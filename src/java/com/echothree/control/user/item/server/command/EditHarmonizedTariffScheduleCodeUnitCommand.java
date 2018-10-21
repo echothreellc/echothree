@@ -1,0 +1,174 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.item.server.command;
+
+import com.echothree.control.user.item.remote.edit.HarmonizedTariffScheduleCodeUnitEdit;
+import com.echothree.control.user.item.remote.edit.ItemEditFactory;
+import com.echothree.control.user.item.remote.form.EditHarmonizedTariffScheduleCodeUnitForm;
+import com.echothree.control.user.item.remote.result.EditHarmonizedTariffScheduleCodeUnitResult;
+import com.echothree.control.user.item.remote.result.ItemResultFactory;
+import com.echothree.control.user.item.remote.spec.HarmonizedTariffScheduleCodeUnitSpec;
+import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnit;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnitDescription;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnitDetail;
+import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeUnitDescriptionValue;
+import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeUnitDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditHarmonizedTariffScheduleCodeUnitCommand
+        extends BaseAbstractEditCommand<HarmonizedTariffScheduleCodeUnitSpec, HarmonizedTariffScheduleCodeUnitEdit, EditHarmonizedTariffScheduleCodeUnitResult, HarmonizedTariffScheduleCodeUnit, HarmonizedTariffScheduleCodeUnit> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCodeUnit.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("HarmonizedTariffScheduleCodeUnitName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("HarmonizedTariffScheduleCodeUnitName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+
+    /** Creates a new instance of EditHarmonizedTariffScheduleCodeUnitCommand */
+    public EditHarmonizedTariffScheduleCodeUnitCommand(UserVisitPK userVisitPK, EditHarmonizedTariffScheduleCodeUnitForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    public EditHarmonizedTariffScheduleCodeUnitResult getResult() {
+        return ItemResultFactory.getEditHarmonizedTariffScheduleCodeUnitResult();
+    }
+
+    @Override
+    public HarmonizedTariffScheduleCodeUnitEdit getEdit() {
+        return ItemEditFactory.getHarmonizedTariffScheduleCodeUnitEdit();
+    }
+
+    @Override
+    public HarmonizedTariffScheduleCodeUnit getEntity(EditHarmonizedTariffScheduleCodeUnitResult result) {
+        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = null;
+        String harmonizedTariffScheduleCodeUnitName = spec.getHarmonizedTariffScheduleCodeUnitName();
+
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
+        } else { // EditMode.UPDATE
+            harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByNameForUpdate(harmonizedTariffScheduleCodeUnitName);
+        }
+
+        if(harmonizedTariffScheduleCodeUnit == null) {
+            addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUnitName.name(), harmonizedTariffScheduleCodeUnitName);
+        }
+
+        return harmonizedTariffScheduleCodeUnit;
+    }
+
+    @Override
+    public HarmonizedTariffScheduleCodeUnit getLockEntity(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
+        return harmonizedTariffScheduleCodeUnit;
+    }
+
+    @Override
+    public void fillInResult(EditHarmonizedTariffScheduleCodeUnitResult result, HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
+        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+
+        result.setHarmonizedTariffScheduleCodeUnit(itemControl.getHarmonizedTariffScheduleCodeUnitTransfer(getUserVisit(), harmonizedTariffScheduleCodeUnit));
+    }
+
+    @Override
+    public void doLock(HarmonizedTariffScheduleCodeUnitEdit edit, HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
+        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());
+        HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
+
+        edit.setHarmonizedTariffScheduleCodeUnitName(harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitName());
+        edit.setIsDefault(harmonizedTariffScheduleCodeUnitDetail.getIsDefault().toString());
+        edit.setSortOrder(harmonizedTariffScheduleCodeUnitDetail.getSortOrder().toString());
+
+        if(harmonizedTariffScheduleCodeUnitDescription != null) {
+            edit.setDescription(harmonizedTariffScheduleCodeUnitDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
+        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        String harmonizedTariffScheduleCodeUnitName = edit.getHarmonizedTariffScheduleCodeUnitName();
+        HarmonizedTariffScheduleCodeUnit duplicateHarmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
+
+        if(duplicateHarmonizedTariffScheduleCodeUnit != null && !harmonizedTariffScheduleCodeUnit.equals(duplicateHarmonizedTariffScheduleCodeUnit)) {
+            addExecutionError(ExecutionErrors.DuplicateHarmonizedTariffScheduleCodeUnitName.name(), harmonizedTariffScheduleCodeUnitName);
+        }
+    }
+
+    @Override
+    public void doUpdate(HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit) {
+        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        PartyPK partyPK = getPartyPK();
+        HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue = itemControl.getHarmonizedTariffScheduleCodeUnitDetailValueForUpdate(harmonizedTariffScheduleCodeUnit);
+        HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionForUpdate(harmonizedTariffScheduleCodeUnit, getPreferredLanguage());
+        String description = edit.getDescription();
+
+        harmonizedTariffScheduleCodeUnitDetailValue.setHarmonizedTariffScheduleCodeUnitName(edit.getHarmonizedTariffScheduleCodeUnitName());
+        harmonizedTariffScheduleCodeUnitDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        harmonizedTariffScheduleCodeUnitDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        itemControl.updateHarmonizedTariffScheduleCodeUnitFromValue(harmonizedTariffScheduleCodeUnitDetailValue, partyPK);
+
+        if(harmonizedTariffScheduleCodeUnitDescription == null && description != null) {
+            itemControl.createHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, getPreferredLanguage(), description, partyPK);
+        } else if(harmonizedTariffScheduleCodeUnitDescription != null && description == null) {
+            itemControl.deleteHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnitDescription, partyPK);
+        } else if(harmonizedTariffScheduleCodeUnitDescription != null && description != null) {
+            HarmonizedTariffScheduleCodeUnitDescriptionValue harmonizedTariffScheduleCodeUnitDescriptionValue = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionValue(harmonizedTariffScheduleCodeUnitDescription);
+
+            harmonizedTariffScheduleCodeUnitDescriptionValue.setDescription(description);
+            itemControl.updateHarmonizedTariffScheduleCodeUnitDescriptionFromValue(harmonizedTariffScheduleCodeUnitDescriptionValue, partyPK);
+        }
+    }
+
+}

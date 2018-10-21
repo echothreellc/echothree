@@ -1,0 +1,562 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Geo">
+            <tables>
+                <table namePlural="GeoCodeTypes" nameSingular="GeoCodeType" columnPrefix="geot">
+                    <columns>
+                        <column name="GeoCodeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeTypeDetails" destinationColumn="GeoCodeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeTypeDetails" destinationColumn="GeoCodeTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeTypeDetails" nameSingular="GeoCodeTypeDetail" columnPrefix="geotdt">
+                    <columns>
+                        <column name="GeoCodeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeTypes" destinationColumn="GeoCodeTypeId" />
+                        <column name="GeoCodeTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentGeoCodeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeTypes" destinationColumn="GeoCodeTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GeoCodeTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ParentGeoCodeTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeTypeDescriptions" nameSingular="GeoCodeTypeDescription" columnPrefix="geotd">
+                    <columns>
+                        <column name="GeoCodeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeTypes" destinationColumn="GeoCodeTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeScopes" nameSingular="GeoCodeScope" columnPrefix="geos">
+                    <columns>
+                        <column name="GeoCodeScopeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeScopeDetails" destinationColumn="GeoCodeScopeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeScopeDetails" destinationColumn="GeoCodeScopeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeScopeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeScopeDetails" nameSingular="GeoCodeScopeDetail" columnPrefix="geosdt">
+                    <columns>
+                        <column name="GeoCodeScopeDetailId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeScopes" destinationColumn="GeoCodeScopeId" />
+                        <column name="GeoCodeScopeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeScopeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GeoCodeScopeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeScopeDescriptions" nameSingular="GeoCodeScopeDescription" columnPrefix="geosd">
+                    <columns>
+                        <column name="GeoCodeScopeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeScopes" destinationColumn="GeoCodeScopeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeScopeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeScopeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeAliasTypes" nameSingular="GeoCodeAliasType" columnPrefix="geoat">
+                    <columns>
+                        <column name="GeoCodeAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeAliasTypeDetails" destinationColumn="GeoCodeAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeAliasTypeDetails" destinationColumn="GeoCodeAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeAliasTypeDetails" nameSingular="GeoCodeAliasTypeDetail" columnPrefix="geoatdt">
+                    <columns>
+                        <column name="GeoCodeAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeAliasTypes" destinationColumn="GeoCodeAliasTypeId" />
+                        <column name="GeoCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeTypes" destinationColumn="GeoCodeTypeId" />
+                        <column name="GeoCodeAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsRequired" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GeoCodeTypeId" />
+                            <indexColumn name="GeoCodeAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="GeoCodeTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeAliasTypeDescriptions" nameSingular="GeoCodeAliasTypeDescription" columnPrefix="geoatd">
+                    <columns>
+                        <column name="GeoCodeAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeAliasTypes" destinationColumn="GeoCodeAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodes" nameSingular="GeoCode" columnPrefix="geo">
+                    <columns>
+                        <column name="GeoCodeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeDetails" destinationColumn="GeoCodeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GeoCodeDetails" destinationColumn="GeoCodeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeDetails" nameSingular="GeoCodeDetail" columnPrefix="geodt">
+                    <columns>
+                        <column name="GeoCodeDetailId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="GeoCodeName" type="Name" nullAllowed="false" />
+                        <column name="GeoCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeTypes" destinationColumn="GeoCodeTypeId" />
+                        <column name="GeoCodeScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeScopes" destinationColumn="GeoCodeScopeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GeoCodeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="GeoCodeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GeoCodeScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="GeoCodeScopeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeDescriptions" nameSingular="GeoCodeDescription" columnPrefix="geod">
+                    <columns>
+                        <column name="GeoCodeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeAliases" nameSingular="GeoCodeAlias" columnPrefix="geoa">
+                    <columns>
+                        <column name="GeoCodeAliasId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="GeoCodeScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeScopes" destinationColumn="GeoCodeScopeId" />
+                        <column name="GeoCodeAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodeAliasTypes" destinationColumn="GeoCodeAliasTypeId" />
+                        <column name="Alias" type="GeoCodeAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeAliasId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GeoCodeAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="GeoCodeAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GeoCodeScopeId" />
+                            <indexColumn name="GeoCodeAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index5">
+                            <indexColumn name="GeoCodeScopeId" />
+                            <indexColumn name="GeoCodeAliasTypeId" />
+                            <indexColumn name="Alias" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeRelationships" nameSingular="GeoCodeRelationship" columnPrefix="geor">
+                    <columns>
+                        <column name="GeoCodeRelationshipId" type="EID" nullAllowed="false" />
+                        <column name="FromGeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="ToGeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeRelationshipId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FromGeoCodeId" />
+                            <indexColumn name="ToGeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FromGeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ToGeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeLanguages" nameSingular="GeoCodeLanguage" columnPrefix="geol">
+                    <columns>
+                        <column name="GeoCodeLanguageId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeLanguageId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeCurrencies" nameSingular="GeoCodeCurrency" columnPrefix="geocur">
+                    <columns>
+                        <column name="GeoCodeCurrencyId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeCurrencyId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeTimeZones" nameSingular="GeoCodeTimeZone" columnPrefix="geotz">
+                    <columns>
+                        <column name="GeoCodeTimeZoneId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="TimeZoneId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TimeZones" destinationColumn="TimeZoneId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeTimeZoneId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="TimeZoneId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TimeZoneId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeDateTimeFormats" nameSingular="GeoCodeDateTimeFormat" columnPrefix="geodtf">
+                    <columns>
+                        <column name="GeoCodeDateTimeFormatId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="DateTimeFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DateTimeFormats" destinationColumn="DateTimeFormatId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeDateTimeFormatId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="DateTimeFormatId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="DateTimeFormatId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeCountries" nameSingular="GeoCodeCountry" columnPrefix="geoc">
+                    <columns>
+                        <column name="GeoCodeCountryId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="TelephoneCode" type="String" maxLength="5" nullAllowed="true" />
+                        <column name="AreaCodePattern" type="RegExp" nullAllowed="true" />
+                        <column name="AreaCodeRequired" type="Boolean" nullAllowed="false" />
+                        <column name="AreaCodeExample" type="AreaCode" nullAllowed="true" />
+                        <column name="TelephoneNumberPattern" type="RegExp" nullAllowed="true" />
+                        <column name="TelephoneNumberExample" type="TelephoneNumber" nullAllowed="true" />
+                        <column name="PostalAddressFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PostalAddressFormats" destinationColumn="PostalAddressFormatId" />
+                        <column name="CityRequired" type="Boolean" nullAllowed="false" />
+                        <column name="CityGeoCodeRequired" type="Boolean" nullAllowed="false" />
+                        <column name="StateRequired" type="Boolean" nullAllowed="false" />
+                        <column name="StateGeoCodeRequired" type="Boolean" nullAllowed="false" />
+                        <column name="PostalCodePattern" type="RegExp" nullAllowed="true" />
+                        <column name="PostalCodeRequired" type="Boolean" nullAllowed="false" />
+                        <column name="PostalCodeGeoCodeRequired" type="Boolean" nullAllowed="false" />
+                        <column name="PostalCodeLength" type="Integer" nullAllowed="true" />
+                        <column name="PostalCodeGeoCodeLength" type="Integer" nullAllowed="true" />
+                        <column name="PostalCodeExample" type="PostalCode" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeCountryId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PostalAddressFormatId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

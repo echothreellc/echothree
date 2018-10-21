@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <columnTypes>
+        <columnType type="Name" realType="String" maxLength="40" />
+        <columnType type="Key" realType="String" maxLength="80" />
+        <columnType type="Guid" realType="String" maxLength="36" />
+        <columnType type="Ulid" realType="String" maxLength="26" />
+        <columnType type="Reference" realType="String" maxLength="40" />
+        <columnType type="Description" realType="String" maxLength="80" />
+        <columnType type="Symbol" realType="String" maxLength="20" />
+        <columnType type="Comment" realType="String" maxLength="80" />
+        <columnType type="CompanyName" realType="String" maxLength="60" />
+        <columnType type="Attention" realType="String" maxLength="60" />
+        <columnType type="NameComponent" realType="String" maxLength="20" />
+        <columnType type="AddressLine" realType="String" maxLength="40" />
+        <columnType type="City" realType="String" maxLength="30" />
+        <columnType type="State" realType="String" maxLength="30" />
+        <columnType type="PostalCode" realType="String" maxLength="15" />
+        <columnType type="TaxID" realType="String" maxLength="9" />
+        <columnType type="EmailAddress" realType="String" maxLength="80" />
+        <columnType type="AreaCode" realType="String" maxLength="5" />
+        <columnType type="TelephoneNumber" realType="String" maxLength="25" />
+        <columnType type="TelephoneExtension" realType="String" maxLength="10" />
+        <columnType type="Url" realType="String" maxLength="200" />
+        <columnType type="Soundex" realType="String" maxLength="4" />
+        <columnType type="RegExp" realType="String" maxLength="128" />
+        <columnType type="Currency" realType="Long" />
+        <columnType type="Username" realType="String" maxLength="80" />
+        <columnType type="CacheKey" realType="String" maxLength="200" />
+        <columnType type="ConfigurationValue" realType="String" maxLength="80" />
+        <columnType type="ContactMechanismAlias" realType="String" maxLength="40" />
+        <columnType type="CustomerAlias" realType="String" maxLength="40" />
+        <columnType type="GeoCodeAlias" realType="String" maxLength="40" />
+        <columnType type="InvoiceAlias" realType="String" maxLength="40" />
+        <columnType type="ItemAlias" realType="String" maxLength="40" />
+        <columnType type="OrderBatchAlias" realType="String" maxLength="40" />
+        <columnType type="OrderAlias" realType="String" maxLength="40" />
+        <columnType type="PartyContactMechanismAlias" realType="String" maxLength="40" />
+        <columnType type="PicklistAlias" realType="String" maxLength="40" />
+        <columnType type="ShipmentAlias" realType="String" maxLength="40" />
+        <columnType type="SequenceMask" realType="String" maxLength="40" />
+        <columnType type="SequenceValue" realType="String" maxLength="40" />
+        <columnType type="Directory" realType="String" maxLength="80" />
+        <columnType type="Percent" realType="Integer" />
+        <columnType type="Day" realType="Integer" />
+        <columnType type="Month" realType="Integer" />
+        <columnType type="Year" realType="Integer" />
+        <columnType type="Md5Hash" realType="String" maxLength="24" />
+        <columnType type="Sha1Salt" realType="String" maxLength="12" />
+        <columnType type="Sha1Hash" realType="String" maxLength="28" />
+        <columnType type="TextPassword" realType="String" maxLength="40" />
+        <columnType type="EncodedSecretKey" realType="String" maxLength="200" />
+        <columnType type="EncodedInitializationVector" realType="String" maxLength="200" />
+        <columnType type="EncodedValue" realType="String" maxLength="200" />
+        <columnType type="Measurement" realType="Long" />
+        <columnType type="CommandName" realType="String" maxLength="80" />
+        <columnType type="BatchAlias" realType="String" maxLength="40" />
+        <columnType type="FinancialAccountAlias" realType="String" maxLength="40" />
+        <columnType type="PartyAlias" realType="String" maxLength="40" />
+        <columnType type="LotAlias" realType="String" maxLength="40" />
+        <columnType type="CarrierAccount" realType="String" maxLength="40" />
+        <columnType type="EntityTypeName" realType="String" maxLength="64" />
+        <columnType type="Degree" realType="Integer" />
+    </columnTypes>
+    <files>
+        <file name="src/xml/AccountingComponent.xml" />
+        <file name="src/xml/AssociateComponent.xml" />
+        <file name="src/xml/BatchComponent.xml" />
+        <file name="src/xml/CampaignComponent.xml" />
+        <file name="src/xml/CancellationPolicyComponent.xml" />
+        <file name="src/xml/CarrierComponent.xml" />
+        <file name="src/xml/ChainComponent.xml" />
+        <file name="src/xml/ClubComponent.xml" />
+        <file name="src/xml/CommentComponent.xml" />
+        <file name="src/xml/CommunicationComponent.xml" />
+        <file name="src/xml/ContactComponent.xml" />
+        <file name="src/xml/ContactListComponent.xml" />
+        <file name="src/xml/ContentComponent.xml" />
+        <file name="src/xml/CoreComponent.xml" />
+        <file name="src/xml/CustomerComponent.xml" />
+        <file name="src/xml/DocumentComponent.xml" />
+        <file name="src/xml/EmployeeComponent.xml" />
+        <file name="src/xml/FilterComponent.xml" />
+        <file name="src/xml/FinancialComponent.xml" />
+        <file name="src/xml/ForumComponent.xml" />
+        <file name="src/xml/GeoComponent.xml" />
+        <file name="src/xml/IconComponent.xml" />
+        <file name="src/xml/IndexComponent.xml" />
+        <file name="src/xml/InventoryComponent.xml" />
+        <file name="src/xml/InvoiceComponent.xml" />
+        <file name="src/xml/ItemComponent.xml" />
+        <file name="src/xml/JobComponent.xml" />
+        <file name="src/xml/LicenseComponent.xml" />
+        <file name="src/xml/LetterComponent.xml" />
+        <file name="src/xml/MessageComponent.xml" />
+        <file name="src/xml/OfferComponent.xml" />
+        <file name="src/xml/OrderComponent.xml" />
+        <file name="src/xml/PartyComponent.xml" />
+        <file name="src/xml/PaymentComponent.xml" />
+        <file name="src/xml/PicklistComponent.xml" />
+        <file name="src/xml/PeriodComponent.xml" />
+        <file name="src/xml/PrinterComponent.xml" />
+        <file name="src/xml/QueueComponent.xml" />
+        <file name="src/xml/RatingComponent.xml" />
+        <file name="src/xml/ReturnPolicyComponent.xml" />
+        <file name="src/xml/SalesComponent.xml" />
+        <file name="src/xml/ScaleComponent.xml" />
+        <file name="src/xml/SearchComponent.xml" />
+        <file name="src/xml/SecurityComponent.xml" />
+        <file name="src/xml/SelectorComponent.xml" />
+        <file name="src/xml/SequenceComponent.xml" />
+        <file name="src/xml/ShipmentComponent.xml" />
+        <file name="src/xml/ShippingComponent.xml" />
+        <file name="src/xml/StyleComponent.xml" />
+        <file name="src/xml/SubscriptionComponent.xml" />
+        <file name="src/xml/SurveyComponent.xml" />
+        <file name="src/xml/TagComponent.xml" />
+        <file name="src/xml/TaxComponent.xml" />
+        <file name="src/xml/TermComponent.xml" />
+        <file name="src/xml/TrackComponent.xml" />
+        <file name="src/xml/TrainingComponent.xml" />
+        <file name="src/xml/UomComponent.xml" />
+        <file name="src/xml/UserComponent.xml" />
+        <file name="src/xml/VendorComponent.xml" />
+        <file name="src/xml/WarehouseComponent.xml" />
+        <file name="src/xml/WishlistComponent.xml" />
+        <file name="src/xml/WorkEffortComponent.xml" />
+        <file name="src/xml/WorkflowComponent.xml" />
+        <file name="src/xml/WorkRequirementComponent.xml" />
+    </files>
+</database>

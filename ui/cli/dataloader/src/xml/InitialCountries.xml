@@ -1,0 +1,1668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This product includes software developed by
+The Apache Software Foundation (http://www.apache.org/).
+-->
+
+<!--
+Copyright 2002-2014 Echo Three, LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<initialData>
+    <countries>
+        <country countryName="UNITED_STATES" iso3Number="840" iso3Letter="USA" iso2Letter="US" telephoneCode="1"
+                 areaCodePattern="^[0-9][0-9][0-9]$" areaCodeRequired="true" areaCodeExample="515"
+                 telephoneNumberPattern="^[0-9][0-9][0-9]([ -\\.]|)[0-9][0-9][0-9][0-9]$" telephoneNumberExample="555-1212"
+                 postalAddressFormatName="USPS" cityRequired="true" cityGeoCodeRequired="true" stateRequired="true"
+                 stateGeoCodeRequired="true" postalCodePattern="^[0-9][0-9][0-9][0-9][0-9](-|)(|[0-9][0-9][0-9][0-9])$"
+                 postalCodeRequired="true" postalCodeGeoCodeRequired="true" postalCodeLength="10" postalCodeGeoCodeLength="5"
+                 postalCodeExample="99999-9999" isDefault="true" sortOrder="1">
+            <geoCodeDescription languageIsoName="en" description="United States" />
+            <geoCodeLanguage languageIsoName="en" isDefault="true" sortOrder="1" />
+            <geoCodeCurrency currencyIsoName="USD" isDefault="true" sortOrder="1" />
+            <geoCodeTimeZone javaTimeZoneName="US/Central" isDefault="true" sortOrder="1" />
+            <geoCodeDateTimeFormat dateTimeFormatName="DEFAULT" isDefault="true" sortOrder="1" />
+            <zipCode zipCodeName="50010" isDefault="true" sortOrder="1" description="50010" />
+            <zipCode zipCodeName="50011" isDefault="false" sortOrder="1" description="50011" />
+            <zipCode zipCodeName="50012" isDefault="false" sortOrder="1" description="50012" />
+            <zipCode zipCodeName="50013" isDefault="false" sortOrder="1" description="50013" />
+            <zipCode zipCodeName="50014" isDefault="false" sortOrder="1" description="50014" />
+            <zipCode zipCodeName="50300" isDefault="false" sortOrder="1" description="50300" />
+            <zipCode zipCodeName="50301" isDefault="false" sortOrder="1" description="50301" />
+            <zipCode zipCodeName="50302" isDefault="false" sortOrder="1" description="50302" />
+            <zipCode zipCodeName="50303" isDefault="false" sortOrder="1" description="50303" />
+            <zipCode zipCodeName="50304" isDefault="false" sortOrder="1" description="50304" />
+            <zipCode zipCodeName="50305" isDefault="false" sortOrder="1" description="50305" />
+            <zipCode zipCodeName="50306" isDefault="false" sortOrder="1" description="50306" />
+            <zipCode zipCodeName="50307" isDefault="false" sortOrder="1" description="50307" />
+            <zipCode zipCodeName="50308" isDefault="false" sortOrder="1" description="50308" />
+            <zipCode zipCodeName="50309" isDefault="false" sortOrder="1" description="50309" />
+            <zipCode zipCodeName="50310" isDefault="false" sortOrder="1" description="50310" />
+            <zipCode zipCodeName="50311" isDefault="false" sortOrder="1" description="50311" />
+            <zipCode zipCodeName="50312" isDefault="false" sortOrder="1" description="50312" />
+            <zipCode zipCodeName="50313" isDefault="false" sortOrder="1" description="50313" />
+            <zipCode zipCodeName="50314" isDefault="false" sortOrder="1" description="50314" />
+            <zipCode zipCodeName="50315" isDefault="false" sortOrder="1" description="50315" />
+            <zipCode zipCodeName="50316" isDefault="false" sortOrder="1" description="50316" />
+            <zipCode zipCodeName="50317" isDefault="false" sortOrder="1" description="50317" />
+            <zipCode zipCodeName="50318" isDefault="false" sortOrder="1" description="50318" />
+            <zipCode zipCodeName="50319" isDefault="false" sortOrder="1" description="50319" />
+            <zipCode zipCodeName="50320" isDefault="false" sortOrder="1" description="50320" />
+            <zipCode zipCodeName="50321" isDefault="false" sortOrder="1" description="50321" />
+            <zipCode zipCodeName="50322" isDefault="false" sortOrder="1" description="50322" />
+            <zipCode zipCodeName="50323" isDefault="false" sortOrder="1" description="50323" />
+            <zipCode zipCodeName="50327" isDefault="false" sortOrder="1" description="50327" />
+            <zipCode zipCodeName="50328" isDefault="false" sortOrder="1" description="50328" />
+            <zipCode zipCodeName="50329" isDefault="false" sortOrder="1" description="50329" />
+            <zipCode zipCodeName="50330" isDefault="false" sortOrder="1" description="50330" />
+            <zipCode zipCodeName="50331" isDefault="false" sortOrder="1" description="50331" />
+            <zipCode zipCodeName="50332" isDefault="false" sortOrder="1" description="50332" />
+            <zipCode zipCodeName="50333" isDefault="false" sortOrder="1" description="50333" />
+            <zipCode zipCodeName="50334" isDefault="false" sortOrder="1" description="50334" />
+            <zipCode zipCodeName="50335" isDefault="false" sortOrder="1" description="50335" />
+            <zipCode zipCodeName="50336" isDefault="false" sortOrder="1" description="50336" />
+            <zipCode zipCodeName="50338" isDefault="false" sortOrder="1" description="50338" />
+            <zipCode zipCodeName="50339" isDefault="false" sortOrder="1" description="50339" />
+            <zipCode zipCodeName="50340" isDefault="false" sortOrder="1" description="50340" />
+            <zipCode zipCodeName="50347" isDefault="false" sortOrder="1" description="50347" />
+            <zipCode zipCodeName="50350" isDefault="false" sortOrder="1" description="50350" />
+            <zipCode zipCodeName="50359" isDefault="false" sortOrder="1" description="50359" />
+            <zipCode zipCodeName="50360" isDefault="false" sortOrder="1" description="50360" />
+            <zipCode zipCodeName="50361" isDefault="false" sortOrder="1" description="50361" />
+            <zipCode zipCodeName="50362" isDefault="false" sortOrder="1" description="50362" />
+            <zipCode zipCodeName="50363" isDefault="false" sortOrder="1" description="50363" />
+            <zipCode zipCodeName="50364" isDefault="false" sortOrder="1" description="50364" />
+            <zipCode zipCodeName="50367" isDefault="false" sortOrder="1" description="50367" />
+            <zipCode zipCodeName="50368" isDefault="false" sortOrder="1" description="50368" />
+            <zipCode zipCodeName="50369" isDefault="false" sortOrder="1" description="50369" />
+            <zipCode zipCodeName="50380" isDefault="false" sortOrder="1" description="50380" />
+            <zipCode zipCodeName="50381" isDefault="false" sortOrder="1" description="50381" />
+            <zipCode zipCodeName="50391" isDefault="false" sortOrder="1" description="50391" />
+            <zipCode zipCodeName="50392" isDefault="false" sortOrder="1" description="50392" />
+            <zipCode zipCodeName="50393" isDefault="false" sortOrder="1" description="50393" />
+            <zipCode zipCodeName="50394" isDefault="false" sortOrder="1" description="50394" />
+            <zipCode zipCodeName="50395" isDefault="false" sortOrder="1" description="50395" />
+            <zipCode zipCodeName="50396" isDefault="false" sortOrder="1" description="50396" />
+            <zipCode zipCodeName="50397" isDefault="false" sortOrder="1" description="50397" />
+            <zipCode zipCodeName="50511" isDefault="false" sortOrder="1" description="50511" />
+            <zipCode zipCodeName="50598" isDefault="false" sortOrder="1" description="50598" />
+            <zipCode zipCodeName="50936" isDefault="false" sortOrder="1" description="50936" />
+            <zipCode zipCodeName="50940" isDefault="false" sortOrder="1" description="50940" />
+            <zipCode zipCodeName="50947" isDefault="false" sortOrder="1" description="50947" />
+            <zipCode zipCodeName="50950" isDefault="false" sortOrder="1" description="50950" />
+            <zipCode zipCodeName="50980" isDefault="false" sortOrder="1" description="50980" />
+            <zipCode zipCodeName="50981" isDefault="false" sortOrder="1" description="50981" />
+            <state stateName="ALASKA" postal2Letter="AK" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Alaska" />
+            </state>
+            <state stateName="ALABAMA" postal2Letter="AL" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Alabama" />
+            </state>
+            <state stateName="AMERICAN_SAMOA" postal2Letter="AS" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="American Samoa" />
+            </state>
+            <state stateName="ARKANSAS" postal2Letter="AR" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Arkansas" />
+            </state>
+            <state stateName="ARIZONA" postal2Letter="AZ" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Arizona" />
+            </state>
+            <state stateName="CALIFORNIA" postal2Letter="CA" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="California" />
+            </state>
+            <state stateName="COLORADO" postal2Letter="CO" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Colorado" />
+            </state>
+            <state stateName="CONNECTICUT" postal2Letter="CT" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Connecticut" />
+            </state>
+            <state stateName="WASHINGTON_DC" postal2Letter="DC" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Washington DC" />
+            </state>
+            <state stateName="DELEWARE" postal2Letter="DE" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Delaware" />
+            </state>
+            <state stateName="FEDERATED_STATES_OF_MICRONESIA" postal2Letter="FM" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Federated States of Micronesia" />
+            </state>
+            <state stateName="FLORIDA" postal2Letter="FL" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Florida" />
+            </state>
+            <state stateName="GEORGIA" postal2Letter="GA" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Georgia" />
+            </state>
+            <state stateName="GUAM" postal2Letter="GU" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Guam" />
+            </state>
+            <state stateName="HAWAII" postal2Letter="HI" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Hawaii" />
+            </state>
+            <state stateName="IOWA" postal2Letter="IA" isDefault="true" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Iowa" />
+                <geoCodeTax taxName="US_IA" />
+                <county countyName="KOSSUTH" countyNumber="109" isDefault="true" sortOrder="0">
+                    <geoCodeDescription languageIsoName="en" description="Kossuth" />
+                    <geoCodeTax taxName="US_IA_CO_KOSSUTH" />
+                </county>
+                <county countyName="POLK" countyNumber="153" isDefault="false" sortOrder="0">
+                    <geoCodeDescription languageIsoName="en" description="Polk" />
+                    <geoCodeTax taxName="US_IA_CO_POLK" />
+                </county>
+                <county countyName="STORY" countyNumber="169" isDefault="false" sortOrder="0">
+                    <geoCodeDescription languageIsoName="en" description="Story" />
+                    <geoCodeTax taxName="US_IA_CO_STORY" />
+                </county>
+                <city cityName="ALGONA" isDefault="false" sortOrder="0">
+                    <geoCodeDescription languageIsoName="en" description="Algona" />
+                    <geoCodeTax taxName="US_IA_CI_ALGONA" />
+                    <cityCounty countyName="KOSSUTH" />
+                    <cityZipCode zipCodeName="50511" />
+                </city>
+                <city cityName="AMES" isDefault="false" sortOrder="0">
+                    <geoCodeDescription languageIsoName="en" description="Ames" />
+                    <geoCodeTax taxName="US_IA_CI_AMES" />
+                    <cityCounty countyName="STORY" />
+                    <cityZipCode zipCodeName="50010" />
+                    <cityZipCode zipCodeName="50011" />
+                    <cityZipCode zipCodeName="50012" />
+                    <cityZipCode zipCodeName="50013" />
+                    <cityZipCode zipCodeName="50014" />
+                </city>
+                <city cityName="DES_MOINES" isDefault="false" sortOrder="0">
+                    <geoCodeDescription languageIsoName="en" description="Des Moines" />
+                    <cityCounty countyName="POLK" />
+                    <cityZipCode zipCodeName="50300" />
+                    <cityZipCode zipCodeName="50301" />
+                    <cityZipCode zipCodeName="50302" />
+                    <cityZipCode zipCodeName="50303" />
+                    <cityZipCode zipCodeName="50304" />
+                    <cityZipCode zipCodeName="50305" />
+                    <cityZipCode zipCodeName="50306" />
+                    <cityZipCode zipCodeName="50307" />
+                    <cityZipCode zipCodeName="50308" />
+                    <cityZipCode zipCodeName="50309" />
+                    <cityZipCode zipCodeName="50310" />
+                    <cityZipCode zipCodeName="50311" />
+                    <cityZipCode zipCodeName="50312" />
+                    <cityZipCode zipCodeName="50313" />
+                    <cityZipCode zipCodeName="50314" />
+                    <cityZipCode zipCodeName="50315" />
+                    <cityZipCode zipCodeName="50316" />
+                    <cityZipCode zipCodeName="50317" />
+                    <cityZipCode zipCodeName="50318" />
+                    <cityZipCode zipCodeName="50319" />
+                    <cityZipCode zipCodeName="50320" />
+                    <cityZipCode zipCodeName="50321" />
+                    <cityZipCode zipCodeName="50327" />
+                    <cityZipCode zipCodeName="50328" />
+                    <cityZipCode zipCodeName="50329" />
+                    <cityZipCode zipCodeName="50330" />
+                    <cityZipCode zipCodeName="50331" />
+                    <cityZipCode zipCodeName="50332" />
+                    <cityZipCode zipCodeName="50333" />
+                    <cityZipCode zipCodeName="50334" />
+                    <cityZipCode zipCodeName="50335" />
+                    <cityZipCode zipCodeName="50336" />
+                    <cityZipCode zipCodeName="50338" />
+                    <cityZipCode zipCodeName="50339" />
+                    <cityZipCode zipCodeName="50340" />
+                    <cityZipCode zipCodeName="50347" />
+                    <cityZipCode zipCodeName="50350" />
+                    <cityZipCode zipCodeName="50359" />
+                    <cityZipCode zipCodeName="50360" />
+                    <cityZipCode zipCodeName="50361" />
+                    <cityZipCode zipCodeName="50362" />
+                    <cityZipCode zipCodeName="50363" />
+                    <cityZipCode zipCodeName="50364" />
+                    <cityZipCode zipCodeName="50367" />
+                    <cityZipCode zipCodeName="50368" />
+                    <cityZipCode zipCodeName="50369" />
+                    <cityZipCode zipCodeName="50380" />
+                    <cityZipCode zipCodeName="50381" />
+                    <cityZipCode zipCodeName="50391" />
+                    <cityZipCode zipCodeName="50392" />
+                    <cityZipCode zipCodeName="50393" />
+                    <cityZipCode zipCodeName="50394" />
+                    <cityZipCode zipCodeName="50395" />
+                    <cityZipCode zipCodeName="50396" />
+                    <cityZipCode zipCodeName="50397" />
+                    <cityZipCode zipCodeName="50936" />
+                    <cityZipCode zipCodeName="50940" />
+                    <cityZipCode zipCodeName="50947" />
+                    <cityZipCode zipCodeName="50950" />
+                    <cityZipCode zipCodeName="50980" />
+                    <cityZipCode zipCodeName="50981" />
+                </city>
+                <city cityName="URBANDALE" isDefault="false" sortOrder="0">
+                    <geoCodeDescription languageIsoName="en" description="Urbandale" />
+                    <cityCounty countyName="POLK" />
+                    <cityZipCode zipCodeName="50322" />
+                    <cityZipCode zipCodeName="50323" />
+                </city>
+                <city cityName="WHITTEMORE" isDefault="true" sortOrder="0">
+                    <geoCodeDescription languageIsoName="en" description="Whittemore" />
+                    <geoCodeTax taxName="US_IA_CI_WHITTEMORE" />
+                    <cityCounty countyName="KOSSUTH" />
+                    <cityZipCode zipCodeName="50598" />
+                </city>
+            </state>
+            <state stateName="IDAHO" postal2Letter="ID" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Idaho" />
+            </state>
+            <state stateName="ILLINOIS" postal2Letter="IL" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Illinois" />
+            </state>
+            <state stateName="INDIANA" postal2Letter="IN" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Indiana" />
+            </state>
+            <state stateName="KANSAS" postal2Letter="KS" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Kansas" />
+            </state>
+            <state stateName="KENTUCKY" postal2Letter="KY" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Kentucky" />
+            </state>
+            <state stateName="LOUISIANA" postal2Letter="LA" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Louisiana" />
+            </state>
+            <state stateName="MASSACHUSETTS" postal2Letter="MA" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Massachusetts" />
+            </state>
+            <state stateName="MARYLAND" postal2Letter="MD" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Maryland" />
+            </state>
+            <state stateName="MAINE" postal2Letter="ME" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Maine" />
+            </state>
+            <state stateName="MARSHALL_ISLANDS" postal2Letter="MH" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Marshall Islands" />
+            </state>
+            <state stateName="MICHIGAN" postal2Letter="MI" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Michigan" />
+            </state>
+            <state stateName="MINNESOTA" postal2Letter="MN" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Minnesota" />
+            </state>
+            <state stateName="MISSOURI" postal2Letter="MO" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Missouri" />
+            </state>
+            <state stateName="MISSISSIPPI" postal2Letter="MS" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Mississippi" />
+            </state>
+            <state stateName="MONTANA" postal2Letter="MT" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Montana" />
+            </state>
+            <state stateName="NEBRASKA" postal2Letter="NE" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Nebraska" />
+            </state>
+            <state stateName="NEVADA" postal2Letter="NV" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Nevada" />
+            </state>
+            <state stateName="NEW_HAMPSHIRE" postal2Letter="NH" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="New Hampshire" />
+            </state>
+            <state stateName="NEW_JERSEY" postal2Letter="NJ" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="New Jersey" />
+            </state>
+            <state stateName="NEW_MEXICO" postal2Letter="NM" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="New Mexico" />
+            </state>
+            <state stateName="NEW_YORK" postal2Letter="NY" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="New York" />
+            </state>
+            <state stateName="NORTH_CAROLINA" postal2Letter="NC" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="North Carolina" />
+            </state>
+            <state stateName="NORTH_DAKOTA" postal2Letter="ND" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="North Dakota" />
+            </state>
+            <state stateName="NORTHERN_MARIANA_ISLANDS" postal2Letter="MP" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Northern Mariana Islands" />
+            </state>
+            <state stateName="OHIO" postal2Letter="OH" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Ohio" />
+            </state>
+            <state stateName="OKLAHOMA" postal2Letter="OK" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Oklahoma" />
+            </state>
+            <state stateName="OREGON" postal2Letter="OR" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Oregon" />
+            </state>
+            <state stateName="PALAU" postal2Letter="PW" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Palau" />
+            </state>
+            <state stateName="PENNSYLVANIA" postal2Letter="PA" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Pennsylvania" />
+            </state>
+            <state stateName="PUERTO_RICO" postal2Letter="PR" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Puerto Rico" />
+            </state>
+            <state stateName="RHODE_ISLAND" postal2Letter="RI" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Rhode Island" />
+            </state>
+            <state stateName="SOUTH_CAROLINA" postal2Letter="SC" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="South Carolina" />
+            </state>
+            <state stateName="SOUTH_DAKOTA" postal2Letter="SD" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="South Dakota" />
+            </state>
+            <state stateName="TENNESSEE" postal2Letter="TN" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Tennessee" />
+            </state>
+            <state stateName="TEXAS" postal2Letter="TX" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Texas" />
+            </state>
+            <state stateName="UTAH" postal2Letter="UT" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Utah" />
+            </state>
+            <state stateName="VIRGINIA" postal2Letter="VA" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Virginia" />
+            </state>
+            <state stateName="VIRGIN_ISLANDS" postal2Letter="VI" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Virgin Islands" />
+            </state>
+            <state stateName="VERMONT" postal2Letter="VT" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Vermont" />
+            </state>
+            <state stateName="WASHINGTON" postal2Letter="WA" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Washington" />
+            </state>
+            <state stateName="WISCONSIN" postal2Letter="WI" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Wisconsin" />
+            </state>
+            <state stateName="WEST_VIRGINIA" postal2Letter="WV" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="West Virginia" />
+            </state>
+            <state stateName="WYOMING" postal2Letter="WY" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Wyoming" />
+            </state>
+            <state stateName="AA" postal2Letter="AA" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Armed Forces Americas (except Canada) (AA)" />
+            </state>
+            <state stateName="AE" postal2Letter="AE" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Armed Forces Europe, Middle East and Canada (AE)" />
+            </state>
+            <state stateName="AP" postal2Letter="AP" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Armed Forces Pacific (AP)" />
+            </state>
+            <taxClassification taxClassificationName="TAXABLE" isDefault="true" sortOrder="1" >
+                <taxClassificationTranslation languageIsoName="en" description="Taxable" />
+            </taxClassification>
+            <taxClassification taxClassificationName="TAX_EXEMPT" isDefault="false" sortOrder="2" >
+                <taxClassificationTranslation languageIsoName="en" description="Tax-Exempt" />
+            </taxClassification>
+        </country>
+        <country countryName="CANADA" iso3Number="124" iso3Letter="CAN" iso2Letter="CA" telephoneCode="1"
+                 areaCodePattern="^[0-9][0-9][0-9]$" areaCodeRequired="true" areaCodeExample="515"
+                 telephoneNumberPattern="^[0-9][0-9][0-9]([ -\\.]|)[0-9][0-9][0-9][0-9]$" telephoneNumberExample="555-1212"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="true" cityGeoCodeRequired="false" stateRequired="true"
+                 stateGeoCodeRequired="true" postalCodePattern="^[A-Z][0-9][A-Z](-| )[0-9][A-Z][0-9]$" postalCodeRequired="true"
+                 postalCodeGeoCodeRequired="false" postalCodeLength="7" postalCodeExample="A1A 1A1" isDefault="false" sortOrder="1">
+            <geoCodeDescription languageIsoName="en" description="Canada" />
+            <state stateName="ALBERTA" postal2Letter="AB" isDefault="true" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Alberta" />
+            </state>
+            <state stateName="BRITISH_COLUMBIA" postal2Letter="BC" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="British Columbia" />
+            </state>
+            <state stateName="MANITOBA" postal2Letter="MB" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Manitoba" />
+            </state>
+            <state stateName="NEW_BRUNSWICK" postal2Letter="NB" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="New Brunswick" />
+            </state>
+            <state stateName="NEWFOUNDLAND_AND_LABRADOR" postal2Letter="NL" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Newfoundland and Labrador" />
+            </state>
+            <state stateName="NORTHWEST_TERRITORIES" postal2Letter="NT" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Northwest Territories" />
+            </state>
+            <state stateName="NOVA_SCOTIA" postal2Letter="NS" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Nova Scotia" />
+            </state>
+            <state stateName="NUNAVUT" postal2Letter="NU" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Nunavut" />
+            </state>
+            <state stateName="ONTARIO" postal2Letter="ON" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Ontario" />
+            </state>
+            <state stateName="PRICE_EDWARD_ISLAND" postal2Letter="PE" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Prince Edward Island" />
+            </state>
+            <state stateName="QUEBEC" postal2Letter="QC" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Quebec" />
+            </state>
+            <state stateName="SASKATCHEWAN" postal2Letter="SK" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Saskatchewan" />
+            </state>
+            <state stateName="YUKON" postal2Letter="YT" isDefault="false" sortOrder="0">
+                <geoCodeDescription languageIsoName="en" description="Yukon" />
+            </state>
+            <taxClassification taxClassificationName="TAXABLE" isDefault="true" sortOrder="1" >
+                <taxClassificationTranslation languageIsoName="en" description="Taxable" />
+            </taxClassification>
+            <taxClassification taxClassificationName="TAX_EXEMPT" isDefault="false" sortOrder="2" >
+                <taxClassificationTranslation languageIsoName="en" description="Tax-Exempt" />
+            </taxClassification>
+        </country>
+        <country countryName="MEXICO" iso3Number="484" iso3Letter="MEX" iso2Letter="MX" telephoneCode="1"
+                 areaCodePattern="^[0-9][0-9][0-9]$" areaCodeRequired="true" areaCodeExample="515"
+                 telephoneNumberPattern="^[0-9][0-9][0-9]([ -\\.]|)[0-9][0-9][0-9][0-9]$" telephoneNumberExample="555-1212"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="true" cityGeoCodeRequired="false" stateRequired="true"
+                 stateGeoCodeRequired="false" postalCodePattern="^[0-9][0-9][0-9][0-9][0-9]$" postalCodeRequired="true"
+                 postalCodeGeoCodeRequired="false" postalCodeLength="5" postalCodeExample="99999" isDefault="false" sortOrder="1">
+            <geoCodeDescription languageIsoName="en" description="Mexico" />
+        </country>
+        <country countryName="AFGHANISTAN" iso3Number="004" iso3Letter="AFG" iso2Letter="AF" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Afghanistan" />
+        </country>
+        <country countryName="ALBANIA" iso3Number="008" iso3Letter="ALB" iso2Letter="AL" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Albania" />
+        </country>
+        <country countryName="ALGERIA" iso3Number="012" iso3Letter="DZA" iso2Letter="DZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Algeria" />
+        </country>
+        <country countryName="AMERICAN_SAMOA" iso3Number="016" iso3Letter="ASM" iso2Letter="AS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="American Samoa" />
+        </country>
+        <country countryName="ANDORRA" iso3Number="020" iso3Letter="AND" iso2Letter="AD" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Andorra" />
+        </country>
+        <country countryName="ANGOLA" iso3Number="024" iso3Letter="AGO" iso2Letter="AO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Angola" />
+        </country>
+        <country countryName="ANGUILLA" iso3Number="660" iso3Letter="AIA" iso2Letter="AI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Anguilla" />
+        </country>
+        <country countryName="ANTARCTICA" iso3Number="010" iso3Letter="ATA" iso2Letter="AQ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Antarctica" />
+        </country>
+        <country countryName="ANTIGUA_AND_BARBUDA" iso3Number="028" iso3Letter="ATG" iso2Letter="AG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Antigua and Barbuda" />
+        </country>
+        <country countryName="ARGENTINA" iso3Number="032" iso3Letter="ARG" iso2Letter="AR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Argentina" />
+        </country>
+        <country countryName="ARMENIA" iso3Number="051" iso3Letter="ARM" iso2Letter="AM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Armenia" />
+        </country>
+        <country countryName="ARUBA" iso3Number="533" iso3Letter="ABW" iso2Letter="AW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Aruba" />
+        </country>
+        <country countryName="AUSTRALIA" iso3Number="036" iso3Letter="AUS" iso2Letter="AU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Australia" />
+        </country>
+        <country countryName="AUSTRIA" iso3Number="040" iso3Letter="AUT" iso2Letter="AT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Austria" />
+        </country>
+        <country countryName="AZERBAIJAN" iso3Number="031" iso3Letter="AZE" iso2Letter="AZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Azerbaijan" />
+        </country>
+        <country countryName="BAHAMAS" iso3Number="044" iso3Letter="BHS" iso2Letter="BS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bahamas" />
+        </country>
+        <country countryName="BAHRAIN" iso3Number="048" iso3Letter="BHR" iso2Letter="BH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bahrain" />
+        </country>
+        <country countryName="BANGLADESH" iso3Number="050" iso3Letter="BGD" iso2Letter="BD" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bangladesh" />
+        </country>
+        <country countryName="BARBADOS" iso3Number="052" iso3Letter="BRB" iso2Letter="BB" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Barbados" />
+        </country>
+        <country countryName="BELARUS" iso3Number="112" iso3Letter="BLR" iso2Letter="BY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Belarus" />
+        </country>
+        <country countryName="BELGIUM" iso3Number="056" iso3Letter="BEL" iso2Letter="BE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Belgium" />
+        </country>
+        <country countryName="BELIZE" iso3Number="084" iso3Letter="BLZ" iso2Letter="BZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Belize" />
+        </country>
+        <country countryName="BENIN" iso3Number="204" iso3Letter="BEN" iso2Letter="BJ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Benin" />
+        </country>
+        <country countryName="BERMUDA" iso3Number="060" iso3Letter="BMU" iso2Letter="BM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bermuda" />
+        </country>
+        <country countryName="BHUTAN" iso3Number="064" iso3Letter="BTN" iso2Letter="BT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bhutan" />
+        </country>
+        <country countryName="BOLIVIA" iso3Number="068" iso3Letter="BOL" iso2Letter="BO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bolivia" />
+        </country>
+        <country countryName="BOSNIA_AND_HERZEGOWINA" iso3Number="070" iso3Letter="BIH" iso2Letter="BA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bosnia and Herzegowina" />
+        </country>
+        <country countryName="BOTSWANA" iso3Number="072" iso3Letter="BWA" iso2Letter="BW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Botswana" />
+        </country>
+        <country countryName="BOUVET_ISLAND" iso3Number="074" iso3Letter="BVT" iso2Letter="BV" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bouvet Island" />
+        </country>
+        <country countryName="BRAZIL" iso3Number="076" iso3Letter="BRA" iso2Letter="BR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Brazil" />
+        </country>
+        <country countryName="BRITISH_INDIAN_OCEAN_TERRITORY" iso3Number="086" iso3Letter="IOT" iso2Letter="IO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="British Indian Ocean Territory" />
+        </country>
+        <country countryName="BRUNEI_DARUSSALAM" iso3Number="096" iso3Letter="BRN" iso2Letter="BN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Brunei Darussalam" />
+        </country>
+        <country countryName="BULGARIA" iso3Number="100" iso3Letter="BGR" iso2Letter="BG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Bulgaria" />
+        </country>
+        <country countryName="BURKINA_FASO" iso3Number="854" iso3Letter="BFA" iso2Letter="BF" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Burkina Faso" />
+        </country>
+        <country countryName="BURUNDI" iso3Number="108" iso3Letter="BDI" iso2Letter="BI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Burundi" />
+        </country>
+        <country countryName="CAMBODIA" iso3Number="116" iso3Letter="KHM" iso2Letter="KH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Cambodia" />
+        </country>
+        <country countryName="CAMEROON" iso3Number="120" iso3Letter="CMR" iso2Letter="CM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Cameroon" />
+        </country>
+        <country countryName="CAPE_VERDE" iso3Number="132" iso3Letter="CPV" iso2Letter="CV" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Cape Verde" />
+        </country>
+        <country countryName="CAYMAN_ISLANDS" iso3Number="136" iso3Letter="CYM" iso2Letter="KY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Cayman Islands" />
+        </country>
+        <country countryName="CENTRAL_AFRICAN_REPUBLIC" iso3Number="140" iso3Letter="CAF" iso2Letter="CF" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Central African Republic" />
+        </country>
+        <country countryName="CHAD" iso3Number="148" iso3Letter="TCD" iso2Letter="TD" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Chad" />
+        </country>
+        <country countryName="CHILE" iso3Number="152" iso3Letter="CHL" iso2Letter="CL" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Chile" />
+        </country>
+        <country countryName="CHINA" iso3Number="156" iso3Letter="CHN" iso2Letter="CN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="China" />
+        </country>
+        <country countryName="CHRISTMAS_ISLAND" iso3Number="162" iso3Letter="CXR" iso2Letter="CX" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Christmas Island" />
+        </country>
+        <country countryName="COCOS_KEELING_ISLANDS" iso3Number="166" iso3Letter="CCK" iso2Letter="CC" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Cocos (Keeling) Islands" />
+        </country>
+        <country countryName="COLOMBIA" iso3Number="170" iso3Letter="COL" iso2Letter="CO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Colombia" />
+        </country>
+        <country countryName="COMOROS" iso3Number="174" iso3Letter="COM" iso2Letter="KM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Comoros" />
+        </country>
+        <country countryName="CONGO" iso3Number="178" iso3Letter="COG" iso2Letter="CG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Congo" />
+        </country>
+        <country countryName="DEMOCRATIC_REPUBLIC_OF_THE_CONGO" iso3Number="180" iso3Letter="COD" iso2Letter="CD" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Democratic Republic of the Congo" />
+        </country>
+        <country countryName="COOK_ISLANDS" iso3Number="184" iso3Letter="COK" iso2Letter="CK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Cook Islands" />
+        </country>
+        <country countryName="COSTA_RICA" iso3Number="188" iso3Letter="CRI" iso2Letter="CR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Costa Rica" />
+        </country>
+        <country countryName="COTE_DIVOIRE" iso3Number="384" iso3Letter="CIV" iso2Letter="CI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Côte d'Ivoire" />
+        </country>
+        <country countryName="CROATIA" iso3Number="191" iso3Letter="HRV" iso2Letter="HR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Croatia" />
+        </country>
+        <country countryName="CUBA" iso3Number="192" iso3Letter="CUB" iso2Letter="CU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Cuba" />
+        </country>
+        <country countryName="CYPRUS" iso3Number="196" iso3Letter="CYP" iso2Letter="CY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Cyprus" />
+        </country>
+        <country countryName="CZECH_REPUBLIC" iso3Number="203" iso3Letter="CZE" iso2Letter="CZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Czech Republic" />
+        </country>
+        <country countryName="DENMARK" iso3Number="208" iso3Letter="DNK" iso2Letter="DK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Denmark" />
+        </country>
+        <country countryName="DJIBOUTI" iso3Number="262" iso3Letter="DJI" iso2Letter="DJ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Djibouti" />
+        </country>
+        <country countryName="DOMINICA" iso3Number="212" iso3Letter="DMA" iso2Letter="DM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Dominica" />
+        </country>
+        <country countryName="DOMINICAN_REPUBLIC" iso3Number="214" iso3Letter="DOM" iso2Letter="DO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Dominican Republic" />
+        </country>
+        <country countryName="EAST_TIMOR" iso3Number="626" iso3Letter="TLS" iso2Letter="TL" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="East Timor" />
+        </country>
+        <country countryName="ECUADOR" iso3Number="218" iso3Letter="ECU" iso2Letter="EC" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Ecuador" />
+        </country>
+        <country countryName="EGYPT" iso3Number="818" iso3Letter="EGY" iso2Letter="EG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Egypt" />
+        </country>
+        <country countryName="EL_SALVADOR" iso3Number="222" iso3Letter="SLV" iso2Letter="SV" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="El Salvador" />
+        </country>
+        <country countryName="EQUATORIAL_GUINEA" iso3Number="226" iso3Letter="GNQ" iso2Letter="GQ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Equatorial Guinea" />
+        </country>
+        <country countryName="ERITREA" iso3Number="232" iso3Letter="ERI" iso2Letter="ER" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Eritrea" />
+        </country>
+        <country countryName="ESTONIA" iso3Number="233" iso3Letter="EST" iso2Letter="EE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Estonia" />
+        </country>
+        <country countryName="ETHIOPIA" iso3Number="231" iso3Letter="ETH" iso2Letter="ET" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Ethiopia" />
+        </country>
+        <country countryName="FALKLAND_ISLANDS" iso3Number="238" iso3Letter="FLK" iso2Letter="FK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Falkland Islands" />
+        </country>
+        <country countryName="FAROE_ISLANDS" iso3Number="234" iso3Letter="FRO" iso2Letter="FO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Faroe Islands" />
+        </country>
+        <country countryName="FIJI" iso3Number="242" iso3Letter="FJI" iso2Letter="FJ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Fiji" />
+        </country>
+        <country countryName="FINLAND" iso3Number="246" iso3Letter="FIN" iso2Letter="FI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Finland" />
+        </country>
+        <country countryName="METROPOLITAN_FRANCE" iso3Number="249" iso3Letter="FXX" iso2Letter="FX" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Metropolitan France" />
+        </country>
+        <country countryName="FRANCE" iso3Number="250" iso3Letter="FRA" iso2Letter="FR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="France" />
+        </country>
+        <country countryName="FRENCH_GUIANA" iso3Number="254" iso3Letter="GUF" iso2Letter="GF" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="French Guiana" />
+        </country>
+        <country countryName="FRENCH_POLYNESIA" iso3Number="258" iso3Letter="PYF" iso2Letter="PF" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="French Polynesia" />
+        </country>
+        <country countryName="FRENCH_SOUTHERN_TERRITORIES" iso3Number="260" iso3Letter="ATF" iso2Letter="TF" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="French Southern Territories" />
+        </country>
+        <country countryName="GABON" iso3Number="266" iso3Letter="GAB" iso2Letter="GA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Gabon" />
+        </country>
+        <country countryName="GAMBIA" iso3Number="270" iso3Letter="GMB" iso2Letter="GM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Gambia" />
+        </country>
+        <country countryName="GEORGIA" iso3Number="268" iso3Letter="GEO" iso2Letter="GE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Georgia" />
+        </country>
+        <country countryName="GERMANY" iso3Number="276" iso3Letter="DEU" iso2Letter="DE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Germany" />
+        </country>
+        <country countryName="GHANA" iso3Number="288" iso3Letter="GHA" iso2Letter="GH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Ghana" />
+        </country>
+        <country countryName="GIBRALTAR" iso3Number="292" iso3Letter="GIB" iso2Letter="GI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Gibraltar" />
+        </country>
+        <country countryName="GREECE" iso3Number="300" iso3Letter="GRC" iso2Letter="GR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Greece" />
+        </country>
+        <country countryName="GREENLAND" iso3Number="304" iso3Letter="GRL" iso2Letter="GL" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Greenland" />
+        </country>
+        <country countryName="GRENADA" iso3Number="308" iso3Letter="GRD" iso2Letter="GD" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Grenada" />
+        </country>
+        <country countryName="GUADELOUPE" iso3Number="312" iso3Letter="GLP" iso2Letter="GP" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Guadeloupe" />
+        </country>
+        <country countryName="GUAM" iso3Number="316" iso3Letter="GUM" iso2Letter="GU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Guam" />
+        </country>
+        <country countryName="GUATEMALA" iso3Number="320" iso3Letter="GTM" iso2Letter="GT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Guatemala" />
+        </country>
+        <country countryName="GUINEA" iso3Number="324" iso3Letter="GIN" iso2Letter="GN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Guinea" />
+        </country>
+        <country countryName="GUINEA_BISSAU" iso3Number="624" iso3Letter="GNB" iso2Letter="GW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Guinea-Bissau" />
+        </country>
+        <country countryName="GUYANA" iso3Number="328" iso3Letter="GUY" iso2Letter="GY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Guyana" />
+        </country>
+        <country countryName="HAITI" iso3Number="332" iso3Letter="HTI" iso2Letter="HT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Haiti" />
+        </country>
+        <country countryName="HEARD_AND_MCDONALD_ISLANDS" iso3Number="334" iso3Letter="HMD" iso2Letter="HM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Heard and McDonald Islands" />
+        </country>
+        <country countryName="STATE_OF_THE_VATICAN_CITY" iso3Number="336" iso3Letter="VAT" iso2Letter="VA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="State of the Vatican City" />
+        </country>
+        <country countryName="HONDURAS" iso3Number="340" iso3Letter="HND" iso2Letter="HN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Honduras" />
+        </country>
+        <country countryName="HONG_KONG" iso3Number="344" iso3Letter="HKG" iso2Letter="HK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Hong Kong" />
+        </country>
+        <country countryName="HUNGARY" iso3Number="348" iso3Letter="HUN" iso2Letter="HU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Hungary" />
+        </country>
+        <country countryName="ICELAND" iso3Number="352" iso3Letter="ISL" iso2Letter="IS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Iceland" />
+        </country>
+        <country countryName="INDIA" iso3Number="356" iso3Letter="IND" iso2Letter="IN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="India" />
+        </country>
+        <country countryName="INDONESIA" iso3Number="360" iso3Letter="IDN" iso2Letter="ID" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Indonesia" />
+        </country>
+        <country countryName="ISLAMIC_REPUBLIC_OF_IRAN" iso3Number="364" iso3Letter="IRN" iso2Letter="IR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Islamic Republic of Iran" />
+        </country>
+        <country countryName="IRAQ" iso3Number="368" iso3Letter="IRQ" iso2Letter="IQ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Iraq" />
+        </country>
+        <country countryName="IRELAND" iso3Number="372" iso3Letter="IRL" iso2Letter="IE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Ireland" />
+        </country>
+        <country countryName="ISRAEL" iso3Number="376" iso3Letter="ISR" iso2Letter="IL" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Israel" />
+        </country>
+        <country countryName="ITALY" iso3Number="380" iso3Letter="ITA" iso2Letter="IT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Italy" />
+        </country>
+        <country countryName="JAMAICA" iso3Number="388" iso3Letter="JAM" iso2Letter="JM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Jamaica" />
+        </country>
+        <country countryName="JAPAN" iso3Number="392" iso3Letter="JPN" iso2Letter="JP" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Japan" />
+        </country>
+        <country countryName="JORDAN" iso3Number="400" iso3Letter="JOR" iso2Letter="JO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Jordan" />
+        </country>
+        <country countryName="KAZAKHSTAN" iso3Number="398" iso3Letter="KAZ" iso2Letter="KZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Kazakhstan" />
+        </country>
+        <country countryName="KENYA" iso3Number="404" iso3Letter="KEN" iso2Letter="KE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Kenya" />
+        </country>
+        <country countryName="KIRIBATI" iso3Number="296" iso3Letter="KIR" iso2Letter="KI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Kiribati" />
+        </country>
+        <country countryName="DEMOCRATIC_PEOPLES_REPUBLIC_OF_KOREA" iso3Number="408" iso3Letter="PRK" iso2Letter="KP" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Democratic People's Republic of Korea" />
+        </country>
+        <country countryName="REPUBLIC_OF_KOREA" iso3Number="410" iso3Letter="KOR" iso2Letter="KR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Republic of Korea" />
+        </country>
+        <country countryName="KUWAIT" iso3Number="414" iso3Letter="KWT" iso2Letter="KW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Kuwait" />
+        </country>
+        <country countryName="KYRGYZSTAN" iso3Number="417" iso3Letter="KGZ" iso2Letter="KG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Kyrgyzstan" />
+        </country>
+        <country countryName="LAO_PEOPLES_DEMOCRATIC_REPUBLIC" iso3Number="418" iso3Letter="LAO" iso2Letter="LA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Lao People's Democratic Republic" />
+        </country>
+        <country countryName="LATVIA" iso3Number="428" iso3Letter="LVA" iso2Letter="LV" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Latvia" />
+        </country>
+        <country countryName="LEBANON" iso3Number="422" iso3Letter="LBN" iso2Letter="LB" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Lebanon" />
+        </country>
+        <country countryName="LESOTHO" iso3Number="426" iso3Letter="LSO" iso2Letter="LS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Lesotho" />
+        </country>
+        <country countryName="LIBERIA" iso3Number="430" iso3Letter="LBR" iso2Letter="LR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Liberia" />
+        </country>
+        <country countryName="LIBYAN_ARAB_JAMAHIRIYA" iso3Number="434" iso3Letter="LBY" iso2Letter="LY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Libyan Arab Jamahiriya" />
+        </country>
+        <country countryName="LIECHTENSTEIN" iso3Number="438" iso3Letter="LIE" iso2Letter="LI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Liechtenstein" />
+        </country>
+        <country countryName="LITHUANIA" iso3Number="440" iso3Letter="LTU" iso2Letter="LT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Lithuania" />
+        </country>
+        <country countryName="LUXEMBOURG" iso3Number="442" iso3Letter="LUX" iso2Letter="LU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Luxembourg" />
+        </country>
+        <country countryName="MACAU" iso3Number="446" iso3Letter="MAC" iso2Letter="MO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Macau" />
+        </country>
+        <country countryName="REPUBLIC_OF_MACEDONIA" iso3Number="807" iso3Letter="MKD" iso2Letter="MK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Republic of Macedonia" />
+        </country>
+        <country countryName="MADAGASCAR" iso3Number="450" iso3Letter="MDG" iso2Letter="MG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Madagascar" />
+        </country>
+        <country countryName="MALAWI" iso3Number="454" iso3Letter="MWI" iso2Letter="MW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Malawi" />
+        </country>
+        <country countryName="MALAYSIA" iso3Number="458" iso3Letter="MYS" iso2Letter="MY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Malaysia" />
+        </country>
+        <country countryName="MALDIVES" iso3Number="462" iso3Letter="MDV" iso2Letter="MV" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Maldives" />
+        </country>
+        <country countryName="MALI" iso3Number="466" iso3Letter="MLI" iso2Letter="ML" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Mali" />
+        </country>
+        <country countryName="MALTA" iso3Number="470" iso3Letter="MLT" iso2Letter="MT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Malta" />
+        </country>
+        <country countryName="MARSHALL_ISLANDS" iso3Number="584" iso3Letter="MHL" iso2Letter="MH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Marshall Islands" />
+        </country>
+        <country countryName="MARTINIQUE" iso3Number="474" iso3Letter="MTQ" iso2Letter="MQ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Martinique" />
+        </country>
+        <country countryName="MAURITANIA" iso3Number="478" iso3Letter="MRT" iso2Letter="MR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Mauritania" />
+        </country>
+        <country countryName="MAURITIUS" iso3Number="480" iso3Letter="MUS" iso2Letter="MU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Mauritius" />
+        </country>
+        <country countryName="MAYOTTE" iso3Number="175" iso3Letter="MYT" iso2Letter="YT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Mayotte" />
+        </country>
+        <country countryName="FEDERATED_STATES_OF_MICRONESIA" iso3Number="583" iso3Letter="FSM" iso2Letter="FM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Federated States of Micronesia" />
+        </country>
+        <country countryName="REPUBLIC_OF_MOLDOVA" iso3Number="498" iso3Letter="MDA" iso2Letter="MD" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Republic of Moldova" />
+        </country>
+        <country countryName="MONACO" iso3Number="492" iso3Letter="MCO" iso2Letter="MC" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Monaco" />
+        </country>
+        <country countryName="MONGOLIA" iso3Number="496" iso3Letter="MNG" iso2Letter="MN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Mongolia" />
+        </country>
+        <country countryName="MONTENEGRO" iso3Number="499" iso3Letter="MNE" iso2Letter="ME" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Montenegro" />
+        </country>
+        <country countryName="MONTSERRAT" iso3Number="500" iso3Letter="MSR" iso2Letter="MS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Montserrat" />
+        </country>
+        <country countryName="MOROCCO" iso3Number="504" iso3Letter="MAR" iso2Letter="MA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Morocco" />
+        </country>
+        <country countryName="MOZAMBIQUE" iso3Number="508" iso3Letter="MOZ" iso2Letter="MZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Mozambique" />
+        </country>
+        <country countryName="MYANMAR" iso3Number="104" iso3Letter="MMR" iso2Letter="MM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Myanmar" />
+        </country>
+        <country countryName="NAMIBIA" iso3Number="516" iso3Letter="NAM" iso2Letter="NA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Namibia" />
+        </country>
+        <country countryName="NAURU" iso3Number="520" iso3Letter="NRU" iso2Letter="NR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Nauru" />
+        </country>
+        <country countryName="NEPAL" iso3Number="524" iso3Letter="NPL" iso2Letter="NP" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Nepal" />
+        </country>
+        <country countryName="NETHERLANDS" iso3Number="528" iso3Letter="NLD" iso2Letter="NL" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Netherlands" />
+        </country>
+        <country countryName="NETHERLANDS_ANTILLES" iso3Number="530" iso3Letter="ANT" iso2Letter="AN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Netherlands Antilles" />
+        </country>
+        <country countryName="NEW_CALEDONIA" iso3Number="540" iso3Letter="NCL" iso2Letter="NC" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="New Caledonia" />
+        </country>
+        <country countryName="NEW_ZEALAND" iso3Number="554" iso3Letter="NZL" iso2Letter="NZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="New Zealand" />
+        </country>
+        <country countryName="NICARAGUA" iso3Number="558" iso3Letter="NIC" iso2Letter="NI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Nicaragua" />
+        </country>
+        <country countryName="NIGER" iso3Number="562" iso3Letter="NER" iso2Letter="NE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Niger" />
+        </country>
+        <country countryName="NIGERIA" iso3Number="566" iso3Letter="NGA" iso2Letter="NG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Nigeria" />
+        </country>
+        <country countryName="NIUE" iso3Number="570" iso3Letter="NIU" iso2Letter="NU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Niue" />
+        </country>
+        <country countryName="NORFOLK_ISLAND" iso3Number="574" iso3Letter="NFK" iso2Letter="NF" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Norfolk Island" />
+        </country>
+        <country countryName="NORTHERN_MARIANA_ISLANDS" iso3Number="580" iso3Letter="MNP" iso2Letter="MP" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Northern Mariana Islands" />
+        </country>
+        <country countryName="NORWAY" iso3Number="578" iso3Letter="NOR" iso2Letter="NO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Norway" />
+        </country>
+        <country countryName="OMAN" iso3Number="512" iso3Letter="OMN" iso2Letter="OM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Oman" />
+        </country>
+        <country countryName="PAKISTAN" iso3Number="586" iso3Letter="PAK" iso2Letter="PK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Pakistan" />
+        </country>
+        <country countryName="PALAU" iso3Number="585" iso3Letter="PLW" iso2Letter="PW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Palau" />
+        </country>
+        <country countryName="PALESTINIAN_TERRITORY_OCCUPIED" iso3Number="275" iso3Letter="PSE" iso2Letter="PS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Palestinian Territory, Occupied" />
+        </country>
+        <country countryName="PANAMA" iso3Number="591" iso3Letter="PAN" iso2Letter="PA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Panama" />
+        </country>
+        <country countryName="PAPUA_NEW_GUINEA" iso3Number="598" iso3Letter="PNG" iso2Letter="PG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Papua New Guinea" />
+        </country>
+        <country countryName="PARAGUAY" iso3Number="600" iso3Letter="PRY" iso2Letter="PY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Paraguay" />
+        </country>
+        <country countryName="PERU" iso3Number="604" iso3Letter="PER" iso2Letter="PE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Peru" />
+        </country>
+        <country countryName="PHILIPPINES" iso3Number="608" iso3Letter="PHL" iso2Letter="PH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Philippines" />
+        </country>
+        <country countryName="PITCAIRN" iso3Number="612" iso3Letter="PCN" iso2Letter="PN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Pitcairn" />
+        </country>
+        <country countryName="POLAND" iso3Number="616" iso3Letter="POL" iso2Letter="PL" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Poland" />
+        </country>
+        <country countryName="PORTUGAL" iso3Number="620" iso3Letter="PRT" iso2Letter="PT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Portugal" />
+        </country>
+        <country countryName="PUERTO_RICO" iso3Number="630" iso3Letter="PRI" iso2Letter="PR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Puerto Rico" />
+        </country>
+        <country countryName="QATAR" iso3Number="634" iso3Letter="QAT" iso2Letter="QA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Qatar" />
+        </country>
+        <country countryName="REUNION" iso3Number="638" iso3Letter="REU" iso2Letter="RE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Reunion" />
+        </country>
+        <country countryName="ROMANIA" iso3Number="642" iso3Letter="ROU" iso2Letter="RO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Romania" />
+        </country>
+        <country countryName="RUSSIAN_FEDERATION" iso3Number="643" iso3Letter="RUS" iso2Letter="RU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Russian Federation" />
+        </country>
+        <country countryName="RWANDA" iso3Number="646" iso3Letter="RWA" iso2Letter="RW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Rwanda" />
+        </country>
+        <country countryName="SAINT_KITTS_AND_NEVIS" iso3Number="659" iso3Letter="KNA" iso2Letter="KN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Saint Kitts and Nevis" />
+        </country>
+        <country countryName="SAINT_LUCIA" iso3Number="662" iso3Letter="LCA" iso2Letter="LC" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Saint Lucia" />
+        </country>
+        <country countryName="SAINT_VINCENT_AND_THE_GRENADINES" iso3Number="670" iso3Letter="VCT" iso2Letter="VC" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Saint Vincent and the Grenadines" />
+        </country>
+        <country countryName="SAMOA" iso3Number="882" iso3Letter="WSM" iso2Letter="WS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Samoa" />
+        </country>
+        <country countryName="SAN_MARINO" iso3Number="674" iso3Letter="SMR" iso2Letter="SM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="San Marino" />
+        </country>
+        <country countryName="SAO_TOME_AND_PRINCIPE" iso3Number="678" iso3Letter="STP" iso2Letter="ST" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="São Tomé and Príncipe" />
+        </country>
+        <country countryName="SAUDI_ARABIA" iso3Number="682" iso3Letter="SAU" iso2Letter="SA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Saudi Arabia" />
+        </country>
+        <country countryName="SENEGAL" iso3Number="686" iso3Letter="SEN" iso2Letter="SN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Senegal" />
+        </country>
+        <country countryName="SERBIA" iso3Number="688" iso3Letter="SRB" iso2Letter="RS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Serbia" />
+        </country>
+        <country countryName="SEYCHELLES" iso3Number="690" iso3Letter="SYC" iso2Letter="SC" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Seychelles" />
+        </country>
+        <country countryName="SIERRA_LEONE" iso3Number="694" iso3Letter="SLE" iso2Letter="SL" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Sierra Leone" />
+        </country>
+        <country countryName="SINGAPORE" iso3Number="702" iso3Letter="SGP" iso2Letter="SG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Singapore" />
+        </country>
+        <country countryName="SLOVAK_REPUBLIC" iso3Number="703" iso3Letter="SVK" iso2Letter="SK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Slovak Republic" />
+        </country>
+        <country countryName="SLOVENIA" iso3Number="705" iso3Letter="SVN" iso2Letter="SI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Slovenia" />
+        </country>
+        <country countryName="SOLOMON_ISLANDS" iso3Number="090" iso3Letter="SLB" iso2Letter="SB" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Solomon Islands" />
+        </country>
+        <country countryName="SOMALIA" iso3Number="706" iso3Letter="SOM" iso2Letter="SO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Somalia" />
+        </country>
+        <country countryName="SGSSI" iso3Number="239" iso3Letter="SGS" iso2Letter="GS" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="South Georgia and the South Sandwich Islands" />
+        </country>
+        <country countryName="SOUTH_AFRICA" iso3Number="710" iso3Letter="ZAF" iso2Letter="ZA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="South Africa" />
+        </country>
+        <country countryName="SPAIN" iso3Number="724" iso3Letter="ESP" iso2Letter="ES" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Spain" />
+        </country>
+        <country countryName="SRI_LANKA" iso3Number="144" iso3Letter="LKA" iso2Letter="LK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Sri Lanka" />
+        </country>
+        <country countryName="SAINT_HELENA" iso3Number="654" iso3Letter="SHN" iso2Letter="SH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Saint Helena" />
+        </country>
+        <country countryName="SAINT_PIERRE_AND_MIQUELON" iso3Number="666" iso3Letter="SPM" iso2Letter="PM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Saint Pierre and Miquelon" />
+        </country>
+        <country countryName="SUDAN" iso3Number="736" iso3Letter="SDN" iso2Letter="SD" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Sudan" />
+        </country>
+        <country countryName="SURINAME" iso3Number="740" iso3Letter="SUR" iso2Letter="SR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Suriname" />
+        </country>
+        <country countryName="SVALBARD_AND_JAN_MAYEN" iso3Number="744" iso3Letter="SJM" iso2Letter="SJ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Svalbard and Jan Mayen" />
+        </country>
+        <country countryName="SWAZILAND" iso3Number="748" iso3Letter="SWZ" iso2Letter="SZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Swaziland" />
+        </country>
+        <country countryName="SWEDEN" iso3Number="752" iso3Letter="SWE" iso2Letter="SE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Sweden" />
+        </country>
+        <country countryName="SWITZERLAND" iso3Number="756" iso3Letter="CHE" iso2Letter="CH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Switzerland" />
+        </country>
+        <country countryName="SYRIAN_ARAB_REPUBLIC" iso3Number="760" iso3Letter="SYR" iso2Letter="SY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Syrian Arab Republic" />
+        </country>
+        <country countryName="TAIWAN" iso3Number="158" iso3Letter="TWN" iso2Letter="TW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Taiwan" />
+        </country>
+        <country countryName="TAJIKISTAN" iso3Number="762" iso3Letter="TJK" iso2Letter="TJ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Tajikistan" />
+        </country>
+        <country countryName="UNITED_REPUBLIC_OF_TANZANIA" iso3Number="834" iso3Letter="TZA" iso2Letter="TZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="United Republic of Tanzania" />
+        </country>
+        <country countryName="THAILAND" iso3Number="764" iso3Letter="THA" iso2Letter="TH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Thailand" />
+        </country>
+        <country countryName="TOGO" iso3Number="768" iso3Letter="TGO" iso2Letter="TG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Togo" />
+        </country>
+        <country countryName="TOKELAU" iso3Number="772" iso3Letter="TKL" iso2Letter="TK" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Tokelau" />
+        </country>
+        <country countryName="TONGA" iso3Number="776" iso3Letter="TON" iso2Letter="TO" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Tonga" />
+        </country>
+        <country countryName="TRINIDAD_AND_TOBAGO" iso3Number="780" iso3Letter="TTO" iso2Letter="TT" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Trinidad and Tobago" />
+        </country>
+        <country countryName="TUNISIA" iso3Number="788" iso3Letter="TUN" iso2Letter="TN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Tunisia" />
+        </country>
+        <country countryName="TURKEY" iso3Number="792" iso3Letter="TUR" iso2Letter="TR" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Turkey" />
+        </country>
+        <country countryName="TURKMENISTAN" iso3Number="795" iso3Letter="TKM" iso2Letter="TM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Turkmenistan" />
+        </country>
+        <country countryName="TURKS_AND_CAICOS_ISLANDS" iso3Number="796" iso3Letter="TCA" iso2Letter="TC" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Turks and Caicos Islands" />
+        </country>
+        <country countryName="TUVALU" iso3Number="798" iso3Letter="TUV" iso2Letter="TV" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Tuvalu" />
+        </country>
+        <country countryName="UGANDA" iso3Number="800" iso3Letter="UGA" iso2Letter="UG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Uganda" />
+        </country>
+        <country countryName="UKRAINE" iso3Number="804" iso3Letter="UKR" iso2Letter="UA" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Ukraine" />
+        </country>
+        <country countryName="UNITED_STATES_MINOR_OUTLYING_ISLANDS" iso3Number="581" iso3Letter="UMI" iso2Letter="UM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="United States Minor Outlying Islands" />
+        </country>
+        <country countryName="UNITED_ARAB_EMIRATES" iso3Number="784" iso3Letter="ARE" iso2Letter="AE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="United Arab Emirates" />
+        </country>
+        <country countryName="UNITED_KINGDOM" iso3Number="826" iso3Letter="GBR" iso2Letter="GB" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="United Kingdom" />
+        </country>
+        <country countryName="URUGUAY" iso3Number="858" iso3Letter="URY" iso2Letter="UY" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Uruguay" />
+        </country>
+        <country countryName="UZBEKISTAN" iso3Number="860" iso3Letter="UZB" iso2Letter="UZ" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Uzbekistan" />
+        </country>
+        <country countryName="VANUATU" iso3Number="548" iso3Letter="VUT" iso2Letter="VU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Vanuatu" />
+        </country>
+        <country countryName="VENEZUELA" iso3Number="862" iso3Letter="VEN" iso2Letter="VE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Venezuela" />
+        </country>
+        <country countryName="VIETNAM" iso3Number="704" iso3Letter="VNM" iso2Letter="VN" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Vietnam" />
+        </country>
+        <country countryName="BRITISH_VIRGIN_ISLANDS" iso3Number="092" iso3Letter="VGB" iso2Letter="VG" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="British Virgin Islands" />
+        </country>
+        <country countryName="UNITED_STATES_VIRGIN_ISLANDS" iso3Number="850" iso3Letter="VIR" iso2Letter="VI" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="United States Virgin Islands" />
+        </country>
+        <country countryName="WALLIS_AND_FUTUNA_ISLANDS" iso3Number="876" iso3Letter="WLF" iso2Letter="WF" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Wallis and Futuna Islands" />
+        </country>
+        <country countryName="WESTERN_SAHARA" iso3Number="732" iso3Letter="ESH" iso2Letter="EH" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Western Sahara" />
+        </country>
+        <country countryName="YEMEN" iso3Number="887" iso3Letter="YEM" iso2Letter="YE" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Yemen" />
+        </country>
+        <country countryName="YUGOSLAVIA" iso3Number="891" iso3Letter="YUG" iso2Letter="YU" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Yugoslavia" />
+        </country>
+        <country countryName="ZAMBIA" iso3Number="894" iso3Letter="ZMB" iso2Letter="ZM" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Zambia" />
+        </country>
+        <country countryName="ZIMBABWE" iso3Number="716" iso3Letter="ZWE" iso2Letter="ZW" areaCodeRequired="false" telephoneNumberPattern="^[0-9 -\\.]*$"
+                 postalAddressFormatName="INTERNATIONAL" cityRequired="false" cityGeoCodeRequired="false" stateRequired="false"
+                 stateGeoCodeRequired="false" postalCodeRequired="false" postalCodeGeoCodeRequired="false" isDefault="false" sortOrder="2">
+            <geoCodeDescription languageIsoName="en" description="Zimbabwe" />
+        </country>
+    </countries>
+    <countryLanguages>
+        <countryLanguage countryIso2Letter="US" languageIsoName="en" isDefault="true" sortOrder="0" />
+        <countryLanguage countryIso2Letter="CA" languageIsoName="en" isDefault="true" sortOrder="0" />
+        <countryLanguage countryIso2Letter="MX" languageIsoName="en" isDefault="true" sortOrder="0" />
+    </countryLanguages>
+</initialData>

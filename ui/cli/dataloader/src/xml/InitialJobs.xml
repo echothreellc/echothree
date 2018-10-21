@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <jobs>
+        <job jobName="DATA_INDEXER" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Data Indexer" />
+        </job>
+        <job jobName="PROCESS_CHAIN_INSTANCE_STATUSES" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Process Chain Instance Statuses" />
+        </job>
+        <job jobName="PROCESS_QUEUED_EVENTS" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Process Queued Events" />
+        </job>
+        <job jobName="PROCESS_WORKFLOW_TRIGGERS" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Process Workflow Triggers" />
+        </job>
+        <job jobName="INVALIDATE_ABANDONED_USER_VISITS" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Invalidate Abandoned User Visits" />
+        </job>
+        <job jobName="REMOVE_INACTIVE_USER_KEYS" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Remove Inactive User Keys" />
+        </job>
+        <job jobName="REMOVE_INVALIDATED_USER_VISITS" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Remove Invalidated User Visits" />
+        </job>
+        <job jobName="REMOVE_EXPIRED_ENTITY_LOCKS" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Remove Expired Entity Locks" />
+        </job>
+        <job jobName="PRINT_PRINTER_GROUP_JOBS" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Print Printer Group Jobs" />
+        </job>
+        <job jobName="LICENSE_UPDATE" sortOrder="1">
+            <jobDescription languageIsoName="en" description="License Update" />
+        </job>
+    </jobs>
+</initialData>

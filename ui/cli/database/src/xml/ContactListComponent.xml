@@ -1,0 +1,569 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="ContactList">
+            <tables>
+                <table namePlural="PartyContactLists" nameSingular="PartyContactList" columnPrefix="parclst">
+                    <columns>
+                        <column name="PartyContactListId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyContactListDetails" destinationColumn="PartyContactListDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyContactListDetails" destinationColumn="PartyContactListDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyContactListId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyContactListDetails" nameSingular="PartyContactListDetail" columnPrefix="parclstdt">
+                    <columns>
+                        <column name="PartyContactListDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyContactListId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyContactLists" destinationColumn="PartyContactListId"/>
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ContactListId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactLists" destinationColumn="ContactListId" />
+                        <column name="PreferredContactListContactMechanismPurposeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListContactMechanismPurposes" destinationColumn="ContactListContactMechanismPurposeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyContactListDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="PreferredContactListContactMechanismPurposeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeContactLists" nameSingular="PartyTypeContactList" columnPrefix="ptypclst">
+                    <columns>
+                        <column name="PartyTypeContactListId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="ContactListId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactLists" destinationColumn="ContactListId" />
+                        <column name="AddWhenCreated" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeContactListId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeContactListGroups" nameSingular="PartyTypeContactListGroup" columnPrefix="ptypclstgrp">
+                    <columns>
+                        <column name="PartyTypeContactListGroupId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="ContactListGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListGroups" destinationColumn="ContactListGroupId" />
+                        <column name="AddWhenCreated" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeContactListGroupId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ContactListGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ContactListGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CustomerTypeContactLists" nameSingular="CustomerTypeContactList" columnPrefix="cutyclst">
+                    <columns>
+                        <column name="CustomerTypeContactListId" type="EID" nullAllowed="false" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="ContactListId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactLists" destinationColumn="ContactListId" />
+                        <column name="AddWhenCreated" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerTypeContactListId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CustomerTypeContactListGroups" nameSingular="CustomerTypeContactListGroup" columnPrefix="cutyclstgrp">
+                    <columns>
+                        <column name="CustomerTypeContactListGroupId" type="EID" nullAllowed="false" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="ContactListGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListGroups" destinationColumn="ContactListGroupId" />
+                        <column name="AddWhenCreated" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerTypeContactListGroupId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ContactListGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ContactListGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListGroups" nameSingular="ContactListGroup" columnPrefix="clstgrp">
+                    <columns>
+                        <column name="ContactListGroupId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListGroupDetails" destinationColumn="ContactListGroupDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListGroupDetails" destinationColumn="ContactListGroupDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListGroupId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListGroupDetails" nameSingular="ContactListGroupDetail" columnPrefix="clstgrpdt">
+                    <columns>
+                        <column name="ContactListGroupDetailId" type="EID" nullAllowed="false" />
+                        <column name="ContactListGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListGroups" destinationColumn="ContactListGroupId" />
+                        <column name="ContactListGroupName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListGroupDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ContactListGroupName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListGroupDescriptions" nameSingular="ContactListGroupDescription" columnPrefix="clstgrpd">
+                    <columns>
+                        <column name="ContactListGroupDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ContactListGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListGroups" destinationColumn="ContactListGroupId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListGroupDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListGroupId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListTypes" nameSingular="ContactListType" columnPrefix="clsttyp">
+                    <columns>
+                        <column name="ContactListTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListTypeDetails" destinationColumn="ContactListTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListTypeDetails" destinationColumn="ContactListTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListTypeDetails" nameSingular="ContactListTypeDetail" columnPrefix="clsttypdt">
+                    <columns>
+                        <column name="ContactListTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ContactListTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListTypes" destinationColumn="ContactListTypeId" />
+                        <column name="ContactListTypeName" type="Name" nullAllowed="false" />
+                        <column name="ConfirmationRequestChainId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="SubscribeChainId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="UnsubscribeChainId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="UsedForSolicitation" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ContactListTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ConfirmationRequestChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SubscribeChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="UnsubscribeChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListTypeDescriptions" nameSingular="ContactListTypeDescription" columnPrefix="clsttypd">
+                    <columns>
+                        <column name="ContactListTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ContactListTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListTypes" destinationColumn="ContactListTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ContactListTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListFrequencies" nameSingular="ContactListFrequency" columnPrefix="clstfrq">
+                    <columns>
+                        <column name="ContactListFrequencyId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListFrequencyDetails" destinationColumn="ContactListFrequencyDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListFrequencyDetails" destinationColumn="ContactListFrequencyDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListFrequencyId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListFrequencyDetails" nameSingular="ContactListFrequencyDetail" columnPrefix="clstfrqdt">
+                    <columns>
+                        <column name="ContactListFrequencyDetailId" type="EID" nullAllowed="false" />
+                        <column name="ContactListFrequencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListFrequencies" destinationColumn="ContactListFrequencyId" />
+                        <column name="ContactListFrequencyName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListFrequencyDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListFrequencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ContactListFrequencyName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListFrequencyDescriptions" nameSingular="ContactListFrequencyDescription" columnPrefix="clstfrqd">
+                    <columns>
+                        <column name="ContactListFrequencyDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ContactListFrequencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListFrequencies" destinationColumn="ContactListFrequencyId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListFrequencyDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListFrequencyId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactLists" nameSingular="ContactList" columnPrefix="clst">
+                    <columns>
+                        <column name="ContactListId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListDetails" destinationColumn="ContactListDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListDetails" destinationColumn="ContactListDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListDetails" nameSingular="ContactListDetail" columnPrefix="clstdt">
+                    <columns>
+                        <column name="ContactListDetailId" type="EID" nullAllowed="false" />
+                        <column name="ContactListId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactLists" destinationColumn="ContactListId" />
+                        <column name="ContactListName" type="Name" nullAllowed="false" />
+                        <column name="ContactListGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListGroups" destinationColumn="ContactListGroupId" />
+                        <column name="ContactListTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListTypes" destinationColumn="ContactListTypeId" />
+                        <column name="ContactListFrequencyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListFrequencies" destinationColumn="ContactListFrequencyId" />
+                        <column name="DefaultPartyContactListStatusId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ContactListName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ContactListGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ContactListTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ContactListFrequencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="DefaultPartyContactListStatusId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListDescriptions" nameSingular="ContactListDescription" columnPrefix="clstd">
+                    <columns>
+                        <column name="ContactListDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ContactListId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactLists" destinationColumn="ContactListId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListContactMechanismPurposes" nameSingular="ContactListContactMechanismPurpose" columnPrefix="clstcmpr">
+                    <columns>
+                        <column name="ContactListContactMechanismPurposeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListContactMechanismPurposeDetails" destinationColumn="ContactListContactMechanismPurposeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactListContactMechanismPurposeDetails" destinationColumn="ContactListContactMechanismPurposeDetailId"/>
+                     </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListContactMechanismPurposeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ContactListContactMechanismPurposeDetails" nameSingular="ContactListContactMechanismPurposeDetail" columnPrefix="clstcmprdt">
+                    <columns>
+                        <column name="ContactListContactMechanismPurposeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ContactListContactMechanismPurposeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactListContactMechanismPurposes" destinationColumn="ContactListContactMechanismPurposeId" />
+                        <column name="ContactListId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactLists" destinationColumn="ContactListId" />
+                        <column name="ContactMechanismPurposeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactMechanismPurposes" destinationColumn="ContactMechanismPurposeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ContactListContactMechanismPurposeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ContactListContactMechanismPurposeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ContactMechanismPurposeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ContactMechanismPurposeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

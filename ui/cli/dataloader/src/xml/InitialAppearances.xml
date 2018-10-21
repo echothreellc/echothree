@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <colors>
+        <color colorName="white" red="255" green="255" blue="255" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="White" />
+        </color>
+        <color colorName="silver" red="192" green="192" blue="192" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Silver" />
+        </color>
+        <color colorName="gray" red="128" green="128" blue="128" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Gray" />
+        </color>
+        <color colorName="black" red="0" green="0" blue="0" isDefault="true" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Black" />
+        </color>
+        <color colorName="red" red="255" green="0" blue="0" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Red" />
+        </color>
+        <color colorName="maroon" red="128" green="0" blue="0" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Maroon" />
+        </color>
+        <color colorName="yellow" red="255" green="255" blue="0" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Yellow" />
+        </color>
+        <color colorName="olive" red="128" green="128" blue="0" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Olive" />
+        </color>
+        <color colorName="lime" red="0" green="255" blue="0" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Lime" />
+        </color>
+        <color colorName="green" red="0" green="128" blue="0" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Green" />
+        </color>
+        <color colorName="aqua" red="0" green="255" blue="255" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Aqua" />
+        </color>
+        <color colorName="teal" red="0" green="128" blue="128" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Teal" />
+        </color>
+        <color colorName="blue" red="0" green="0" blue="255" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Blue" />
+        </color>
+        <color colorName="navy" red="0" green="0" blue="128" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Navy" />
+        </color>
+        <color colorName="fuchsia" red="255" green="0" blue="255" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Fuchsia" />
+        </color>
+        <color colorName="purple" red="128" green="0" blue="128" isDefault="false" sortOrder="1">
+            <colorDescription languageIsoName="en" description="Purple" />
+        </color>
+    </colors>
+    <fontStyles>
+        <fontStyle fontStyleName="NORMAL" isDefault="true" sortOrder="1">
+            <fontStyleDescription languageIsoName="en" description="Normal" />
+        </fontStyle>
+        <fontStyle fontStyleName="ITALIC" isDefault="false" sortOrder="2">
+            <fontStyleDescription languageIsoName="en" description="Italic" />
+        </fontStyle>
+        <fontStyle fontStyleName="OBLIQUE" isDefault="false" sortOrder="2">
+            <fontStyleDescription languageIsoName="en" description="Oblique" />
+        </fontStyle>
+    </fontStyles>
+    <fontWeights>
+        <fontWeight fontWeightName="LIGHTER" isDefault="false" sortOrder="1">
+            <fontWeightDescription languageIsoName="en" description="Lighter" />
+        </fontWeight>
+        <fontWeight fontWeightName="NORMAL" isDefault="true" sortOrder="2">
+            <fontWeightDescription languageIsoName="en" description="Normal" />
+        </fontWeight>
+        <fontWeight fontWeightName="BOLD" isDefault="false" sortOrder="3">
+            <fontWeightDescription languageIsoName="en" description="Bold" />
+        </fontWeight>
+        <fontWeight fontWeightName="BOLDER" isDefault="false" sortOrder="3">
+            <fontWeightDescription languageIsoName="en" description="Bolder" />
+        </fontWeight>
+    </fontWeights>
+    <textDecorations>
+        <textDecoration textDecorationName="OVERLINE" isDefault="true" sortOrder="1">
+            <textDecorationDescription languageIsoName="en" description="Overline" />
+        </textDecoration>
+        <textDecoration textDecorationName="LINE_THROUGH" isDefault="false" sortOrder="2">
+            <textDecorationDescription languageIsoName="en" description="Line-Through" />
+        </textDecoration>
+        <textDecoration textDecorationName="UNDERLINE" isDefault="false" sortOrder="2">
+            <textDecorationDescription languageIsoName="en" description="Underline" />
+        </textDecoration>
+    </textDecorations>
+    <textTransformations>
+        <textTransformation textTransformationName="UPPERCASE" isDefault="true" sortOrder="1">
+            <textTransformationDescription languageIsoName="en" description="Uppercase" />
+        </textTransformation>
+        <textTransformation textTransformationName="LOWERCASE" isDefault="false" sortOrder="2">
+            <textTransformationDescription languageIsoName="en" description="Lowercase" />
+        </textTransformation>
+        <textTransformation textTransformationName="CAPITALIZE" isDefault="false" sortOrder="2">
+            <textTransformationDescription languageIsoName="en" description="Capitalize" />
+        </textTransformation>
+    </textTransformations>
+    <appearances>
+        <appearance appearanceName="TEST_APPEARANCE" textColor="black" backgroundcolor="white" fontStyle="NORMAL" fontWeight="NORMAL" isDefault="true"
+                sortOrder="1">
+            <appearanceDescription languageIsoName="en" description="Test Appearance" />
+            <appearanceTextDecoration textDecorationName="line-through" />
+            <appearanceTextTransformation textTransformationName="lowercase" />
+        </appearance>
+    </appearances>
+</initialData>

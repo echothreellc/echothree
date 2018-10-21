@@ -1,0 +1,111 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.cancellationpolicy.server.command;
+
+import com.echothree.control.user.cancellationpolicy.remote.form.GetCancellationPolicyReasonsForm;
+import com.echothree.control.user.cancellationpolicy.remote.result.CancellationPolicyResultFactory;
+import com.echothree.control.user.cancellationpolicy.remote.result.GetCancellationPolicyReasonsResult;
+import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class GetCancellationPolicyReasonsCommand
+        extends BaseSimpleCommand<GetCancellationPolicyReasonsForm> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.CancellationPolicyReason.name(), SecurityRoles.List.name())
+                        )))
+                )));
+        
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("CancellationReasonName", FieldType.ENTITY_NAME, false, null, null)
+                ));
+    }
+    
+    /** Creates a new instance of GetCancellationPolicyReasonsCommand */
+    public GetCancellationPolicyReasonsCommand(UserVisitPK userVisitPK, GetCancellationPolicyReasonsForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        GetCancellationPolicyReasonsResult result = CancellationPolicyResultFactory.getGetCancellationPolicyReasonsResult();
+        String cancellationPolicyName = form.getCancellationPolicyName();
+        String cancellationReasonName = form.getCancellationReasonName();
+        int parameterCount = (cancellationReasonName != null? 1: 0) + (cancellationPolicyName != null? 1: 0);
+        
+        if(parameterCount == 1) {
+            String cancellationKindName = form.getCancellationKindName();
+            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+            
+            if(cancellationKind != null) {
+                if(cancellationPolicyName != null) {
+                    CancellationPolicy cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                    
+                    if(cancellationPolicy != null) {
+                        result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(getUserVisit(), cancellationPolicy));
+                        result.setCancellationPolicyReasons(cancellationPolicyControl.getCancellationPolicyReasonTransfersByCancellationPolicy(getUserVisit(), cancellationPolicy));
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
+                    }
+                } else if(cancellationKindName != null && cancellationReasonName != null) {
+                    CancellationReason cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+                    
+                    if(cancellationReason != null) {
+                        result.setCancellationReason(cancellationPolicyControl.getCancellationReasonTransfer(getUserVisit(), cancellationReason));
+                        result.setCancellationPolicyReasons(cancellationPolicyControl.getCancellationPolicyReasonTransfersByCancellationReason(getUserVisit(), cancellationReason));
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
+                    }
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+        
+        return result;
+    }
+    
+}

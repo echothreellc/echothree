@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+    <display-name>EchoThree Core</display-name>
+
+    <resource-ref>
+        <lookup-name>java:jboss/infinispan/cache/EchoThree/Security</lookup-name>
+        <res-ref-name>java:app/infinispan/EchoThree/Security</res-ref-name>
+    </resource-ref>
+
+    <resource-ref>
+        <lookup-name>java:jboss/infinispan/cache/EchoThree/Data</lookup-name>
+        <res-ref-name>java:app/infinispan/EchoThree/Data</res-ref-name>
+    </resource-ref>
+
+    <module>
+        <ejb>commons-codec.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>guava.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>httpclient.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>httpcore.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>itext.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>juel-impl.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>lucene-core.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>lucene-analyzers-common.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>lucene-analyzers-kuromoji.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>lucene-queryparser.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>lucene-suggest.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>graphql-java.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>graphql-java-annotations.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>antlr4-runtime.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>slf4j-api.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>slf4j-log4j12.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>gson.jar</ejb>
+    </module>
+    
+    <module>
+        <ejb>validation-api.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>jooq.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>nekohtml.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>xercesImpl.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>xml-apis.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>reactive-streams.jar</ejb>
+    </module>
+
+    <module>
+        <ejb>echothree-server.jar</ejb>
+    </module>
+    
+</application>

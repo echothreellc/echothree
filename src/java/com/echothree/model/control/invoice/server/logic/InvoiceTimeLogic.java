@@ -1,0 +1,128 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.invoice.server.logic;
+
+import com.echothree.model.control.invoice.server.InvoiceControl;
+import com.echothree.model.data.invoice.server.entity.Invoice;
+import com.echothree.model.data.invoice.server.entity.InvoiceDetail;
+import com.echothree.model.data.invoice.server.entity.InvoiceTime;
+import com.echothree.model.data.invoice.server.entity.InvoiceTimeType;
+import com.echothree.model.data.invoice.server.entity.InvoiceType;
+import com.echothree.model.data.invoice.server.value.InvoiceTimeValue;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.Session;
+
+public class InvoiceTimeLogic {
+
+    private InvoiceTimeLogic() {
+        super();
+    }
+
+    private static class InvoiceTimeLogicHolder {
+        static InvoiceTimeLogic instance = new InvoiceTimeLogic();
+    }
+
+    public static InvoiceTimeLogic getInstance() {
+        return InvoiceTimeLogicHolder.instance;
+    }
+
+    private String getInvoiceTypeName(InvoiceType invoiceType) {
+        return invoiceType.getLastDetail().getInvoiceTypeName();
+    }
+
+    public void createOrUpdateInvoiceTimeIfNotNull(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final Long time,
+            final BasePK partyPK) {
+        if(time != null) {
+            createOrUpdateInvoiceTime(ema, invoice, invoiceTimeTypeName, time, partyPK);
+        }
+    }
+
+    public void createOrUpdateInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final Long time,
+            final BasePK partyPK) {
+        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        InvoiceDetail invoiceDetail = invoice.getLastDetail();
+        InvoiceType invoiceType = invoiceDetail.getInvoiceType();
+        InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+
+        if(invoiceTimeType == null) {
+            if(ema != null) {
+                ema.addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), getInvoiceTypeName(invoiceType), invoiceTimeTypeName);
+            }
+        } else {
+            InvoiceTimeValue invoiceTimeValue = invoiceControl.getInvoiceTimeValueForUpdate(invoice, invoiceTimeType);
+
+            if(invoiceTimeValue == null) {
+                invoiceControl.createInvoiceTime(invoice, invoiceTimeType, time, partyPK);
+            } else {
+                invoiceTimeValue.setTime(time);
+                invoiceControl.updateInvoiceTimeFromValue(invoiceTimeValue, partyPK);
+            }
+        }
+    }
+
+    public Long getInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName) {
+        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        InvoiceDetail invoiceDetail = invoice.getLastDetail();
+        InvoiceType invoiceType = invoiceDetail.getInvoiceType();
+        InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+        Long result = null;
+
+        if(invoiceTimeType == null) {
+            if(ema != null) {
+                ema.addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), getInvoiceTypeName(invoiceType), invoiceTimeTypeName);
+            }
+        } else {
+            InvoiceTime invoiceTime = invoiceControl.getInvoiceTime(invoice, invoiceTimeType);
+
+            if(invoiceTime == null) {
+                if(ema != null) {
+                    ema.addExecutionError(ExecutionErrors.UnknownInvoiceTime.name(), getInvoiceTypeName(invoiceType), invoiceDetail.getInvoiceName(), invoiceTimeTypeName);
+                }
+            } else {
+                result = invoiceTime.getTime();
+            }
+        }
+
+        return result;
+    }
+
+    public void deleteInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final BasePK deletedBy) {
+        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        InvoiceDetail invoiceDetail = invoice.getLastDetail();
+        InvoiceType invoiceType = invoiceDetail.getInvoiceType();
+        InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
+
+        if(invoiceTimeType == null) {
+            if(ema != null) {
+                ema.addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), getInvoiceTypeName(invoiceType), invoiceTimeTypeName);
+            }
+        } else {
+            InvoiceTime invoiceTime = invoiceControl.getInvoiceTimeForUpdate(invoice, invoiceTimeType);
+
+            if(invoiceTime == null) {
+                if(ema != null) {
+                    ema.addExecutionError(ExecutionErrors.UnknownInvoiceTime.name(), getInvoiceTypeName(invoiceType), invoiceDetail.getInvoiceName(), invoiceTimeTypeName);
+                }
+            } else {
+                invoiceControl.deleteInvoiceTime(invoiceTime, deletedBy);
+            }
+        }
+    }
+
+}

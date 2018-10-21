@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <termTypes>
+        <termType termTypeName="DATE_DRIVEN" isDefault="false" sortOrder="1">
+            <termTypeDescription languageIsoName="en" description="Date Driven" />
+        </termType>
+        <termType termTypeName="PREPAID" isDefault="false" sortOrder="1">
+            <termTypeDescription languageIsoName="en" description="Prepaid" />
+        </termType>
+        <termType termTypeName="STANDARD" isDefault="false" sortOrder="1">
+            <termTypeDescription languageIsoName="en" description="Standard" />
+        </termType>
+    </termTypes>
+    <terms>
+        <term termTypeName="PREPAID" termName="PREPAID" isDefault="true" sortOrder="1">
+            <termDescription languageIsoName="en" description="Prepaid" />
+        </term>
+        <term termTypeName="STANDARD" termName="1_10_NET_30" isDefault="false" sortOrder="1" netDueDays="30" discountPercentage="1"
+        discountDays="10">
+            <termDescription languageIsoName="en" description="1% 10 Net 30" />
+        </term>
+        <term termTypeName="STANDARD" termName="2_10_NET_30" isDefault="false" sortOrder="1" netDueDays="30" discountPercentage="2"
+        discountDays="10">
+            <termDescription languageIsoName="en" description="2% 10 Net 30" />
+        </term>
+        <term termTypeName="STANDARD" termName="NET_15" isDefault="false" sortOrder="1" netDueDays="15" discountPercentage="0"
+        discountDays="0">
+            <termDescription languageIsoName="en" description="Net 15" />
+        </term>
+        <term termTypeName="STANDARD" termName="NET_30" isDefault="false" sortOrder="1" netDueDays="30" discountPercentage="0"
+        discountDays="0">
+            <termDescription languageIsoName="en" description="Net 30" />
+        </term>
+        <term termTypeName="STANDARD" termName="NET_60" isDefault="false" sortOrder="1" netDueDays="60" discountPercentage="0"
+        discountDays="0">
+            <termDescription languageIsoName="en" description="Net 60" />
+        </term>
+        <term termTypeName="STANDARD" termName="DUE_ON_RECEIPT" isDefault="false" sortOrder="1" netDueDays="0" discountPercentage="0"
+        discountDays="0">
+            <termDescription languageIsoName="en" description="Due on Receipt" />
+        </term>
+        <term termTypeName="DATE_DRIVEN" termName="SAMPLE_DATE_DRIVEN" isDefault="false" sortOrder="1" netDueDayOfMonth="1"
+        dueNextMonthDays="5" discountPercentage="1" discountBeforeDayOfMonth="1">
+            <termDescription languageIsoName="en" description="Sample Date Driven" />
+        </term>
+    </terms>
+</initialData>

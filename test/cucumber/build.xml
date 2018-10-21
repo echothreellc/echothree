@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Echo Three Cucumber Tests" default="test" basedir=".">
+
+    <target name="init">
+        <!-- where all application jars are stored -->
+        <property name="dir.lib" value="../../lib" />
+        <!-- where all application src is stored -->
+        <property name="dir.src" value="." />
+        <!-- The component root directory of the workspace -->
+        <property name="dir.home" value="../../" />
+
+        <property file="../../environment.properties" />
+        <property file="../../build.properties" />
+        <property name="metadata.dir" value="src/metadata"/>
+    </target>
+
+    <target name="compile" depends="init" description="Compile Unit Tests">
+        <mkdir dir="${test.cucumber.classes.dir}" />
+        <javac
+            debug="true"
+            source="1.8"
+            target="1.8"
+            srcdir="${test.cucumber.src.dir}"
+            destdir="${test.cucumber.classes.dir}"
+            includeAntRuntime="false">
+            <classpath>
+                <pathelement location="./"/>
+                <fileset dir="../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+        </javac>
+    </target>
+
+    <target name="test" depends="compile" description="Execute Unit Tests">
+        <mkdir dir="${test.cucumber.results.dir}" />
+        <mkdir dir="${test.cucumber.results.html.dir}" />
+        <mkdir dir="${test.cucumber.results.junit.dir}" />
+        
+        <java classname="cucumber.api.cli.Main" fork="true" failonerror="false" resultproperty="cucumber.exitstatus">
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../${wildfly.home.modules}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+                <pathelement path="${test.cucumber.classes.dir}" />
+                <pathelement path="${test.cucumber.pathelement.1}" />
+                <pathelement path="${test.cucumber.pathelement.2}" />
+                <pathelement path="${test.cucumber.pathelement.3}" />
+                <pathelement path="${test.cucumber.pathelement.4}" />
+                <pathelement path="${test.cucumber.pathelement.5}" />
+                <pathelement path="${test.cucumber.pathelement.6}" />
+                <pathelement path="${test.cucumber.pathelement.7}" />
+                <pathelement path="${test.cucumber.pathelement.8}" />
+                <pathelement path="${test.cucumber.pathelement.9}" />
+                <pathelement path="${test.cucumber.pathelement.10}" />
+                <pathelement path="${test.cucumber.component.src.metadata}" />
+            </classpath>
+            <arg value="--plugin"/>
+            <arg value="junit:${test.cucumber.results.junit.dir}/allcukes.xml"/>
+            <arg value="--plugin"/>
+            <arg value="pretty"/>
+            <arg value="--plugin"/>
+            <arg value="html:${test.cucumber.results.html.dir}"/>
+            <arg value="--glue"/>
+            <arg value=""/>
+            <arg value="."/>
+        </java>
+        <junitreport todir="${test.cucumber.results.junit.dir}">
+            <fileset dir="${test.cucumber.results.junit.dir}">
+                <include name="${test.cucumber.junitreport.include}"/>
+            </fileset>
+            <report
+                format="${test.cucumber.junitreport.format}"
+                styledir="${test.cucumber.junitreport.styledir}"
+                todir="${test.cucumber.results.junit.dir}"/>
+        </junitreport>
+    </target>
+
+    <target name="clean" depends="init">
+        <delete dir="${test.cucumber.classes.dir}" />
+        <delete dir="${test.cucumber.results.dir}" />
+    </target>
+
+</project>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <carrierTypes>
+        <carrierType carrierTypeName="DEUTSCHE_POST" isDefault="false" sortOrder="1">
+            <carrierTypeDescription languageIsoName="en" description="Deutsche Post" />
+        </carrierType>
+        <carrierType carrierTypeName="FEDEX" isDefault="true" sortOrder="1">
+            <carrierTypeDescription languageIsoName="en" description="FedEx" />
+        </carrierType>
+        <carrierType carrierTypeName="MISCELLANEOUS" isDefault="false" sortOrder="1">
+            <carrierTypeDescription languageIsoName="en" description="Miscellaneous" />
+        </carrierType>
+        <carrierType carrierTypeName="UPS" isDefault="false" sortOrder="1">
+            <carrierTypeDescription languageIsoName="en" description="United Parcel Service" />
+        </carrierType>
+        <carrierType carrierTypeName="USPS" isDefault="false" sortOrder="1">
+            <carrierTypeDescription languageIsoName="en" description="United States Postal Service" />
+        </carrierType>
+    </carrierTypes>
+    <carriers>
+        <carrier carrierName="TEST_CARRIER" name="Test Carrier" carrierTypeName="MISCELLANEOUS" isDefault="true" sortOrder="1">
+            <carrierOption carrierOptionName="TEST_CARRIER_OPTION_1" isRecommended="false" isRequired="false" isDefault="true" sortOrder="1">
+                <carrierOptionDescription languageIsoName="en" description="Test Carrier Option 1" />
+            </carrierOption>
+            <carrierOption carrierOptionName="TEST_CARRIER_OPTION_2" isRecommended="false" isRequired="false" isDefault="false" sortOrder="1">
+                <carrierOptionDescription languageIsoName="en" description="Test Carrier Option 2" />
+            </carrierOption>
+            <carrierService carrierServiceName="TEST_CARRIER_SERVICE_1" isDefault="true" sortOrder="1">
+                <carrierServiceDescription languageIsoName="en" description="Test Carrier Service 1" />
+                <carrierServiceOption carrierOptionName="TEST_CARRIER_OPTION_1" isRecommended="false" isRequired="false" />
+                <carrierServiceOption carrierOptionName="TEST_CARRIER_OPTION_2" isRecommended="false" isRequired="false" />
+            </carrierService>
+            <carrierService carrierServiceName="TEST_CARRIER_SERVICE_2" isDefault="false" sortOrder="1">
+                <carrierServiceDescription languageIsoName="en" description="Test Carrier Service 2" />
+                <carrierServiceOption carrierOptionName="TEST_CARRIER_OPTION_1" isRecommended="false" isRequired="false" />
+            </carrierService>
+            <carrierService carrierServiceName="TEST_CARRIER_SERVICE_3" isDefault="false" sortOrder="1">
+                <carrierServiceDescription languageIsoName="en" description="Test Carrier Service 3" />
+                <carrierServiceOption carrierOptionName="TEST_CARRIER_OPTION_1" isRecommended="false" isRequired="false" />
+            </carrierService>
+        </carrier>
+    </carriers>
+</initialData>

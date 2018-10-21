@@ -1,0 +1,133 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.forum.server.command;
+
+import com.echothree.control.user.forum.remote.edit.ForumEditFactory;
+import com.echothree.control.user.forum.remote.edit.ForumGroupDescriptionEdit;
+import com.echothree.control.user.forum.remote.form.EditForumGroupDescriptionForm;
+import com.echothree.control.user.forum.remote.result.EditForumGroupDescriptionResult;
+import com.echothree.control.user.forum.remote.result.ForumResultFactory;
+import com.echothree.control.user.forum.remote.spec.ForumGroupDescriptionSpec;
+import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.data.forum.server.entity.ForumGroup;
+import com.echothree.model.data.forum.server.entity.ForumGroupDescription;
+import com.echothree.model.data.forum.server.value.ForumGroupDescriptionValue;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditForumGroupDescriptionCommand
+        extends BaseAbstractEditCommand<ForumGroupDescriptionSpec, ForumGroupDescriptionEdit, EditForumGroupDescriptionResult, ForumGroupDescription, ForumGroup> {
+    
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    
+    static {
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("ForumGroupName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of EditForumGroupDescriptionCommand */
+    public EditForumGroupDescriptionCommand(UserVisitPK userVisitPK, EditForumGroupDescriptionForm form) {
+        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    public EditForumGroupDescriptionResult getResult() {
+        return ForumResultFactory.getEditForumGroupDescriptionResult();
+    }
+
+    @Override
+    public ForumGroupDescriptionEdit getEdit() {
+        return ForumEditFactory.getForumGroupDescriptionEdit();
+    }
+
+    @Override
+    public ForumGroupDescription getEntity(EditForumGroupDescriptionResult result) {
+        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        ForumGroupDescription forumGroupDescription = null;
+        String forumGroupName = spec.getForumGroupName();
+        ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
+
+        if(forumGroup != null) {
+            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = spec.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+
+            if(language != null) {
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                    forumGroupDescription = forumControl.getForumGroupDescription(forumGroup, language);
+                } else { // EditMode.UPDATE
+                    forumGroupDescription = forumControl.getForumGroupDescriptionForUpdate(forumGroup, language);
+                }
+
+                if(forumGroupDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownForumGroupDescription.name(), forumGroupName, languageIsoName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownForumGroupName.name(), forumGroupName);
+        }
+
+        return forumGroupDescription;
+    }
+
+    @Override
+    public ForumGroup getLockEntity(ForumGroupDescription forumGroupDescription) {
+        return forumGroupDescription.getForumGroup();
+    }
+
+    @Override
+    public void fillInResult(EditForumGroupDescriptionResult result, ForumGroupDescription forumGroupDescription) {
+        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+
+        result.setForumGroupDescription(forumControl.getForumGroupDescriptionTransfer(getUserVisit(), forumGroupDescription));
+    }
+
+    @Override
+    public void doLock(ForumGroupDescriptionEdit edit, ForumGroupDescription forumGroupDescription) {
+        edit.setDescription(forumGroupDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(ForumGroupDescription forumGroupDescription) {
+        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        ForumGroupDescriptionValue forumGroupDescriptionValue = forumControl.getForumGroupDescriptionValue(forumGroupDescription);
+
+        forumGroupDescriptionValue.setDescription(edit.getDescription());
+
+        forumControl.updateForumGroupDescriptionFromValue(forumGroupDescriptionValue, getPartyPK());
+    }
+    
+}

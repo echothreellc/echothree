@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <mimeTypeUsageTypes>
+        <mimeTypeUsageType mimeTypeUsageTypeName="IMAGE" isDefault="false" sortOrder="1">
+            <mimeTypeUsageTypeDescription languageIsoName="en" description="Image" />
+        </mimeTypeUsageType>
+        <mimeTypeUsageType mimeTypeUsageTypeName="AUDIO" isDefault="false" sortOrder="1">
+            <mimeTypeUsageTypeDescription languageIsoName="en" description="Audio" />
+        </mimeTypeUsageType>
+        <mimeTypeUsageType mimeTypeUsageTypeName="VIDEO" isDefault="false" sortOrder="1">
+            <mimeTypeUsageTypeDescription languageIsoName="en" description="Video" />
+        </mimeTypeUsageType>
+        <mimeTypeUsageType mimeTypeUsageTypeName="TEXT" isDefault="true" sortOrder="1">
+            <mimeTypeUsageTypeDescription languageIsoName="en" description="Text" />
+        </mimeTypeUsageType>
+        <mimeTypeUsageType mimeTypeUsageTypeName="DOCUMENT" isDefault="false" sortOrder="1">
+            <mimeTypeUsageTypeDescription languageIsoName="en" description="Document" />
+        </mimeTypeUsageType>
+    </mimeTypeUsageTypes>
+    <mimeTypes>
+        <mimeType mimeTypeName="image/gif" entityAttributeTypeName="BLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="GIF" />
+            <mimeTypeFileExtension fileExtension="gif" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="IMAGE" />
+        </mimeType>
+        <mimeType mimeTypeName="image/jpeg" entityAttributeTypeName="BLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="JPEG" />
+            <mimeTypeFileExtension fileExtension="jpeg" isDefault="true" />
+            <mimeTypeFileExtension fileExtension="jpg" isDefault="false" />
+            <mimeTypeUsage mimeTypeUsageTypeName="IMAGE" />
+        </mimeType>
+        <mimeType mimeTypeName="image/png" entityAttributeTypeName="BLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="PNG" />
+            <mimeTypeFileExtension fileExtension="png" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="IMAGE" />
+        </mimeType>
+        <mimeType mimeTypeName="video/mpeg" entityAttributeTypeName="BLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="MPEG Video" />
+            <mimeTypeFileExtension fileExtension="mpeg" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="VIDEO" />
+        </mimeType>
+        <mimeType mimeTypeName="audio/mpeg" entityAttributeTypeName="BLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="MPEG Audio" />
+            <mimeTypeFileExtension fileExtension="mp3" isDefault="true" />
+            <mimeTypeFileExtension fileExtension="mp2" isDefault="false" />
+            <mimeTypeFileExtension fileExtension="mpga" isDefault="false" />
+            <mimeTypeUsage mimeTypeUsageTypeName="AUDIO" />
+        </mimeType>
+        <mimeType mimeTypeName="video/quicktime" entityAttributeTypeName="BLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="QuickTime" />
+            <mimeTypeFileExtension fileExtension="qt" isDefault="true" />
+            <mimeTypeFileExtension fileExtension="mov" isDefault="false" />
+            <mimeTypeUsage mimeTypeUsageTypeName="VIDEO" />
+        </mimeType>
+        <mimeType mimeTypeName="text/html" entityAttributeTypeName="CLOB" isDefault="true" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="HTML" />
+            <mimeTypeFileExtension fileExtension="html" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+            <mimeTypeUsage mimeTypeUsageTypeName="TEXT" />
+        </mimeType>
+        <mimeType mimeTypeName="text/plain" entityAttributeTypeName="CLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="Plain Text" />
+            <mimeTypeFileExtension fileExtension="txt" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+            <mimeTypeUsage mimeTypeUsageTypeName="TEXT" />
+        </mimeType>
+        <mimeType mimeTypeName="text/x-markup" entityAttributeTypeName="CLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="Markup" />
+            <mimeTypeFileExtension fileExtension="mkp" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+            <mimeTypeUsage mimeTypeUsageTypeName="TEXT" />
+        </mimeType>
+        <mimeType mimeTypeName="text/x-textile" entityAttributeTypeName="CLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="Textile" />
+            <mimeTypeFileExtension fileExtension="txtl" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+            <mimeTypeUsage mimeTypeUsageTypeName="TEXT" />
+        </mimeType>
+        <mimeType mimeTypeName="application/postscript" entityAttributeTypeName="CLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="Postscript" />
+            <mimeTypeFileExtension fileExtension="ps" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+        </mimeType>
+        <mimeType mimeTypeName="application/pdf" entityAttributeTypeName="BLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="PDF" />
+            <mimeTypeFileExtension fileExtension="pdf" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+        </mimeType>
+        <mimeType mimeTypeName="message/rfc822" entityAttributeTypeName="BLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="E-mail Message" />
+            <mimeTypeFileExtension fileExtension="eml" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+        </mimeType>
+        <mimeType mimeTypeName="application/javascript" entityAttributeTypeName="CLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="JavaScript" />
+            <mimeTypeFileExtension fileExtension="html" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+            <mimeTypeUsage mimeTypeUsageTypeName="TEXT" />
+        </mimeType>
+        <mimeType mimeTypeName="application/json" entityAttributeTypeName="CLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="JSON (JavaScript Object Notation)" />
+            <mimeTypeFileExtension fileExtension="html" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+            <mimeTypeUsage mimeTypeUsageTypeName="TEXT" />
+        </mimeType>
+        <mimeType mimeTypeName="text/css" entityAttributeTypeName="CLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="CSS (Cascading Style Sheet)" />
+            <mimeTypeFileExtension fileExtension="html" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+            <mimeTypeUsage mimeTypeUsageTypeName="TEXT" />
+        </mimeType>
+        <mimeType mimeTypeName="text/csv" entityAttributeTypeName="CLOB" isDefault="false" sortOrder="1">
+            <mimeTypeDescription languageIsoName="en" description="CSV (Comma-Separated Values)" />
+            <mimeTypeFileExtension fileExtension="html" isDefault="true" />
+            <mimeTypeUsage mimeTypeUsageTypeName="DOCUMENT" />
+            <mimeTypeUsage mimeTypeUsageTypeName="TEXT" />
+        </mimeType>
+    </mimeTypes>
+</initialData>

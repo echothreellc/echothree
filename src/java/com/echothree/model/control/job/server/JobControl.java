@@ -1,0 +1,479 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.job.server;
+
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.job.remote.choice.JobStatusChoicesBean;
+import com.echothree.model.control.job.remote.transfer.JobDescriptionTransfer;
+import com.echothree.model.control.job.remote.transfer.JobTransfer;
+import com.echothree.model.control.job.server.transfer.JobTransferCache;
+import com.echothree.model.control.job.server.transfer.JobTransferCaches;
+import com.echothree.model.control.job.common.workflow.JobStatusConstants;
+import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.job.remote.pk.JobPK;
+import com.echothree.model.data.job.server.entity.Job;
+import com.echothree.model.data.job.server.entity.JobDescription;
+import com.echothree.model.data.job.server.entity.JobDetail;
+import com.echothree.model.data.job.server.entity.JobStatus;
+import com.echothree.model.data.job.server.factory.JobDescriptionFactory;
+import com.echothree.model.data.job.server.factory.JobDetailFactory;
+import com.echothree.model.data.job.server.factory.JobFactory;
+import com.echothree.model.data.job.server.factory.JobStatusFactory;
+import com.echothree.model.data.job.server.value.JobDescriptionValue;
+import com.echothree.model.data.job.server.value.JobDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
+import com.echothree.util.common.exception.PersistenceDatabaseException;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.server.control.BaseModelControl;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class JobControl
+        extends BaseModelControl {
+    
+    /** Creates a new instance of JobControl */
+    public JobControl() {
+        super();
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Contact List Transfer Caches
+    // --------------------------------------------------------------------------------
+    
+    private JobTransferCaches jobTransferCaches = null;
+    
+    public JobTransferCaches getJobTransferCaches(UserVisit userVisit) {
+        if(jobTransferCaches == null) {
+            jobTransferCaches = new JobTransferCaches(userVisit, this);
+        }
+        
+        return jobTransferCaches;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Jobs
+    // --------------------------------------------------------------------------------
+    
+    public Job createJob(String jobName, Party runAsParty, Integer sortOrder, BasePK createdBy) {
+        Job job = JobFactory.getInstance().create();
+        JobDetail jobDetail = JobDetailFactory.getInstance().create(job, jobName, runAsParty, sortOrder,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        job = JobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, job.getPrimaryKey());
+        job.setActiveDetail(jobDetail);
+        job.setLastDetail(jobDetail);
+        job.store();
+        
+        sendEventUsingNames(job.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        createJobStatus(job);
+        
+        return job;
+    }
+    
+    private Job getJobByName(String jobName, EntityPermission entityPermission) {
+        Job job = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM jobs, jobdetails " +
+                        "WHERE jb_activedetailid = jbdt_jobdetailid AND jbdt_jobname = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM jobs, jobdetails " +
+                        "WHERE jb_activedetailid = jbdt_jobdetailid AND jbdt_jobname = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = JobFactory.getInstance().prepareStatement(query);
+            
+            ps.setString(1, jobName);
+            
+            job = JobFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return job;
+    }
+    
+    public Job getJobByName(String jobName) {
+        return getJobByName(jobName, EntityPermission.READ_ONLY);
+    }
+    
+    public Job getJobByNameForUpdate(String jobName) {
+        return getJobByName(jobName, EntityPermission.READ_WRITE);
+    }
+    
+    public JobDetailValue getJobDetailValueForUpdate(Job job) {
+        return job == null? null: job.getLastDetailForUpdate().getJobDetailValue().clone();
+    }
+    
+    public JobDetailValue getJobDetailValueByNameForUpdate(String jobName) {
+        return getJobDetailValueForUpdate(getJobByNameForUpdate(jobName));
+    }
+    
+    private List<Job> getJobs(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM jobs, jobdetails " +
+                    "WHERE jb_activedetailid = jbdt_jobdetailid " +
+                    "ORDER BY jbdt_sortorder, jbdt_jobname";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM jobs, jobdetails " +
+                    "WHERE jb_activedetailid = jbdt_jobdetailid " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = JobFactory.getInstance().prepareStatement(query);
+        
+        return JobFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+    }
+    
+    public List<Job> getJobs() {
+        return getJobs(EntityPermission.READ_ONLY);
+    }
+    
+    public List<Job> getJobsForUpdate() {
+        return getJobs(EntityPermission.READ_WRITE);
+    }
+    
+    public JobTransfer getJobTransfer(UserVisit userVisit, Job job) {
+        return getJobTransferCaches(userVisit).getJobTransferCache().getJobTransfer(job);
+    }
+    
+    public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
+        List<Job> jobs = getJobs();
+        List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
+        JobTransferCache jobTransferCache = getJobTransferCaches(userVisit).getJobTransferCache();
+        
+        jobs.stream().forEach((job) -> {
+            jobTransfers.add(jobTransferCache.getJobTransfer(job));
+        });
+        
+        return jobTransfers;
+    }
+    
+    public JobStatusChoicesBean getJobStatusChoices(String defaultJobStatusChoice, Language language, boolean allowNullChoice,
+            Job job, PartyPK partyPK) {
+        WorkflowControl workflowControl = getWorkflowControl();
+        JobStatusChoicesBean jobStatusChoicesBean = new JobStatusChoicesBean();
+        
+        if(job == null) {
+            workflowControl.getWorkflowEntranceChoices(jobStatusChoicesBean, defaultJobStatusChoice, language, allowNullChoice,
+                    workflowControl.getWorkflowByName(JobStatusConstants.Workflow_JOB_STATUS), partyPK);
+        } else {
+            EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(job.getPrimaryKey());
+            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
+                    entityInstance);
+            
+            workflowControl.getWorkflowDestinationChoices(jobStatusChoicesBean, defaultJobStatusChoice, language, allowNullChoice,
+                    workflowEntityStatus.getWorkflowStep(), partyPK);
+        }
+        
+        return jobStatusChoicesBean;
+    }
+    
+    public void setJobStatus(ExecutionErrorAccumulator eea, Job job, String jobStatusChoice, PartyPK modifiedBy) {
+        WorkflowControl workflowControl = getWorkflowControl();
+        EntityInstance entityInstance = getEntityInstanceByBaseEntity(job);
+        WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
+                entityInstance);
+        WorkflowDestination workflowDestination = jobStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), jobStatusChoice);
+        
+        if(workflowDestination != null || jobStatusChoice == null) {
+            workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, null, modifiedBy);
+        } else {
+            eea.addExecutionError(ExecutionErrors.UnknownJobStatusChoice.name(), jobStatusChoice);
+        }
+    }
+    
+    public void updateJobFromValue(JobDetailValue jobDetailValue, BasePK updatedBy) {
+        Job job = JobFactory.getInstance().getEntityFromPK(session,
+                EntityPermission.READ_WRITE, jobDetailValue.getJobPK());
+        JobDetail jobDetail = job.getActiveDetailForUpdate();
+        
+        jobDetail.setThruTime(session.START_TIME_LONG);
+        jobDetail.store();
+        
+        JobPK jobPK = jobDetail.getJobPK();
+        String jobName = jobDetailValue.getJobName();
+        PartyPK runAsPartyPK = jobDetailValue.getRunAsPartyPK();
+        Integer sortOrder = jobDetailValue.getSortOrder();
+        
+        jobDetail = JobDetailFactory.getInstance().create(jobPK, jobName, runAsPartyPK, sortOrder,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        job.setActiveDetail(jobDetail);
+        job.setLastDetail(jobDetail);
+        job.store();
+        
+        sendEventUsingNames(jobPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+    }
+    
+    public void deleteJob(Job job, BasePK deletedBy) {
+        deleteJobDescriptionsByJob(job, deletedBy);
+        
+        JobDetail jobDetail = job.getLastDetailForUpdate();
+        jobDetail.setThruTime(session.START_TIME_LONG);
+        job.setActiveDetail(null);
+        job.store();
+        
+        sendEventUsingNames(job.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        
+        removeJobStatusByJob(job);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Job Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public JobDescription createJobDescription(Job job, Language language,
+            String description, BasePK createdBy) {
+        JobDescription jobDescription = JobDescriptionFactory.getInstance().create(session,
+                job, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(job.getPrimaryKey(), EventTypes.MODIFY.name(), jobDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return jobDescription;
+    }
+    
+    private JobDescription getJobDescription(Job job, Language language, EntityPermission entityPermission) {
+        JobDescription jobDescription = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM jobdescriptions " +
+                        "WHERE jbd_jb_jobid = ? AND jbd_lang_languageid = ? AND jbd_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM jobdescriptions " +
+                        "WHERE jbd_jb_jobid = ? AND jbd_lang_languageid = ? AND jbd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = JobDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, job.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+            
+            jobDescription = JobDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return jobDescription;
+    }
+    
+    public JobDescription getJobDescription(Job job, Language language) {
+        return getJobDescription(job, language, EntityPermission.READ_ONLY);
+    }
+    
+    public JobDescription getJobDescriptionForUpdate(Job job, Language language) {
+        return getJobDescription(job, language, EntityPermission.READ_WRITE);
+    }
+    
+    public JobDescriptionValue getJobDescriptionValue(JobDescription jobDescription) {
+        return jobDescription == null? null: jobDescription.getJobDescriptionValue().clone();
+    }
+    
+    public JobDescriptionValue getJobDescriptionValueForUpdate(Job job, Language language) {
+        return getJobDescriptionValue(getJobDescriptionForUpdate(job, language));
+    }
+    
+    private List<JobDescription> getJobDescriptionsByJob(Job job, EntityPermission entityPermission) {
+        List<JobDescription> jobDescriptions = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM jobdescriptions, languages " +
+                        "WHERE jbd_jb_jobid = ? AND jbd_thrutime = ? AND jbd_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM jobdescriptions " +
+                        "WHERE jbd_jb_jobid = ? AND jbd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = JobDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, job.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            jobDescriptions = JobDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return jobDescriptions;
+    }
+    
+    public List<JobDescription> getJobDescriptionsByJob(Job job) {
+        return getJobDescriptionsByJob(job, EntityPermission.READ_ONLY);
+    }
+    
+    public List<JobDescription> getJobDescriptionsByJobForUpdate(Job job) {
+        return getJobDescriptionsByJob(job, EntityPermission.READ_WRITE);
+    }
+    
+    public String getBestJobDescription(Job job, Language language) {
+        String description;
+        JobDescription jobDescription = getJobDescription(job, language);
+        
+        if(jobDescription == null && !language.getIsDefault()) {
+            jobDescription = getJobDescription(job, getPartyControl().getDefaultLanguage());
+        }
+        
+        if(jobDescription == null) {
+            description = job.getLastDetail().getJobName();
+        } else {
+            description = jobDescription.getDescription();
+        }
+        
+        return description;
+    }
+    
+    public JobDescriptionTransfer getJobDescriptionTransfer(UserVisit userVisit, JobDescription jobDescription) {
+        return getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription);
+    }
+    
+    public List<JobDescriptionTransfer> getJobDescriptionTransfersByJob(UserVisit userVisit, Job job) {
+        List<JobDescription> jobDescriptions = getJobDescriptionsByJob(job);
+        List<JobDescriptionTransfer> jobDescriptionTransfers = new ArrayList<>(jobDescriptions.size());
+        
+        jobDescriptions.stream().forEach((jobDescription) -> {
+            jobDescriptionTransfers.add(getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription));
+        });
+        
+        return jobDescriptionTransfers;
+    }
+    
+    public void updateJobDescriptionFromValue(JobDescriptionValue jobDescriptionValue, BasePK updatedBy) {
+        if(jobDescriptionValue.hasBeenModified()) {
+            JobDescription jobDescription = JobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     jobDescriptionValue.getPrimaryKey());
+            
+            jobDescription.setThruTime(session.START_TIME_LONG);
+            jobDescription.store();
+            
+            Job job = jobDescription.getJob();
+            Language language = jobDescription.getLanguage();
+            String description = jobDescriptionValue.getDescription();
+            
+            jobDescription = JobDescriptionFactory.getInstance().create(job, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(job.getPrimaryKey(), EventTypes.MODIFY.name(), jobDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deleteJobDescription(JobDescription jobDescription, BasePK deletedBy) {
+        jobDescription.setThruTime(session.START_TIME_LONG);
+        
+        sendEventUsingNames(jobDescription.getJobPK(), EventTypes.MODIFY.name(), jobDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        
+    }
+    
+    public void deleteJobDescriptionsByJob(Job job, BasePK deletedBy) {
+        List<JobDescription> jobDescriptions = getJobDescriptionsByJobForUpdate(job);
+        
+        jobDescriptions.stream().forEach((jobDescription) -> {
+            deleteJobDescription(jobDescription, deletedBy);
+        });
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Job Statuses
+    // --------------------------------------------------------------------------------
+    
+    public JobStatus createJobStatus(Job job) {
+        return JobStatusFactory.getInstance().create(job, null, null);
+    }
+    
+    private JobStatus getJobStatus(Job job, EntityPermission entityPermission) {
+        JobStatus jobStatus = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM jobstatuses " +
+                        "WHERE jbst_jb_jobid = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM jobstatuses " +
+                        "WHERE jbst_jb_jobid = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = JobStatusFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, job.getPrimaryKey().getEntityId());
+            
+            jobStatus = JobStatusFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return jobStatus;
+    }
+    
+    public JobStatus getJobStatus(Job job) {
+        return getJobStatus(job, EntityPermission.READ_ONLY);
+    }
+    
+    public JobStatus getJobStatusForUpdate(Job job) {
+        return getJobStatus(job, EntityPermission.READ_WRITE);
+    }
+    
+    public void removeJobStatusByJob(Job job) {
+        JobStatus jobStatus = getJobStatusForUpdate(job);
+        
+        if(jobStatus != null) {
+            jobStatus.remove();
+        }
+    }
+    
+}

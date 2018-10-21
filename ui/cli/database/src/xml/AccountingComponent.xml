@@ -1,0 +1,1132 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Accounting">
+            <tables>
+                <table namePlural="Currencies" nameSingular="Currency" columnPrefix="cur">
+                    <columns>
+                        <column name="CurrencyId" type="EID" nullAllowed="false" />
+                        <column name="CurrencyIsoName" type="String" maxLength="3" nullAllowed="false" />
+                        <column name="Symbol" type="Symbol" nullAllowed="true" />
+                        <column name="SymbolPositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SymbolPositions" destinationColumn="SymbolPositionId" />
+                        <column name="SymbolOnListStart" type="Boolean" nullAllowed="true" />
+                        <column name="SymbolOnListMember" type="Boolean" maxLength="1" nullAllowed="true" />
+                        <column name="SymbolOnSubtotal" type="Boolean" maxLength="1" nullAllowed="true" />
+                        <column name="SymbolOnTotal" type="Boolean" maxLength="1" nullAllowed="true" />
+                        <column name="GroupingSeparator" type="String" maxLength="1" nullAllowed="false" />
+                        <column name="GroupingSize" type="Integer" nullAllowed="false" />
+                        <column name="FractionSeparator" type="String" maxLength="1" nullAllowed="true" />
+                        <column name="DefaultFractionDigits" type="Integer" nullAllowed="true" />
+                        <column name="PriceUnitFractionDigits" type="Integer" nullAllowed="true" />
+                        <column name="PriceLineFractionDigits" type="Integer" nullAllowed="true" />
+                        <column name="CostUnitFractionDigits" type="Integer" nullAllowed="true" />
+                        <column name="CostLineFractionDigits" type="Integer" nullAllowed="true" />
+                        <column name="MinusSign" type="String" maxLength="1" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CurrencyId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="CurrencyIsoName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="IsDefault" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="SymbolPositionId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CurrencyDescriptions" nameSingular="CurrencyDescription" columnPrefix="curd">
+                    <columns>
+                        <column name="CurrencyDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CurrencyDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountTypes" nameSingular="GlAccountType" columnPrefix="glatyp">
+                    <columns>
+                        <column name="GlAccountTypeId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="GlAccountTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountTypeDescriptions" nameSingular="GlAccountTypeDescription" columnPrefix="glatypd">
+                    <columns>
+                        <column name="GlAccountTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccountTypes" destinationColumn="GlAccountTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlAccountTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountClasses" nameSingular="GlAccountClass" columnPrefix="glacls">
+                    <columns>
+                        <column name="GlAccountClassId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountClassDetails" destinationColumn="GlAccountClassDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountClassDetails" destinationColumn="GlAccountClassDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountClassId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountClassDetails" nameSingular="GlAccountClassDetail" columnPrefix="glaclsdt">
+                    <columns>
+                        <column name="GlAccountClassDetailId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccountClasses" destinationColumn="GlAccountClassId" />
+                        <column name="GlAccountClassName" type="Name" nullAllowed="false" />
+                        <column name="ParentGlAccountClassId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountClasses" destinationColumn="GlAccountClassId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountClassDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlAccountClassId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GlAccountClassName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentGlAccountClassId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountClassDescriptions" nameSingular="GlAccountClassDescription" columnPrefix="glaclsd">
+                    <columns>
+                        <column name="GlAccountClassDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccountClasses" destinationColumn="GlAccountClassId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountClassDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlAccountClassId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GlAccountClassId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountCategories" nameSingular="GlAccountCategory" columnPrefix="glac">
+                    <columns>
+                        <column name="GlAccountCategoryId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountCategoryDetails" destinationColumn="GlAccountCategoryDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountCategoryDetails" destinationColumn="GlAccountCategoryDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountCategoryId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountCategoryDetails" nameSingular="GlAccountCategoryDetail" columnPrefix="glacdt">
+                    <columns>
+                        <column name="GlAccountCategoryDetailId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccountCategories" destinationColumn="GlAccountCategoryId" />
+                        <column name="GlAccountCategoryName" type="Name" nullAllowed="false" />
+                        <column name="ParentGlAccountCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountCategories" destinationColumn="GlAccountCategoryId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountCategoryDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlAccountCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GlAccountCategoryName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentGlAccountCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountCategoryDescriptions" nameSingular="GlAccountCategoryDescription" columnPrefix="glacd">
+                    <columns>
+                        <column name="GlAccountCategoryDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccountCategories" destinationColumn="GlAccountCategoryId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountCategoryDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlAccountCategoryId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GlAccountCategoryId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlResourceTypes" nameSingular="GlResourceType" columnPrefix="glrtyp">
+                    <columns>
+                        <column name="GlResourceTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlResourceTypeDetails" destinationColumn="GlResourceTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlResourceTypeDetails" destinationColumn="GlResourceTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlResourceTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlResourceTypeDetails" nameSingular="GlResourceTypeDetail" columnPrefix="glrtypdt">
+                    <columns>
+                        <column name="GlResourceTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="GlResourceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlResourceTypes" destinationColumn="GlResourceTypeId" />
+                        <column name="GlResourceTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlResourceTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlResourceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GlResourceTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlResourceTypeDescriptions" nameSingular="GlResourceTypeDescription" columnPrefix="glrtypd">
+                    <columns>
+                        <column name="GlResourceTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GlResourceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlResourceTypes" destinationColumn="GlResourceTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlResourceTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlResourceTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GlResourceTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccounts" nameSingular="GlAccount" columnPrefix="gla">
+                    <columns>
+                        <column name="GlAccountId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountDetails" destinationColumn="GlAccountDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountDetails" destinationColumn="GlAccountDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountDetails" nameSingular="GlAccountDetail" columnPrefix="gladt">
+                    <columns>
+                        <column name="GlAccountDetailId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="GlAccountName" type="Name" nullAllowed="false" />
+                        <column name="ParentGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="GlAccountTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccountTypes" destinationColumn="GlAccountTypeId" />
+                        <column name="GlAccountClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccountClasses" destinationColumn="GlAccountClassId" />
+                        <column name="GlAccountCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountCategories" destinationColumn="GlAccountCategoryId" />
+                        <column name="GlResourceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlResourceTypes" destinationColumn="GlResourceTypeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GlAccountName" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentGlAccountId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GlAccountTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="GlAccountClassId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="GlAccountCategoryId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="GlResourceTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="GlAccountCategoryId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountDescriptions" nameSingular="GlAccountDescription" columnPrefix="glad">
+                    <columns>
+                        <column name="GlAccountDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GlAccountSummaries" nameSingular="GlAccountSummary" columnPrefix="glasmy">
+                    <columns>
+                        <column name="GlAccountSummaryId" type="EID" nullAllowed="false" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="GroupPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PeriodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Periods" destinationColumn="PeriodId" />
+                        <column name="Balance" type="Currency" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GlAccountSummaryId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="GroupPartyId" />
+                            <indexColumn name="PeriodId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GroupPartyId" />
+                            <indexColumn name="PeriodId" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PeriodId" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="PeriodId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyGlAccounts" nameSingular="PartyGlAccount" columnPrefix="pgla">
+                    <columns>
+                        <column name="PartyGlAccountId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyGlAccountId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAccountingCategories" nameSingular="ItemAccountingCategory" columnPrefix="iactgc">
+                    <columns>
+                        <column name="ItemAccountingCategoryId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAccountingCategoryDetails" destinationColumn="ItemAccountingCategoryDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAccountingCategoryDetails" destinationColumn="ItemAccountingCategoryDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAccountingCategoryId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAccountingCategoryDetails" nameSingular="ItemAccountingCategoryDetail" columnPrefix="iactgcdt">
+                    <columns>
+                        <column name="ItemAccountingCategoryDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemAccountingCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAccountingCategories" destinationColumn="ItemAccountingCategoryId" />
+                        <column name="ItemAccountingCategoryName" type="Name" nullAllowed="false" />
+                        <column name="ParentItemAccountingCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAccountingCategories" destinationColumn="ItemAccountingCategoryId" />
+                        <column name="InventoryGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="SalesGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="ReturnsGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="CogsGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="ReturnsCogsGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAccountingCategoryDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemAccountingCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemAccountingCategoryName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentItemAccountingCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InventoryGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="SalesGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ReturnsGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="CogsGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="ReturnsCogsGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAccountingCategoryDescriptions" nameSingular="ItemAccountingCategoryDescription" columnPrefix="iactgcd">
+                    <columns>
+                        <column name="ItemAccountingCategoryDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemAccountingCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAccountingCategories" destinationColumn="ItemAccountingCategoryId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAccountingCategoryDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemAccountingCategoryId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemAccountingCategoryId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionTypes" nameSingular="TransactionType" columnPrefix="trxtyp">
+                    <columns>
+                        <column name="TransactionTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionTypeDetails" destinationColumn="TransactionTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionTypeDetails" destinationColumn="TransactionTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionTypeDetails" nameSingular="TransactionTypeDetail" columnPrefix="trxtypdt">
+                    <columns>
+                        <column name="TransactionTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="TransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTypes" destinationColumn="TransactionTypeId" />
+                        <column name="TransactionTypeName" type="Name" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TransactionTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionTypeDescriptions" nameSingular="TransactionTypeDescription" columnPrefix="trxtypd">
+                    <columns>
+                        <column name="TransactionTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTypes" destinationColumn="TransactionTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TransactionTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionGlAccountCategories" nameSingular="TransactionGlAccountCategory" columnPrefix="trxglac">
+                    <columns>
+                        <column name="TransactionGlAccountCategoryId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGlAccountCategoryDetails" destinationColumn="TransactionGlAccountCategoryDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGlAccountCategoryDetails" destinationColumn="TransactionGlAccountCategoryDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionGlAccountCategoryId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionGlAccountCategoryDetails" nameSingular="TransactionGlAccountCategoryDetail" columnPrefix="trxglacdt">
+                    <columns>
+                        <column name="TransactionGlAccountCategoryDetailId" type="EID" nullAllowed="false" />
+                        <column name="TransactionGlAccountCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionGlAccountCategories" destinationColumn="TransactionGlAccountCategoryId" />
+                        <column name="TransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTypes" destinationColumn="TransactionTypeId" />
+                        <column name="TransactionGlAccountCategoryName" type="Name" nullAllowed="false" />
+                        <column name="GlAccountCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccountCategories" destinationColumn="GlAccountCategoryId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionGlAccountCategoryDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionGlAccountCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TransactionTypeId" />
+                            <indexColumn name="TransactionGlAccountCategoryName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TransactionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GlAccountCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionGlAccountCategoryDescriptions" nameSingular="TransactionGlAccountCategoryDescription" columnPrefix="trxglacd">
+                    <columns>
+                        <column name="TransactionGlAccountCategoryDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TransactionGlAccountCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionGlAccountCategories" destinationColumn="TransactionGlAccountCategoryId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionGlAccountCategoryDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionGlAccountCategoryId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TransactionGlAccountCategoryId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionEntityRoleTypes" nameSingular="TransactionEntityRoleType" columnPrefix="trxertyp">
+                    <columns>
+                        <column name="TransactionEntityRoleTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionEntityRoleTypeDetails" destinationColumn="TransactionEntityRoleTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionEntityRoleTypeDetails" destinationColumn="TransactionEntityRoleTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionEntityRoleTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionEntityRoleTypeDetails" nameSingular="TransactionEntityRoleTypeDetail" columnPrefix="trxertypdt">
+                    <columns>
+                        <column name="TransactionEntityRoleTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="TransactionEntityRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionEntityRoleTypes" destinationColumn="TransactionEntityRoleTypeId" />
+                        <column name="TransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTypes" destinationColumn="TransactionTypeId" />
+                        <column name="TransactionEntityRoleTypeName" type="Name" nullAllowed="false" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionEntityRoleTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionEntityRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TransactionTypeId" />
+                            <indexColumn name="TransactionEntityRoleTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="TransactionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionEntityRoleTypeDescriptions" nameSingular="TransactionEntityRoleTypeDescription" columnPrefix="trxertypd">
+                    <columns>
+                        <column name="TransactionEntityRoleTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TransactionEntityRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionEntityRoleTypes" destinationColumn="TransactionEntityRoleTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionEntityRoleTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionEntityRoleTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TransactionEntityRoleTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionGlAccounts" nameSingular="TransactionGlAccount" columnPrefix="trxgla">
+                    <columns>
+                        <column name="TransactionGlAccountId" type="EID" nullAllowed="false" />
+                        <column name="TransactionGlAccountCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionGlAccountCategories" destinationColumn="TransactionGlAccountCategoryId" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionGlAccountId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionGlAccountCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionGroups" nameSingular="TransactionGroup" columnPrefix="trxgrp">
+                    <columns>
+                        <column name="TransactionGroupId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGroupDetails" destinationColumn="TransactionGroupDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGroupDetails" destinationColumn="TransactionGroupDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionGroupId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionGroupDetails" nameSingular="TransactionGroupDetail" columnPrefix="trxgrpdt">
+                    <columns>
+                        <column name="TransactionGroupDetailId" type="EID" nullAllowed="false" />
+                        <column name="TransactionGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionGroups" destinationColumn="TransactionGroupId" />
+                        <column name="TransactionGroupName" type="Name" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionGroupDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TransactionGroupName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Transactions" nameSingular="Transaction" columnPrefix="trx">
+                    <columns>
+                        <column name="TransactionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionDetails" destinationColumn="TransactionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionDetails" destinationColumn="TransactionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionDetails" nameSingular="TransactionDetail" columnPrefix="trxdt">
+                    <columns>
+                        <column name="TransactionDetailId" type="EID" nullAllowed="false" />
+                        <column name="TransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Transactions" destinationColumn="TransactionId" />
+                        <column name="TransactionName" type="Name" nullAllowed="false" />
+                        <column name="GroupPartyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="TransactionGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionGroups" destinationColumn="TransactionGroupId" />
+                        <column name="TransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionTypes" destinationColumn="TransactionTypeId" />
+                        <column name="PostingTime" type="Time" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TransactionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="GroupPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="TransactionGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="TransactionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionStatuses" nameSingular="TransactionStatus" columnPrefix="trxst">
+                    <columns>
+                        <column name="TransactionStatusId" type="EID" nullAllowed="false" />
+                        <column name="TransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Transactions" destinationColumn="TransactionId"/>
+                        <column name="TransactionGlEntrySequence" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="TransactionId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionGlEntries" nameSingular="TransactionGlEntry" columnPrefix="trxglent">
+                    <columns>
+                        <column name="TransactionGlEntryId" type="EID" nullAllowed="false" />
+                        <column name="TransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Transactions" destinationColumn="TransactionId" />
+                        <column name="TransactionGlEntrySequence" type="Integer" nullAllowed="false" />
+                        <column name="ParentTransactionGlEntryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGlEntries" destinationColumn="TransactionGlEntryId" />
+                        <column name="GroupPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="TransactionGlAccountCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TransactionGlAccountCategories" destinationColumn="TransactionGlAccountCategoryId" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="OriginalCurrencyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="OriginalAmount" type="Currency" nullAllowed="true" />
+                        <column name="Amount" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionGlEntryId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionId" />
+                            <indexColumn name="TransactionGlEntrySequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ParentTransactionGlEntryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="GroupPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="TransactionGlAccountCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="OriginalCurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TransactionEntityRoles" nameSingular="TransactionEntityRole" columnPrefix="trxer">
+                    <columns>
+                        <column name="TransactionEntityRoleId" type="EID" nullAllowed="false" />
+                        <column name="TransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Transactions" destinationColumn="TransactionId" />
+                        <column name="TransactionEntityRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TransactionEntityRoleTypes" destinationColumn="TransactionEntityRoleTypeId" />
+                        <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TransactionEntityRoleId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TransactionId" />
+                            <indexColumn name="TransactionEntityRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TransactionEntityRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SymbolPositions" nameSingular="SymbolPosition" columnPrefix="sympos">
+                    <columns>
+                        <column name="SymbolPositionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SymbolPositionDetails" destinationColumn="SymbolPositionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SymbolPositionDetails" destinationColumn="SymbolPositionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SymbolPositionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SymbolPositionDetails" nameSingular="SymbolPositionDetail" columnPrefix="symposdt">
+                    <columns>
+                        <column name="SymbolPositionDetailId" type="EID" nullAllowed="false" />
+                        <column name="SymbolPositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SymbolPositions" destinationColumn="SymbolPositionId" />
+                        <column name="SymbolPositionName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SymbolPositionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SymbolPositionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="SymbolPositionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SymbolPositionDescriptions" nameSingular="SymbolPositionDescription" columnPrefix="symposd">
+                    <columns>
+                        <column name="SymbolPositionDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="SymbolPositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SymbolPositions" destinationColumn="SymbolPositionId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SymbolPositionDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SymbolPositionId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SymbolPositionId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

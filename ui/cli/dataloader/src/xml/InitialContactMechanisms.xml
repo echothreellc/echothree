@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <contactMechanismAliasTypes>
+        <contactMechanismAliasType contactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" isDefault="true" sortOrder="1">
+            <contactMechanismAliasTypeDescription languageIsoName="en" description="Test Contact Mechanism Alias Type" />
+        </contactMechanismAliasType>
+        <contactMechanismAliasType contactMechanismAliasTypeName="TEST_PARTY_CONTACT_MECHANISM_ALIAS_TYPE" isDefault="true" sortOrder="1">
+            <contactMechanismAliasTypeDescription languageIsoName="en" description="Test Party Contact Mechanism Alias Type" />
+        </contactMechanismAliasType>
+    </contactMechanismAliasTypes>
+    <contactMechanismTypes>
+        <contactMechanismType contactMechanismTypeName="ELECTRONIC_ADDRESS" isDefault="false" sortOrder="1">
+            <contactMechanismTypeDescription languageIsoName="en" description="Electronic Address" />
+        </contactMechanismType>
+        <contactMechanismType contactMechanismTypeName="EMAIL_ADDRESS" parentContactMechanismTypeName="ELECTRONIC_ADDRESS" isDefault="false" sortOrder="1">
+            <contactMechanismTypeDescription languageIsoName="en" description="E-mail Address" />
+        </contactMechanismType>
+        <contactMechanismType contactMechanismTypeName="WEB_ADDRESS" parentContactMechanismTypeName="ELECTRONIC_ADDRESS" isDefault="false" sortOrder="4">
+            <contactMechanismTypeDescription languageIsoName="en" description="Web Address" />
+        </contactMechanismType>
+        <contactMechanismType contactMechanismTypeName="INET_4" parentContactMechanismTypeName="ELECTRONIC_ADDRESS" isDefault="false" sortOrder="5">
+            <contactMechanismTypeDescription languageIsoName="en" description="IP Version 4 Address" />
+        </contactMechanismType>
+        <contactMechanismType contactMechanismTypeName="INET_6" parentContactMechanismTypeName="ELECTRONIC_ADDRESS" isDefault="false" sortOrder="5">
+            <contactMechanismTypeDescription languageIsoName="en" description="IP Version 6 Address" />
+        </contactMechanismType>
+        <contactMechanismType contactMechanismTypeName="POSTAL_ADDRESS" isDefault="false" sortOrder="2">
+            <contactMechanismTypeDescription languageIsoName="en" description="Postal Address" />
+        </contactMechanismType>
+        <contactMechanismType contactMechanismTypeName="TELECOM_ADDRESS" isDefault="false" sortOrder="3">
+            <contactMechanismTypeDescription languageIsoName="en" description="Telecom Address" />
+        </contactMechanismType>
+    </contactMechanismTypes>
+    <contactMechanismPurposes>
+        <contactMechanismPurpose contactMechanismPurposeName="OTHER_EMAIL" contactMechanismTypeName="EMAIL_ADDRESS"
+            eventSubscriber="true" isDefault="false" sortOrder="2">
+            <contactMechanismPurposeDescription languageIsoName="en" description="E-mail (Other)" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="PRIMARY_EMAIL" contactMechanismTypeName="EMAIL_ADDRESS"
+            eventSubscriber="true" isDefault="true" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="E-mail" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="PHYSICAL_BILLING" contactMechanismTypeName="POSTAL_ADDRESS"
+            eventSubscriber="false" isDefault="false" sortOrder="2">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Billing" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="PHYSICAL_DELIVERY" contactMechanismTypeName="POSTAL_ADDRESS"
+            eventSubscriber="false" isDefault="true" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Shipping" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="FAX_NUMBER" contactMechanismTypeName="TELECOM_ADDRESS"
+            eventSubscriber="false" isDefault="false" sortOrder="2">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Fax" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="FAX_NUMBER_SEC" contactMechanismTypeName="TELECOM_ADDRESS"
+            eventSubscriber="false" isDefault="false" sortOrder="2">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Fax (Secondary)" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="PHONE_HOME" contactMechanismTypeName="TELECOM_ADDRESS"
+            eventSubscriber="false" isDefault="false" sortOrder="4">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Home" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="PHONE_MOBILE" contactMechanismTypeName="TELECOM_ADDRESS"
+            eventSubscriber="false" isDefault="false" sortOrder="3">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Mobile" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="PHONE_WORK" contactMechanismTypeName="TELECOM_ADDRESS"
+            eventSubscriber="false" isDefault="true" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Work" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="PHONE_WORK_SEC" contactMechanismTypeName="TELECOM_ADDRESS"
+            eventSubscriber="false" isDefault="false" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Work (Secondary)" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="WEB_SITE" contactMechanismTypeName="WEB_ADDRESS"
+            eventSubscriber="false" isDefault="true" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Web Site" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="INET_4_LOGIN" contactMechanismTypeName="INET_4"
+            eventSubscriber="false" isDefault="true" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Login" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="INET_4_ORDER" contactMechanismTypeName="INET_4"
+            eventSubscriber="false" isDefault="false" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Order" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="INET_6_LOGIN" contactMechanismTypeName="INET_6"
+            eventSubscriber="false" isDefault="true" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Login" />
+        </contactMechanismPurpose>
+        <contactMechanismPurpose contactMechanismPurposeName="INET_6_ORDER" contactMechanismTypeName="INET_6"
+            eventSubscriber="false" isDefault="false" sortOrder="1">
+            <contactMechanismPurposeDescription languageIsoName="en" description="Order" />
+        </contactMechanismPurpose>
+    </contactMechanismPurposes>
+</initialData>

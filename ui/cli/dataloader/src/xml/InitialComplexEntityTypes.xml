@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <componentVendors>
+        <componentVendor componentVendorName="ECHOTHREE" commandAction="none">
+            <entityType entityTypeName="ContactMechanism" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism" />
+                <commentType commentTypeName="CONTACT_MECHANISM" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Contact Mechanism" />
+                </commentType>
+            </entityType>
+            <entityType entityTypeName="Order" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order" />
+                <messageType messageTypeName="EXAMPLE_SALES_ORDER" mimeTypeUsageTypeName="TEXT" sortOrder="0">
+                    <messageTypeDescription languageIsoName="en" description="Example Sales Order Message Type" />
+                    <message messageName="SALES_ORDER_1" mimeTypeName="text/plain" includeByDefault="false" isDefault="true" sortOrder="0">
+                        Sales Order Message 1
+                    </message>
+                </messageType>
+                <messageType messageTypeName="EXAMPLE_PURCHASE_ORDER" mimeTypeUsageTypeName="TEXT" sortOrder="0">
+                    <messageTypeDescription languageIsoName="en" description="Example Purchase Order Message Type" />
+                    <message messageName="PURCHASE_ORDER_1" mimeTypeName="text/plain" includeByDefault="false" isDefault="true" sortOrder="0">
+                        Purchase Order Message 1
+                    </message>
+                </messageType>
+                <messageType messageTypeName="EXAMPLE_STRING" sortOrder="0">
+                    <messageTypeDescription languageIsoName="en" description="Example String Message Type" />
+                    <message messageName="STRING_1" includeByDefault="false" isDefault="true" sortOrder="0" stringMessage="String 1" />
+                </messageType>
+            </entityType>
+            <entityType entityTypeName="Party" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party" />
+                <commentType commentTypeName="CUSTOMER_ORDER_ENTRY" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Order Entry" />
+                </commentType>
+                <commentType commentTypeName="CUSTOMER_CUSTOMER_SERVICE" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Customer Service" />
+                </commentType>
+                <commentType commentTypeName="VENDOR_PURCHASING" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Purchasing" />
+                </commentType>
+            </entityType>
+            <entityType entityTypeName="PartyPaymentMethod" keepAllHistory="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Payment Method" />
+                <commentType commentTypeName="PARTY_PAYMENT_METHOD" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Party Payment Method" />
+                </commentType>
+            </entityType>
+            <entityType entityTypeName="PartyContactList" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Contact List" />
+                <commentType commentTypeName="PARTY_CONTACT_LIST" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Party Contact List" />
+                </commentType>
+            </entityType>
+            <entityType entityTypeName="PaymentMethod" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Method" />
+                <commentType commentTypeName="PAYMENT_METHOD" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Payment Method" />
+                </commentType>
+            </entityType>
+            <entityType entityTypeName="PaymentProcessor" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor" />
+                <commentType commentTypeName="PAYMENT_PROCESSOR" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Payment Processor" />
+                </commentType>
+            </entityType>
+            <entityType entityTypeName="ShippingMethod" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipping Method" />
+                <commentType commentTypeName="SHIPPING_METHOD" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Shipping Method" />
+                </commentType>
+            </entityType>
+            <entityType entityTypeName="VendorItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Vendor Item" />
+                <commentType commentTypeName="VENDOR_ITEM_PURCHASING" mimeTypeUsageTypeName="TEXT" sortOrder="1">
+                    <commentTypeDescription languageIsoName="en" description="Purchasing" />
+                </commentType>
+            </entityType>
+        </componentVendor>
+    </componentVendors>
+</initialData>

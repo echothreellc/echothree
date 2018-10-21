@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Rating">
+            <tables>
+                <table namePlural="RatingTypes" nameSingular="RatingType" columnPrefix="rtgtyp">
+                    <columns>
+                        <column name="RatingTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RatingTypeDetails" destinationColumn="RatingTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RatingTypeDetails" destinationColumn="RatingTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RatingTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RatingTypeDetails" nameSingular="RatingTypeDetail" columnPrefix="rtgtypdt">
+                    <columns>
+                        <column name="RatingTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="RatingTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RatingTypes" destinationColumn="RatingTypeId"/>
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="RatingTypeName" type="Name" nullAllowed="false" />
+                        <column name="RatingSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RatingTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RatingTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="RatingTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="RatingSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RatingTypeDescriptions" nameSingular="RatingTypeDescription" columnPrefix="rtgtypd">
+                    <columns>
+                        <column name="RatingTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="RatingTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RatingTypes" destinationColumn="RatingTypeId"/>
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RatingTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RatingTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RatingTypeListItems" nameSingular="RatingTypeListItem" columnPrefix="rtgtypli">
+                    <columns>
+                        <column name="RatingTypeListItemId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RatingTypeListItemDetails" destinationColumn="RatingTypeListItemDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RatingTypeListItemDetails" destinationColumn="RatingTypeListItemDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RatingTypeListItemId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RatingTypeListItemDetails" nameSingular="RatingTypeListItemDetail" columnPrefix="rtgtyplidt">
+                    <columns>
+                        <column name="RatingTypeListItemDetailId" type="EID" nullAllowed="false" />
+                        <column name="RatingTypeListItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RatingTypeListItems" destinationColumn="RatingTypeListItemId"/>
+                        <column name="RatingTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RatingTypes" destinationColumn="RatingTypeId"/>
+                        <column name="RatingTypeListItemName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RatingTypeListItemDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RatingTypeListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="RatingTypeId" />
+                            <indexColumn name="RatingTypeListItemName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="RatingTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RatingTypeListItemDescriptions" nameSingular="RatingTypeListItemDescription" columnPrefix="rtgtyplid">
+                    <columns>
+                        <column name="RatingTypeListItemDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="RatingTypeListItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RatingTypeListItems" destinationColumn="RatingTypeListItemId"/>
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RatingTypeListItemDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RatingTypeListItemId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Ratings" nameSingular="Rating" columnPrefix="rtg">
+                    <columns>
+                        <column name="RatingId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RatingDetails" destinationColumn="RatingDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RatingDetails" destinationColumn="RatingDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RatingId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RatingDetails" nameSingular="RatingDetail" columnPrefix="rtgdt">
+                    <columns>
+                        <column name="RatingDetailId" type="EID" nullAllowed="false" />
+                        <column name="RatingId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Ratings" destinationColumn="RatingId"/>
+                        <column name="RatingName" type="Name" nullAllowed="false" />
+                        <column name="RatingTypeListItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RatingTypeListItems" destinationColumn="RatingTypeListItemId"/>
+                        <column name="RatedEntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId"/>
+                        <column name="RatedByEntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId"/>
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RatingDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RatingId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="RatingName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="RatedEntityInstanceId" />
+                            <indexColumn name="RatedByEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="RatingTypeListItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="RatedEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="RatedByEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

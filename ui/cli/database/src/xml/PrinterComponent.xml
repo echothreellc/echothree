@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Printer">
+            <tables>
+                <table namePlural="PrinterGroups" nameSingular="PrinterGroup" columnPrefix="prngrp">
+                    <columns>
+                        <column name="PrinterGroupId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PrinterGroupDetails" destinationColumn="PrinterGroupDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PrinterGroupDetails" destinationColumn="PrinterGroupDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterGroupId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterGroupDetails" nameSingular="PrinterGroupDetail" columnPrefix="prngrpdt">
+                    <columns>
+                        <column name="PrinterGroupDetailId" type="EID" nullAllowed="false" />
+                        <column name="PrinterGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroups" destinationColumn="PrinterGroupId" />
+                        <column name="PrinterGroupName" type="Name" nullAllowed="false" />
+                        <column name="KeepPrintedJobsTime" type="Time" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterGroupDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PrinterGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PrinterGroupName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterGroupDescriptions" nameSingular="PrinterGroupDescription" columnPrefix="prngrpd">
+                    <columns>
+                        <column name="PrinterGroupDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PrinterGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroups" destinationColumn="PrinterGroupId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterGroupDescriptionId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PrinterGroupId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Printers" nameSingular="Printer" columnPrefix="prn">
+                    <columns>
+                        <column name="PrinterId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PrinterDetails" destinationColumn="PrinterDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PrinterDetails" destinationColumn="PrinterDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterDetails" nameSingular="PrinterDetail" columnPrefix="prndt">
+                    <columns>
+                        <column name="PrinterDetailId" type="EID" nullAllowed="false" />
+                        <column name="PrinterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Printers" destinationColumn="PrinterId" />
+                        <column name="PrinterName" type="Name" nullAllowed="false" />
+                        <column name="PrinterGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroups" destinationColumn="PrinterGroupId" />
+                        <column name="Priority" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PrinterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PrinterName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PrinterGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterDescriptions" nameSingular="PrinterDescription" columnPrefix="prnd">
+                    <columns>
+                        <column name="PrinterDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PrinterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Printers" destinationColumn="PrinterId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterDescriptionId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PrinterId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterGroupJobs" nameSingular="PrinterGroupJob" columnPrefix="prngrpj">
+                    <columns>
+                        <column name="PrinterGroupJobId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PrinterGroupJobDetails" destinationColumn="PrinterGroupJobDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PrinterGroupJobDetails" destinationColumn="PrinterGroupJobDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterGroupJobId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterGroupJobDetails" nameSingular="PrinterGroupJobDetail" columnPrefix="prngrpjdt">
+                    <columns>
+                        <column name="PrinterGroupJobDetailId" type="EID" nullAllowed="false" />
+                        <column name="PrinterGroupJobId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroupJobs" destinationColumn="PrinterGroupJobId" />
+                        <column name="PrinterGroupJobName" type="Name" nullAllowed="false" />
+                        <column name="PrinterGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroups" destinationColumn="PrinterGroupId" />
+                        <column name="DocumentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Documents" destinationColumn="DocumentId" />
+                        <column name="Copies" type="Integer" nullAllowed="false" />
+                        <column name="Priority" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterGroupJobDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PrinterGroupJobId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PrinterGroupJobName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PrinterGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="DocumentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterGroupUseTypes" nameSingular="PrinterGroupUseType" columnPrefix="prngrpusetyp">
+                    <columns>
+                        <column name="PrinterGroupUseTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PrinterGroupUseTypeDetails" destinationColumn="PrinterGroupUseTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PrinterGroupUseTypeDetails" destinationColumn="PrinterGroupUseTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterGroupUseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterGroupUseTypeDetails" nameSingular="PrinterGroupUseTypeDetail" columnPrefix="prngrpusetypdt">
+                    <columns>
+                        <column name="PrinterGroupUseTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PrinterGroupUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroupUseTypes" destinationColumn="PrinterGroupUseTypeId" />
+                        <column name="PrinterGroupUseTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterGroupUseTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PrinterGroupUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PrinterGroupUseTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PrinterGroupUseTypeDescriptions" nameSingular="PrinterGroupUseTypeDescription" columnPrefix="prngrpusetypd">
+                    <columns>
+                        <column name="PrinterGroupUseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PrinterGroupUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroupUseTypes" destinationColumn="PrinterGroupUseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PrinterGroupUseTypeDescriptionId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PrinterGroupUseTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyPrinterGroupUses" nameSingular="PartyPrinterGroupUse" columnPrefix="parprngrpuse">
+                    <columns>
+                        <column name="PartyPrinterGroupUseId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PrinterGroupUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroupUseTypes" destinationColumn="PrinterGroupUseTypeId" />
+                        <column name="PrinterGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PrinterGroups" destinationColumn="PrinterGroupId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyPrinterGroupUseId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="PrinterGroupUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PrinterGroupUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PrinterGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

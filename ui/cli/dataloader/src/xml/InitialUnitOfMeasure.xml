@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <unitOfMeasureKindUseTypes>
+        <unitOfMeasureKindUseType unitOfMeasureKindUseTypeName="TIME" allowMultiple="false" allowFractionDigits="false" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindUseTypeDescription languageIsoName="en" description="Time" />
+        </unitOfMeasureKindUseType>
+        <unitOfMeasureKindUseType unitOfMeasureKindUseTypeName="WEIGHT" allowMultiple="false" allowFractionDigits="false" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindUseTypeDescription languageIsoName="en" description="Weight" />
+        </unitOfMeasureKindUseType>
+        <unitOfMeasureKindUseType unitOfMeasureKindUseTypeName="VOLUME" allowMultiple="false" allowFractionDigits="false" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindUseTypeDescription languageIsoName="en" description="Volume" />
+        </unitOfMeasureKindUseType>
+        <unitOfMeasureKindUseType unitOfMeasureKindUseTypeName="DISTANCE" allowMultiple="false" allowFractionDigits="false" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindUseTypeDescription languageIsoName="en" description="Distance" />
+        </unitOfMeasureKindUseType>
+        <unitOfMeasureKindUseType unitOfMeasureKindUseTypeName="ELEVATION" allowMultiple="false" allowFractionDigits="false" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindUseTypeDescription languageIsoName="en" description="Elevation" />
+        </unitOfMeasureKindUseType>
+        <unitOfMeasureKindUseType unitOfMeasureKindUseTypeName="ALTITUDE" allowMultiple="false" allowFractionDigits="false" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindUseTypeDescription languageIsoName="en" description="Altitude" />
+        </unitOfMeasureKindUseType>
+        <unitOfMeasureKindUseType unitOfMeasureKindUseTypeName="QUANTITY" allowMultiple="true" allowFractionDigits="false" isDefault="true" sortOrder="1">
+            <unitOfMeasureKindUseTypeDescription languageIsoName="en" description="Quantity" />
+        </unitOfMeasureKindUseType>
+    </unitOfMeasureKindUseTypes>
+    <unitOfMeasureKinds>
+        <unitOfMeasureKind unitOfMeasureKindName="US_DISTANCE" fractionDigits="0" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindDescription languageIsoName="en" description="US Distance" />
+            <unitOfMeasureType unitOfMeasureTypeName="INCH" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="true" sortOrder="1">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Inch" pluralDescription="Inches" symbol="in" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="FOOT" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="2">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Foot" pluralDescription="Feet" symbol="ft" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="YARD" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="3">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Yard" pluralDescription="Yards" symbol="yd" />
+            </unitOfMeasureType>
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="FOOT" toUnitOfMeasureTypeName="INCH" toQuantity="12" />
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="YARD" toUnitOfMeasureTypeName="FOOT" toQuantity="3" />
+            <unitOfMeasureKindUse unitOfMeasureKindUseTypeName="DISTANCE" isDefault="true" sortOrder="1" />
+            <unitOfMeasureKindUse unitOfMeasureKindUseTypeName="ELEVATION" isDefault="true" sortOrder="1" />
+            <unitOfMeasureKindUse unitOfMeasureKindUseTypeName="ALTITUDE" isDefault="true" sortOrder="1" />
+            <unitOfMeasureKindUse unitOfMeasureKindUseTypeName="VOLUME" isDefault="true" sortOrder="1" />
+        </unitOfMeasureKind>
+        <unitOfMeasureKind unitOfMeasureKindName="BASIC" fractionDigits="0" isDefault="true" sortOrder="1">
+            <unitOfMeasureKindDescription languageIsoName="en" description="Basic Unit of Measure" />
+            <unitOfMeasureType unitOfMeasureTypeName="EACH" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="true" sortOrder="1">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Each" pluralDescription="Each" symbol="ea" />
+                <unitOfMeasureTypeVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
+                depthUnitOfMeasureTypeName="INCH" depth="1" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="DOZEN" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="1">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Dozen" pluralDescription="Dozen" symbol="dz" />
+                <unitOfMeasureTypeVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
+                depthUnitOfMeasureTypeName="INCH" depth="12" />
+            </unitOfMeasureType>
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="DOZEN" toUnitOfMeasureTypeName="EACH" toQuantity="12" />
+            <unitOfMeasureKindUse unitOfMeasureKindUseTypeName="QUANTITY" isDefault="true" sortOrder="1" />
+            <unitOfMeasureType unitOfMeasureTypeName="EACH" doCreate="false">
+                <unitOfMeasureTypeVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
+                depthUnitOfMeasureTypeName="INCH" depth="1" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="DOZEN" doCreate="false">
+                <unitOfMeasureTypeVolume heightUnitOfMeasureTypeName="INCH" height="1" widthUnitOfMeasureTypeName="INCH" width="1"
+                depthUnitOfMeasureTypeName="INCH" depth="12" />
+            </unitOfMeasureType>
+        </unitOfMeasureKind>
+        <unitOfMeasureKind unitOfMeasureKindName="TIME" fractionDigits="0" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindDescription languageIsoName="en" description="Time" />
+            <unitOfMeasureType unitOfMeasureTypeName="MILLISECOND" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="1">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Millisecond" pluralDescription="Milliseconds" symbol="ms" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="SECOND" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="2">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Second" pluralDescription="Seconds" symbol="sec" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="MINUTE" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="true" sortOrder="3">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Minute" pluralDescription="Minutes" symbol="min" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="HOUR" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="4">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Hour" pluralDescription="Hours" symbol="hr" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="DAY" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="5">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Day" pluralDescription="Days" symbol="d" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="WEEK" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="6">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Week" pluralDescription="Weeks" symbol="wk" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="YEAR" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="7">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Year" pluralDescription="Years" symbol="yr" />
+            </unitOfMeasureType>
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="YEAR" toUnitOfMeasureTypeName="DAY" toQuantity="365" />
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="YEAR" toUnitOfMeasureTypeName="WEEK" toQuantity="52" />
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="WEEK" toUnitOfMeasureTypeName="DAY" toQuantity="7" />
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="DAY" toUnitOfMeasureTypeName="HOUR" toQuantity="24" />
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="HOUR" toUnitOfMeasureTypeName="MINUTE" toQuantity="60" />
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="MINUTE" toUnitOfMeasureTypeName="SECOND" toQuantity="60" />
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="SECOND" toUnitOfMeasureTypeName="MILLISECOND" toQuantity="1000" />
+            <unitOfMeasureKindUse unitOfMeasureKindUseTypeName="TIME" isDefault="true" sortOrder="1" />
+        </unitOfMeasureKind>
+        <unitOfMeasureKind unitOfMeasureKindName="US_WEIGHT" fractionDigits="0" isDefault="false" sortOrder="1">
+            <unitOfMeasureKindDescription languageIsoName="en" description="US Weight" />
+            <unitOfMeasureType unitOfMeasureTypeName="OUNCE" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="true" sortOrder="1">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Ounce" pluralDescription="Ounces" symbol="oz" />
+            </unitOfMeasureType>
+            <unitOfMeasureType unitOfMeasureTypeName="POUND" symbolPositionName="AFTER_VALUE" suppressSymbolSeparator="false"
+                               isDefault="false" sortOrder="2">
+                <unitOfMeasureTypeDescription languageIsoName="en" singularDescription="Pound" pluralDescription="Pounds" symbol="lb" />
+            </unitOfMeasureType>
+            <unitOfMeasureEquivalent fromUnitOfMeasureTypeName="POUND" toUnitOfMeasureTypeName="OUNCE" toQuantity="16" />
+            <unitOfMeasureKindUse unitOfMeasureKindUseTypeName="WEIGHT" isDefault="true" sortOrder="1" />
+        </unitOfMeasureKind>
+    </unitOfMeasureKinds>
+</initialData>

@@ -1,0 +1,418 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.customer.customer;
+
+import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.remote.form.GetMimeTypeChoicesForm;
+import com.echothree.control.user.core.remote.result.GetMimeTypeChoicesResult;
+import com.echothree.control.user.icon.common.IconUtil;
+import com.echothree.control.user.icon.remote.form.GetIconChoicesForm;
+import com.echothree.control.user.icon.remote.result.GetIconChoicesResult;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.remote.form.GetBirthdayFormatChoicesForm;
+import com.echothree.control.user.party.remote.form.GetGenderChoicesForm;
+import com.echothree.control.user.party.remote.form.GetMoodChoicesForm;
+import com.echothree.control.user.party.remote.result.GetBirthdayFormatChoicesResult;
+import com.echothree.control.user.party.remote.result.GetGenderChoicesResult;
+import com.echothree.control.user.party.remote.result.GetMoodChoicesResult;
+import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.core.remote.choice.MimeTypeChoicesBean;
+import com.echothree.model.control.icon.common.IconConstants;
+import com.echothree.model.control.icon.remote.choice.IconChoicesBean;
+import com.echothree.model.control.party.remote.choice.BirthdayFormatChoicesBean;
+import com.echothree.model.control.party.remote.choice.GenderChoicesBean;
+import com.echothree.model.control.party.remote.choice.MoodChoicesBean;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.BaseLanguageActionForm;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
+import java.util.List;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.util.LabelValueBean;
+
+@SproutForm(name="CustomerProfileAdd")
+public class CustomerProfileAddActionForm
+        extends BaseLanguageActionForm {
+    
+    private IconChoicesBean iconChoices;
+    private GenderChoicesBean genderChoices;
+    private MoodChoicesBean moodChoices;
+    private BirthdayFormatChoicesBean birthdayFormatChoices;
+    private MimeTypeChoicesBean bioMimeTypeChoices;
+    private MimeTypeChoicesBean signatureMimeTypeChoices;
+    
+    private String partyName;
+    private String customerName;
+    private String nickname;
+    private String iconChoice;
+    private String genderChoice;
+    private String moodChoice;
+    private String birthday;
+    private String birthdayFormatChoice;
+    private String occupation;
+    private String hobbies;
+    private String location;
+    private String bioMimeTypeChoice;
+    private String bio;
+    private String signatureMimeTypeChoice;
+    private String signature;
+    
+    private void setupIconChoices() {
+        if(iconChoices == null) {
+            try {
+                GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+                
+                commandForm.setIconUsageTypeName(IconConstants.IconUsageType_PROFILE);
+                commandForm.setDefaultIconChoice(iconChoice);
+                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                
+                CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
+                iconChoices = result.getIconChoices();
+                
+                if(iconChoice == null) {
+                    iconChoice = iconChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, iconChoices remains null, no default
+            }
+        }
+    }
+    
+    private void setupGenderChoices() {
+        if(genderChoices == null) {
+            try {
+                GetGenderChoicesForm commandForm = PartyUtil.getHome().getGetGenderChoicesForm();
+                
+                commandForm.setDefaultGenderChoice(genderChoice);
+                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                
+                CommandResult commandResult = PartyUtil.getHome().getGenderChoices(userVisitPK, commandForm);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetGenderChoicesResult result = (GetGenderChoicesResult)executionResult.getResult();
+                genderChoices = result.getGenderChoices();
+                
+                if(genderChoice == null) {
+                    genderChoice = genderChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, genderChoices remains null, no default
+            }
+        }
+    }
+    
+    private void setupMoodChoices() {
+        if(moodChoices == null) {
+            try {
+                GetMoodChoicesForm commandForm = PartyUtil.getHome().getGetMoodChoicesForm();
+                
+                commandForm.setDefaultMoodChoice(moodChoice);
+                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                
+                CommandResult commandResult = PartyUtil.getHome().getMoodChoices(userVisitPK, commandForm);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetMoodChoicesResult result = (GetMoodChoicesResult)executionResult.getResult();
+                moodChoices = result.getMoodChoices();
+                
+                if(moodChoice == null) {
+                    moodChoice = moodChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, moodChoices remains null, no default
+            }
+        }
+    }
+    
+    private void setupBirthdayFormatChoices() {
+        if(birthdayFormatChoices == null) {
+            try {
+                GetBirthdayFormatChoicesForm commandForm = PartyUtil.getHome().getGetBirthdayFormatChoicesForm();
+
+                commandForm.setDefaultBirthdayFormatChoice(birthdayFormatChoice);
+                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+                CommandResult commandResult = PartyUtil.getHome().getBirthdayFormatChoices(userVisitPK, commandForm);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetBirthdayFormatChoicesResult result = (GetBirthdayFormatChoicesResult)executionResult.getResult();
+                birthdayFormatChoices = result.getBirthdayFormatChoices();
+
+                if(birthdayFormatChoice == null) {
+                    birthdayFormatChoice = birthdayFormatChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, birthdayFormatChoices remains null, no default
+            }
+        }
+    }
+
+    private void setupBioMimeTypeChoices() {
+        if(bioMimeTypeChoices == null) {
+            try {
+                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                
+                commandForm.setDefaultMimeTypeChoice(bioMimeTypeChoice);
+                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+                
+                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                bioMimeTypeChoices = result.getMimeTypeChoices();
+                
+                if(bioMimeTypeChoice == null) {
+                    bioMimeTypeChoice = bioMimeTypeChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                // failed, bioMimeTypeChoices remains null, no default
+            }
+        }
+    }
+    
+    private void setupSignatureMimeTypeChoices() {
+        if(signatureMimeTypeChoices == null) {
+            try {
+                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+                
+                commandForm.setDefaultMimeTypeChoice(signatureMimeTypeChoice);
+                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+                commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+                
+                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                signatureMimeTypeChoices = result.getMimeTypeChoices();
+                
+                if(signatureMimeTypeChoice == null) {
+                    signatureMimeTypeChoice = signatureMimeTypeChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                // failed, signatureMimeTypeChoices remains null, no default
+            }
+        }
+    }
+    
+    public String getPartyName() {
+        return partyName;
+    }
+    
+    public void setPartyName(String partyName) {
+        this.partyName = partyName;
+    }
+    
+    public String getCustomerName() {
+        return customerName;
+    }
+    
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    
+    public String getNickname() {
+        return nickname;
+    }
+    
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+    
+    public List<LabelValueBean> getIconChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupIconChoices();
+        if(iconChoices != null) {
+            choices = convertChoices(iconChoices);
+        }
+        
+        return choices;
+    }
+    
+    public void setIconChoice(String iconChoice) {
+        this.iconChoice = iconChoice;
+    }
+    
+    public String getIconChoice() {
+        setupIconChoices();
+        
+        return iconChoice;
+    }
+    
+    public List<LabelValueBean> getGenderChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupGenderChoices();
+        if(genderChoices != null) {
+            choices = convertChoices(genderChoices);
+        }
+        
+        return choices;
+    }
+    
+    public void setGenderChoice(String genderChoice) {
+        this.genderChoice = genderChoice;
+    }
+    
+    public String getGenderChoice() {
+        setupGenderChoices();
+        
+        return genderChoice;
+    }
+    
+    public List<LabelValueBean> getMoodChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupMoodChoices();
+        if(moodChoices != null) {
+            choices = convertChoices(moodChoices);
+        }
+        
+        return choices;
+    }
+    
+    public void setMoodChoice(String moodChoice) {
+        this.moodChoice = moodChoice;
+    }
+    
+    public String getMoodChoice() {
+        setupMoodChoices();
+        
+        return moodChoice;
+    }
+    
+    public String getBirthday() {
+        return birthday;
+    }
+    
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+    
+    public List<LabelValueBean> getBirthdayFormatChoices() {
+        List<LabelValueBean> choices = null;
+
+        setupBirthdayFormatChoices();
+        if(birthdayFormatChoices != null) {
+            choices = convertChoices(birthdayFormatChoices);
+        }
+
+        return choices;
+    }
+
+    public void setBirthdayFormatChoice(String birthdayFormatChoice) {
+        this.birthdayFormatChoice = birthdayFormatChoice;
+    }
+
+    public String getBirthdayFormatChoice() {
+        setupBirthdayFormatChoices();
+
+        return birthdayFormatChoice;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+    
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+    
+    public String getHobbies() {
+        return hobbies;
+    }
+    
+    public void setHobbies(String hobbies) {
+        this.hobbies = hobbies;
+    }
+    
+    public String getLocation() {
+        return location;
+    }
+    
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    
+    public List<LabelValueBean> getBioMimeTypeChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupBioMimeTypeChoices();
+        if(bioMimeTypeChoices != null) {
+            choices = convertChoices(bioMimeTypeChoices);
+        }
+        
+        return choices;
+    }
+    
+    public void setBioMimeTypeChoice(String bioMimeTypeChoice) {
+        this.bioMimeTypeChoice = bioMimeTypeChoice;
+    }
+    
+    public String getBioMimeTypeChoice() {
+        setupBioMimeTypeChoices();
+        
+        return bioMimeTypeChoice;
+    }
+    
+    public String getBio() {
+        return bio;
+    }
+    
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+    
+    public List<LabelValueBean> getSignatureMimeTypeChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupSignatureMimeTypeChoices();
+        if(signatureMimeTypeChoices != null) {
+            choices = convertChoices(signatureMimeTypeChoices);
+        }
+        
+        return choices;
+    }
+    
+    public void setSignatureMimeTypeChoice(String signatureMimeTypeChoice) {
+        this.signatureMimeTypeChoice = signatureMimeTypeChoice;
+    }
+    
+    public String getSignatureMimeTypeChoice() {
+        setupSignatureMimeTypeChoices();
+        
+        return signatureMimeTypeChoice;
+    }
+    
+    public String getSignature() {
+        return signature;
+    }
+    
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+    
+    @Override
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        super.reset(mapping, request);
+    }
+    
+}

@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="echothree.ear" default="compile" basedir=".">
+
+    <!-- The component root directory of the workspace -->
+    <property name="dir.home" value=".." />
+    <!-- where all application jars are stored -->
+    <property name="dir.lib" value="${dir.home}/lib" />
+    <property name="dir.build.lib" value="${dir.home}/build/lib" />
+    <!-- where all application src is stored -->
+    <property name="dir.src" value="." />
+
+    <property file="${dir.home}/environment.properties" />
+    <property file="${dir.home}/build.properties" />
+
+    <patternset id="server.metadata" >
+        <include name="${server.metadata.include.1}" />
+        <include name="${server.metadata.include.2}" />
+        <include name="${server.metadata.include.3}" />
+        <include name="${server.metadata.include.4}" />
+        <include name="${server.metadata.include.5}" />
+        <include name="${server.metadata.include.6}" />
+        <include name="${server.metadata.include.7}" />
+        <include name="${server.metadata.include.8}" />
+        <include name="${server.metadata.include.9}" />
+        <include name="${server.metadata.include.10}" />
+
+        <exclude name="${server.metadata.exclude.1}" />
+        <exclude name="${server.metadata.exclude.2}" />
+        <exclude name="${server.metadata.exclude.3}" />
+        <exclude name="${server.metadata.exclude.4}" />
+        <exclude name="${server.metadata.exclude.5}" />
+        <exclude name="${server.metadata.exclude.6}" />
+        <exclude name="${server.metadata.exclude.7}" />
+        <exclude name="${server.metadata.exclude.8}" />
+        <exclude name="${server.metadata.exclude.9}" />
+        <exclude name="${server.metadata.exclude.10}" />
+    </patternset>
+
+    <patternset id="client.metadata" >
+        <include name="${client.metadata.include.1}" />
+        <include name="${client.metadata.include.2}" />
+        <include name="${client.metadata.include.3}" />
+        <include name="${client.metadata.include.4}" />
+        <include name="${client.metadata.include.5}" />
+        <include name="${client.metadata.include.6}" />
+        <include name="${client.metadata.include.7}" />
+        <include name="${client.metadata.include.8}" />
+        <include name="${client.metadata.include.9}" />
+        <include name="${client.metadata.include.10}" />
+
+        <exclude name="${client.metadata.exclude.1}" />
+        <exclude name="${client.metadata.exclude.2}" />
+        <exclude name="${client.metadata.exclude.3}" />
+        <exclude name="${client.metadata.exclude.4}" />
+        <exclude name="${client.metadata.exclude.5}" />
+        <exclude name="${client.metadata.exclude.6}" />
+        <exclude name="${client.metadata.exclude.7}" />
+        <exclude name="${client.metadata.exclude.8}" />
+        <exclude name="${client.metadata.exclude.9}" />
+        <exclude name="${client.metadata.exclude.10}" />
+    </patternset>
+
+    <patternset id="all.properties">
+        <include name="${all.properties.include.1}" />
+        <include name="${all.properties.include.2}" />
+        <include name="${all.properties.include.3}" />
+
+        <exclude name="${all.properties.exclude.1}" />
+        <exclude name="${all.properties.exclude.2}" />
+        <exclude name="${all.properties.exclude.3}" />
+    </patternset>
+
+    <path id="shared.class.path">
+        <fileset dir="${dir.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+
+        <fileset dir="${dir.build.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+
+        <!-- append the external classpath lastly -->
+        <pathelement path="${java.class.path}" />
+    </path>
+
+    <!--////////////////////////////////////////-->
+    <!--//      CREATE THE BUILD DIRECTORY    //-->
+    <!--//      AND GENERATED CODE BUILD DIR  //-->
+    <!--////////////////////////////////////////-->
+
+    <target name="prepare">
+        <mkdir dir="${dir.home}/build" />
+        <mkdir dir="${dir.home}/build/classes" />
+        <mkdir dir="${dir.home}/build/ears" />
+        <mkdir dir="${dir.home}/build/jars" />
+        <mkdir dir="${dir.home}/build/lib" />
+        <mkdir dir="${dir.home}/build/metadata" />
+        <mkdir dir="${dir.home}/build/metadata/client" />
+        <mkdir dir="${dir.home}/build/metadata/client/taglib" />
+        <mkdir dir="${dir.home}/build/metadata/server" />
+        <mkdir dir="${dir.home}/build/metadata/server/META-INF" />
+        <mkdir dir="${dir.home}/generated" />
+        <mkdir dir="${dir.home}/generated/data" />
+        <mkdir dir="${dir.home}/generated/data/java" />
+        <mkdir dir="${dir.home}/generated/form" />
+        <mkdir dir="${dir.home}/generated/form/java" />
+        <mkdir dir="${dir.home}/generated/ivy"/>
+        <mkdir dir="${dir.home}/generated/javadoc"/>
+        <mkdir dir="${dir.home}/generated/pmd"/>
+    </target>
+    
+    <target name="metadata" depends="prepare">
+        <copy todir="${dir.home}/build/metadata/server/META-INF">
+            <fileset dir="metadata/server">
+                <patternset refid="server.metadata" />
+            </fileset>
+        </copy>
+        <copy todir="${dir.home}/build/metadata/client">
+            <fileset dir="metadata/client">
+                <patternset refid="client.metadata" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="persistence_uptodate">
+        <uptodate
+            property="persistence.uptodate"
+            targetfile="${dir.home}/generated/data/java/.flagfile">
+            <srcfiles dir= "${dir.home}/ui/cli/database/src/xml" includes="**/*.xml" />
+        </uptodate>
+    </target>
+
+    <target name="persistence" unless="persistence.uptodate" depends="prepare">
+        <ant dir="${dir.home}/ui/cli/database" target="GenerateJava" />
+        <touch file="${dir.home}/generated/data/java/.flagfile" />
+    </target>
+
+    <target name="form_uptodate">
+        <uptodate
+            property="form.uptodate"
+            targetfile="${dir.home}/generated/form/java/.flagfile">
+            <srcfiles dir= "${dir.home}/src/java/com/echothree/control/user" includes="**/*Edit.java" />
+            <srcfiles dir= "${dir.home}/src/java/com/echothree/control/user" includes="**/*Form.java" />
+            <srcfiles dir= "${dir.home}/src/java/com/echothree/control/user" includes="**/*Spec.java" />
+            <srcfiles dir= "${dir.home}/src/java/com/echothree/control/user" includes="**/*Result.java" />
+        </uptodate>
+    </target>
+
+    <target name="form" unless="form.uptodate" depends="prepare">
+        <ant dir="${dir.home}/ui/cli/form" target="Generate" />
+        <touch file="${dir.home}/generated/form/java/.flagfile" />
+    </target>
+
+    <target name="generated_persistence" depends="persistence_uptodate,persistence" />
+
+    <target name="generated_form" depends="form_uptodate,form" />
+
+    <target name="generated" depends="prepare">
+        <parallel>
+            <ant target="generated_persistence"/>
+            <ant target="generated_form"/>
+        </parallel>
+    </target>
+
+    <target name="compile" depends="generated">
+        <javac
+            compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
+            debug="on"
+            source="1.8"
+            target="1.8"
+            srcdir="${dir.home}/generated/data/java:${dir.home}/generated/form/java:java"
+            destdir="${dir.home}/build/classes"
+            includeAntRuntime="false"
+            classpath="${compile.task.classpath}"
+            classpathref="shared.class.path"
+            includes="${compile.task.include}" >
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+            <compilerclasspath>
+                <pathelement location="${dir.home}/build/lib/error_prone_ant.jar"/>
+            </compilerclasspath>
+        </javac>
+        
+        <copy todir="${dir.home}/build/classes">
+            <fileset dir="${component.src.java}">
+                <patternset refid="all.properties" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="server_jar">
+        <manifest file="${dir.home}/build/metadata/server/META-INF/MANIFEST.MF">
+            <attribute name="Dependencies" value="org.infinispan services"/>
+        </manifest>
+        <jar jarfile="${dir.home}/build/jars/echothree-server.jar"
+             manifest="${dir.home}/build/metadata/server/META-INF/MANIFEST.MF">
+            <fileset dir="${dir.home}/build/classes">
+                <include name="com/echothree/control/user/*/common/**/*.class" />
+                <include name="com/echothree/model/control/*/common/**/*.class" />
+                <include name="com/echothree/model/data/*/common/**/*.class" />
+                <include name="com/echothree/util/common/**/*.class" />
+                <include name="com/echothree/view/common/**/*.class" />
+                
+                <include name="com/echothree/control/user/*/remote/**/*.class" />
+                <include name="com/echothree/model/control/*/remote/**/*.class" />
+                <include name="com/echothree/model/data/*/remote/**/*.class" />
+                <include name="com/echothree/util/remote/**/*.class" />
+                <include name="com/echothree/view/remote/**/*.class" />
+                
+                <include name="com/echothree/control/user/*/server/**/*.class" />
+                <include name="com/echothree/model/control/*/server/**/*.class" />
+                <include name="com/echothree/service/*/server/**/*.class" />
+                <include name="com/echothree/model/data/*/server/**/*.class" />
+                <include name="com/echothree/util/server/**/*.class" />
+            </fileset>
+            
+            <metainf dir="${dir.home}/build/metadata/server/META-INF">
+                <include name="*.xml" />
+                <include name="*.properties" />
+            </metainf>
+        </jar>
+    </target>  
+
+    <target name="client_jar">
+        <jar jarfile="${dir.home}/build/jars/echothree-client.jar">
+            <fileset dir="${dir.home}/build/classes">
+                <include name="com/echothree/control/user/*/common/**/*.class" />
+                <include name="com/echothree/model/control/*/common/**/*.class" />
+                <include name="com/echothree/model/data/*/common/**/*.class" />
+                <include name="com/echothree/util/common/**/*.class" />
+                <include name="com/echothree/view/common/**/*.class" />
+
+                <include name="com/echothree/control/user/*/remote/**/*.class" />
+                <include name="com/echothree/model/control/*/remote/**/*.class" />
+                <include name="com/echothree/model/data/*/remote/**/*.class" />
+                <include name="com/echothree/util/remote/**/*.class" />
+                <include name="com/echothree/view/remote/**/*.class" />
+
+                <include name="com/echothree/control/user/*/client/**/*.class" />
+                <include name="com/echothree/model/data/*/client/**/*.class" />
+                <include name="com/echothree/util/client/**/*.class" />
+                <include name="com/echothree/view/client/**/*.class" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="jars" depends="compile,metadata">
+        <parallel>
+            <ant target="server_jar"/>
+            <ant target="client_jar"/>
+        </parallel>
+    </target>
+
+    <target name="ear" depends="jars">
+        <ear earfile="${dir.home}/build/ears/echothree.ear" appxml="${dir.home}/build/metadata/server/META-INF/application.xml">
+            <fileset dir="${dir.home}/build/jars">
+                <include name="echothree-server.jar" />
+            </fileset>
+            <fileset dir="${dir.home}/build/lib">
+                <include name="antlr4-runtime.jar" />
+                <include name="commons-codec.jar" />
+                <include name="graphql-java.jar" />
+                <include name="graphql-java-annotations.jar" />
+                <include name="gson.jar" />
+                <include name="guava.jar" />
+                <include name="httpclient.jar" />
+                <include name="httpcore.jar" />
+                <include name="itext.jar" />
+                <include name="jooq.jar"/>
+                <include name="juel-impl.jar"/>
+                <include name="lucene-analyzers-common.jar" />
+                <include name="lucene-analyzers-kuromoji.jar" />
+                <include name="lucene-core.jar" />
+                <include name="lucene-queryparser.jar" />
+                <include name="lucene-suggest.jar" />
+                <include name="nekohtml.jar" />
+                <include name="reactive-streams.jar" />
+                <include name="slf4j-api.jar" />
+                <include name="slf4j-log4j12.jar" />
+                <include name="validation-api.jar" />
+                <include name="xercesImpl.jar" />
+                <include name="xml-apis.jar" />
+            </fileset>
+        </ear>
+    </target>
+  
+    <target name="deploy" depends="ear" >
+        <!-- Copy the ear file to the application server -->        
+        <copy file="${dir.home}/build/ears/echothree.ear" todir="${wildfly.home.deploy}" />
+    </target>
+    
+    <target name="javadoc" depends="generated">
+        <javadoc
+            packagenames="${javadoc.packagenames}"
+            destdir="${dir.home}/generated/javadoc"
+            author="${javadoc.author}"
+            version="${javadoc.version}"
+            use="${javadoc.use}"
+            windowtitle="${javadoc.windowtitle}"
+            doctitle="${javadoc.doctitle}"
+            bottom="${javadoc.bottom}"
+            additionalparam="-J-Xmx4096m -linksource"
+            classpath="${compile.task.classpath}"
+	    classpathref="shared.class.path">
+            
+            <sourcepath>
+                <pathelement path="${dir.home}/generated/data/java"/>
+                <pathelement path="${dir.home}/generated/form/java"/>
+                <pathelement path="java"/>
+            </sourcepath>
+            
+        </javadoc>
+    </target>
+        
+    <path id="pmd.classpath">
+        <fileset dir="${dir.home}/lib/pmd/lib">
+            <include name="*.jar" />
+        </fileset>  
+    </path>         
+                
+    <target name="pmd" depends="generated">
+        <taskdef
+            name="pmd"
+            classname="net.sourceforge.pmd.ant.PMDTask"
+            classpathref="pmd.classpath" />
+
+        <pmd shortFilenames="true">
+            <sourceLanguage name="java" version="1.8" />
+            <ruleset>java-unusedcode</ruleset>
+            <ruleset>java-basic</ruleset>
+            <ruleset>java-imports</ruleset>
+            <formatter
+                type="xml"
+                toFile="${dir.home}/generated/pmd/report.xml">
+<!--
+                <param name="linkPrefix" value="${dir.home}/generated/javadoc/src-html" />
+-->
+            </formatter>
+            <fileset dir="java">
+                <include name="**/*.java" />
+            </fileset>
+<!--
+            <fileset dir="${dir.home}/generated/data/java">
+                <include name="**/*.java" />
+            </fileset>
+-->
+        </pmd>
+        <xslt in="${dir.home}/generated/pmd/report.xml"
+              style="${dir.home}/lib/pmd/etc/xslt/wz-pmd-report.xslt"
+              out="${dir.home}/generated/pmd/index.html"/>
+    </target>
+
+
+    <target name="clean-generated">
+        <echo message="Deleting directory ../build" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="${dir.home}/build">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="clean-build">
+        <echo message="Deleting directory ../generated" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="${dir.home}/generated">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="clean">
+        <parallel>
+            <ant target="clean-generated"/>
+            <ant target="clean-build"/>
+        </parallel>
+    </target>
+
+</project>

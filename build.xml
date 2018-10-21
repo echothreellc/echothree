@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="Echo Three"
+    xmlns:ivy="antlib:org.apache.ivy.ant">
+    
+    <!-- The component root directory of the workspace -->
+    <property name="root.dir.home" value="." />
+    <!-- where all application jars are stored -->
+    <property name="root.dir.lib" value="${root.dir.home}/lib" />
+    <property name="dir.build.metadata.common" value="${root.dir.home}/build/metadata/common" />
+
+    <property name="build.properties.file" value="${dir.build.metadata.common}/echothree-build.properties" />
+    <property name="build.properties.comment" value="Build information for ${ant.project.name}" />
+    
+    <target name="prepare">
+        <mkdir dir="${root.dir.home}/build" />
+        <mkdir dir="${root.dir.home}/build/lib" />
+        <mkdir dir="${root.dir.home}/build/metadata" />
+        <mkdir dir="${root.dir.home}/build/metadata/common" />
+    </target>
+    
+    <target name="build-properties-instance" depends="prepare">
+        <propertyfile file="${build.properties.file}" comment="${build.properties.comment}">
+          <entry key="build.instance" type="int" default="0" operation="+" />
+        </propertyfile>
+    </target>
+    
+    <target name="build-properties" depends="build-properties-instance">
+        <exec executable="svn" outputproperty="subversion.output">
+            <arg line="info" />
+        </exec>
+        
+        <loadresource property="subversion.url">
+            <propertyresource name="subversion.output" />
+            <filterchain>
+                <linecontainsregexp>
+                    <regexp pattern="^URL:" />
+                </linecontainsregexp>
+                <tokenfilter>
+                    <replaceregex pattern="^URL: (.*)$" replace="\1" flags="g"/>
+                </tokenfilter>
+                <striplinebreaks />
+            </filterchain>
+        </loadresource>
+        <loadresource property="subversion.revision">
+            <propertyresource name="subversion.output" />
+            <filterchain>
+                <linecontainsregexp>
+                    <regexp pattern="^Revision:" />
+                </linecontainsregexp>
+                <tokenfilter>
+                    <replaceregex pattern="^Revision: (.*)$" replace="\1" flags="g"/>
+                </tokenfilter>
+                <striplinebreaks />
+            </filterchain>
+        </loadresource>
+        
+        <propertyfile file="${build.properties.file}" comment="${build.properties.comment}">
+          <entry key="subversion.url" value="${subversion.url}" />
+          <entry key="subversion.revision" value="${subversion.revision}" />
+          <entry key="build.time" type="date" value="now" pattern="MM/dd/yy hh:mm:ss aa Z" />
+          <entry key="build.user" value="${user.name}" />
+        </propertyfile>
+    </target>
+    
+    <target name="setup-ivy-uptodate">
+        <uptodate
+            property="com.echothree.uptodate.ivy"
+            targetfile="${user.home}/.ant/lib/ivy.jar">
+            <srcfiles dir= "${root.dir.lib}/apache-ivy" includes="ivy.jar" />
+        </uptodate>
+    </target>
+
+    <target name="setup-ivy-copy" unless="com.echothree.uptodate.ivy">
+        <copy todir="${user.home}/.ant/lib">
+            <fileset dir="${root.dir.lib}/apache-ivy">
+                <include name="ivy.jar"/>
+            </fileset>
+        </copy>
+    </target>
+    
+    <target name="setup-ivy" depends="setup-ivy-uptodate,setup-ivy-copy" />
+    
+    <target name="uptodate-ivy-lib">
+        <uptodate
+            property="com.echothree.uptodate.ivy-lib"
+            srcfile="ivy.xml"
+            targetfile="build/lib/.flagfile" />
+    </target>
+
+    <target name="retrieve-ivy-lib" unless="com.echothree.uptodate.ivy-lib" depends="prepare">
+        <ivy:retrieve conf="sources" pattern="build/lib-sources/[artifact](-[classifier]).[ext]" />
+        <ivy:retrieve conf="javadoc" pattern="build/lib-javadoc/[artifact](-[classifier]).[ext]" />
+        <ivy:retrieve conf="binaries" pattern="build/lib/[artifact](-[classifier]).[ext]" />
+        <touch file="build/lib/.flagfile" />
+    </target>
+
+    <target name="ivy-lib" depends="uptodate-ivy-lib,retrieve-ivy-lib" />
+
+    <target name="ivy-report">
+        <ivy:resolve conf="binaries" />
+        <ivy:report todir="generated/ivy" />
+    </target>
+    
+    <target name="compile" depends="build-properties,setup-ivy,ivy-lib">
+        <ant dir="src" target="jars"/>
+        <parallel>
+            <ant dir="service" target="compile"/>
+            <ant dir="test" target="compile"/>
+            <ant dir="ui" target="compile"/>
+        </parallel>
+    </target>
+    
+    <target name="javadoc" depends="build-properties,setup-ivy,ivy-lib">
+        <ant dir="src" target="javadoc"/>
+    </target>
+    
+    <target name="pmd" depends="build-properties,setup-ivy,ivy-lib">
+        <ant dir="src" target="pmd"/>
+    </target>
+
+    <target name="deploy" depends="build-properties,setup-ivy,ivy-lib">
+        <ant dir="src" target="deploy"/>
+        <parallel>
+            <ant dir="service" target="deploy"/>
+            <ant dir="ui" target="deploy"/>
+        </parallel>
+    </target>
+    
+    <target name="clean">
+        <ant dir="src" target="clean"/>
+        <ant dir="service" target="clean"/>
+        <ant dir="test" target="clean"/>
+        <ant dir="ui" target="clean"/>
+    </target>
+    
+    <target name="compile-test" depends="build-properties,setup-ivy,ivy-lib">
+        <ant dir="test" target="compile"/>
+    </target>
+    
+    <target name="test" depends="build-properties,setup-ivy,ivy-lib">
+        <ant dir="test" target="test"/>
+    </target>
+    
+    <target name="complete">
+        <ant target="clean"/>
+        <ant target="compile"/>
+        <ant target="deploy"/>
+        <parallel>
+            <ant target="javadoc"/>
+            <ant target="pmd"/>
+            <ant target="ivy-report"/>
+        </parallel>
+    </target>
+    
+    <target name="setup" depends="build-properties,setup-ivy" />
+    
+</project>
+

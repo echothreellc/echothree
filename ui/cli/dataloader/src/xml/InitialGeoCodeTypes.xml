@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <geoCodeTypes>
+        <geoCodeType geoCodeTypeName="ROOT" isDefault="false" sortOrder="0">
+            <geoCodeTypeDescription languageIsoName="en" description="Root Geographic Entity" />
+        </geoCodeType>
+        <geoCodeType geoCodeTypeName="COUNTRY" parentGeoCodeTypeName="ROOT" isDefault="true" sortOrder="0">
+            <geoCodeTypeDescription languageIsoName="en" description="Country" />
+            <geoCodeAliasType geoCodeAliasTypeName="COUNTRY_NAME" isRequired="true" isDefault="true" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="Country Name" />
+            </geoCodeAliasType>
+            <geoCodeAliasType geoCodeAliasTypeName="ISO_3_NUMBER" isRequired="true" validationPattern="^[0-9][0-9][0-9]$" isDefault="false" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="ISO 3 Number Code" />
+            </geoCodeAliasType>
+            <geoCodeAliasType geoCodeAliasTypeName="ISO_3_LETTER" isRequired="true" validationPattern="^[A-Z][A-Z][A-Z]$" isDefault="false" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="ISO 3 Letter Code" />
+            </geoCodeAliasType>
+            <geoCodeAliasType geoCodeAliasTypeName="ISO_2_LETTER" isRequired="true" validationPattern="^[A-Z][A-Z]$" isDefault="false" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="ISO 2 Letter Code" />
+            </geoCodeAliasType>
+        </geoCodeType>
+        <geoCodeType geoCodeTypeName="STATE" parentGeoCodeTypeName="COUNTRY" isDefault="false" sortOrder="0">
+            <geoCodeTypeDescription languageIsoName="en" description="State or Province" />
+            <geoCodeAliasType geoCodeAliasTypeName="STATE_NAME" isRequired="true" isDefault="true" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="State Name" />
+            </geoCodeAliasType>
+            <geoCodeAliasType geoCodeAliasTypeName="POSTAL_2_LETTER" isRequired="true" validationPattern="^[A-Z][A-Z]$" isDefault="false" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="Postal 2 Letter Code" />
+            </geoCodeAliasType>
+        </geoCodeType>
+        <geoCodeType geoCodeTypeName="COUNTY" parentGeoCodeTypeName="STATE" isDefault="false" sortOrder="0">
+            <geoCodeTypeDescription languageIsoName="en" description="County" />
+            <geoCodeAliasType geoCodeAliasTypeName="COUNTY_NAME" isRequired="true" isDefault="true" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="County Name" />
+            </geoCodeAliasType>
+            <geoCodeAliasType geoCodeAliasTypeName="COUNTY_NUMBER" isRequired="true" validationPattern="^([0-9]+)$" isDefault="false" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="County Number" />
+            </geoCodeAliasType>
+        </geoCodeType>
+        <geoCodeType geoCodeTypeName="CITY" parentGeoCodeTypeName="STATE" isDefault="false" sortOrder="0">
+            <geoCodeTypeDescription languageIsoName="en" description="City" />
+            <geoCodeAliasType geoCodeAliasTypeName="CITY_NAME" isRequired="true" isDefault="true" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="City Name" />
+            </geoCodeAliasType>
+        </geoCodeType>
+        <geoCodeType geoCodeTypeName="ZIP_CODE" parentGeoCodeTypeName="COUNTRY" isDefault="false" sortOrder="0">
+            <geoCodeTypeDescription languageIsoName="en" description="Zip Code or Postal Code" />
+            <geoCodeAliasType geoCodeAliasTypeName="ZIP_CODE" isRequired="true" isDefault="true" sortOrder="0">
+                <geoCodeAliasTypeDescription languageIsoName="en" description="Zip Code" />
+            </geoCodeAliasType>
+        </geoCodeType>
+    </geoCodeTypes>
+</initialData>

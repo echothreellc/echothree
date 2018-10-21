@@ -1,0 +1,182 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.contactlist.server.command;
+
+import com.echothree.control.user.contactlist.remote.edit.ContactListEditFactory;
+import com.echothree.control.user.contactlist.remote.edit.PartyContactListEdit;
+import com.echothree.control.user.contactlist.remote.form.EditPartyContactListForm;
+import com.echothree.control.user.contactlist.remote.result.ContactListResultFactory;
+import com.echothree.control.user.contactlist.remote.result.EditPartyContactListResult;
+import com.echothree.control.user.contactlist.remote.spec.PartyContactListSpec;
+import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
+import com.echothree.model.data.contactlist.server.entity.ContactList;
+import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
+import com.echothree.model.data.contactlist.server.entity.PartyContactList;
+import com.echothree.model.data.contactlist.server.entity.PartyContactListDetail;
+import com.echothree.model.data.contactlist.server.value.PartyContactListDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditPartyContactListCommand
+        extends BaseAbstractEditCommand<PartyContactListSpec, PartyContactListEdit, EditPartyContactListResult, PartyContactList, PartyContactList> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyContactList.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("PreferredContactMechanismPurposeName", FieldType.ENTITY_NAME, false, null, null)
+                ));
+    }
+
+    /** Creates a new instance of EditContactListCommand */
+    public EditPartyContactListCommand(UserVisitPK userVisitPK, EditPartyContactListForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    public EditPartyContactListResult getResult() {
+        return ContactListResultFactory.getEditPartyContactListResult();
+    }
+
+    @Override
+    public PartyContactListEdit getEdit() {
+        return ContactListEditFactory.getPartyContactListEdit();
+    }
+
+    ContactList contactList;
+    
+    @Override
+    public PartyContactList getEntity(EditPartyContactListResult result) {
+        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        PartyContactList partyContactList = null;
+        String partyName = spec.getPartyName();
+        Party party = partyControl.getPartyByName(partyName);
+        
+        if(party != null) {
+            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            String contactListName = spec.getContactListName();
+            
+            contactList = contactListControl.getContactListByName(contactListName);
+            
+            if(contactList != null) {
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                    partyContactList = contactListControl.getPartyContactList(party, contactList);
+                } else { // EditMode.UPDATE
+                    partyContactList = contactListControl.getPartyContactListForUpdate(party, contactList);
+                }
+
+                if(partyContactList == null) {
+                    addExecutionError(ExecutionErrors.UnknownPartyContactList.name(), partyName, contactListName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownContactListName.name(), contactListName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
+        }
+
+        return partyContactList;
+    }
+
+    @Override
+    public PartyContactList getLockEntity(PartyContactList partyContactList) {
+        return partyContactList;
+    }
+
+    @Override
+    public void fillInResult(EditPartyContactListResult result, PartyContactList partyContactList) {
+        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+
+        result.setPartyContactList(contactListControl.getPartyContactListTransfer(getUserVisit(), partyContactList));
+    }
+
+    ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose;
+    
+    @Override
+    public void doLock(PartyContactListEdit edit, PartyContactList partyContactList) {
+        PartyContactListDetail partyContactListDetail = partyContactList.getLastDetail();
+        
+        preferredContactListContactMechanismPurpose = partyContactListDetail.getPreferredContactListContactMechanismPurpose();
+        
+        edit.setPreferredContactMechanismPurposeName(preferredContactListContactMechanismPurpose == null ? null : preferredContactListContactMechanismPurpose.getLastDetail().getContactMechanismPurpose().getContactMechanismPurposeName());
+    }
+
+    @Override
+    public void canUpdate(PartyContactList partyContactList) {
+        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        String preferredContactMechanismPurposeName = edit.getPreferredContactMechanismPurposeName();
+        ContactMechanismPurpose preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
+
+        if(preferredContactMechanismPurposeName == null || preferredContactMechanismPurpose != null) {
+            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            
+            preferredContactListContactMechanismPurpose = preferredContactMechanismPurpose == null ? null : contactListControl.getContactListContactMechanismPurpose(contactList, preferredContactMechanismPurpose);
+
+            if(preferredContactMechanismPurpose != null && preferredContactListContactMechanismPurpose == null) {
+                addExecutionError(ExecutionErrors.UnknownContactListContactMechanismPurpose.name(), contactList.getLastDetail().getContactListName(),
+                        preferredContactMechanismPurposeName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownContactMechanismPurposeName.name(), preferredContactMechanismPurposeName);
+        }
+    }
+
+    @Override
+    public void doUpdate(PartyContactList partyContactList) {
+        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        PartyPK partyPK = getPartyPK();
+        PartyContactListDetailValue partyContactListDetailValue = contactListControl.getPartyContactListDetailValueForUpdate(partyContactList);
+
+        partyContactListDetailValue.setPreferredContactListContactMechanismPurposePK(preferredContactListContactMechanismPurpose == null ? null : preferredContactListContactMechanismPurpose.getPrimaryKey());
+
+        contactListControl.updatePartyContactListFromValue(partyContactListDetailValue, partyPK);
+    }
+
+}

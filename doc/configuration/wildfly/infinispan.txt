@@ -1,0 +1,14 @@
+            <cache-container name="EchoThree">
+                <transport/>
+                <replicated-cache name="Cms">
+                    <transaction locking="OPTIMISTIC" mode="FULL_XA"/>
+                    <object-memory size="5242880"/>
+                </replicated-cache>
+                <replicated-cache name="Data">
+                    <transaction locking="OPTIMISTIC" mode="FULL_XA"/>
+                    <object-memory size="5242880"/>
+                </replicated-cache>
+                <replicated-cache name="Security">
+                    <transaction locking="OPTIMISTIC" mode="FULL_XA"/>
+                </replicated-cache>
+            </cache-container>

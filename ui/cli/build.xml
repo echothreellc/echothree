@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="Utilities">
+    
+    <target name="compile">
+        <parallel>
+            <ant dir="amazon" target="compile"/>
+            <ant dir="database" target="compile"/>
+            <ant dir="dataloader" target="compile"/>
+            <ant dir="form" target="compile"/>
+            <ant dir="logging" target="compile"/>
+            <ant dir="mailtransfer" target="compile"/>
+        </parallel>
+    </target>
+    
+    <target name="clean">
+        <parallel>
+            <ant dir="amazon" target="clean"/>
+            <ant dir="database" target="clean"/>
+            <ant dir="dataloader" target="clean"/>
+            <ant dir="form" target="clean"/>
+            <ant dir="logging" target="clean"/>
+            <ant dir="mailtransfer" target="clean"/>
+        </parallel>
+    </target>
+        
+</project>
+

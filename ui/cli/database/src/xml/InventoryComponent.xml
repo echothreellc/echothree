@@ -1,0 +1,888 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Inventory">
+            <tables>
+                <table namePlural="InventoryLocationGroups" nameSingular="InventoryLocationGroup" columnPrefix="invlocgrp">
+                    <columns>
+                        <column name="InventoryLocationGroupId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryLocationGroupDetails" destinationColumn="InventoryLocationGroupDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryLocationGroupDetails" destinationColumn="InventoryLocationGroupDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationGroupId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLocationGroupDetails" nameSingular="InventoryLocationGroupDetail" columnPrefix="invlocgrpdt">
+                    <columns>
+                        <column name="InventoryLocationGroupDetailId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLocationGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLocationGroups" destinationColumn="InventoryLocationGroupId" />
+                        <column name="WarehousePartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="InventoryLocationGroupName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationGroupDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryLocationGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WarehousePartyId" />
+                            <indexColumn name="InventoryLocationGroupName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WarehousePartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="WarehousePartyId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLocationGroupDescriptions" nameSingular="InventoryLocationGroupDescription" columnPrefix="invlocgrpd">
+                    <columns>
+                        <column name="InventoryLocationGroupDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLocationGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLocationGroups" destinationColumn="InventoryLocationGroupId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationGroupDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryLocationGroupId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="InventoryLocationGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLocationGroupVolumes" nameSingular="InventoryLocationGroupVolume" columnPrefix="invlocgrpvol">
+                    <columns>
+                        <column name="InventoryLocationGroupVolumeId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLocationGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLocationGroups" destinationColumn="InventoryLocationGroupId"/>
+                        <column name="Height" type="Measurement" nullAllowed="false" />
+                        <column name="Width" type="Measurement" nullAllowed="false" />
+                        <column name="Depth" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationGroupVolumeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryLocationGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLocationGroupCapacities" nameSingular="InventoryLocationGroupCapacity" columnPrefix="invlocgrpcap">
+                    <columns>
+                        <column name="InventoryLocationGroupCapacityId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLocationGroupId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLocationGroups" destinationColumn="InventoryLocationGroupId"/>
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Capacity" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationGroupCapacityId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryLocationGroupId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="InventoryLocationGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryConditions" nameSingular="InventoryCondition" columnPrefix="invcon">
+                    <columns>
+                        <column name="InventoryConditionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryConditionDetails" destinationColumn="InventoryConditionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryConditionDetails" destinationColumn="InventoryConditionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryConditionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryConditionDetails" nameSingular="InventoryConditionDetail" columnPrefix="invcondt">
+                    <columns>
+                        <column name="InventoryConditionDetailId" type="EID" nullAllowed="false" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="InventoryConditionName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryConditionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="InventoryConditionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryConditionDescriptions" nameSingular="InventoryConditionDescription" columnPrefix="invcond">
+                    <columns>
+                        <column name="InventoryConditionDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryConditionDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryConditionUseTypes" nameSingular="InventoryConditionUseType" columnPrefix="invconut">
+                    <columns>
+                        <column name="InventoryConditionUseTypeId" type="EID" nullAllowed="false" />
+                        <column name="InventoryConditionUseTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryConditionUseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="InventoryConditionUseTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryConditionUseTypeDescriptions" nameSingular="InventoryConditionUseTypeDescription" columnPrefix="invconutd">
+                    <columns>
+                        <column name="InventoryConditionUseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="InventoryConditionUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditionUseTypes" destinationColumn="InventoryConditionUseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryConditionUseTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryConditionUseTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryConditionUses" nameSingular="InventoryConditionUse" columnPrefix="invconu">
+                    <columns>
+                        <column name="InventoryConditionUseId" type="EID" nullAllowed="false" />
+                        <column name="InventoryConditionUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditionUseTypes" destinationColumn="InventoryConditionUseTypeId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryConditionUseId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryConditionUseTypeId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="InventoryConditionUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InventoryConditionUseTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryConditionGlAccounts" nameSingular="InventoryConditionGlAccount" columnPrefix="invcongla">
+                    <columns>
+                        <column name="InventoryConditionGlAccountId" type="EID" nullAllowed="false" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="ItemAccountingCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAccountingCategories" destinationColumn="ItemAccountingCategoryId" />
+                        <column name="InventoryGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="SalesGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="ReturnsGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="CogsGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="ReturnsCogsGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryConditionGlAccountId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ItemAccountingCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemAccountingCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SalesGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ReturnsGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="CogsGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ReturnsCogsGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotTypes" nameSingular="LotType" columnPrefix="lttyp">
+                    <columns>
+                        <column name="LotTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotTypeDetails" destinationColumn="LotTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotTypeDetails" destinationColumn="LotTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotTypeDetails" nameSingular="LotTypeDetail" columnPrefix="lttypdt">
+                    <columns>
+                        <column name="LotTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="LotTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotTypes" destinationColumn="LotTypeId" />
+                        <column name="LotTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentLotTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotTypes" destinationColumn="LotTypeId" />
+                        <column name="LotSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="LotWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="LotWorkflowEntranceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LotTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentLotTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="LotSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="LotWorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="LotWorkflowEntranceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotTypeDescriptions" nameSingular="LotTypeDescription" columnPrefix="lttypd">
+                    <columns>
+                        <column name="LotTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="LotTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotTypes" destinationColumn="LotTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotTimeTypes" nameSingular="LotTimeType" columnPrefix="lttimtyp">
+                    <columns>
+                        <column name="LotTimeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotTimeTypeDetails" destinationColumn="LotTimeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotTimeTypeDetails" destinationColumn="LotTimeTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotTimeTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotTimeTypeDetails" nameSingular="LotTimeTypeDetail" columnPrefix="lttimtypdt">
+                    <columns>
+                        <column name="LotTimeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="LotTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotTimeTypes" destinationColumn="LotTimeTypeId" />
+                        <column name="LotTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotTypes" destinationColumn="LotTypeId" />
+                        <column name="LotTimeTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotTimeTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LotTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="LotTimeTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotTimeTypeDescriptions" nameSingular="LotTimeTypeDescription" columnPrefix="lttimtypd">
+                    <columns>
+                        <column name="LotTimeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="LotTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotTimeTypes" destinationColumn="LotTimeTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotTimeTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LotTimeTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LotTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotAliasTypes" nameSingular="LotAliasType" columnPrefix="ltaltyp">
+                    <columns>
+                        <column name="LotAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotAliasTypeDetails" destinationColumn="LotAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotAliasTypeDetails" destinationColumn="LotAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotAliasTypeDetails" nameSingular="LotAliasTypeDetail" columnPrefix="ltaltypdt">
+                    <columns>
+                        <column name="LotAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="LotAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotAliasTypes" destinationColumn="LotAliasTypeId" />
+                        <column name="LotTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotTypes" destinationColumn="LotTypeId" />
+                        <column name="LotAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LotAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="LotAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotAliasTypeDescriptions" nameSingular="LotAliasTypeDescription" columnPrefix="ltaltypd">
+                    <columns>
+                        <column name="LotAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="LotAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotAliasTypes" destinationColumn="LotAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LotAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LotAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotAliases" nameSingular="LotAlias" columnPrefix="ltal">
+                    <columns>
+                        <column name="LotAliasId" type="EID" nullAllowed="false" />
+                        <column name="LotId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Lots" destinationColumn="LotId" />
+                        <column name="LotAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotAliasTypes" destinationColumn="LotAliasTypeId" />
+                        <column name="Alias" type="LotAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotAliasId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="LotId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LotAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="LotAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="Alias" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Lots" nameSingular="Lot" columnPrefix="lt">
+                    <columns>
+                        <column name="LotId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotDetails" destinationColumn="LotDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LotDetails" destinationColumn="LotDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotDetails" nameSingular="LotDetail" columnPrefix="ltdt">
+                    <columns>
+                        <column name="LotDetailId" type="EID" nullAllowed="false" />
+                        <column name="LotId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Lots" destinationColumn="LotId" />
+                        <column name="LotTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotTypes" destinationColumn="LotTypeId" />
+                        <column name="LotName" type="Name" nullAllowed="false" />
+                        <column name="OwnerPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="UnitCost" type="Currency" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LotId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="LotName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LotTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="OwnerPartyId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="OwnerPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LotTimes" nameSingular="LotTime" columnPrefix="lttim">
+                    <columns>
+                        <column name="LotTimeId" type="EID" nullAllowed="false" />
+                        <column name="LotId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Lots" destinationColumn="LotId" />
+                        <column name="LotTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LotTimeTypes" destinationColumn="LotTimeTypeId" />
+                        <column name="Time" type="Time" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LotTimeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="LotId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LotId" />
+                            <indexColumn name="LotTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LotTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLocationAssignments" nameSingular="InventoryLocationAssignment" columnPrefix="invlocasgn">
+                    <columns>
+                        <column name="InventoryLocationAssignmentId" type="EID" nullAllowed="false" />
+                        <column name="LotId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Lots" destinationColumn="LotId" />
+                        <column name="LocationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Locations" destinationColumn="LocationId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationAssignmentId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LotId" />
+                            <indexColumn name="LocationId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LotId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LocationId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryLocationAssignmentStatuses" nameSingular="InventoryLocationAssignmentStatus" columnPrefix="invlocasgnst">
+                    <columns>
+                        <column name="InventoryLocationAssignmentStatusId" type="EID" nullAllowed="false" />
+                        <column name="InventoryLocationAssignmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryLocationAssignments" destinationColumn="InventoryLocationAssignmentId"/>
+                        <column name="QuantityOnHand" type="Measurement" nullAllowed="false" />
+                        <column name="AvailableToPromise" type="Measurement" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryLocationAssignmentStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="InventoryLocationAssignmentId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyInventoryLevels" nameSingular="PartyInventoryLevel" columnPrefix="parinvlvl">
+                    <columns>
+                        <column name="PartyInventoryLevelId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="MinimumInventory" type="Measurement" nullAllowed="true" />
+                        <column name="MaximumInventory" type="Measurement" nullAllowed="true" />
+                        <column name="ReorderQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyInventoryLevelId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="AllocationPriorities" nameSingular="AllocationPriority" columnPrefix="allocpr">
+                    <columns>
+                        <column name="AllocationPriorityId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="AllocationPriorityDetails" destinationColumn="AllocationPriorityDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="AllocationPriorityDetails" destinationColumn="AllocationPriorityDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="AllocationPriorityId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="AllocationPriorityDetails" nameSingular="AllocationPriorityDetail" columnPrefix="allocprdt">
+                    <columns>
+                        <column name="AllocationPriorityDetailId" type="EID" nullAllowed="false" />
+                        <column name="AllocationPriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="AllocationPriorities" destinationColumn="AllocationPriorityId" />
+                        <column name="AllocationPriorityName" type="Name" nullAllowed="false" />
+                        <column name="Priority" type="Integer" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="AllocationPriorityDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="AllocationPriorityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="AllocationPriorityName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="AllocationPriorityDescriptions" nameSingular="AllocationPriorityDescription" columnPrefix="allocprd">
+                    <columns>
+                        <column name="AllocationPriorityDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="AllocationPriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="AllocationPriorities" destinationColumn="AllocationPriorityId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="AllocationPriorityDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="AllocationPriorityId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="AllocationPriorityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

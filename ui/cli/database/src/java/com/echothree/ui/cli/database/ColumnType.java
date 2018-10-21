@@ -1,0 +1,170 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.cli.database;
+
+public class ColumnType {
+    
+    static final int columnEID = 1;
+    static final int columnInteger = 2;
+    static final int columnLong = 3;
+    static final int columnString = 5;
+    static final int columnBoolean = 6;
+    static final int columnDate = 7;
+    static final int columnTime = 8;
+    static final int columnCLOB = 9;
+    static final int columnBLOB = 10;
+    static final int columnForeignKey = 11;
+    
+    static public String columnTypeToString(int type) {
+        String result = null;
+        switch(type) {
+            case columnEID:
+                result = "EID";
+                break;
+            case columnInteger:
+                result = "Integer";
+                break;
+            case columnLong:
+                result = "Long";
+                break;
+            case columnString:
+                result = "String";
+                break;
+            case columnBoolean:
+                result = "Boolean";
+                break;
+            case columnDate:
+                result = "Date";
+                break;
+            case columnTime:
+                result = "Time";
+                break;
+            case columnCLOB:
+                result = "CLOB";
+                break;
+            case columnBLOB:
+                result = "BLOB";
+                break;
+            case columnForeignKey:
+                result = "ForeignKey";
+                break;
+        }
+        return result;
+    }
+    
+    String type;
+    int realType;
+    boolean hasMaxLength;
+    long maxLength;
+    boolean hasTotalDigits;
+    String description;
+    String destinationTable;
+    String destinationColumn;
+    int onParentDelete;
+    
+    /** Creates new ColumnType */
+    /** Creates a new instance of ColumnType */
+    public ColumnType(String type, String realType, String maxLength, String description, String destinationTable, String destinationColumn,
+            String onParentDelete)
+            throws Exception {
+        
+        this.type = type;
+        if(maxLength != null) {
+            hasMaxLength = true;
+            this.maxLength = Long.parseLong(maxLength);
+        } else {
+            hasMaxLength = false;
+        }
+        this.description = description;
+        this.destinationTable = destinationTable;
+        this.destinationColumn = destinationColumn;
+        
+        if(onParentDelete != null)  {
+            if(onParentDelete.equals("delete"))
+                this.onParentDelete = Column.parentDelete;
+            else if(onParentDelete.equals("setNull"))
+                this.onParentDelete = Column.parentSetNull;
+            else
+                throw new Exception("Illegal onParentDelete \"" + onParentDelete + "\"");
+        } else
+            this.onParentDelete = Column.parentNone;
+        
+        if(realType.equals("EID"))
+            this.realType = columnEID;
+        else if(realType.equals("Integer"))
+            this.realType = columnInteger;
+        else if(realType.equals("Long"))
+            this.realType = columnLong;
+        else if(realType.equals("String")) {
+            this.realType = columnString;
+            if(hasMaxLength == false)
+                throw new Exception("String column type requires length");
+        } else if(realType.equals("Boolean"))
+            this.realType = columnBoolean;
+        else if(realType.equals("Date"))
+            this.realType = columnDate;
+        else if(realType.equals("Time"))
+            this.realType = columnTime;
+        else if(realType.equals("CLOB"))
+            this.realType = columnCLOB;
+        else if(realType.equals("BLOB"))
+            this.realType = columnBLOB;
+        else if(type.equals("ForeignKey")) {
+            this.realType = columnForeignKey;
+            if(destinationTable == null || destinationColumn == null || onParentDelete == null)
+                throw new Exception("Foreign Key missing one or more of destinationTable, destinationColumn or onParentDelete");
+        } else
+            throw new Exception("Illegal column type \"" + realType + "\"");
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public int getRealType() {
+        return realType;
+    }
+    
+    public boolean hasMaxLength() {
+        return hasMaxLength;
+    }
+    
+    public long getMaxLength() {
+        return maxLength;
+    }
+    
+    public boolean hasTotalDigits() {
+        return hasTotalDigits;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public String getDestinationTable() {
+        return destinationTable;
+    }
+    
+    public String getDestinationColumn() {
+        return destinationColumn;
+    }
+    
+    public int getOnParentDelete() {
+        return onParentDelete;
+    }
+    
+}

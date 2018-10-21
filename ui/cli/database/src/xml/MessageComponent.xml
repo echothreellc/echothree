@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Message">
+            <tables>
+                <table namePlural="MessageTypes" nameSingular="MessageType" columnPrefix="mssgtyp">
+                    <columns>
+                        <column name="MessageTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MessageTypeDetails" destinationColumn="MessageTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MessageTypeDetails" destinationColumn="MessageTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MessageTypeDetails" nameSingular="MessageTypeDetail" columnPrefix="mssgtypdt">
+                    <columns>
+                        <column name="MessageTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="MessageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="MessageTypes" destinationColumn="MessageTypeId" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="MessageTypeName" type="Name" nullAllowed="false" />
+                        <column name="MimeTypeUsageTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypeUsageTypes" destinationColumn="MimeTypeUsageTypeId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MessageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="MessageTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="MimeTypeUsageTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MessageTypeDescriptions" nameSingular="MessageTypeDescription" columnPrefix="mssgtypd">
+                    <columns>
+                        <column name="MessageTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="MessageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="MessageTypes" destinationColumn="MessageTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MessageTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Messages" nameSingular="Message" columnPrefix="mssg">
+                    <columns>
+                        <column name="MessageId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MessageDetails" destinationColumn="MessageDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MessageDetails" destinationColumn="MessageDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MessageDetails" nameSingular="MessageDetail" columnPrefix="mssgdt">
+                    <columns>
+                        <column name="MessageDetailId" type="EID" nullAllowed="false" />
+                        <column name="MessageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Messages" destinationColumn="MessageId" />
+                        <column name="MessageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="MessageTypes" destinationColumn="MessageTypeId" />
+                        <column name="MessageName" type="Name" nullAllowed="false" />
+                        <column name="IncludeByDefault" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MessageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="MessageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="MessageTypeId" />
+                            <indexColumn name="MessageName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="MessageTypeId" />
+                            <indexColumn name="IncludeByDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="MessageTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MessageDescriptions" nameSingular="MessageDescription" columnPrefix="mssgd">
+                    <columns>
+                        <column name="MessageDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="MessageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Messages" destinationColumn="MessageId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MessageId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MessageStrings" nameSingular="MessageString" columnPrefix="mssgs">
+                    <columns>
+                        <column name="MessageStringId" type="EID" nullAllowed="false" />
+                        <column name="MessageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Messages" destinationColumn="MessageId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="String" type="String" maxLength="512" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageStringId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MessageId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MessageClobs" nameSingular="MessageClob" columnPrefix="mssgc">
+                    <columns>
+                        <column name="MessageClobId" type="EID" nullAllowed="false" />
+                        <column name="MessageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Messages" destinationColumn="MessageId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="MimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Clob" type="CLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageClobId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MessageId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="MimeTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MessageBlobs" nameSingular="MessageBlob" columnPrefix="mssgb">
+                    <columns>
+                        <column name="MessageBlobId" type="EID" nullAllowed="false" />
+                        <column name="MessageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Messages" destinationColumn="MessageId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="MimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Blob" type="BLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MessageBlobId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MessageId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="MimeTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityMessages" nameSingular="EntityMessage" columnPrefix="emssg">
+                    <columns>
+                        <column name="EntityMessageId" type="EID" nullAllowed="false" />
+                        <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="MessageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Messages" destinationColumn="MessageId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityMessageId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="MessageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="MessageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

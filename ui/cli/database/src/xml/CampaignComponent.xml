@@ -1,0 +1,470 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Campaign">
+            <tables>
+                <table namePlural="Campaigns" nameSingular="Campaign" columnPrefix="cmpgn">
+                    <columns>
+                        <column name="CampaignId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignDetails" destinationColumn="CampaignDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignDetails" destinationColumn="CampaignDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignDetails" nameSingular="CampaignDetail" columnPrefix="cmpgndt">
+                    <columns>
+                        <column name="CampaignDetailId" type="EID" nullAllowed="false" />
+                        <column name="CampaignId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Campaigns" destinationColumn="CampaignId" />
+                        <column name="CampaignName" type="Name" nullAllowed="false" />
+                        <column name="ValueSha1Hash" type="Sha1Hash" nullAllowed="false" />
+                        <column name="Value" type="CLOB" nullAllowed="false" />                        
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CampaignName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ValueSha1Hash" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignDescriptions" nameSingular="CampaignDescription" columnPrefix="cmpgnd">
+                    <columns>
+                        <column name="CampaignDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CampaignId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Campaigns" destinationColumn="CampaignId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CampaignId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignSources" nameSingular="CampaignSource" columnPrefix="cmpgnsrc">
+                    <columns>
+                        <column name="CampaignSourceId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignSourceDetails" destinationColumn="CampaignSourceDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignSourceDetails" destinationColumn="CampaignSourceDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignSourceId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignSourceDetails" nameSingular="CampaignSourceDetail" columnPrefix="cmpgnsrcdt">
+                    <columns>
+                        <column name="CampaignSourceDetailId" type="EID" nullAllowed="false" />
+                        <column name="CampaignSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CampaignSources" destinationColumn="CampaignSourceId" />
+                        <column name="CampaignSourceName" type="Name" nullAllowed="false" />
+                        <column name="ValueSha1Hash" type="Sha1Hash" nullAllowed="false" />
+                        <column name="Value" type="CLOB" nullAllowed="false" />                        
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignSourceDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignSourceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CampaignSourceName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ValueSha1Hash" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignSourceDescriptions" nameSingular="CampaignSourceDescription" columnPrefix="cmpgnsrcd">
+                    <columns>
+                        <column name="CampaignSourceDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CampaignSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CampaignSources" destinationColumn="CampaignSourceId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignSourceDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignSourceId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CampaignSourceId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignMediums" nameSingular="CampaignMedium" columnPrefix="cmpgnmdm">
+                    <columns>
+                        <column name="CampaignMediumId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignMediumDetails" destinationColumn="CampaignMediumDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignMediumDetails" destinationColumn="CampaignMediumDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignMediumId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignMediumDetails" nameSingular="CampaignMediumDetail" columnPrefix="cmpgnmdmdt">
+                    <columns>
+                        <column name="CampaignMediumDetailId" type="EID" nullAllowed="false" />
+                        <column name="CampaignMediumId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CampaignMediums" destinationColumn="CampaignMediumId" />
+                        <column name="CampaignMediumName" type="Name" nullAllowed="false" />
+                        <column name="ValueSha1Hash" type="Sha1Hash" nullAllowed="false" />
+                        <column name="Value" type="CLOB" nullAllowed="false" />                        
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignMediumDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignMediumId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CampaignMediumName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ValueSha1Hash" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignMediumDescriptions" nameSingular="CampaignMediumDescription" columnPrefix="cmpgnmdmd">
+                    <columns>
+                        <column name="CampaignMediumDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CampaignMediumId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CampaignMediums" destinationColumn="CampaignMediumId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignMediumDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignMediumId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CampaignMediumId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignTerms" nameSingular="CampaignTerm" columnPrefix="cmpgntrm">
+                    <columns>
+                        <column name="CampaignTermId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignTermDetails" destinationColumn="CampaignTermDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignTermDetails" destinationColumn="CampaignTermDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignTermId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignTermDetails" nameSingular="CampaignTermDetail" columnPrefix="cmpgntrmdt">
+                    <columns>
+                        <column name="CampaignTermDetailId" type="EID" nullAllowed="false" />
+                        <column name="CampaignTermId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CampaignTerms" destinationColumn="CampaignTermId" />
+                        <column name="CampaignTermName" type="Name" nullAllowed="false" />
+                        <column name="ValueSha1Hash" type="Sha1Hash" nullAllowed="false" />
+                        <column name="Value" type="CLOB" nullAllowed="false" />                        
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignTermDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignTermId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CampaignTermName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ValueSha1Hash" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignTermDescriptions" nameSingular="CampaignTermDescription" columnPrefix="cmpgntrmd">
+                    <columns>
+                        <column name="CampaignTermDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CampaignTermId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CampaignTerms" destinationColumn="CampaignTermId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignTermDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignTermId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CampaignTermId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignContents" nameSingular="CampaignContent" columnPrefix="cmpgncnt">
+                    <columns>
+                        <column name="CampaignContentId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignContentDetails" destinationColumn="CampaignContentDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignContentDetails" destinationColumn="CampaignContentDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignContentId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignContentDetails" nameSingular="CampaignContentDetail" columnPrefix="cmpgncntdt">
+                    <columns>
+                        <column name="CampaignContentDetailId" type="EID" nullAllowed="false" />
+                        <column name="CampaignContentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CampaignContents" destinationColumn="CampaignContentId" />
+                        <column name="CampaignContentName" type="Name" nullAllowed="false" />
+                        <column name="ValueSha1Hash" type="Sha1Hash" nullAllowed="false" />
+                        <column name="Value" type="CLOB" nullAllowed="false" />                        
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignContentDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignContentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CampaignContentName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ValueSha1Hash" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CampaignContentDescriptions" nameSingular="CampaignContentDescription" columnPrefix="cmpgncntd">
+                    <columns>
+                        <column name="CampaignContentDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CampaignContentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CampaignContents" destinationColumn="CampaignContentId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CampaignContentDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CampaignContentId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CampaignContentId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UserVisitCampaigns" nameSingular="UserVisitCampaign" columnPrefix="uviscmpgn">
+                    <columns>
+                        <column name="UserVisitCampaignId" type="EID" nullAllowed="false" />
+                        <column name="UserVisitId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UserVisits" destinationColumn="UserVisitId" />
+                        <column name="UserVisitCampaignSequence" type="Integer" nullAllowed="false" />
+                        <column name="Time" type="Time" nullAllowed="false" />
+                        <column name="CampaignId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Campaigns" destinationColumn="CampaignId" />
+                        <column name="CampaignSourceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignSources" destinationColumn="CampaignSourceId" />
+                        <column name="CampaignMediumId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignMediums" destinationColumn="CampaignMediumId" />
+                        <column name="CampaignTermId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignTerms" destinationColumn="CampaignTermId" />
+                        <column name="CampaignContentId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CampaignContents" destinationColumn="CampaignContentId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UserVisitCampaignId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UserVisitId" />
+                            <indexColumn name="UserVisitCampaignSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CampaignId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CampaignSourceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CampaignMediumId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="CampaignTermId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="CampaignContentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

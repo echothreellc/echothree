@@ -1,0 +1,210 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+/*
+ * Copyright 1999-2004 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.echothree.view.client.web.taglib;
+
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.remote.message.Message;
+import com.echothree.util.remote.message.Messages;
+import java.util.Iterator;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+import org.apache.struts.taglib.TagUtils;
+
+/**
+ * Custom tag that iterates the elements of a message collection.
+ * It defaults to retrieving the messages from <code>Globals.WARNING_KEY</code>,
+ * but if the message attribute is set to true then the messages will be
+ * retrieved from <code>Globals.MESSAGE_KEY</code>. This is an alternative
+ * to the default <code>WarningsTag</code>.
+ *
+ * @since Struts 1.1
+ */
+public class ExecutionWarningsTag
+        extends BaseMessageTag {
+    
+    /**
+     * Iterator of the elements of this warning collection, while we are actually
+     * running.
+     */
+    protected Iterator<Message> iterator = null;
+    
+    /**
+     * Whether or not any warning messages have been processed.
+     */
+    protected boolean processed = false;
+    
+    /**
+     * The message resource key for warnings header.
+     */
+    protected String header = null;
+    
+    /**
+     * The message resource key for warnings footer.
+     */
+    protected String footer = null;
+    
+    public String getHeader() {
+        return (this.header);
+    }
+    
+    public void setHeader(String header) {
+        this.header = header;
+    }
+    
+    public String getFooter() {
+        return (this.footer);
+    }
+    
+    public void setFooter(String footer) {
+        this.footer = footer;
+    }
+    
+    public Messages getMessages(PageContext pageContext, String paramName)
+    throws JspException {
+        Messages messages = new Messages();
+        CommandResult commandResult = (CommandResult)pageContext.findAttribute(paramName);
+        
+        if(commandResult != null) {
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            
+            if(executionResult != null) {
+                Messages pageMessages = executionResult.getExecutionWarnings();
+                
+                if(pageMessages != null) {
+                    messages.add(pageMessages);
+                }
+            }
+        }
+        
+        return messages;
+    }
+    
+    /**
+     * Construct an iterator for the specified collection, and begin
+     * looping through the body once per element.
+     *
+     * @exception JspException if a JSP exception has occurred
+     */
+    @Override
+    public int doStartTag()
+    throws JspException {
+        // Initialize for a new request.
+        processed = false;
+        
+        // Make a local copy of the name attribute that we can modify.
+        Messages messages = getMessages(pageContext, commandResultVar);
+        
+        // Acquire the collection we are going to iterate over
+        this.iterator = messages.get(Messages.EXECUTION_WARNING);
+        
+        // Store the first value and evaluate, or skip the body if none
+        if (!this.iterator.hasNext()) {
+            return SKIP_BODY;
+        }
+        
+        setMessageAttribute(iterator.next());
+        
+        if (header != null && header.length() > 0) {
+            String headerMessage = TagUtils.getInstance().message(pageContext, bundle, locale, header);
+            
+            if (headerMessage != null) {
+                TagUtils.getInstance().write(pageContext, headerMessage);
+            }
+        }
+        
+        // Set the processed variable to true so the
+        // doEndTag() knows processing took place
+        processed = true;
+        
+        return EVAL_BODY_BUFFERED;
+    }
+    
+    /**
+     * Make the next collection element available and loop, or
+     * finish the iterations if there are no more elements.
+     *
+     * @exception JspException if a JSP exception has occurred
+     */
+    @Override
+    public int doAfterBody()
+    throws JspException {
+        // Render the output from this iteration to the output stream
+        if(bodyContent != null) {
+            TagUtils.getInstance().writePrevious(pageContext, bodyContent.getString());
+            bodyContent.clearBody();
+        }
+        
+        // Decide whether to iterate or quit
+        if(iterator.hasNext()) {
+            setMessageAttribute((Message)iterator.next());
+            return EVAL_BODY_BUFFERED;
+        } else {
+            return SKIP_BODY;
+        }
+        
+    }
+    
+    /**
+     * Clean up after processing this enumeration.
+     *
+     * @exception JspException if a JSP exception has occurred
+     */
+    @Override
+    public int doEndTag()
+    throws JspException {
+        if (processed && footer != null && footer.length() > 0) {
+            String footerMessage = TagUtils.getInstance().message(pageContext, bundle, locale, footer);
+            
+            if (footerMessage != null) {
+                TagUtils.getInstance().write(pageContext, footerMessage);
+            }
+        }
+        
+        return EVAL_PAGE;
+    }
+    
+    /**
+     * Release all allocated resources.
+     */
+    @Override
+    public void release() {
+        super.release();
+        
+        iterator = null;
+        processed = false;
+        header = null;
+        footer = null;
+    }
+    
+}

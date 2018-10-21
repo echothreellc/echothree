@@ -1,0 +1,85 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.core.server.transfer;
+
+import com.echothree.model.control.core.common.CoreOptions;
+import com.echothree.model.control.core.remote.transfer.EntityAttributeGroupTransfer;
+import com.echothree.model.control.core.remote.transfer.EntityAttributeTransfer;
+import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
+import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.remote.transfer.MapWrapper;
+import java.util.List;
+import java.util.Set;
+
+public class EntityAttributeGroupTransferCache
+        extends BaseCoreTransferCache<EntityAttributeGroup, EntityAttributeGroupTransfer> {
+    
+    boolean includeEntityAttributes;
+    
+    /** Creates a new instance of EntityAttributeGroupTransferCache */
+    public EntityAttributeGroupTransferCache(UserVisit userVisit, CoreControl coreControl) {
+        super(userVisit, coreControl);
+        
+        Set<String> options = session.getOptions();
+        if(options != null) {
+            includeEntityAttributes = options.contains(CoreOptions.EntityAttributeGroupIncludeEntityAttributes);
+        }
+
+        setIncludeEntityInstance(true);
+    }
+    
+    public EntityAttributeGroupTransfer getEntityAttributeGroupTransfer(EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
+        EntityAttributeGroupTransfer entityAttributeGroupTransfer = get(entityAttributeGroup);
+        
+        if(entityAttributeGroupTransfer == null) {
+            EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+            String entityAttributeGroupName = entityAttributeGroupDetail.getEntityAttributeGroupName();
+            Boolean isDefault = entityAttributeGroupDetail.getIsDefault();
+            Integer sortOrder = entityAttributeGroupDetail.getSortOrder();
+            String description = coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage());
+            
+            entityAttributeGroupTransfer = new EntityAttributeGroupTransfer(entityAttributeGroupName, isDefault, sortOrder, description);
+            if(entityInstance == null) {
+                put(entityAttributeGroup, entityAttributeGroupTransfer);
+            } else {
+                setupEntityInstance(entityAttributeGroup, null, entityAttributeGroupTransfer);
+            }
+            
+            if(includeEntityAttributes) {
+                if(entityInstance != null) {
+                    List<EntityAttributeTransfer> entityAttributeTransfers = coreControl.getEntityAttributeTransfersByEntityAttributeGroupAndEntityType(userVisit,
+                            entityAttributeGroup, entityInstance.getEntityType(), entityInstance);
+                    MapWrapper<EntityAttributeTransfer> mapWrapper = new MapWrapper<>(entityAttributeTransfers.size());
+
+                    entityAttributeTransfers.stream().forEach((entityAttributeTransfer) -> {
+                        mapWrapper.put(entityAttributeTransfer.getEntityAttributeName(), entityAttributeTransfer);
+                    });
+
+                    entityAttributeGroupTransfer.setEntityAttributes(mapWrapper);
+                } else {
+                    getLog().error("entityInstance is null");
+                }
+            }
+        }
+        
+        return entityAttributeGroupTransfer;
+    }
+    
+}

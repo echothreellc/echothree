@@ -1,0 +1,531 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Financial">
+            <tables>
+                <table namePlural="FinancialAccountRoleTypes" nameSingular="FinancialAccountRoleType" columnPrefix="finatyp">
+                    <columns>
+                        <column name="FinancialAccountRoleTypeId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountRoleTypeName" type="Name" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountRoleTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="FinancialAccountRoleTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountRoleTypeDescriptions" nameSingular="FinancialAccountRoleTypeDescription" columnPrefix="finatypd">
+                    <columns>
+                        <column name="FinancialAccountRoleTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountRoleTypes" destinationColumn="FinancialAccountRoleTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountRoleTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountRoleTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountTypes" nameSingular="FinancialAccountType" columnPrefix="fnatyp">
+                    <columns>
+                        <column name="FinancialAccountTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountTypeDetails" destinationColumn="FinancialAccountTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountTypeDetails" destinationColumn="FinancialAccountTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountTypeDetails" nameSingular="FinancialAccountTypeDetail" columnPrefix="fnatypdt">
+                    <columns>
+                        <column name="FinancialAccountTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTypes" destinationColumn="FinancialAccountTypeId" />
+                        <column name="FinancialAccountTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentFinancialAccountTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountTypes" destinationColumn="FinancialAccountTypeId" />
+                        <column name="DefaultGlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="FinancialAccountSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="FinancialAccountTransactionSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="FinancialAccountWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="FinancialAccountWorkflowEntranceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FinancialAccountTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentFinancialAccountTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="DefaultGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="FinancialAccountSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="FinancialAccountTransactionSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="FinancialAccountWorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="FinancialAccountWorkflowEntranceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountTypeDescriptions" nameSingular="FinancialAccountTypeDescription" columnPrefix="fnatypd">
+                    <columns>
+                        <column name="FinancialAccountTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTypes" destinationColumn="FinancialAccountTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountAliasTypes" nameSingular="FinancialAccountAliasType" columnPrefix="finaat">
+                    <columns>
+                        <column name="FinancialAccountAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountAliasTypeDetails" destinationColumn="FinancialAccountAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountAliasTypeDetails" destinationColumn="FinancialAccountAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountAliasTypeDetails" nameSingular="FinancialAccountAliasTypeDetail" columnPrefix="finaatdt">
+                    <columns>
+                        <column name="FinancialAccountAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountAliasTypes" destinationColumn="FinancialAccountAliasTypeId" />
+                        <column name="FinancialAccountTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTypes" destinationColumn="FinancialAccountTypeId" />
+                        <column name="FinancialAccountAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="FinancialAccountAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountAliasTypeDescriptions" nameSingular="FinancialAccountAliasTypeDescription" columnPrefix="finaatd">
+                    <columns>
+                        <column name="FinancialAccountAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountAliasTypes" destinationColumn="FinancialAccountAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FinancialAccountAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountTransactionTypes" nameSingular="FinancialAccountTransactionType" columnPrefix="fnatrxtyp">
+                    <columns>
+                        <column name="FinancialAccountTransactionTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountTransactionTypeDetails" destinationColumn="FinancialAccountTransactionTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountTransactionTypeDetails" destinationColumn="FinancialAccountTransactionTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountTransactionTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountTransactionTypeDetails" nameSingular="FinancialAccountTransactionTypeDetail" columnPrefix="fnatrxtypdt">
+                    <columns>
+                        <column name="FinancialAccountTransactionTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTransactionTypes" destinationColumn="FinancialAccountTransactionTypeId" />
+                        <column name="FinancialAccountTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTypes" destinationColumn="FinancialAccountTypeId" />
+                        <column name="FinancialAccountTransactionTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentFinancialAccountTransactionTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountTransactionTypes" destinationColumn="FinancialAccountTransactionTypeId" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountTransactionTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountTransactionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="FinancialAccountTransactionTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ParentFinancialAccountTransactionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountTransactionTypeDescriptions" nameSingular="FinancialAccountTransactionTypeDescription" columnPrefix="fnatrxtypd">
+                    <columns>
+                        <column name="FinancialAccountTransactionTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTransactionTypes" destinationColumn="FinancialAccountTransactionTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountTransactionTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountTransactionTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FinancialAccountTransactionTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccounts" nameSingular="FinancialAccount" columnPrefix="fina">
+                    <columns>
+                        <column name="FinancialAccountId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountDetails" destinationColumn="FinancialAccountDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountDetails" destinationColumn="FinancialAccountDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountDetails" nameSingular="FinancialAccountDetail" columnPrefix="finadt">
+                    <columns>
+                        <column name="FinancialAccountDetailId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccounts" destinationColumn="FinancialAccountId" />
+                        <column name="FinancialAccountTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTypes" destinationColumn="FinancialAccountTypeId" />
+                        <column name="FinancialAccountName" type="Name" nullAllowed="false" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="Reference" type="Reference" nullAllowed="true" />
+                        <column name="Description" type="Description" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="FinancialAccountName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="FinancialAccountTypeId" />
+                            <indexColumn name="Reference" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountStatuses" nameSingular="FinancialAccountStatus" columnPrefix="finast">
+                    <columns>
+                        <column name="FinancialAccountStatusId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccounts" destinationColumn="FinancialAccountId" />
+                        <column name="ActualBalance" type="Currency" nullAllowed="false" />
+                        <column name="AvailableBalance" type="Currency" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountStatusId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountAliases" nameSingular="FinancialAccountAlias" columnPrefix="finaal">
+                    <columns>
+                        <column name="FinancialAccountAliasId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccounts" destinationColumn="FinancialAccountId" />
+                        <column name="FinancialAccountAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountAliasTypes" destinationColumn="FinancialAccountAliasTypeId" />
+                        <column name="Alias" type="FinancialAccountAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountAliasId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="FinancialAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FinancialAccountAliasTypeId" />
+                            <indexColumn name="Alias" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="FinancialAccountAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountRoles" nameSingular="FinancialAccountRole" columnPrefix="fnar">
+                    <columns>
+                        <column name="FinancialAccountRoleId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccounts" destinationColumn="FinancialAccountId"/>
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId"/>
+                        <column name="FinancialAccountRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountRoleTypes" destinationColumn="FinancialAccountRoleTypeId"/>
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountRoleId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="FinancialAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="FinancialAccountRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="FinancialAccountRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index5">
+                            <indexColumn name="FinancialAccountId" />
+                            <indexColumn name="FinancialAccountRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountTransactions" nameSingular="FinancialAccountTransaction" columnPrefix="finatrx">
+                    <columns>
+                        <column name="FinancialAccountTransactionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountTransactionDetails" destinationColumn="FinancialAccountTransactionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FinancialAccountTransactionDetails" destinationColumn="FinancialAccountTransactionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountTransactionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FinancialAccountTransactionDetails" nameSingular="FinancialAccountTransactionDetail" columnPrefix="finatrxdt">
+                    <columns>
+                        <column name="FinancialAccountTransactionDetailId" type="EID" nullAllowed="false" />
+                        <column name="FinancialAccountTransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTransactions" destinationColumn="FinancialAccountTransactionId" />
+                        <column name="FinancialAccountTransactionName" type="Name" nullAllowed="false" />
+                        <column name="FinancialAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccounts" destinationColumn="FinancialAccountId" />
+                        <column name="FinancialAccountTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FinancialAccountTransactionTypes" destinationColumn="FinancialAccountTransactionTypeId" />
+                        <column name="Amount" type="Currency" nullAllowed="false" />
+                        <column name="Comment" type="Comment" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FinancialAccountTransactionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FinancialAccountTransactionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FinancialAccountTransactionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="FinancialAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="FinancialAccountTransactionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

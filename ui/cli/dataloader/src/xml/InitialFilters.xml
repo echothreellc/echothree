@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <filterAdjustmentSources>
+        <filterAdjustmentSource filterAdjustmentSourceName="CURRENT" isDefault="true" sortOrder="1" allowedForInitialAmount="false">
+            <filterAdjustmentSourceDescription languageIsoName="en" description="Current" />
+        </filterAdjustmentSource>
+        <filterAdjustmentSource filterAdjustmentSourceName="INVENTORY_COST" isDefault="false" sortOrder="1" allowedForInitialAmount="true">
+            <filterAdjustmentSourceDescription languageIsoName="en" description="Inventory Cost" />
+        </filterAdjustmentSource>
+        <filterAdjustmentSource filterAdjustmentSourceName="ITEM_PRICE" isDefault="false" sortOrder="1" allowedForInitialAmount="true">
+            <filterAdjustmentSourceDescription languageIsoName="en" description="Item Price" />
+        </filterAdjustmentSource>
+        <filterAdjustmentSource filterAdjustmentSourceName="PRIMARY_VENDOR_COST" isDefault="false" sortOrder="1" allowedForInitialAmount="true">
+            <filterAdjustmentSourceDescription languageIsoName="en" description="Primary Vendor Cost" />
+        </filterAdjustmentSource>
+        <filterAdjustmentSource filterAdjustmentSourceName="VENDOR_COST" isDefault="false" sortOrder="1" allowedForInitialAmount="true">
+            <filterAdjustmentSourceDescription languageIsoName="en" description="Vendor Cost" />
+        </filterAdjustmentSource>
+        <filterAdjustmentSource filterAdjustmentSourceName="SET_AMOUNT" isDefault="false" sortOrder="1" allowedForInitialAmount="true">
+            <filterAdjustmentSourceDescription languageIsoName="en" description="Set Amount" />
+        </filterAdjustmentSource>
+    </filterAdjustmentSources>
+    <filterAdjustmentTypes>
+        <filterAdjustmentType filterAdjustmentTypeName="AMOUNT" isDefault="false" sortOrder="1">
+            <filterAdjustmentTypeDescription languageIsoName="en" description="Amount" />
+        </filterAdjustmentType>
+        <filterAdjustmentType filterAdjustmentTypeName="FIXED_AMOUNT" isDefault="false" sortOrder="1">
+            <filterAdjustmentTypeDescription languageIsoName="en" description="Fixed Amount" />
+        </filterAdjustmentType>
+        <filterAdjustmentType filterAdjustmentTypeName="PERCENT" isDefault="false" sortOrder="1">
+            <filterAdjustmentTypeDescription languageIsoName="en" description="Percent" />
+        </filterAdjustmentType>
+    </filterAdjustmentTypes>
+    <filterKinds>
+        <filterKind filterKindName="COST" isDefault="true" sortOrder="1">
+            <filterKindDescription languageIsoName="en" description="Cost" />
+            <filterType filterTypeName="VENDOR_ITEM_COST" isDefault="true" sortOrder="1">
+                <filterTypeDescription languageIsoName="en" description="Vendor Item Cost" />
+            </filterType>
+        </filterKind>
+        <filterKind filterKindName="PRICE" isDefault="false" sortOrder="1">
+            <filterKindDescription languageIsoName="en" description="Price" />
+            <filterAdjustment filterAdjustmentName="EXAMPLE_ITEM_PRICE" filterAdjustmentSourceName="ITEM_PRICE" isDefault="true"
+            sortOrder="1">
+                <filterAdjustmentDescription languageIsoName="en" description="Example List Price" />
+            </filterAdjustment>
+            <filterAdjustment filterAdjustmentName="EXAMPLE_5_PERCENT" filterAdjustmentSourceName="CURRENT"
+            filterAdjustmentTypeName="PERCENT" isDefault="true" sortOrder="1">
+                <filterAdjustmentDescription languageIsoName="en" description="Example 5 Percent" />
+                <filterAdjustmentPercent unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" currencyIsoName="USD"
+                percent="5.000" />
+            </filterAdjustment>
+            <filterAdjustment filterAdjustmentName="EXAMPLE_10_PERCENT" filterAdjustmentSourceName="CURRENT"
+            filterAdjustmentTypeName="PERCENT" isDefault="true" sortOrder="1">
+                <filterAdjustmentDescription languageIsoName="en" description="Example 10 Percent" />
+                <filterAdjustmentPercent unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" currencyIsoName="USD"
+                percent="10.000" />
+            </filterAdjustment>
+            <filterAdjustment filterAdjustmentName="EXAMPLE_1_USD_AMOUNT" filterAdjustmentSourceName="CURRENT"
+            filterAdjustmentTypeName="AMOUNT" isDefault="true" sortOrder="1">
+                <filterAdjustmentDescription languageIsoName="en" description="Example $1.00 USD Amount" />
+                <filterAdjustmentAmount unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" currencyIsoName="USD"
+                amount="-1.00" />
+            </filterAdjustment>
+            <filterAdjustment filterAdjustmentName="EXAMPLE_1_USD_FIXED" filterAdjustmentSourceName="CURRENT"
+            filterAdjustmentTypeName="FIXED_AMOUNT" isDefault="true" sortOrder="1">
+                <filterAdjustmentDescription languageIsoName="en" description="Example $1.99 USD Fixed" />
+                <filterAdjustmentFixedAmount unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" currencyIsoName="USD"
+                unitAmount="1.99" />
+            </filterAdjustment>
+            <filterType filterTypeName="CLUB" isDefault="true" sortOrder="1">
+                <filterTypeDescription languageIsoName="en" description="Club" />
+                <filter filterName="EXAMPLE_CLUB_FILTER" initialFilterAdjustmentName="EXAMPLE_10_PERCENT"
+                filterItemSelectorName="ACTIVE_ITEM" isDefault="true" sortOrder="1">
+                    <filterDescription languageIsoName="en" description="Example Club Filter" />
+                </filter>
+            </filterType>
+            <filterType filterTypeName="COUPON" isDefault="false" sortOrder="1">
+                <filterTypeDescription languageIsoName="en" description="Coupon" />
+            </filterType>
+            <filterType filterTypeName="OFFER_ITEM_PRICE" isDefault="false" sortOrder="1">
+                <filterTypeDescription languageIsoName="en" description="Offer Item Price" />
+                <filter filterName="EXAMPLE_OFFER_ITEM_PRICE_FILTER" initialFilterAdjustmentName="EXAMPLE_ITEM_PRICE"
+                filterItemSelectorName="ACTIVE_ITEM" isDefault="true" sortOrder="1">
+                    <filterDescription languageIsoName="en" description="Example Offer Item Price Filter" />
+                    <filterStep filterStepName="EXAMPLE_FILTER_STEP_1">
+                        <filterStepDescription languageIsoName="en" description="Example Offer Item Price Filter Step 1" />
+                        <filterStepElement filterStepElementName="EXAMPLE_FILTER_STEP_1_ELEMENT_1" filterAdjustmentName="EXAMPLE_5_PERCENT">
+                            <filterStepElementDescription languageIsoName="en" description="Example Offer Item Price Filter Step 1 Element 1" />
+                        </filterStepElement>
+                        <filterStepElement filterStepElementName="EXAMPLE_FILTER_STEP_1_ELEMENT_2" filterItemSelectorName="EXAMPLE_FILTER_ITEM" filterAdjustmentName="EXAMPLE_10_PERCENT">
+                            <filterStepElementDescription languageIsoName="en" description="Example Offer Item Price Filter Step 1 Element 2" />
+                        </filterStepElement>
+                    </filterStep>
+                    <filterStep filterStepName="EXAMPLE_FILTER_STEP_2">
+                        <filterStepDescription languageIsoName="en" description="Example Offer Item Price Filter Step 2" />
+                        <filterStepElement filterStepElementName="EXAMPLE_FILTER_STEP_2_ELEMENT_1" filterAdjustmentName="EXAMPLE_1_USD_AMOUNT">
+                            <filterStepElementDescription languageIsoName="en" description="Example Offer Item Price Filter Step 1 Element 1" />
+                        </filterStepElement>
+                    </filterStep>
+                    <filterEntranceStep filterStepName="EXAMPLE_FILTER_STEP_1" />
+                    <filterStepDestination fromFilterStepName="EXAMPLE_FILTER_STEP_1" toFilterStepName="EXAMPLE_FILTER_STEP_2" />
+                </filter>
+            </filterType>
+        </filterKind>
+    </filterKinds>
+</initialData>

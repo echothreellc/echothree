@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <picklistTypes>
+       <picklistType picklistTypeName="TEST_PARENT" isDefault="false" sortOrder="1">
+            <picklistTypeDescription languageIsoName="en" description="Test Parent" />
+        </picklistType>
+       <picklistType picklistTypeName="TEST_CHILD" parentPicklistTypeName="TEST_PARENT" isDefault="false" sortOrder="1">
+            <picklistTypeDescription languageIsoName="en" description="Test Child" />
+            <picklistTimeType picklistTimeTypeName="TEST_TIME_TYPE" isDefault="true" sortOrder="1">
+                <picklistTimeTypeDescription languageIsoName="en" description="Test Time Type" />
+            </picklistTimeType>
+            <picklistAliasType picklistAliasTypeName="TEST_PICKLIST_ALIAS_TYPE" isDefault="true" sortOrder="1">
+                <picklistAliasTypeDescription languageIsoName="en" description="Test Picklist Alias Type" />
+            </picklistAliasType>
+        </picklistType>
+    </picklistTypes>
+</initialData>

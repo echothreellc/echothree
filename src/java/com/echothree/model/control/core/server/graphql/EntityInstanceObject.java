@@ -1,0 +1,128 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.core.server.graphql;
+
+import com.echothree.model.control.core.remote.transfer.EntityLockTransfer;
+import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.EntityLockControl;
+import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.data.core.server.entity.EntityAppearance;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.entity.EntityTime;
+import com.echothree.model.data.core.server.entity.EntityVisit;
+import com.echothree.model.data.user.server.entity.UserSession;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import graphql.annotations.annotationTypes.GraphQLDescription;
+import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.schema.DataFetchingEnvironment;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
+
+@GraphQLDescription("entity instance object")
+@GraphQLName("EntityInstance")
+public class EntityInstanceObject {
+    
+    private final EntityInstance entityInstance; // Always Present
+    
+    public EntityInstanceObject(EntityInstance entityInstance) {
+        this.entityInstance = entityInstance;
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("entity type")
+    @GraphQLNonNull
+    public EntityTypeObject getEntityType() {
+        return new EntityTypeObject(entityInstance.getEntityType());
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("entity unique id")
+    @GraphQLNonNull
+    public Long getEntityUniqueId() {
+        return entityInstance.getEntityUniqueId();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("key")
+    @GraphQLNonNull
+    public String getKey() {
+        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+
+        return coreControl.generateKeyForEntityInstance(entityInstance, false);
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("guid")
+    @GraphQLNonNull
+    public String getGuid() {
+        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+
+        return coreControl.generateGuidForEntityInstance(entityInstance, false);
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("ulid")
+    @GraphQLNonNull
+    public String getUlid() {
+        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+
+        return coreControl.generateUlidForEntityInstance(entityInstance, false);
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("entity time")
+    public EntityTimeObject getEntityTime() {
+        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        EntityTime entityTime = coreControl.getEntityTime(entityInstance);
+        
+        return entityTime == null ? null : new EntityTimeObject(entityTime);
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("entity visit")
+    public EntityVisitObject getEntityVisit(final DataFetchingEnvironment env) {
+        GraphQlContext context = env.getContext();
+        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        UserSession userSession = context.getUserSession();
+        EntityInstance visitingEntityInstance = userSession == null ? null : coreControl.getEntityInstanceByBasePK(userSession.getPartyPK());
+        EntityVisit entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
+        
+        return entityVisit == null ? null : new EntityVisitObject(entityVisit);
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("entity appearance")
+    public EntityAppearanceObject getEntityAppearance() {
+        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        EntityAppearance entityAppearance = coreControl.getEntityAppearance(entityInstance);
+        
+        return entityAppearance == null ? null : new EntityAppearanceObject(entityAppearance);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity lock")
+    public EntityLockObject getEntityLock(final DataFetchingEnvironment env) {
+        GraphQlContext context = env.getContext();
+        EntityLockControl entityLockControl = (EntityLockControl)Session.getModelController(EntityLockControl.class);
+        UserVisit userVisit = context.getUserVisit();
+        EntityLockTransfer entityLockTransfer = entityLockControl.getEntityLockTransferByEntityInstance(userVisit, entityInstance);
+        
+        return entityLockTransfer == null ? null : new EntityLockObject(entityLockTransfer);
+    }
+
+}

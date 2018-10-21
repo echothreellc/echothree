@@ -1,0 +1,187 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.filter.server.command;
+
+import com.echothree.control.user.filter.remote.edit.FilterEditFactory;
+import com.echothree.control.user.filter.remote.edit.FilterTypeEdit;
+import com.echothree.control.user.filter.remote.form.EditFilterTypeForm;
+import com.echothree.control.user.filter.remote.result.EditFilterTypeResult;
+import com.echothree.control.user.filter.remote.result.FilterResultFactory;
+import com.echothree.control.user.filter.remote.spec.FilterTypeSpec;
+import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.model.data.filter.server.entity.FilterKindDetail;
+import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.filter.server.entity.FilterTypeDescription;
+import com.echothree.model.data.filter.server.entity.FilterTypeDetail;
+import com.echothree.model.data.filter.server.value.FilterTypeDescriptionValue;
+import com.echothree.model.data.filter.server.value.FilterTypeDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditFilterTypeCommand
+        extends BaseAbstractEditCommand<FilterTypeSpec, FilterTypeEdit, EditFilterTypeResult, FilterType, FilterType> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.FilterType.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+
+    /** Creates a new instance of EditFilterTypeCommand */
+    public EditFilterTypeCommand(UserVisitPK userVisitPK, EditFilterTypeForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    public EditFilterTypeResult getResult() {
+        return FilterResultFactory.getEditFilterTypeResult();
+    }
+
+    @Override
+    public FilterTypeEdit getEdit() {
+        return FilterEditFactory.getFilterTypeEdit();
+    }
+
+    FilterKind filterKind;
+
+    @Override
+    public FilterType getEntity(EditFilterTypeResult result) {
+        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        FilterType filterType = null;
+        String filterKindName = spec.getFilterKindName();
+
+        filterKind = filterControl.getFilterKindByName(filterKindName);
+
+        if(filterKind != null) {
+            String filterTypeName = spec.getFilterTypeName();
+
+            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+            } else { // EditMode.UPDATE
+                filterType = filterControl.getFilterTypeByNameForUpdate(filterKind, filterTypeName);
+            }
+
+            if(filterType == null) {
+                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterKindName, filterTypeName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+        }
+
+        return filterType;
+    }
+
+    @Override
+    public FilterType getLockEntity(FilterType filterType) {
+        return filterType;
+    }
+
+    @Override
+    public void fillInResult(EditFilterTypeResult result, FilterType filterType) {
+        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+
+        result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));
+    }
+
+    @Override
+    public void doLock(FilterTypeEdit edit, FilterType filterType) {
+        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        FilterTypeDescription filterTypeDescription = filterControl.getFilterTypeDescription(filterType, getPreferredLanguage());
+        FilterTypeDetail filterTypeDetail = filterType.getLastDetail();
+
+        edit.setFilterTypeName(filterTypeDetail.getFilterTypeName());
+        edit.setIsDefault(filterTypeDetail.getIsDefault().toString());
+        edit.setSortOrder(filterTypeDetail.getSortOrder().toString());
+
+        if(filterTypeDescription != null) {
+            edit.setDescription(filterTypeDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(FilterType filterType) {
+        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        FilterKindDetail filterKindDetail = filterKind.getLastDetail();
+        String filterTypeName = edit.getFilterTypeName();
+        FilterType duplicateFilterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
+
+        if(duplicateFilterType != null && !filterType.equals(duplicateFilterType)) {
+            addExecutionError(ExecutionErrors.DuplicateFilterTypeName.name(), filterKindDetail.getFilterKindName(), filterTypeName);
+        }
+    }
+
+    @Override
+    public void doUpdate(FilterType filterType) {
+        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        PartyPK partyPK = getPartyPK();
+        FilterTypeDetailValue filterTypeDetailValue = filterControl.getFilterTypeDetailValueForUpdate(filterType);
+        FilterTypeDescription filterTypeDescription = filterControl.getFilterTypeDescriptionForUpdate(filterType, getPreferredLanguage());
+        String description = edit.getDescription();
+
+        filterTypeDetailValue.setFilterTypeName(edit.getFilterTypeName());
+        filterTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        filterTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        filterControl.updateFilterTypeFromValue(filterTypeDetailValue, partyPK);
+
+        if(filterTypeDescription == null && description != null) {
+            filterControl.createFilterTypeDescription(filterType, getPreferredLanguage(), description, partyPK);
+        } else if(filterTypeDescription != null && description == null) {
+            filterControl.deleteFilterTypeDescription(filterTypeDescription, partyPK);
+        } else if(filterTypeDescription != null && description != null) {
+            FilterTypeDescriptionValue filterTypeDescriptionValue = filterControl.getFilterTypeDescriptionValue(filterTypeDescription);
+
+            filterTypeDescriptionValue.setDescription(description);
+            filterControl.updateFilterTypeDescriptionFromValue(filterTypeDescriptionValue, partyPK);
+        }
+    }
+
+}

@@ -1,0 +1,78 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.scale.server.logic;
+
+import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.scale.server.entity.PartyScaleUse;
+import com.echothree.model.data.scale.server.entity.Scale;
+import com.echothree.model.data.scale.server.entity.ScaleUseType;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.Session;
+
+public class PartyScaleUseLogic
+        extends BaseLogic {
+
+    private PartyScaleUseLogic() {
+        super();
+    }
+
+    private static class PartyScaleUseLogicHolder {
+        static PartyScaleUseLogic instance = new PartyScaleUseLogic();
+    }
+
+    public static PartyScaleUseLogic getInstance() {
+        return PartyScaleUseLogicHolder.instance;
+    }
+
+    public PartyScaleUse getPartyScaleUse(final ExecutionErrorAccumulator ema, final Party party, final ScaleUseType scaleUseType,
+            final BasePK createdBy) {
+        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        PartyScaleUse partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
+
+        if(partyScaleUse == null) {
+            Scale scale = scaleControl.getDefaultScale();
+
+            if(scale == null) {
+                addExecutionError(ema, ExecutionErrors.MissingDefaultPartyScale.name());
+            } else {
+                partyScaleUse = scaleControl.createPartyScaleUse(party, scaleUseType, scale, createdBy);
+            }
+        }
+
+        return partyScaleUse;
+    }
+
+    public PartyScaleUse getPartyScaleUseUsingNames(final ExecutionErrorAccumulator ema, final Party party, final String scaleUseTypeName,
+            final BasePK createdBy) {
+        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+        PartyScaleUse partyScaleUse = null;
+
+        if(scaleUseType == null) {
+            addExecutionError(ema, ExecutionErrors.UnknownScaleUseTypeName.name(), scaleUseTypeName);
+        } else {
+            partyScaleUse = getPartyScaleUse(ema, party, scaleUseType, createdBy);
+        }
+
+        return partyScaleUse;
+    }
+
+}

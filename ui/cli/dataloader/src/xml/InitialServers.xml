@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <protocols>
+        <protocol protocolName="TCP" isDefault="true" sortOrder="1">
+            <protocolDescription languageIsoName="en" description="TCP" />
+        </protocol>
+        <protocol protocolName="UDP" isDefault="false" sortOrder="1">
+            <protocolDescription languageIsoName="en" description="UDP" />
+        </protocol>
+    </protocols>
+    <services>
+        <service serviceName="DomainTCP" port="53" protocolName="TCP" isDefault="false" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="Domain Name Service (TCP)" />
+        </service>
+        <service serviceName="DomainUDP" port="53" protocolName="UDP" isDefault="false" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="Domain Name Service (UDP)" />
+        </service>
+        <service serviceName="HTTP" port="80" protocolName="TCP" isDefault="true" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="Hypertext Transfer Protocol" />
+        </service>
+        <service serviceName="HTTPS" port="442" protocolName="TCP" isDefault="false" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="Hypertext Transfer Protocol Secure" />
+        </service>
+        <service serviceName="FTP" port="21" protocolName="TCP" isDefault="false" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="File Transfer Protocol" />
+        </service>
+        <service serviceName="SMTP" port="25" protocolName="TCP" isDefault="false" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="Simple Mail Transfer Protocol" />
+        </service>
+        <service serviceName="POP3" port="110" protocolName="TCP" isDefault="false" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="Post Office Protocol version 3" />
+        </service>
+        <service serviceName="MySQL" port="3306" protocolName="TCP" isDefault="false" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="MySQL" />
+        </service>
+        <service serviceName="Scale10001" port="10001" protocolName="TCP" isDefault="false" sortOrder="1">
+            <serviceDescription languageIsoName="en" description="Scale Serial Converter, Port 10001" />
+        </service>
+    </services>
+    <servers>
+        <server serverName="127.0.0.1" isDefault="true" sortOrder="1">
+            <serverService serviceName="HTTP" />
+            <serverService serviceName="HTTPS" />
+            <serverService serviceName="SMTP" />
+        </server>
+        <server serverName="localhost" isDefault="false" sortOrder="1">
+            <serverService serviceName="HTTP" />
+            <serverService serviceName="HTTPS" />
+            <serverService serviceName="SMTP" />
+        </server>
+        <server serverName="web1.echothree.com" isDefault="false" sortOrder="1">
+            <serverService serviceName="HTTP" />
+            <serverService serviceName="HTTPS" />
+            <serverService serviceName="SMTP" />
+        </server>
+        <server serverName="dr0.echothree.com" isDefault="false" sortOrder="1" />
+        <server serverName="mail.echothree.com" isDefault="false" sortOrder="1">
+            <serverService serviceName="POP3" />
+        </server>
+        <server serverName="db1.echothree.com" isDefault="false" sortOrder="1">
+            <serverService serviceName="MySQL" />
+        </server>
+        <server serverName="db2.echothree.com" isDefault="false" sortOrder="1">
+            <serverService serviceName="MySQL" />
+        </server>
+        <server serverName="scale1.echothree.com" isDefault="false" sortOrder="1">
+            <serverService serviceName="Scale10001" />
+        </server>
+    </servers>
+</initialData>

@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Shipping">
+            <tables>
+                <table namePlural="ShippingMethods" nameSingular="ShippingMethod" columnPrefix="shm">
+                    <columns>
+                        <column name="ShippingMethodId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShippingMethodDetails" destinationColumn="ShippingMethodDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShippingMethodDetails" destinationColumn="ShippingMethodDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShippingMethodId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShippingMethodDetails" nameSingular="ShippingMethodDetail" columnPrefix="shmdt">
+                    <columns>
+                        <column name="ShippingMethodDetailId" type="EID" nullAllowed="false" />
+                        <column name="ShippingMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShippingMethods" destinationColumn="ShippingMethodId" />
+                        <column name="ShippingMethodName" type="Name" nullAllowed="false" />
+                        <column name="GeoCodeSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="ItemSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShippingMethodDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ShippingMethodName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="GeoCodeSelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ItemSelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShippingMethodDescriptions" nameSingular="ShippingMethodDescription" columnPrefix="shmd">
+                    <columns>
+                        <column name="ShippingMethodDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ShippingMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShippingMethods" destinationColumn="ShippingMethodId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShippingMethodDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShippingMethodCarrierServices" nameSingular="ShippingMethodCarrierService" columnPrefix="shmcrrsrv">
+                    <columns>
+                        <column name="ShippingMethodCarrierServiceId" type="EID" nullAllowed="false" />
+                        <column name="ShippingMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShippingMethods" destinationColumn="ShippingMethodId" />
+                        <column name="CarrierServiceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CarrierServices" destinationColumn="CarrierServiceId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShippingMethodCarrierServiceId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="CarrierServiceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CarrierServiceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

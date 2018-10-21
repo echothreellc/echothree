@@ -1,0 +1,395 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Picklist">
+            <tables>
+                <table namePlural="PicklistTypes" nameSingular="PicklistType" columnPrefix="pcklsttyp">
+                    <columns>
+                        <column name="PicklistTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistTypeDetails" destinationColumn="PicklistTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistTypeDetails" destinationColumn="PicklistTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistTypeDetails" nameSingular="PicklistTypeDetail" columnPrefix="pcklsttypdt">
+                    <columns>
+                        <column name="PicklistTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PicklistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistTypes" destinationColumn="PicklistTypeId" />
+                        <column name="PicklistTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentPicklistTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistTypes" destinationColumn="PicklistTypeId" />
+                        <column name="PicklistSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="PicklistWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="PicklistWorkflowEntranceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PicklistTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentPicklistTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PicklistSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="PicklistWorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="PicklistWorkflowEntranceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistTypeDescriptions" nameSingular="PicklistTypeDescription" columnPrefix="pcklsttypd">
+                    <columns>
+                        <column name="PicklistTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PicklistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistTypes" destinationColumn="PicklistTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistTimeTypes" nameSingular="PicklistTimeType" columnPrefix="pcklsttimtyp">
+                    <columns>
+                        <column name="PicklistTimeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistTimeTypeDetails" destinationColumn="PicklistTimeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistTimeTypeDetails" destinationColumn="PicklistTimeTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistTimeTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistTimeTypeDetails" nameSingular="PicklistTimeTypeDetail" columnPrefix="pcklsttimtypdt">
+                    <columns>
+                        <column name="PicklistTimeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PicklistTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistTimeTypes" destinationColumn="PicklistTimeTypeId" />
+                        <column name="PicklistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistTypes" destinationColumn="PicklistTypeId" />
+                        <column name="PicklistTimeTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistTimeTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PicklistTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="PicklistTimeTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistTimeTypeDescriptions" nameSingular="PicklistTimeTypeDescription" columnPrefix="pcklsttimtypd">
+                    <columns>
+                        <column name="PicklistTimeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PicklistTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistTimeTypes" destinationColumn="PicklistTimeTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistTimeTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PicklistTimeTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PicklistTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistAliasTypes" nameSingular="PicklistAliasType" columnPrefix="pcklstaltyp">
+                    <columns>
+                        <column name="PicklistAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistAliasTypeDetails" destinationColumn="PicklistAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistAliasTypeDetails" destinationColumn="PicklistAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistAliasTypeDetails" nameSingular="PicklistAliasTypeDetail" columnPrefix="pcklstaltypdt">
+                    <columns>
+                        <column name="PicklistAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PicklistAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistAliasTypes" destinationColumn="PicklistAliasTypeId" />
+                        <column name="PicklistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistTypes" destinationColumn="PicklistTypeId" />
+                        <column name="PicklistAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PicklistAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="PicklistAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistAliasTypeDescriptions" nameSingular="PicklistAliasTypeDescription" columnPrefix="pcklstaltypd">
+                    <columns>
+                        <column name="PicklistAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PicklistAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistAliasTypes" destinationColumn="PicklistAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PicklistAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PicklistAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistAliases" nameSingular="PicklistAlias" columnPrefix="pcklstal">
+                    <columns>
+                        <column name="PicklistAliasId" type="EID" nullAllowed="false" />
+                        <column name="PicklistId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Picklists" destinationColumn="PicklistId" />
+                        <column name="PicklistAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistAliasTypes" destinationColumn="PicklistAliasTypeId" />
+                        <column name="Alias" type="PicklistAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistAliasId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PicklistId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PicklistAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="PicklistAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="Alias" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Picklists" nameSingular="Picklist" columnPrefix="pcklst">
+                    <columns>
+                        <column name="PicklistId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistDetails" destinationColumn="PicklistDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PicklistDetails" destinationColumn="PicklistDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistDetails" nameSingular="PicklistDetail" columnPrefix="pcklstdt">
+                    <columns>
+                        <column name="PicklistDetailId" type="EID" nullAllowed="false" />
+                        <column name="PicklistId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Picklists" destinationColumn="PicklistId" />
+                        <column name="PicklistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistTypes" destinationColumn="PicklistTypeId" />
+                        <column name="PicklistName" type="Name" nullAllowed="false" />
+                        <!-- TDB -->
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PicklistId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="PicklistName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PicklistTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistStatuses" nameSingular="PicklistStatus" columnPrefix="pcklstst">
+                    <columns>
+                        <column name="PicklistStatusId" type="EID" nullAllowed="false" />
+                        <column name="PicklistId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Picklists" destinationColumn="PicklistId"/>
+                        <column name="PicklistLineSequence" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="PicklistId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PicklistTimes" nameSingular="PicklistTime" columnPrefix="pcklsttim">
+                    <columns>
+                        <column name="PicklistTimeId" type="EID" nullAllowed="false" />
+                        <column name="PicklistId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Picklists" destinationColumn="PicklistId" />
+                        <column name="PicklistTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PicklistTimeTypes" destinationColumn="PicklistTimeTypeId" />
+                        <column name="Time" type="Time" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PicklistTimeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PicklistId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PicklistId" />
+                            <indexColumn name="PicklistTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PicklistTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

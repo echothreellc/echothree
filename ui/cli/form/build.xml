@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="form" default="Help" basedir=".">
+
+    <property name="component.home" value="./"/>
+    <property name="metadata.dir" value="${component.home}/src/metadata"/>
+    
+    <target name="compile">
+        <mkdir dir="build"/>
+        <mkdir dir="build/classes"/>
+        <javac
+            compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
+            debug="true"
+            source="1.8"
+            target="1.8"
+            srcdir="./src/java"
+            destdir="./build/classes"
+            includeAntRuntime="false">
+            <classpath>
+                <pathelement location="./"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+            <compilerclasspath>
+                <pathelement location="../../../build/lib/error_prone_ant.jar"/>
+            </compilerclasspath>
+        </javac>
+    </target>
+    
+    <target name="Generate" depends="compile">
+        <java classname="FormUtility" fork="true">
+            <arg value="--generated"/>
+            <arg value="../../../generated/form"/>
+            <arg value="--source"/>
+            <arg value="../../../src"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+   <target name="clean-generated">
+        <echo message="Deleting directory ../../../generated/form" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="../../../generated/form">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="clean-build">
+        <echo message="Deleting directory build" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="build">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="clean">
+        <parallel>
+            <ant target="clean-generated"/>
+            <ant target="clean-build"/>
+        </parallel>
+    </target>
+    
+    <target name="Help">
+        <echo>+-------------------------------------------+</echo>
+        <echo>+ Available targets for form utilities:     +</echo>
+        <echo>+                                           +</echo>
+        <echo>+        ant Generate                       +</echo>
+        <echo>+                                           +</echo>
+        <echo>+-------------------------------------------+</echo>
+    </target>
+
+</project>

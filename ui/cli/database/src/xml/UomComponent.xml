@@ -1,0 +1,311 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Uom">
+            <tables>
+                <table namePlural="UnitOfMeasureKinds" nameSingular="UnitOfMeasureKind" columnPrefix="uomk">
+                    <columns>
+                        <column name="UnitOfMeasureKindId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureKindDetails" destinationColumn="UnitOfMeasureKindDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureKindDetails" destinationColumn="UnitOfMeasureKindDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureKindId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureKindDetails" nameSingular="UnitOfMeasureKindDetail" columnPrefix="uomkdt">
+                    <columns>
+                        <column name="UnitOfMeasureKindDetailId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureKinds" destinationColumn="UnitOfMeasureKindId" />
+                        <column name="UnitOfMeasureKindName" type="Name" nullAllowed="false" />
+                        <column name="FractionDigits" type="Integer" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureKindDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UnitOfMeasureKindName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="UnitOfMeasureKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureKindDescriptions" nameSingular="UnitOfMeasureKindDescription" columnPrefix="uomkd">
+                    <columns>
+                        <column name="UnitOfMeasureKindDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureKinds" destinationColumn="UnitOfMeasureKindId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureKindDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UnitOfMeasureKindId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureTypes" nameSingular="UnitOfMeasureType" columnPrefix="uomt">
+                    <columns>
+                        <column name="UnitOfMeasureTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureTypeDetails" destinationColumn="UnitOfMeasureTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureTypeDetails" destinationColumn="UnitOfMeasureTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureTypeDetails" nameSingular="UnitOfMeasureTypeDetail" columnPrefix="uomtdt">
+                    <columns>
+                        <column name="UnitOfMeasureTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="UnitOfMeasureKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureKinds" destinationColumn="UnitOfMeasureKindId" />
+                        <column name="UnitOfMeasureTypeName" type="Name" nullAllowed="false" />
+                        <column name="SymbolPositionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SymbolPositions" destinationColumn="SymbolPositionId" />
+                        <column name="SuppressSymbolSeparator" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="UnitOfMeasureKindId" />
+                            <indexColumn name="UnitOfMeasureTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SymbolPositionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureTypeDescriptions" nameSingular="UnitOfMeasureTypeDescription" columnPrefix="uomtd">
+                    <columns>
+                        <column name="UnitOfMeasureTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="SingularDescription" type="Description" nullAllowed="false" />
+                        <column name="PluralDescription" type="Description" nullAllowed="false" />
+                        <column name="Symbol" type="Symbol" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureTypeVolumes" nameSingular="UnitOfMeasureTypeVolume" columnPrefix="uomtvol">
+                    <columns>
+                        <column name="UnitOfMeasureTypeVolumeId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Height" type="Measurement" nullAllowed="false" />
+                        <column name="Width" type="Measurement" nullAllowed="false" />
+                        <column name="Depth" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureTypeVolumeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureTypeWeights" nameSingular="UnitOfMeasureTypeWeight" columnPrefix="uomtwght">
+                    <columns>
+                        <column name="UnitOfMeasureTypeWeightId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Weight" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureTypeWeightId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureEquivalents" nameSingular="UnitOfMeasureEquivalent" columnPrefix="uomeq">
+                    <columns>
+                        <column name="UnitOfMeasureEquivalentId" type="EID" nullAllowed="false" />
+                        <column name="FromUnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="ToUnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="ToQuantity" type="Long" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureEquivalentId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FromUnitOfMeasureTypeId" />
+                            <indexColumn name="ToUnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FromUnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ToUnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureKindUseTypes" nameSingular="UnitOfMeasureKindUseType" columnPrefix="uomkut">
+                    <columns>
+                        <column name="UnitOfMeasureKindUseTypeId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureKindUseTypeName" type="Name" nullAllowed="false" />
+                        <column name="AllowMultiple" type="Boolean" nullAllowed="false" />
+                        <column name="AllowFractionDigits" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureKindUseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="UnitOfMeasureKindUseTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureKindUseTypeDescriptions" nameSingular="UnitOfMeasureKindUseTypeDescription" columnPrefix="uomkutd">
+                    <columns>
+                        <column name="UnitOfMeasureKindUseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureKindUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureKindUseTypes" destinationColumn="UnitOfMeasureKindUseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureKindUseTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UnitOfMeasureKindUseTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UnitOfMeasureKindUses" nameSingular="UnitOfMeasureKindUse" columnPrefix="uomku">
+                    <columns>
+                        <column name="UnitOfMeasureKindUseId" type="EID" nullAllowed="false" />
+                        <column name="UnitOfMeasureKindUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureKindUseTypes" destinationColumn="UnitOfMeasureKindUseTypeId" />
+                        <column name="UnitOfMeasureKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureKinds" destinationColumn="UnitOfMeasureKindId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UnitOfMeasureKindUseId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UnitOfMeasureKindUseTypeId" />
+                            <indexColumn name="UnitOfMeasureKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="UnitOfMeasureKindUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="UnitOfMeasureKindUseTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

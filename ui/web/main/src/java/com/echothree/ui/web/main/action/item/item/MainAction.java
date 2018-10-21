@@ -1,0 +1,136 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.item.item;
+
+import com.echothree.control.user.search.common.SearchUtil;
+import com.echothree.control.user.search.remote.form.GetItemResultsForm;
+import com.echothree.control.user.search.remote.form.SearchItemsForm;
+import com.echothree.control.user.search.remote.result.GetItemResultsResult;
+import com.echothree.control.user.search.remote.result.SearchItemsResult;
+import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.remote.transfer.ItemResultTransfer;
+import com.echothree.ui.web.main.framework.ForwardConstants;
+import com.echothree.ui.web.main.framework.MainBaseAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.CustomActionForward;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
+import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+@SproutAction(
+    path = "/Item/Item/Main",
+    mappingClass = SecureActionMapping.class,
+    name = "ItemMain",
+    properties = {
+        @SproutProperty(property = "secure", value = "true")
+    },
+    forwards = {
+        @SproutForward(name = "Display", path = "/action/Item/Item/Result", redirect = true),
+        @SproutForward(name = "Review", path = "/action/Item/Item/Review", redirect = true),
+        @SproutForward(name = "Form", path = "/item/item/main.jsp")
+    }
+)
+public class MainAction
+        extends MainBaseAction<MainActionForm> {
+    
+    private String getItemName(HttpServletRequest request)
+            throws NamingException {
+        GetItemResultsForm commandForm = SearchUtil.getHome().getGetItemResultsForm();
+        String itemName = null;
+        
+        commandForm.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTAINENCE);
+        
+        CommandResult commandResult = SearchUtil.getHome().getItemResults(getUserVisitPK(request), commandForm);
+        ExecutionResult executionResult = commandResult.getExecutionResult();
+        GetItemResultsResult result = (GetItemResultsResult)executionResult.getResult();
+        List<ItemResultTransfer> itemResults = result.getItemResults();
+        Iterator<ItemResultTransfer> iter = itemResults.iterator();
+        if(iter.hasNext()) {
+            itemName = (iter.next()).getItemName();
+        }
+        
+        return itemName;
+    }
+    
+    @Override
+    public ActionForward executeAction(ActionMapping mapping, MainActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        String forwardKey;
+        String itemName = null;
+
+        if(wasPost(request)) {
+            SearchItemsForm commandForm = SearchUtil.getHome().getSearchItemsForm();
+
+            commandForm.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTAINENCE);
+            commandForm.setItemNameOrAlias(actionForm.getItemNameOrAlias());
+            commandForm.setDescription(actionForm.getDescription());
+            commandForm.setItemTypeName(actionForm.getItemTypeChoice());
+            commandForm.setItemUseTypeName(actionForm.getItemUseTypeChoice());
+            commandForm.setItemStatusChoice(actionForm.getItemStatusChoice());
+            commandForm.setCreatedSince(actionForm.getCreatedSince());
+            commandForm.setModifiedSince(actionForm.getModifiedSince());
+            commandForm.setSearchDefaultOperatorName(actionForm.getSearchDefaultOperatorChoice());
+            commandForm.setSearchSortOrderName(actionForm.getSearchSortOrderChoice());
+            commandForm.setSearchSortDirectionName(actionForm.getSearchSortDirectionChoice());
+            commandForm.setRememberPreferences(actionForm.getRememberPreferences().toString());
+            commandForm.setSearchUseTypeName(SearchConstants.SearchUseType_INITIAL);
+
+            CommandResult commandResult = SearchUtil.getHome().searchItems(getUserVisitPK(request), commandForm);
+
+            if(commandResult.hasErrors()) {
+                setCommandResultAttribute(request, commandResult);
+                forwardKey = ForwardConstants.FORM;
+            } else {
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                SearchItemsResult result = (SearchItemsResult)executionResult.getResult();
+                int count = result.getCount();
+
+                if(count == 0 || count > 1) {
+                    forwardKey = ForwardConstants.DISPLAY;
+                } else {
+                    itemName = getItemName(request);
+                    forwardKey = ForwardConstants.REVIEW;
+                }
+            }
+        } else {
+            forwardKey = ForwardConstants.FORM;
+        }
+        
+        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+        if(forwardKey.equals(ForwardConstants.REVIEW)) {
+            Map<String, String> parameters = new HashMap<>(1);
+            
+            parameters.put(ParameterConstants.ITEM_NAME, itemName);
+            customActionForward.setParameters(parameters);
+        }
+        
+        return customActionForward;
+    }
+    
+}

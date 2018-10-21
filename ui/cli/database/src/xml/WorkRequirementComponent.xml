@@ -1,0 +1,385 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="WorkRequirement">
+            <tables>
+                <table namePlural="WorkRequirementTypes" nameSingular="WorkRequirementType" columnPrefix="wrt">
+                    <columns>
+                        <column name="WorkRequirementTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkRequirementTypeDetails" destinationColumn="WorkRequirementTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkRequirementTypeDetails" destinationColumn="WorkRequirementTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkRequirementTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkRequirementTypeDetails" nameSingular="WorkRequirementTypeDetail" columnPrefix="wrtdt">
+                    <columns>
+                        <column name="WorkRequirementTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkRequirementTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirementTypes" destinationColumn="WorkRequirementTypeId" />
+                        <column name="WorkEffortTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortTypes" destinationColumn="WorkEffortTypeId" />
+                        <column name="WorkRequirementTypeName" type="Name" nullAllowed="false" />
+                        <column name="WorkRequirementSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="WorkflowStepId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowSteps" destinationColumn="WorkflowStepId" />
+                        <column name="EstimatedTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="MaximumTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="AllowReassignment" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkRequirementTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkRequirementTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkEffortTypeId" />
+                            <indexColumn name="WorkRequirementTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkEffortTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="WorkRequirementSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkRequirementTypeDescriptions" nameSingular="WorkRequirementTypeDescription" columnPrefix="wrtd">
+                    <columns>
+                        <column name="WorkRequirementTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkRequirementTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirementTypes" destinationColumn="WorkRequirementTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkRequirementTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkRequirementTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkRequirementScopes" nameSingular="WorkRequirementScope" columnPrefix="wrs">
+                    <columns>
+                        <column name="WorkRequirementScopeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkRequirementScopeDetails" destinationColumn="WorkRequirementScopeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkRequirementScopeDetails" destinationColumn="WorkRequirementScopeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkRequirementScopeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkRequirementScopeDetails" nameSingular="WorkRequirementScopeDetail" columnPrefix="wrsdt">
+                    <columns>
+                        <column name="WorkRequirementScopeDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkRequirementScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirementScopes" destinationColumn="WorkRequirementScopeId" />
+                        <column name="WorkEffortScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
+                        <column name="WorkRequirementTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirementTypes" destinationColumn="WorkRequirementTypeId" />
+                        <column name="WorkRequirementSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="WorkTimeSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="WorkAssignmentSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="EstimatedTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="MaximumTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkRequirementScopeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkRequirementScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="WorkEffortScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkRequirementTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index4">
+                            <indexColumn name="WorkEffortScopeId" />
+                            <indexColumn name="WorkRequirementTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="WorkRequirementSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="WorkTimeSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="WorkAssignmentSelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkRequirements" nameSingular="WorkRequirement" columnPrefix="wr">
+                    <columns>
+                        <column name="WorkRequirementId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkRequirementDetails" destinationColumn="WorkRequirementDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkRequirementDetails" destinationColumn="WorkRequirementDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkRequirementId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkRequirementDetails" nameSingular="WorkRequirementDetail" columnPrefix="wrdt">
+                    <columns>
+                        <column name="WorkRequirementDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkRequirementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirements" destinationColumn="WorkRequirementId" />
+                        <column name="WorkRequirementName" type="Name" nullAllowed="false" />
+                        <column name="WorkEffortId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEfforts" destinationColumn="WorkEffortId" />
+                        <column name="WorkRequirementScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirementScopes" destinationColumn="WorkRequirementScopeId" />
+                        <column name="StartTime" type="Time" nullAllowed="false" />
+                        <column name="RequiredTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkRequirementDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkRequirementId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkRequirementName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkEffortId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="WorkRequirementScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkRequirementStatuses" nameSingular="WorkRequirementStatus" columnPrefix="wrst">
+                    <columns>
+                        <column name="WorkRequirementStatusId" type="EID" nullAllowed="false" />
+                        <column name="WorkRequirementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirements" destinationColumn="WorkRequirementId" />
+                        <column name="WorkAssignmentSequence" type="Integer" nullAllowed="false" />
+                        <column name="LastWorkAssignmentId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkAssignments" destinationColumn="WorkAssignmentId" />
+                        <column name="WorkTimeSequence" type="Integer" nullAllowed="false" />
+                        <column name="LastWorkTimeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkTimes" destinationColumn="WorkTimeId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkRequirementStatusId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkRequirementId" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LastWorkAssignmentId" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="LastWorkTimeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkAssignments" nameSingular="WorkAssignment" columnPrefix="wasgn">
+                    <columns>
+                        <column name="WorkAssignmentId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkAssignmentDetails" destinationColumn="WorkAssignmentDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkAssignmentDetails" destinationColumn="WorkAssignmentDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkAssignmentId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkAssignmentDetails" nameSingular="WorkAssignmentDetail" columnPrefix="wasgndt">
+                    <columns>
+                        <column name="WorkAssignmentDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkAssignmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkAssignments" destinationColumn="WorkAssignmentId" />
+                        <column name="WorkRequirementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirements" destinationColumn="WorkRequirementId" />
+                        <column name="WorkAssignmentSequence" type="Integer" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="StartTime" type="Time" nullAllowed="false" />
+                        <column name="EndTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkAssignmentDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkAssignmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkRequirementId" />
+                            <indexColumn name="WorkAssignmentSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkRequirementId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkTimes" nameSingular="WorkTime" columnPrefix="wtm">
+                    <columns>
+                        <column name="WorkTimeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkTimeDetails" destinationColumn="WorkTimeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkTimeDetails" destinationColumn="WorkTimeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkTimeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkTimeDetails" nameSingular="WorkTimeDetail" columnPrefix="wtmdt">
+                    <columns>
+                        <column name="WorkTimeDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkTimeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkTimes" destinationColumn="WorkTimeId" />
+                        <column name="WorkRequirementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkRequirements" destinationColumn="WorkRequirementId" />
+                        <column name="WorkTimeSequence" type="Integer" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="StartTime" type="Time" nullAllowed="false" />
+                        <column name="EndTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkTimeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkTimeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkRequirementId" />
+                            <indexColumn name="WorkTimeSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkRequirementId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkTimeUserVisits" nameSingular="WorkTimeUserVisit" columnPrefix="wtmuvis">
+                    <columns>
+                        <column name="WorkTimeUserVisitId" type="EID" nullAllowed="false" />
+                        <column name="WorkTimeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkTimes" destinationColumn="WorkTimeId" />
+                        <column name="UserVisitId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UserVisits" destinationColumn="UserVisitId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkTimeUserVisitId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkTimeId" />
+                            <indexColumn name="UserVisitId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="WorkTimeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UserVisitId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

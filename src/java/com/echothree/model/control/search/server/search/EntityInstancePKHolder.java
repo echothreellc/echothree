@@ -1,0 +1,57 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.search.server.search;
+
+import com.echothree.model.data.core.remote.pk.EntityInstancePK;
+import java.util.HashMap;
+import java.util.Map;
+
+public class EntityInstancePKHolder {
+
+    Map<EntityInstancePK, Integer> entityInstancePKs;
+
+    private void init(Map<EntityInstancePK, Integer> entityInstancePKs) {
+        this.entityInstancePKs = entityInstancePKs;
+    }
+
+    /** Creates a new instance of EntityInstancePKHolder */
+    public EntityInstancePKHolder(int initialCapacity) {
+        init(new HashMap<>(initialCapacity));
+    }
+
+    /** Creates a new instance of EntityInstancePKHolder */
+    public EntityInstancePKHolder() {
+        init(new HashMap<>());
+    }
+
+    public void add(EntityInstancePK entityInstancePK, Integer sortOrder) {
+        entityInstancePKs.put(entityInstancePK, sortOrder);
+    }
+
+    public int size() {
+        return entityInstancePKs.size();
+    }
+
+    public void retainAll(EntityInstancePKHolder entityInstancePKHolder) {
+        entityInstancePKs.keySet().retainAll(entityInstancePKHolder.entityInstancePKs.keySet());
+    }
+
+    public void addAll(EntityInstancePKHolder entityInstancePKHolder) {
+        entityInstancePKs.putAll(entityInstancePKHolder.entityInstancePKs);
+    }
+    
+}

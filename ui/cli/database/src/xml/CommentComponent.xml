@@ -1,0 +1,327 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Comment">
+            <tables>
+                <table namePlural="CommentTypes" nameSingular="CommentType" columnPrefix="cmnttyp">
+                    <columns>
+                        <column name="CommentTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommentTypeDetails" destinationColumn="CommentTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommentTypeDetails" destinationColumn="CommentTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentTypeDetails" nameSingular="CommentTypeDetail" columnPrefix="cmnttypdt">
+                    <columns>
+                        <column name="CommentTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="CommentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommentTypes" destinationColumn="CommentTypeId" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="CommentTypeName" type="Name" nullAllowed="false" />
+                        <column name="CommentSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="WorkflowEntranceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="MimeTypeUsageTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypeUsageTypes" destinationColumn="MimeTypeUsageTypeId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="CommentTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CommentSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="WorkflowEntranceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="MimeTypeUsageTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentTypeDescriptions" nameSingular="CommentTypeDescription" columnPrefix="cmnttypd">
+                    <columns>
+                        <column name="CommentTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CommentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommentTypes" destinationColumn="CommentTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentUsageTypes" nameSingular="CommentUsageType" columnPrefix="cmntutyp">
+                    <columns>
+                        <column name="CommentUsageTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommentUsageTypeDetails" destinationColumn="CommentUsageTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommentUsageTypeDetails" destinationColumn="CommentUsageTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentUsageTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentUsageTypeDetails" nameSingular="CommentUsageTypeDetail" columnPrefix="cmntutypdt">
+                    <columns>
+                        <column name="CommentUsageTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="CommentUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommentUsageTypes" destinationColumn="CommentUsageTypeId" />
+                        <column name="CommentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommentTypes" destinationColumn="CommentTypeId" />
+                        <column name="CommentUsageTypeName" type="Name" nullAllowed="false" />
+                        <column name="SelectedByDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentUsageTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CommentTypeId" />
+                            <indexColumn name="CommentUsageTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentUsageTypeDescriptions" nameSingular="CommentUsageTypeDescription" columnPrefix="cmntutypd">
+                    <columns>
+                        <column name="CommentUsageTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CommentUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommentUsageTypes" destinationColumn="CommentUsageTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentUsageTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentUsageTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Comments" nameSingular="Comment" columnPrefix="cmnt">
+                    <columns>
+                        <column name="CommentId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommentDetails" destinationColumn="CommentDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommentDetails" destinationColumn="CommentDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentDetails" nameSingular="CommentDetail" columnPrefix="cmntdt">
+                    <columns>
+                        <column name="CommentDetailId" type="EID" nullAllowed="false" />
+                        <column name="CommentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Comments" destinationColumn="CommentId" />
+                        <column name="CommentName" type="Name" nullAllowed="false" />
+                        <column name="CommentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommentTypes" destinationColumn="CommentTypeId" />
+                        <column name="CommentedEntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="CommentedByEntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="true" />
+                        <column name="MimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CommentName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CommentedEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CommentedEntityInstanceId" />
+                            <indexColumn name="CommentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="CommentedByEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="CommentTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="MimeTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentStrings" nameSingular="CommentString" columnPrefix="cmnts">
+                    <columns>
+                        <column name="CommentStringId" type="EID" nullAllowed="false" />
+                        <column name="CommentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Comments" destinationColumn="CommentId" />
+                        <column name="String" type="String" maxLength="512" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentStringId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentClobs" nameSingular="CommentClob" columnPrefix="cmntc">
+                    <columns>
+                        <column name="CommentClobId" type="EID" nullAllowed="false" />
+                        <column name="CommentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Comments" destinationColumn="CommentId" />
+                        <column name="Clob" type="CLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentClobId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentBlobs" nameSingular="CommentBlob" columnPrefix="cmntb">
+                    <columns>
+                        <column name="CommentBlobId" type="EID" nullAllowed="false" />
+                        <column name="CommentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Comments" destinationColumn="CommentId" />
+                        <column name="Blob" type="BLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentBlobId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommentUsages" nameSingular="CommentUsage" columnPrefix="cmntu">
+                    <columns>
+                        <column name="CommentUsageId" type="EID" nullAllowed="false" />
+                        <column name="CommentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Comments" destinationColumn="CommentId" />
+                        <column name="CommentUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommentUsageTypes" destinationColumn="CommentUsageTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommentUsageId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommentId" />
+                            <indexColumn name="CommentUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CommentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CommentUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

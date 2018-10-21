@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <scaleUseTypes>
+        <scaleUseType scaleUseTypeName="WAREHOUSE_PACKING" isDefault="false" sortOrder="1">
+            <scaleUseTypeDescription languageIsoName="en" description="Warehouse Packing" />
+        </scaleUseType>
+    </scaleUseTypes>
+    <scaleTypes>
+        <scaleType scaleTypeName="TEST" isDefault="false" sortOrder="1">
+            <scaleTypeDescription languageIsoName="en" description="Test Scale Type" />
+        </scaleType>
+    </scaleTypes>
+    <scales>
+        <scale scaleName="TEST" scaleTypeName="TEST" serverName="scale1.echothree.com" serviceName="Scale10001" isDefault="true" sortOrder="1">
+            <scaleDescription languageIsoName="en" description="Test Scale " />
+        </scale>
+    </scales>
+</initialData>

@@ -1,0 +1,52 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.filter.server.transfer;
+
+import com.echothree.model.control.filter.remote.transfer.FilterKindTransfer;
+import com.echothree.model.control.filter.server.FilterControl;
+import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.model.data.filter.server.entity.FilterKindDetail;
+import com.echothree.model.data.user.server.entity.UserVisit;
+
+public class FilterKindTransferCache
+        extends BaseFilterTransferCache<FilterKind, FilterKindTransfer> {
+    
+    /** Creates a new instance of FilterKindTransferCache */
+    public FilterKindTransferCache(UserVisit userVisit, FilterControl filterControl) {
+        super(userVisit, filterControl);
+        
+        setIncludeEntityInstance(true);
+    }
+    
+    public FilterKindTransfer getFilterKindTransfer(FilterKind filterKind) {
+        FilterKindTransfer filterKindTransfer = get(filterKind);
+        
+        if(filterKindTransfer == null) {
+            FilterKindDetail filterKindDetail = filterKind.getLastDetail();
+            String filterKindName = filterKindDetail.getFilterKindName();
+            Boolean isDefault = filterKindDetail.getIsDefault();
+            Integer sortOrder = filterKindDetail.getSortOrder();
+            String description = filterControl.getBestFilterKindDescription(filterKind, getLanguage());
+            
+            filterKindTransfer = new FilterKindTransfer(filterKindName, isDefault, sortOrder, description);
+            put(filterKind, filterKindTransfer);
+        }
+        
+        return filterKindTransfer;
+    }
+    
+}

@@ -1,0 +1,389 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Document">
+            <tables>
+                <table namePlural="DocumentTypes" nameSingular="DocumentType" columnPrefix="dcmnttyp">
+                    <columns>
+                        <column name="DocumentTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DocumentTypeDetails" destinationColumn="DocumentTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DocumentTypeDetails" destinationColumn="DocumentTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentTypeDetails" nameSingular="DocumentTypeDetail" columnPrefix="dcmnttypdt">
+                    <columns>
+                        <column name="DocumentTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="DocumentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DocumentTypes" destinationColumn="DocumentTypeId" />
+                        <column name="DocumentTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentDocumentTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DocumentTypes" destinationColumn="DocumentTypeId" />
+                        <column name="MimeTypeUsageTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypeUsageTypes" destinationColumn="MimeTypeUsageTypeId" />
+                        <column name="MaximumPages" type="Integer" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="DocumentTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentDocumentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="MimeTypeUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentTypeDescriptions" nameSingular="DocumentTypeDescription" columnPrefix="dcmnttypd">
+                    <columns>
+                        <column name="DocumentTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="DocumentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DocumentTypes" destinationColumn="DocumentTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="DocumentTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentTypeUsageTypes" nameSingular="DocumentTypeUsageType" columnPrefix="dcmnttyputyp">
+                    <columns>
+                        <column name="DocumentTypeUsageTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DocumentTypeUsageTypeDetails" destinationColumn="DocumentTypeUsageTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DocumentTypeUsageTypeDetails" destinationColumn="DocumentTypeUsageTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentTypeUsageTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentTypeUsageTypeDetails" nameSingular="DocumentTypeUsageTypeDetail" columnPrefix="dcmnttyputypdt">
+                    <columns>
+                        <column name="DocumentTypeUsageTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="DocumentTypeUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DocumentTypeUsageTypes" destinationColumn="DocumentTypeUsageTypeId" />
+                        <column name="DocumentTypeUsageTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentTypeUsageTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentTypeUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="DocumentTypeUsageTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentTypeUsageTypeDescriptions" nameSingular="DocumentTypeUsageTypeDescription" columnPrefix="dcmnttyputypd">
+                    <columns>
+                        <column name="DocumentTypeUsageTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="DocumentTypeUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DocumentTypeUsageTypes" destinationColumn="DocumentTypeUsageTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentTypeUsageTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentTypeUsageTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentTypeUsages" nameSingular="DocumentTypeUsage" columnPrefix="dcmnttypu">
+                    <columns>
+                        <column name="DocumentTypeUsageId" type="EID" nullAllowed="false" />
+                        <column name="DocumentTypeUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DocumentTypeUsageTypes" destinationColumn="DocumentTypeUsageTypeId" />
+                        <column name="DocumentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DocumentTypes" destinationColumn="DocumentTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="MaximumInstances" type="Integer" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentTypeUsageId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentTypeUsageTypeId" />
+                            <indexColumn name="DocumentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="DocumentTypeUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="DocumentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="DocumentTypeUsageTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Documents" nameSingular="Document" columnPrefix="dcmnt">
+                    <columns>
+                        <column name="DocumentId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DocumentDetails" destinationColumn="DocumentDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DocumentDetails" destinationColumn="DocumentDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentDetails" nameSingular="DocumentDetail" columnPrefix="dcmntdt">
+                    <columns>
+                        <column name="DocumentDetailId" type="EID" nullAllowed="false" />
+                        <column name="DocumentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Documents" destinationColumn="DocumentId" />
+                        <column name="DocumentName" type="Name" nullAllowed="false" />
+                        <column name="DocumentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DocumentTypes" destinationColumn="DocumentTypeId" />
+                        <column name="MimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Pages" type="Integer" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="DocumentName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="DocumentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="MimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentBlobs" nameSingular="DocumentBlob" columnPrefix="dcmntb">
+                    <columns>
+                        <column name="DocumentBlobId" type="EID" nullAllowed="false" />
+                        <column name="DocumentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Documents" destinationColumn="DocumentId" />
+                        <column name="Blob" type="BLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentBlobId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentId"/>
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentClobs" nameSingular="DocumentClob" columnPrefix="dcmntc">
+                    <columns>
+                        <column name="DocumentClobId" type="EID" nullAllowed="false" />
+                        <column name="DocumentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Documents" destinationColumn="DocumentId" />
+                        <column name="Clob" type="CLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentClobId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentId"/>
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DocumentDescriptions" nameSingular="DocumentDescription" columnPrefix="dcmntd">
+                    <columns>
+                        <column name="DocumentDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="DocumentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Documents" destinationColumn="DocumentId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DocumentDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DocumentId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeDocumentTypeUsageTypes" nameSingular="PartyTypeDocumentTypeUsageType" columnPrefix="ptypdcmnttyputyp">
+                    <columns>
+                        <column name="PartyTypeDocumentTypeUsageTypeId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="DocumentTypeUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DocumentTypeUsageTypes" destinationColumn="DocumentTypeUsageTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeDocumentTypeUsageTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="DocumentTypeUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="DocumentTypeUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyDocuments" nameSingular="PartyDocument" columnPrefix="pardcmnt">
+                    <columns>
+                        <column name="PartyDocumentId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="DocumentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Documents" destinationColumn="DocumentId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyDocumentId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="DocumentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

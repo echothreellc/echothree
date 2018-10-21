@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Subscription">
+            <tables>
+                <table namePlural="SubscriptionKinds" nameSingular="SubscriptionKind" columnPrefix="subscrk">
+                    <columns>
+                        <column name="SubscriptionKindId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SubscriptionKindDetails" destinationColumn="SubscriptionKindDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SubscriptionKindDetails" destinationColumn="SubscriptionKindDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionKindId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SubscriptionKindDetails" nameSingular="SubscriptionKindDetail" columnPrefix="subscrkdt">
+                    <columns>
+                        <column name="SubscriptionKindDetailId" type="EID" nullAllowed="false" />
+                        <column name="SubscriptionKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SubscriptionKinds" destinationColumn="SubscriptionKindId" />
+                        <column name="SubscriptionKindName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionKindDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SubscriptionKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="SubscriptionKindName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SubscriptionKindDescriptions" nameSingular="SubscriptionKindDescription" columnPrefix="subscrkd">
+                    <columns>
+                        <column name="SubscriptionKindDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="SubscriptionKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SubscriptionKinds" destinationColumn="SubscriptionKindId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionKindDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SubscriptionKindId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SubscriptionKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SubscriptionTypes" nameSingular="SubscriptionType" columnPrefix="subscrtyp">
+                    <columns>
+                        <column name="SubscriptionTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SubscriptionTypeDetails" destinationColumn="SubscriptionTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SubscriptionTypeDetails" destinationColumn="SubscriptionTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SubscriptionTypeDetails" nameSingular="SubscriptionTypeDetail" columnPrefix="subscrtypdt">
+                    <columns>
+                        <column name="SubscriptionTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="SubscriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SubscriptionTypes" destinationColumn="SubscriptionTypeId" />
+                        <column name="SubscriptionKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SubscriptionKinds" destinationColumn="SubscriptionKindId" />
+                        <column name="SubscriptionTypeName" type="Name" nullAllowed="false" />
+                        <column name="SubscriptionSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SubscriptionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SubscriptionKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="SubscriptionKindId" />
+                            <indexColumn name="SubscriptionTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SubscriptionKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="SubscriptionSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SubscriptionTypeDescriptions" nameSingular="SubscriptionTypeDescription" columnPrefix="subscrtypd">
+                    <columns>
+                        <column name="SubscriptionTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="SubscriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SubscriptionTypes" destinationColumn="SubscriptionTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SubscriptionTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SubscriptionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Subscriptions" nameSingular="Subscription" columnPrefix="subscr">
+                    <columns>
+                        <column name="SubscriptionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SubscriptionDetails" destinationColumn="SubscriptionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SubscriptionDetails" destinationColumn="SubscriptionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SubscriptionDetails" nameSingular="SubscriptionDetail" columnPrefix="subscrdt">
+                    <columns>
+                        <column name="SubscriptionDetailId" type="EID" nullAllowed="false" />
+                        <column name="SubscriptionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Subscriptions" destinationColumn="SubscriptionId" />
+                        <column name="SubscriptionName" type="Name" nullAllowed="false" />
+                        <column name="SubscriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SubscriptionTypes" destinationColumn="SubscriptionTypeId" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="StartTime" type="Time" nullAllowed="false" />
+                        <column name="EndTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SubscriptionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="SubscriptionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="SubscriptionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SubscriptionTypeChains" nameSingular="SubscriptionTypeChain" columnPrefix="subscrtypchn">
+                    <columns>
+                        <column name="SubscriptionTypeChainId" type="EID" nullAllowed="false" />
+                        <column name="SubscriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SubscriptionTypes" destinationColumn="SubscriptionTypeId" />
+                        <column name="ChainId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="RemainingTime" type="Measurement" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SubscriptionTypeChainId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SubscriptionTypeId" />
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SubscriptionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

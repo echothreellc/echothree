@@ -1,0 +1,128 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.inventory.server.logic;
+
+import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.data.inventory.server.entity.Lot;
+import com.echothree.model.data.inventory.server.entity.LotDetail;
+import com.echothree.model.data.inventory.server.entity.LotTime;
+import com.echothree.model.data.inventory.server.entity.LotTimeType;
+import com.echothree.model.data.inventory.server.entity.LotType;
+import com.echothree.model.data.inventory.server.value.LotTimeValue;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.Session;
+
+public class LotTimeLogic {
+
+    private LotTimeLogic() {
+        super();
+    }
+
+    private static class LotTimeLogicHolder {
+        static LotTimeLogic instance = new LotTimeLogic();
+    }
+
+    public static LotTimeLogic getInstance() {
+        return LotTimeLogicHolder.instance;
+    }
+
+    private String getLotTypeName(LotType lotType) {
+        return lotType.getLastDetail().getLotTypeName();
+    }
+
+    public void createOrUpdateLotTimeIfNotNull(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
+            final BasePK partyPK) {
+        if(time != null) {
+            createOrUpdateLotTime(ema, lot, lotTimeTypeName, time, partyPK);
+        }
+    }
+
+    public void createOrUpdateLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
+            final BasePK partyPK) {
+        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        LotDetail lotDetail = lot.getLastDetail();
+        LotType lotType = lotDetail.getLotType();
+        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
+
+        if(lotTimeType == null) {
+            if(ema != null) {
+                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), getLotTypeName(lotType), lotTimeTypeName);
+            }
+        } else {
+            LotTimeValue lotTimeValue = inventoryControl.getLotTimeValueForUpdate(lot, lotTimeType);
+
+            if(lotTimeValue == null) {
+                inventoryControl.createLotTime(lot, lotTimeType, time, partyPK);
+            } else {
+                lotTimeValue.setTime(time);
+                inventoryControl.updateLotTimeFromValue(lotTimeValue, partyPK);
+            }
+        }
+    }
+
+    public Long getLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName) {
+        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        LotDetail lotDetail = lot.getLastDetail();
+        LotType lotType = lotDetail.getLotType();
+        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
+        Long result = null;
+
+        if(lotTimeType == null) {
+            if(ema != null) {
+                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), getLotTypeName(lotType), lotTimeTypeName);
+            }
+        } else {
+            LotTime lotTime = inventoryControl.getLotTime(lot, lotTimeType);
+
+            if(lotTime == null) {
+                if(ema != null) {
+                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), getLotTypeName(lotType), lotDetail.getLotName(), lotTimeTypeName);
+                }
+            } else {
+                result = lotTime.getTime();
+            }
+        }
+
+        return result;
+    }
+
+    public void deleteLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final BasePK deletedBy) {
+        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        LotDetail lotDetail = lot.getLastDetail();
+        LotType lotType = lotDetail.getLotType();
+        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
+
+        if(lotTimeType == null) {
+            if(ema != null) {
+                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), getLotTypeName(lotType), lotTimeTypeName);
+            }
+        } else {
+            LotTime lotTime = inventoryControl.getLotTimeForUpdate(lot, lotTimeType);
+
+            if(lotTime == null) {
+                if(ema != null) {
+                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), getLotTypeName(lotType), lotDetail.getLotName(), lotTimeTypeName);
+                }
+            } else {
+                inventoryControl.deleteLotTime(lotTime, deletedBy);
+            }
+        }
+    }
+
+}

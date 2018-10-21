@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Sales">
+            <tables>
+                <table namePlural="SalesOrderBatches" nameSingular="SalesOrderBatch" columnPrefix="salordbtch">
+                    <columns>
+                        <column name="SalesOrderBatchId" type="EID" nullAllowed="false" />
+                        <column name="BatchId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Batches" destinationColumn="BatchId" />
+                        <column name="PaymentMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentMethods" destinationColumn="PaymentMethodId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SalesOrderBatchId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="BatchId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PaymentMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SalesOrders" nameSingular="SalesOrder" columnPrefix="salord">
+                    <columns>
+                        <column name="SalesOrderId" type="EID" nullAllowed="false" />
+                        <column name="OrderId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Orders" destinationColumn="OrderId" />
+                        <column name="OfferUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
+                        <column name="AssociateReferralId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="AssociateReferrals" destinationColumn="AssociateReferralId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SalesOrderId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OrderId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OfferUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="AssociateReferralId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SalesOrderLines" nameSingular="SalesOrderLine" columnPrefix="salordl">
+                    <columns>
+                        <column name="SalesOrderLineId" type="EID" nullAllowed="false" />
+                        <column name="OrderLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OrderLines" destinationColumn="OrderLineId" />
+                        <column name="OfferUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
+                        <column name="AssociateReferralId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="AssociateReferrals" destinationColumn="AssociateReferralId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SalesOrderLineId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OrderLineId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OfferUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="AssociateReferralId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

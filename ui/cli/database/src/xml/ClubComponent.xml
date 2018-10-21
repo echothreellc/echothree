@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Club">
+            <tables>
+                <table namePlural="Clubs" nameSingular="Club" columnPrefix="clb">
+                    <columns>
+                        <column name="ClubId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ClubDetails" destinationColumn="ClubDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ClubDetails" destinationColumn="ClubDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ClubId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ClubDetails" nameSingular="ClubDetail" columnPrefix="clbdt">
+                    <columns>
+                        <column name="ClubDetailId" type="EID" nullAllowed="false" />
+                        <column name="ClubId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Clubs" destinationColumn="ClubId" />
+                        <column name="ClubName" type="Name" nullAllowed="false" />
+                        <column name="SubscriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SubscriptionTypes" destinationColumn="SubscriptionTypeId" />
+                        <column name="ClubPriceFilterId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Filters" destinationColumn="FilterId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ClubDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ClubId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ClubName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="SubscriptionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ClubPriceFilterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ClubDescriptions" nameSingular="ClubDescription" columnPrefix="clbd">
+                    <columns>
+                        <column name="ClubDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ClubId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Clubs" destinationColumn="ClubId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ClubDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ClubId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ClubItemTypes" nameSingular="ClubItemType" columnPrefix="clbitmtyp">
+                    <columns>
+                        <column name="ClubItemTypeId" type="EID" nullAllowed="false" />
+                        <column name="ClubItemTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ClubItemTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ClubItemTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ClubItemTypeDescriptions" nameSingular="ClubItemTypeDescription" columnPrefix="clbitmtypd">
+                    <columns>
+                        <column name="ClubItemTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ClubItemTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ClubItemTypes" destinationColumn="ClubItemTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ClubItemTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ClubItemTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ClubItems" nameSingular="ClubItem" columnPrefix="clbitm">
+                    <columns>
+                        <column name="ClubItemId" type="EID" nullAllowed="false" />
+                        <column name="ClubId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Clubs" destinationColumn="ClubId" />
+                        <column name="ClubItemTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ClubItemTypes" destinationColumn="ClubItemTypeId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="SubscriptionTime" type="Measurement" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ClubItemId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ClubId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ClubItemTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index4">
+                            <indexColumn name="ClubId" />
+                            <indexColumn name="ClubItemTypeId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

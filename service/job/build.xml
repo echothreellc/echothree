@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="job" default="jar" basedir=".">
+
+    <property file="build.properties"/>
+    <property file="${component.home}/environment.properties"/>
+    <property file="${component.home}/build.properties"/>
+
+    <path id="build.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${build.dir.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+        <pathelement location="${build.dir}/jars/echothree-client.jar"/>
+    </path>
+
+    <target name="prepare">
+        <mkdir dir="${service.job.classbindir}" />
+        <mkdir dir="${service.job.jardir}" />
+    </target>
+ 
+    <target name="compile" depends="prepare">
+        <javac
+            debug="on"
+            source="1.8"
+            target="1.8"
+            srcdir="${service.job.javasrc}"
+            destdir="${service.job.classbindir}"
+            includeAntRuntime="true"
+            classpathref="build.classpath" >
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+        </javac>
+    </target>
+    
+    <target name="jar" depends="compile">
+        <jar destfile="${service.job.jarfile}">
+            <metainf dir="${service.job.metadatasrc}">
+                <include name="*.properties"/>
+                <include name="*.xml"/>
+            </metainf>
+            <fileset dir="${service.job.classbindir}">
+                <include name="**/*.class" />
+            </fileset>
+            <!-- EchoThree -->
+            <zipfileset src="${component.home}/build/jars/echothree-client.jar" excludes="META-INF/*" />
+        </jar>
+    </target>
+
+    <target name="deploy" depends="jar">
+        <copy file="${service.job.jarfile}" todir="../${wildfly.home.deploy}" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${service.job.builddir}" />
+    </target>
+
+</project>

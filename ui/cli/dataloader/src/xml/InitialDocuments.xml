@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <documentTypeUsageTypes>
+        <documentTypeUsageType documentTypeUsageTypeName="TEST" isDefault="true" sortOrder="1">
+            <documentTypeUsageTypeDescription languageIsoName="en" description="Test Document Type Usage Type" />
+            <partyTypeDocumentTypeUsageType partyTypeName="COMPANY" isDefault="false" sortOrder="1" />
+        </documentTypeUsageType>
+        <documentTypeUsageType documentTypeUsageTypeName="PARTY_IMAGE" isDefault="false" sortOrder="1">
+            <documentTypeUsageTypeDescription languageIsoName="en" description="Party Image" />
+            <partyTypeDocumentTypeUsageType partyTypeName="CUSTOMER" isDefault="false" sortOrder="1" />
+            <partyTypeDocumentTypeUsageType partyTypeName="EMPLOYEE" isDefault="false" sortOrder="1" />
+            <partyTypeDocumentTypeUsageType partyTypeName="VENDOR" isDefault="false" sortOrder="1" />
+        </documentTypeUsageType>
+    </documentTypeUsageTypes>
+    <documentTypes>
+        <documentType documentTypeName="COMMUNICATION_EVENT" isDefault="false" sortOrder="1">
+            <documentTypeDescription languageIsoName="en" description="Communication Event" />
+        </documentType>
+        <documentType documentTypeName="COMMUNICATION_EVENT_EMAIL" parentDocumentTypeName="COMMUNICATION_EVENT" isDefault="true" sortOrder="1">
+            <documentTypeDescription languageIsoName="en" description="Communication Event Email" />
+        </documentType>
+        <documentType documentTypeName="PRINTER_GROUP_JOB" isDefault="false" sortOrder="1">
+            <documentTypeDescription languageIsoName="en" description="Printer Group Job" />
+        </documentType>
+        <documentType documentTypeName="TEST_DOCUMENT_TYPE" isDefault="false" sortOrder="1">
+            <documentTypeDescription languageIsoName="en" description="Test Document Type" />
+            <documentTypeUsage documentTypeUsageTypeName="TEST" isDefault="true" sortOrder="1" />
+        </documentType>
+        <documentType documentTypeName="PARTY" isDefault="false" sortOrder="1">
+            <documentTypeDescription languageIsoName="en" description="Party" />
+        </documentType>
+        <documentType documentTypeName="HEADSHOT" parentDocumentTypeName="PARTY" mimeTypeUsageTypeName="IMAGE" isDefault="false" sortOrder="1">
+            <documentTypeDescription languageIsoName="en" description="Headshot" />
+            <documentTypeUsage documentTypeUsageTypeName="PARTY_IMAGE" isDefault="true" sortOrder="1" maximumInstances="1" />
+        </documentType>
+    </documentTypes>
+</initialData>

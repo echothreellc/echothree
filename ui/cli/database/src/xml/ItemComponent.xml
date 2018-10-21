@@ -1,0 +1,2065 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Item">
+            <tables>
+                <table namePlural="ItemTypes" nameSingular="ItemType" columnPrefix="ityp">
+                    <columns>
+                        <column name="ItemTypeId" type="EID" nullAllowed="false" />
+                        <column name="ItemTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ItemTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemTypeDescriptions" nameSingular="ItemTypeDescription" columnPrefix="itypd">
+                    <columns>
+                        <column name="ItemTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemTypes" destinationColumn="ItemTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDeliveryTypes" nameSingular="ItemDeliveryType" columnPrefix="idlvrtyp">
+                    <columns>
+                        <column name="ItemDeliveryTypeId" type="EID" nullAllowed="false" />
+                        <column name="ItemDeliveryTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDeliveryTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ItemDeliveryTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDeliveryTypeDescriptions" nameSingular="ItemDeliveryTypeDescription" columnPrefix="idlvrtypd">
+                    <columns>
+                        <column name="ItemDeliveryTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemDeliveryTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDeliveryTypes" destinationColumn="ItemDeliveryTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDeliveryTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDeliveryTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemInventoryTypes" nameSingular="ItemInventoryType" columnPrefix="iinvtyp">
+                    <columns>
+                        <column name="ItemInventoryTypeId" type="EID" nullAllowed="false" />
+                        <column name="ItemInventoryTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemInventoryTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ItemInventoryTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemInventoryTypeDescriptions" nameSingular="ItemInventoryTypeDescription" columnPrefix="iinvtypd">
+                    <columns>
+                        <column name="ItemInventoryTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemInventoryTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemInventoryTypes" destinationColumn="ItemInventoryTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemInventoryTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemInventoryTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemUseTypes" nameSingular="ItemUseType" columnPrefix="iutyp">
+                    <columns>
+                        <column name="ItemUseTypeId" type="EID" nullAllowed="false" />
+                        <column name="ItemUseTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemUseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ItemUseTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemUseTypeDescriptions" nameSingular="ItemUseTypeDescription" columnPrefix="iutypd">
+                    <columns>
+                        <column name="ItemUseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemUseTypes" destinationColumn="ItemUseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemUseTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemUseTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAliasChecksumTypes" nameSingular="ItemAliasChecksumType" columnPrefix="iact">
+                    <columns>
+                        <column name="ItemAliasChecksumTypeId" type="EID" nullAllowed="false" />
+                        <column name="ItemAliasChecksumTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAliasChecksumTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ItemAliasChecksumTypeName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAliasChecksumTypeDescriptions" nameSingular="ItemAliasChecksumTypeDescription" columnPrefix="iactd">
+                    <columns>
+                        <column name="ItemAliasChecksumTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemAliasChecksumTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAliasChecksumTypes" destinationColumn="ItemAliasChecksumTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAliasChecksumTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemAliasChecksumTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAliasTypes" nameSingular="ItemAliasType" columnPrefix="iat">
+                    <columns>
+                        <column name="ItemAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAliasTypeDetails" destinationColumn="ItemAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAliasTypeDetails" destinationColumn="ItemAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAliasTypeDetails" nameSingular="ItemAliasTypeDetail" columnPrefix="iatdt">
+                    <columns>
+                        <column name="ItemAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAliasTypes" destinationColumn="ItemAliasTypeId" />
+                        <column name="ItemAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="ItemAliasChecksumTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAliasChecksumTypes" destinationColumn="ItemAliasChecksumTypeId" />
+                        <column name="AllowMultiple" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemAliasChecksumTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="AllowMultiple" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAliasTypeDescriptions" nameSingular="ItemAliasTypeDescription" columnPrefix="iatd">
+                    <columns>
+                        <column name="ItemAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAliasTypes" destinationColumn="ItemAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemPriceTypes" nameSingular="ItemPriceType" columnPrefix="ipt">
+                    <columns>
+                        <column name="ItemPriceTypeId" type="EID" nullAllowed="false" />
+                        <column name="ItemPriceTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemPriceTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ItemPriceTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemPriceTypeDescriptions" nameSingular="ItemPriceTypeDescription" columnPrefix="iptd">
+                    <columns>
+                        <column name="ItemPriceTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemPriceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemPriceTypes" destinationColumn="ItemPriceTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemPriceTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemPriceTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAdditionalChargeTypes" nameSingular="ItemAdditionalChargeType" columnPrefix="itmaddtlct">
+                    <columns>
+                        <column name="ItemAdditionalChargeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAdditionalChargeTypeDetails" destinationColumn="ItemAdditionalChargeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAdditionalChargeTypeDetails" destinationColumn="ItemAdditionalChargeTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAdditionalChargeTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAdditionalChargeTypeDetails" nameSingular="ItemAdditionalChargeTypeDetail" columnPrefix="itmaddtlctdt">
+                    <columns>
+                        <column name="ItemAdditionalChargeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemAdditionalChargeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAdditionalChargeTypes" destinationColumn="ItemAdditionalChargeTypeId" />
+                        <column name="ItemAdditionalChargeTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAdditionalChargeTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemAdditionalChargeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemAdditionalChargeTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAdditionalChargeTypeDescriptions" nameSingular="ItemAdditionalChargeTypeDescription" columnPrefix="itmaddtlctd">
+                    <columns>
+                        <column name="ItemAdditionalChargeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemAdditionalChargeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAdditionalChargeTypes" destinationColumn="ItemAdditionalChargeTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAdditionalChargeTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemAdditionalChargeTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Items" nameSingular="Item" columnPrefix="itm">
+                    <columns>
+                        <column name="ItemId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDetails" destinationColumn="ItemDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDetails" destinationColumn="ItemDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDetails" nameSingular="ItemDetail" columnPrefix="itmdt">
+                    <columns>
+                        <column name="ItemDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="ItemName" type="Name" nullAllowed="false" />
+                        <column name="ItemTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemTypes" destinationColumn="ItemTypeId" />
+                        <column name="ItemUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemUseTypes" destinationColumn="ItemUseTypeId" />
+                        <column name="ItemCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemCategories" destinationColumn="ItemCategoryId" />
+                        <column name="ItemAccountingCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAccountingCategories" destinationColumn="ItemAccountingCategoryId" />
+                        <column name="ItemPurchasingCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemPurchasingCategories" destinationColumn="ItemPurchasingCategoryId" />
+                        <column name="CompanyPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ItemDeliveryTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDeliveryTypes" destinationColumn="ItemDeliveryTypeId" />
+                        <column name="ItemInventoryTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemInventoryTypes" destinationColumn="ItemInventoryTypeId" />
+                        <column name="InventorySerialized" type="Boolean" nullAllowed="true" />
+                        <column name="SerialNumberSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="ShippingChargeExempt" type="Boolean" nullAllowed="false" />
+                        <column name="ShippingStartTime" type="Time" nullAllowed="false" />
+                        <column name="ShippingEndTime" type="Time" nullAllowed="true" />
+                        <column name="SalesOrderStartTime" type="Time" nullAllowed="false" />
+                        <column name="SalesOrderEndTime" type="Time" nullAllowed="true" />
+                        <column name="PurchaseOrderStartTime" type="Time" nullAllowed="true" />
+                        <column name="PurchaseOrderEndTime" type="Time" nullAllowed="true" />
+                        <column name="AllowClubDiscounts" type="Boolean" nullAllowed="false" />
+                        <column name="AllowCouponDiscounts" type="Boolean" nullAllowed="false" />
+                        <column name="AllowAssociatePayments" type="Boolean" nullAllowed="false" />
+                        <column name="UnitOfMeasureKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureKinds" destinationColumn="UnitOfMeasureKindId" />
+                        <column name="ItemPriceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemPriceTypes" destinationColumn="ItemPriceTypeId" />
+                        <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="ReturnPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="StylePathId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="StylePaths" destinationColumn="StylePathId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="ItemName" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ItemUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ItemCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ItemAccountingCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ItemPurchasingCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="CompanyPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="ItemDeliveryTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index10">
+                            <indexColumn name="ItemInventoryTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index11">
+                            <indexColumn name="SerialNumberSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index12">
+                            <indexColumn name="UnitOfMeasureKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index13">
+                            <indexColumn name="ItemPriceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index14">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index15">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index16">
+                            <indexColumn name="StylePathId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemUnitOfMeasureTypes" nameSingular="ItemUnitOfMeasureType" columnPrefix="iuomt">
+                    <columns>
+                        <column name="ItemUnitOfMeasureTypeId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemUnitOfMeasureTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemKitOptions" nameSingular="ItemKitOption" columnPrefix="ikopt">
+                    <columns>
+                        <column name="ItemKitOptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="AllowPartialShipments" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemKitOptionId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ItemId"/>
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemShippingTimes" nameSingular="ItemShippingTime" columnPrefix="istim">
+                    <columns>
+                        <column name="ItemShippingTimeId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="ShippingStartTime" type="Time" nullAllowed="false" />
+                        <column name="ShippingEndTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemShippingTimeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ItemId"/>
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CustomerTypeId"/>
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ItemId"/>
+                            <indexColumn name="CustomerTypeId"/>
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemCountryOfOrigins" nameSingular="ItemCountryOfOrigin" columnPrefix="icoorgn">
+                    <columns>
+                        <column name="ItemCountryOfOriginId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="CountryGeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="Percent" type="Percent" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemCountryOfOriginId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId"/>
+                            <indexColumn name="CountryGeoCodeId"/>
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId"/>
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CountryGeoCodeId"/>
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemCategories" nameSingular="ItemCategory" columnPrefix="ic">
+                    <columns>
+                        <column name="ItemCategoryId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemCategoryDetails" destinationColumn="ItemCategoryDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemCategoryDetails" destinationColumn="ItemCategoryDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemCategoryId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemCategoryDetails" nameSingular="ItemCategoryDetail" columnPrefix="icdt">
+                    <columns>
+                        <column name="ItemCategoryDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemCategories" destinationColumn="ItemCategoryId" />
+                        <column name="ItemCategoryName" type="Name" nullAllowed="false" />
+                        <column name="ParentItemCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemCategories" destinationColumn="ItemCategoryId" />
+                        <column name="ItemSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemCategoryDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemCategoryName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentItemCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ItemSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemCategoryDescriptions" nameSingular="ItemCategoryDescription" columnPrefix="icd">
+                    <columns>
+                        <column name="ItemCategoryDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemCategories" destinationColumn="ItemCategoryId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemCategoryDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemCategoryId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAliases" nameSingular="ItemAlias" columnPrefix="itmal">
+                    <columns>
+                        <column name="ItemAliasId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="ItemAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAliasTypes" destinationColumn="ItemAliasTypeId" />
+                        <column name="Alias" type="ItemAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAliasId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ItemAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index5">
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="Alias" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemPrices" nameSingular="ItemPrice" columnPrefix="itmp">
+                    <columns>
+                        <column name="ItemPriceId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemPriceId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemFixedPrices" nameSingular="ItemFixedPrice" columnPrefix="itmfp">
+                    <columns>
+                        <column name="ItemFixedPriceId" type="EID" nullAllowed="false" />
+                        <column name="ItemPriceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemPrices" destinationColumn="ItemPriceId" />
+                        <column name="UnitPrice" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemFixedPriceId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemPriceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemVariablePrices" nameSingular="ItemVariablePrice" columnPrefix="itmvp">
+                    <columns>
+                        <column name="ItemVariablePriceId" type="EID" nullAllowed="false" />
+                        <column name="ItemPriceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemPrices" destinationColumn="ItemPriceId" />
+                        <column name="MinimumUnitPrice" type="Currency" nullAllowed="false" />
+                        <column name="MaximumUnitPrice" type="Currency" nullAllowed="false" />
+                        <column name="UnitPriceIncrement" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemVariablePriceId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemPriceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemAdditionalCharges" nameSingular="ItemAdditionalCharge" columnPrefix="itmaddtlc">
+                    <columns>
+                        <column name="ItemAdditionalChargeId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="ItemAdditionalChargeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemAdditionalChargeTypes" destinationColumn="ItemAdditionalChargeTypeId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="MinimumQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="MaximumQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="UnitPrice" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemAdditionalChargeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemAdditionalChargeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemPackCheckRequirements" nameSingular="ItemPackCheckRequirement" columnPrefix="ipcr">
+                    <columns>
+                        <column name="ItemPackCheckRequirementId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="MinimumQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="MaximumQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemPackCheckRequirementId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemUnitPriceLimits" nameSingular="ItemUnitPriceLimit" columnPrefix="iupl">
+                    <columns>
+                        <column name="ItemUnitPriceLimitId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="MinimumUnitPrice" type="Currency" nullAllowed="true" />
+                        <column name="MaximumUnitPrice" type="Currency" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemUnitPriceLimitId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index4">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemUnitLimits" nameSingular="ItemUnitLimit" columnPrefix="iul">
+                    <columns>
+                        <column name="ItemUnitLimitId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="MinimumQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="MaximumQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemUnitLimitId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index4">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemUnitCustomerTypeLimits" nameSingular="ItemUnitCustomerTypeLimit" columnPrefix="iuctl">
+                    <columns>
+                        <column name="ItemUnitCustomerTypeLimitId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="MinimumQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="MaximumQuantity" type="Measurement" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemUnitCustomerTypeLimitId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                       <index type="Multiple" name="Index4">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemKitMembers" nameSingular="ItemKitMember" columnPrefix="ikm">
+                    <columns>
+                        <column name="ItemKitMemberId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="MemberItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="MemberInventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="MemberUnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemKitMemberId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="MemberItemId" />
+                            <indexColumn name="MemberInventoryConditionId" />
+                            <indexColumn name="MemberUnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="MemberItemId" />
+                            <indexColumn name="MemberInventoryConditionId" />
+                            <indexColumn name="MemberUnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="MemberItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="MemberInventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index10">
+                            <indexColumn name="MemberUnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index11">
+                            <indexColumn name="MemberItemId" />
+                            <indexColumn name="MemberUnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptionTypes" nameSingular="ItemDescriptionType" columnPrefix="idt">
+                    <columns>
+                        <column name="ItemDescriptionTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDescriptionTypeDetails" destinationColumn="ItemDescriptionTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDescriptionTypeDetails" destinationColumn="ItemDescriptionTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptionTypeDetails" nameSingular="ItemDescriptionTypeDetail" columnPrefix="idtdt">
+                    <columns>
+                        <column name="ItemDescriptionTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptionTypes" destinationColumn="ItemDescriptionTypeId" />
+                        <column name="ItemDescriptionTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentItemDescriptionTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDescriptionTypes" destinationColumn="ItemDescriptionTypeId" />
+                        <column name="UseParentIfMissing" type="Boolean" nullAllowed="false" />
+                        <column name="MimeTypeUsageTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypeUsageTypes" destinationColumn="MimeTypeUsageTypeId" />
+                        <column name="CheckContentWebAddress" type="Boolean" nullAllowed="false" />
+                        <column name="IncludeInIndex" type="Boolean" nullAllowed="false" />
+                        <column name="IndexDefault" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemDescriptionTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentItemDescriptionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="MimeTypeUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="IncludeInIndex" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="IndexDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptionTypeDescriptions" nameSingular="ItemDescriptionTypeDescription" columnPrefix="idtd">
+                    <columns>
+                        <column name="ItemDescriptionTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptionTypes" destinationColumn="ItemDescriptionTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemDescriptionTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemImageDescriptionTypes" nameSingular="ItemImageDescriptionType" columnPrefix="iimgdt">
+                    <columns>
+                        <column name="ItemImageDescriptionTypeId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptionTypes" destinationColumn="ItemDescriptionTypeId" />
+                        <column name="MinimumHeight" type="Integer" nullAllowed="true" />
+                        <column name="MinimumWidth" type="Integer" nullAllowed="true" />
+                        <column name="MaximumHeight" type="Integer" nullAllowed="true" />
+                        <column name="MaximumWidth" type="Integer" nullAllowed="true" />
+                        <column name="PreferredHeight" type="Integer" nullAllowed="true" />
+                        <column name="PreferredWidth" type="Integer" nullAllowed="true" />
+                        <column name="PreferredMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Quality" type="Integer" nullAllowed="true" />
+                        <column name="ScaleFromParent" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemImageDescriptionTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PreferredMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptionTypeUseTypes" nameSingular="ItemDescriptionTypeUseType" columnPrefix="idtutyp">
+                    <columns>
+                        <column name="ItemDescriptionTypeUseTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDescriptionTypeUseTypeDetails" destinationColumn="ItemDescriptionTypeUseTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDescriptionTypeUseTypeDetails" destinationColumn="ItemDescriptionTypeUseTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionTypeUseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptionTypeUseTypeDetails" nameSingular="ItemDescriptionTypeUseTypeDetail" columnPrefix="idtutypdt">
+                    <columns>
+                        <column name="ItemDescriptionTypeUseTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionTypeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptionTypeUseTypes" destinationColumn="ItemDescriptionTypeUseTypeId" />
+                        <column name="ItemDescriptionTypeUseTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionTypeUseTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionTypeUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemDescriptionTypeUseTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptionTypeUseTypeDescriptions" nameSingular="ItemDescriptionTypeUseTypeDescription" columnPrefix="idtutypd">
+                    <columns>
+                        <column name="ItemDescriptionTypeUseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionTypeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptionTypeUseTypes" destinationColumn="ItemDescriptionTypeUseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionTypeUseTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionTypeUseTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemDescriptionTypeUseTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptionTypeUses" nameSingular="ItemDescriptionTypeUse" columnPrefix="idtu">
+                    <columns>
+                        <column name="ItemDescriptionTypeUseId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptionTypes" destinationColumn="ItemDescriptionTypeId" />
+                        <column name="ItemDescriptionTypeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptionTypeUseTypes" destinationColumn="ItemDescriptionTypeUseTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionTypeUseId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionTypeId" />
+                            <indexColumn name="ItemDescriptionTypeUseTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemDescriptionTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemDescriptionTypeUseTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemImageTypes" nameSingular="ItemImageType" columnPrefix="iimgt">
+                    <columns>
+                        <column name="ItemImageTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemImageTypeDetails" destinationColumn="ItemImageTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemImageTypeDetails" destinationColumn="ItemImageTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemImageTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemImageTypeDetails" nameSingular="ItemImageTypeDetail" columnPrefix="iimgtdt">
+                    <columns>
+                        <column name="ItemImageTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemImageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemImageTypes" destinationColumn="ItemImageTypeId" />
+                        <column name="ItemImageTypeName" type="Name" nullAllowed="false" />
+                        <column name="PreferredMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Quality" type="Integer" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemImageTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemImageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemImageTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PreferredMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemImageTypeDescriptions" nameSingular="ItemImageTypeDescription" columnPrefix="iimgtd">
+                    <columns>
+                        <column name="ItemImageTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemImageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemImageTypes" destinationColumn="ItemImageTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemImageTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemImageTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemImageTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptions" nameSingular="ItemDescription" columnPrefix="idesc">
+                    <columns>
+                        <column name="ItemDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDescriptionDetails" destinationColumn="ItemDescriptionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemDescriptionDetails" destinationColumn="ItemDescriptionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemDescriptionDetails" nameSingular="ItemDescriptionDetail" columnPrefix="idescdt">
+                    <columns>
+                        <column name="ItemDescriptionDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptions" destinationColumn="ItemDescriptionId" />
+                        <column name="ItemDescriptionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptionTypes" destinationColumn="ItemDescriptionTypeId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="MimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemDescriptionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemDescriptionTypeId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="MimeTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemStringDescriptions" nameSingular="ItemStringDescription" columnPrefix="isdesc">
+                    <columns>
+                        <column name="ItemStringDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptions" destinationColumn="ItemDescriptionId" />
+                        <column name="StringDescription" type="String" maxLength="512" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemStringDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemClobDescriptions" nameSingular="ItemClobDescription" columnPrefix="icdesc">
+                    <columns>
+                        <column name="ItemClobDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptions" destinationColumn="ItemDescriptionId" />
+                        <column name="ClobDescription" type="CLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemClobDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemBlobDescriptions" nameSingular="ItemBlobDescription" columnPrefix="ibdesc">
+                    <columns>
+                        <column name="ItemBlobDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptions" destinationColumn="ItemDescriptionId" />
+                        <column name="BlobDescription" type="BLOB" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemBlobDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemImageDescriptions" nameSingular="ItemImageDescription" columnPrefix="iimgdesc">
+                    <columns>
+                        <column name="ItemImageDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemDescriptionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemDescriptions" destinationColumn="ItemDescriptionId" />
+                        <column name="ItemImageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemImageTypes" destinationColumn="ItemImageTypeId" />
+                        <column name="Height" type="Integer" nullAllowed="true" />
+                        <column name="Width" type="Integer" nullAllowed="true" />
+                        <column name="ScaledFromParent" type="Boolean" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemImageDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemDescriptionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemImageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ScaledFromParent" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemVolumes" nameSingular="ItemVolume" columnPrefix="ivol">
+                    <columns>
+                        <column name="ItemVolumeId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Height" type="Measurement" nullAllowed="false" />
+                        <column name="Width" type="Measurement" nullAllowed="false" />
+                        <column name="Depth" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemVolumeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemWeights" nameSingular="ItemWeight" columnPrefix="iwght">
+                    <columns>
+                        <column name="ItemWeightId" type="EID" nullAllowed="false" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Weight" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemWeightId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RelatedItemTypes" nameSingular="RelatedItemType" columnPrefix="rltityp">
+                    <columns>
+                        <column name="RelatedItemTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RelatedItemTypeDetails" destinationColumn="RelatedItemTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RelatedItemTypeDetails" destinationColumn="RelatedItemTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RelatedItemTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RelatedItemTypeDetails" nameSingular="RelatedItemTypeDetail" columnPrefix="rltitypdt">
+                    <columns>
+                        <column name="RelatedItemTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="RelatedItemTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RelatedItemTypes" destinationColumn="RelatedItemTypeId" />
+                        <column name="RelatedItemTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RelatedItemTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RelatedItemTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="RelatedItemTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RelatedItemTypeDescriptions" nameSingular="RelatedItemTypeDescription" columnPrefix="rltitypd">
+                    <columns>
+                        <column name="RelatedItemTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="RelatedItemTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RelatedItemTypes" destinationColumn="RelatedItemTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RelatedItemTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RelatedItemTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="RelatedItemTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RelatedItems" nameSingular="RelatedItem" columnPrefix="rlti">
+                    <columns>
+                        <column name="RelatedItemId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RelatedItemDetails" destinationColumn="RelatedItemDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RelatedItemDetails" destinationColumn="RelatedItemDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RelatedItemId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RelatedItemDetails" nameSingular="RelatedItemDetail" columnPrefix="rltidt">
+                    <columns>
+                        <column name="RelatedItemDetailId" type="EID" nullAllowed="false" />
+                        <column name="RelatedItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RelatedItems" destinationColumn="RelatedItemId" />
+                        <column name="RelatedItemTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RelatedItemTypes" destinationColumn="RelatedItemTypeId" />
+                        <column name="FromItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="ToItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RelatedItemDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RelatedItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="RelatedItemTypeId" />
+                            <indexColumn name="FromItemId" />
+                            <indexColumn name="ToItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="RelatedItemTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="RelatedItemTypeId" />
+                            <indexColumn name="FromItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="RelatedItemTypeId" />
+                            <indexColumn name="ToItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="FromItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ToItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodes" nameSingular="HarmonizedTariffScheduleCode" columnPrefix="hztsc">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeDetails" destinationColumn="HarmonizedTariffScheduleCodeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeDetails" destinationColumn="HarmonizedTariffScheduleCodeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeDetails" nameSingular="HarmonizedTariffScheduleCodeDetail" columnPrefix="hztscdt">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeDetailId" type="EID" nullAllowed="false" />
+                        <column name="HarmonizedTariffScheduleCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodes" destinationColumn="HarmonizedTariffScheduleCodeId" />
+                        <column name="CountryGeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="HarmonizedTariffScheduleCodeName" type="Name" nullAllowed="false" />
+                        <column name="FirstHarmonizedTariffScheduleCodeUnitId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUnits" destinationColumn="HarmonizedTariffScheduleCodeUnitId" />
+                        <column name="SecondHarmonizedTariffScheduleCodeUnitId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUnits" destinationColumn="HarmonizedTariffScheduleCodeUnitId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="HarmonizedTariffScheduleCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CountryGeoCodeId" />
+                            <indexColumn name="HarmonizedTariffScheduleCodeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CountryGeoCodeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="FirstHarmonizedTariffScheduleCodeUnitId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="SecondHarmonizedTariffScheduleCodeUnitId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeTranslations" nameSingular="HarmonizedTariffScheduleCodeTranslation" columnPrefix="hztsctr">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeTranslationId" type="EID" nullAllowed="false" />
+                        <column name="HarmonizedTariffScheduleCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodes" destinationColumn="HarmonizedTariffScheduleCodeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="OverviewMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Overview" type="CLOB" nullAllowed="true" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="HarmonizedTariffScheduleCodeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="HarmonizedTariffScheduleCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="OverviewMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeUnits" nameSingular="HarmonizedTariffScheduleCodeUnit" columnPrefix="hztscunt">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeUnitId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUnitDetails" destinationColumn="HarmonizedTariffScheduleCodeUnitDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUnitDetails" destinationColumn="HarmonizedTariffScheduleCodeUnitDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUnitId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeUnitDetails" nameSingular="HarmonizedTariffScheduleCodeUnitDetail" columnPrefix="hztscuntdt">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeUnitDetailId" type="EID" nullAllowed="false" />
+                        <column name="HarmonizedTariffScheduleCodeUnitId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUnits" destinationColumn="HarmonizedTariffScheduleCodeUnitId" />
+                        <column name="HarmonizedTariffScheduleCodeUnitName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUnitDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUnitId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUnitName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeUnitDescriptions" nameSingular="HarmonizedTariffScheduleCodeUnitDescription" columnPrefix="hztscuntd">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeUnitDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="HarmonizedTariffScheduleCodeUnitId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUnits" destinationColumn="HarmonizedTariffScheduleCodeUnitId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="CLOB" nullAllowed="true" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUnitDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUnitId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUnitId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeUseTypes" nameSingular="HarmonizedTariffScheduleCodeUseType" columnPrefix="hztscutyp">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeUseTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUseTypeDetails" destinationColumn="HarmonizedTariffScheduleCodeUseTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUseTypeDetails" destinationColumn="HarmonizedTariffScheduleCodeUseTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeUseTypeDetails" nameSingular="HarmonizedTariffScheduleCodeUseTypeDetail" columnPrefix="hztscutypdt">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeUseTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="HarmonizedTariffScheduleCodeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUseTypes" destinationColumn="HarmonizedTariffScheduleCodeUseTypeId" />
+                        <column name="HarmonizedTariffScheduleCodeUseTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeUseTypeDescriptions" nameSingular="HarmonizedTariffScheduleCodeUseTypeDescription" columnPrefix="hztscutypd">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeUseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="HarmonizedTariffScheduleCodeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUseTypes" destinationColumn="HarmonizedTariffScheduleCodeUseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="CLOB" nullAllowed="true" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="HarmonizedTariffScheduleCodeUses" nameSingular="HarmonizedTariffScheduleCodeUse" columnPrefix="hztscu">
+                    <columns>
+                        <column name="HarmonizedTariffScheduleCodeUseId" type="EID" nullAllowed="false" />
+                        <column name="HarmonizedTariffScheduleCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodes" destinationColumn="HarmonizedTariffScheduleCodeId" />
+                        <column name="HarmonizedTariffScheduleCodeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUseTypes" destinationColumn="HarmonizedTariffScheduleCodeUseTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="HarmonizedTariffScheduleCodeId" />
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="HarmonizedTariffScheduleCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemHarmonizedTariffScheduleCodes" nameSingular="ItemHarmonizedTariffScheduleCode" columnPrefix="itmhztsc">
+                    <columns>
+                        <column name="ItemHarmonizedTariffScheduleCodeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemHarmonizedTariffScheduleCodeDetails" destinationColumn="ItemHarmonizedTariffScheduleCodeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemHarmonizedTariffScheduleCodeDetails" destinationColumn="ItemHarmonizedTariffScheduleCodeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemHarmonizedTariffScheduleCodeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemHarmonizedTariffScheduleCodeDetails" nameSingular="ItemHarmonizedTariffScheduleCodeDetail" columnPrefix="itmhztscdt">
+                    <columns>
+                        <column name="ItemHarmonizedTariffScheduleCodeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemHarmonizedTariffScheduleCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemHarmonizedTariffScheduleCodes" destinationColumn="ItemHarmonizedTariffScheduleCodeId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="CountryGeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="HarmonizedTariffScheduleCodeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodeUseTypes" destinationColumn="HarmonizedTariffScheduleCodeUseTypeId" />
+                        <column name="HarmonizedTariffScheduleCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="HarmonizedTariffScheduleCodes" destinationColumn="HarmonizedTariffScheduleCodeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemHarmonizedTariffScheduleCodeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemHarmonizedTariffScheduleCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="CountryGeoCodeId" />
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CountryGeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="HarmonizedTariffScheduleCodeUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="HarmonizedTariffScheduleCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

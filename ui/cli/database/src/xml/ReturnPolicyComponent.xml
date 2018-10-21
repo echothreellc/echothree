@@ -1,0 +1,471 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="ReturnPolicy">
+            <tables>
+                <table namePlural="PartyReturnPolicies" nameSingular="PartyReturnPolicy" columnPrefix="prtnplcy">
+                    <columns>
+                        <column name="PartyReturnPolicyId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ReturnPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyReturnPolicyId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnKinds" nameSingular="ReturnKind" columnPrefix="rtnk">
+                    <columns>
+                        <column name="ReturnKindId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnKindDetails" destinationColumn="ReturnKindDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnKindDetails" destinationColumn="ReturnKindDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnKindId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnKindDetails" nameSingular="ReturnKindDetail" columnPrefix="rtnkdt">
+                    <columns>
+                        <column name="ReturnKindDetailId" type="EID" nullAllowed="false" />
+                        <column name="ReturnKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnKinds" destinationColumn="ReturnKindId" />
+                        <column name="ReturnKindName" type="Name" nullAllowed="false" />
+                        <column name="ReturnSequenceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnKindDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ReturnKindName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ReturnSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnKindDescriptions" nameSingular="ReturnKindDescription" columnPrefix="rtnkd">
+                    <columns>
+                        <column name="ReturnKindDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ReturnKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnKinds" destinationColumn="ReturnKindId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnKindDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnPolicies" nameSingular="ReturnPolicy" columnPrefix="rtnplcy">
+                    <columns>
+                        <column name="ReturnPolicyId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicyDetails" destinationColumn="ReturnPolicyDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicyDetails" destinationColumn="ReturnPolicyDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnPolicyId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnPolicyDetails" nameSingular="ReturnPolicyDetail" columnPrefix="rtnplcydt">
+                    <columns>
+                        <column name="ReturnPolicyDetailId" type="EID" nullAllowed="false" />
+                        <column name="ReturnPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="ReturnKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnKinds" destinationColumn="ReturnKindId" />
+                        <column name="ReturnPolicyName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnPolicyDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="ReturnPolicyName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnPolicyTranslations" nameSingular="ReturnPolicyTranslation" columnPrefix="rtnplcytr">
+                    <columns>
+                        <column name="ReturnPolicyTranslationId" type="EID" nullAllowed="false" />
+                        <column name="ReturnPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="PolicyMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Policy" type="CLOB" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnPolicyTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PolicyMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnPolicyReasons" nameSingular="ReturnPolicyReason" columnPrefix="rtnplcyrsn">
+                    <columns>
+                        <column name="ReturnPolicyReasonId" type="EID" nullAllowed="false" />
+                        <column name="ReturnPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="ReturnReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnReasons" destinationColumn="ReturnReasonId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnPolicyReasonId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ReturnReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ReturnReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnReasons" nameSingular="ReturnReason" columnPrefix="rtnrsn">
+                    <columns>
+                        <column name="ReturnReasonId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnReasonDetails" destinationColumn="ReturnReasonDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnReasonDetails" destinationColumn="ReturnReasonDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnReasonId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnReasonDetails" nameSingular="ReturnReasonDetail" columnPrefix="rtnrsndt">
+                    <columns>
+                        <column name="ReturnReasonDetailId" type="EID" nullAllowed="false" />
+                        <column name="ReturnReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnReasons" destinationColumn="ReturnReasonId" />
+                        <column name="ReturnKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnKinds" destinationColumn="ReturnKindId" />
+                        <column name="ReturnReasonName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnReasonDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="ReturnReasonName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnReasonDescriptions" nameSingular="ReturnReasonDescription" columnPrefix="rtnrsnd">
+                    <columns>
+                        <column name="ReturnReasonDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ReturnReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnReasons" destinationColumn="ReturnReasonId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnReasonDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnReasonId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnReasonTypes" nameSingular="ReturnReasonType" columnPrefix="rtnrsntyp">
+                    <columns>
+                        <column name="ReturnReasonTypeId" type="EID" nullAllowed="false" />
+                        <column name="ReturnReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnReasons" destinationColumn="ReturnReasonId" />
+                        <column name="ReturnTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnTypes" destinationColumn="ReturnTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnReasonTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnReasonId" />
+                            <indexColumn name="ReturnTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ReturnReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ReturnTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ReturnReasonId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnTypes" nameSingular="ReturnType" columnPrefix="rtntyp">
+                    <columns>
+                        <column name="ReturnTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnTypeDetails" destinationColumn="ReturnTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnTypeDetails" destinationColumn="ReturnTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnTypeDetails" nameSingular="ReturnTypeDetail" columnPrefix="rtntypdt">
+                    <columns>
+                        <column name="ReturnTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ReturnTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnTypes" destinationColumn="ReturnTypeId" />
+                        <column name="ReturnKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnKinds" destinationColumn="ReturnKindId" />
+                        <column name="ReturnTypeName" type="Name" nullAllowed="false" />
+                        <column name="ReturnSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="ReturnTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ReturnSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ReturnKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnTypeDescriptions" nameSingular="ReturnTypeDescription" columnPrefix="rtntypd">
+                    <columns>
+                        <column name="ReturnTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ReturnTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnTypes" destinationColumn="ReturnTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ReturnTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ReturnTypeShippingMethods" nameSingular="ReturnTypeShippingMethod" columnPrefix="rtntypshm">
+                    <columns>
+                        <column name="ReturnTypeShippingMethodId" type="EID" nullAllowed="false" />
+                        <column name="ReturnTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ReturnTypes" destinationColumn="ReturnTypeId" />
+                        <column name="ShippingMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShippingMethods" destinationColumn="ShippingMethodId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ReturnTypeShippingMethodId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ReturnTypeId" />
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ReturnTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ReturnTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

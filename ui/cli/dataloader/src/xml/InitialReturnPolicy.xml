@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <returnKinds>
+        <returnKind returnKindName="CUSTOMER_RETURN" returnSequenceTypeName="CUSTOMER_RETURN" isDefault="true" sortOrder="1">
+            <returnKindDescription languageIsoName="en" description="Customer Return" />
+            <returnPolicy returnPolicyName="DEFAULT" isDefault="true" sortOrder="1">
+                <returnPolicyTranslation languageIsoName="en" description="Default" />
+            </returnPolicy>
+            <returnPolicy returnPolicyName="NO_RETURNS" isDefault="false" sortOrder="1">
+                <returnPolicyTranslation languageIsoName="en" description="No Returns Allowed" />
+            </returnPolicy>
+            <returnReason returnReasonName="ORDERED_WRONG_ITEM" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Ordered the wrong item" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="FOUND_BETTER_PRICE" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Found better prices elsewhere" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="QUALITY_UNACCEPTABLE" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Item performance/quality is not up to expectations" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="NOT_COMPATIBLE" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Item is not fully compatible with existing system" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="NOT_PROPERLY_PACKAGED" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Item was not properly packaged to avoid damage in transit" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="MISSED_ESTIMATED_DELIVERY" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Item was not received by estimated delivery date" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="MISSING_PARTS" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Item is missing parts/accessories" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="DAMAGED_BY_CARRIER" isDefault="true" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Item was clearly damaged during shipment" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="true" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="DEFECTIVE" isDefault="true" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Item is defective" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="UNWANTED_ITEM" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Changed mind, no longer wanted" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnReason returnReasonName="INCORRECT_ITEM_SHIPPED" isDefault="false" sortOrder="1">
+                <returnReasonDescription languageIsoName="en" description="Selected Item in Shipment" />
+                <returnPolicyReason returnPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </returnReason>
+            <returnType returnTypeName="CREDIT_ON_RETURN" isDefault="false" sortOrder="1">
+                <returnTypeDescription languageIsoName="en" description="Account Credit on Return" />
+                <returnReasonType returnReasonName="ORDERED_WRONG_ITEM" isDefault="true" sortOrder="1" />
+                <returnReasonType returnReasonName="FOUND_BETTER_PRICE" isDefault="true" sortOrder="1" />
+                <returnReasonType returnReasonName="UNWANTED_ITEM" isDefault="true" sortOrder="1" />
+            </returnType>
+            <returnType returnTypeName="REFUND_ITEM_ON_RETURN" isDefault="false" sortOrder="1">
+                <returnTypeDescription languageIsoName="en" description="Refund on Return" />
+                <returnReasonType returnReasonName="ORDERED_WRONG_ITEM" isDefault="false" sortOrder="1" />
+                <returnReasonType returnReasonName="FOUND_BETTER_PRICE" isDefault="false" sortOrder="1" />
+                <returnReasonType returnReasonName="UNWANTED_ITEM" isDefault="false" sortOrder="1" />
+            </returnType>
+            <returnType returnTypeName="REFUND_ITEM_AND_SHIPPING_ON_RETURN" isDefault="false" sortOrder="1">
+                <returnTypeDescription languageIsoName="en" description="Refund Item and Shipping on Return" />
+                <returnReasonType returnReasonName="QUALITY_UNACCEPTABLE" isDefault="true" sortOrder="1" />
+                <returnReasonType returnReasonName="NOT_COMPATIBLE" isDefault="true" sortOrder="1" />
+                <returnReasonType returnReasonName="NOT_PROPERLY_PACKAGED" isDefault="false" sortOrder="1" />
+                <returnReasonType returnReasonName="MISSED_ESTIMATED_DELIVERY" isDefault="true" sortOrder="1" />
+                <returnReasonType returnReasonName="MISSING_PARTS" isDefault="false" sortOrder="1" />
+                <returnReasonType returnReasonName="DEFECTIVE" isDefault="false" sortOrder="1" />
+                <returnTypeShippingMethod shippingMethodName="RETURN_SHIPPING_METHOD" isDefault="true" sortOrder="1" />
+            </returnType>
+            <returnType returnTypeName="REPLACEMENT_WITHOUT_RETURN" isDefault="false" sortOrder="1">
+                <returnTypeDescription languageIsoName="en" description="Replacement Without Return" />
+                <returnReasonType returnReasonName="DAMAGED_BY_CARRIER" isDefault="true" sortOrder="1" />
+            </returnType>
+            <returnType returnTypeName="CROSS_SHIP_REPLACEMENT" isDefault="false" sortOrder="1">
+                <returnTypeDescription languageIsoName="en" description="Cross Ship Replacement" />
+                <returnReasonType returnReasonName="NOT_PROPERLY_PACKAGED" isDefault="true" sortOrder="1" />
+                <returnReasonType returnReasonName="MISSING_PARTS" isDefault="true" sortOrder="1" />
+                <returnReasonType returnReasonName="DEFECTIVE" isDefault="true" sortOrder="1" />
+                <returnTypeShippingMethod shippingMethodName="RETURN_SHIPPING_METHOD" isDefault="true" sortOrder="1" />
+            </returnType>
+        </returnKind>
+        <returnKind returnKindName="VENDOR_RETURN" returnSequenceTypeName="VENDOR_RETURN" isDefault="false" sortOrder="1">
+            <returnKindDescription languageIsoName="en" description="Vendor Return" />
+            <returnPolicy returnPolicyName="DEFAULT" isDefault="true" sortOrder="1">
+                <returnPolicyTranslation languageIsoName="en" description="Default" />
+            </returnPolicy>
+            <returnPolicy returnPolicyName="NO_RETURNS" isDefault="false" sortOrder="1">
+                <returnPolicyTranslation languageIsoName="en" description="No Returns Allowed" />
+            </returnPolicy>
+            <!-- TODO -->
+        </returnKind>
+    </returnKinds>
+</initialData>

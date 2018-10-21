@@ -1,0 +1,64 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.authentication.server.command;
+
+import com.echothree.control.user.authentication.remote.form.RemoveInactiveUserKeysForm;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.user.server.logic.UserKeyLogic;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class RemoveInactiveUserKeysCommand
+        extends BaseSimpleCommand<RemoveInactiveUserKeysForm> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null)
+                )));
+        
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("InactiveTime", FieldType.UNSIGNED_LONG, true, null, null)
+                ));
+    }
+    
+    /** Creates a new instance of RemoveInactiveUserKeysCommand */
+    public RemoveInactiveUserKeysCommand(UserVisitPK userVisitPK, RemoveInactiveUserKeysForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        Long maximumTime = (long) 2 * 60 * 1000; // 2 minutes
+        Long inactiveTime = Long.valueOf(form.getInactiveTime());
+        
+        UserKeyLogic.getInstance().removeInactiveUserKeys(maximumTime, inactiveTime);
+        
+        return null;
+    }
+    
+}

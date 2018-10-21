@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <contentPageAreaTypes>
+        <contentPageAreaType contentPageAreaTypeName="CLOB">
+            <contentPageAreaTypeDescription languageIsoName="en" description="Text Area" />
+        </contentPageAreaType>
+        <contentPageAreaType contentPageAreaTypeName="LINK">
+            <contentPageAreaTypeDescription languageIsoName="en" description="Link" />
+        </contentPageAreaType>
+        <contentPageAreaType contentPageAreaTypeName="IMAGE">
+            <contentPageAreaTypeDescription languageIsoName="en" description="Image" />
+        </contentPageAreaType>
+    </contentPageAreaTypes>
+    <contentPageLayouts>
+        <contentPageLayout contentPageLayoutName="layout-01" isDefault="true" sortOrder="1">
+            <contentPageLayoutDescription languageIsoName="en" description="One Text Area" />
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="false" sortOrder="1">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Text Area" />
+            </contentPageLayoutArea>
+        </contentPageLayout>
+        <!--
+        <contentPageLayout contentPageLayoutName="layout-02" isDefault="false" sortOrder="2">
+            <contentPageLayoutDescription languageIsoName="en" description="One Image in Upper Left Corner, One Text Area" />
+            <contentPageLayoutArea contentPageAreaTypeName="IMAGE" showDescriptionField="true" sortOrder="1">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Upper Left Corner Image" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="false" sortOrder="2">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Text Area" />
+            </contentPageLayoutArea>
+        </contentPageLayout>
+        <contentPageLayout contentPageLayoutName="layout-03" isDefault="false" sortOrder="3">
+            <contentPageLayoutDescription languageIsoName="en" description="One Image in Upper Right Corner, One Text Area" />
+            <contentPageLayoutArea contentPageAreaTypeName="IMAGE" showDescriptionField="true" sortOrder="1">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Upper Right Corner Image" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="false" sortOrder="2">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Text Area" />
+            </contentPageLayoutArea>
+        </contentPageLayout>
+        -->
+        <contentPageLayout contentPageLayoutName="layout-04" isDefault="false" sortOrder="4">
+            <contentPageLayoutDescription languageIsoName="en" description="List of Four Links With Descriptions" />
+            <contentPageLayoutArea contentPageAreaTypeName="LINK" showDescriptionField="true" sortOrder="1">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="First Link and Text Area" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="LINK" showDescriptionField="true" sortOrder="2">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Second Link and Text Area" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="LINK" showDescriptionField="true" sortOrder="3">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Third Link and Text Area" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="LINK" showDescriptionField="true" sortOrder="4">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Fourth Link and Text Area" />
+            </contentPageLayoutArea>
+        </contentPageLayout>
+        <contentPageLayout contentPageLayoutName="layout-05" isDefault="false" sortOrder="5">
+            <contentPageLayoutDescription languageIsoName="en" description="Two Columns of Text" />
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="false" sortOrder="1">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Left Text Area" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="false" sortOrder="2">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Right Text Area" />
+            </contentPageLayoutArea>
+        </contentPageLayout>
+        <contentPageLayout contentPageLayoutName="layout-06" isDefault="false" sortOrder="6">
+            <contentPageLayoutDescription languageIsoName="en" description="Four Text Areas" />
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="true" sortOrder="1">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Text Area 1" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="true" sortOrder="2">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Text Area 2" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="true" sortOrder="3">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Text Area 3" />
+            </contentPageLayoutArea>
+            <contentPageLayoutArea contentPageAreaTypeName="CLOB" showDescriptionField="true" sortOrder="4">
+                <contentPageLayoutAreaDescription languageIsoName="en" description="Text Area 4" />
+            </contentPageLayoutArea>
+        </contentPageLayout>
+    </contentPageLayouts>
+    <contentCollections>
+        <contentCollection contentCollectionName="ExampleContentCollection">
+            <contentCollectionDescription languageIsoName="en" description="Example Content Collection" />
+            <contentSection contentSectionName="Home" isDefault="true" sortOrder="1">
+                <contentSectionDescription languageIsoName="en" description="Home" />
+                <contentPage contentPageName="Home" contentPageLayoutName="layout-01" isDefault="true" sortOrder="1">
+                    <contentPageDescription languageIsoName="en" description="Home" />
+                    <contentPageArea sortOrder="1" languageIsoName="en" mimeTypeName="text/html">
+                        <![CDATA[
+                            <p>This is a test web site. There is no real content here. Please move along quickly.</p>
+                            <p>This is a second paragraph on a web site that should not exist.</p>
+                            <p>And a third paragraph just to see how this looks.</p>
+                        ]]>
+                    </contentPageArea>
+                </contentPage>
+            </contentSection>
+            <contentSection contentSectionName="AboutUs" isDefault="false" sortOrder="1">
+                <contentSectionDescription languageIsoName="en" description="About Us" />
+                <contentPage contentPageName="Overview" contentPageLayoutName="layout-01" isDefault="true" sortOrder="1">
+                    <contentPageDescription languageIsoName="en" description="Overview" />
+                    <contentPageArea sortOrder="1" languageIsoName="en" description="Company Overview" mimeTypeName="text/html">
+                        <![CDATA[
+                            <p>This is some example content written in English.</p>
+                        ]]>
+                    </contentPageArea>
+                </contentPage>
+                <contentPage contentPageName="Partners" contentPageLayoutName="layout-04" isDefault="false" sortOrder="1">
+                    <contentPageDescription languageIsoName="en" description="Partners" />
+                    <contentPageArea sortOrder="1" contentPageAreaURL="http://www.echothree.com/" languageIsoName="en" description="EchoThree" mimeTypeName="text/html">
+                        <![CDATA[
+                            <p>The software developers.</p>
+                        ]]>
+                    </contentPageArea>
+                    <contentPageArea sortOrder="2" contentPageAreaURL="http://web.echothree.com/" languageIsoName="en" mimeTypeName="text/html">
+                        <![CDATA[
+                            <p>The test web site.</p>
+                        ]]>
+                    </contentPageArea>
+                    <contentPageArea sortOrder="3" contentPageAreaURL="http://www.darkrealms.com/" languageIsoName="en" description="DarkRealms" mimeTypeName="text/html" />
+                </contentPage>
+            </contentSection>
+            <contentSection contentSectionName="WhoWeAre" parentContentSectionName="AboutUs" isDefault="false" sortOrder="1">
+                <contentSectionDescription languageIsoName="en" description="Who We Are" />
+                <contentPage contentPageName="Everyone" contentPageLayoutName="layout-01" isDefault="true" sortOrder="1">
+                    <contentPageDescription languageIsoName="en" description="Everyone" />
+                </contentPage>
+                <contentPage contentPageName="Person1" contentPageLayoutName="layout-01" isDefault="false" sortOrder="1">
+                    <contentPageDescription languageIsoName="en" description="Person 1" />
+                </contentPage>
+                <contentPage contentPageName="Person2" contentPageLayoutName="layout-01" isDefault="false" sortOrder="1">
+                    <contentPageDescription languageIsoName="en" description="Person 2" />
+                </contentPage>
+            </contentSection>
+            <contentCatalog contentCatalogName="ExampleCatalog" defaultOfferName="TEST0005" defaultUseName="B" isDefault="true"
+                    sortOrder="1">
+                <contentCatalogDescription languageIsoName="en" description="Example Catalog"  />
+                <contentCategory contentCategoryName="Category1" defaultOfferName="TEST0001" defaultUseName="B" isDefault="true"
+                        sortOrder="1">
+                    <contentCategoryDescription languageIsoName="en" description="Category 1" />
+                </contentCategory>
+                <contentCategory contentCategoryName="Category2" defaultOfferName="TEST0002" defaultUseName="B" isDefault="false"
+                        sortOrder="1">
+                    <contentCategoryDescription languageIsoName="en" description="Category 2" />
+                </contentCategory>
+                <contentCategory contentCategoryName="Category2a" parentContentCategoryName="Category2" isDefault="false" sortOrder="1">
+                    <contentCategoryDescription languageIsoName="en" description="Category 2a" />
+                    <contentCategoryItem itemName="MINIMAL" inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" isDefault="true" sortOrder="1" />
+                </contentCategory>
+                <contentCategory contentCategoryName="Category2b" parentContentCategoryName="Category2" isDefault="false" sortOrder="1">
+                    <contentCategoryDescription languageIsoName="en" description="Category 2b" />
+                    <contentCategoryItem itemName="MINIMAL" inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" isDefault="false" sortOrder="1" />
+                </contentCategory>
+                <contentCategory contentCategoryName="Category3" defaultOfferName="TEST0003" defaultUseName="B" isDefault="false"
+                        sortOrder="1">
+                    <contentCategoryDescription languageIsoName="en" description="Category 3" />
+                    <!-- <contentCategoryItem itemName="MINIMAL" inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" isDefault="false" sortOrder="1" /> -->
+                </contentCategory>
+            </contentCatalog>
+            <contentForum forumName="TEST_FORUM" sortOrder="1" isDefault="true" />
+        </contentCollection>
+    </contentCollections>
+    <contentWebAddresses>
+        <contentWebAddress contentWebAddressName="127.0.0.1" contentCollectionName="ExampleContentCollection">
+            <contentWebAddressDescription languageIsoName="en" description="Example Web Address" />
+            <contentWebAddressServer serverName="127.0.0.1" />
+        </contentWebAddress>
+        <contentWebAddress contentWebAddressName="localhost" contentCollectionName="ExampleContentCollection">
+            <contentWebAddressDescription languageIsoName="en" description="Example Web Address" />
+            <contentWebAddressServer serverName="localhost" />
+        </contentWebAddress>
+        <contentWebAddress contentWebAddressName="web.echothree.com" contentCollectionName="ExampleContentCollection">
+            <contentWebAddressDescription languageIsoName="en" description="Example Web Address" />
+            <contentWebAddressServer serverName="web1.echothree.com" />
+        </contentWebAddress>
+    </contentWebAddresses>
+</initialData>

@@ -1,0 +1,2397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <componentStages>
+        <componentStage componentStageName="DEVELOPMENT" description="Development" relativeAge="1" />
+        <componentStage componentStageName="ALPHA" description="Alpha" relativeAge="2" />
+        <componentStage componentStageName="BETA" description="Beta" relativeAge="3" />
+        <componentStage componentStageName="RELEASE" description="Release" relativeAge="4" />
+    </componentStages>
+    <entityAttributeTypes>
+        <entityAttributeType entityAttributeTypeName="NAME">
+            <entityAttributeTypeDescription languageIsoName="en" description="Name" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="INTEGER">
+            <entityAttributeTypeDescription languageIsoName="en" description="Integer" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="LONG">
+            <entityAttributeTypeDescription languageIsoName="en" description="Long" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="BOOLEAN">
+            <entityAttributeTypeDescription languageIsoName="en" description="Boolean" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="STRING">
+            <entityAttributeTypeDescription languageIsoName="en" description="String" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="GEOPOINT">
+            <entityAttributeTypeDescription languageIsoName="en" description="Geo Point" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="BLOB">
+            <entityAttributeTypeDescription languageIsoName="en" description="Binary Large Object" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="CLOB">
+            <entityAttributeTypeDescription languageIsoName="en" description="Character Large Object" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="ENTITY">
+            <entityAttributeTypeDescription languageIsoName="en" description="Entity" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="COLLECTION">
+            <entityAttributeTypeDescription languageIsoName="en" description="Entity Collection" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="DATE">
+            <entityAttributeTypeDescription languageIsoName="en" description="Date" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="TIME">
+            <entityAttributeTypeDescription languageIsoName="en" description="Time" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="LISTITEM">
+            <entityAttributeTypeDescription languageIsoName="en" description="Choice from List" />
+        </entityAttributeType>
+        <entityAttributeType entityAttributeTypeName="MULTIPLELISTITEM">
+            <entityAttributeTypeDescription languageIsoName="en" description="Multiple Choices from List" />
+        </entityAttributeType>
+    </entityAttributeTypes>
+    <componentVendors>
+        <componentVendor componentVendorName="ECHOTHREE" description="EchoThree">
+            <entityType entityTypeName="Party" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party" />
+            </entityType>
+            <entityType entityTypeName="EntityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Type" />
+            </entityType>
+            <entityType entityTypeName="EntityTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Type Description" />
+            </entityType>
+            <entityType entityTypeName="Command" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Command" />
+            </entityType>
+            <entityType entityTypeName="CommandDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Command Description" />
+            </entityType>
+            <entityType entityTypeName="CommandMessage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Command Message" />
+            </entityType>
+            <entityType entityTypeName="CommandMessageTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Command Message Translation" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Group" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeGroupDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Group Description" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Type" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Type Description" />
+            </entityType>
+            <entityType entityTypeName="EntityAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Description" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeEntityAttributeGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Entity Attribute Group" />
+            </entityType>
+            <entityType entityTypeName="EntityListItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity List Item" />
+            </entityType>
+            <entityType entityTypeName="EntityListItemDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity List Item Description" />
+            </entityType>
+            <entityType entityTypeName="EntityNameAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Name Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityIntegerAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Integer Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityIntegerRange" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Integer Range" />
+            </entityType>
+            <entityType entityTypeName="EntityIntegerRangeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Integer Range Description" />
+            </entityType>
+            <entityType entityTypeName="EntityLongAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Long Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityLongRange" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Long Range" />
+            </entityType>
+            <entityType entityTypeName="EntityLongRangeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Long Range Description" />
+            </entityType>
+            <entityType entityTypeName="EntityBooleanAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Boolean Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityDateAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Date Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityTimeAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Time Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityStringAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity String Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityGeoPointAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Geo Point Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityClobAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Clob Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityBlobAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Blob Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeEntityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Entity Types" />
+            </entityType>
+            <entityType entityTypeName="EntityEntityAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Entity Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityCollectionAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Collection Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityListItemAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity List Item Attribute" />
+            </entityType>
+            <entityType entityTypeName="EntityMultipleListItemAttribute" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Multiple List Item Attribute" />
+            </entityType>
+            <entityType entityTypeName="ComponentVendor" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Component Vendor" />
+            </entityType>
+            <entityType entityTypeName="CarrierType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Carrier Type" />
+            </entityType>
+            <entityType entityTypeName="CarrierTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Carrier Type Description" />
+            </entityType>
+            <entityType entityTypeName="Carrier" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Carrier" />
+            </entityType>
+            <entityType entityTypeName="CarrierService" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Carrier Service" />
+            </entityType>
+            <entityType entityTypeName="CarrierServiceDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Carrier Service Description" />
+            </entityType>
+            <entityType entityTypeName="CarrierOption" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Carrier Option" />
+            </entityType>
+            <entityType entityTypeName="CarrierOptionDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Carrier Option Description" />
+            </entityType>
+            <entityType entityTypeName="CarrierServiceOption" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Carrier Service Option" />
+            </entityType>
+            <entityType entityTypeName="PartyCarrier" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Carrier" />
+            </entityType>
+            <entityType entityTypeName="PartyCarrierAccount" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Carrier Account" />
+            </entityType>
+            <entityType entityTypeName="ChainKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Kind" />
+            </entityType>
+            <entityType entityTypeName="ChainKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Kind Description" />
+            </entityType>
+            <entityType entityTypeName="ChainType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Type" />
+            </entityType>
+            <entityType entityTypeName="ChainTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Type Description" />
+            </entityType>
+            <entityType entityTypeName="ChainEntityRoleType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Entity Role Type" />
+            </entityType>
+            <entityType entityTypeName="ChainEntityRoleTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Entity Role Type Description" />
+            </entityType>
+            <entityType entityTypeName="ChainActionType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action Type" />
+            </entityType>
+            <entityType entityTypeName="ChainActionTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action Type Description" />
+            </entityType>
+            <entityType entityTypeName="Chain" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain" />
+            </entityType>
+            <entityType entityTypeName="ChainDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Description" />
+            </entityType>
+            <entityType entityTypeName="ChainActionSet" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action Set" />
+            </entityType>
+            <entityType entityTypeName="ChainActionSetDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action Set Description" />
+            </entityType>
+            <entityType entityTypeName="ChainAction" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action" />
+            </entityType>
+            <entityType entityTypeName="ChainActionDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action Description" />
+            </entityType>
+            <entityType entityTypeName="ChainActionLetter" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action Letter" />
+            </entityType>
+            <entityType entityTypeName="ChainActionSurvey" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action Survey" />
+            </entityType>
+            <entityType entityTypeName="ChainActionChainActionSet" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Action Chain Action Set" />
+            </entityType>
+            <entityType entityTypeName="ChainInstance" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Instance" />
+            </entityType>
+            <entityType entityTypeName="ChainInstanceStatus" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Instance Status" />
+            </entityType>
+            <entityType entityTypeName="ChainInstanceEntityRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Chain Instance Entity Role" />
+            </entityType>
+            <entityType entityTypeName="Letter" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Letter" />
+            </entityType>
+            <entityType entityTypeName="LetterDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Letter Description" />
+            </entityType>
+            <entityType entityTypeName="Survey" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Survey" />
+            </entityType>
+            <entityType entityTypeName="SurveyDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Survey Description" />
+            </entityType>
+            <entityType entityTypeName="Club" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Club" />
+            </entityType>
+            <entityType entityTypeName="ClubDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Club Description" />
+            </entityType>
+            <entityType entityTypeName="ClubItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Club Item" />
+            </entityType>
+            <entityType entityTypeName="CommunicationEventPurpose" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Communication Event Purpose" />
+            </entityType>
+            <entityType entityTypeName="CommunicationEventPurposeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Communication Event Purpose Description" />
+            </entityType>
+            <entityType entityTypeName="CommunicationSource" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Communication Source" />
+            </entityType>
+            <entityType entityTypeName="CommunicationEmailSource" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Communication Email Source" />
+            </entityType>
+            <entityType entityTypeName="CommunicationSourceDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Communication Source Description" />
+            </entityType>
+            <entityType entityTypeName="CommunicationEvent" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Communication Event" />
+            </entityType>
+            <entityType entityTypeName="CommunicationEventRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Communication Event Role" />
+            </entityType>
+            <entityType entityTypeName="Document" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document" />
+            </entityType>
+            <entityType entityTypeName="DocumentBlob" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document Blob" />
+            </entityType>
+            <entityType entityTypeName="DocumentClob" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document Clob" />
+            </entityType>
+            <entityType entityTypeName="DocumentDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document Description" />
+            </entityType>
+            <entityType entityTypeName="PartyDocument" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Document" />
+            </entityType>
+            <entityType entityTypeName="ForumGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Group" />
+            </entityType>
+            <entityType entityTypeName="ForumGroupDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Group Description" />
+            </entityType>
+            <entityType entityTypeName="Forum" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum" />
+            </entityType>
+            <entityType entityTypeName="ForumDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Description" />
+            </entityType>
+            <entityType entityTypeName="ForumGroupForum" keepAllHistory="false" sortOrder="1">
+                <entityTypeForum languageIsoName="en" description="Forum Group Forum" />
+            </entityType>
+            <entityType entityTypeName="ForumMimeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Mime Type" />
+            </entityType>
+            <entityType entityTypeName="ForumPartyRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Party Role" />
+            </entityType>
+            <entityType entityTypeName="ForumPartyTypeRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Party Type Role" />
+            </entityType>
+            <entityType entityTypeName="ForumThread" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Thread" />
+            </entityType>
+            <entityType entityTypeName="ForumMessage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message" />
+            </entityType>
+            <entityType entityTypeName="ForumMessageAttachment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message Attachment" />
+            </entityType>
+            <entityType entityTypeName="ForumMessageBlobAttachment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message Blob Attachment" />
+            </entityType>
+            <entityType entityTypeName="ForumMessageClobAttachment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message Clob Attachment" />
+            </entityType>
+            <entityType entityTypeName="ForumMessageAttachmentDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message Attachment Description" />
+            </entityType>
+            <entityType entityTypeName="ForumMessageRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message Role" />
+            </entityType>
+            <entityType entityTypeName="ForumMessagePart" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Message Part" />
+            </entityType>
+            <entityType entityTypeName="ForumBlobMessagePart" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Blob Message Part" />
+            </entityType>
+            <entityType entityTypeName="ForumClobMessagePart" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Clob Message Part" />
+            </entityType>
+            <entityType entityTypeName="ForumStringMessagePart" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum String Message Part" />
+            </entityType>
+            <entityType entityTypeName="ForumForumThread" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Forum Forum Thread" />
+            </entityType>
+            <entityType entityTypeName="GlAccountClass" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gl Account Class" />
+            </entityType>
+            <entityType entityTypeName="GlAccountClassDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gl Account Class Description" />
+            </entityType>
+            <entityType entityTypeName="GlAccountCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gl Account Category" />
+            </entityType>
+            <entityType entityTypeName="GlAccountCategoryDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gl Account Category Description" />
+            </entityType>
+            <entityType entityTypeName="GlResourceType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gl Resource Type" />
+            </entityType>
+            <entityType entityTypeName="GlResourceTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gl Resource Type Description" />
+            </entityType>
+            <entityType entityTypeName="GlAccount" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gl Account" />
+            </entityType>
+            <entityType entityTypeName="GlAccountDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gl Account Description" />
+            </entityType>
+            <entityType entityTypeName="Icon" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Icon" />
+            </entityType>
+            <entityType entityTypeName="IconUsage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Icon Usage" />
+            </entityType>
+            <entityType entityTypeName="IconUsageType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Icon Usage Type" />
+            </entityType>
+            <entityType entityTypeName="IconUsageTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Icon Usage Type Description" />
+            </entityType>
+            <entityType entityTypeName="ItemAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Alias" />
+            </entityType>
+            <entityType entityTypeName="ItemAccountingCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Accounting Category" />
+            </entityType>
+            <entityType entityTypeName="ItemAccountingCategoryDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Accounting Category Description" />
+            </entityType>
+            <entityType entityTypeName="ItemPurchasingCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Purchasing Category" />
+            </entityType>
+            <entityType entityTypeName="ItemPurchasingCategoryDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Purchasing Category Description" />
+            </entityType>
+            <entityType entityTypeName="ItemCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Category" />
+            </entityType>
+            <entityType entityTypeName="ItemCategoryDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Category Description" />
+            </entityType>
+            <entityType entityTypeName="ItemAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Alias Type" />
+            </entityType>
+            <entityType entityTypeName="ItemAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="ItemDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Description" />
+            </entityType>
+            <entityType entityTypeName="ItemStringDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item String Description" />
+            </entityType>
+            <entityType entityTypeName="ItemBlobDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Blob Description" />
+            </entityType>
+            <entityType entityTypeName="ItemClobDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Clob Description" />
+            </entityType>
+            <entityType entityTypeName="ItemImageDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Image Description" />
+            </entityType>
+            <entityType entityTypeName="ItemDescriptionType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Description Type" />
+            </entityType>
+            <entityType entityTypeName="ItemDescriptionTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Description Type Description" />
+            </entityType>
+            <entityType entityTypeName="ItemImageDescriptionType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Image Description Type" />
+            </entityType>
+            <entityType entityTypeName="ItemDescriptionTypeUseType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Description Type Use Type" />
+            </entityType>
+            <entityType entityTypeName="ItemDescriptionTypeUseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Description Type Use Type Description" />
+            </entityType>
+            <entityType entityTypeName="ItemDescriptionTypeUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Description Type Use" />
+            </entityType>
+            <entityType entityTypeName="ItemImageType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Image Type" />
+            </entityType>
+            <entityType entityTypeName="ItemImageTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Image Type Description" />
+            </entityType>
+            <entityType entityTypeName="ItemFixedPrice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Fixed Price" />
+            </entityType>
+            <entityType entityTypeName="ItemPrice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Price" />
+            </entityType>
+            <entityType entityTypeName="ItemUnitOfMeasureType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Unit Of Measure Type" />
+            </entityType>
+            <entityType entityTypeName="ItemType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Type" />
+            </entityType>
+            <entityType entityTypeName="ItemDeliveryType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Delivery Type" />
+            </entityType>
+            <entityType entityTypeName="ItemInventoryType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Inventory Type" />
+            </entityType>
+            <entityType entityTypeName="ItemVariablePrice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Variable Price" />
+            </entityType>
+            <entityType entityTypeName="ItemShippingTime" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Shipping Time" />
+            </entityType>
+            <entityType entityTypeName="ItemVolume" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Volume" />
+            </entityType>
+            <entityType entityTypeName="ItemWeight" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Weight" />
+            </entityType>
+            <entityType entityTypeName="RelatedItemType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Related Item Type" />
+            </entityType>
+            <entityType entityTypeName="RelatedItemTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Related Item Type Description" />
+            </entityType>
+            <entityType entityTypeName="RelatedItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Related Item" />
+            </entityType>
+            <entityType entityTypeName="ItemCountryOfOrigin" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Origin" />
+            </entityType>
+            <entityType entityTypeName="ItemPackCheckRequirement" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Pack Check Requirement" />
+            </entityType>
+            <entityType entityTypeName="ItemUnitPriceLimit" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Unit Price Limit" />
+            </entityType>
+            <entityType entityTypeName="ItemUnitLimit" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Unit Limit" />
+            </entityType>
+            <entityType entityTypeName="ItemUnitCustomerTypeLimit" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Unit Customer Type Limit" />
+            </entityType>
+            <entityType entityTypeName="ItemKitMember" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Kit Member" />
+            </entityType>
+            <entityType entityTypeName="Comment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment" />
+            </entityType>
+            <entityType entityTypeName="CommentString" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment String" />
+            </entityType>
+            <entityType entityTypeName="CommentBlob" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment Blob" />
+            </entityType>
+            <entityType entityTypeName="CommentClob" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment Clob" />
+            </entityType>
+            <entityType entityTypeName="CommentType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment Type" />
+            </entityType>
+            <entityType entityTypeName="CommentTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment Type Description" />
+            </entityType>
+            <entityType entityTypeName="CommentUsage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment Usage" />
+            </entityType>
+            <entityType entityTypeName="CommentUsageType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment Usage Type" />
+            </entityType>
+            <entityType entityTypeName="CommentUsageTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Comment Usage Type Description" />
+            </entityType>
+            <entityType entityTypeName="MessageType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="MessageType" />
+            </entityType>
+            <entityType entityTypeName="MessageTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Message Type Description" />
+            </entityType>
+            <entityType entityTypeName="Message" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Message" />
+            </entityType>
+            <entityType entityTypeName="MessageDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Message Description" />
+            </entityType>
+            <entityType entityTypeName="MessageString" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Message String" />
+            </entityType>
+            <entityType entityTypeName="MessageClob" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Message Clob" />
+            </entityType>
+            <entityType entityTypeName="EntityMessage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Message" />
+            </entityType>
+            <entityType entityTypeName="TagScope" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Tag Scope" />
+            </entityType>
+            <entityType entityTypeName="TagScopeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Tag Scope Description" />
+            </entityType>
+            <entityType entityTypeName="TagScopeEntityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Tag Scope Entity Type" />
+            </entityType>
+            <entityType entityTypeName="Tag" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Tag" />
+            </entityType>
+            <entityType entityTypeName="EntityTag" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Tag" />
+            </entityType>
+            <entityType entityTypeName="ContactMechanismAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias" />
+            </entityType>
+            <entityType entityTypeName="ContactEmailAddress" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Email Address" />
+            </entityType>
+            <entityType entityTypeName="ContactInet4Address" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Inet 4 Address" />
+            </entityType>
+            <entityType entityTypeName="ContactInet6Address" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Inet 6 Address" />
+            </entityType>
+            <entityType entityTypeName="ContactPostalAddress" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Postal Address" />
+            </entityType>
+            <entityType entityTypeName="ContactPostalAddressCorrection" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Postal Address Correction" />
+            </entityType>
+            <entityType entityTypeName="ContactTelephone" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Telephone" />
+            </entityType>
+            <entityType entityTypeName="ContactWebAddress" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Web Address" />
+            </entityType>
+            <entityType entityTypeName="ContentCatalog" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Catalog" />
+            </entityType>
+            <entityType entityTypeName="ContentCatalogDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Catalog Description" />
+            </entityType>
+            <entityType entityTypeName="ContentCatalogItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Catalog Item" />
+            </entityType>
+            <entityType entityTypeName="ContentCatalogItemFixedPrice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Catalog Item Fixed Price" />
+            </entityType>
+            <entityType entityTypeName="ContentCatalogItemVariablePrice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Catalog Item Variable Price" />
+            </entityType>
+            <entityType entityTypeName="ContentCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Category" />
+            </entityType>
+            <entityType entityTypeName="ContentCategoryDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Category Description" />
+            </entityType>
+            <entityType entityTypeName="ContentCategoryItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Category Item" />
+            </entityType>
+            <entityType entityTypeName="ContentCollection" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Collection" />
+            </entityType>
+            <entityType entityTypeName="ContentCollectionDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Collection Description" />
+            </entityType>
+            <entityType entityTypeName="ContentForum" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Forum" />
+            </entityType>
+            <entityType entityTypeName="ContentPage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Page" />
+            </entityType>
+            <entityType entityTypeName="ContentPageArea" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Page Area" />
+            </entityType>
+            <entityType entityTypeName="ContentPageDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Page Description" />
+            </entityType>
+            <entityType entityTypeName="ContentPublishedStage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Published Stage" />
+            </entityType>
+            <entityType entityTypeName="ContentSection" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Section" />
+            </entityType>
+            <entityType entityTypeName="ContentSectionDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Section Description" />
+            </entityType>
+            <entityType entityTypeName="ContentWebAddress" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Web Address" />
+            </entityType>
+            <entityType entityTypeName="ContentWebAddressDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Web Address Description" />
+            </entityType>
+            <entityType entityTypeName="ContentWebAddressServer" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Web Address Server" />
+            </entityType>
+            <entityType entityTypeName="EmployeeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Employee Type" />
+            </entityType>
+            <entityType entityTypeName="EmployeeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Employee Type Description" />
+            </entityType>
+            <entityType entityTypeName="VendorType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Vendor Type" />
+            </entityType>
+            <entityType entityTypeName="VendorTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Vendor Type Description" />
+            </entityType>
+            <entityType entityTypeName="CommandMessageType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Command Message Type" />
+            </entityType>
+            <entityType entityTypeName="CommandMessageTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Command Message Type Description" />
+            </entityType>
+            <entityType entityTypeName="Customer" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Customer" />
+            </entityType>
+            <entityType entityTypeName="PartyAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Alias Type" />
+            </entityType>
+            <entityType entityTypeName="PartyAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="PartyAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Alias" />
+            </entityType>
+            <entityType entityTypeName="CustomerType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Customer Type" />
+            </entityType>
+            <entityType entityTypeName="CustomerTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Customer Type Description" />
+            </entityType>
+            <entityType entityTypeName="CustomerTypeCreditLimit" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Customer Type Credit Limit" />
+            </entityType>
+            <entityType entityTypeName="CustomerTypePaymentMethod" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Customer Type Payment Method" />
+            </entityType>
+            <entityType entityTypeName="CustomerTypeShippingMethod" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Customer Type Shipping Method" />
+            </entityType>
+            <entityType entityTypeName="DateTimeFormat" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Date Time Format" />
+            </entityType>
+            <entityType entityTypeName="DateTimeFormatDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Date Time Format Description" />
+            </entityType>
+            <entityType entityTypeName="GeoCode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Alias" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Alias Type" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Description" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeRelationship" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Relationship" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeScope" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Scope" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeScopeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Scope Description" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeTax" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Tax" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Type" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Type Description" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeLanguage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Language" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeCurrency" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Currency" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeDateTimeFormat" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Date Time Format" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeTimeZone" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Time Zone" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeCountry" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Country" />
+            </entityType>
+            <entityType entityTypeName="EventGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Event Group" />
+            </entityType>
+            <entityType entityTypeName="UserVisitGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="User Visit Group" />
+            </entityType>
+            <entityType entityTypeName="FilterKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Kind" />
+            </entityType>
+            <entityType entityTypeName="FilterKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Kind Description" />
+            </entityType>
+            <entityType entityTypeName="FilterType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Type" />
+            </entityType>
+            <entityType entityTypeName="FilterTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Type Description" />
+            </entityType>
+            <entityType entityTypeName="Filter" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter" />
+            </entityType>
+            <entityType entityTypeName="FilterDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Description" />
+            </entityType>
+            <entityType entityTypeName="FilterEntranceStep" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Entrance Step" />
+            </entityType>
+            <entityType entityTypeName="FilterAdjustment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Adjustment" />
+            </entityType>
+            <entityType entityTypeName="FilterAdjustmentAmount" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Adjustment Amount" />
+            </entityType>
+            <entityType entityTypeName="FilterAdjustmentDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Adjustment Description" />
+            </entityType>
+            <entityType entityTypeName="FilterAdjustmentFixedAmount" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Adjustment Fixed Amount" />
+            </entityType>
+            <entityType entityTypeName="FilterAdjustmentPercent" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Adjustment Percent" />
+            </entityType>
+            <entityType entityTypeName="FilterStep" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Step" />
+            </entityType>
+            <entityType entityTypeName="FilterStepDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Step Description" />
+            </entityType>
+            <entityType entityTypeName="FilterStepDestination" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Step Destination" />
+            </entityType>
+            <entityType entityTypeName="FilterStepElement" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Step Element" />
+            </entityType>
+            <entityType entityTypeName="FilterStepElementDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Filter Step Element Description" />
+            </entityType>
+            <entityType entityTypeName="Gender" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gender" />
+            </entityType>
+            <entityType entityTypeName="GenderDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gender Description" />
+            </entityType>
+            <entityType entityTypeName="Mood" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Mood" />
+            </entityType>
+            <entityType entityTypeName="MoodDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Mood Description" />
+            </entityType>
+            <entityType entityTypeName="BirthdayFormat" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Birthday Format" />
+            </entityType>
+            <entityType entityTypeName="BirthdayFormatDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Birthday Format Description" />
+            </entityType>
+            <entityType entityTypeName="InventoryCondition" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Condition" />
+            </entityType>
+            <entityType entityTypeName="InventoryConditionDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Condition Description" />
+            </entityType>
+            <entityType entityTypeName="InventoryConditionUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Condition Use" />
+            </entityType>
+            <entityType entityTypeName="InventoryLocationGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Location Group" />
+            </entityType>
+            <entityType entityTypeName="InventoryLocationGroupCapacity" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Location Group Capacity" />
+            </entityType>
+            <entityType entityTypeName="InventoryLocationGroupDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Location Group Description" />
+            </entityType>
+            <entityType entityTypeName="InventoryLocationGroupVolume" keepAllHistory="false" sortOrder="1">
+                <entityTypeVolume languageIsoName="en" description="Inventory Location Group Volume" />
+            </entityType>
+            <entityType entityTypeName="BatchType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Batch Type" />
+            </entityType>
+            <entityType entityTypeName="BatchTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Batch Type Description" />
+            </entityType>
+            <entityType entityTypeName="BatchTypeEntityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeEntityType languageIsoName="en" description="Batch Type Entity Type" />
+            </entityType>
+            <entityType entityTypeName="BatchAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Batch Alias Type" />
+            </entityType>
+            <entityType entityTypeName="BatchAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Batch Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="Batch" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Batch" />
+            </entityType>
+            <entityType entityTypeName="BatchAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Batch Alias" />
+            </entityType>
+            <entityType entityTypeName="BatchEntity" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Batch Entity" />
+            </entityType>
+            <entityType entityTypeName="InvoiceType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Type" />
+            </entityType>
+            <entityType entityTypeName="InvoiceTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Type Description" />
+            </entityType>
+            <entityType entityTypeName="InvoiceTimeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Time Type" />
+            </entityType>
+            <entityType entityTypeName="InvoiceTimeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Time Type Description" />
+            </entityType>
+            <entityType entityTypeName="InvoiceTime" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Time" />
+            </entityType>
+            <entityType entityTypeName="InvoiceLineType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Line Type" />
+            </entityType>
+            <entityType entityTypeName="InvoiceLineTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Line Type Description" />
+            </entityType>
+            <entityType entityTypeName="InvoiceAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Alias Type" />
+            </entityType>
+            <entityType entityTypeName="InvoiceAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="InvoiceAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Alias" />
+            </entityType>
+            <entityType entityTypeName="Invoice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice" />
+            </entityType>
+            <entityType entityTypeName="InvoiceRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Role" />
+            </entityType>
+            <entityType entityTypeName="InvoiceLine" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Line" />
+            </entityType>
+            <entityType entityTypeName="InvoiceLineItems" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Line Items" />
+            </entityType>
+            <entityType entityTypeName="InvoiceLineGlAccount" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Invoice Line Gl Account" />
+            </entityType>
+            <entityType entityTypeName="BillingAccount" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Billing Account" />
+            </entityType>
+            <entityType entityTypeName="BillingAccountRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Billing Account Role" />
+            </entityType>
+            <entityType entityTypeName="LocationType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Location Type" />
+            </entityType>
+            <entityType entityTypeName="LocationTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Location Type Description" />
+            </entityType>
+            <entityType entityTypeName="LocationNameElement" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Location Name Element" />
+            </entityType>
+            <entityType entityTypeName="LocationNameElementDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Location Name Element Description" />
+            </entityType>
+            <entityType entityTypeName="Location" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Location" />
+            </entityType>
+            <entityType entityTypeName="LocationDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Location Description" />
+            </entityType>
+            <entityType entityTypeName="LocationVolume" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Location Volume" />
+            </entityType>
+            <entityType entityTypeName="LocationCapacity" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Location Capacity" />
+            </entityType>
+            <entityType entityTypeName="NameSuffix" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Name Suffix" />
+            </entityType>
+            <entityType entityTypeName="Offer" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer" />
+            </entityType>
+            <entityType entityTypeName="OfferDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Description" />
+            </entityType>
+            <entityType entityTypeName="OfferChainType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Chain Type" />
+            </entityType>
+            <entityType entityTypeName="OfferCustomerType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Customer Type" />
+            </entityType>
+            <entityType entityTypeName="OfferItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Item" />
+            </entityType>
+            <entityType entityTypeName="OfferItemFixedPrice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Item Fixed Price" />
+            </entityType>
+            <entityType entityTypeName="OfferItemPrice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Item Price" />
+            </entityType>
+            <entityType entityTypeName="OfferItemVariablePrice" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Item Variable Price" />
+            </entityType>
+            <entityType entityTypeName="OfferNameElement" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Name Element" />
+            </entityType>
+            <entityType entityTypeName="OfferNameElementDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Name Element Description" />
+            </entityType>
+            <entityType entityTypeName="OfferUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Use" />
+            </entityType>
+            <entityType entityTypeName="OrderTimeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Time Type" />
+            </entityType>
+            <entityType entityTypeName="OrderTimeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Time Type Description" />
+            </entityType>
+            <entityType entityTypeName="OrderAdjustmentType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Adjustment Type" />
+            </entityType>
+            <entityType entityTypeName="OrderAdjustmentTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Adjustment Type Description" />
+            </entityType>
+            <entityType entityTypeName="OrderLineAdjustmentType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Line Adjustment Type" />
+            </entityType>
+            <entityType entityTypeName="OrderLineAdjustmentTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Line Adjustment Type Description" />
+            </entityType>
+            <entityType entityTypeName="OrderPriority" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Priority" />
+            </entityType>
+            <entityType entityTypeName="OrderPriorityDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Priority Description" />
+            </entityType>
+            <entityType entityTypeName="OrderPaymentPreference" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Payment Preference" />
+            </entityType>
+            <entityType entityTypeName="OrderShipmentGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Shipment Group" />
+            </entityType>
+            <entityType entityTypeName="OrderTime" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Time" />
+            </entityType>
+            <entityType entityTypeName="OrderLine" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Line" />
+            </entityType>
+            <entityType entityTypeName="OrderLineItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Line Item" />
+            </entityType>
+            <entityType entityTypeName="OrderRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Role" />
+            </entityType>
+            <entityType entityTypeName="PartyCompany" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Company" />
+            </entityType>
+            <entityType entityTypeName="PartyContactMechanism" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Contact Mechanism" />
+            </entityType>
+            <entityType entityTypeName="PartyContactMechanismAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Contact Mechanism Alias" />
+            </entityType>
+            <entityType entityTypeName="PartyContactMechanismPurpose" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Contact Mechanism Purpose" />
+            </entityType>
+            <entityType entityTypeName="PartyContactMechanismRelationship" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Contact Mechanism Relationship" />
+            </entityType>
+            <entityType entityTypeName="PartyCreditLimit" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Credit Limit" />
+            </entityType>
+            <entityType entityTypeName="PartyDepartment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Department" />
+            </entityType>
+            <entityType entityTypeName="PartyDivision" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Division" />
+            </entityType>
+            <entityType entityTypeName="PartyEmployee" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Employee" />
+            </entityType>
+            <entityType entityTypeName="Employment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Employment" />
+            </entityType>
+            <entityType entityTypeName="Leave" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Leave" />
+            </entityType>
+            <entityType entityTypeName="PartyGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Group" />
+            </entityType>
+            <entityType entityTypeName="PartyInventoryLevel" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Inventory Level" />
+            </entityType>
+            <entityType entityTypeName="AllocationPriority" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Allocation Priority" />
+            </entityType>
+            <entityType entityTypeName="AllocationPriorityDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Allocation Priority Description" />
+            </entityType>
+            <entityType entityTypeName="PartyPaymentMethodCreditCard" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Payment Method Credit Card" />
+            </entityType>
+            <entityType entityTypeName="PartyPaymentMethodCreditCardSecurityCode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Payment Method Credit Card Security Code" />
+            </entityType>
+            <entityType entityTypeName="PartyPaymentMethodContactMechanism" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Payment Method Contact Mechanism" />
+            </entityType>
+            <entityType entityTypeName="PartyPrinterGroupUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Printer Group Use" />
+            </entityType>
+            <entityType entityTypeName="PartyRelationship" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Relationship" />
+            </entityType>
+            <entityType entityTypeName="PartySecurityRoleTemplate" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Security Role Template" />
+            </entityType>
+            <entityType entityTypeName="PartySecurityRoleTemplateDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Security Role Template Description" />
+            </entityType>
+            <entityType entityTypeName="PartySecurityRoleTemplateRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Security Role Template Role" />
+            </entityType>
+            <entityType entityTypeName="PartySecurityRoleTemplateTrainingClass" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Security Role Template Training Class" />
+            </entityType>
+            <entityType entityTypeName="PartySecurityRoleTemplateUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Security Role Template Use" />
+            </entityType>
+            <entityType entityTypeName="PartySecurityRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Security Role" />
+            </entityType>
+            <entityType entityTypeName="PartyTerm" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Term" />
+            </entityType>
+            <entityType entityTypeName="PartyType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Type" />
+            </entityType>
+            <entityType entityTypeName="Gender" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gender" />
+            </entityType>
+            <entityType entityTypeName="GenderDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Gender Destination" />
+            </entityType>
+            <entityType entityTypeName="Title" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Title" />
+            </entityType>
+            <entityType entityTypeName="TitleDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Title Destination" />
+            </entityType>
+            <entityType entityTypeName="Profile" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Profile" />
+            </entityType>
+            <entityType entityTypeName="PartyTypePasswordStringPolicy" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Type Password String Policy" />
+            </entityType>
+            <entityType entityTypeName="PartyTypeLockoutPolicy" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Type Lockout Policy" />
+            </entityType>
+            <entityType entityTypeName="PartyTypeAuditPolicy" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Type Audit Policy" />
+            </entityType>
+            <entityType entityTypeName="PaymentMethodDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Method Description" />
+            </entityType>
+            <entityType entityTypeName="PaymentProcessorDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Description" />
+            </entityType>
+            <entityType entityTypeName="PaymentMethodCheck" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Method Check" />
+            </entityType>
+            <entityType entityTypeName="PaymentMethodCreditCard" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Method Credit Card" />
+            </entityType>
+            <entityType entityTypeName="PaymentMethodType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Method Type" />
+            </entityType>
+            <entityType entityTypeName="PaymentMethodTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Method Type Description" />
+            </entityType>
+            <entityType entityTypeName="Person" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Person" />
+            </entityType>
+            <entityType entityTypeName="PostalAddressFormat" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Postal Address Format" />
+            </entityType>
+            <entityType entityTypeName="PostalAddressFormatDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Postal Address Format Description" />
+            </entityType>
+            <entityType entityTypeName="PostalAddressLine" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Postal Address Line" />
+            </entityType>
+            <entityType entityTypeName="PostalAddressLineElement" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Postal Address Line Element" />
+            </entityType>
+            <entityType entityTypeName="Printer" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Printer" />
+            </entityType>
+            <entityType entityTypeName="PrinterDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Printer Description" />
+            </entityType>
+            <entityType entityTypeName="PrinterGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Printer Group" />
+            </entityType>
+            <entityType entityTypeName="PrinterGroupDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Printer Group Description" />
+            </entityType>
+            <entityType entityTypeName="PrinterGroupUseType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Printer Group Use Type" />
+            </entityType>
+            <entityType entityTypeName="PrinterGroupUseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Printer Group Use Type Description" />
+            </entityType>
+            <entityType entityTypeName="PrinterGroupJob" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Printer Group Job" />
+            </entityType>
+            <entityType entityTypeName="PersonalTitle" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Personal Title" />
+            </entityType>
+            <entityType entityTypeName="Rating" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Rating" />
+            </entityType>
+            <entityType entityTypeName="RatingType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Rating Type" />
+            </entityType>
+            <entityType entityTypeName="RatingTypeListItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Rating Type List Item" />
+            </entityType>
+            <entityType entityTypeName="RatingTypeListItemDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Rating Type List Item Description" />
+            </entityType>
+            <entityType entityTypeName="RatingTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Rating Type Description" />
+            </entityType>
+            <entityType entityTypeName="RecoveryAnswer" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Recovery Answer" />
+            </entityType>
+            <entityType entityTypeName="RecoveryQuestion" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Recovery Question" />
+            </entityType>
+            <entityType entityTypeName="RecoveryQuestionDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Recovery Question Description" />
+            </entityType>
+            <entityType entityTypeName="OrderBatch" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Batch" />
+            </entityType>
+            <entityType entityTypeName="SalesOrderBatch" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Sales Order Batch" />
+            </entityType>
+            <entityType entityTypeName="SalesOrderLine" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Sales Order Line" />
+            </entityType>
+            <entityType entityTypeName="SalesOrder" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Sales Order" />
+            </entityType>
+            <entityType entityTypeName="SelectorKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Kind" />
+            </entityType>
+            <entityType entityTypeName="SelectorKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Kind Description" />
+            </entityType>
+            <entityType entityTypeName="SelectorType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Type" />
+            </entityType>
+            <entityType entityTypeName="SelectorTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Type Description" />
+            </entityType>
+            <entityType entityTypeName="Selector" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector" />
+            </entityType>
+            <entityType entityTypeName="SelectorDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Description" />
+            </entityType>
+            <entityType entityTypeName="SelectorParty" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Party" />
+            </entityType>
+            <entityType entityTypeName="SelectorNode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Description" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeBoolean" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Boolean" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeEntityListItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Entity List Item" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeWorkflowStep" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Workflow Step" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeResponsibilityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Responsibility Type" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeSkillType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Skill Type" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeTrainingClass" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Training Class" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeItemCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Item Category" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeItemAccountingCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Item Accounting Category" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeItemPurchasingCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Item Purchasing Category" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeGeoCode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Geo Code" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodePaymentMethod" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Payment Method" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodePaymentProcessor" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Payment Processor" />
+            </entityType>
+            <entityType entityTypeName="Sequence" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Sequence" />
+            </entityType>
+            <entityType entityTypeName="SequenceDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Sequence Description" />
+            </entityType>
+            <entityType entityTypeName="SequenceType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Sequence Type" />
+            </entityType>
+            <entityType entityTypeName="SequenceTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Sequence Type Description" />
+            </entityType>
+            <entityType entityTypeName="Server" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Server" />
+            </entityType>
+            <entityType entityTypeName="ServerDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Server Description" />
+            </entityType>
+            <entityType entityTypeName="ServerService" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Server Service" />
+            </entityType>
+            <entityType entityTypeName="Service" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Service" />
+            </entityType>
+            <entityType entityTypeName="ServiceDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Service Description" />
+            </entityType>
+            <entityType entityTypeName="Protocol" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Protocol" />
+            </entityType>
+            <entityType entityTypeName="ProtocolDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Protocol Description" />
+            </entityType>
+            <entityType entityTypeName="Shipment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment" />
+            </entityType>
+            <entityType entityTypeName="ShippingMethodDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipping Method Description" />
+            </entityType>
+            <entityType entityTypeName="ShippingMethodCarrierService" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipping Method Carrier Service" />
+            </entityType>
+            <entityType entityTypeName="Source" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Source" />
+            </entityType>
+            <entityType entityTypeName="SubscriptionKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Subscription Type" />
+            </entityType>
+            <entityType entityTypeName="SubscriptionKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Subscription Type Description" />
+            </entityType>
+            <entityType entityTypeName="SubscriptionType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Subscription Type" />
+            </entityType>
+            <entityType entityTypeName="SubscriptionTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Subscription Type Description" />
+            </entityType>
+            <entityType entityTypeName="SubscriptionTypeChain" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Subscription Type Chain" />
+            </entityType>
+            <entityType entityTypeName="Subscription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Subscription" />
+            </entityType>
+            <entityType entityTypeName="TaxClassification" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Tax Classification" />
+            </entityType>
+            <entityType entityTypeName="TaxClassificationTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Tax Classification Translation" />
+            </entityType>
+            <entityType entityTypeName="ItemTaxClassification" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Tax Classification" />
+            </entityType>
+            <entityType entityTypeName="Tax" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Tax" />
+            </entityType>
+            <entityType entityTypeName="TaxDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Tax Description" />
+            </entityType>
+            <entityType entityTypeName="GeoCodeTax" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Geo Code Tax" />
+            </entityType>
+            <entityType entityTypeName="CancellationPolicy" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Policy" />
+            </entityType>
+            <entityType entityTypeName="CancellationPolicyTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Policy Translation" />
+            </entityType>
+            <entityType entityTypeName="PartyCancellationPolicy" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Cancellation Policy" />
+            </entityType>
+            <entityType entityTypeName="CancellationPolicyReason" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Policy Reason" />
+            </entityType>
+            <entityType entityTypeName="CancellationKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Kind" />
+            </entityType>
+            <entityType entityTypeName="CancellationKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Kind Description" />
+            </entityType>
+            <entityType entityTypeName="CancellationReason" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Reason" />
+            </entityType>
+            <entityType entityTypeName="CancellationReasonDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Reason Description" />
+            </entityType>
+            <entityType entityTypeName="CancellationReasonType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Reason Type" />
+            </entityType>
+            <entityType entityTypeName="CancellationType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Type" />
+            </entityType>
+            <entityType entityTypeName="CancellationTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cancellation Type Description" />
+            </entityType>
+            <entityType entityTypeName="ReturnPolicy" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Policy" />
+            </entityType>
+            <entityType entityTypeName="ReturnPolicyTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Policy Translation" />
+            </entityType>
+            <entityType entityTypeName="PartyReturnPolicy" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Return Policy" />
+            </entityType>
+            <entityType entityTypeName="Profile" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Profile" />
+            </entityType>
+            <entityType entityTypeName="ReturnPolicyReason" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Policy Reason" />
+            </entityType>
+            <entityType entityTypeName="ReturnKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Kind" />
+            </entityType>
+            <entityType entityTypeName="ReturnKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Kind Description" />
+            </entityType>
+            <entityType entityTypeName="ReturnReason" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Reason" />
+            </entityType>
+            <entityType entityTypeName="ReturnReasonDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Reason Description" />
+            </entityType>
+            <entityType entityTypeName="ReturnReasonType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Reason Type" />
+            </entityType>
+            <entityType entityTypeName="ReturnType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Type" />
+            </entityType>
+            <entityType entityTypeName="ReturnTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Type Description" />
+            </entityType>
+            <entityType entityTypeName="ReturnTypeShippingMethod" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Return Type Shipping Method" />
+            </entityType>
+            <entityType entityTypeName="Term" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Term" />
+            </entityType>
+            <entityType entityTypeName="StandardTerm" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Standard Term" />
+            </entityType>
+            <entityType entityTypeName="DateDrivenTerm" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Date Driven Term" />
+            </entityType>
+            <entityType entityTypeName="TermDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Term Description" />
+            </entityType>
+            <entityType entityTypeName="TimeZone" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Time Zone" />
+            </entityType>
+            <entityType entityTypeName="TimeZoneDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Time Zone Description" />
+            </entityType>
+            <entityType entityTypeName="TransactionType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Type" />
+            </entityType>
+            <entityType entityTypeName="TransactionTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Type Description" />
+            </entityType>
+            <entityType entityTypeName="TransactionGlAccountCategory" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Gl Account Category" />
+            </entityType>
+            <entityType entityTypeName="TransactionGlAccountCategoryDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Gl Account Category Description" />
+            </entityType>
+            <entityType entityTypeName="TransactionGlAccount" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Gl Account" />
+            </entityType>
+            <entityType entityTypeName="TransactionEntityRoleType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Entity Role Type" />
+            </entityType>
+            <entityType entityTypeName="TransactionEntityRoleTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Entity Role Type Description" />
+            </entityType>
+            <entityType entityTypeName="TransactionGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Group" />
+            </entityType>
+            <entityType entityTypeName="Transaction" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction" />
+            </entityType>
+            <entityType entityTypeName="TransactionGlEntry" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Gl Account Entry" />
+            </entityType>
+            <entityType entityTypeName="TransactionEntityRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Transaction Entity Role" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureEquivalent" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Equivalent" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Kind" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Kind Description" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureKindUseType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Kind Use Type" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureKindUseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Kind Use Type Description" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureKindUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Kind Use" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Type" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Type Description" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureTypeVolume" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Type Volume" />
+            </entityType>
+            <entityType entityTypeName="UnitOfMeasureTypeWeight" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Unit Of Measure Type Weight" />
+            </entityType>
+            <entityType entityTypeName="UseNameElement" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Use Name Element" />
+            </entityType>
+            <entityType entityTypeName="UseNameElementDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Use Name Element Description" />
+            </entityType>
+            <entityType entityTypeName="UseType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Use Type" />
+            </entityType>
+            <entityType entityTypeName="UseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Use Type Description" />
+            </entityType>
+            <entityType entityTypeName="Use" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Use" />
+            </entityType>
+            <entityType entityTypeName="UseDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Offer Use Description" />
+            </entityType>
+            <entityType entityTypeName="UserLogin" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="User Login" />
+            </entityType>
+            <entityType entityTypeName="UserLoginPassword" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="User Login Password" />
+            </entityType>
+            <entityType entityTypeName="UserLoginPasswordString" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="User Login Password String" />
+            </entityType>
+            <entityType entityTypeName="Vendor" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Vendor" />
+            </entityType>
+            <entityType entityTypeName="VendorItemCost" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Vendor Item Cost" />
+            </entityType>
+            <entityType entityTypeName="Warehouse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Warehouse" />
+            </entityType>
+            <entityType entityTypeName="Wishlist" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Wishlist" />
+            </entityType>
+            <entityType entityTypeName="WishlistLine" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Wishlist Line" />
+            </entityType>
+            <entityType entityTypeName="WishlistType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Wishlist Type" />
+            </entityType>
+            <entityType entityTypeName="WishlistTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Wishlist Type Description" />
+            </entityType>
+            <entityType entityTypeName="WishlistTypePriority" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Wishlist Type Priority" />
+            </entityType>
+            <entityType entityTypeName="WishlistTypePriorityDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Wishlist Type Priority Description" />
+            </entityType>
+            <entityType entityTypeName="Workflow" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow" />
+            </entityType>
+            <entityType entityTypeName="WorkflowDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Destination" />
+            </entityType>
+            <entityType entityTypeName="WorkflowDestination" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Destination" />
+            </entityType>
+            <entityType entityTypeName="WorkflowDestinationDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Destination Description" />
+            </entityType>
+            <entityType entityTypeName="WorkflowDestinationSelector" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Destination Selector" />
+            </entityType>
+            <entityType entityTypeName="WorkflowDestinationPartyType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Destination Party Type" />
+            </entityType>
+            <entityType entityTypeName="WorkflowDestinationSecurityRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Destination Security Role" />
+            </entityType>
+            <entityType entityTypeName="WorkflowDestinationStep" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Destination Step" />
+            </entityType>
+            <entityType entityTypeName="WorkflowEntrance" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Entrance" />
+            </entityType>
+            <entityType entityTypeName="WorkflowEntranceDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Entrance Description" />
+            </entityType>
+            <entityType entityTypeName="WorkflowEntranceSelector" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Entrance Selector" />
+            </entityType>
+            <entityType entityTypeName="WorkflowEntrancePartyType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Entrance Party Type" />
+            </entityType>
+            <entityType entityTypeName="WorkflowEntranceSecurityRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Entrance Security Role" />
+            </entityType>
+            <entityType entityTypeName="WorkflowEntranceStep" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Entrance Step" />
+            </entityType>
+            <entityType entityTypeName="WorkflowSelectorKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Selector Kind" />
+            </entityType>
+            <entityType entityTypeName="WorkflowStep" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Step" />
+            </entityType>
+            <entityType entityTypeName="WorkflowStepDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Step Description" />
+            </entityType>
+            <entityType entityTypeName="WorkflowEntityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Entity Type" />
+            </entityType>
+            <entityType entityTypeName="WorkflowEntityStatus" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Entity Status" />
+            </entityType>
+            <entityType entityTypeName="WorkEffortType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Effort Type" />
+            </entityType>
+            <entityType entityTypeName="WorkEffortTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Effort Type Description" />
+            </entityType>
+            <entityType entityTypeName="WorkEffortScope" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Effort Scope" />
+            </entityType>
+            <entityType entityTypeName="WorkEffortScopeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Effort Scope Description" />
+            </entityType>
+            <entityType entityTypeName="WorkEffort" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Effort" />
+            </entityType>
+            <entityType entityTypeName="WorkRequirementType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Requirement Type" />
+            </entityType>
+            <entityType entityTypeName="WorkRequirementTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Requirement Type Description" />
+            </entityType>
+            <entityType entityTypeName="WorkRequirementScope" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Requirement Scope" />
+            </entityType>
+            <entityType entityTypeName="WorkRequirementScopeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Requirement Scope Description" />
+            </entityType>
+            <entityType entityTypeName="WorkRequirement" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Requirement" />
+            </entityType>
+            <entityType entityTypeName="WorkAssignment" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Assignment" />
+            </entityType>
+            <entityType entityTypeName="WorkTime" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Work Time" />
+            </entityType>
+            <entityType entityTypeName="ResponsibilityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Responsibility Type" />
+            </entityType>
+            <entityType entityTypeName="ResponsibilityTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Responsibility Type Description" />
+            </entityType>
+            <entityType entityTypeName="PartyResponsibility" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Responsibility" />
+            </entityType>
+            <entityType entityTypeName="SkillType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Skill Type" />
+            </entityType>
+            <entityType entityTypeName="SkillTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Skill Type Description" />
+            </entityType>
+            <entityType entityTypeName="PartySkill" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Skill" />
+            </entityType>
+            <entityType entityTypeName="TrainingClass" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Translation" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassSection" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Section" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassSectionTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Section Translation" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassPage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Page" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassPageTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Page Translation" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassQuestion" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Question" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassQuestionTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Question Translation" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassAnswer" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Answer" />
+            </entityType>
+            <entityType entityTypeName="TrainingClassAnswerTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Training Class Answer Translation" />
+            </entityType>
+            <entityType entityTypeName="PartyTrainingClass" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Training Class" />
+            </entityType>
+            <entityType entityTypeName="PartyTrainingClassSession" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Training Class Session" />
+            </entityType>
+            <entityType entityTypeName="PartyTrainingClassSessionPage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Training Class Session Page" />
+            </entityType>
+            <entityType entityTypeName="PartyTrainingClassSessionQuestion" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Training Class Session Question" />
+            </entityType>
+            <entityType entityTypeName="PartyTrainingClassSessionAnswer" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Training Class Session Answer" />
+            </entityType>
+            <entityType entityTypeName="LeaveType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Leave Type" />
+            </entityType>
+            <entityType entityTypeName="LeaveTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Leave Type Description" />
+            </entityType>
+            <entityType entityTypeName="LeaveReason" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Leave Reason" />
+            </entityType>
+            <entityType entityTypeName="LeaveReasonDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Leave Reason Description" />
+            </entityType>
+            <entityType entityTypeName="TerminationReason" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Termination Reason" />
+            </entityType>
+            <entityType entityTypeName="TerminationReasonDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Termination Reason Description" />
+            </entityType>
+            <entityType entityTypeName="TerminationType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Termination Type" />
+            </entityType>
+            <entityType entityTypeName="TerminationTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Termination Type Description" />
+            </entityType>
+            <entityType entityTypeName="AssociateProgram" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Associate Program" />
+            </entityType>
+            <entityType entityTypeName="AssociateProgramDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Associate Program Description" />
+            </entityType>
+            <entityType entityTypeName="Associate" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Associate" />
+            </entityType>
+            <entityType entityTypeName="AssociatePartyContactMechanism" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Associate Party Contact Mechanism" />
+            </entityType>
+            <entityType entityTypeName="AssociateReferral" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Associate Referral" />
+            </entityType>
+            <entityType entityTypeName="ShipmentTypeShippingMethod" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Type Shipping Method" />
+            </entityType>
+            <entityType entityTypeName="PartyTypeContactList" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Type Contact List" />
+            </entityType>
+            <entityType entityTypeName="PartyTypeContactListGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Type Contact List Group" />
+            </entityType>
+            <entityType entityTypeName="CustomerTypeContactList" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Customer Type Contact List" />
+            </entityType>
+            <entityType entityTypeName="CustomerTypeContactListGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Customer Type Contact List Group" />
+            </entityType>
+            <entityType entityTypeName="ContactListGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List Group" />
+            </entityType>
+            <entityType entityTypeName="ContactListGroupDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List Group Description" />
+            </entityType>
+            <entityType entityTypeName="ContactListFrequency" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List Frequency" />
+            </entityType>
+            <entityType entityTypeName="ContactListFrequencyDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List Frequency Description" />
+            </entityType>
+            <entityType entityTypeName="ContactListType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List Type" />
+            </entityType>
+            <entityType entityTypeName="ContactListTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List Type Description" />
+            </entityType>
+            <entityType entityTypeName="ContactList" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List" />
+            </entityType>
+            <entityType entityTypeName="ContactListDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List Description" />
+            </entityType>
+            <entityType entityTypeName="ContactListContactMechanismPurpose" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact List Contact Mechanism Purpose" />
+            </entityType>
+            <entityType entityTypeName="LetterSource" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Letter Source" />
+            </entityType>
+            <entityType entityTypeName="LetterSourceDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Letter Source Description" />
+            </entityType>
+            <entityType entityTypeName="Letter" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Letter" />
+            </entityType>
+            <entityType entityTypeName="LetterDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Letter Description" />
+            </entityType>
+            <entityType entityTypeName="LetterContactMechanismPurpose" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Letter Contact Mechanism Purpose" />
+            </entityType>
+            <entityType entityTypeName="Job" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Job" />
+            </entityType>
+            <entityType entityTypeName="JobDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Job Description" />
+            </entityType>
+            <entityType entityTypeName="SecurityRoleGroup" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Security Role Group" />
+            </entityType>
+            <entityType entityTypeName="SecurityRoleGroupDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Security Role Group Description" />
+            </entityType>
+            <entityType entityTypeName="SecurityRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Security Role" />
+            </entityType>
+            <entityType entityTypeName="SecurityRoleDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Security Role Description" />
+            </entityType>
+            <entityType entityTypeName="SecurityRolePartyType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Security Role Party Type" />
+            </entityType>
+            <entityType entityTypeName="BaseEncryptionKey" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Base Encryption Key" />
+            </entityType>
+            <entityType entityTypeName="EventSubscriber" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Event Subscriber" />
+            </entityType>
+            <entityType entityTypeName="EventSubscriberEventType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Event Subscriber Event Type" />
+            </entityType>
+            <entityType entityTypeName="EventSubscriberEntityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Event Subscriber Entity Type" />
+            </entityType>
+            <entityType entityTypeName="EventSubscriberEntityInstance" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Event Subscriber Entity Instance" />
+            </entityType>
+            <entityType entityTypeName="PartyEntityType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Entity Type" />
+            </entityType>
+            <entityType entityTypeName="PeriodKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Period Kind" />
+            </entityType>
+            <entityType entityTypeName="PeriodKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Period Kind Description" />
+            </entityType>
+            <entityType entityTypeName="PeriodType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Period Type" />
+            </entityType>
+            <entityType entityTypeName="PeriodTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Period Type Description" />
+            </entityType>
+            <entityType entityTypeName="Period" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Period" />
+            </entityType>
+            <entityType entityTypeName="PeriodDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Period Description" />
+            </entityType>
+            <entityType entityTypeName="DocumentTypeUsageType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document Type Usage Type" />
+            </entityType>
+            <entityType entityTypeName="DocumentTypeUsageTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document Type Usage Type Description" />
+            </entityType>
+            <entityType entityTypeName="DocumentTypeUsage" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document Type Usage" />
+            </entityType>
+            <entityType entityTypeName="PartyTypeDocumentTypeUsageType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Type Document Type Usage Type" />
+            </entityType>
+            <entityType entityTypeName="DocumentType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document Type" />
+            </entityType>
+            <entityType entityTypeName="DocumentTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Document Type Description" />
+            </entityType>
+            <entityType entityTypeName="OrderAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Alias Type" />
+            </entityType>
+            <entityType entityTypeName="OrderAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="OrderAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Alias" />
+            </entityType>
+            <entityType entityTypeName="ShipmentAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Alias Type" />
+            </entityType>
+            <entityType entityTypeName="ShipmentAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="ShipmentAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Alias" />
+            </entityType>
+            <entityType entityTypeName="PicklistAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Picklist Alias Type" />
+            </entityType>
+            <entityType entityTypeName="PicklistAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Picklist Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="PicklistAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Picklist Alias" />
+            </entityType>
+            <entityType entityTypeName="OrderType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Type" />
+            </entityType>
+            <entityType entityTypeName="OrderTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Order Type Description" />
+            </entityType>
+            <entityType entityTypeName="ShipmentType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Type" />
+            </entityType>
+            <entityType entityTypeName="ShipmentTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Type Description" />
+            </entityType>
+            <entityType entityTypeName="ShipmentTimeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Time Type" />
+            </entityType>
+            <entityType entityTypeName="ShipmentTimeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Time Type Description" />
+            </entityType>
+            <entityType entityTypeName="ShipmentTime" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Shipment Time" />
+            </entityType>
+            <entityType entityTypeName="PicklistType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Picklist Type" />
+            </entityType>
+            <entityType entityTypeName="PicklistTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Picklist Type Description" />
+            </entityType>
+            <entityType entityTypeName="PicklistTimeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Picklist Time Type" />
+            </entityType>
+            <entityType entityTypeName="PicklistTimeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Picklist Time Type Description" />
+            </entityType>
+            <entityType entityTypeName="PicklistTime" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Picklist Time" />
+            </entityType>
+            <entityType entityTypeName="ContactMechanismAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias Type" />
+            </entityType>
+            <entityType entityTypeName="ContactMechanismAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias Type" />
+            </entityType>
+            <entityType entityTypeName="LotType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot Type" />
+            </entityType>
+            <entityType entityTypeName="LotTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot Type Description" />
+            </entityType>
+            <entityType entityTypeName="LotAliasType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot Alias Type" />
+            </entityType>
+            <entityType entityTypeName="LotAliasTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="LotTimeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot Time Type" />
+            </entityType>
+            <entityType entityTypeName="LotTimeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot Time Type Description" />
+            </entityType>
+            <entityType entityTypeName="Lot" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot" />
+            </entityType>
+            <entityType entityTypeName="LotAlias" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot Alias" />
+            </entityType>
+            <entityType entityTypeName="LotTime" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Lot Time" />
+            </entityType>
+            <entityType entityTypeName="Scale" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Scale " />
+            </entityType>
+            <entityType entityTypeName="ScaleDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Scale Description" />
+            </entityType>
+            <entityType entityTypeName="ScaleType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Scale Type " />
+            </entityType>
+            <entityType entityTypeName="ScaleTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Scale Type Description" />
+            </entityType>
+            <entityType entityTypeName="ScaleUseType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Scale Use Type" />
+            </entityType>
+            <entityType entityTypeName="ScaleUseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Scale Use Type Description" />
+            </entityType>
+            <entityType entityTypeName="PartyScaleUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Scale Use" />
+            </entityType>
+            <entityType entityTypeName="MimeType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Mime Type" />
+            </entityType>
+            <entityType entityTypeName="MimeTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Mime Type Description" />
+            </entityType>
+            <entityType entityTypeName="SearchDefaultOperator" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Default Operator" />
+            </entityType>
+            <entityType entityTypeName="SearchDefaultOperatorDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Default Operator Description" />
+            </entityType>
+            <entityType entityTypeName="SearchSortDirection" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Sort Direction" />
+            </entityType>
+            <entityType entityTypeName="SearchSortDirectionDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Sort Direction Description" />
+            </entityType>
+            <entityType entityTypeName="SearchUseType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Use Type" />
+            </entityType>
+            <entityType entityTypeName="SearchUseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Use Type Description" />
+            </entityType>
+            <entityType entityTypeName="PartySearchTypePreference" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Search Type Preference" />
+            </entityType>
+            <entityType entityTypeName="SearchKind" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Kind" />
+            </entityType>
+            <entityType entityTypeName="SearchKindDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Kind Description" />
+            </entityType>
+            <entityType entityTypeName="SearchType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Type" />
+            </entityType>
+            <entityType entityTypeName="SearchTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Type Description" />
+            </entityType>
+            <entityType entityTypeName="SearchSortOrder" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Sort Order" />
+            </entityType>
+            <entityType entityTypeName="SearchSortOrderDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Sort Order Description" />
+            </entityType>
+            <entityType entityTypeName="HarmonizedTariffScheduleCode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Harmonized Tariff Schedule Code" />
+            </entityType>
+            <entityType entityTypeName="HarmonizedTariffScheduleCodeTranslation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Harmonized Tariff Schedule Code Translation" />
+            </entityType>
+            <entityType entityTypeName="HarmonizedTariffScheduleCodeUnit" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Harmonized Tariff Schedule Code Unit" />
+            </entityType>
+            <entityType entityTypeName="HarmonizedTariffScheduleCodeUnitDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Harmonized Tariff Schedule Code Unit Description" />
+            </entityType>
+            <entityType entityTypeName="HarmonizedTariffScheduleCodeUseType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Harmonized Tariff Schedule Code Use Type" />
+            </entityType>
+            <entityType entityTypeName="HarmonizedTariffScheduleCodeUseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Harmonized Tariff Schedule Code Use Type Description" />
+            </entityType>
+            <entityType entityTypeName="HarmonizedTariffScheduleCodeUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Harmonized Tariff Schedule Code Use" />
+            </entityType>
+            <entityType entityTypeName="ItemHarmonizedTariffScheduleCode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Harmonized Tariff Schedule Code" />
+            </entityType>
+            <entityType entityTypeName="Application" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Application" />
+            </entityType>
+            <entityType entityTypeName="ApplicationDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Application Description" />
+            </entityType>
+            <entityType entityTypeName="Editor" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Editor" />
+            </entityType>
+            <entityType entityTypeName="EditorDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Editor Description" />
+            </entityType>
+            <entityType entityTypeName="ApplicationEditor" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Application Editor" />
+            </entityType>
+            <entityType entityTypeName="ApplicationEditorUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Application Editor Use" />
+            </entityType>
+            <entityType entityTypeName="ApplicationEditorUseDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Application Editor Use Description" />
+            </entityType>
+            <entityType entityTypeName="PartyApplicationEditorUse" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Application Editor Use" />
+            </entityType>
+            <entityType entityTypeName="Color" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Color" />
+            </entityType>
+            <entityType entityTypeName="ColorDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Color Description" />
+            </entityType>
+            <entityType entityTypeName="FontStyle" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Font Style" />
+            </entityType>
+            <entityType entityTypeName="FontStyleDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Font Style Description" />
+            </entityType>
+            <entityType entityTypeName="FontWeight" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Font Weight" />
+            </entityType>
+            <entityType entityTypeName="FontWeightDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Font Weight Description" />
+            </entityType>
+            <entityType entityTypeName="TextDecoration" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Text Decoration" />
+            </entityType>
+            <entityType entityTypeName="TextDecorationDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Text Decoration Description" />
+            </entityType>
+            <entityType entityTypeName="TextTransformation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Text Transformation" />
+            </entityType>
+            <entityType entityTypeName="TextTransformationDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Text Transformation Description" />
+            </entityType>
+            <entityType entityTypeName="Appearance" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Appearance" />
+            </entityType>
+            <entityType entityTypeName="AppearanceDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Appearance Description" />
+            </entityType>
+            <entityType entityTypeName="AppearanceTextDecoration" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Appearance Text Decoration" />
+            </entityType>
+            <entityType entityTypeName="AppearanceTextTransformation" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Appearance Text Transformation" />
+            </entityType>
+            <entityType entityTypeName="EntityAppearance" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Appearance" />
+            </entityType>
+            <entityType entityTypeName="IndexType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Index Type" />
+            </entityType>
+            <entityType entityTypeName="IndexTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Index Type Description" />
+            </entityType>
+            <entityType entityTypeName="IndexField" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Index Field" />
+            </entityType>
+            <entityType entityTypeName="IndexFieldDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Index Field Description" />
+            </entityType>
+            <entityType entityTypeName="Index" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Index" />
+            </entityType>
+            <entityType entityTypeName="IndexDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Index Description" />
+            </entityType>
+            <entityType entityTypeName="LicenseType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="License Type" />
+            </entityType>
+            <entityType entityTypeName="LicenseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="License Type Description" />
+            </entityType>
+            <entityType entityTypeName="QueueType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Queue Type" />
+            </entityType>
+            <entityType entityTypeName="QueueTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Queue Type Description" />
+            </entityType>
+            <entityType entityTypeName="Search" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search" />
+            </entityType>
+            <entityType entityTypeName="SearchResultActionType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Result Action Type" />
+            </entityType>
+            <entityType entityTypeName="SearchResultActionTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Result Action Type Description" />
+            </entityType>
+            <entityType entityTypeName="SearchResultAction" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Result Action" />
+            </entityType>
+            <entityType entityTypeName="SearchCheckSpellingActionType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Check Spelling Action Type" />
+            </entityType>
+            <entityType entityTypeName="SearchCheckSpellingActionTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Search Check Spelling Action Type Description" />
+            </entityType>
+            <entityType entityTypeName="CachedSearch" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cached Search" />
+            </entityType>
+            <entityType entityTypeName="CachedSearchIndexField" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cached Search Index Field" />
+            </entityType>
+            <entityType entityTypeName="CachedExecutedSearch" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Cached Executed Search" />
+            </entityType>
+            <entityType entityTypeName="Campaign" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign" />
+            </entityType>
+            <entityType entityTypeName="CampaignDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Description" />
+            </entityType>
+            <entityType entityTypeName="CampaignSource" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Source" />
+            </entityType>
+            <entityType entityTypeName="CampaignSourceDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Source Description" />
+            </entityType>
+            <entityType entityTypeName="CampaignMedium" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Medium" />
+            </entityType>
+            <entityType entityTypeName="CampaignMediumDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Medium Description" />
+            </entityType>
+            <entityType entityTypeName="CampaignSource" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Term" />
+            </entityType>
+            <entityType entityTypeName="CampaignTermDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Term Description" />
+            </entityType>
+            <entityType entityTypeName="CampaignContent" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Content" />
+            </entityType>
+            <entityType entityTypeName="CampaignContentDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Campaign Content Description" />
+            </entityType>
+            <entityType entityTypeName="Track" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Track" />
+            </entityType>
+            <entityType entityTypeName="TrackDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Track Description" />
+            </entityType>
+            <entityType entityTypeName="PartyEntitySecurityRole" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Party Entity Security Role" />
+            </entityType>
+            <entityType entityTypeName="SymbolPosition" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Symbol Position" />
+            </entityType>
+            <entityType entityTypeName="SymbolPositionDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Symbol Position Description" />
+            </entityType>
+            <entityType entityTypeName="Currency" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Currency" />
+            </entityType>
+            <entityType entityTypeName="CurrencyDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Currency Description" />
+            </entityType>
+            <entityType entityTypeName="Language" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Language" />
+            </entityType>
+            <entityType entityTypeName="LanguageDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Language Description" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeBlob" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Blob" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeInteger" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Integer" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeListItem" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute List Item" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeLong" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Long" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeNumeric" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute Numeric" />
+            </entityType>
+            <entityType entityTypeName="EntityAttributeString" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Attribute String" />
+            </entityType>
+            <component componentName="InitialDataFromXML" description="Initial Data From XML">
+                <componentVersion majorRevision="1" minorRevision="0" componentStageName="DEVELOPMENT" buildNumber="1" />
+            </component>
+            <component componentName="CoreService" description="Core Service">
+                <componentVersion majorRevision="1" minorRevision="0" componentStageName="DEVELOPMENT" buildNumber="1" />
+            </component>
+            <component componentName="PartyService" description="Party Service">
+                <componentVersion majorRevision="1" minorRevision="0" componentStageName="DEVELOPMENT" buildNumber="1" />
+            </component>
+            <component componentName="AccountingService" description="Accounting Service">
+                <componentVersion majorRevision="1" minorRevision="0" componentStageName="DEVELOPMENT" buildNumber="1" />
+            </component>
+            <component componentName="UserService" description="User Service">
+                <componentVersion majorRevision="1" minorRevision="0" componentStageName="DEVELOPMENT" buildNumber="1" />
+            </component>
+            <command commandName="GetUserSession" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get User Session" />
+            </command>
+            <command commandName="GetUserVisit" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get User Visit" />
+            </command>
+            <command commandName="StartJob" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Start Job" />
+            </command>
+            <command commandName="EndJob" sortOrder="1">
+                <commandDescription languageIsoName="en" description="End Job" />
+            </command>
+            <command commandName="GenerateBaseKeys" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Generate Base Keys" />
+            </command>
+            <command commandName="ProcessQueuedEvents" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Process Queued Events" />
+            </command>
+            <command commandName="UpdateIndexes" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Update Indexes" />
+            </command>
+            <command commandName="EvaluateSelectors" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Evaluate Selectors" />
+            </command>
+            <command commandName="GetCountry" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get Country" />
+            </command>
+            <command commandName="GetState" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get State" />
+            </command>
+            <command commandName="GetCounty" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get County" />
+            </command>
+            <command commandName="GetCity" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get City" />
+            </command>
+            <command commandName="GetZipCode" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get Zip Code" />
+            </command>
+            <command commandName="CreateZipCode" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Create Zip Code" />
+            </command>
+            <command commandName="GetCompanyChoices" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get Company Choices" />
+            </command>
+            <command commandName="GetEmployeeLoginDefaults" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Get Employee Login Defaults" />
+            </command>
+            <command commandName="EmployeeLogin" sortOrder="1">
+                <commandDescription languageIsoName="en" description="Employee Login" />
+            </command>
+        </componentVendor>
+    </componentVendors>
+</initialData>

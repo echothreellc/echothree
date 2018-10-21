@@ -1,0 +1,91 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.core.eventgroup;
+
+import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.remote.form.GetEventGroupStatusChoicesForm;
+import com.echothree.control.user.core.remote.result.GetEventGroupStatusChoicesResult;
+import com.echothree.model.control.core.remote.choice.EventGroupStatusChoicesBean;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.BaseActionForm;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
+import java.util.List;
+import javax.naming.NamingException;
+import org.apache.struts.util.LabelValueBean;
+
+@SproutForm(name="EventGroupStatus")
+public class StatusActionForm
+        extends BaseActionForm {
+    
+    private EventGroupStatusChoicesBean eventGroupStatusChoices;
+    
+    private String eventGroupName;
+    private String eventGroupStatusChoice;
+    
+    public void setupEventGroupStatusChoices() {
+        if(eventGroupStatusChoices == null) {
+            try {
+                GetEventGroupStatusChoicesForm form = CoreUtil.getHome().getGetEventGroupStatusChoicesForm();
+                
+                form.setEventGroupName(eventGroupName);
+                form.setDefaultEventGroupStatusChoice(eventGroupStatusChoice);
+                form.setAllowNullChoice(Boolean.FALSE.toString());
+                
+                CommandResult commandResult = CoreUtil.getHome().getEventGroupStatusChoices(userVisitPK, form);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetEventGroupStatusChoicesResult result = (GetEventGroupStatusChoicesResult)executionResult.getResult();
+                eventGroupStatusChoices = result.getEventGroupStatusChoices();
+                
+                if(eventGroupStatusChoice == null) {
+                    eventGroupStatusChoice = eventGroupStatusChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, eventGroupStatusChoices remains null, no default
+            }
+        }
+    }
+    
+    public String getEventGroupName() {
+        return eventGroupName;
+    }
+    
+    public void setEventGroupName(String eventGroupName) {
+        this.eventGroupName = eventGroupName;
+    }
+    
+    public String getEventGroupStatusChoice() {
+        return eventGroupStatusChoice;
+    }
+    
+    public void setEventGroupStatusChoice(String eventGroupStatusChoice) {
+        this.eventGroupStatusChoice = eventGroupStatusChoice;
+    }
+    
+    public List<LabelValueBean> getEventGroupStatusChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupEventGroupStatusChoices();
+        if(eventGroupStatusChoices != null) {
+            choices = convertChoices(eventGroupStatusChoices);
+        }
+        
+        return choices;
+    }
+    
+}

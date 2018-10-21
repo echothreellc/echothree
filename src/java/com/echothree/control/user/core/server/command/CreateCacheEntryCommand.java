@@ -1,0 +1,124 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.core.server.command;
+
+import com.echothree.control.user.core.remote.form.CreateCacheEntryForm;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.uom.common.UomConstants;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.core.server.entity.CacheEntry;
+import com.echothree.model.data.core.server.entity.MimeType;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.exception.PersistenceDatabaseException;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.PersistenceUtils;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+public class CreateCacheEntryCommand
+        extends BaseSimpleCommand<CreateCacheEntryForm> {
+    
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+    
+    static {
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("CacheEntryKey", FieldType.STRING, true, 1L, 200L),
+                new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
+                new FieldDefinition("ValidForTime", FieldType.UNSIGNED_LONG, false, null, null),
+                new FieldDefinition("ValidForTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Clob", FieldType.STRING, false, 1L, null)
+                ));
+    }
+    
+    /** Creates a new instance of CreateCacheEntryCommand */
+    public CreateCacheEntryCommand(UserVisitPK userVisitPK, CreateCacheEntryForm form) {
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        CoreControl coreControl = getCoreControl();
+        String cacheEntryKey = form.getCacheEntryKey();
+        CacheEntry cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
+
+        if(cacheEntry == null) {
+            String mimeTypeName = form.getMimeTypeName();
+            MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
+
+            if(mimeType != null) {
+                Long validForTime = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
+                        form.getValidForTime(), form.getValidForTimeUnitOfMeasureTypeName(),
+                        null, ExecutionErrors.MissingRequiredValidForTime.name(), null, ExecutionErrors.MissingRequiredValidForTimeUnitOfMeasureTypeName.name(),
+                        null, ExecutionErrors.UnknownValidForTimeUnitOfMeasureTypeName.name());
+
+                if(!hasExecutionErrors()) {
+                    String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                    Set<String> entityRefs = form.getEntityRefs();
+
+                    try {
+                        if(entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {
+                            String clob = form.getClob();
+
+                            if(clob != null) {
+                                coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
+                                        validForTime == null ? null : session.START_TIME + validForTime, clob, null, entityRefs);
+                            } else {
+                                addExecutionError(ExecutionErrors.MissingClob.name());
+                            }
+                        } else if(entityAttributeTypeName.equals(EntityAttributeTypes.BLOB.name())) {
+                            ByteArray blob = form.getBlob();
+
+                            if(blob != null) {
+                                coreControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
+                                        validForTime == null ? null : session.START_TIME + validForTime, null, blob, entityRefs);
+                            } else {
+                                addExecutionError(ExecutionErrors.MissingBlob.name());
+                            }
+                        } else {
+                            addExecutionError(ExecutionErrors.InvalidMimeType.name(), mimeTypeName);
+                        }
+                    } catch(PersistenceDatabaseException pde) {
+                        if(PersistenceUtils.getInstance().isIntegrityConstraintViolation(pde)) {
+                            // Duplicate key in index, add this as a regular error, and continue. Tested w/ MySQL only.
+                            addExecutionError(ExecutionErrors.DuplicateCacheEntryKey.name(), cacheEntryKey);
+                            pde = null;
+                        }
+
+                        if(pde != null) {
+                            throw pde;
+                        }
+                    }
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownMimeTypeName.name(), mimeTypeName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateCacheEntryKey.name(), cacheEntryKey);
+        }
+        
+        return null;
+    }
+    
+}

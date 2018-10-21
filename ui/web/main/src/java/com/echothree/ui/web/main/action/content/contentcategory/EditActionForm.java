@@ -1,0 +1,91 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.content.contentcategory;
+
+import com.echothree.control.user.content.common.ContentUtil;
+import com.echothree.control.user.content.remote.form.GetContentCategoryChoicesForm;
+import com.echothree.control.user.content.remote.result.GetContentCategoryChoicesResult;
+import com.echothree.model.control.content.remote.choice.ContentCategoryChoicesBean;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
+import java.util.List;
+import javax.naming.NamingException;
+import org.apache.struts.util.LabelValueBean;
+
+@SproutForm(name="ContentCategoryEdit")
+public class EditActionForm
+        extends AddActionForm {
+    
+    protected ContentCategoryChoicesBean parentContentCategoryChoices = null;
+    
+    protected String originalContentCategoryName = null;
+    protected String parentContentCategoryChoice = null;
+    
+    private void setupParentContentCategoryChoices() {
+        if(parentContentCategoryChoices == null) {
+            try {
+                GetContentCategoryChoicesForm form = ContentUtil.getHome().getGetContentCategoryChoicesForm();
+                
+                form.setContentCollectionName(contentCollectionName);
+                form.setContentCatalogName(contentCatalogName);
+                form.setDefaultContentCategoryChoice(parentContentCategoryChoice);
+                form.setAllowNullChoice(Boolean.TRUE.toString());
+                
+                CommandResult commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetContentCategoryChoicesResult getContentCategoryChoicesResult = (GetContentCategoryChoicesResult)executionResult.getResult();
+                parentContentCategoryChoices = getContentCategoryChoicesResult.getContentCategoryChoices();
+                
+                if(parentContentCategoryChoice == null) {
+                    parentContentCategoryChoice = parentContentCategoryChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, parentContentCategoryChoices remains null, no default
+            }
+        }
+    }
+    
+    public String getOriginalContentCategoryName() {
+        return originalContentCategoryName;
+    }
+    
+    public void setOriginalContentCategoryName(String originalContentCategoryName) {
+        this.originalContentCategoryName = originalContentCategoryName;
+    }
+    
+    public String getParentContentCategoryChoice() {
+        return parentContentCategoryChoice;
+    }
+    
+    public void setParentContentCategoryChoice(String parentContentCategoryChoice) {
+        this.parentContentCategoryChoice = parentContentCategoryChoice;
+    }
+    
+    public List<LabelValueBean> getParentContentCategoryChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupParentContentCategoryChoices();
+        if(parentContentCategoryChoices != null) {
+            choices = convertChoices(parentContentCategoryChoices);
+        }
+        
+        return choices;
+    }
+    
+}

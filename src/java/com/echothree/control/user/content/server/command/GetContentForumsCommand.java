@@ -1,0 +1,88 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.content.server.command;
+
+import com.echothree.control.user.content.remote.form.GetContentForumsForm;
+import com.echothree.control.user.content.remote.result.ContentResultFactory;
+import com.echothree.control.user.content.remote.result.GetContentForumsResult;
+import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.data.content.server.entity.ContentCollection;
+import com.echothree.model.data.content.server.entity.ContentForum;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+public class GetContentForumsCommand
+        extends BaseMultipleEntitiesCommand<ContentForum, GetContentForumsForm> {
+    
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+    
+    static {
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+    }
+    
+    /** Creates a new instance of GetContentForumsCommand */
+    public GetContentForumsCommand(UserVisitPK userVisitPK, GetContentForumsForm form) {
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+    }
+    
+    private ContentCollection contentCollection;
+    
+    @Override
+    protected Collection<ContentForum> getEntities() {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        String contentCollectionName = form.getContentCollectionName();
+        Collection<ContentForum> contentForums = null;
+        
+        contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        
+        if(contentCollection != null) {
+            contentForums = contentControl.getContentForums(contentCollection);
+        } else {
+            addExecutionError(ExecutionErrors.UnknownContentCollectionName.name(), contentCollectionName);
+        }
+        
+        return contentForums;
+    }
+    
+    @Override
+    protected BaseResult getTransfers(Collection<ContentForum> entities) {
+        GetContentForumsResult result = ContentResultFactory.getGetContentForumsResult();
+        
+        if(entities != null) {
+            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            UserVisit userVisit = getUserVisit();
+            
+            result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
+            result.setContentForums(contentControl.getContentForumTransfers(userVisit, entities));
+        }
+        
+        return result;
+    }
+    
+}

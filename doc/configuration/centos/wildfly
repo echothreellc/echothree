@@ -1,0 +1,14 @@
+JAVA_HOME=/usr/java/latest
+JBOSS_USER=jboss
+JBOSS_HOME=/usr/local/jboss/wildfly-latest
+JBOSS_MODE=standalone
+JBOSS_BASE_DIR="$JBOSS_HOME/$JBOSS_MODE"
+JBOSS_CONFIG=standalone-full-ha.xml
+JBOSS_OPTS=-b=127.0.0.1
+
+JAVA_OPTS="-Xms128m -Xmx4096m -Djava.net.preferIPv4Stack=true"
+JAVA_OPTS="$JAVA_OPTS -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
+JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true"
+#JAVA_OPTS="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n"
+JAVA_OPTS="$JAVA_OPTS -Dorg.jooq.no-logo=true"
+export JAVA_OPTS

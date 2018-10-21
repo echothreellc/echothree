@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="ui">
+    
+    <target name="compile">
+        <parallel>
+            <ant dir="cli" target="compile"/>
+            <ant dir="web" target="compile"/>
+        </parallel>
+    </target>
+    
+    <target name="deploy">
+        <parallel>
+            <ant dir="web" target="deploy"/>
+        </parallel>
+    </target>
+    
+    <target name="clean">
+        <parallel>
+            <ant dir="cli" target="clean"/>
+            <ant dir="web" target="clean"/>
+        </parallel>
+    </target>
+        
+</project>
+

@@ -1,0 +1,171 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.accounting.server.command;
+
+import com.echothree.control.user.accounting.remote.edit.AccountingEditFactory;
+import com.echothree.control.user.accounting.remote.edit.TransactionTypeEdit;
+import com.echothree.control.user.accounting.remote.form.EditTransactionTypeForm;
+import com.echothree.control.user.accounting.remote.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.remote.result.EditTransactionTypeResult;
+import com.echothree.control.user.accounting.remote.spec.TransactionTypeSpec;
+import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.accounting.server.entity.TransactionType;
+import com.echothree.model.data.accounting.server.entity.TransactionTypeDescription;
+import com.echothree.model.data.accounting.server.entity.TransactionTypeDetail;
+import com.echothree.model.data.accounting.server.value.TransactionTypeDescriptionValue;
+import com.echothree.model.data.accounting.server.value.TransactionTypeDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditTransactionTypeCommand
+        extends BaseEditCommand<TransactionTypeSpec, TransactionTypeEdit> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.TransactionType.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+        
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+        
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of EditTransactionTypeCommand */
+    public EditTransactionTypeCommand(UserVisitPK userVisitPK, EditTransactionTypeForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        EditTransactionTypeResult result = AccountingResultFactory.getEditTransactionTypeResult();
+        String transactionTypeName = spec.getTransactionTypeName();
+        
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+            
+            if(transactionType != null) {
+                if(editMode.equals(EditMode.LOCK)) {
+                    if(lockEntity(transactionType)) {
+                        TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, getPreferredLanguage());
+                        TransactionTypeEdit edit = AccountingEditFactory.getTransactionTypeEdit();
+                        TransactionTypeDetail transactionTypeDetail = transactionType.getLastDetail();
+
+                        result.setTransactionType(accountingControl.getTransactionTypeTransfer(getUserVisit(), transactionType));
+                        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+
+                        result.setEdit(edit);
+                        edit.setTransactionTypeName(transactionTypeDetail.getTransactionTypeName());
+                        edit.setSortOrder(transactionTypeDetail.getSortOrder().toString());
+
+                        if(transactionTypeDescription != null) {
+                            edit.setDescription(transactionTypeDescription.getDescription());
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                    }
+
+                    result.setEntityLock(getEntityLockTransfer(transactionType));
+                } else { // EditMode.ABANDON
+                    unlockEntity(transactionType);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownTransactionTypeName.name(), transactionTypeName);
+            }
+        } else if(editMode.equals(EditMode.UPDATE)) {
+            TransactionType transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
+            
+            if(transactionType != null) {
+                transactionTypeName = edit.getTransactionTypeName();
+                TransactionType duplicateTransactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
+                
+                if(duplicateTransactionType == null || transactionType.equals(duplicateTransactionType)) {
+                    if(lockEntityForUpdate(transactionType)) {
+                        try {
+                            PartyPK partyPK = getPartyPK();
+                            TransactionTypeDetailValue transactionTypeDetailValue = accountingControl.getTransactionTypeDetailValueForUpdate(transactionType);
+                            TransactionTypeDescription transactionTypeDescription = accountingControl.getTransactionTypeDescriptionForUpdate(transactionType, getPreferredLanguage());
+                            String description = edit.getDescription();
+
+                            transactionTypeDetailValue.setTransactionTypeName(edit.getTransactionTypeName());
+                            transactionTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+                            accountingControl.updateTransactionTypeFromValue(transactionTypeDetailValue, partyPK);
+
+                            if(transactionTypeDescription == null && description != null) {
+                                accountingControl.createTransactionTypeDescription(transactionType, getPreferredLanguage(), description, partyPK);
+                            } else if(transactionTypeDescription != null && description == null) {
+                                accountingControl.deleteTransactionTypeDescription(transactionTypeDescription, partyPK);
+                            } else if(transactionTypeDescription != null && description != null) {
+                                TransactionTypeDescriptionValue transactionTypeDescriptionValue = accountingControl.getTransactionTypeDescriptionValue(transactionTypeDescription);
+
+                                transactionTypeDescriptionValue.setDescription(description);
+                                accountingControl.updateTransactionTypeDescriptionFromValue(transactionTypeDescriptionValue, partyPK);
+                            }
+                        } finally {
+                            unlockEntity(transactionType);
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.EntityLockStale.name());
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.DuplicateTransactionTypeName.name(), transactionTypeName);
+                }
+                
+                if(hasExecutionErrors()) {
+                    result.setTransactionType(accountingControl.getTransactionTypeTransfer(getUserVisit(), transactionType));
+                    result.setEntityLock(getEntityLockTransfer(transactionType));
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownTransactionTypeName.name(), transactionTypeName);
+            }
+        }
+        
+        return result;
+    }
+    
+}

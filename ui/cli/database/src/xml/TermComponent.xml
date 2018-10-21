@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Term">
+            <tables>
+                <table namePlural="TermTypes" nameSingular="TermType" columnPrefix="trmtyp">
+                    <columns>
+                        <column name="TermTypeId" type="EID" nullAllowed="false" />
+                        <column name="TermTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TermTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="TermTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TermTypeDescriptions" nameSingular="TermTypeDescription" columnPrefix="trmtypd">
+                    <columns>
+                        <column name="TermTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TermTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TermTypes" destinationColumn="TermTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TermTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TermTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Terms" nameSingular="Term" columnPrefix="trm">
+                    <columns>
+                        <column name="TermId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TermDetails" destinationColumn="TermDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TermDetails" destinationColumn="TermDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TermId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TermDetails" nameSingular="TermDetail" columnPrefix="trmdt">
+                    <columns>
+                        <column name="TermDetailId" type="EID" nullAllowed="false" />
+                        <column name="TermId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="TermName" type="Name" nullAllowed="false" />
+                        <column name="TermTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TermTypes" destinationColumn="TermTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TermDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TermId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TermName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="TermTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TermDescriptions" nameSingular="TermDescription" columnPrefix="trmd">
+                    <columns>
+                        <column name="TermDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TermId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TermDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TermId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="StandardTerms" nameSingular="StandardTerm" columnPrefix="stdtrm">
+                    <columns>
+                        <column name="StandardTermId" type="EID" nullAllowed="false" />
+                        <column name="TermId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="NetDueDays" type="Integer" nullAllowed="false" />
+                        <column name="DiscountPercentage" type="Integer" nullAllowed="false" />
+                        <column name="DiscountDays" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="StandardTermId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TermId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DateDrivenTerms" nameSingular="DateDrivenTerm" columnPrefix="ddtrm">
+                    <columns>
+                        <column name="DateDrivenTermId" type="EID" nullAllowed="false" />
+                        <column name="TermId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="NetDueDayOfMonth" type="Integer" nullAllowed="false" />
+                        <column name="DueNextMonthDays" type="Integer" nullAllowed="false" />
+                        <column name="DiscountPercentage" type="Integer" nullAllowed="false" />
+                        <column name="DiscountBeforeDayOfMonth" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DateDrivenTermId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TermId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CustomerTypeCreditLimits" nameSingular="CustomerTypeCreditLimit" columnPrefix="cutyclim">
+                    <columns>
+                        <column name="CustomerTypeCreditLimitId" type="EID" nullAllowed="false" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="CreditLimit" type="Currency" nullAllowed="true" />
+                        <column name="PotentialCreditLimit" type="Currency" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerTypeCreditLimitId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyCreditLimits" nameSingular="PartyCreditLimit" columnPrefix="pclim">
+                    <columns>
+                        <column name="PartyCreditLimitId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="CreditLimit" type="Currency" nullAllowed="true" />
+                        <column name="PotentialCreditLimit" type="Currency" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyCreditLimitId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTerms" nameSingular="PartyTerm" columnPrefix="ptrm">
+                    <columns>
+                        <column name="PartyTermId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="TermId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="Taxable" type="Boolean" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTermId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TermId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

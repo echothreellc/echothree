@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="web">
+    
+    <target name="compile">
+        <parallel>
+            <ant dir="cms" target="compile"/>
+            <ant dir="main" target="compile"/>
+            <ant dir="letter" target="compile"/>
+        </parallel>
+    </target>
+    
+    <target name="deploy">
+        <parallel>
+            <ant dir="cms" target="deploy"/>
+            <ant dir="main" target="deploy"/>
+            <ant dir="letter" target="deploy"/>
+        </parallel>
+    </target>
+    
+    <target name="clean">
+        <parallel>
+            <ant dir="cms" target="clean"/>
+            <ant dir="main" target="clean"/>
+            <ant dir="letter" target="clean"/>
+        </parallel>
+    </target>
+        
+</project>
+

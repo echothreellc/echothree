@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Letter">
+            <tables>
+                <table namePlural="LetterSources" nameSingular="LetterSource" columnPrefix="lttrsrc">
+                    <columns>
+                        <column name="LetterSourceId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LetterSourceDetails" destinationColumn="LetterSourceDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LetterSourceDetails" destinationColumn="LetterSourceDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LetterSourceId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LetterSourceDetails" nameSingular="LetterSourceDetail" columnPrefix="lttrsrcdt">
+                    <columns>
+                        <column name="LetterSourceDetailId" type="EID" nullAllowed="false" />
+                        <column name="LetterSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LetterSources" destinationColumn="LetterSourceId" />
+                        <column name="LetterSourceName" type="Name" nullAllowed="false" />
+                        <column name="CompanyPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="EmailAddressPartyContactMechanismId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyContactMechanisms" destinationColumn="PartyContactMechanismId" />
+                        <column name="PostalAddressPartyContactMechanismId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyContactMechanisms" destinationColumn="PartyContactMechanismId" />
+                        <column name="LetterSourcePartyContactMechanismId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyContactMechanisms" destinationColumn="PartyContactMechanismId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LetterSourceDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LetterSourceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LetterSourceName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CompanyPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="EmailAddressPartyContactMechanismId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="PostalAddressPartyContactMechanismId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="LetterSourcePartyContactMechanismId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LetterSourceDescriptions" nameSingular="LetterSourceDescription" columnPrefix="lttrsrcd">
+                    <columns>
+                        <column name="LetterSourceDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="LetterSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LetterSources" destinationColumn="LetterSourceId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LetterSourceDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LetterSourceId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LetterSourceId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Letters" nameSingular="Letter" columnPrefix="lttr">
+                    <columns>
+                        <column name="LetterId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LetterDetails" destinationColumn="LetterDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LetterDetails" destinationColumn="LetterDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LetterId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LetterDetails" nameSingular="LetterDetail" columnPrefix="lttrdt">
+                    <columns>
+                        <column name="LetterDetailId" type="EID" nullAllowed="false" />
+                        <column name="LetterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Letters" destinationColumn="LetterId" />
+                        <column name="ChainTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainTypes" destinationColumn="ChainTypeId" />
+                        <column name="LetterName" type="Name" nullAllowed="false" />
+                        <column name="LetterSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LetterSources" destinationColumn="LetterSourceId" />
+                        <column name="ContactListId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ContactLists" destinationColumn="ContactListId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LetterDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LetterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="LetterName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="LetterSourceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ContactListId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LetterDescriptions" nameSingular="LetterDescription" columnPrefix="lttrd">
+                    <columns>
+                        <column name="LetterDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="LetterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Letters" destinationColumn="LetterId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LetterDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LetterId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LetterContactMechanismPurposes" nameSingular="LetterContactMechanismPurpose" columnPrefix="lttrcmpr">
+                    <columns>
+                        <column name="LetterContactMechanismPurposeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LetterContactMechanismPurposeDetails" destinationColumn="LetterContactMechanismPurposeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LetterContactMechanismPurposeDetails" destinationColumn="LetterContactMechanismPurposeDetailId"/>
+                     </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LetterContactMechanismPurposeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LetterContactMechanismPurposeDetails" nameSingular="LetterContactMechanismPurposeDetail" columnPrefix="lttrcmprdt">
+                    <columns>
+                        <column name="LetterContactMechanismPurposeDetailId" type="EID" nullAllowed="false" />
+                        <column name="LetterContactMechanismPurposeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LetterContactMechanismPurposes" destinationColumn="LetterContactMechanismPurposeId" />
+                        <column name="LetterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Letters" destinationColumn="LetterId" />
+                        <column name="Priority" type="Integer" nullAllowed="false" />
+                        <column name="ContactMechanismPurposeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactMechanismPurposes" destinationColumn="ContactMechanismPurposeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LetterContactMechanismPurposeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LetterContactMechanismPurposeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LetterId" />
+                            <indexColumn name="Priority" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LetterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ContactMechanismPurposeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="QueuedLetters" nameSingular="QueuedLetter" columnPrefix="qlttr">
+                    <columns>
+                        <column name="QueuedLetterId" type="EID" nullAllowed="false" />
+                        <column name="ChainInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainInstances" destinationColumn="ChainInstanceId" />
+                        <column name="QueuedLetterSequence" type="Integer" nullAllowed="false" />
+                        <column name="LetterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Letters" destinationColumn="LetterId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="QueuedLetterId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainInstanceId" />
+                            <indexColumn name="QueuedLetterSequence" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LetterId" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

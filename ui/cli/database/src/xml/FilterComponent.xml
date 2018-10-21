@@ -1,0 +1,691 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Filter">
+            <tables>
+                <table namePlural="FilterKinds" nameSingular="FilterKind" columnPrefix="fltk">
+                    <columns>
+                        <column name="FilterKindId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterKindDetails" destinationColumn="FilterKindDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterKindDetails" destinationColumn="FilterKindDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterKindId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterKindDetails" nameSingular="FilterKindDetail" columnPrefix="fltkdt">
+                    <columns>
+                        <column name="FilterKindDetailId" type="EID" nullAllowed="false" />
+                        <column name="FilterKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterKinds" destinationColumn="FilterKindId" />
+                        <column name="FilterKindName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterKindDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FilterKindName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterKindDescriptions" nameSingular="FilterKindDescription" columnPrefix="fltkd">
+                    <columns>
+                        <column name="FilterKindDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FilterKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterKinds" destinationColumn="FilterKindId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterKindDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterKindId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FilterKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterTypes" nameSingular="FilterType" columnPrefix="flttyp">
+                    <columns>
+                        <column name="FilterTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterTypeDetails" destinationColumn="FilterTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterTypeDetails" destinationColumn="FilterTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterTypeDetails" nameSingular="FilterTypeDetail" columnPrefix="flttypdt">
+                    <columns>
+                        <column name="FilterTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="FilterTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterTypes" destinationColumn="FilterTypeId" />
+                        <column name="FilterKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterKinds" destinationColumn="FilterKindId" />
+                        <column name="FilterTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FilterKindId" />
+                            <indexColumn name="FilterTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="FilterKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterTypeDescriptions" nameSingular="FilterTypeDescription" columnPrefix="flttypd">
+                    <columns>
+                        <column name="FilterTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FilterTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterTypes" destinationColumn="FilterTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="FilterTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentSources" nameSingular="FilterAdjustmentSource" columnPrefix="fltas">
+                    <columns>
+                        <column name="FilterAdjustmentSourceId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentSourceName" type="Name" nullAllowed="false" />
+                        <column name="AllowedForInitialAmount" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentSourceId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="FilterAdjustmentSourceName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="AllowedForInitialAmount" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentSourceDescriptions" nameSingular="FilterAdjustmentSourceDescription" columnPrefix="fltasd">
+                    <columns>
+                        <column name="FilterAdjustmentSourceDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustmentSources" destinationColumn="FilterAdjustmentSourceId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentSourceDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterAdjustmentSourceId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentTypes" nameSingular="FilterAdjustmentType" columnPrefix="fltat">
+                    <columns>
+                        <column name="FilterAdjustmentTypeId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="FilterAdjustmentTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentTypeDescriptions" nameSingular="FilterAdjustmentTypeDescription" columnPrefix="fltatd">
+                    <columns>
+                        <column name="FilterAdjustmentTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustmentTypes" destinationColumn="FilterAdjustmentTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterAdjustmentTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustments" nameSingular="FilterAdjustment" columnPrefix="flta">
+                    <columns>
+                        <column name="FilterAdjustmentId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterAdjustmentDetails" destinationColumn="FilterAdjustmentDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterAdjustmentDetails" destinationColumn="FilterAdjustmentDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentDetails" nameSingular="FilterAdjustmentDetail" columnPrefix="fltadt">
+                    <columns>
+                        <column name="FilterAdjustmentDetailId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustments" destinationColumn="FilterAdjustmentId" />
+                        <column name="FilterKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterKinds" destinationColumn="FilterKindId" />
+                        <column name="FilterAdjustmentName" type="Name" nullAllowed="false" />
+                        <column name="FilterAdjustmentSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustmentSources" destinationColumn="FilterAdjustmentSourceId" />
+                        <column name="FilterAdjustmentTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterAdjustmentTypes" destinationColumn="FilterAdjustmentTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterAdjustmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FilterKindId" />
+                            <indexColumn name="FilterAdjustmentName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="FilterKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="FilterAdjustmentSourceId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="FilterAdjustmentTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentDescriptions" nameSingular="FilterAdjustmentDescription" columnPrefix="fltad">
+                    <columns>
+                        <column name="FilterAdjustmentDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustments" destinationColumn="FilterAdjustmentId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterAdjustmentId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentFixedAmounts" nameSingular="FilterAdjustmentFixedAmount" columnPrefix="fltafa">
+                    <columns>
+                        <column name="FilterAdjustmentFixedAmountId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustments" destinationColumn="FilterAdjustmentId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="UnitAmount" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentFixedAmountId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterAdjustmentId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="CurrencyId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentPercents" nameSingular="FilterAdjustmentPercent" columnPrefix="fltap">
+                    <columns>
+                        <column name="FilterAdjustmentPercentId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustments" destinationColumn="FilterAdjustmentId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="Percent" type="Percent" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentPercentId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterAdjustmentId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="CurrencyId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterAdjustmentAmounts" nameSingular="FilterAdjustmentAmount" columnPrefix="fltaa">
+                    <columns>
+                        <column name="FilterAdjustmentAmountId" type="EID" nullAllowed="false" />
+                        <column name="FilterAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustments" destinationColumn="FilterAdjustmentId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="Amount" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterAdjustmentAmountId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterAdjustmentId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="CurrencyId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Filters" nameSingular="Filter" columnPrefix="flt">
+                    <columns>
+                        <column name="FilterId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterDetails" destinationColumn="FilterDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterDetails" destinationColumn="FilterDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterDetails" nameSingular="FilterDetail" columnPrefix="fltdt">
+                    <columns>
+                        <column name="FilterDetailId" type="EID" nullAllowed="false" />
+                        <column name="FilterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Filters" destinationColumn="FilterId" />
+                        <column name="FilterTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterTypes" destinationColumn="FilterTypeId" />
+                        <column name="FilterName" type="Name" nullAllowed="false" />
+                        <column name="InitialFilterAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustments" destinationColumn="FilterAdjustmentId" />
+                        <column name="FilterItemSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FilterTypeId" />
+                            <indexColumn name="FilterName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="InitialFilterAdjustmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="FilterTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="FilterItemSelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="FilterTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterDescriptions" nameSingular="FilterDescription" columnPrefix="fltd">
+                    <columns>
+                        <column name="FilterDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FilterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Filters" destinationColumn="FilterId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterSteps" nameSingular="FilterStep" columnPrefix="fltstp">
+                    <columns>
+                        <column name="FilterStepId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterStepDetails" destinationColumn="FilterStepDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterStepDetails" destinationColumn="FilterStepDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterStepId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterStepDetails" nameSingular="FilterStepDetail" columnPrefix="fltstpdt">
+                    <columns>
+                        <column name="FilterStepDetailId" type="EID" nullAllowed="false" />
+                        <column name="FilterStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterSteps" destinationColumn="FilterStepId"/>
+                        <column name="FilterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Filters" destinationColumn="FilterId"/>
+                        <column name="FilterStepName" type="Name" nullAllowed="false" />
+                        <column name="FilterItemSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId"/>
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterStepDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FilterId" />
+                            <indexColumn name="FilterStepName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="FilterItemSelectorId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterStepDescriptions" nameSingular="FilterStepDescription" columnPrefix="fltstpd">
+                    <columns>
+                        <column name="FilterStepDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FilterStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterSteps" destinationColumn="FilterStepId"/>
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterStepDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterStepId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterEntranceSteps" nameSingular="FilterEntranceStep" columnPrefix="fltens">
+                    <columns>
+                        <column name="FilterEntranceStepId" type="EID" nullAllowed="false" />
+                        <column name="FilterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Filters" destinationColumn="FilterId"/>
+                        <column name="FilterStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterSteps" destinationColumn="FilterStepId"/>
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterEntranceStepId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="FilterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="FilterStepId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterStepDestinations" nameSingular="FilterStepDestination" columnPrefix="fltstpdn">
+                    <columns>
+                        <column name="FilterStepDestinationId" type="EID" nullAllowed="false" />
+                        <column name="FromFilterStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterSteps" destinationColumn="FilterStepId"/>
+                        <column name="ToFilterStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterSteps" destinationColumn="FilterStepId"/>
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterStepDestinationId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="FromFilterStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ToFilterStepId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterStepElements" nameSingular="FilterStepElement" columnPrefix="fltstpe">
+                    <columns>
+                        <column name="FilterStepElementId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterStepElementDetails" destinationColumn="FilterStepElementDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="FilterStepElementDetails" destinationColumn="FilterStepElementDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterStepElementId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterStepElementDetails" nameSingular="FilterStepElementDetail" columnPrefix="fltstpedt">
+                    <columns>
+                        <column name="FilterStepElementDetailId" type="EID" nullAllowed="false" />
+                        <column name="FilterStepElementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterStepElements" destinationColumn="FilterStepElementId" />
+                        <column name="FilterStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterSteps" destinationColumn="FilterStepId" />
+                        <column name="FilterStepElementName" type="Name" nullAllowed="false" />
+                        <column name="FilterItemSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="FilterAdjustmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterAdjustments" destinationColumn="FilterAdjustmentId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterStepElementDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterStepElementId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="FilterStepId" />
+                            <indexColumn name="FilterStepElementName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="FilterItemSelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="FilterAdjustmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="FilterStepElementDescriptions" nameSingular="FilterStepElementDescription" columnPrefix="fltstped">
+                    <columns>
+                        <column name="FilterStepElementDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="FilterStepElementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="FilterStepElements" destinationColumn="FilterStepElementId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="FilterStepElementDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="FilterStepElementId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

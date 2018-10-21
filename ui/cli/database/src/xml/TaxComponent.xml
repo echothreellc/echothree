@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Tax">
+            <tables>
+                <table namePlural="TaxClassifications" nameSingular="TaxClassification" columnPrefix="txclsfn">
+                    <columns>
+                        <column name="TaxClassificationId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TaxClassificationDetails" destinationColumn="TaxClassificationDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TaxClassificationDetails" destinationColumn="TaxClassificationDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TaxClassificationId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TaxClassificationDetails" nameSingular="TaxClassificationDetail" columnPrefix="txclsfndt">
+                    <columns>
+                        <column name="TaxClassificationDetailId" type="EID" nullAllowed="false" />
+                        <column name="TaxClassificationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TaxClassifications" destinationColumn="TaxClassificationId" />
+                        <column name="CountryGeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="TaxClassificationName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TaxClassificationDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TaxClassificationId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CountryGeoCodeId" />
+                            <indexColumn name="TaxClassificationName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CountryGeoCodeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TaxClassificationTranslations" nameSingular="TaxClassificationTranslation" columnPrefix="txclsfntr">
+                    <columns>
+                        <column name="TaxClassificationTranslationId" type="EID" nullAllowed="false" />
+                        <column name="TaxClassificationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TaxClassifications" destinationColumn="TaxClassificationId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="OverviewMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Overview" type="CLOB" nullAllowed="true" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TaxClassificationTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TaxClassificationId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TaxClassificationId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="OverviewMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemTaxClassifications" nameSingular="ItemTaxClassification" columnPrefix="itmtxclsfn">
+                    <columns>
+                        <column name="ItemTaxClassificationId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemTaxClassificationDetails" destinationColumn="ItemTaxClassificationDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemTaxClassificationDetails" destinationColumn="ItemTaxClassificationDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemTaxClassificationId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemTaxClassificationDetails" nameSingular="ItemTaxClassificationDetail" columnPrefix="itmtxclsfndt">
+                    <columns>
+                        <column name="ItemTaxClassificationDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemTaxClassificationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemTaxClassifications" destinationColumn="ItemTaxClassificationId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="CountryGeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="TaxClassificationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TaxClassifications" destinationColumn="TaxClassificationId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemTaxClassificationDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemTaxClassificationId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="CountryGeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CountryGeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="TaxClassificationId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Taxes" nameSingular="Tax" columnPrefix="tx">
+                    <columns>
+                        <column name="TaxId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TaxDetails" destinationColumn="TaxDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TaxDetails" destinationColumn="TaxDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TaxId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TaxDetails" nameSingular="TaxDetail" columnPrefix="txdt">
+                    <columns>
+                        <column name="TaxDetailId" type="EID" nullAllowed="false" />
+                        <column name="TaxId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Taxes" destinationColumn="TaxId" />
+                        <column name="TaxName" type="Name" nullAllowed="false" />
+                        <column name="ContactMechanismPurposeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContactMechanismPurposes" destinationColumn="ContactMechanismPurposeId" />
+                        <column name="GlAccountId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="IncludeShippingCharge" type="Boolean" nullAllowed="false" />
+                        <column name="IncludeProcessingCharge" type="Boolean" nullAllowed="false" />
+                        <column name="IncludeInsuranceCharge" type="Boolean" nullAllowed="false" />
+                        <column name="Percent" type="Percent" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TaxDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TaxId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TaxName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="GlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ContactMechanismPurposeId" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TaxDescriptions" nameSingular="TaxDescription" columnPrefix="txd">
+                    <columns>
+                        <column name="TaxDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TaxId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Taxes" destinationColumn="TaxId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TaxDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TaxId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GeoCodeTaxes" nameSingular="GeoCodeTax" columnPrefix="geotx">
+                    <columns>
+                        <column name="GeoCodeTaxId" type="EID" nullAllowed="false" />
+                        <column name="GeoCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="GeoCodes" destinationColumn="GeoCodeId" />
+                        <column name="TaxId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Taxes" destinationColumn="TaxId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GeoCodeTaxId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="TaxId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="GeoCodeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TaxId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

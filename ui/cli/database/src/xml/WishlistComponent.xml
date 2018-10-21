@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Wishlist">
+            <tables>
+                <table namePlural="WishlistTypes" nameSingular="WishlistType" columnPrefix="wshlty">
+                    <columns>
+                        <column name="WishlistTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WishlistTypeDetails" destinationColumn="WishlistTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WishlistTypeDetails" destinationColumn="WishlistTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WishlistTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WishlistTypeDetails" nameSingular="WishlistTypeDetail" columnPrefix="wshltydt">
+                    <columns>
+                        <column name="WishlistTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="WishlistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypes" destinationColumn="WishlistTypeId" />
+                        <column name="WishlistTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WishlistTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WishlistTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WishlistTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WishlistTypeDescriptions" nameSingular="WishlistTypeDescription" columnPrefix="wshltyd">
+                    <columns>
+                        <column name="WishlistTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WishlistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypes" destinationColumn="WishlistTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WishlistTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WishlistTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="WishlistTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WishlistTypePriorities" nameSingular="WishlistTypePriority" columnPrefix="wshltyprty">
+                    <columns>
+                        <column name="WishlistTypePriorityId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WishlistTypePriorityDetails" destinationColumn="WishlistTypePriorityDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WishlistTypePriorityDetails" destinationColumn="WishlistTypePriorityDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WishlistTypePriorityId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WishlistTypePriorityDetails" nameSingular="WishlistTypePriorityDetail" columnPrefix="wshltyprtydt">
+                    <columns>
+                        <column name="WishlistTypePriorityDetailId" type="EID" nullAllowed="false" />
+                        <column name="WishlistTypePriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypePriorities" destinationColumn="WishlistTypePriorityId" />
+                        <column name="WishlistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypes" destinationColumn="WishlistTypeId" />
+                        <column name="WishlistTypePriorityName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WishlistTypePriorityDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WishlistTypeId" />
+                            <indexColumn name="WishlistTypePriorityName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WishlistTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WishlistTypePriorityDescriptions" nameSingular="WishlistTypePriorityDescription" columnPrefix="wshltyprtyd">
+                    <columns>
+                        <column name="WishlistTypePriorityDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WishlistTypePriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypePriorities" destinationColumn="WishlistTypePriorityId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WishlistTypePriorityDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Wishlists" nameSingular="Wishlist" columnPrefix="wshl">
+                    <columns>
+                        <column name="WishlistId" type="EID" nullAllowed="false" />
+                        <column name="OrderId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Orders" destinationColumn="OrderId" />
+                        <column name="OfferUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
+                        <column name="WishlistTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypes" destinationColumn="WishlistTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WishlistId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OrderId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OfferUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WishlistTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WishlistLines" nameSingular="WishlistLine" columnPrefix="wshll">
+                    <columns>
+                        <column name="WishlistLineId" type="EID" nullAllowed="false" />
+                        <column name="OrderLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OrderLines" destinationColumn="OrderLineId" />
+                        <column name="OfferUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
+                        <column name="WishlistTypePriorityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WishlistTypePriorities" destinationColumn="WishlistTypePriorityId" />
+                        <column name="AssociateReferralId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="AssociateReferrals" destinationColumn="AssociateReferralId" />
+                        <column name="Comment" type="Comment" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WishlistLineId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OrderLineId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OfferUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WishlistTypePriorityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="AssociateReferralId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

@@ -1,0 +1,178 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.license.server.command;
+
+import com.echothree.control.user.license.remote.edit.LicenseEditFactory;
+import com.echothree.control.user.license.remote.edit.LicenseTypeEdit;
+import com.echothree.control.user.license.remote.form.EditLicenseTypeForm;
+import com.echothree.control.user.license.remote.result.EditLicenseTypeResult;
+import com.echothree.control.user.license.remote.result.LicenseResultFactory;
+import com.echothree.control.user.license.remote.spec.LicenseTypeSpec;
+import com.echothree.model.control.license.server.LicenseControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.license.server.entity.LicenseType;
+import com.echothree.model.data.license.server.entity.LicenseTypeDescription;
+import com.echothree.model.data.license.server.entity.LicenseTypeDetail;
+import com.echothree.model.data.license.server.value.LicenseTypeDescriptionValue;
+import com.echothree.model.data.license.server.value.LicenseTypeDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditLicenseTypeCommand
+        extends BaseAbstractEditCommand<LicenseTypeSpec, LicenseTypeEdit, EditLicenseTypeResult, LicenseType, LicenseType> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.LicenseType.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+        
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("LicenseTypeName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+        
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("LicenseTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of EditLicenseTypeCommand */
+    public EditLicenseTypeCommand(UserVisitPK userVisitPK, EditLicenseTypeForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+    
+    @Override
+    public EditLicenseTypeResult getResult() {
+        return LicenseResultFactory.getEditLicenseTypeResult();
+    }
+
+    @Override
+    public LicenseTypeEdit getEdit() {
+        return LicenseEditFactory.getLicenseTypeEdit();
+    }
+
+    @Override
+    public LicenseType getEntity(EditLicenseTypeResult result) {
+        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        LicenseType licenseType;
+        String licenseTypeName = spec.getLicenseTypeName();
+
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+        } else { // EditMode.UPDATE
+            licenseType = licenseControl.getLicenseTypeByNameForUpdate(licenseTypeName);
+        }
+
+        if(licenseType == null) {
+            addExecutionError(ExecutionErrors.UnknownLicenseTypeName.name(), licenseTypeName);
+        }
+
+        return licenseType;
+    }
+
+    @Override
+    public LicenseType getLockEntity(LicenseType licenseType) {
+        return licenseType;
+    }
+
+    @Override
+    public void fillInResult(EditLicenseTypeResult result, LicenseType licenseType) {
+        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+
+        result.setLicenseType(licenseControl.getLicenseTypeTransfer(getUserVisit(), licenseType));
+    }
+
+    @Override
+    public void doLock(LicenseTypeEdit edit, LicenseType licenseType) {
+        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescription(licenseType, getPreferredLanguage());
+        LicenseTypeDetail licenseTypeDetail = licenseType.getLastDetail();
+
+        edit.setLicenseTypeName(licenseTypeDetail.getLicenseTypeName());
+        edit.setIsDefault(licenseTypeDetail.getIsDefault().toString());
+        edit.setSortOrder(licenseTypeDetail.getSortOrder().toString());
+
+        if(licenseTypeDescription != null) {
+            edit.setDescription(licenseTypeDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(LicenseType licenseType) {
+        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        String licenseTypeName = edit.getLicenseTypeName();
+        LicenseType duplicateLicenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
+
+        if(duplicateLicenseType != null && !licenseType.equals(duplicateLicenseType)) {
+            addExecutionError(ExecutionErrors.DuplicateLicenseTypeName.name(), licenseTypeName);
+        }
+    }
+
+    @Override
+    public void doUpdate(LicenseType licenseType) {
+        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        PartyPK partyPK = getPartyPK();
+        LicenseTypeDetailValue licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueForUpdate(licenseType);
+        LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescriptionForUpdate(licenseType, getPreferredLanguage());
+        String description = edit.getDescription();
+
+        licenseTypeDetailValue.setLicenseTypeName(edit.getLicenseTypeName());
+        licenseTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        licenseTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        licenseControl.updateLicenseTypeFromValue(licenseTypeDetailValue, partyPK);
+
+        if(licenseTypeDescription == null && description != null) {
+            licenseControl.createLicenseTypeDescription(licenseType, getPreferredLanguage(), description, partyPK);
+        } else {
+            if(licenseTypeDescription != null && description == null) {
+                licenseControl.deleteLicenseTypeDescription(licenseTypeDescription, partyPK);
+            } else {
+                if(licenseTypeDescription != null && description != null) {
+                    LicenseTypeDescriptionValue licenseTypeDescriptionValue = licenseControl.getLicenseTypeDescriptionValue(licenseTypeDescription);
+
+                    licenseTypeDescriptionValue.setDescription(description);
+                    licenseControl.updateLicenseTypeDescriptionFromValue(licenseTypeDescriptionValue, partyPK);
+                }
+            }
+        }
+    }
+    
+}

@@ -1,0 +1,105 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.customer.customer;
+
+import com.echothree.control.user.customer.common.CustomerUtil;
+import com.echothree.control.user.customer.remote.form.GetCustomerForm;
+import com.echothree.control.user.customer.remote.result.GetCustomerResult;
+import com.echothree.control.user.user.common.UserUtil;
+import com.echothree.control.user.user.remote.form.GetRecoveryAnswerForm;
+import com.echothree.control.user.user.remote.result.GetRecoveryAnswerResult;
+import com.echothree.model.control.customer.remote.transfer.CustomerTransfer;
+import com.echothree.model.control.user.remote.transfer.RecoveryAnswerTransfer;
+import com.echothree.ui.web.main.framework.AttributeConstants;
+import com.echothree.ui.web.main.framework.ForwardConstants;
+import com.echothree.ui.web.main.framework.MainBaseAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
+import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+@SproutAction(
+    path = "/Customer/Customer/CustomerRecoveryAnswerReview",
+    mappingClass = SecureActionMapping.class,
+    properties = {
+        @SproutProperty(property = "secure", value = "true")
+    },
+    forwards = {
+        @SproutForward(name = "Display", path = "/customer/customer/customerRecoveryAnswerReview.jsp")
+    }
+)
+public class CustomerRecoveryAnswerReviewAction
+        extends MainBaseAction<ActionForm> {
+
+    public void setupCustomerTransfer(HttpServletRequest request, HttpServletResponse response)
+            throws NamingException {
+        GetCustomerForm commandForm = CustomerUtil.getHome().getGetCustomerForm();
+
+        commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
+
+        CommandResult commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
+
+        if(!commandResult.hasErrors()) {
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCustomerResult result = (GetCustomerResult)executionResult.getResult();
+            CustomerTransfer customer = result.getCustomer();
+
+            if(customer != null) {
+                request.setAttribute(AttributeConstants.CUSTOMER, customer);
+            }
+        }
+    }
+
+    @Override
+    public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        String forwardKey = null;
+        GetRecoveryAnswerForm commandForm = UserUtil.getHome().getGetRecoveryAnswerForm();
+        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
+
+        commandForm.setPartyName(partyName);
+
+        CommandResult commandResult = UserUtil.getHome().getRecoveryAnswer(getUserVisitPK(request), commandForm);
+        RecoveryAnswerTransfer recoveryAnswer = null;
+
+        if(!commandResult.hasErrors()) {
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetRecoveryAnswerResult result = (GetRecoveryAnswerResult)executionResult.getResult();
+            recoveryAnswer = result.getRecoveryAnswer();
+        }
+
+        if(recoveryAnswer == null) {
+            forwardKey = ForwardConstants.ERROR_404;
+        } else {
+            request.setAttribute(AttributeConstants.RECOVERY_ANSWER, recoveryAnswer);
+            setupCustomerTransfer(request, response);
+            forwardKey = ForwardConstants.DISPLAY;
+        }
+
+        return mapping.findForward(forwardKey);
+    }
+    
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ui/cli/amazon/amazon.iml" filepath="$PROJECT_DIR$/ui/cli/amazon/amazon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/web/cms/cms.iml" filepath="$PROJECT_DIR$/ui/web/cms/cms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/cucumber/cucumber.iml" filepath="$PROJECT_DIR$/test/cucumber/cucumber.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/cli/database/database.iml" filepath="$PROJECT_DIR$/ui/cli/database/database.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/cli/dataloader/dataloader.iml" filepath="$PROJECT_DIR$/ui/cli/dataloader/dataloader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/cli/form/form.iml" filepath="$PROJECT_DIR$/ui/cli/form/form.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/job/job.iml" filepath="$PROJECT_DIR$/service/job/job.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/junit/junit.iml" filepath="$PROJECT_DIR$/test/junit/junit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/web/letter/letter.iml" filepath="$PROJECT_DIR$/ui/web/letter/letter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/cli/logging/logging.iml" filepath="$PROJECT_DIR$/ui/cli/logging/logging.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/cli/mailtransfer/mailtransfer.iml" filepath="$PROJECT_DIR$/ui/cli/mailtransfer/mailtransfer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/web/main/main.iml" filepath="$PROJECT_DIR$/ui/web/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/src.iml" filepath="$PROJECT_DIR$/src/src.iml" />
+    </modules>
+  </component>
+</project>

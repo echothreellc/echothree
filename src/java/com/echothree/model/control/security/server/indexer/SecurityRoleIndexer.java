@@ -1,0 +1,87 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.security.server.indexer;
+
+import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.server.analysis.SecurityRoleAnalyzer;
+import com.echothree.model.control.index.server.indexer.BaseIndexer;
+import com.echothree.model.control.index.server.indexer.FieldTypes;
+import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.index.server.entity.Index;
+import com.echothree.model.data.security.server.entity.SecurityRole;
+import com.echothree.model.data.security.server.entity.SecurityRoleDetail;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.Session;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.SortedDocValuesField;
+import org.apache.lucene.util.BytesRef;
+
+public class SecurityRoleIndexer
+        extends BaseIndexer<SecurityRole> {
+    
+    SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+
+    /** Creates a new instance of SecurityRoleIndexer */
+    public SecurityRoleIndexer(final ExecutionErrorAccumulator eea, final Index index) {
+        super(eea, index);
+    }
+
+    @Override
+    protected Analyzer getAnalyzer() {
+        return new SecurityRoleAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+    }
+    
+    @Override
+    protected SecurityRole getEntity(final EntityInstance entityInstance) {
+        return securityControl.getSecurityRoleByEntityInstance(entityInstance);
+    }
+    
+    @Override
+    protected Document convertToDocument(final EntityInstance entityInstance, final SecurityRole securityRole) {
+        SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
+        String description = securityControl.getBestSecurityRoleDescription(securityRole, language);
+        Document document = new Document();
+
+        document.add(new Field(IndexConstants.IndexField_EntityRef, securityRole.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+
+        document.add(new Field(IndexConstants.IndexField_SecurityRoleGroupName, securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName(),
+                FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+                new BytesRef(securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName())));
+        document.add(new Field(IndexConstants.IndexField_SecurityRoleName, securityRoleDetail.getSecurityRoleName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+                new BytesRef(securityRoleDetail.getSecurityRoleName())));
+
+        if(description != null) {
+            document.add(new Field(IndexConstants.IndexField_Description, description, FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+                    new BytesRef(description)));
+        }
+        
+        indexWorkflowEntityStatuses(document, entityInstance);
+        indexEntityTimes(document, entityInstance);
+        indexEntityAttributes(document, entityInstance);
+        indexEntityTags(document, entityInstance);
+
+        return document;
+    }
+
+}

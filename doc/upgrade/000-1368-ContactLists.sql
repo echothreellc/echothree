@@ -1,0 +1,3 @@
+ALTER TABLE contactlistdetails DROP FOREIGN KEY clstdt_wkflen_workflowentranceid_fk;
+ALTER TABLE contactlistdetails CHANGE clstdt_wkflen_workflowentranceid clstdt_defaultpartycontactliststatusid bigint(20) NOT NULL;
+ALTER TABLE contactlistdetails ADD CONSTRAINT clstdt_defaultpartycontactliststatusid_fk FOREIGN KEY (clstdt_defaultpartycontactliststatusid) REFERENCES workflowentrances (wkflen_workflowentranceid) ON DELETE CASCADE;

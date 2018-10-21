@@ -1,0 +1,89 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.item.itemaliastype;
+
+import com.echothree.control.user.item.common.ItemUtil;
+import com.echothree.control.user.item.remote.form.CreateItemAliasTypeDescriptionForm;
+import com.echothree.control.user.item.remote.form.GetItemAliasTypeForm;
+import com.echothree.control.user.item.remote.result.GetItemAliasTypeResult;
+import com.echothree.ui.web.main.framework.AttributeConstants;
+import com.echothree.ui.web.main.framework.MainBaseAddAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
+import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.Map;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+
+@SproutAction(
+    path = "/Item/ItemAliasType/DescriptionAdd",
+    mappingClass = SecureActionMapping.class,
+    name = "ItemAliasTypeDescriptionAdd",
+    properties = {
+        @SproutProperty(property = "secure", value = "true")
+    },
+    forwards = {
+        @SproutForward(name = "Display", path = "/action/Item/ItemAliasType/Description", redirect = true),
+        @SproutForward(name = "Form", path = "/item/itemaliastype/descriptionAdd.jsp")
+    }
+)
+public class DescriptionAddAction
+        extends MainBaseAddAction<DescriptionAddActionForm> {
+
+    @Override
+    public void setupParameters(DescriptionAddActionForm actionForm, HttpServletRequest request) {
+        actionForm.setItemAliasTypeName(findParameter(request, ParameterConstants.ITEM_ALIAS_TYPE_NAME, actionForm.getItemAliasTypeName()));
+    }
+    
+    @Override
+    public void setupTransfer(DescriptionAddActionForm actionForm, HttpServletRequest request)
+            throws NamingException {
+        GetItemAliasTypeForm commandForm = ItemUtil.getHome().getGetItemAliasTypeForm();
+
+        commandForm.setItemAliasTypeName(actionForm.getItemAliasTypeName());
+        
+        CommandResult commandResult = ItemUtil.getHome().getItemAliasType(getUserVisitPK(request), commandForm);
+        if(!commandResult.hasErrors()) {
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetItemAliasTypeResult result = (GetItemAliasTypeResult)executionResult.getResult();
+            
+            request.setAttribute(AttributeConstants.ITEM_ALIAS_TYPE, result.getItemAliasType());
+        }
+    }
+    
+    @Override
+    public CommandResult doAdd(DescriptionAddActionForm actionForm, HttpServletRequest request)
+            throws NamingException {
+        CreateItemAliasTypeDescriptionForm commandForm = ItemUtil.getHome().getCreateItemAliasTypeDescriptionForm();
+
+        commandForm.setItemAliasTypeName( actionForm.getItemAliasTypeName());
+        commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
+        commandForm.setDescription(actionForm.getDescription());
+
+        return ItemUtil.getHome().createItemAliasTypeDescription(getUserVisitPK(request), commandForm);
+    }
+    
+    @Override
+    public void setupForwardParameters(DescriptionAddActionForm actionForm, Map<String, String> parameters) {
+        parameters.put(ParameterConstants.ITEM_ALIAS_TYPE_NAME, actionForm.getItemAliasTypeName());
+    }
+    
+}

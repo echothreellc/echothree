@@ -1,0 +1,181 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.search.server.command;
+
+import com.echothree.control.user.search.remote.form.SearchForumMessagesForm;
+import com.echothree.control.user.search.remote.result.SearchForumMessagesResult;
+import com.echothree.control.user.search.remote.result.SearchResultFactory;
+import com.echothree.model.control.forum.common.ForumConstants;
+import com.echothree.model.control.forum.server.ForumControl;
+import com.echothree.model.control.forum.server.logic.ForumLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.forum.server.search.ForumMessageSearchEvaluator;
+import com.echothree.model.control.search.server.logic.SearchLogic;
+import com.echothree.model.data.forum.server.entity.Forum;
+import com.echothree.model.data.forum.server.entity.ForumMessageType;
+import com.echothree.model.data.forum.server.entity.ForumType;
+import com.echothree.model.data.forum.server.entity.ForumTypeMessageType;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.search.server.entity.PartySearchTypePreference;
+import com.echothree.model.data.search.server.entity.PartySearchTypePreferenceDetail;
+import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
+import com.echothree.model.data.search.server.entity.SearchKind;
+import com.echothree.model.data.search.server.entity.SearchSortDirection;
+import com.echothree.model.data.search.server.entity.SearchSortOrder;
+import com.echothree.model.data.search.server.entity.SearchType;
+import com.echothree.model.data.search.server.entity.SearchUseType;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.server.persistence.Session;
+import com.google.common.base.Splitter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class SearchForumMessagesCommand
+        extends BaseSearchCommand<SearchForumMessagesForm, SearchForumMessagesResult> {
+    
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+
+    static {
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SearchDefaultOperatorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SearchSortDirectionName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SearchSortOrderName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ForumName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ForumMessageType", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IncludeFutureForumThreads", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("Q", FieldType.STRING, false, null, null),
+                new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
+                new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
+                new FieldDefinition("Fields", FieldType.STRING, false, null, null),
+                new FieldDefinition("RememberPreferences", FieldType.BOOLEAN, false, null, null),
+                new FieldDefinition("SearchUseTypeName", FieldType.ENTITY_NAME, false, null, null)
+                ));
+    }
+
+    /** Creates a new instance of SearchForumMessagesCommand */
+    public SearchForumMessagesCommand(UserVisitPK userVisitPK, SearchForumMessagesForm form) {
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        SearchForumMessagesResult result = SearchResultFactory.getSearchForumMessagesResult();
+        SearchLogic searchLogic = SearchLogic.getInstance();
+        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_FORUM_MESSAGE);
+
+        if(!hasExecutionErrors()) {
+            String searchTypeName = form.getSearchTypeName();
+            SearchType searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
+
+            if(!hasExecutionErrors()) {
+                String languageIsoName = form.getLanguageIsoName();
+                Language language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+                
+                if(!hasExecutionErrors()) {
+                    SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+                    PartySearchTypePreference partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
+                    PartySearchTypePreferenceDetail partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
+                    boolean rememberPreferences = Boolean.valueOf(form.getRememberPreferences());
+                    String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
+                    SearchDefaultOperator searchDefaultOperator = searchDefaultOperatorName == null 
+                            ? getDefaultSearchDefaultOperator(searchLogic, rememberPreferences, partySearchTypePreferenceDetail)
+                            : searchLogic.getSearchDefaultOperatorByName(this, searchDefaultOperatorName);
+
+                    if(!hasExecutionErrors()) {
+                        String searchSortOrderName = form.getSearchSortOrderName();
+                        SearchSortOrder searchSortOrder = searchSortOrderName == null
+                                ? getDefaultSearchSortOrder(searchLogic, rememberPreferences, searchKind, partySearchTypePreferenceDetail)
+                                : searchLogic.getSearchSortOrderByName(this, searchKind, searchSortOrderName);
+
+                        if(!hasExecutionErrors()) {
+                            String searchSortDirectionName = form.getSearchSortDirectionName();
+                            SearchSortDirection searchSortDirection = searchSortDirectionName == null
+                                    ? getDefaultSearchSortDirection(searchLogic, rememberPreferences, partySearchTypePreferenceDetail)
+                                    : searchLogic.getSearchSortDirectionByName(this, searchSortDirectionName);
+
+                            if(!hasExecutionErrors()) {
+                                String searchUseTypeName = form.getSearchUseTypeName();
+                                SearchUseType searchUseType = searchUseTypeName == null ? null : SearchLogic.getInstance().getSearchUseTypeByName(this, searchUseTypeName);
+
+                                if(!hasExecutionErrors()) {
+                                    ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+                                    String forumName = form.getForumName();
+                                    Forum forum = forumControl.getForumByName(forumName);
+
+                                    if(forum != null) {
+                                        if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
+                                            String forumMessageTypeName = form.getForumMessageTypeName();
+                                            ForumMessageType forumMessageType = forumMessageTypeName == null ? null : forumControl.getForumMessageTypeByName(forumMessageTypeName);
+
+                                            if(forumMessageTypeName == null || forumMessageType != null) {
+                                                ForumType forumType = forum.getLastDetail().getForumType();
+                                                ForumTypeMessageType forumTypeMessageType = forumMessageType == null ? forumControl.getDefaultForumTypeMessageType(forumType)
+                                                        : forumControl.getForumTypeMessageType(forumType, forumMessageType);
+
+                                                if(forumTypeMessageType != null) {
+                                                    ForumMessageSearchEvaluator forumMessageSearchEvaluator = new ForumMessageSearchEvaluator(getUserVisit(),
+                                                            language, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, searchUseType,
+                                                            forum, forumTypeMessageType.getForumMessageType());
+                                                    String createdSince = form.getCreatedSince();
+                                                    String modifiedSince = form.getModifiedSince();
+                                                    String fields = form.getFields();
+
+                                                    forumMessageSearchEvaluator.setIncludeFutureForumThreads(Boolean.parseBoolean(form.getIncludeFutureForumThreads()));
+                                                    forumMessageSearchEvaluator.setQ(this, form.getQ());
+                                                    forumMessageSearchEvaluator.setCreatedSince(createdSince == null ? null : Long.valueOf(createdSince));
+                                                    forumMessageSearchEvaluator.setModifiedSince(modifiedSince == null ? null : Long.valueOf(modifiedSince));
+                                                    forumMessageSearchEvaluator.setFields(fields == null ? null : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fields).toArray(new String[0]));
+
+                                                    if(!hasExecutionErrors()) {
+                                                        result.setCount(forumMessageSearchEvaluator.execute(this));
+                                                    }
+                                                } else {
+                                                    if(forumMessageTypeName == null) {
+                                                        addExecutionError(ExecutionErrors.UnknownDefaultForumTypeMessageType.name(), forumType.getForumTypeName());
+                                                    } else {
+                                                        addExecutionError(ExecutionErrors.UnknownForumTypeMessageType.name(), forumType.getForumTypeName(), forumMessageTypeName);
+                                                    }
+                                                }
+                                            } else {
+                                                addExecutionError(ExecutionErrors.UnknownForumMessageTypeName.name(), forumMessageTypeName);
+                                            }
+                                        } else {
+                                            addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
+                                        }
+                                    } else {
+                                        addExecutionError(ExecutionErrors.UnknownForumName.name(), forumName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+}

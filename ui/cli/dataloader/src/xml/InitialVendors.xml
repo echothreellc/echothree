@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <vendorTypes>
+        <vendorType vendorTypeName="DEFAULT" defaultHoldUntilComplete="false" defaultAllowBackorders="true" defaultAllowSubstitutions="false"
+        defaultAllowCombiningShipments="false" defaultRequireReference="false" defaultAllowReferenceDuplicates="false" isDefault="true" sortOrder="1">
+            <vendorTypeDescription languageIsoName="en" description="Default Vendor Type" />
+        </vendorType>
+    </vendorTypes>
+    <vendors>
+        <vendor vendorName="TEST_VENDOR" vendorTypeName="DEFAULT" minimumPurchaseOrderLines="5" maximumPurchaseOrderLines="100"
+        minimumPurchaseOrderAmount="100.00" maximumPurchaseOrderAmount="10000.00" useItemPurchasingCategories="true"
+        defaultItemAliasTypeName="UPC" firstName="Test" middleName="A" lastName="Vendor" emailAddress="TestV@echothree.com"
+        allowSolicitation="true" taxable="true">
+            <partyCreditLimit currencyIsoName="USD" creditLimit="100.00" potentialCreditLimit="1000.00" />
+            <contactMechanisms>
+                <contactEmailAddress emailAddress="TestVAlternate@echothree.com" allowSolicitation="false">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="OTHER_EMAIL" />
+                </contactEmailAddress>
+                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Vendor" address1="Address 1"
+                city="Des Moines" state="IA" postalCode="50310" countryName="UNITED_STATES" isCommercial="false"
+                allowSolicitation="true">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_BILLING" />
+                    <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_DELIVERY" />
+                </contactPostalAddress>
+                <contactTelephone countryName="UNITED_STATES" areaCode="515" telephoneNumber="555-1212" allowSolicitation="true">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="PHONE_WORK" />
+                </contactTelephone>
+                <contactWebAddress url="http://www.echothree.com/">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="WEB_SITE" />
+                </contactWebAddress>
+            </contactMechanisms>
+            <comments>
+                <comment commentTypeName="VENDOR" mimeTypeName="text/html">
+                    <![CDATA[
+                        <p>This is an example vendor comment.</p>
+                    ]]>
+                </comment>
+            </comments>
+            <vendorItem itemName="MINIMAL" vendorItemName="VENDOR_MINIMAL" description="Vendor's Minimal Item" priority="1">
+                <vendorItemCost inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" unitCost="1.00" />
+            </vendorItem>
+            <purchaseInvoices companyName="TEST_COMPANY">
+                <purchaseInvoice>
+                    <!-- TODO -->
+                </purchaseInvoice>
+                <purchaseInvoice>
+                    <!-- TODO -->
+                </purchaseInvoice>
+                <purchaseInvoice reference="1000" description="test invoice">
+                    <purchaseInvoiceLine invoiceLineTypeName="PINV_MISC_CHARGE" amount="199.00" glAccountName="612100" description="test line" />
+                    <purchaseInvoiceLine invoiceLineTypeName="PINV_MISC_CHARGE" amount="765.00" glAccountName="612200" />
+                </purchaseInvoice>
+                <purchaseInvoice termName="1_10_NET_30" reference="1001" description="another test invoice">
+                    <purchaseInvoiceLine invoiceLineTypeName="PINV_MISC_CHARGE" amount="432.00" glAccountName="612100" />
+                </purchaseInvoice>
+                <purchaseInvoice termName="NET_15">
+                    <!-- TODO -->
+                </purchaseInvoice>
+                <purchaseInvoice termName="DUE_ON_RECEIPT">
+                    <!-- TODO -->
+                </purchaseInvoice>
+            </purchaseInvoices>
+        </vendor>
+    </vendors>
+</initialData>

@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Scale">
+            <tables>
+                <table namePlural="ScaleTypes" nameSingular="ScaleType" columnPrefix="scltyp">
+                    <columns>
+                        <column name="ScaleTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ScaleTypeDetails" destinationColumn="ScaleTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ScaleTypeDetails" destinationColumn="ScaleTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ScaleTypeDetails" nameSingular="ScaleTypeDetail" columnPrefix="scltypdt">
+                    <columns>
+                        <column name="ScaleTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ScaleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ScaleTypes" destinationColumn="ScaleTypeId" />
+                        <column name="ScaleTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ScaleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ScaleTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ScaleTypeDescriptions" nameSingular="ScaleTypeDescription" columnPrefix="scltypd">
+                    <columns>
+                        <column name="ScaleTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ScaleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ScaleTypes" destinationColumn="ScaleTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleTypeDescriptionId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ScaleTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Scales" nameSingular="Scale" columnPrefix="scl">
+                    <columns>
+                        <column name="ScaleId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ScaleDetails" destinationColumn="ScaleDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ScaleDetails" destinationColumn="ScaleDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ScaleDetails" nameSingular="ScaleDetail" columnPrefix="scldt">
+                    <columns>
+                        <column name="ScaleDetailId" type="EID" nullAllowed="false" />
+                        <column name="ScaleId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Scales" destinationColumn="ScaleId" />
+                        <column name="ScaleName" type="Name" nullAllowed="false" />
+                        <column name="ScaleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ScaleTypes" destinationColumn="ScaleTypeId" />
+                        <column name="ServerServiceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ServerServices" destinationColumn="ServerServiceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ScaleId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ScaleName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ScaleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ServerServiceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ScaleDescriptions" nameSingular="ScaleDescription" columnPrefix="scld">
+                    <columns>
+                        <column name="ScaleDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ScaleId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Scales" destinationColumn="ScaleId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleDescriptionId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ScaleId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ScaleUseTypes" nameSingular="ScaleUseType" columnPrefix="sclusetyp">
+                    <columns>
+                        <column name="ScaleUseTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ScaleUseTypeDetails" destinationColumn="ScaleUseTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ScaleUseTypeDetails" destinationColumn="ScaleUseTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleUseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ScaleUseTypeDetails" nameSingular="ScaleUseTypeDetail" columnPrefix="sclusetypdt">
+                    <columns>
+                        <column name="ScaleUseTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ScaleUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ScaleUseTypes" destinationColumn="ScaleUseTypeId" />
+                        <column name="ScaleUseTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleUseTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ScaleUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ScaleUseTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ScaleUseTypeDescriptions" nameSingular="ScaleUseTypeDescription" columnPrefix="sclusetypd">
+                    <columns>
+                        <column name="ScaleUseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ScaleUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ScaleUseTypes" destinationColumn="ScaleUseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ScaleUseTypeDescriptionId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ScaleUseTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyScaleUses" nameSingular="PartyScaleUse" columnPrefix="parscluse">
+                    <columns>
+                        <column name="PartyScaleUseId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ScaleUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ScaleUseTypes" destinationColumn="ScaleUseTypeId" />
+                        <column name="ScaleId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Scales" destinationColumn="ScaleId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyScaleUseId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ScaleUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ScaleUseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ScaleId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

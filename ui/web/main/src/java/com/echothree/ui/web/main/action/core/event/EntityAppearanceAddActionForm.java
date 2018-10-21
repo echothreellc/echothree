@@ -1,0 +1,91 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.core.event;
+
+import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.remote.form.GetAppearanceChoicesForm;
+import com.echothree.control.user.core.remote.result.GetAppearanceChoicesResult;
+import com.echothree.model.control.core.remote.choice.AppearanceChoicesBean;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.BaseActionForm;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
+import java.util.List;
+import javax.naming.NamingException;
+import org.apache.struts.util.LabelValueBean;
+
+@SproutForm(name="EntityAppearanceAdd")
+public class EntityAppearanceAddActionForm
+        extends BaseActionForm {
+    
+    private AppearanceChoicesBean appearanceChoices;
+    
+    private String entityRef;
+    private String appearanceChoice;
+    
+    private void setupAppearanceChoices() {
+        if(appearanceChoices == null) {
+            try {
+                GetAppearanceChoicesForm commandForm = CoreUtil.getHome().getGetAppearanceChoicesForm();
+                
+                commandForm.setDefaultAppearanceChoice(appearanceChoice);
+                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+                
+                CommandResult commandResult = CoreUtil.getHome().getAppearanceChoices(userVisitPK, commandForm);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetAppearanceChoicesResult getAppearanceChoicesResult = (GetAppearanceChoicesResult)executionResult.getResult();
+                appearanceChoices = getAppearanceChoicesResult.getAppearanceChoices();
+                
+                if(appearanceChoice == null)
+                    appearanceChoice = appearanceChoices.getDefaultValue();
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, appearanceChoices remains null, no default
+            }
+        }
+    }
+    
+    public String getEntityRef() {
+        return entityRef;
+    }
+    
+    public void setEntityRef(String entityRef) {
+        this.entityRef = entityRef;
+    }
+    
+    public List<LabelValueBean> getAppearanceChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupAppearanceChoices();
+        if(appearanceChoices != null) {
+            choices = convertChoices(appearanceChoices);
+        }
+        
+        return choices;
+    }
+    
+    public void setAppearanceChoice(String appearanceChoice) {
+        this.appearanceChoice = appearanceChoice;
+    }
+    
+    public String getAppearanceChoice() {
+        setupAppearanceChoices();
+        
+        return appearanceChoice;
+    }
+    
+}

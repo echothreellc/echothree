@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <cancellationKinds>
+        <cancellationKind cancellationKindName="CUSTOMER_CANCELLATION" cancellationSequenceTypeName="CUSTOMER_CANCELLATION" isDefault="true" sortOrder="1">
+            <cancellationKindDescription languageIsoName="en" description="Customer Cancellation" />
+            <cancellationPolicy cancellationPolicyName="DEFAULT" isDefault="true" sortOrder="1">
+                <cancellationPolicyTranslation languageIsoName="en" description="Default" />
+            </cancellationPolicy>
+            <cancellationPolicy cancellationPolicyName="NO_CANCELLATIONS" isDefault="false" sortOrder="1">
+                <cancellationPolicyTranslation languageIsoName="en" description="No Cancellations Allowed" />
+            </cancellationPolicy>
+            <cancellationReason cancellationReasonName="ORDERED_WRONG_ITEM" isDefault="false" sortOrder="1">
+                <cancellationReasonDescription languageIsoName="en" description="Ordered the wrong item" />
+                <cancellationPolicyReason cancellationPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </cancellationReason>
+            <cancellationReason cancellationReasonName="FOUND_BETTER_PRICE" isDefault="false" sortOrder="1">
+                <cancellationReasonDescription languageIsoName="en" description="Found better prices elsewhere" />
+                <cancellationPolicyReason cancellationPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </cancellationReason>
+            <cancellationReason cancellationReasonName="NOT_COMPATIBLE" isDefault="false" sortOrder="1">
+                <cancellationReasonDescription languageIsoName="en" description="Item is not fully compatible with existing system" />
+                <cancellationPolicyReason cancellationPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </cancellationReason>
+            <cancellationReason cancellationReasonName="MISSED_ESTIMATED_DELIVERY" isDefault="false" sortOrder="1">
+                <cancellationReasonDescription languageIsoName="en" description="Item was not received by estimated delivery date" />
+                <cancellationPolicyReason cancellationPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </cancellationReason>
+            <cancellationReason cancellationReasonName="MISSING_PARTS" isDefault="false" sortOrder="1">
+                <cancellationReasonDescription languageIsoName="en" description="Item is missing parts/accessories" />
+                <cancellationPolicyReason cancellationPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </cancellationReason>
+            <cancellationReason cancellationReasonName="UNWANTED_ITEM" isDefault="false" sortOrder="1">
+                <cancellationReasonDescription languageIsoName="en" description="Changed mind, no longer wanted" />
+                <cancellationPolicyReason cancellationPolicyName="DEFAULT" isDefault="false" sortOrder="1" />
+            </cancellationReason>
+            <cancellationType cancellationTypeName="NO_PENALTY" isDefault="false" sortOrder="1">
+                <cancellationTypeDescription languageIsoName="en" description="No Penalty on Cancellation" />
+                <cancellationReasonType cancellationReasonName="ORDERED_WRONG_ITEM" isDefault="true" sortOrder="1" />
+                <cancellationReasonType cancellationReasonName="FOUND_BETTER_PRICE" isDefault="true" sortOrder="1" />
+                <cancellationReasonType cancellationReasonName="NOT_COMPATIBLE" isDefault="true" sortOrder="1" />
+                <cancellationReasonType cancellationReasonName="MISSED_ESTIMATED_DELIVERY" isDefault="true" sortOrder="1" />
+                <cancellationReasonType cancellationReasonName="MISSING_PARTS" isDefault="true" sortOrder="1" />
+                <cancellationReasonType cancellationReasonName="UNWANTED_ITEM" isDefault="true" sortOrder="1" />
+            </cancellationType>
+        </cancellationKind>
+        <cancellationKind cancellationKindName="VENDOR_CANCELLATION" cancellationSequenceTypeName="VENDOR_CANCELLATION" isDefault="false" sortOrder="1">
+            <cancellationKindDescription languageIsoName="en" description="Vendor Cancellation" />
+            <cancellationPolicy cancellationPolicyName="DEFAULT" isDefault="true" sortOrder="1">
+                <cancellationPolicyTranslation languageIsoName="en" description="Default" />
+            </cancellationPolicy>
+            <cancellationPolicy cancellationPolicyName="NO_CANCELLATIONS" isDefault="false" sortOrder="1">
+                <cancellationPolicyTranslation languageIsoName="en" description="No Cancellations Allowed" />
+            </cancellationPolicy>
+            <!-- TODO -->
+        </cancellationKind>
+    </cancellationKinds>
+</initialData>

@@ -1,0 +1,156 @@
+.executionErrors {
+    background: #fff6bf url(../stylesheets/silk/exclamation.png) center no-repeat;
+    background-position: 15px 50%;
+    text-align: left;
+    padding: 5px 20px 5px 45px;
+    border-top: 1px solid #ffd324;
+    border-bottom: 1px solid #ffd324;
+}
+
+.executionWarnings {
+    background: #f8fafc url(../stylesheets/silk/information.png) center no-repeat;
+    background-position: 15px 50%;
+    text-align: left;
+    padding: 5px 20px 5px 45px;
+    border-top: 1px solid #b5d4fe;
+    border-bottom: 1px solid #b5d4fe;
+}
+
+table.displaytag {
+    border: 1px solid #666;
+    margin: 10px 0 10px 0;
+    width: auto;
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+
+table.displaytag th {
+    font: 10px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    padding: 2px 4px 2px 4px;
+    text-align: center;
+    vertical-align: top;
+}
+
+table.displaytag td {
+    font: 10px verdana, arial, helvetica, sans-serif;
+    padding: 2px 4px 2px 4px;
+    text-align: left;
+    vertical-align: top;
+    border-top: 0px none black;
+}
+
+table.displaytag td.amount {
+    text-align: right;
+}
+
+table.displaytag td.percent {
+    text-align: right;
+}
+
+table.displaytag td.quantity {
+    text-align: right;
+}
+
+table.displaytag td a {
+    padding: 0px 3px 0px 3px;
+    background-color: #eee;
+}
+
+table.displaytag td a:hover {
+    background-color: #ddd;
+    text-decoration: underline;
+}
+
+table.displaytag thead tr {
+    background-color: #fc0;
+}
+
+table.displaytag th a, th a:visited {
+    color: black;
+}
+
+table.displaytag th a:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+table.displaytag th.sorted a, th.sortable a {
+    background-position: right;
+    display: block;
+}
+
+table.displaytag th.sortable a {
+    padding: 0px 13px 0px 3px;
+    background-image: url(arrow_off.png);
+}
+
+table.displaytag th.order1 a {
+    padding: 0px 13px 0px 3px;
+    background-image: url(arrow_down.png);
+}
+
+table.displaytag th.order2 a {
+    padding: 0px 13px 0px 3px;
+    background-image: url(arrow_up.png);
+}
+
+table.displaytag tr.odd {
+    background-color: #fff
+}
+
+table.displaytag thead tr {
+    background-color: #69c;
+}
+
+table.displaytag tr.even {
+    background-color: #def;
+}
+
+div.exportlinks {
+	background-color: #eee;
+	border: 1px dotted #999;
+	padding: 2px 4px 2px 4px;
+	margin: 2px 0 10px 0;
+}
+
+span.export {
+	padding: 0 4px 1px 20px;
+	display: inline;
+	display: inline-block;
+	cursor: pointer;
+}
+
+span.excel {
+	background-image: url(../stylesheets/ico_file_excel.png);
+}
+
+span.csv {
+	background-image: url(../stylesheets/ico_file_csv.png);
+}
+
+span.xml {
+	background-image: url(../stylesheets/ico_file_xml.png);
+}
+
+span.pdf {
+	background-image: url(../stylesheets/ico_file_pdf.png);
+}
+
+span.rtf {
+	background-image: url(../stylesheets/ico_file_rtf.png);
+}
+
+/* Override some defaults from bootstrap */
+body {
+    background-color: #eeeeee !important;
+}
+
+body > .container {
+  padding-top: 70px;
+}
+
+.container > footer p {
+    text-align: center; /* center align it with the container */
+    color: #cccccc;
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="Service">
+    
+    <target name="deploy">
+        <parallel>
+            <ant dir="job" target="deploy"/>
+        </parallel>
+    </target>
+    
+    <target name="clean">
+        <parallel>
+            <ant dir="job" target="clean"/>
+        </parallel>
+    </target>
+        
+    <target name="compile">
+        <ant dir="job" target="compile"/>
+    </target>
+        
+</project>
+

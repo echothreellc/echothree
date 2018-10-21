@@ -1,0 +1,1319 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Party">
+            <tables>
+                <table namePlural="Languages" nameSingular="Language" columnPrefix="lang">
+                    <columns>
+                        <column name="LanguageId" type="EID" nullAllowed="false" />
+                        <column name="LanguageIsoName" type="String" maxLength="5" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LanguageIsoName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LanguageDescriptions" nameSingular="LanguageDescription" columnPrefix="langd">
+                    <columns>
+                        <column name="LanguageDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="DescriptionLanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LanguageDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="DescriptionLanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="DescriptionLanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypes" nameSingular="PartyType" columnPrefix="ptyp">
+                    <columns>
+                        <column name="PartyTypeId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentPartyTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="BillingAccountSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="AllowUserLogins" type="Boolean" nullAllowed="false" />
+                        <column name="AllowPartyAliases" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="PartyTypeName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ParentPartyTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="BillingAccountSequenceTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeDescriptions" nameSingular="PartyTypeDescription" columnPrefix="ptypd">
+                    <columns>
+                        <column name="PartyTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeUseTypes" nameSingular="PartyTypeUseType" columnPrefix="ptyput">
+                    <columns>
+                        <column name="PartyTypeUseTypeId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeUseTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeUseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="PartyTypeUseTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeUseTypeDescriptions" nameSingular="PartyTypeUseTypeDescription" columnPrefix="ptyputd">
+                    <columns>
+                        <column name="PartyTypeUseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypeUseTypes" destinationColumn="PartyTypeUseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeUseTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypeUseTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeUses" nameSingular="PartyTypeUse" columnPrefix="ptypu">
+                    <columns>
+                        <column name="PartyTypeUseId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeUseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypeUseTypes" destinationColumn="PartyTypeUseTypeId" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeUseId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypeUseTypeId" />
+                            <indexColumn name="PartyTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyTypeUseTypeId" />
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyAliasTypes" nameSingular="PartyAliasType" columnPrefix="pat">
+                    <columns>
+                        <column name="PartyAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyAliasTypeDetails" destinationColumn="PartyAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyAliasTypeDetails" destinationColumn="PartyAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyAliasTypeDetails" nameSingular="PartyAliasTypeDetail" columnPrefix="patdt">
+                    <columns>
+                        <column name="PartyAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyAliasTypes" destinationColumn="PartyAliasTypeId" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="PartyAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="PartyAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyAliasTypeDescriptions" nameSingular="PartyAliasTypeDescription" columnPrefix="patd">
+                    <columns>
+                        <column name="PartyAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PartyAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyAliasTypes" destinationColumn="PartyAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RoleTypes" nameSingular="RoleType" columnPrefix="rtyp">
+                    <columns>
+                        <column name="RoleTypeId" type="EID" nullAllowed="false" />
+                        <column name="RoleTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentRoleTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="RoleTypes" destinationColumn="RoleTypeId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RoleTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="RoleTypeName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ParentRoleTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="RoleTypeDescriptions" nameSingular="RoleTypeDescription" columnPrefix="rtypd">
+                    <columns>
+                        <column name="RoleTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="RoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RoleTypes" destinationColumn="RoleTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="RoleTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="RoleTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyRelationshipTypes" nameSingular="PartyRelationshipType" columnPrefix="prt">
+                    <columns>
+                        <column name="PartyRelationshipTypeId" type="EID" nullAllowed="false" />
+                        <column name="PartyRelationshipTypeName" type="Name" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyRelationshipTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="PartyRelationshipTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyRelationshipTypeDescriptions" nameSingular="PartyRelationshipTypeDescription" columnPrefix="prtd">
+                    <columns>
+                        <column name="PartyRelationshipTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PartyRelationshipTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyRelationshipTypes" destinationColumn="PartyRelationshipTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyRelationshipTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyRelationshipTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="NameSuffixes" nameSingular="NameSuffix" columnPrefix="nsfx">
+                    <columns>
+                        <column name="NameSuffixId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="NameSuffixDetails" destinationColumn="NameSuffixDetailId" />
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="NameSuffixDetails" destinationColumn="NameSuffixDetailId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="NameSuffixId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="NameSuffixDetails" nameSingular="NameSuffixDetail" columnPrefix="nsfxd">
+                    <columns>
+                        <column name="NameSuffixDetailId" type="EID" nullAllowed="false" />
+                        <column name="NameSuffixId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="NameSuffixes" destinationColumn="NameSuffixId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="NameSuffixDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="NameSuffixId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PersonalTitles" nameSingular="PersonalTitle" columnPrefix="pert">
+                    <columns>
+                        <column name="PersonalTitleId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PersonalTitleDetails" destinationColumn="PersonalTitleDetailId" />
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PersonalTitleDetails" destinationColumn="PersonalTitleDetailId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PersonalTitleId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PersonalTitleDetails" nameSingular="PersonalTitleDetail" columnPrefix="pertd">
+                    <columns>
+                        <column name="PersonalTitleDetailId" type="EID" nullAllowed="false" />
+                        <column name="PersonalTitleId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PersonalTitles" destinationColumn="PersonalTitleId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PersonalTitleDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PersonalTitleId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TimeZones" nameSingular="TimeZone" columnPrefix="tz">
+                    <columns>
+                        <column name="TimeZoneId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TimeZoneDetails" destinationColumn="TimeZoneDetailId" />
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TimeZoneDetails" destinationColumn="TimeZoneDetailId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TimeZoneId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TimeZoneDetails" nameSingular="TimeZoneDetail" columnPrefix="tzdt">
+                    <columns>
+                        <column name="TimeZoneDetailId" type="EID" nullAllowed="false" />
+                        <column name="TimeZoneId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TimeZones" destinationColumn="TimeZoneId" />
+                        <column name="JavaTimeZoneName" type="Name" nullAllowed="false" />
+                        <column name="UnixTimeZoneName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TimeZoneDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TimeZoneId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="JavaTimeZoneName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="UnixTimeZoneName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TimeZoneDescriptions" nameSingular="TimeZoneDescription" columnPrefix="tzd">
+                    <columns>
+                        <column name="TimeZoneDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TimeZoneId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TimeZones" destinationColumn="TimeZoneId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TimeZoneDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TimeZoneId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DateTimeFormats" nameSingular="DateTimeFormat" columnPrefix="dtf">
+                    <columns>
+                        <column name="DateTimeFormatId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DateTimeFormatDetails" destinationColumn="DateTimeFormatDetailId" />
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DateTimeFormatDetails" destinationColumn="DateTimeFormatDetailId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DateTimeFormatId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DateTimeFormatDetails" nameSingular="DateTimeFormatDetail" columnPrefix="dtfdt">
+                    <columns>
+                        <column name="DateTimeFormatDetailId" type="EID" nullAllowed="false" />
+                        <column name="DateTimeFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DateTimeFormats" destinationColumn="DateTimeFormatId" />
+                        <column name="DateTimeFormatName" type="Name" nullAllowed="false" />
+                        <column name="JavaShortDateFormat" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="JavaAbbrevDateFormat" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="JavaAbbrevDateFormatWeekday" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="JavaLongDateFormat" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="JavaLongDateFormatWeekday" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="JavaTimeFormat" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="JavaTimeFormatSeconds" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="UnixShortDateFormat" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="UnixAbbrevDateFormat" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="UnixAbbrevDateFormatWeekday" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="UnixLongDateFormat" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="UnixLongDateFormatWeekday" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="UnixTimeFormat" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="UnixTimeFormatSeconds" type="String" maxLength="60" nullAllowed="false" />
+                        <column name="ShortDateSeparator" type="String" maxLength="1" nullAllowed="false" />
+                        <column name="TimeSeparator" type="String" maxLength="1" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DateTimeFormatDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DateTimeFormatId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="DateTimeFormatName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="DateTimeFormatDescriptions" nameSingular="DateTimeFormatDescription" columnPrefix="dtfd">
+                    <columns>
+                        <column name="DateTimeFormatDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="DateTimeFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="DateTimeFormats" destinationColumn="DateTimeFormatId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="DateTimeFormatDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="DateTimeFormatId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Parties" nameSingular="Party" columnPrefix="par">
+                    <columns>
+                        <column name="PartyId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyDetails" destinationColumn="PartyDetailId" />
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyDetails" destinationColumn="PartyDetailId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyDetails" nameSingular="PartyDetail" columnPrefix="pardt">
+                    <columns>
+                        <column name="PartyDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PartyName" type="Name" nullAllowed="false" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="PreferredLanguageId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="PreferredCurrencyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="PreferredTimeZoneId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TimeZones" destinationColumn="TimeZoneId" />
+                        <column name="PreferredDateTimeFormatId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="DateTimeFormats" destinationColumn="DateTimeFormatId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyDetailId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PreferredLanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="PreferredCurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="PreferredTimeZoneId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="PreferredDateTimeFormatId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyStatuses" nameSingular="PartyStatus" columnPrefix="parst">
+                    <columns>
+                        <column name="PartyStatusId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PartyCachedSearchSequence" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="PartyId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyAliases" nameSingular="PartyAlias" columnPrefix="pal">
+                    <columns>
+                        <column name="PartyAliasId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PartyAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyAliasTypes" destinationColumn="PartyAliasTypeId" />
+                        <column name="Alias" type="PartyAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyAliasId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="PartyAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyAliasTypeId" />
+                            <indexColumn name="Alias" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyGroups" nameSingular="PartyGroup" columnPrefix="pgp">
+                    <columns>
+                        <column name="PartyGroupId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="Name" type="CompanyName" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyGroupId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyCompanies" nameSingular="PartyCompany" columnPrefix="pcomp">
+                    <columns>
+                        <column name="PartyCompanyId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PartyCompanyName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyCompanyId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyCompanyName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyDivisions" nameSingular="PartyDivision" columnPrefix="pdiv">
+                    <columns>
+                        <column name="PartyDivisionId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="CompanyPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PartyDivisionName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyDivisionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CompanyPartyId" />
+                            <indexColumn name="PartyDivisionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CompanyPartyId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyDepartments" nameSingular="PartyDepartment" columnPrefix="pdept">
+                    <columns>
+                        <column name="PartyDepartmentId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="DivisionPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PartyDepartmentName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyDepartmentId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="DivisionPartyId" />
+                            <indexColumn name="PartyDepartmentName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="DivisionPartyId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="People" nameSingular="Person" columnPrefix="peop">
+                    <columns>
+                        <column name="PersonId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="PersonalTitleId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PersonalTitles" destinationColumn="PersonalTitleId" />
+                        <column name="FirstName" type="NameComponent" nullAllowed="true" />
+                        <column name="FirstNameSdx" type="Soundex" nullAllowed="true" />
+                        <column name="MiddleName" type="NameComponent" nullAllowed="true" />
+                        <column name="MiddleNameSdx" type="Soundex" nullAllowed="true" />
+                        <column name="LastName" type="NameComponent" nullAllowed="true" />
+                        <column name="LastNameSdx" type="Soundex" nullAllowed="true" />
+                        <column name="NameSuffixId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="NameSuffixes" destinationColumn="NameSuffixId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PersonId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PersonalTitleId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="NameSuffixId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="FirstName" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="FirstNameSdx" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="MiddleName" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="MiddleNameSdx" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="LastName" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="LastNameSdx" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyRelationships" nameSingular="PartyRelationship" columnPrefix="prel">
+                    <columns>
+                        <column name="PartyRelationshipId" type="EID" nullAllowed="false" />
+                        <column name="PartyRelationshipTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyRelationshipTypes" destinationColumn="PartyRelationshipTypeId" />
+                        <column name="FromPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="FromRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RoleTypes" destinationColumn="RoleTypeId" />
+                        <column name="ToPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ToRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="RoleTypes" destinationColumn="RoleTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyRelationshipId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyRelationshipTypeId" />
+                            <indexColumn name="FromPartyId" />
+                            <indexColumn name="FromRoleTypeId" />
+                            <indexColumn name="ToPartyId" />
+                            <indexColumn name="ToRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyRelationshipTypeId" />
+                            <indexColumn name="FromPartyId" />
+                            <indexColumn name="FromRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyRelationshipTypeId" />
+                            <indexColumn name="ToPartyId" />
+                            <indexColumn name="ToRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PartyRelationshipTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="FromPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="FromRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ToPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="ToRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypePasswordStringPolicies" nameSingular="PartyTypePasswordStringPolicy" columnPrefix="ptyppsp">
+                    <columns>
+                        <column name="PartyTypePasswordStringPolicyId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTypePasswordStringPolicyDetails" destinationColumn="PartyTypePasswordStringPolicyDetailId" />
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTypePasswordStringPolicyDetails" destinationColumn="PartyTypePasswordStringPolicyDetailId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypePasswordStringPolicyId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypePasswordStringPolicyDetails" nameSingular="PartyTypePasswordStringPolicyDetail" columnPrefix="ptyppspdt">
+                    <columns>
+                        <column name="PartyTypePasswordStringPolicyDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypePasswordStringPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypePasswordStringPolicies" destinationColumn="PartyTypePasswordStringPolicyId" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="ForceChangeAfterCreate" type="Boolean" nullAllowed="false" />
+                        <column name="ForceChangeAfterReset" type="Boolean" nullAllowed="false" />
+                        <column name="AllowChange" type="Boolean" nullAllowed="false" />
+                        <column name="PasswordHistory" type="Integer" nullAllowed="true" />
+                        <column name="MinimumPasswordLifetime" type="Time" nullAllowed="true" />
+                        <column name="MaximumPasswordLifetime" type="Time" nullAllowed="true" />
+                        <column name="ExpirationWarningTime" type="Time" nullAllowed="true" />
+                        <column name="ExpiredLoginsPermitted" type="Integer" nullAllowed="true" />
+                        <column name="MinimumLength" type="Integer" nullAllowed="true" />
+                        <column name="MaximumLength" type="Integer" nullAllowed="true" />
+                        <column name="RequiredDigitCount" type="Integer" nullAllowed="true" />
+                        <column name="RequiredLetterCount" type="Integer" nullAllowed="true" />
+                        <column name="RequiredUpperCaseCount" type="Integer" nullAllowed="true" />
+                        <column name="RequiredLowerCaseCount" type="Integer" nullAllowed="true" />
+                        <column name="MaximumRepeated" type="Integer" nullAllowed="true" />
+                        <column name="MinimumCharacterTypes" type="Integer" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypePasswordStringPolicyDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypePasswordStringPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeLockoutPolicies" nameSingular="PartyTypeLockoutPolicy" columnPrefix="ptyplp">
+                    <columns>
+                        <column name="PartyTypeLockoutPolicyId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTypeLockoutPolicyDetails" destinationColumn="PartyTypeLockoutPolicyDetailId" />
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTypeLockoutPolicyDetails" destinationColumn="PartyTypeLockoutPolicyDetailId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeLockoutPolicyId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeLockoutPolicyDetails" nameSingular="PartyTypeLockoutPolicyDetail" columnPrefix="ptyplpdt">
+                    <columns>
+                        <column name="PartyTypeLockoutPolicyDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeLockoutPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypeLockoutPolicies" destinationColumn="PartyTypeLockoutPolicyId" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="LockoutFailureCount" type="Integer" nullAllowed="true" />
+                        <column name="ResetFailureCountTime" type="Time" nullAllowed="true" />
+                        <column name="ManualLockoutReset" type="Boolean" nullAllowed="false" />
+                        <column name="LockoutInactiveTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeLockoutPolicyDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypeLockoutPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeAuditPolicies" nameSingular="PartyTypeAuditPolicy" columnPrefix="ptypap">
+                    <columns>
+                        <column name="PartyTypeAuditPolicyId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTypeAuditPolicyDetails" destinationColumn="PartyTypeAuditPolicyDetailId" />
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTypeAuditPolicyDetails" destinationColumn="PartyTypeAuditPolicyDetailId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeAuditPolicyId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTypeAuditPolicyDetails" nameSingular="PartyTypeAuditPolicyDetail" columnPrefix="ptypapdt">
+                    <columns>
+                        <column name="PartyTypeAuditPolicyDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyTypeAuditPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypeAuditPolicies" destinationColumn="PartyTypeAuditPolicyId" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="AuditCommands" type="Boolean" nullAllowed="false" />
+                        <column name="RetainUserVisitsTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTypeAuditPolicyDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTypeAuditPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Genders" nameSingular="Gender" columnPrefix="gndr">
+                    <columns>
+                        <column name="GenderId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GenderDetails" destinationColumn="GenderDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GenderDetails" destinationColumn="GenderDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GenderId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GenderDetails" nameSingular="GenderDetail" columnPrefix="gndrdt">
+                    <columns>
+                        <column name="GenderDetailId" type="EID" nullAllowed="false" />
+                        <column name="GenderId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Genders" destinationColumn="GenderId" />
+                        <column name="GenderName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GenderDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GenderId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="GenderName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="GenderDescriptions" nameSingular="GenderDescription" columnPrefix="gndrd">
+                    <columns>
+                        <column name="GenderDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="GenderId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Genders" destinationColumn="GenderId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="GenderDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="GenderId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Moods" nameSingular="Mood" columnPrefix="md">
+                    <columns>
+                        <column name="MoodId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MoodDetails" destinationColumn="MoodDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MoodDetails" destinationColumn="MoodDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MoodId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MoodDetails" nameSingular="MoodDetail" columnPrefix="mddt">
+                    <columns>
+                        <column name="MoodDetailId" type="EID" nullAllowed="false" />
+                        <column name="MoodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Moods" destinationColumn="MoodId" />
+                        <column name="MoodName" type="Name" nullAllowed="false" />
+                        <column name="IconId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Icons" destinationColumn="IconId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MoodDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MoodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="MoodName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IconId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="MoodDescriptions" nameSingular="MoodDescription" columnPrefix="mdd">
+                    <columns>
+                        <column name="MoodDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="MoodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Moods" destinationColumn="MoodId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="MoodDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="MoodId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BirthdayFormats" nameSingular="BirthdayFormat" columnPrefix="bdyf">
+                    <columns>
+                        <column name="BirthdayFormatId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BirthdayFormatDetails" destinationColumn="BirthdayFormatDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BirthdayFormatDetails" destinationColumn="BirthdayFormatDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BirthdayFormatId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BirthdayFormatDetails" nameSingular="BirthdayFormatDetail" columnPrefix="bdyfdt">
+                    <columns>
+                        <column name="BirthdayFormatDetailId" type="EID" nullAllowed="false" />
+                        <column name="BirthdayFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BirthdayFormats" destinationColumn="BirthdayFormatId" />
+                        <column name="BirthdayFormatName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BirthdayFormatDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="BirthdayFormatId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="BirthdayFormatName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BirthdayFormatDescriptions" nameSingular="BirthdayFormatDescription" columnPrefix="bdyfd">
+                    <columns>
+                        <column name="BirthdayFormatDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="BirthdayFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BirthdayFormats" destinationColumn="BirthdayFormatId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BirthdayFormatDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="BirthdayFormatId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Profiles" nameSingular="Profile" columnPrefix="prfl">
+                    <columns>
+                        <column name="ProfileId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="Nickname" type="String" maxLength="40" nullAllowed="true" />
+                        <column name="IconId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Icons" destinationColumn="IconId" />
+                        <column name="GenderId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Genders" destinationColumn="GenderId" />
+                        <column name="MoodId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Moods" destinationColumn="MoodId" />
+                        <column name="Birthday" type="Date" nullAllowed="true" />
+                        <column name="BirthdayFormatId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BirthdayFormats" destinationColumn="BirthdayFormatId" />
+                        <column name="Occupation" type="String" maxLength="200" nullAllowed="true" />
+                        <column name="Hobbies" type="String" maxLength="200" nullAllowed="true" />
+                        <column name="Location" type="String" maxLength="60" nullAllowed="true" />
+                        <column name="BioMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Bio" type="String" maxLength="512" nullAllowed="true" />
+                        <column name="SignatureMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Signature" type="String" maxLength="512" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ProfileId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="Nickname" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IconId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GenderId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="MoodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="BirthdayFormatId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="BioMimeTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="SignatureMimeTypeId" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

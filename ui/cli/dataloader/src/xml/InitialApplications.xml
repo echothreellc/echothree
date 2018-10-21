@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <editors>
+        <editor editorName="TINYMCE" hasDimensions="true" minimumHeight="5" minimumWidth="60" maximumHeight="100" maximumWidth="100" defaultHeight="10"
+                defaultWidth="60" isDefault="true" sortOrder="1">
+            <editorDescription languageIsoName="en" description="TinyMCE" />
+        </editor>
+        <editor editorName="TEXT_AREA" hasDimensions="true" minimumHeight="5" minimumWidth="60" maximumHeight="100" maximumWidth="100" defaultHeight="10"
+                defaultWidth="60" isDefault="false" sortOrder="2">
+            <editorDescription languageIsoName="en" description="Text Area" />
+        </editor>
+    </editors>
+    <applications>
+        <application applicationName="main" isDefault="true" sortOrder="1">
+            <applicationDescription languageIsoName="en" description="main" />
+            <applicationEditor editorName="TINYMCE" isDefault="true" sortOrder="1" />
+            <applicationEditor editorName="TEXT_AREA" isDefault="false" sortOrder="2" />
+            <applicationEditorUse applicationEditorUseName="CompanyContactMechanismComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="true" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Company Contact Mechanism Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="DivisionContactMechanismComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Division Contact Mechanism Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="DepartmentContactMechanismComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Department Contact Mechanism Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="ItemDescription" defaultEditorName="TINYMCE" defaultHeight="40" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Item Description" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="ItemComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Item Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="ContentPageArea" defaultEditorName="TINYMCE" defaultHeight="30" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Content Page Area" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="BlogEntryFeedSummary" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Blog Entry Feed Summary" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="BlogEntrySummary" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Blog Entry Summary" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="BlogEntryContent" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Blog Entry Content" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="BlogCommentContent" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Blog Comment Content" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="EmployeeProfileBio" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Employee Profile Bio" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="EmployeeProfileSignature" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Employee Profile Signature" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CustomerProfileBio" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Customer Profile Bio" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CustomerProfileSignature" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Customer Profile Signature" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CustomerComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Customer Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CustomerContactMechanismComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Customer Contact Mechanism Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CustomerContactListComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Customer Contact List Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CustomerPaymentMethodComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Customer Payment Method Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="EmployeeContactMechanismComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Employee Contact Mechanism Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="VendorComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Vendor Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="VendorContactMechanismComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Vendor Contact Mechanism Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="VendorItemComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Vendor Item Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CarrierContactMechanismComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Carrier Contact Mechanism Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="WarehouseContactMechanismComment" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Warehouse Contact Mechanism Comment" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CancellationPolicyTranslation" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Cancellation Policy Translation" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="ReturnPolicyTranslation" defaultEditorName="TINYMCE" defaultHeight="5" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Return Policy Translation" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="TrainingClassOverview" defaultEditorName="TINYMCE" defaultHeight="15" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Training Class - Overview" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="TrainingClassIntroduction" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Training Class - Introduction" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="TrainingClassSectionOverview" defaultEditorName="TINYMCE" defaultHeight="15" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Training Class Section - Overview" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="TrainingClassSectionIntroduction" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Training Class Section - Introduction" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="TrainingClassPagePage" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Training Class Page - Page" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="TrainingClassQuestionQuestion" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Training Class Question - Question" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="TrainingClassAnswerAnswer" defaultEditorName="TINYMCE" defaultHeight="15" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Training Class Answer - Answer" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="TrainingClassAnswerSelected" defaultEditorName="TINYMCE" defaultHeight="15" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Training Class Answer - Selected" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CompanyDocument" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Company Document" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="CustomerDocument" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Customer Document" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="EmployeeDocument" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Employee Document" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="VendorDocument" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Vendor Document" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="HarmonizedTariffScheduleCodeOverview" defaultEditorName="TINYMCE" defaultHeight="20" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Harmonized Tariff Schedule Code - Overview" />
+            </applicationEditorUse>
+            <applicationEditorUse applicationEditorUseName="EntityAttribute" defaultEditorName="TINYMCE" defaultHeight="40" defaultWidth="60"
+                    isDefault="false" sortOrder="1">
+                <applicationEditorUseDescription languageIsoName="en" description="Entity Attribute" />
+            </applicationEditorUse>
+        </application>
+    </applications>
+</initialData>

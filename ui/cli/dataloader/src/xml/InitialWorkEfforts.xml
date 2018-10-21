@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <workEffortTypes>
+        <workEffortType workEffortTypeName="RECEIVE_CUSTOMER_EMAIL" componentVendorName="EchoThree" entityTypeName="CommunicationEvent"
+            scheduledTimeUnitOfMeasureTypeName="DAY" scheduledTime="2" estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="5"
+            maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="20" sortOrder="1">
+            <workEffortTypeDescription languageIsoName="en" description="Receive Customer Email" />
+            <workRequirementType workRequirementTypeName="CLASSIFICATION" allowReassignment="true" sortOrder="1"
+                workflowName="INCOMING_CUSTOMER_EMAIL" workflowStepName="CLASSIFY"
+                estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="2"
+                maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="5">
+                <workRequirementTypeDescription languageIsoName="en" description="Classify Email" />
+            </workRequirementType>
+            <workRequirementType workRequirementTypeName="RESEARCH" allowReassignment="true" sortOrder="1"
+                estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="3"
+                maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="5">
+                <workRequirementTypeDescription languageIsoName="en" description="Research Email" />
+            </workRequirementType>
+            <workRequirementType workRequirementTypeName="REPLY" allowReassignment="true" sortOrder="1"
+                estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="3"
+                maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="5">
+                <workRequirementTypeDescription languageIsoName="en" description="Reply to Email" />
+            </workRequirementType>
+            <workRequirementType workRequirementTypeName="IMPROVE_REPLY" allowReassignment="true" sortOrder="1"
+                estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="0"
+                maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="5">
+                <workRequirementTypeDescription languageIsoName="en" description="Improve Reply" />
+            </workRequirementType>
+            <workEffortScope workEffortScopeName="SUPPORT" isDefault="true" sortOrder="1">
+                <workEffortScopeDescription languageIsoName="en" description="Support Email" />
+            </workEffortScope>
+        </workEffortType>
+        <workEffortType workEffortTypeName="SEND_CUSTOMER_EMAIL" componentVendorName="EchoThree" entityTypeName="CommunicationEvent"
+            scheduledTimeUnitOfMeasureTypeName="DAY" scheduledTime="2" estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="5"
+            maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="5" sortOrder="1">
+            <workEffortTypeDescription languageIsoName="en" description="Send Customer Email" />
+            <workRequirementType workRequirementTypeName="REVIEW" allowReassignment="true" sortOrder="1"
+                workflowName="OUTGOING_CUSTOMER_EMAIL" workflowStepName="REVIEW"
+                estimatedTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTimeAllowed="2"
+                maximumTimeAllowedUnitOfMeasureTypeName="MINUTE" maximumTimeAllowed="5">
+                <workRequirementTypeDescription languageIsoName="en" description="Review Email" />
+            </workRequirementType>
+            <workEffortScope workEffortScopeName="SUPPORT" isDefault="true" sortOrder="1">
+                <workEffortScopeDescription languageIsoName="en" description="Support Email" />
+            </workEffortScope>
+        </workEffortType>
+    </workEffortTypes>
+</initialData>

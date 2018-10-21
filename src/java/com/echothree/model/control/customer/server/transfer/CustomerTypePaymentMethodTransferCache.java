@@ -1,0 +1,55 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.customer.server.transfer;
+
+import com.echothree.model.control.customer.remote.transfer.CustomerTypePaymentMethodTransfer;
+import com.echothree.model.control.customer.remote.transfer.CustomerTypeTransfer;
+import com.echothree.model.control.customer.server.CustomerControl;
+import com.echothree.model.control.payment.remote.transfer.PaymentMethodTransfer;
+import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+
+public class CustomerTypePaymentMethodTransferCache
+        extends BaseCustomerTransferCache<CustomerTypePaymentMethod, CustomerTypePaymentMethodTransfer> {
+    
+    /** Creates a new instance of CustomerTypePaymentMethodTransferCache */
+    public CustomerTypePaymentMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {
+        super(userVisit, customerControl);
+    }
+    
+    public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(CustomerTypePaymentMethod customerTypePaymentMethod) {
+        CustomerTypePaymentMethodTransfer customerTypePaymentMethodTransfer = get(customerTypePaymentMethod);
+        
+        if(customerTypePaymentMethodTransfer == null) {
+            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            CustomerTypeTransfer customerType = customerControl.getCustomerTypeTransfer(userVisit, customerTypePaymentMethod.getCustomerType());
+            PaymentMethodTransfer paymentMethod = paymentControl.getPaymentMethodTransfer(userVisit, customerTypePaymentMethod.getPaymentMethod());
+            Integer defaultSelectionPriority = customerTypePaymentMethod.getDefaultSelectionPriority();
+            Boolean isDefault = customerTypePaymentMethod.getIsDefault();
+            Integer sortOrder = customerTypePaymentMethod.getSortOrder();
+            
+            customerTypePaymentMethodTransfer = new CustomerTypePaymentMethodTransfer(customerType, paymentMethod, defaultSelectionPriority, isDefault,
+                    sortOrder);
+            put(customerTypePaymentMethod, customerTypePaymentMethodTransfer);
+        }
+        
+        return customerTypePaymentMethodTransfer;
+    }
+    
+}

@@ -1,0 +1,96 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.content.contentwebaddress;
+
+import com.echothree.control.user.content.common.ContentUtil;
+import com.echothree.control.user.content.remote.edit.ContentWebAddressEdit;
+import com.echothree.control.user.content.remote.form.EditContentWebAddressForm;
+import com.echothree.control.user.content.remote.result.EditContentWebAddressResult;
+import com.echothree.control.user.content.remote.spec.ContentWebAddressSpec;
+import com.echothree.ui.web.main.framework.MainBaseEditAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
+import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+
+@SproutAction(
+    path = "/Content/ContentWebAddress/Edit",
+    mappingClass = SecureActionMapping.class,
+    name = "ContentWebAddressEdit",
+    properties = {
+        @SproutProperty(property = "secure", value = "true")
+    },
+    forwards = {
+        @SproutForward(name = "Display", path = "/action/Content/ContentWebAddress/Main", redirect = true),
+        @SproutForward(name = "Form", path = "/content/contentwebaddress/edit.jsp")
+    }
+)
+public class EditAction
+        extends MainBaseEditAction<EditActionForm, ContentWebAddressSpec, ContentWebAddressEdit, EditContentWebAddressForm, EditContentWebAddressResult> {
+    
+    @Override
+    protected ContentWebAddressSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
+            throws NamingException {
+        ContentWebAddressSpec spec = ContentUtil.getHome().getContentWebAddressSpec();
+        String originalContentWebAddressName = request.getParameter(ParameterConstants.ORIGINAL_CONTENT_WEB_ADDRESS_NAME);
+
+        if(originalContentWebAddressName == null) {
+            originalContentWebAddressName = actionForm.getOriginalContentWebAddressName();
+        }
+
+        spec.setContentWebAddressName(originalContentWebAddressName);
+        
+        return spec;
+    }
+    
+    @Override
+    protected ContentWebAddressEdit getEdit(HttpServletRequest request, EditActionForm actionForm)
+            throws NamingException {
+        ContentWebAddressEdit edit = ContentUtil.getHome().getContentWebAddressEdit();
+
+        edit.setContentWebAddressName(actionForm.getContentWebAddressName());
+        edit.setContentCollectionName(actionForm.getContentCollectionChoice());
+        edit.setDescription(actionForm.getDescription());
+
+        return edit;
+    }
+    
+    @Override
+    protected EditContentWebAddressForm getForm()
+            throws NamingException {
+        return ContentUtil.getHome().getEditContentWebAddressForm();
+    }
+    
+    @Override
+    protected void setupActionForm(HttpServletRequest request, EditActionForm actionForm, EditContentWebAddressResult result, ContentWebAddressSpec spec, ContentWebAddressEdit edit) {
+        actionForm.setOriginalContentWebAddressName(spec.getContentWebAddressName());
+        actionForm.setContentWebAddressName(edit.getContentWebAddressName());
+        actionForm.setContentCollectionChoice(edit.getContentCollectionName());
+        actionForm.setDescription(edit.getDescription());
+    }
+    
+    @Override
+    protected CommandResult doEdit(HttpServletRequest request, EditContentWebAddressForm commandForm)
+            throws Exception {
+        return ContentUtil.getHome().editContentWebAddress(getUserVisitPK(request), commandForm);
+    }
+    
+}

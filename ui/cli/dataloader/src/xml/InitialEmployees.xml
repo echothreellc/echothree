@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <responsibilityTypes>
+        <responsibilityType responsibilityTypeName="TEST_RESPONSIBILITY_TYPE" isDefault="true" sortOrder="1">
+            <responsibilityTypeDescription languageIsoName="en" description="Test Responsibility Type" />
+        </responsibilityType>
+    </responsibilityTypes>
+    <skillTypes>
+        <skillType skillTypeName="TEST_SKILL_TYPE" isDefault="true" sortOrder="1">
+            <skillTypeDescription languageIsoName="en" description="Test Skill Type" />
+        </skillType>
+    </skillTypes>
+    <leaveReasons>
+        <leaveReason leaveReasonName="TEST_LEAVE_REASON" isDefault="true" sortOrder="1">
+            <leaveReasonDescription languageIsoName="en" description="Test Leave Reason" />
+        </leaveReason>
+    </leaveReasons>
+    <leaveTypes>
+        <leaveType leaveTypeName="TEST_LEAVE_TYPE" isDefault="true" sortOrder="1">
+            <leaveTypeDescription languageIsoName="en" description="Test Leave Type" />
+        </leaveType>
+    </leaveTypes>
+    <terminationReasons>
+        <terminationReason terminationReasonName="TEST_TERMINATION_REASON" isDefault="true" sortOrder="1">
+            <terminationReasonDescription languageIsoName="en" description="Test Termination Reason" />
+        </terminationReason>
+    </terminationReasons>
+    <terminationTypes>
+        <terminationType terminationTypeName="TEST_TERMINATION_TYPE" isDefault="true" sortOrder="1">
+            <terminationTypeDescription languageIsoName="en" description="Test Termination Type" />
+        </terminationType>
+    </terminationTypes>
+    <partyTypes>
+        <partyType partyTypeName="EMPLOYEE" commandAction="none">
+            <partyTypePasswordStringPolicy forceChangeAfterCreate="true" forceChangeAfterReset="true" allowChange="true" minimumLength="6" />
+            <partyTypeLockoutPolicy lockoutFailureCount="3" manualLockoutReset="true" />
+            <partyTypeAuditPolicy auditCommands="true" retainUserVisitsTime="30" retainUserVisitsTimeUnitOfMeasureTypeName="DAY" />
+        </partyType>
+    </partyTypes>
+    <employeeTypes>
+        <employeeType employeeTypeName="FULL_TIME" isDefault="true" sortOrder="1">
+            <employeeTypeDescription languageIsoName="en" description="Full Time" />
+        </employeeType>
+        <employeeType employeeTypeName="PART_TIME" isDefault="false" sortOrder="1">
+            <employeeTypeDescription languageIsoName="en" description="Part Time" />
+        </employeeType>
+        <employeeType employeeTypeName="TEMPORARY" isDefault="false" sortOrder="1">
+            <employeeTypeDescription languageIsoName="en" description="Temporary" />
+        </employeeType>
+    </employeeTypes>
+    <employees>
+        <employee employeeTypeName="FULL_TIME" firstName="Test" middleName="A" lastName="Employee" emailAddress="TestE@echothree.com"
+        allowSolicitation="true" username="Test E" password1="password" password2="password" partySecurityRoleTemplateName="SAMPLE_TEMPLATE">
+            <employeeCompany companyName="TEST_COMPANY" />
+            <employment companyName="TEST_COMPANY" startTime="12/01/2010 5:00 PM" />
+            <leave companyName="TEST_COMPANY" leaveTypeName="TEST_LEAVE_TYPE" leaveReasonName="TEST_LEAVE_REASON" startTime="12/02/2010 5:00 PM" />
+            <partyResponsibilities>
+                <partyResponsibility responsibilityTypeName="TEST_RESPONSIBILITY_TYPE" />
+            </partyResponsibilities>
+            <partySkills>
+                <partySkill skillTypeName="TEST_SKILL_TYPE" />
+            </partySkills>
+            <partyTrainingClasses>
+                <partyTrainingClass trainingClassName="TEST_TRAINING_CLASS" />
+            </partyTrainingClasses>
+        </employee>
+    </employees>
+</initialData>

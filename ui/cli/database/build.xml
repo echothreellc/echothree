@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="database" default="Help" basedir=".">
+
+    <property name="component.home" value="./"/>
+    <property name="metadata.dir" value="${component.home}/src/metadata"/>
+    
+    <target name="compile">
+        <mkdir dir="build"/>
+        <mkdir dir="build/classes"/>
+        <javac
+            compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
+            debug="true"
+            source="1.8"
+            target="1.8"
+            srcdir="./src/java"
+            destdir="./build/classes"
+            includeAntRuntime="false">
+            <classpath>
+                <pathelement location="./"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+            <compilerclasspath>
+                <pathelement location="../../../build/lib/error_prone_ant.jar"/>
+            </compilerclasspath>
+        </javac>
+    </target>
+    
+    <target name="GenerateJava" depends="compile">
+        <java classname="DatabaseUtility" fork="true">
+            <arg value="--java"/>
+            <arg value="--generated"/>
+            <arg value="../../../generated/data"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+        
+    <target name="GenerateDatabase" depends="compile">
+        <java classname="DatabaseUtility" fork="true">
+            <arg value="--structure"/>
+            <arg value="--verbose"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+        
+    <target name="RegenerateDatabase" depends="compile">
+        <java classname="DatabaseUtility" fork="true">
+            <arg value="--empty"/>
+            <arg value="--structure"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="SetCharacterSetAndCollation" depends="compile">
+        <java classname="DatabaseUtility" fork="true">
+            <arg value="--charset"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="RegenerateReporting" depends="compile">
+        <java classname="DatabaseUtility" fork="true">
+            <arg value="--reporting"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+   <target name="clean-generated">
+        <echo message="Deleting directory ../../../generated/data" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="../../../generated/data">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="clean-build">
+        <echo message="Deleting directory build" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="build">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="clean">
+        <parallel>
+            <ant target="clean-generated"/>
+            <ant target="clean-build"/>
+        </parallel>
+    </target>
+    
+    <target name="Help">
+        <echo>+-------------------------------------------+</echo>
+        <echo>+ Available targets for database utilities: +</echo>
+        <echo>+                                           +</echo>
+        <echo>+        ant GenerateJava                   +</echo>
+        <echo>+        ant GenerateDatabase               +</echo>
+        <echo>+        ant SetCharacterSetAndCollation    +</echo>
+        <echo>+        ant RegenerateDatabase             +</echo>
+        <echo>+        ant RegenerateReporting            +</echo>
+        <echo>+                                           +</echo>
+        <echo>+-------------------------------------------+</echo>
+    </target>
+
+</project>

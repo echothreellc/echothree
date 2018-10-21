@@ -1,0 +1,22 @@
+Apache Ivy 2.4.0
+ASM 3.1 (used by PMD)
+Bootstrap 4.0.0
+cross-revalidator 1.0a
+displaytag 1.2
+Jakarta POI 3.2 (used by displaytag)
+Jakarta taglibs standard 1.1.2
+Jaxen 1.1.1 (used by PMD)
+JBoss 4.2.2 GA Client
+JBoss Server 4.2.2 GA
+JBoss Cache 1.4.1 SP14
+jQuery 3.3.1
+log4j 1.2.8
+logkit 1.2
+PMD 4.2.5
+Popper.js 1.14.1
+Prism 1.6.0
+Prototype 1.6.0.3
+Struts 1.3.10
+TinyMCE 4.5.2
+XML-RPC 3.1.1
+XOM 1.2.8

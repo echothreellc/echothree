@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <customerTypes>
+        <customerType customerTypeName="REGULAR" defaultHoldUntilComplete="false" defaultAllowBackorders="true" defaultAllowSubstitutions="true"
+                defaultAllowCombiningShipments="true" defaultRequireReference="false" defaultAllowReferenceDuplicates="false" defaultTaxable="true" isDefault="true"
+                sortOrder="1">
+            <customerTypeDescription languageIsoName="en" description="Regular Customer" />
+            <customerTypePaymentMethod paymentMethodName="DISCOVER" defaultSelectionPriority="1" isDefault="false" sortOrder="1" />
+            <customerTypePaymentMethod paymentMethodName="VISA" defaultSelectionPriority="1" isDefault="true" sortOrder="1" />
+            <customerTypePaymentMethod paymentMethodName="MASTERCARD" defaultSelectionPriority="1" isDefault="false" sortOrder="1" />
+            <customerTypePaymentMethod paymentMethodName="AMERICAN_EXPRESS" defaultSelectionPriority="1" isDefault="false" sortOrder="1" />
+            <customerTypeShippingMethod shippingMethodName="TEST_SHIPPING_METHOD_1" defaultSelectionPriority="1" isDefault="false" sortOrder="1" />
+            <customerTypeShippingMethod shippingMethodName="TEST_SHIPPING_METHOD_2" defaultSelectionPriority="1" isDefault="false" sortOrder="1" />
+            <offerCustomerType offerName="TEST0004" isDefault="true" sortOrder="1" />
+            <offerCustomerType offerName="TEST0006" isDefault="true" sortOrder="1" />
+            <offerCustomerType offerName="TEST0005" isDefault="true" sortOrder="1" />
+        </customerType>
+        <customerType customerTypeName="TEST" customerSequenceName="DEFAULT" defaultOfferName="TEST0005" defaultUseName="B" defaultTermName="NET_15"
+                defaultCustomerCreditStatusChoice="WAITING_APPROVAL" defaultHoldUntilComplete="false" defaultAllowBackorders="true" defaultAllowSubstitutions="true"
+                defaultAllowCombiningShipments="true" defaultRequireReference="false" defaultAllowReferenceDuplicates="false" defaultTaxable="true" isDefault="false"
+                sortOrder="1">
+            <customerTypeDescription languageIsoName="en" description="Test Customer" />
+            <customerTypePaymentMethod paymentMethodName="PURCHASE_ORDER" defaultSelectionPriority="1" isDefault="true" sortOrder="1" />
+            <customerTypeShippingMethod shippingMethodName="TEST_SHIPPING_METHOD_1" defaultSelectionPriority="1" isDefault="false" sortOrder="1" />
+            <customerTypeShippingMethod shippingMethodName="TEST_SHIPPING_METHOD_2" defaultSelectionPriority="1" isDefault="false" sortOrder="1" />
+            <customerTypeCreditLimit currencyIsoName="USD" creditLimit="500.00" potentialCreditLimit="5000.00" />
+            <offerCustomerType offerName="TEST0005" isDefault="false" sortOrder="1" />
+        </customerType>
+    </customerTypes>
+    <partyTypes>
+        <partyType partyTypeName="CUSTOMER" commandAction="none">
+            <partyTypePasswordStringPolicy forceChangeAfterCreate="false" forceChangeAfterReset="true" allowChange="true" minimumLength="6" />
+            <partyTypeLockoutPolicy lockoutFailureCount="3" manualLockoutReset="true" />
+            <partyTypeAuditPolicy auditCommands="false" />
+            <partyTypeContactListGroup contactListGroupName="TEST_CONTACT_LIST_GROUP" addWhenCreated="true" />
+            <partyTypeContactList contactListName="TEST_CONTACT_LIST" addWhenCreated="true" />
+            <partyAliasType partyAliasTypeName="TEST" isDefault="true" sortOrder="1">
+                <partyAliasTypeDescription languageIsoName="en" description="Test" />
+            </partyAliasType>
+        </partyType>
+    </partyTypes>
+    <customers>
+        <customerWithLogin firstName="Test" middleName="A" lastName="Customer" emailAddress="TestC@echothree.com"
+                allowSolicitation="true" username="TestC@echothree.com" password1="password" password2="password"
+                recoveryQuestionName="FAVORITE_COLOR" answer="Chrome">
+            <partyAlias partyAliasTypeName="TEST" alias="TEST_CUSTOMER_ALIAS" />
+            <partyCreditLimit currencyIsoName="USD" creditLimit="100.00" potentialCreditLimit="1000.00" />
+            <subscription subscriptionKindName="CLUB" subscriptionTypeName="SAMPLE" unitOfMeasureTypeName="WEEK" subscriptionTime="1" />
+            <wishlists>
+                <wishlist>
+                    <wishlistLine itemName="MINIMAL" />
+                    <wishlistLine itemName="CLUB_INITIAL" />
+                </wishlist>
+            </wishlists>
+            <contactMechanisms>
+                <contactEmailAddress emailAddress="TestCAlternate@echothree.com" allowSolicitation="false">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="OTHER_EMAIL" />
+                </contactEmailAddress>
+                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Customer" address1="Address 1"
+                        city="Des Moines" state="IA" postalCode="50310" countryName="UNITED_STATES" isCommercial="false"
+                        allowSolicitation="true">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_BILLING" />
+                    <partyContactMechanismPurpose contactMechanismPurposeName="PHYSICAL_DELIVERY" />
+                    <contactMechanismAlias contactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE"
+                            alias="TEST_CONTACT_MECHANISM_ALIAS" />
+                    <partyContactMechanismAlias contactMechanismAliasTypeName="TEST_PARTY_CONTACT_MECHANISM_ALIAS_TYPE"
+                            alias="TEST_PARTY_CONTACT_MECHANISM_ALIAS" />
+                    <partyPaymentMethods>
+                        <partyPaymentMethod description="Test Card" paymentMethodName="VISA" deleteWhenUnused="false"
+                                isDefault="true" sortOrder="1" number="4000300020001000" securityCode="123" expirationMonth="12"
+                                expirationYear="2008" personalTitle="Mr." firstName="Test" lastName="Customer" />
+                    </partyPaymentMethods>
+                </contactPostalAddress>
+                <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Canadian" address1="Address 1"
+                        city="Ottawa" state="ON" postalCode="K1V 1J8" countryName="CANADA" isCommercial="false"
+                        allowSolicitation="true">
+                    <partyPaymentMethods>
+                        <partyPaymentMethod description="Test Canadian Card" paymentMethodName="VISA" deleteWhenUnused="false"
+                                isDefault="true" sortOrder="1" number="4444333322221111" securityCode="123" expirationMonth="12"
+                                expirationYear="2008" personalTitle="Mr." firstName="Test" lastName="Canadian" />
+                    </partyPaymentMethods>
+                </contactPostalAddress>
+                <contactTelephone countryName="UNITED_STATES" areaCode="515" telephoneNumber="555-1212" allowSolicitation="true">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="PHONE_HOME" />
+                </contactTelephone>
+                <contactTelephone countryName="UNITED_STATES" areaCode="515" telephoneNumber="555-1212" allowSolicitation="true">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="PHONE_WORK" />
+                </contactTelephone>
+                <contactWebAddress url="http://www.echothree.com/">
+                    <partyContactMechanismPurpose contactMechanismPurposeName="WEB_SITE" />
+                    <contactMechanismAlias contactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE"
+                            alias="TEST_WEB_ADDRESS_ALIAS" />
+                </contactWebAddress>
+            </contactMechanisms>
+            <profile nickname="Test Customer" birthday="8/3/1971" birthdayFormatName="MONTH_DAY" />
+            <comments>
+                <comment commentTypeName="CUSTOMER_CUSTOMER_SERVICE" mimeTypeName="text/html">
+                    <![CDATA[
+                        <p>This is an example customer service comment.</p>
+                    ]]>
+                    <commentUsage commentUsageTypeName="COMMENT_USAGE_1" />
+                </comment>
+                <comment commentTypeName="CUSTOMER_ORDER_ENTRY" mimeTypeName="text/html">
+                    <![CDATA[
+                        <p>This is an example order entry comment.</p>
+                    ]]>
+                    <commentUsage commentUsageTypeName="COMMENT_USAGE_1" />
+                </comment>
+            </comments>
+            <entityTags>
+                <entityTag tagScopeName="EMPLOYEE_CUSTOMER" tagName="test customer" />
+            </entityTags>
+            <associate associateProgramName="DEFAULT" associateName="TEST_ASSOCIATE" description="Test Associate"
+                    summaryMimeTypeName="text/plain" summary="Test Associate Summary Text">
+                <associatePartyContactMechanism associatePartyContactMechanismName="TEST_ASSOCIATE_PARTY_CONTACT_MECHANISM"
+                        contactMechanismAliasTypeName="TEST_CONTACT_MECHANISM_ALIAS_TYPE" alias="TEST_WEB_ADDRESS_ALIAS"
+                        isDefault="true" sortOrder="1" />
+            </associate>
+        </customerWithLogin>
+    </customers>
+</initialData>

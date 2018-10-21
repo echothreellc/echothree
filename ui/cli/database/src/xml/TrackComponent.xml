@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Track">
+            <tables>
+                <table namePlural="Tracks" nameSingular="Track" columnPrefix="trk">
+                    <columns>
+                        <column name="TrackId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrackDetails" destinationColumn="TrackDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrackDetails" destinationColumn="TrackDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrackId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrackDetails" nameSingular="TrackDetail" columnPrefix="trkdt">
+                    <columns>
+                        <column name="TrackDetailId" type="EID" nullAllowed="false" />
+                        <column name="TrackId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Tracks" destinationColumn="TrackId" />
+                        <column name="TrackName" type="Name" nullAllowed="false" />
+                        <column name="ValueSha1Hash" type="Sha1Hash" nullAllowed="false" />
+                        <column name="Value" type="CLOB" nullAllowed="false" />                        
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrackDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrackId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TrackName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ValueSha1Hash" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrackDescriptions" nameSingular="TrackDescription" columnPrefix="trkd">
+                    <columns>
+                        <column name="TrackDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TrackId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Tracks" destinationColumn="TrackId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrackDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrackId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TrackId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UserVisitTracks" nameSingular="UserVisitTrack" columnPrefix="uvistrk">
+                    <columns>
+                        <column name="UserVisitTrackId" type="EID" nullAllowed="false" />
+                        <column name="UserVisitId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UserVisits" destinationColumn="UserVisitId" />
+                        <column name="UserVisitTrackSequence" type="Integer" nullAllowed="false" />
+                        <column name="Time" type="Time" nullAllowed="false" />
+                        <column name="TrackId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Tracks" destinationColumn="TrackId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UserVisitTrackId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UserVisitId" />
+                            <indexColumn name="UserVisitTrackSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TrackId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <offerNameElements>
+        <offerNameElement offerNameElementName="TEST" offset="0" length="8" validationPattern="^[A-Z0-9]$">
+            <offerNameElementDescription languageIsoName="en" description="Test Offer Name Element" />
+        </offerNameElement>
+    </offerNameElements>
+    <useNameElements>
+        <useNameElement useNameElementName="TEST" offset="0" length="1" validationPattern="^[A-Z]$">
+            <useNameElementDescription languageIsoName="en" description="Test Use Name Element" />
+        </useNameElement>
+    </useNameElements>
+    <useTypes>
+        <useType useTypeName="TEST" isDefault="true" sortOrder="1">
+            <useTypeDescription languageIsoName="en" description="Test Use Type" />
+        </useType>
+    </useTypes>
+    <uses>
+        <use useName="A" useTypeName="TEST" isDefault="true" sortOrder="1">
+            <useDescription languageIsoName="en" description="Test Use A" />
+        </use>
+        <use useName="B" useTypeName="TEST" isDefault="false" sortOrder="1">
+            <useDescription languageIsoName="en" description="Test Use B" />
+        </use>
+    </uses>
+    <offers>
+        <offer offerName="TEST0004" companyName="TEST_COMPANY" divisionName="TEST_DIVISION_2" departmentName="TEST_DEPARTMENT_2_A"
+               isDefault="true" sortOrder="1">
+            <offerDescription languageIsoName="en" description="Test 0004" />
+            <offerChainType chainKindName="CUSTOMER" chainTypeName="WELCOME" chainName="TEST_CUSTOMER_WELCOME_1" />
+            <offerUse useName="A">
+                <source sourceName="T4A" isDefault="true" sortOrder="1" />
+            </offerUse>
+            <offerItem itemName="MINIMAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="9.95" />
+            </offerItem>
+            <offerItem itemName="CLUB_INITIAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="8.95" />
+            </offerItem>
+            <offerItem itemName="CLUB_RENEWAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="7.95" />
+            </offerItem>
+        </offer>
+        <offer offerName="TEST0006" salesOrderSequenceName="DEFAULT" offerItemSelectorName="EXAMPLE_OFFER_ITEM_1"
+                offerItemPriceFilterName="EXAMPLE_OFFER_ITEM_PRICE_FILTER" companyName="TEST_COMPANY" divisionName="TEST_DIVISION_1"
+                isDefault="false" sortOrder="1">
+            <offerDescription languageIsoName="en" description="Test 0006" />
+            <offerChainType chainKindName="CUSTOMER" chainTypeName="WELCOME" chainName="TEST_CUSTOMER_WELCOME_2" />
+            <offerUse useName="A">
+                <source sourceName="T6A" isDefault="false" sortOrder="1" />
+            </offerUse>
+        </offer>
+        <offer offerName="TEST0005" salesOrderSequenceName="DEFAULT" offerItemSelectorName="EXAMPLE_OFFER_ITEM_1"
+                offerItemPriceFilterName="EXAMPLE_OFFER_ITEM_PRICE_FILTER" isDefault="false" sortOrder="1">
+            <offerDescription languageIsoName="en" description="Test 0005" />
+            <offerChainType chainKindName="CUSTOMER" chainTypeName="WELCOME" chainName="TEST_CUSTOMER_WELCOME_3" />
+            <offerUse useName="A">
+                <source sourceName="T5A" isDefault="false" sortOrder="1" />
+            </offerUse>
+            <offerUse useName="B">
+                <source sourceName="T5B" isDefault="false" sortOrder="1" />
+            </offerUse>
+        </offer>
+        <offer offerName="TEST0001" companyName="TEST_COMPANY" divisionName="TEST_DIVISION_2" departmentName="TEST_DEPARTMENT_2_A"
+                isDefault="false" sortOrder="1">
+            <offerDescription languageIsoName="en" description="Test 0001" />
+            <offerUse useName="B" />
+            <offerItem itemName="MINIMAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="9.94" />
+            </offerItem>
+            <offerItem itemName="CLUB_INITIAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="8.94" />
+            </offerItem>
+            <offerItem itemName="CLUB_RENEWAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="7.94" />
+            </offerItem>
+        </offer>
+        <offer offerName="TEST0002" companyName="TEST_COMPANY" divisionName="TEST_DIVISION_2" departmentName="TEST_DEPARTMENT_2_A"
+                isDefault="false" sortOrder="1">
+            <offerDescription languageIsoName="en" description="Test 0002" />
+            <offerUse useName="B" />
+            <offerItem itemName="MINIMAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="9.93" />
+            </offerItem>
+            <offerItem itemName="CLUB_INITIAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="8.93" />
+            </offerItem>
+            <offerItem itemName="CLUB_RENEWAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="7.93" />
+            </offerItem>
+        </offer>
+        <offer offerName="TEST0003" companyName="TEST_COMPANY" divisionName="TEST_DIVISION_2" departmentName="TEST_DEPARTMENT_2_A"
+                isDefault="false" sortOrder="1">
+            <offerDescription languageIsoName="en" description="Test 0003" />
+            <offerUse useName="B" />
+            <offerItem itemName="MINIMAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="9.92" />
+            </offerItem>
+            <offerItem itemName="CLUB_INITIAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="8.92" />
+            </offerItem>
+            <offerItem itemName="CLUB_RENEWAL">
+                <offerItemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="7.92" />
+            </offerItem>
+        </offer>
+    </offers>
+</initialData>

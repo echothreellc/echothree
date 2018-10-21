@@ -1,0 +1,288 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Sequence">
+            <tables>
+                <table namePlural="SequenceChecksumTypes" nameSingular="SequenceChecksumType" columnPrefix="sqct">
+                    <columns>
+                        <column name="SequenceChecksumTypeId" type="EID" nullAllowed="false" />
+                        <column name="SequenceChecksumTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceChecksumTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="SequenceChecksumTypeName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceChecksumTypeDescriptions" nameSingular="SequenceChecksumTypeDescription" columnPrefix="sqctd">
+                    <columns>
+                        <column name="SequenceChecksumTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="SequenceChecksumTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceChecksumTypes" destinationColumn="SequenceChecksumTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceChecksumTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SequenceChecksumTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceEncoderTypes" nameSingular="SequenceEncoderType" columnPrefix="sqet">
+                    <columns>
+                        <column name="SequenceEncoderTypeId" type="EID" nullAllowed="false" />
+                        <column name="SequenceEncoderTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceEncoderTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="SequenceEncoderTypeName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceEncoderTypeDescriptions" nameSingular="SequenceEncoderTypeDescription" columnPrefix="sqetd">
+                    <columns>
+                        <column name="SequenceEncoderTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="SequenceEncoderTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceEncoderTypes" destinationColumn="SequenceEncoderTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceEncoderTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SequenceEncoderTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceTypes" nameSingular="SequenceType" columnPrefix="sqtyp">
+                    <columns>
+                        <column name="SequenceTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypeDetails" destinationColumn="SequenceTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypeDetails" destinationColumn="SequenceTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceTypeDetails" nameSingular="SequenceTypeDetail" columnPrefix="sqtypdt">
+                    <columns>
+                        <column name="SequenceTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="SequenceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="SequenceTypeName" type="Name" nullAllowed="false" />
+                        <column name="Prefix" type="String" maxLength="10" nullAllowed="true" />
+                        <column name="Suffix" type="String" maxLength="10" nullAllowed="true" />
+                        <column name="SequenceEncoderTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceEncoderTypes" destinationColumn="SequenceEncoderTypeId" />
+                        <column name="SequenceChecksumTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceChecksumTypes" destinationColumn="SequenceChecksumTypeId" />
+                        <column name="ChunkSize" type="Integer" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="SequenceTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="SequenceEncoderTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SequenceChecksumTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index6">
+                            <indexColumn name="Prefix" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index7">
+                            <indexColumn name="Suffix" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceTypeDescriptions" nameSingular="SequenceTypeDescription" columnPrefix="sqtypd">
+                    <columns>
+                        <column name="SequenceTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="SequenceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SequenceTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Sequences" nameSingular="Sequence" columnPrefix="sq">
+                    <columns>
+                        <column name="SequenceId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceDetails" destinationColumn="SequenceDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceDetails" destinationColumn="SequenceDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceDetails" nameSingular="SequenceDetail" columnPrefix="sqdt">
+                    <columns>
+                        <column name="SequenceDetailId" type="EID" nullAllowed="false" />
+                        <column name="SequenceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="SequenceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="SequenceName" type="Name" nullAllowed="false" />
+                        <column name="Mask" type="SequenceMask" nullAllowed="false" />
+                        <column name="ChunkSize" type="Integer" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="SequenceTypeId" />
+                            <indexColumn name="SequenceName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="SequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SequenceTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceDescriptions" nameSingular="SequenceDescription" columnPrefix="sqd">
+                    <columns>
+                        <column name="SequenceDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="SequenceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SequenceId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SequenceValues" nameSingular="SequenceValue" columnPrefix="sqv">
+                    <columns>
+                        <column name="SequenceValueId" type="EID" nullAllowed="false" />
+                        <column name="SequenceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="Value" type="SequenceValue" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SequenceValueId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="SequenceId" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

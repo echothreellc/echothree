@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <communicationSourceTypes>
+        <communicationSourceType communicationSourceTypeName="EMAIL" isDefault="false" sortOrder="1">
+            <communicationSourceTypeDescription languageIsoName="en" description="Email" />
+        </communicationSourceType>
+    </communicationSourceTypes>
+    <communicationEventRoleTypes>
+        <communicationEventRoleType communicationEventRoleTypeName="SENDER" sortOrder="1">
+            <communicationEventRoleTypeDescription languageIsoName="en" description="Sender" />
+        </communicationEventRoleType>
+        <communicationEventRoleType communicationEventRoleTypeName="RECIPIENT" sortOrder="1">
+            <communicationEventRoleTypeDescription languageIsoName="en" description="Recipient" />
+        </communicationEventRoleType>
+    </communicationEventRoleTypes>
+    <communicationEventTypes>
+        <communicationEventType communicationEventTypeName="EMAIL" isDefault="false" sortOrder="1">
+            <communicationEventTypeDescription languageIsoName="en" description="Email" />
+        </communicationEventType>
+        <communicationEventType communicationEventTypeName="FACE_TO_FACE" isDefault="false" sortOrder="1">
+            <communicationEventTypeDescription languageIsoName="en" description="Face-to-Face" />
+        </communicationEventType>
+        <communicationEventType communicationEventTypeName="FAX" isDefault="false" sortOrder="1">
+            <communicationEventTypeDescription languageIsoName="en" description="Fax" />
+        </communicationEventType>
+        <communicationEventType communicationEventTypeName="LETTER" isDefault="false" sortOrder="1">
+            <communicationEventTypeDescription languageIsoName="en" description="Letter" />
+        </communicationEventType>
+        <communicationEventType communicationEventTypeName="PHONE" isDefault="true" sortOrder="1">
+            <communicationEventTypeDescription languageIsoName="en" description="Phone" />
+        </communicationEventType>
+        <communicationEventType communicationEventTypeName="WEB_SITE" isDefault="false" sortOrder="1">
+            <communicationEventTypeDescription languageIsoName="en" description="Web Site" />
+        </communicationEventType>
+        <communicationEventType communicationEventTypeName="COMMENT_NOTE" isDefault="false" sortOrder="1">
+            <communicationEventTypeDescription languageIsoName="en" description="Comment/Note" />
+        </communicationEventType>
+    </communicationEventTypes>
+    <communicationEventPurposes>
+        <communicationEventPurpose communicationEventPurposeName="UNCLASSIFIED" isDefault="true" sortOrder="1">
+            <communicationEventPurposeDescription languageIsoName="en" description="Unclassified" />
+        </communicationEventPurpose>
+        <communicationEventPurpose communicationEventPurposeName="SALES" isDefault="false" sortOrder="2">
+            <communicationEventPurposeDescription languageIsoName="en" description="Sales" />
+        </communicationEventPurpose>
+        <communicationEventPurpose communicationEventPurposeName="SALES_FOLLOW_UP" isDefault="false" sortOrder="2">
+            <communicationEventPurposeDescription languageIsoName="en" description="Sales Follow Up" />
+        </communicationEventPurpose>
+        <communicationEventPurpose communicationEventPurposeName="ORDER_INQUIRY" isDefault="false" sortOrder="3">
+            <communicationEventPurposeDescription languageIsoName="en" description="Order Inquiry" />
+        </communicationEventPurpose>
+        <communicationEventPurpose communicationEventPurposeName="ORDER_MODIFICATION" isDefault="false" sortOrder="3">
+            <communicationEventPurposeDescription languageIsoName="en" description="Order Modification" />
+        </communicationEventPurpose>
+        <communicationEventPurpose communicationEventPurposeName="ORDER_CANCELLATION" isDefault="false" sortOrder="3">
+            <communicationEventPurposeDescription languageIsoName="en" description="Order Cancellation" />
+        </communicationEventPurpose>
+        <communicationEventPurpose communicationEventPurposeName="RETURN" isDefault="false" sortOrder="4">
+            <communicationEventPurposeDescription languageIsoName="en" description="Return" />
+        </communicationEventPurpose>
+        <communicationEventPurpose communicationEventPurposeName="RETURN_FOLLOW_UP" isDefault="false" sortOrder="4">
+            <communicationEventPurposeDescription languageIsoName="en" description="Return Follow Up" />
+        </communicationEventPurpose>
+        <communicationEventPurpose communicationEventPurposeName="SUPPORT_CALL" isDefault="false" sortOrder="5">
+            <communicationEventPurposeDescription languageIsoName="en" description="Support Call" />
+        </communicationEventPurpose>
+    </communicationEventPurposes>
+    <communicationSources>
+        <communicationSource communicationSourceName="SUPPORT" communicationSourceTypeName="EMAIL" sortOrder="1"
+            serverName="dr0.echothree.com" username="support" password="password-here" receiveWorkEffortScopeName="SUPPORT"
+            sendWorkEffortScopeName="SUPPORT">
+            <communicationSourceDescription languageIsoName="en" description="Test Support Email" />
+        </communicationSource>
+    </communicationSources>
+</initialData>

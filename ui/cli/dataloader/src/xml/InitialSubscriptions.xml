@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <subscriptionKinds>
+        <subscriptionKind subscriptionKindName="CLUB" isDefault="true" sortOrder="1">
+            <subscriptionKindDescription languageIsoName="en" description="Club" />
+            <subscriptionType subscriptionTypeName="SAMPLE" isDefault="true" sortOrder="1">
+                <subscriptionTypeDescription languageIsoName="en" description="Sample Club Subscription" />
+                <subscriptionTypeChain chainTypeName="INITIAL" chainName="TEST_SUBSCRIPTION_INITIAL_1" />
+                <subscriptionTypeChain chainTypeName="EXPIRATION_WARNING" chainName="TEST_SUBSCRIPTION_EXPIRATION_WARNING"
+                        unitOfMeasureTypeName="WEEK" remainingTime="4" />
+                <subscriptionTypeChain chainTypeName="RENEWAL" chainName="TEST_SUBSCRIPTION_RENEWAL" />
+                <subscriptionTypeChain chainTypeName="EXPIRATION" chainName="TEST_SUBSCRIPTION_EXPIRATION" />
+            </subscriptionType>
+        </subscriptionKind>
+    </subscriptionKinds>
+    <clubItemTypes>
+        <clubItemType clubItemTypeName="INITIAL" isDefault="true" sortOrder="1">
+            <clubItemTypeDescription languageIsoName="en" description="Initial" />
+        </clubItemType>
+        <clubItemType clubItemTypeName="RENEWAL" isDefault="false" sortOrder="1">
+            <clubItemTypeDescription languageIsoName="en" description="Renewal" />
+        </clubItemType>
+    </clubItemTypes>
+    <clubs>
+        <club clubName="TEST_CLUB" subscriptionTypeName="SAMPLE" clubPriceFilterName="EXAMPLE_CLUB_FILTER" currencyIsoName="X-1"
+                isDefault="true" sortOrder="1">
+            <clubDescription languageIsoName="en" description="Test Club" />
+            <clubItem clubItemTypeName="INITIAL" itemName="CLUB_INITIAL" unitOfMeasureTypeName="YEAR" subscriptionTime="1" />
+            <clubItem clubItemTypeName="RENEWAL" itemName="CLUB_RENEWAL" unitOfMeasureTypeName="YEAR" subscriptionTime="1" />
+        </club>
+    </clubs>
+</initialData>

@@ -1,0 +1,167 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.offer.server.command;
+
+import com.echothree.control.user.offer.remote.edit.OfferEditFactory;
+import com.echothree.control.user.offer.remote.edit.UseNameElementEdit;
+import com.echothree.control.user.offer.remote.form.EditUseNameElementForm;
+import com.echothree.control.user.offer.remote.result.EditUseNameElementResult;
+import com.echothree.control.user.offer.remote.result.OfferResultFactory;
+import com.echothree.control.user.offer.remote.spec.UseNameElementSpec;
+import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.offer.server.entity.UseNameElement;
+import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
+import com.echothree.model.data.offer.server.entity.UseNameElementDetail;
+import com.echothree.model.data.offer.server.value.UseNameElementDescriptionValue;
+import com.echothree.model.data.offer.server.value.UseNameElementDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditUseNameElementCommand
+        extends BaseEditCommand<UseNameElementSpec, UseNameElementEdit> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.UseNameElement.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+        
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("UseNameElementName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+        
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("UseNameElementName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Offset", FieldType.UNSIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Length", FieldType.UNSIGNED_INTEGER, true, null, null),
+                new FieldDefinition("ValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of EditUseNameElementCommand */
+    public EditUseNameElementCommand(UserVisitPK userVisitPK, EditUseNameElementForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        EditUseNameElementResult result = OfferResultFactory.getEditUseNameElementResult();
+        
+        if(editMode.equals(EditMode.LOCK)) {
+            String useNameElementName = spec.getUseNameElementName();
+            UseNameElement useNameElement = offerControl.getUseNameElementByName(useNameElementName);
+            
+            if(useNameElement != null) {
+                result.setUseNameElement(offerControl.getUseNameElementTransfer(getUserVisit(), useNameElement));
+                
+                if(lockEntity(useNameElement)) {
+                    UseNameElementDescription useNameElementDescription = offerControl.getUseNameElementDescription(useNameElement, getPreferredLanguage());
+                    UseNameElementEdit edit = OfferEditFactory.getUseNameElementEdit();
+                    UseNameElementDetail useNameElementDetail = useNameElement.getLastDetail();
+                    
+                    result.setEdit(edit);
+                    edit.setUseNameElementName(useNameElementDetail.getUseNameElementName());
+                    edit.setOffset(useNameElementDetail.getOffset().toString());
+                    edit.setLength(useNameElementDetail.getLength().toString());
+                    edit.setValidationPattern(useNameElementDetail.getValidationPattern());
+                    
+                    if(useNameElementDescription != null) {
+                        edit.setDescription(useNameElementDescription.getDescription());
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                }
+                
+                result.setEntityLock(getEntityLockTransfer(useNameElement));
+            } else {
+                addExecutionError(ExecutionErrors.UnknownUseNameElementName.name(), useNameElementName);
+            }
+        } else if(editMode.equals(EditMode.UPDATE)) {
+            String useNameElementName = spec.getUseNameElementName();
+            UseNameElement useNameElement = offerControl.getUseNameElementByNameForUpdate(useNameElementName);
+            
+            if(useNameElement != null) {
+                useNameElementName = edit.getUseNameElementName();
+                UseNameElement duplicateUseNameElement = offerControl.getUseNameElementByName(useNameElementName);
+                
+                if(duplicateUseNameElement == null || useNameElement.equals(duplicateUseNameElement)) {
+                    if(lockEntityForUpdate(useNameElement)) {
+                        try {
+                            PartyPK partyPK = getPartyPK();
+                            UseNameElementDetailValue useNameElementDetailValue = offerControl.getUseNameElementDetailValueForUpdate(useNameElement);
+                            UseNameElementDescription useNameElementDescription = offerControl.getUseNameElementDescriptionForUpdate(useNameElement, getPreferredLanguage());
+                            String description = edit.getDescription();
+                            
+                            useNameElementDetailValue.setUseNameElementName(edit.getUseNameElementName());
+                            useNameElementDetailValue.setOffset(Integer.valueOf(edit.getOffset()));
+                            useNameElementDetailValue.setLength(Integer.valueOf(edit.getLength()));
+                            useNameElementDetailValue.setValidationPattern(edit.getValidationPattern());
+                            
+                            offerControl.updateUseNameElementFromValue(useNameElementDetailValue, partyPK);
+                            
+                            if(useNameElementDescription == null && description != null) {
+                                offerControl.createUseNameElementDescription(useNameElement, getPreferredLanguage(), description, partyPK);
+                            } else if(useNameElementDescription != null && description == null) {
+                                offerControl.deleteUseNameElementDescription(useNameElementDescription, partyPK);
+                            } else if(useNameElementDescription != null && description != null) {
+                                UseNameElementDescriptionValue useNameElementDescriptionValue = offerControl.getUseNameElementDescriptionValue(useNameElementDescription);
+                                
+                                useNameElementDescriptionValue.setDescription(description);
+                                offerControl.updateUseNameElementDescriptionFromValue(useNameElementDescriptionValue, partyPK);
+                            }
+                        } finally {
+                            unlockEntity(useNameElement);
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.EntityLockStale.name());
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.DuplicateUseNameElementName.name(), useNameElementName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownUseNameElementName.name(), useNameElementName);
+            }
+        }
+        
+        return result;
+    }
+    
+}

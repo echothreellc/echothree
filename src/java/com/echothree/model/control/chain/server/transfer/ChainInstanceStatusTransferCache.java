@@ -1,0 +1,56 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.chain.server.transfer;
+
+import com.echothree.model.control.chain.remote.transfer.ChainActionSetTransfer;
+import com.echothree.model.control.chain.remote.transfer.ChainInstanceStatusTransfer;
+import com.echothree.model.control.chain.remote.transfer.ChainInstanceTransfer;
+import com.echothree.model.control.chain.server.ChainControl;
+import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.data.chain.server.entity.ChainInstanceStatus;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+
+public class ChainInstanceStatusTransferCache
+        extends BaseChainTransferCache<ChainInstanceStatus, ChainInstanceStatusTransfer> {
+    
+    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    
+    /** Creates a new instance of ChainInstanceStatusTransferCache */
+    public ChainInstanceStatusTransferCache(UserVisit userVisit, ChainControl chainControl) {
+        super(userVisit, chainControl);
+    }
+    
+    public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(ChainInstanceStatus chainInstanceStatus) {
+        ChainInstanceStatusTransfer chainInstanceStatusTransfer = get(chainInstanceStatus);
+        
+        if(chainInstanceStatusTransfer == null) {
+            ChainInstanceTransfer chainInstance = chainControl.getChainInstanceTransfer(userVisit, chainInstanceStatus.getChainInstance());
+            ChainActionSetTransfer nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainInstanceStatus.getNextChainActionSet());
+            Long unformattedNextChainActionSetTime = chainInstanceStatus.getNextChainActionSetTime();
+            String nextChainActionSetTime = formatTypicalDateTime(unformattedNextChainActionSetTime);
+            Integer queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence();
+            
+            chainInstanceStatusTransfer = new ChainInstanceStatusTransfer(chainInstance, nextChainActionSet, unformattedNextChainActionSetTime,
+                    nextChainActionSetTime, queuedLetterSequence);
+            put(chainInstanceStatus, chainInstanceStatusTransfer);
+        }
+        
+        return chainInstanceStatusTransfer;
+    }
+    
+}

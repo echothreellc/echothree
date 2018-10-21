@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <includes>
+        <file name="src/xml/InitialLanguages.xml" />
+    </includes>
+    <partyTypes>
+        <partyType partyTypeName="UTILITY" allowUserLogins="false" allowPartyAliases="false" isDefault="false" sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Utility" />
+        </partyType>
+    </partyTypes>
+    <includes>
+        <file name="src/xml/InitialEventTypes.xml" />
+        <file name="src/xml/InitialComponentVendors.xml" />
+        <file name="src/xml/InitialMimeTypes.xml" />
+        <file name="src/xml/InitialComplexEntityTypes.xml" />
+        <file name="src/xml/InitialCommandMessageTypes.xml" />
+        <file name="src/xml/InitialPersonalTitles.xml" />
+        <file name="src/xml/InitialNameSuffixes.xml" />
+        <file name="src/xml/InitialGenders.xml" />
+        <file name="src/xml/InitialBirthdayFormats.xml" />
+        <file name="src/xml/InitialMoods.xml" />
+        <file name="src/xml/InitialUserLogins.xml" />
+        <file name="src/xml/InitialRecoveryQuestions.xml" />
+        <file name="src/xml/InitialTimeZones.xml" />
+        <file name="src/xml/InitialDateFormats.xml" />
+        <file name="src/xml/InitialSequences.xml" />
+        <file name="src/xml/InitialPartyTypes.xml" />
+        <file name="src/xml/InitialDocuments.xml" />
+        <file name="src/xml/InitialContactMechanisms.xml" />
+        <file name="src/xml/InitialCurrencies.xml" />
+        <file name="src/xml/InitialGlAccounts.xml" />
+        <file name="src/xml/InitialTransactionTypes.xml" />
+        <file name="src/xml/InitialTaxes.xml" />
+        <file name="src/xml/InitialGeoCodeTypes.xml" />
+        <file name="src/xml/InitialGeoCodeScopes.xml" />
+        <file name="src/xml/InitialPostalAddressFormats.xml" />
+        <file name="src/xml/InitialCountries.xml" />
+        <file name="src/xml/InitialRoleTypes.xml" />
+        <file name="src/xml/InitialPartyRelationshipTypes.xml" />
+        <file name="src/xml/InitialTrainingClasses.xml" />
+        <file name="src/xml/InitialSecurity.xml" />
+        <file name="src/xml/InitialServers.xml" />
+        <file name="src/xml/InitialUnitOfMeasure.xml" />
+        <file name="src/xml/InitialWorkflows.xml" />
+        <file name="src/xml/InitialWorkEfforts.xml" />
+    </includes>
+    <generateBaseKeys />
+    <includes>
+        <file name="src/xml/InitialBatchTypes.xml" />
+        <file name="src/xml/InitialCommunications.xml" />
+        <file name="src/xml/InitialPrinters.xml" />
+        <file name="src/xml/InitialScales.xml" />
+        <file name="src/xml/InitialCompanies.xml" />
+        <file name="src/xml/InitialPeriods.xml" />
+        <file name="src/xml/InitialIcons.xml" />
+        <file name="src/xml/InitialEmployees.xml" />
+        <file name="src/xml/InitialEntityAttributes.xml" />
+        <file name="src/xml/InitialTags.xml" />
+        <file name="src/xml/InitialSelectors.xml" />
+        <file name="src/xml/InitialFilters.xml" />
+        <file name="src/xml/InitialTerms.xml" />
+        <file name="src/xml/InitialPaymentMethods.xml" />
+        <file name="src/xml/InitialOrders.xml" />
+        <file name="src/xml/InitialCarriers.xml" />
+        <file name="src/xml/InitialShipments.xml" />
+        <file name="src/xml/InitialReturnPolicy.xml" />
+        <file name="src/xml/InitialCancellationPolicy.xml" />
+        <file name="src/xml/InitialInvoices.xml" />
+        <file name="src/xml/InitialPicklists.xml" />
+        <file name="src/xml/InitialInventory.xml" />
+        <file name="src/xml/InitialWarehouses.xml" />
+        <file name="src/xml/InitialItems.xml" />
+        <file name="src/xml/InitialChainActionTypes.xml" />
+        <file name="src/xml/InitialContactLists.xml" />
+        <file name="src/xml/InitialChainKinds.xml" />
+        <file name="src/xml/InitialSubscriptions.xml" />
+        <file name="src/xml/InitialOffers.xml" />
+        <file name="src/xml/InitialWishlists.xml" />
+        <file name="src/xml/InitialAssociates.xml" />
+        <file name="src/xml/InitialCustomers.xml" />
+        <file name="src/xml/InitialVendors.xml" />
+        <file name="src/xml/InitialForums.xml" />
+        <file name="src/xml/InitialContent.xml" />
+        <file name="src/xml/InitialApplications.xml" />
+        <file name="src/xml/InitialAppearances.xml" />
+        <file name="src/xml/InitialLicenses.xml" />
+        <file name="src/xml/InitialQueues.xml" />
+        <file name="src/xml/InitialIndexes.xml" />
+        <file name="src/xml/InitialSearch.xml" />
+        <file name="src/xml/InitialJobs.xml" />
+    </includes>
+</initialData>

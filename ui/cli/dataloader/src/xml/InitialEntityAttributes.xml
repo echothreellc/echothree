@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <entityAttributeGroups>
+        <entityAttributeGroup entityAttributeGroupName="DEFAULT" isDefault="true" sortOrder="1">
+            <entityAttributeGroupDescription languageIsoName="en" description="Default Entity Attribute Group" />
+        </entityAttributeGroup>
+    </entityAttributeGroups>
+    <componentVendors>
+        <componentVendor componentVendorName="ECHOTHREE" commandAction="none">
+            <entityType entityTypeName="Item" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item" />
+                <!--
+                <entityAttribute entityAttributeName="EXAMPLE_NAME" entityAttributeTypeName="NAME" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Name" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_INTEGER" entityAttributeTypeName="INTEGER" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Integer" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_LONG" entityAttributeTypeName="LONG" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Long" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_BOOLEAN" entityAttributeTypeName="BOOLEAN" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Boolean" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_STRING" entityAttributeTypeName="STRING" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example String" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_BLOB" entityAttributeTypeName="BLOB" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example BLOB" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_CLOB" entityAttributeTypeName="CLOB" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example CLOB" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_ENTITY" entityAttributeTypeName="ENTITY" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Entity" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                    <entityAttributeEntityType allowedComponentVendorName="ECHOTHREE" allowedEntityTypeName="Forum" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_COLLECTION" entityAttributeTypeName="COLLECTION" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Collection" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                    <entityAttributeEntityType allowedComponentVendorName="ECHOTHREE" allowedEntityTypeName="Forum" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_DATE" entityAttributeTypeName="DATE" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Date" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_TIME" entityAttributeTypeName="TIME" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Time" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_LISTITEM" entityAttributeTypeName="LISTITEM" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example List Item" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                    <entityListItem entityListItemName="CHOICE_1" isDefault="true" sortOrder="1">
+                        <entityListItemDescription languageIsoName="en" description="Choice 1" />
+                    </entityListItem>
+                    <entityListItem entityListItemName="CHOICE_2" isDefault="false" sortOrder="1">
+                        <entityListItemDescription languageIsoName="en" description="Choice 2" />
+                    </entityListItem>
+                    <entityListItem entityListItemName="CHOICE_3" isDefault="false" sortOrder="1">
+                        <entityListItemDescription languageIsoName="en" description="Choice 3" />
+                    </entityListItem>
+                    <entityListItem entityListItemName="CHOICE_4" isDefault="false" sortOrder="1">
+                        <entityListItemDescription languageIsoName="en" description="Choice 4" />
+                    </entityListItem>
+                </entityAttribute>
+                <entityAttribute entityAttributeName="EXAMPLE_MULTIPLELISTITEM" entityAttributeTypeName="MULTIPLELISTITEM" trackRevisions="true"
+                                 checkContentWebAddress="false" sortOrder="1">
+                    <entityAttributeDescription languageIsoName="en" description="Example Multiple List Item" />
+                    <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
+                    <entityListItem entityListItemName="CHOICE_1" isDefault="true" sortOrder="1">
+                        <entityListItemDescription languageIsoName="en" description="Choice 1" />
+                    </entityListItem>
+                    <entityListItem entityListItemName="CHOICE_2" isDefault="false" sortOrder="1">
+                        <entityListItemDescription languageIsoName="en" description="Choice 2" />
+                    </entityListItem>
+                    <entityListItem entityListItemName="CHOICE_3" isDefault="false" sortOrder="1">
+                        <entityListItemDescription languageIsoName="en" description="Choice 3" />
+                    </entityListItem>
+                    <entityListItem entityListItemName="CHOICE_4" isDefault="false" sortOrder="1">
+                        <entityListItemDescription languageIsoName="en" description="Choice 4" />
+                    </entityListItem>
+                </entityAttribute>
+                -->
+                <commentType commentTypeName="ITEM_CUSTOMER" workflowName="ITEM_CUSTOMER_COMMENT_STATUS" workflowEntranceName="NEW_REVIEW"
+                        mimeTypeUsageTypeName="TEXT" sortOrder="0">
+                    <commentTypeDescription languageIsoName="en" description="Customer" />
+                </commentType>
+                <commentType commentTypeName="ITEM_CUSTOMER_SERVICE" mimeTypeUsageTypeName="TEXT" sortOrder="0">
+                    <commentTypeDescription languageIsoName="en" description="Customer Service" />
+                </commentType>
+                <commentType commentTypeName="ITEM_PURCHASING" mimeTypeUsageTypeName="TEXT" sortOrder="0">
+                    <commentTypeDescription languageIsoName="en" description="Purchasing" />
+                </commentType>
+                <ratingType ratingTypeName="ITEM_CUSTOMER" sortOrder="0">
+                    <ratingTypeDescription languageIsoName="en" description="Customer" />
+                    <ratingTypeListItem ratingTypeListItemName="1" isDefault="false" sortOrder="0">
+                        <ratingTypeListItemDescription languageIsoName="en" description="Wonderful!" />
+                    </ratingTypeListItem>
+                    <ratingTypeListItem ratingTypeListItemName="2" isDefault="false" sortOrder="1">
+                        <ratingTypeListItemDescription languageIsoName="en" description="Pretty good!" />
+                    </ratingTypeListItem>
+                    <ratingTypeListItem ratingTypeListItemName="3" isDefault="true" sortOrder="2">
+                        <ratingTypeListItemDescription languageIsoName="en" description="Okay." />
+                    </ratingTypeListItem>
+                    <ratingTypeListItem ratingTypeListItemName="4" isDefault="false" sortOrder="3">
+                        <ratingTypeListItemDescription languageIsoName="en" description="Not all that good." />
+                    </ratingTypeListItem>
+                    <ratingTypeListItem ratingTypeListItemName="5" isDefault="false" sortOrder="4">
+                        <ratingTypeListItemDescription languageIsoName="en" description="This sucked!" />
+                    </ratingTypeListItem>
+                </ratingType>
+            </entityType>
+        </componentVendor>
+    </componentVendors>
+</initialData>

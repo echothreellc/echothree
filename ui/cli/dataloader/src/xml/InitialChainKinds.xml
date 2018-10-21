@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <chainKinds>
+        <chainKind chainKindName="SUBSCRIPTION" isDefault="true" sortOrder="1">
+            <chainKindDescription languageIsoName="en" description="Club" />
+            <chainType chainTypeName="INITIAL" isDefault="true" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Initial" />
+                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="EchoThree" entityTypeName="Subscription" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Subscription" />
+                </chainEntityRoleType>
+                <chain chainName="TEST_SUBSCRIPTION_INITIAL_1" isDefault="true" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Subscription Initial 1" />
+                </chain>
+                <chain chainName="TEST_SUBSCRIPTION_INITIAL_2" isDefault="false" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Subscription Initial 2" />
+                </chain>
+                <chain chainName="TEST_SUBSCRIPTION_INITIAL_3" isDefault="false" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Subscription Initial 3" />
+                </chain>
+            </chainType>
+            <chainType chainTypeName="EXPIRATION_WARNING" isDefault="false" sortOrder="2">
+                <chainTypeDescription languageIsoName="en" description="Expiration Warning" />
+                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="EchoThree" entityTypeName="Subscription" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Subscription" />
+                </chainEntityRoleType>
+                <chain chainName="TEST_SUBSCRIPTION_EXPIRATION_WARNING" isDefault="true" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Subscription Expiration Warning" />
+                </chain>
+            </chainType>
+            <chainType chainTypeName="RENEWAL" isDefault="false" sortOrder="3">
+                <chainTypeDescription languageIsoName="en" description="Renewal" />
+                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="EchoThree" entityTypeName="Subscription" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Subscription" />
+                </chainEntityRoleType>
+                <chain chainName="TEST_SUBSCRIPTION_RENEWAL" isDefault="true" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Subscription Renewal" />
+                </chain>
+            </chainType>
+            <chainType chainTypeName="EXPIRATION" isDefault="false" sortOrder="4">
+                <chainTypeDescription languageIsoName="en" description="Expiration" />
+                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="EchoThree" entityTypeName="Subscription" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Subscription" />
+                </chainEntityRoleType>
+                <chain chainName="TEST_SUBSCRIPTION_EXPIRATION" isDefault="true" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Subscription Expiration" />
+                </chain>
+            </chainType>
+        </chainKind>
+        <chainKind chainKindName="CUSTOMER" isDefault="false" sortOrder="1">
+            <chainKindDescription languageIsoName="en" description="Customers" />
+            <chainActionTypeUse chainActionTypeName="LETTER" isDefault="true" />
+            <chainActionTypeUse chainActionTypeName="SURVEY" isDefault="false" />
+            <chainActionTypeUse chainActionTypeName="CHAIN_ACTION_SET" isDefault="false" />
+            <chainType chainTypeName="WELCOME" isDefault="true" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Welcome" />
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
+                </chainEntityRoleType>
+                <letter letterName="TEST_CUSTOMER_WELCOME_LETTER_1" letterSourceName="TEST_LETTER_SOURCE" contactListName="TEST_CONTACT_LIST" isDefault="true" sortOrder="1">
+                    <letterDescription languageIsoName="en" description="Test Customer Welcome Letter 1" />
+                    <letterContactMechanismPurpose priority="1" contactMechanismPurposeName="PRIMARY_EMAIL" />
+                    <letterContactMechanismPurpose priority="2" contactMechanismPurposeName="OTHER_EMAIL" />
+                    <letterContactMechanismPurpose priority="3" contactMechanismPurposeName="PHYSICAL_BILLING" />
+                </letter>
+                <letter letterName="TEST_CUSTOMER_WELCOME_LETTER_2" letterSourceName="TEST_LETTER_SOURCE" contactListName="TEST_CONTACT_LIST" isDefault="false" sortOrder="1">
+                    <letterDescription languageIsoName="en" description="Test Customer Welcome Letter 2" />
+                    <letterContactMechanismPurpose priority="1" contactMechanismPurposeName="PRIMARY_EMAIL" />
+                </letter>
+                <chain chainName="TEST_CUSTOMER_WELCOME_1" isDefault="true" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Customer Welcome 1" />
+                    <chainActionSet chainActionSetName="TEST_CUSTOMER_WELCOME_1_B" isDefault="false" sortOrder="1">
+                        <chainActionSetDescription languageIsoName="en" description="Test Customer Welcome 1 B" />
+                    </chainActionSet>
+                    <chainActionSet chainActionSetName="TEST_CUSTOMER_WELCOME_1_A" isDefault="true" sortOrder="1">
+                        <chainActionSetDescription languageIsoName="en" description="Test Customer Welcome 1 A" />
+                        <chainAction chainActionName="TEST_CUSTOMER_WELCOME_1_A_A" chainActionTypeName="LETTER" sortOrder="1" letterName="TEST_CUSTOMER_WELCOME_LETTER_1">
+                            <chainActionDescription languageIsoName="en" description="Test Customer Welcome 1 A A" />
+                        </chainAction>
+                        <chainAction chainActionName="TEST_CUSTOMER_WELCOME_1_A_B" chainActionTypeName="CHAIN_ACTION_SET" sortOrder="1" nextChainActionSetName="TEST_CUSTOMER_WELCOME_1_B" delayTime="5" delayTimeUnitOfMeasureTypeName="MINUTE">
+                            <chainActionDescription languageIsoName="en" description="Test Customer Welcome 1 A B" />
+                        </chainAction>
+                    </chainActionSet>
+                </chain>
+                <chain chainName="TEST_CUSTOMER_WELCOME_2" isDefault="false" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Customer Welcome 2" />
+                </chain>
+                <chain chainName="TEST_CUSTOMER_WELCOME_3" isDefault="false" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Customer Welcome 3" />
+                </chain>
+            </chainType>
+            <chainType chainTypeName="PASSWORD_RECOVERY" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Password Recovery" />
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
+                </chainEntityRoleType>
+                <chain chainName="TEST_CUSTOMER_PASSWORD_RECOVERY_1" isDefault="true" sortOrder="1">
+                    <chainDescription languageIsoName="en" description="Test Customer Password Recovery 1" />
+                </chain>
+            </chainType>
+            <chainType chainTypeName="PARTY_TERM_CHANGED" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Terms Changed" />
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
+                </chainEntityRoleType>
+            </chainType>
+            <chainType chainTypeName="PARTY_CREDIT_LIMIT_CHANGED" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Credit Limit Changed" />
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
+                </chainEntityRoleType>
+            </chainType>
+            <chainType chainTypeName="PARTY_CREDIT_STATUS_CHANGED" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Credit Status Changed" />
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                    <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
+                </chainEntityRoleType>
+            </chainType>
+        </chainKind>
+        <chainKind chainKindName="PAYMENT_METHOD" isDefault="false" sortOrder="1">
+            <chainKindDescription languageIsoName="en" description="Payment Methods" />
+            <chainType chainTypeName="CC_AVS_FAILURE" isDefault="true" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="CC Address Not Valid" />
+            </chainType>
+            <chainType chainTypeName="CC_DECLINE" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="CC Declined" />
+            </chainType>
+        </chainKind>
+        <chainKind chainKindName="SALES_ORDER" isDefault="false" sortOrder="1">
+            <chainKindDescription languageIsoName="en" description="Sales Orders" />
+            <chainType chainTypeName="ORDER_CONFIRMATION" isDefault="true" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Order Confirmation" />
+            </chainType>
+            <chainType chainTypeName="BACKORDER_NOTIFICATION" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Backorder Notification" />
+            </chainType>
+            <chainType chainTypeName="ORDER_CANCELLATION" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Order Cancellation" />
+            </chainType>
+            <chainType chainTypeName="ITEM_CANCELLATION" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Item Cancellation" />
+            </chainType>
+        </chainKind>
+        <chainKind chainKindName="PURCHASE_ORDER" isDefault="false" sortOrder="1">
+            <chainKindDescription languageIsoName="en" description="Purchase Orders" />
+        </chainKind>
+        <chainKind chainKindName="CUSTOMER_SHIPMENT" isDefault="false" sortOrder="1">
+            <chainKindDescription languageIsoName="en" description="Customer Shipments" />
+            <chainType chainTypeName="SHIPPING_NOTIFICATION" isDefault="true" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Shipping Notification" />
+            </chainType>
+        </chainKind>
+        <chainKind chainKindName="CUSTOMER_RETURN" isDefault="false" sortOrder="1">
+            <chainKindDescription languageIsoName="en" description="Customer Returns" />
+            <chainType chainTypeName="RETURN_AUTHORIZATION" isDefault="true" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Return Authorization" />
+            </chainType>
+            <chainType chainTypeName="RETURN_RECEIVED" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Return Received" />
+            </chainType>
+            <chainType chainTypeName="RETURN_NOT_RECEIVED" isDefault="false" sortOrder="1">
+                <chainTypeDescription languageIsoName="en" description="Return Not Received" />
+            </chainType>
+        </chainKind>
+    </chainKinds>
+</initialData>

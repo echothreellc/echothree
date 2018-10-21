@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <workEffortTypes>
+        <workEffortType workEffortTypeName="TRAINING" componentVendorName="EchoThree" entityTypeName="PartyTrainingClass" sortOrder="1">
+            <workEffortTypeDescription languageIsoName="en" description="Training" />
+            <workRequirementType workRequirementTypeName="TRAINING" allowReassignment="false" sortOrder="1">
+                <workRequirementTypeDescription languageIsoName="en" description="Training" />
+            </workRequirementType>
+            <workEffortScope workEffortScopeName="PCI_TRAINING" isDefault="true" sortOrder="1">
+                <workEffortScopeDescription languageIsoName="en" description="PCI Training" />
+            </workEffortScope>
+        </workEffortType>
+    </workEffortTypes>
+    <trainingClasses>
+        <trainingClass trainingClassName="TEST_TRAINING_CLASS" alwaysReassignOnExpiration="false" isDefault="true" sortOrder="1">
+            <trainingClassTranslation languageIsoName="en" description="Test Training Class" />
+        </trainingClass>
+        <trainingClass trainingClassName="REQUIRED_TRAINING_CLASS" estimatedReadingTime="15" estimatedReadingTimeUnitOfMeasureTypeName="MINUTE"
+        readingTimeAllowed="30" readingTimeAllowedUnitOfMeasureTypeName="MINUTE" estimatedTestingTime="5" estimatedTestingTimeUnitOfMeasureTypeName="MINUTE"
+        testingTimeAllowed="10" testingTimeAllowedUnitOfMeasureTypeName="MINUTE" requiredCompletionTime="2" requiredCompletionTimeUnitOfMeasureTypeName="WEEK"
+        workEffortScopeName="PCI_TRAINING" defaultPercentageToPass="80" overallQuestionCount="6" testingValidityTime="1"
+        testingValidityTimeUnitOfMeasureTypeName="YEAR" alwaysReassignOnExpiration="false" isDefault="false" sortOrder="1">
+            <trainingClassTranslation languageIsoName="en" description="Required Training Class" overviewMimeTypeName="text/plain"
+            overview="This is an example required training class." introductionMimeTypeName="text/plain" introduction="The introduction to the training class." />
+            <trainingClassSection trainingClassSectionName="SECTION_1" sortOrder="1">
+                <trainingClassSectionTranslation languageIsoName="en" description="Section 1" overviewMimeTypeName="text/plain" overview="Section 1 overview."
+                introductionMimeTypeName="text/plain" introduction="Section 1 introduction." />
+                <trainingClassPage trainingClassPageName="SECTION_1_PAGE_1" sortOrder="1">
+                    <trainingClassPageTranslation languageIsoName="en" description="Section 1, Page 1" pageMimeTypeName="text/plain" page="This is section 1, page 1." />
+                </trainingClassPage>
+                <trainingClassPage trainingClassPageName="SECTION_1_PAGE_2" sortOrder="1">
+                    <trainingClassPageTranslation languageIsoName="en" description="Section 1, Page 2" pageMimeTypeName="text/plain" page="This is section 1, page 2." />
+                </trainingClassPage>
+                <trainingClassPage trainingClassPageName="SECTION_1_PAGE_3" sortOrder="1">
+                    <trainingClassPageTranslation languageIsoName="en" description="Section 1, Page 3" pageMimeTypeName="text/plain" page="This is section 1, page 3." />
+                </trainingClassPage>
+                <trainingClassPage trainingClassPageName="SECTION_1_PAGE_4" sortOrder="1">
+                    <trainingClassPageTranslation languageIsoName="en" description="Section 1, Page 4" pageMimeTypeName="text/plain" page="This is section 1, page 4." />
+                </trainingClassPage>
+                <trainingClassQuestion trainingClassQuestionName="SECTION_1_QUESTION_1" askingRequired="true" passingRequired="true" sortOrder="1">
+                    <trainingClassQuestionTranslation languageIsoName="en" questionMimeTypeName="text/plain" question="This is section 1, question 1." />
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_1_ANSWER_1" isCorrect="true" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 1, answer 1."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 1, answer 1, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_1_ANSWER_2" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 1, answer 2."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 1, answer 2, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_1_ANSWER_3" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 1, answer 3."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 1, answer 3, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_1_ANSWER_4" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 1, answer 4."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 1, answer 4, selected response." />
+                    </trainingClassAnswer>
+                </trainingClassQuestion>
+                <trainingClassQuestion trainingClassQuestionName="SECTION_1_QUESTION_2" askingRequired="false" passingRequired="true" sortOrder="1">
+                    <trainingClassQuestionTranslation languageIsoName="en" questionMimeTypeName="text/plain" question="This is section 1, question 2." />
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_2_ANSWER_1" isCorrect="true" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 2, answer 1."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 2, answer 1, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_2_ANSWER_2" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 2, answer 2."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 2, answer 2, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_2_ANSWER_3" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 2, answer 3."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 2, answer 3, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_2_ANSWER_4" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 2, answer 4."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 2, answer 4, selected response." />
+                    </trainingClassAnswer>
+                </trainingClassQuestion>
+                <trainingClassQuestion trainingClassQuestionName="SECTION_1_QUESTION_3" askingRequired="true" passingRequired="false" sortOrder="1">
+                    <trainingClassQuestionTranslation languageIsoName="en" questionMimeTypeName="text/plain" question="This is section 1, question 3." />
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_3_ANSWER_1" isCorrect="true" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 3, answer 1."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 3, answer 1, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_3_ANSWER_2" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 3, answer 2."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 3, answer 2, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_3_ANSWER_3" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 3, answer 3."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 3, answer 3, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_3_ANSWER_4" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 3, answer 4."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 3, answer 4, selected response." />
+                    </trainingClassAnswer>
+                </trainingClassQuestion>
+                <trainingClassQuestion trainingClassQuestionName="SECTION_1_QUESTION_4" askingRequired="false" passingRequired="false" sortOrder="1">
+                    <trainingClassQuestionTranslation languageIsoName="en" questionMimeTypeName="text/plain" question="This is section 1, question 4." />
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_4_ANSWER_1" isCorrect="true" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 4, answer 1."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 4, answer 1, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_4_ANSWER_2" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 4, answer 2." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_4_ANSWER_3" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 4, answer 3." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_1_QUESTION_4_ANSWER_4" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 1, question 4, answer 4."
+                        selectedMimeTypeName="text/plain" selected="This is section 1, question 4, answer 4, selected response." />
+                    </trainingClassAnswer>
+                </trainingClassQuestion>
+            </trainingClassSection>
+            <trainingClassSection trainingClassSectionName="SECTION_2" percentageToPass="95" questionCount="2" sortOrder="1">
+                <trainingClassSectionTranslation languageIsoName="en" description="Section 2" overviewMimeTypeName="text/plain" overview="Section 2 overview."
+                introductionMimeTypeName="text/plain" introduction="Section 2 introduction." />
+                <trainingClassPage trainingClassPageName="SECTION_2_PAGE_1" sortOrder="1">
+                    <trainingClassPageTranslation languageIsoName="en" description="Section 2, Page 1" pageMimeTypeName="text/plain" page="This is section 2, page 1." />
+                </trainingClassPage>
+                <trainingClassPage trainingClassPageName="SECTION_2_PAGE_2" sortOrder="1">
+                    <trainingClassPageTranslation languageIsoName="en" description="Section 2, Page 2" pageMimeTypeName="text/plain" page="This is section 2, page 2." />
+                </trainingClassPage>
+                <trainingClassPage trainingClassPageName="SECTION_2_PAGE_3" sortOrder="1">
+                    <trainingClassPageTranslation languageIsoName="en" description="Section 2, Page 3" pageMimeTypeName="text/plain" page="This is section 2, page 3." />
+                </trainingClassPage>
+                <trainingClassPage trainingClassPageName="SECTION_2_PAGE_4" sortOrder="1">
+                    <trainingClassPageTranslation languageIsoName="en" description="Section 2, Page 4" pageMimeTypeName="text/plain" page="This is section 2, page 4." />
+                </trainingClassPage>
+                <trainingClassQuestion trainingClassQuestionName="SECTION_2_QUESTION_1" askingRequired="false" passingRequired="true" sortOrder="1">
+                    <trainingClassQuestionTranslation languageIsoName="en" questionMimeTypeName="text/plain" question="This is section 2, question 1." />
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_1_ANSWER_1" isCorrect="true" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 1, answer 1."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 1, answer 1, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_1_ANSWER_2" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 1, answer 2."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 1, answer 2, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_1_ANSWER_3" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 1, answer 3."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 1, answer 3, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_1_ANSWER_4" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 1, answer 4."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 1, answer 4, selected response." />
+                    </trainingClassAnswer>
+                </trainingClassQuestion>
+                <trainingClassQuestion trainingClassQuestionName="SECTION_2_QUESTION_2" askingRequired="false" passingRequired="true" sortOrder="1">
+                    <trainingClassQuestionTranslation languageIsoName="en" questionMimeTypeName="text/plain" question="This is section 2, question 2." />
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_2_ANSWER_1" isCorrect="true" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 2, answer 1."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 2, answer 1, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_2_ANSWER_2" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 2, answer 2."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 2, answer 2, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_2_ANSWER_3" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 2, answer 3."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 2, answer 3, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_2_ANSWER_4" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 2, answer 4."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 2, answer 4, selected response." />
+                    </trainingClassAnswer>
+                </trainingClassQuestion>
+                <trainingClassQuestion trainingClassQuestionName="SECTION_2_QUESTION_3" askingRequired="false" passingRequired="false" sortOrder="1">
+                    <trainingClassQuestionTranslation languageIsoName="en" questionMimeTypeName="text/plain" question="This is section 2, question 3." />
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_3_ANSWER_1" isCorrect="true" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 3, answer 1."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 3, answer 1, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_3_ANSWER_2" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 3, answer 2."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 3, answer 2, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_3_ANSWER_3" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 3, answer 3."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 3, answer 3, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_3_ANSWER_4" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 3, answer 4."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 3, answer 4, selected response." />
+                    </trainingClassAnswer>
+                </trainingClassQuestion>
+                <trainingClassQuestion trainingClassQuestionName="SECTION_2_QUESTION_4" askingRequired="false" passingRequired="false" sortOrder="1">
+                    <trainingClassQuestionTranslation languageIsoName="en" questionMimeTypeName="text/plain" question="This is section 2, question 4." />
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_4_ANSWER_1" isCorrect="true" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 4, answer 1."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 4, answer 1, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_4_ANSWER_2" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 4, answer 2."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 4, answer 2, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_4_ANSWER_3" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 4, answer 3."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 4, answer 3, selected response." />
+                    </trainingClassAnswer>
+                    <trainingClassAnswer trainingClassAnswerName="SECTION_2_QUESTION_4_ANSWER_4" isCorrect="false" sortOrder="1">
+                        <trainingClassAnswerTranslation languageIsoName="en" answerMimeTypeName="text/plain" answer="This is section 2, question 4, answer 4."
+                        selectedMimeTypeName="text/plain" selected="This is section 2, question 4, answer 4, selected response." />
+                    </trainingClassAnswer>
+                </trainingClassQuestion>
+            </trainingClassSection>
+        </trainingClass>
+    </trainingClasses>
+</initialData>

@@ -1,0 +1,319 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.payment.server.command;
+
+import com.echothree.control.user.payment.remote.edit.PaymentEditFactory;
+import com.echothree.control.user.payment.remote.edit.PaymentMethodEdit;
+import com.echothree.control.user.payment.remote.form.EditPaymentMethodForm;
+import com.echothree.control.user.payment.remote.result.EditPaymentMethodResult;
+import com.echothree.control.user.payment.remote.result.PaymentResultFactory;
+import com.echothree.control.user.payment.remote.spec.PaymentMethodSpec;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.payment.server.entity.PaymentMethod;
+import com.echothree.model.data.payment.server.entity.PaymentMethodCheck;
+import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
+import com.echothree.model.data.payment.server.entity.PaymentMethodDescription;
+import com.echothree.model.data.payment.server.entity.PaymentMethodDetail;
+import com.echothree.model.data.payment.server.value.PaymentMethodCheckValue;
+import com.echothree.model.data.payment.server.value.PaymentMethodCreditCardValue;
+import com.echothree.model.data.payment.server.value.PaymentMethodDescriptionValue;
+import com.echothree.model.data.payment.server.value.PaymentMethodDetailValue;
+import com.echothree.model.data.selector.server.entity.Selector;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.remote.form.ValidationResult;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.validation.Validator;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditPaymentMethodCommand
+        extends BaseAbstractEditCommand<PaymentMethodSpec, PaymentMethodEdit, EditPaymentMethodResult, PaymentMethod, PaymentMethod> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> editCheckFieldDefinitions;
+    private final static List<FieldDefinition> editCreditCardFieldDefinitions;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                    new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethod.name(), SecurityRoles.Edit.name())
+                    )))
+                )));
+
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+        
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SalesOrderItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+        
+        editCheckFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("HoldDays", FieldType.UNSIGNED_INTEGER, true, null, null)
+                ));
+        
+        editCreditCardFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("RequestNameOnCard", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequireNameOnCard", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("CheckCardNumber", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequestExpirationDate", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequireExpirationDate", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("CheckExpirationDate", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequestSecurityCode", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequireSecurityCode", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("CardNumberValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
+                new FieldDefinition("SecurityCodeValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
+                new FieldDefinition("RetainCreditCard", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RetainSecurityCode", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequestBilling", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequireBilling", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequestIssuer", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("RequireIssuer", FieldType.BOOLEAN, true, null, null)
+                ));
+    }
+    
+    /** Creates a new instance of EditPaymentMethodCommand */
+    public EditPaymentMethodCommand(UserVisitPK userVisitPK, EditPaymentMethodForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+    
+    @Override
+    protected ValidationResult validateEdit(Validator validator) {
+        ValidationResult validationResult = validator.validate(edit, getEditFieldDefinitions());
+        
+        if(!validationResult.getHasErrors()) {
+            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(spec.getPaymentMethodName());
+            
+            if(paymentMethod != null) {
+                String paymentMethodTypeName = paymentMethod.getLastDetail().getPaymentMethodType().getPaymentMethodTypeName();
+                
+                if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CHECK)) {
+                    validationResult = validator.validate(edit, editCheckFieldDefinitions);
+                } else if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+                    validationResult = validator.validate(edit, editCreditCardFieldDefinitions);
+                }
+            }
+        }
+        
+        return validationResult;
+    }
+    
+    @Override
+    public EditPaymentMethodResult getResult() {
+        return PaymentResultFactory.getEditPaymentMethodResult();
+    }
+
+    @Override
+    public PaymentMethodEdit getEdit() {
+        return PaymentEditFactory.getPaymentMethodEdit();
+    }
+
+    @Override
+    public PaymentMethod getEntity(EditPaymentMethodResult result) {
+        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        PaymentMethod paymentMethod = null;
+        String paymentMethodName = spec.getPaymentMethodName();
+
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+        } else { // EditMode.UPDATE
+            paymentMethod = paymentControl.getPaymentMethodByNameForUpdate(paymentMethodName);
+        }
+
+        if(paymentMethod != null) {
+            result.setPaymentMethod(paymentControl.getPaymentMethodTransfer(getUserVisit(), paymentMethod));
+        } else {
+            addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);
+        }
+
+        return paymentMethod;
+    }
+
+    @Override
+    public PaymentMethod getLockEntity(PaymentMethod paymentMethod) {
+        return paymentMethod;
+    }
+
+    @Override
+    public void fillInResult(EditPaymentMethodResult result, PaymentMethod paymentMethod) {
+        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+
+        result.setPaymentMethod(paymentControl.getPaymentMethodTransfer(getUserVisit(), paymentMethod));
+    }
+
+    Selector itemSelector = null;
+    Selector salesOrderItemSelector = null;
+
+    @Override
+    public void doLock(PaymentMethodEdit edit, PaymentMethod paymentMethod) {
+        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        PaymentMethodDescription paymentMethodDescription = paymentControl.getPaymentMethodDescription(paymentMethod, getPreferredLanguage());
+        PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetail();
+        String paymentMethodTypeName = paymentMethodDetail.getPaymentMethodType().getPaymentMethodTypeName();
+
+        itemSelector = paymentMethodDetail.getItemSelector();
+        salesOrderItemSelector = paymentMethodDetail.getSalesOrderItemSelector();
+
+        edit.setPaymentMethodName(paymentMethodDetail.getPaymentMethodName());
+        edit.setItemSelectorName(itemSelector == null? null: itemSelector.getLastDetail().getSelectorName());
+        edit.setSalesOrderItemSelectorName(salesOrderItemSelector == null? null: salesOrderItemSelector.getLastDetail().getSelectorName());
+        edit.setIsDefault(paymentMethodDetail.getIsDefault().toString());
+        edit.setSortOrder(paymentMethodDetail.getSortOrder().toString());
+
+        if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CHECK)) {
+            PaymentMethodCheck paymentMethodCheck = paymentControl.getPaymentMethodCheck(paymentMethod);
+
+            edit.setHoldDays(paymentMethodCheck.getHoldDays().toString());
+        } else if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+            PaymentMethodCreditCard paymentMethodCreditCard = paymentControl.getPaymentMethodCreditCard(paymentMethod);
+
+            edit.setRequestNameOnCard(paymentMethodCreditCard.getRequestNameOnCard().toString());
+            edit.setRequireNameOnCard(paymentMethodCreditCard.getRequireNameOnCard().toString());
+            edit.setCheckCardNumber(paymentMethodCreditCard.getCheckCardNumber().toString());
+            edit.setRequestExpirationDate(paymentMethodCreditCard.getRequestExpirationDate().toString());
+            edit.setRequireExpirationDate(paymentMethodCreditCard.getRequireExpirationDate().toString());
+            edit.setCheckExpirationDate(paymentMethodCreditCard.getCheckExpirationDate().toString());
+            edit.setRequestSecurityCode(paymentMethodCreditCard.getRequestSecurityCode().toString());
+            edit.setRequireSecurityCode(paymentMethodCreditCard.getRequireSecurityCode().toString());
+            edit.setCardNumberValidationPattern(paymentMethodCreditCard.getCardNumberValidationPattern());
+            edit.setSecurityCodeValidationPattern(paymentMethodCreditCard.getSecurityCodeValidationPattern());
+            edit.setRetainCreditCard(paymentMethodCreditCard.getRetainCreditCard().toString());
+            edit.setRetainSecurityCode(paymentMethodCreditCard.getRetainSecurityCode().toString());
+            edit.setRequestBilling(paymentMethodCreditCard.getRequestBilling().toString());
+            edit.setRequireBilling(paymentMethodCreditCard.getRequireBilling().toString());
+            edit.setRequestIssuer(paymentMethodCreditCard.getRequestIssuer().toString());
+            edit.setRequireIssuer(paymentMethodCreditCard.getRequireIssuer().toString());
+        }
+
+        if(paymentMethodDescription != null) {
+            edit.setDescription(paymentMethodDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(PaymentMethod paymentMethod) {
+        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        String paymentMethodName = edit.getPaymentMethodName();
+        PaymentMethod duplicatePaymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
+
+        if(duplicatePaymentMethod != null && !paymentMethod.equals(duplicatePaymentMethod)) {
+            addExecutionError(ExecutionErrors.DuplicatePaymentMethodName.name(), paymentMethodName);
+        } else {
+            SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            String itemSelectorName = edit.getItemSelectorName();
+            itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorConstants.SelectorKind_ITEM,
+                    SelectorConstants.SelectorType_PAYMENT_METHOD, itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());
+
+            if(!hasExecutionErrors()) {
+                String salesOrderItemSelectorName = edit.getSalesOrderItemSelectorName();
+                salesOrderItemSelector = salesOrderItemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this,
+                        SelectorConstants.SelectorKind_SALES_ORDER_ITEM, SelectorConstants.SelectorType_PAYMENT_METHOD, salesOrderItemSelectorName,
+                        ExecutionErrors.UnknownSalesOrderItemSelectorName.name());
+            }
+        }
+    }
+
+    @Override
+    public void doUpdate(PaymentMethod paymentMethod) {
+        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        PartyPK partyPK = getPartyPK();
+        PaymentMethodDetailValue paymentMethodDetailValue = paymentControl.getPaymentMethodDetailValueForUpdate(paymentMethod);
+        PaymentMethodDescription paymentMethodDescription = paymentControl.getPaymentMethodDescriptionForUpdate(paymentMethod, getPreferredLanguage());
+        String paymentMethodTypeName = paymentMethod.getLastDetail().getPaymentMethodType().getPaymentMethodTypeName();
+        String description = edit.getDescription();
+
+        paymentMethodDetailValue.setPaymentMethodName(edit.getPaymentMethodName());
+        paymentMethodDetailValue.setItemSelectorPK(itemSelector == null? null: itemSelector.getPrimaryKey());
+        paymentMethodDetailValue.setSalesOrderItemSelectorPK(salesOrderItemSelector == null? null: salesOrderItemSelector.getPrimaryKey());
+        paymentMethodDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        paymentMethodDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        paymentControl.updatePaymentMethodFromValue(paymentMethodDetailValue, partyPK);
+
+        if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CHECK)) {
+            PaymentMethodCheckValue paymentMethodCheckValue = paymentControl.getPaymentMethodCheckValueForUpdate(paymentMethod);
+
+            paymentMethodCheckValue.setHoldDays(Integer.valueOf(edit.getHoldDays()));
+
+            paymentControl.updatePaymentMethodCheckFromValue(paymentMethodCheckValue, partyPK);
+        } else {
+            if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+                PaymentMethodCreditCardValue paymentMethodCreditCardValue = paymentControl.getPaymentMethodCreditCardValueForUpdate(paymentMethod);
+
+                paymentMethodCreditCardValue.setRequestNameOnCard(Boolean.valueOf(edit.getRequestNameOnCard()));
+                paymentMethodCreditCardValue.setRequireNameOnCard(Boolean.valueOf(edit.getRequireNameOnCard()));
+                paymentMethodCreditCardValue.setCheckCardNumber(Boolean.valueOf(edit.getCheckCardNumber()));
+                paymentMethodCreditCardValue.setRequestExpirationDate(Boolean.valueOf(edit.getRequestExpirationDate()));
+                paymentMethodCreditCardValue.setRequireExpirationDate(Boolean.valueOf(edit.getRequireExpirationDate()));
+                paymentMethodCreditCardValue.setCheckExpirationDate(Boolean.valueOf(edit.getCheckExpirationDate()));
+                paymentMethodCreditCardValue.setRequestSecurityCode(Boolean.valueOf(edit.getRequestSecurityCode()));
+                paymentMethodCreditCardValue.setRequireSecurityCode(Boolean.valueOf(edit.getRequireSecurityCode()));
+                paymentMethodCreditCardValue.setCardNumberValidationPattern(edit.getCardNumberValidationPattern());
+                paymentMethodCreditCardValue.setSecurityCodeValidationPattern(edit.getSecurityCodeValidationPattern());
+                paymentMethodCreditCardValue.setRetainCreditCard(Boolean.valueOf(edit.getRetainCreditCard()));
+                paymentMethodCreditCardValue.setRetainSecurityCode(Boolean.valueOf(edit.getRetainSecurityCode()));
+                paymentMethodCreditCardValue.setRequestBilling(Boolean.valueOf(edit.getRequestBilling()));
+                paymentMethodCreditCardValue.setRequireBilling(Boolean.valueOf(edit.getRequireBilling()));
+                paymentMethodCreditCardValue.setRequestIssuer(Boolean.valueOf(edit.getRequestIssuer()));
+                paymentMethodCreditCardValue.setRequireIssuer(Boolean.valueOf(edit.getRequireIssuer()));
+
+                paymentControl.updatePaymentMethodCreditCardFromValue(paymentMethodCreditCardValue, partyPK);
+            }
+        }
+
+        if(paymentMethodDescription == null && description != null) {
+            paymentControl.createPaymentMethodDescription(paymentMethod, getPreferredLanguage(), description, partyPK);
+        } else {
+            if(paymentMethodDescription != null && description == null) {
+                paymentControl.deletePaymentMethodDescription(paymentMethodDescription, partyPK);
+            } else {
+                if(paymentMethodDescription != null && description != null) {
+                    PaymentMethodDescriptionValue paymentMethodDescriptionValue = paymentControl.getPaymentMethodDescriptionValue(paymentMethodDescription);
+
+                    paymentMethodDescriptionValue.setDescription(description);
+                    paymentControl.updatePaymentMethodDescriptionFromValue(paymentMethodDescriptionValue, partyPK);
+                }
+            }
+        }
+    }
+
+}

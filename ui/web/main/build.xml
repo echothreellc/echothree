@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="main" default="war" basedir=".">
+
+    <property file="build.properties"/>
+    <property file="${component.home}/environment.properties"/>
+    <property file="${component.home}/build.properties"/>
+
+    <target name="build-properties-instance">
+        <ant dir="${component.home}" target="build-properties-instance"/>
+    </target>
+
+    <path id="build.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${build.lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+        <pathelement location="${build.dir}/jars/echothree-client.jar"/>
+    </path>
+
+    <path id="shared.class.path">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+        <pathelement path="${java.class.path}" />
+    </path>
+
+    <target name="prepare">
+        <mkdir dir="${ui.web.main.classbindir}" />
+        <mkdir dir="${ui.web.main.wardir}" />
+    </target>
+ 
+    <target name="compile" depends="prepare">
+        <javac
+            debug="on"
+            source="1.8"
+            target="1.8"
+            srcdir="${ui.web.main.javasrc}"
+            destdir="${ui.web.main.classbindir}"
+            includeAntRuntime="false"
+            classpathref="build.classpath" >
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+        </javac>
+    </target>
+
+    <target name="war" depends="build-properties-instance,compile">
+        <war
+            warfile="${ui.web.main.warfile}"
+            webxml="${ui.web.main.metadatasrc}/web.xml">
+            <fileset dir="${ui.web.main.websrc}" />
+            <classes dir="${ui.web.main.classbindir}"/>
+            <classes dir="${ui.web.main.metadatasrc}">
+                <include name="*.properties"/>
+            </classes>
+            <webinf dir="${ui.web.main.metadatasrc}">
+                <include name="jboss-all.xml"/>
+                <include name="struts-config.xml"/>
+            </webinf>
+            <webinf dir="${ui.web.main.metadatasrc}">
+                <include name="beans.xml"/>
+            </webinf>
+            <!-- EchoThree and SSLExt -->
+            <lib dir="${component.home}/build/jars">
+                <include name="echothree-client.jar"/>
+            </lib>
+            <webinf dir="${build.dir}/metadata/client/taglib">
+                <include name="*.tld"/>
+            </webinf>
+            <classes dir="${build.dir}/metadata/common">
+                <include name="*.properties"/>
+            </classes>
+            <lib dir="${build.lib.dir}">
+                <include name="textile4j.jar"/>
+                <include name="nekohtml.jar"/>
+                <include name="guava.jar"/>
+            </lib>
+            <!-- iText -->
+            <lib dir="${build.lib.dir}">
+                <include name="itext.jar"/>
+            </lib>
+            <!-- Xerces -->
+            <lib dir="${build.lib.dir}">
+                <include name="xercesImpl.jar"/>
+                <include name="xml-apis.jar"/>
+            </lib>
+            <!-- Commons Validator -->
+            <lib dir="${build.lib.dir}">
+                <include name="commons-validator.jar"/>
+            </lib>
+            <!-- ROME -->
+            <lib dir="${build.lib.dir}">
+                <include name="jdom.jar"/>
+                <include name="rome.jar"/>
+            </lib>
+            <!-- GraphQL -->
+            <lib dir="${build.lib.dir}">
+                <include name="graphql-java.jar"/>
+            </lib>
+            <!-- FastClasspathScanner -->
+            <lib dir="${build.lib.dir}">
+                <include name="classgraph.jar"/>
+            </lib>
+            <!-- Struts -->
+            <lib dir="${build.lib.dir}">
+                <include name="commons-beanutils.jar"/>
+                <include name="commons-collections.jar"/>
+                <include name="commons-digester.jar"/>
+                <include name="commons-fileupload.jar"/>
+                <include name="commons-io.jar"/>
+                <include name="commons-logging.jar"/>
+            </lib>
+            <lib dir="${lib.dir}/struts">
+                <include name="bsf.jar"/>
+                <include name="commons-chain.jar"/>
+                <include name="oro.jar"/>
+                <include name="struts-core.jar"/>
+                <include name="struts-el.jar"/>
+                <include name="struts-extras.jar"/>
+                <include name="struts-faces.jar"/>
+                <include name="struts-mailreader-dao.jar"/>
+                <include name="struts-scripting.jar"/>
+                <include name="struts-taglib.jar"/>
+                <include name="struts-tiles.jar"/>
+            </lib>
+            <!-- Spring -->
+            <lib dir="${build.lib.dir}">
+                <include name="spring-beans.jar"/>
+                <include name="spring-context.jar"/>
+                <include name="spring-core.jar"/>
+                <include name="spring-expression.jar"/>
+                <include name="spring-web.jar"/>
+                <include name="spring-struts.jar"/>
+                <include name="reactive-streams.jar"/>
+            </lib>
+            <webinf dir="${ui.web.main.metadatasrc}">
+                <include name="applicationContext.xml"/>
+                <include name="main-servlet.xml"/>
+            </webinf>
+            <!-- Display Tag Library -->
+            <lib dir="${build.lib.dir}">
+                <include name="commons-lang.jar"/>
+                <include name="poi.jar"/>
+            </lib>
+            <lib dir="${lib.dir}/displaytag">
+                <include name="displaytag.jar"/>
+                <include name="displaytag-export-poi.jar"/>
+            </lib>
+            <!-- Jakarta Taglibs Standard -->
+            <lib dir="${lib.dir}/jakarta-taglibs-standard/lib">
+                <include name="*.jar"/>
+            </lib>
+            <webinf dir="${lib.dir}/jakarta-taglibs-standard/tld">
+                <include name="*.tld"/>
+            </webinf>
+            <!-- TinyMCE -->
+            <zipfileset prefix="tinymce" dir="${lib.dir}/tinymce"/>
+            <!-- Prism -->
+            <zipfileset prefix="prism" dir="${lib.dir}/prism"/>
+            <!-- jQuery -->
+            <fileset dir="${lib.dir}/jquery">
+                <include name="jquery.min.js" />
+            </fileset>
+            <!-- Popper.js -->
+            <fileset dir="${lib.dir}/popper/dist/umd">
+                <include name="popper.min.js" />
+            </fileset>
+            <!-- Bootstrap -->
+            <fileset dir="${lib.dir}/bootstrap/css">
+                <include name="bootstrap.min.css" />
+            </fileset>
+            <fileset dir="${lib.dir}/bootstrap/js">
+                <include name="bootstrap.min.js" />
+            </fileset>
+        </war>
+    </target>
+
+    <target name="deploy" depends="war">
+        <copy file="${ui.web.main.warfile}" todir="../../${wildfly.home.deploy}" />
+    </target>
+
+    <target name="clean">
+        <echo message="Deleting directory ${ui.web.main.builddir}" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="${ui.web.main.builddir}">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+
+</project>
+

@@ -1,0 +1,79 @@
+<%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
+
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+
+<%@ include file="../../include/taglibs.jsp" %>
+
+<html:html xhtml="true">
+    <head>
+        <title>Review (<c:out value="${returnType.returnTypeName}" />)</title>
+        <html:base/>
+        <%@ include file="../../include/environment.jsp" %>
+    </head>
+    <body>
+        <div id="Header">
+            <h2>
+                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/ReturnPolicy/Main" />">Returns</a> &gt;&gt;
+                <a href="<c:url value="/action/ReturnPolicy/ReturnKind/Main" />">Return Kinds</a> &gt;&gt;
+                <c:url var="returnTypesUrl" value="/action/ReturnPolicy/ReturnType/Main">
+                    <c:param name="ReturnKindName" value="${returnType.returnKind.returnKindName}" />
+                </c:url>
+                <a href="${returnTypesUrl}">Return Types</a> &gt;&gt;
+                Review (<c:out value="${returnType.returnTypeName}" />)
+            </h2>
+        </div>
+        <div id="Content">
+            <p><font size="+2"><b><c:out value="${returnType.description}" /></b></font></p>
+            <br />
+            Return Type Name: ${returnType.returnTypeName}<br />
+            <br />
+            Return Sequence:
+            <c:choose>
+                <c:when test="${returnType.returnSequence == null}">
+                    <i>Not Set, Using Default.</i>.
+                </c:when>
+                <c:otherwise>
+                    <c:url var="returnSequenceUrl" value="/action/Sequence/Sequence/Review">
+                        <c:param name="SequenceTypeName" value="${returnType.returnKind.returnSequenceType.sequenceTypeName}" />
+                        <c:param name="SequenceName" value="${returnType.returnSequence.sequenceName}" />
+                    </c:url>
+                    <a href="${returnSequenceUrl}"><c:out value="${returnType.returnSequence.description}" /></a>
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <br />
+            <br />
+            Created: <c:out value="${returnType.entityInstance.entityTime.createdTime}" /><br />
+            <c:if test='${returnType.entityInstance.entityTime.modifiedTime != null}'>
+                Modified: <c:out value="${returnType.entityInstance.entityTime.modifiedTime}" /><br />
+            </c:if>
+            <c:if test='${returnType.entityInstance.entityTime.deletedTime != null}'>
+                Deleted: <c:out value="${returnType.entityInstance.entityTime.deletedTime}" /><br />
+            </c:if>
+            <et:checkSecurityRoles securityRoles="Event.List" />
+            <et:hasSecurityRole securityRole="Event.List">
+                <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                    <c:param name="EntityRef" value="${returnType.entityInstance.entityRef}" />
+                </c:url>
+                <a href="${eventsUrl}">Events</a>
+            </et:hasSecurityRole>
+        </div>
+        <jsp:include page="../../include/userSession.jsp" />
+        <jsp:include page="../../include/copyright.jsp" />
+    </body>
+</html:html>

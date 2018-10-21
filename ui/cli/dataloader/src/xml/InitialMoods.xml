@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <moods>
+        <mood moodName="ACCOMPLISHED" isDefault="true" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Accomplished" />
+        </mood>
+        <mood moodName="AGGRAVATED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Aggravated" />
+        </mood>
+        <mood moodName="AMUSED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Amused" />
+        </mood>
+        <mood moodName="ANGRY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Angry" />
+        </mood>
+        <mood moodName="ANNOYED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Annoyed" />
+        </mood>
+        <mood moodName="ANXIOUS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Anxious" />
+        </mood>
+        <mood moodName="APATHETIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Apathetic" />
+        </mood>
+        <mood moodName="ARTISTIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Artistic" />
+        </mood>
+        <mood moodName="AWAKE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Awake" />
+        </mood>
+        <mood moodName="BITCHY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Bitchy" />
+        </mood>
+        <mood moodName="BLAH" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Blah" />
+        </mood>
+        <mood moodName="BLANK" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Blank" />
+        </mood>
+        <mood moodName="BORED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Bored" />
+        </mood>
+        <mood moodName="BOUNCY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Bouncy" />
+        </mood>
+        <mood moodName="BUSY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Busy" />
+        </mood>
+        <mood moodName="CALM" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Calm" />
+        </mood>
+        <mood moodName="CHEERFUL" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Cheerful" />
+        </mood>
+        <mood moodName="CHIPPER" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Chipper" />
+        </mood>
+        <mood moodName="COLD" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Cold" />
+        </mood>
+        <mood moodName="COMPLACENT" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Complacent" />
+        </mood>
+        <mood moodName="CONFUSED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Confused" />
+        </mood>
+        <mood moodName="CONTEMPLATIVE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Contemplative" />
+        </mood>
+        <mood moodName="CONTENT" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Content" />
+        </mood>
+        <mood moodName="CRANKY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Cranky" />
+        </mood>
+        <mood moodName="CRAPPY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Crappy" />
+        </mood>
+        <mood moodName="CRAZY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Crazy" />
+        </mood>
+        <mood moodName="CREATIVE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Creative" />
+        </mood>
+        <mood moodName="CRUSHED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Crushed" />
+        </mood>
+        <mood moodName="CURIOUS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Curious" />
+        </mood>
+        <mood moodName="CYNICAL" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Cynical" />
+        </mood>
+        <mood moodName="DEPRESSED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Depressed" />
+        </mood>
+        <mood moodName="DETERMINED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Determined" />
+        </mood>
+        <mood moodName="DEVIOUS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Devious" />
+        </mood>
+        <mood moodName="DIRTY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Dirty" />
+        </mood>
+        <mood moodName="DISAPPOINTED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Disappointed" />
+        </mood>
+        <mood moodName="DISCONTENT" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Discontent" />
+        </mood>
+        <mood moodName="DISTRESSED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Distressed" />
+        </mood>
+        <mood moodName="DITZY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Ditzy" />
+        </mood>
+        <mood moodName="DORKY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Dorky" />
+        </mood>
+        <mood moodName="DRAINED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Drained" />
+        </mood>
+        <mood moodName="DRUNK" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Drunk" />
+        </mood>
+        <mood moodName="ECSTATIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Ecstatic" />
+        </mood>
+        <mood moodName="EMBARRASSED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Embarrassed" />
+        </mood>
+        <mood moodName="ENERGETIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Energetic" />
+        </mood>
+        <mood moodName="ENRAGED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Enraged" />
+        </mood>
+        <mood moodName="ENTHRALLED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Enthralled" />
+        </mood>
+        <mood moodName="ENVIOUS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Envious" />
+        </mood>
+        <mood moodName="EXANIMATE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Exanimate" />
+        </mood>
+        <mood moodName="EXCITED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Excited" />
+        </mood>
+        <mood moodName="EXHAUSTED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Exhausted" />
+        </mood>
+        <mood moodName="FLIRTY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Flirty" />
+        </mood>
+        <mood moodName="FRUSTRATED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Frustrated" />
+        </mood>
+        <mood moodName="FULL" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Full" />
+        </mood>
+        <mood moodName="GEEKY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Geeky" />
+        </mood>
+        <mood moodName="GIDDY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Giddy" />
+        </mood>
+        <mood moodName="GIGGLY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Giggly" />
+        </mood>
+        <mood moodName="GLOOMY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Gloomy" />
+        </mood>
+        <mood moodName="GOOD" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Good" />
+        </mood>
+        <mood moodName="GRATEFUL" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Grateful" />
+        </mood>
+        <mood moodName="GROGGY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Groggy" />
+        </mood>
+        <mood moodName="GRUMPY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Grumpy" />
+        </mood>
+        <mood moodName="GUILTY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Guilty" />
+        </mood>
+        <mood moodName="HAPPY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Happy" />
+        </mood>
+        <mood moodName="HIGH" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="High" />
+        </mood>
+        <mood moodName="HOPEFUL" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Hopeful" />
+        </mood>
+        <mood moodName="HORNY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Horny" />
+        </mood>
+        <mood moodName="HOT" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Hot" />
+        </mood>
+        <mood moodName="HUNGRY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Hungry" />
+        </mood>
+        <mood moodName="HYPER" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Hyper" />
+        </mood>
+        <mood moodName="IMPRESSED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Impressed" />
+        </mood>
+        <mood moodName="INDESCRIBABLE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Indescribable" />
+        </mood>
+        <mood moodName="INDIFFERENT" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Indifferent" />
+        </mood>
+        <mood moodName="INFURIATED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Infuriated" />
+        </mood>
+        <mood moodName="INTIMIDATED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Intimidated" />
+        </mood>
+        <mood moodName="IRATE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Irate" />
+        </mood>
+        <mood moodName="IRRITATED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Irritated" />
+        </mood>
+        <mood moodName="JEALOUS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Jealous" />
+        </mood>
+        <mood moodName="JUBILANT" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Jubilant" />
+        </mood>
+        <mood moodName="LAZY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Lazy" />
+        </mood>
+        <mood moodName="LETHARGIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Lethargic" />
+        </mood>
+        <mood moodName="LISTLESS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Listless" />
+        </mood>
+        <mood moodName="LONELY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Lonely" />
+        </mood>
+        <mood moodName="LOVED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Loved" />
+        </mood>
+        <mood moodName="MELANCHOLY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Melancholy" />
+        </mood>
+        <mood moodName="MELLOW" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Mellow" />
+        </mood>
+        <mood moodName="MISCHIEVOUS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Mischievous" />
+        </mood>
+        <mood moodName="MOODY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Moody" />
+        </mood>
+        <mood moodName="MOROSE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Morose" />
+        </mood>
+        <mood moodName="NAUGHTY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Naughty" />
+        </mood>
+        <mood moodName="NAUSEATED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Nauseated" />
+        </mood>
+        <mood moodName="NERDY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Nerdy" />
+        </mood>
+        <mood moodName="NERVOUS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Nervous" />
+        </mood>
+        <mood moodName="NOSTALGIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Nostalgic" />
+        </mood>
+        <mood moodName="NUMB" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Numb" />
+        </mood>
+        <mood moodName="OKAY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Okay" />
+        </mood>
+        <mood moodName="OPTIMISTIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Optimistic" />
+        </mood>
+        <mood moodName="PEACEFUL" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Peaceful" />
+        </mood>
+        <mood moodName="PENSIVE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Pensive" />
+        </mood>
+        <mood moodName="PESSIMISTIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Pessimistic" />
+        </mood>
+        <mood moodName="PISSED_OFF" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Pissed Off" />
+        </mood>
+        <mood moodName="PLEASED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Pleased" />
+        </mood>
+        <mood moodName="PRODUCTIVE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Productive" />
+        </mood>
+        <mood moodName="QUIXOTIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Quixotic" />
+        </mood>
+        <mood moodName="RECUMBENT" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Recumbent" />
+        </mood>
+        <mood moodName="REFRESHED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Refreshed" />
+        </mood>
+        <mood moodName="REJECTED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Rejected" />
+        </mood>
+        <mood moodName="REJUVENATED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Rejuvenated" />
+        </mood>
+        <mood moodName="RELAXED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Relaxed" />
+        </mood>
+        <mood moodName="RELIEVED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Relieved" />
+        </mood>
+        <mood moodName="RESTLESS" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Restless" />
+        </mood>
+        <mood moodName="RUSHED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Rushed" />
+        </mood>
+        <mood moodName="SAD" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Sad" />
+        </mood>
+        <mood moodName="SATISFIED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Satisfied" />
+        </mood>
+        <mood moodName="SAVAGE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Savage" />
+        </mood>
+        <mood moodName="SCARED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Scared" />
+        </mood>
+        <mood moodName="SHOCKED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Shocked" />
+        </mood>
+        <mood moodName="SICK" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Sick" />
+        </mood>
+        <mood moodName="SILLY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Silly" />
+        </mood>
+        <mood moodName="SLEEPY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Sleepy" />
+        </mood>
+        <mood moodName="SORE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Sore" />
+        </mood>
+        <mood moodName="STRESSED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Stressed" />
+        </mood>
+        <mood moodName="SURPRISED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Surprised" />
+        </mood>
+        <mood moodName="SYMPATHETIC" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Sympathetic" />
+        </mood>
+        <mood moodName="THANKFUL" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Thankful" />
+        </mood>
+        <mood moodName="THIRSTY" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Thirsty" />
+        </mood>
+        <mood moodName="THOUGHTFUL" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Thoughtful" />
+        </mood>
+        <mood moodName="TIRED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Tired" />
+        </mood>
+        <mood moodName="TOUCHED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Touched" />
+        </mood>
+        <mood moodName="UNCOMFORTABLE" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Uncomfortable" />
+        </mood>
+        <mood moodName="WEIRD" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Weird" />
+        </mood>
+        <mood moodName="WORKING" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Working" />
+        </mood>
+        <mood moodName="WORRIED" isDefault="false" sortOrder="1">
+            <moodDescription languageIsoName="en" description="Worried" />
+        </mood>
+    </moods>
+</initialData>

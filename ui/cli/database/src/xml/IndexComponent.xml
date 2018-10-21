@@ -1,0 +1,290 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Index">
+            <tables>
+                <table namePlural="IndexTypes" nameSingular="IndexType" columnPrefix="idxt">
+                    <columns>
+                        <column name="IndexTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IndexTypeDetails" destinationColumn="IndexTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IndexTypeDetails" destinationColumn="IndexTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IndexTypeDetails" nameSingular="IndexTypeDetail" columnPrefix="idxtdt">
+                    <columns>
+                        <column name="IndexTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="IndexTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IndexTypes" destinationColumn="IndexTypeId" />
+                        <column name="IndexTypeName" type="Name" nullAllowed="false" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IndexTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="IndexTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IndexTypeDescriptions" nameSingular="IndexTypeDescription" columnPrefix="idxtd">
+                    <columns>
+                        <column name="IndexTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="IndexTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IndexTypes" destinationColumn="IndexTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IndexTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="IndexTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Indexes" nameSingular="Index" columnPrefix="idx">
+                    <columns>
+                        <column name="IndexId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IndexDetails" destinationColumn="IndexDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IndexDetails" destinationColumn="IndexDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IndexFields" nameSingular="IndexField" columnPrefix="idxfld">
+                    <columns>
+                        <column name="IndexFieldId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IndexFieldDetails" destinationColumn="IndexFieldDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IndexFieldDetails" destinationColumn="IndexFieldDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexFieldId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IndexFieldDetails" nameSingular="IndexFieldDetail" columnPrefix="idxflddt">
+                    <columns>
+                        <column name="IndexFieldDetailId" type="EID" nullAllowed="false" />
+                        <column name="IndexFieldId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IndexFields" destinationColumn="IndexFieldId" />
+                        <column name="IndexTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IndexTypes" destinationColumn="IndexTypeId" />
+                        <column name="IndexFieldName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexFieldDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IndexFieldId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="IndexTypeId" />
+                            <indexColumn name="IndexFieldName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IndexTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IndexFieldDescriptions" nameSingular="IndexFieldDescription" columnPrefix="idxfldd">
+                    <columns>
+                        <column name="IndexFieldDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="IndexFieldId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IndexFields" destinationColumn="IndexFieldId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexFieldDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IndexFieldId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="IndexFieldId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IndexDetails" nameSingular="IndexDetail" columnPrefix="idxdt">
+                    <columns>
+                        <column name="IndexDetailId" type="EID" nullAllowed="false" />
+                        <column name="IndexId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Indexes" destinationColumn="IndexId" />
+                        <column name="IndexName" type="Name" nullAllowed="false" />
+                        <column name="IndexTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IndexTypes" destinationColumn="IndexTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Directory" type="Directory" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IndexId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="IndexName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IndexTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index5">
+                            <indexColumn name="Directory" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index6">
+                            <indexColumn name="IndexTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IndexDescriptions" nameSingular="IndexDescription" columnPrefix="idxd">
+                    <columns>
+                        <column name="IndexDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="IndexId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Indexes" destinationColumn="IndexId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IndexId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="IndexId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IndexStatuses" nameSingular="IndexStatus" columnPrefix="idxst">
+                    <columns>
+                        <column name="IndexStatusId" type="EID" nullAllowed="false" />
+                        <column name="IndexId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Indexes" destinationColumn="IndexId"/>
+                        <column name="CreatedTime" type="Time" nullAllowed="true" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IndexStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="IndexId" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

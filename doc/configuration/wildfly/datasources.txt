@@ -1,0 +1,45 @@
+                <datasource jta="false" jndi-name="java:/EchoThreeNTDS" pool-name="EchoThreeNTDS">
+                    <connection-url>jdbc:mysql://127.0.0.1:3306/echothree?useSSL=false&amp;serverTimezone=US/Central</connection-url>
+                    <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
+                    <driver>mysql-connector-java.jar</driver>
+                    <pool>
+                        <min-pool-size>5</min-pool-size>
+                    </pool>
+                    <security>
+                        <user-name>echothree</user-name>
+                        <password>$Exampl3Passw0rd#</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <background-validation>true</background-validation>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+                    </validation>
+                </datasource>
+                <xa-datasource jndi-name="java:/EchoThreeDS" pool-name="EchoThreeDS">
+                    <xa-datasource-property name="ServerName">
+                        127.0.0.1
+                    </xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">
+                        echothree
+                    </xa-datasource-property>
+                    <xa-datasource-property name="useSSL">
+                        false
+                    </xa-datasource-property>
+                    <xa-datasource-property name="serverTimezone">
+                        US/Central
+                    </xa-datasource-property>
+                    <xa-datasource-class>com.mysql.cj.jdbc.MysqlXADataSource</xa-datasource-class>
+                    <driver>mysql-connector-java.jar</driver>
+                    <xa-pool>
+                        <min-pool-size>5</min-pool-size>
+                    </xa-pool>
+                    <security>
+                        <user-name>echothree</user-name>
+                        <password>$Exampl3Passw0rd#</password>
+                    </security>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"/>
+                        <background-validation>true</background-validation>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"/>
+                    </validation>
+                </xa-datasource>

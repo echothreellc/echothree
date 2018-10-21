@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <inventoryConditionUseTypes>
+        <inventoryConditionUseType inventoryConditionUseTypeName="PURCHASE_ORDER" isDefault="true" sortOrder="1">
+            <inventoryConditionUseTypeDescription languageIsoName="en" description="Purchase Orders" />
+        </inventoryConditionUseType>
+        <inventoryConditionUseType inventoryConditionUseTypeName="SALES_ORDER" isDefault="false" sortOrder="1">
+            <inventoryConditionUseTypeDescription languageIsoName="en" description="Sales Orders" />
+        </inventoryConditionUseType>
+        <inventoryConditionUseType inventoryConditionUseTypeName="RETURN" isDefault="false" sortOrder="1">
+            <inventoryConditionUseTypeDescription languageIsoName="en" description="Returns" />
+        </inventoryConditionUseType>
+    </inventoryConditionUseTypes>
+    <inventoryConditions>
+        <inventoryCondition inventoryConditionName="GOOD" isDefault="true" sortOrder="0">
+            <inventoryConditionDescription languageIsoName="en" description="Good" />
+            <inventoryConditionUse inventoryConditionUseTypeName="PURCHASE_ORDER" isDefault="true" />
+            <inventoryConditionUse inventoryConditionUseTypeName="SALES_ORDER" isDefault="true" />
+            <inventoryConditionUse inventoryConditionUseTypeName="RETURN" isDefault="true" />
+        </inventoryCondition>
+        <inventoryCondition inventoryConditionName="FIX" isDefault="false" sortOrder="0">
+            <inventoryConditionDescription languageIsoName="en" description="Fix" />
+            <inventoryConditionUse inventoryConditionUseTypeName="SALES_ORDER" isDefault="false" />
+            <inventoryConditionUse inventoryConditionUseTypeName="RETURN" isDefault="false" />
+        </inventoryCondition>
+        <inventoryCondition inventoryConditionName="BAD" isDefault="false" sortOrder="0">
+            <inventoryConditionDescription languageIsoName="en" description="Bad" />
+            <inventoryConditionUse inventoryConditionUseTypeName="RETURN" isDefault="false" />
+        </inventoryCondition>
+    </inventoryConditions>
+    <allocationPriorities>
+        <allocationPriority allocationPriorityName="LOW" priority="10" isDefault="false" sortOrder="1">
+            <allocationPriorityDescription languageIsoName="en" description="Low" />
+        </allocationPriority>
+        <allocationPriority allocationPriorityName="NORMAL" priority="20" isDefault="true" sortOrder="2">
+            <allocationPriorityDescription languageIsoName="en" description="Normal" />
+        </allocationPriority>
+        <allocationPriority allocationPriorityName="HIGH" priority="30" isDefault="false" sortOrder="3">
+            <allocationPriorityDescription languageIsoName="en" description="High" />
+        </allocationPriority>
+    </allocationPriorities>
+</initialData>

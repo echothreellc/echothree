@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This product includes software developed by
+The Apache Software Foundation (http://www.apache.org/).
+-->
+
+<!--
+Copyright 2002-2014 Echo Three, LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<initialData>
+    <glAccountTypes>
+        <glAccountType glAccountTypeName="POSTING" isDefault="true" sortOrder="0">
+            <glAccountTypeDescription languageIsoName="en" description="Posting" />
+        </glAccountType>
+        <!--
+        <glAccountType glAccountTypeName="FIXED_ALLOCATION" isDefault="false" sortOrder="0">
+            <glAccountTypeDescription languageIsoName="en" description="Fixed Allocation" />
+        </glAccountType>
+        -->
+    </glAccountTypes>
+    <glAccountClasses>
+        <glAccountClass glAccountClassName="CREDIT" isDefault="true" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Credit" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="REVENUE" parentGlAccountClassName="CREDIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Revenue" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="DEBIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Debit" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="ASSET" parentGlAccountClassName="DEBIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Asset" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="DISTRIBUTION" parentGlAccountClassName="DEBIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Distributed Equity" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="EQUITY" parentGlAccountClassName="CREDIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Equity" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="EXPENSE" parentGlAccountClassName="DEBIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Expense" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="INCOME" parentGlAccountClassName="DEBIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Income" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="LIABILITY" parentGlAccountClassName="CREDIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Liability" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="NON_POSTING" parentGlAccountClassName="DEBIT" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Non-Posting" />
+        </glAccountClass>
+        <glAccountClass glAccountClassName="RESOURCE" isDefault="false" sortOrder="0">
+            <glAccountClassDescription languageIsoName="en" description="Resource" />
+        </glAccountClass>
+    </glAccountClasses>
+    <glAccountCategories>
+        <glAccountCategory glAccountCategoryName="ACCOUNTS_PAYABLE" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Accounts Payable" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="ACCOUNTS_RECEIVABLE" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Accounts Receivable" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="BALANCE_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Balance" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="BANK_STLMNT_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Bank Settlement" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="COGS_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Cost of Goods Sold" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="CREDIT_CARD" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Credit Card" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="CURRENT_ASSET" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Current Asset" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="PREPAID_EXPENSES" parentGlAccountCategoryName="CURRENT_ASSET" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Prepaid Expenses" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="CURRENT_LIABILITY" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Current Liability" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="CUSTOMER_CREDIT" parentGlAccountCategoryName="CURRENT_LIABILITY" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Customer Credits" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="CUSTOMER_DEPOSIT" parentGlAccountCategoryName="CURRENT_LIABILITY" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Customer Deposits" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="CUSTOMER_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Customer Account" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="DISCOUNTS_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Discounts Account" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="FIXED_ASSET" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Fixed Asset" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="INVENTORY_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Inventory Account" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="INV_CHANGE_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Inventory Change Account" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="LONG_TERM_LIABILITY" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Long Term Liability" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="OPERATING_EXPENSE" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Operating Expense" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="OTHER_ASSET" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Other Asset" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="OTHER_EXPENSE" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Other Expense" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="OWNERS_EQUITY" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Owner&apos;s Equity" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="PRODUCT_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Product" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="PROFIT_LOSS_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Profit Loss" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="PURCHASE_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Purchase" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="RETAINED_EARNINGS" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Retained Earnings" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="SALES_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Sales" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="SALES_RETURNS" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Customer Returns" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="SUPPLIER_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Supplier" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="TAX_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Tax" />
+        </glAccountCategory>
+        <glAccountCategory glAccountCategoryName="SALES_TAX_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Sales Tax" />
+        </glAccountCategory>
+    </glAccountCategories>
+    <glResourceTypes>
+        <glResourceType glResourceTypeName="DELIVERED_GOODS" isDefault="false" sortOrder="0">
+            <glResourceTypeDescription languageIsoName="en" description="Delivered Goods" />
+        </glResourceType>
+        <glResourceType glResourceTypeName="FINISHED_GOODS" isDefault="false" sortOrder="0">
+            <glResourceTypeDescription languageIsoName="en" description="Finished Goods" />
+        </glResourceType>
+        <glResourceType glResourceTypeName="LABOR" isDefault="false" sortOrder="0">
+            <glResourceTypeDescription languageIsoName="en" description="Labor" />
+        </glResourceType>
+        <glResourceType glResourceTypeName="MONEY" isDefault="true" sortOrder="0">
+            <glResourceTypeDescription languageIsoName="en" description="Money" />
+        </glResourceType>
+        <glResourceType glResourceTypeName="RAW_MATERIALS" isDefault="false" sortOrder="0">
+            <glResourceTypeDescription languageIsoName="en" description="Raw Materials" />
+        </glResourceType>
+        <glResourceType glResourceTypeName="SERVICES" isDefault="false" sortOrder="0">
+            <glResourceTypeDescription languageIsoName="en" description="Services" />
+        </glResourceType>
+    </glResourceTypes>
+    <glAccounts>
+        <glAccount glAccountTypeName="POSTING" glAccountName="10000" glAccountClassName="NON_POSTING" glAccountCategoryName="BALANCE_ACCOUNT" glResourceTypeName="MONEY" currencyIsoName="USD" isDefault="false">
+            <glAccountDescription languageIsoName="en" description="Test Account 10000" />
+        </glAccount>
+        <glAccount glAccountTypeName="POSTING" glAccountName="10010" parentGlAccountName="10000" glAccountClassName="NON_POSTING" glAccountCategoryName="BALANCE_ACCOUNT" glResourceTypeName="MONEY" currencyIsoName="USD" isDefault="false">
+            <glAccountDescription languageIsoName="en" description="Test Account 10010" />
+        </glAccount>
+        <glAccount glAccountTypeName="POSTING" glAccountName="10020" parentGlAccountName="10000" glAccountClassName="NON_POSTING" glAccountCategoryName="BALANCE_ACCOUNT" glResourceTypeName="MONEY" currencyIsoName="USD" isDefault="false">
+            <glAccountDescription languageIsoName="en" description="Test Account 10020" />
+        </glAccount>
+        <glAccount glAccountTypeName="POSTING" glAccountName="100000" glAccountClassName="ASSET" glResourceTypeName="MONEY" accountCode="100000" currencyIsoName="USD" description="ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="110000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="100000" accountCode="110000" currencyIsoName="USD" description="CASH" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="110000" accountCode="111000" currencyIsoName="USD" description="CASH IN BANK AND ON HAND" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111100" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111100" currencyIsoName="USD" description="GENERAL CHECKING ACCOUNT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111200" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111200" currencyIsoName="USD" description="PAYROLL CHECKING ACCOUNT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111300" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111300" currencyIsoName="USD" description="SINGLE TITLE ORDER PLAN (STOP) CHECKING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111400" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111400" currencyIsoName="USD" description="MONEY MARKET" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111500" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111500" currencyIsoName="USD" description="CERTIFICATES OF DEPOSIT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111600" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111600" currencyIsoName="USD" description="SAVINGS ACCOUNTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111700" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111700" currencyIsoName="USD" description="CASH IN REGISTERS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111800" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111800" currencyIsoName="USD" description="CASH FOR OUT OF STORE EVENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="111900" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="111000" accountCode="111900" currencyIsoName="USD" description="PETTY CASH" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="120000" isDefault="false" glAccountCategoryName="ACCOUNTS_RECEIVABLE" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="100000" accountCode="120000" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="121000" isDefault="false" glAccountCategoryName="ACCOUNTS_RECEIVABLE" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="120000" accountCode="121000" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE - TRADE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="121100" isDefault="false" glAccountCategoryName="ACCOUNTS_RECEIVABLE" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="121000" accountCode="121100" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE - TRADE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="121200" isDefault="false" glAccountCategoryName="ACCOUNTS_RECEIVABLE" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="121000" accountCode="121200" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE - NON-SUFFICIENT FUNDS RETURNED CHECKS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="121900" isDefault="false" glAccountCategoryName="ACCOUNTS_RECEIVABLE" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="121000" accountCode="121900" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE TRADE - ALLOWANCE FOR BAD DEBT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="122000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="120000" accountCode="122000" currencyIsoName="USD" description="IN TRANSIT FROM CREDIT CARD PROCESSORS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="122100" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="122000" accountCode="122100" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE - AMEX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="122200" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="122000" accountCode="122200" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE - DISCOVER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="122300" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="122000" accountCode="122300" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE - MASTER CARD / VISA" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="122400" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="122000" accountCode="122400" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE - DEBIT / ATM CARDS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="122900" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="122000" accountCode="122900" currencyIsoName="USD" description="ACCOUNTS RECEIVABLE CREDIT CARDS - ALLOWANCE FOR BAD DEBT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="123000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="120000" accountCode="123000" currencyIsoName="USD" description="VENDOR ADVERTISING ALLOWANCES RECEIVABLE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="124000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="120000" accountCode="124000" currencyIsoName="USD" description="LOANS RECEIVABLE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="124100" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="124000" accountCode="124100" currencyIsoName="USD" description="LOANS RECEIVABLE - EMPLOYEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="124200" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="124000" accountCode="124200" currencyIsoName="USD" description="LOANS RECEIVABLE - OWNERS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="124300" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="124000" accountCode="124300" currencyIsoName="USD" description="LOANS RECEIVABLE -OTHERS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="129000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="120000" accountCode="129000" currencyIsoName="USD" description="A/R MISCELLANEOUS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="140000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="100000" accountCode="140000" currencyIsoName="USD" description="INVENTORY" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="150000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="100000" accountCode="150000" currencyIsoName="USD" description="PREPAID EXPENSES, DEPOSITS, OTHER CURRENT ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="151000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="150000" accountCode="151000" currencyIsoName="USD" description="PREPAID EXPENSES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="151100" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="151000" accountCode="151100" currencyIsoName="USD" description="PREPAID INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="151200" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="151000" accountCode="151200" currencyIsoName="USD" description="PREPAID RENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="151300" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="151000" accountCode="151300" currencyIsoName="USD" description="PREPAID INTEREST" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="151900" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="151000" accountCode="151900" currencyIsoName="USD" description="PREPAID OTHER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="152000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="150000" accountCode="152000" currencyIsoName="USD" description="DEPOSITS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="152100" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="152000" accountCode="152100" currencyIsoName="USD" description="DEPOSIT - UPS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="152200" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="152000" accountCode="152200" currencyIsoName="USD" description="DEPOSIT - UTILITIES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="152300" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="152000" accountCode="152300" currencyIsoName="USD" description="DEPOSIT - RENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="152900" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="152000" accountCode="152900" currencyIsoName="USD" description="DEPOSITS - OTHER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="153000" isDefault="false" glAccountCategoryName="CURRENT_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="150000" accountCode="153000" currencyIsoName="USD" description="OTHER CURRENT ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="160000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="100000" accountCode="160000" currencyIsoName="USD" description="LAND AND BUILDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="161000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="160000" accountCode="161000" currencyIsoName="USD" description="LAND" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="162000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="160000" accountCode="162000" currencyIsoName="USD" description="BUILDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="163000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="160000" accountCode="163000" currencyIsoName="USD" description="LAND IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="164000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="160000" accountCode="164000" currencyIsoName="USD" description="BUILDING IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="165000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="160000" accountCode="165000" currencyIsoName="USD" description="LEASEHOLD IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="170000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="FINISHED_GOODS" parentGlAccountName="100000" accountCode="170000" currencyIsoName="USD" description="FURNITURE - FIXTURES - EQUIPMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="171000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="FINISHED_GOODS" parentGlAccountName="170000" accountCode="171000" currencyIsoName="USD" description="FURNITURE - FIXTURES - EQUIPMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="172000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="FINISHED_GOODS" parentGlAccountName="170000" accountCode="172000" currencyIsoName="USD" description="DATA PROCESSING EQUIPMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="173000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="FINISHED_GOODS" parentGlAccountName="170000" accountCode="173000" currencyIsoName="USD" description="DATA PROCESSING SOFTWARE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="174000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="FINISHED_GOODS" parentGlAccountName="170000" accountCode="174000" currencyIsoName="USD" description="VEHICLES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="180000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="100000" accountCode="180000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="181000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="180000" accountCode="181000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION - BUILDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="182000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="180000" accountCode="182000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION - LAND IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="183000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="180000" accountCode="183000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION - BUILDING IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="184000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="180000" accountCode="184000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION - LEASEHOLD IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="185000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="180000" accountCode="185000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION - FURNITURE FIXTURES EQUIPMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="186000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="180000" accountCode="186000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION - DATA PROCESSING EQUIP" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="187000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="180000" accountCode="187000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION - DATA PROCESSING SOFTWARE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="188000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="180000" accountCode="188000" currencyIsoName="USD" description="ACCUMULATED DEPRECIATION - VEHICLES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="190000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="100000" accountCode="190000" currencyIsoName="USD" description="OTHER ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="191000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="190000" accountCode="191000" currencyIsoName="USD" description="INTANGIBLE ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="191100" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="191000" accountCode="191100" currencyIsoName="USD" description="COVENANT NOT TO COMPETE-PREVIOUS OWNER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="191200" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="191000" accountCode="191200" currencyIsoName="USD" description="GOODWILL" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="191300" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="191000" accountCode="191300" currencyIsoName="USD" description="CUSTOMER LISTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="191800" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="191000" accountCode="191800" currencyIsoName="USD" description="OTHER INTANGIBLE ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="191900" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="191000" accountCode="191900" currencyIsoName="USD" description="ACCUMULATED AMORTIZATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="192000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="190000" accountCode="192000" currencyIsoName="USD" description="CASH SURRENDER VALUE OF LIFE INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="199000" isDefault="false" glAccountCategoryName="FIXED_ASSET" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="190000" accountCode="199000" currencyIsoName="USD" description="OTHER ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="200000" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" accountCode="200000" currencyIsoName="USD" description="LIABILITIES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="210000" isDefault="false" glAccountCategoryName="ACCOUNTS_PAYABLE" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="200000" accountCode="210000" currencyIsoName="USD" description="ACCOUNTS PAYABLE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="211000" isDefault="false" glAccountCategoryName="ACCOUNTS_PAYABLE" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="210000" accountCode="211000" currencyIsoName="USD" description="ACCOUNTS PAYABLE - MERCHANDISE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="212000" isDefault="false" glAccountCategoryName="ACCOUNTS_PAYABLE" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="210000" accountCode="212000" currencyIsoName="USD" description="ACCOUNTS PAYABLE - OPERATING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="213000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="210000" accountCode="213000" currencyIsoName="USD" description="CUSTOMER CREDITS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="213100" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="213000" accountCode="213100" currencyIsoName="USD" description="MERCHANDISE CREDITS UNREDEEMED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="213200" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="213000" accountCode="213200" currencyIsoName="USD" description="GIFT CERTIFICATES UNREDEEMED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="213300" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="213000" accountCode="213300" currencyIsoName="USD" description="SPECIAL ORDER DEPOSITS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="213400" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="213000" accountCode="213400" currencyIsoName="USD" description="MAIL ORDER DEPOSITS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="220000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="200000" accountCode="220000" currencyIsoName="USD" description="ACCRUED EXPENSES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="221000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="220000" accountCode="221000" currencyIsoName="USD" description="ACCRUED PAYROLL" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="220000" accountCode="222000" currencyIsoName="USD" description="PAYROLL WITHHOLDINGS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222100" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="222000" accountCode="222100" currencyIsoName="USD" description="FEDERAL WITHHOLDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222200" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="222000" accountCode="222200" currencyIsoName="USD" description="FICA WITHHOLDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222300" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="222000" accountCode="222300" currencyIsoName="USD" description="MEDICARE WITHHOLDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222400" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="222000" accountCode="222400" currencyIsoName="USD" description="STATE WITHHOLDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222500" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="222000" accountCode="222500" currencyIsoName="USD" description="LOCAL WITHHOLDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222600" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="222000" accountCode="222600" currencyIsoName="USD" description="401k - PENSION WITHHOLDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222700" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="222000" accountCode="222700" currencyIsoName="USD" description="GARNISHMENT WITHHOLDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="222900" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="222000" accountCode="222900" currencyIsoName="USD" description="MISCELLANEOUS WITHHOLDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="223000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="220000" accountCode="223000" currencyIsoName="USD" description="ACCRUED PAYROLL TAXES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="223100" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="223000" accountCode="223100" currencyIsoName="USD" description="ACCRUED PAYROLL TAXES - FICA EMPLOYER&apos;S SHARE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="223200" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="223000" accountCode="223200" currencyIsoName="USD" description="ACCRUED PAYROLL TAXES - MEDICARE EMPLOYER&apos;S SHARE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="223300" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="223000" accountCode="223300" currencyIsoName="USD" description="ACCRUED PAYROLL TAXES - FEDERAL UNEMPLOYMENT TAX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="223400" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="223000" accountCode="223400" currencyIsoName="USD" description="ACCRUED PAYROLL TAXES - STATE UNEMPLOYMENT TAX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="224000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="220000" accountCode="224000" currencyIsoName="USD" description="SALES TAX COLLECTED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="224100" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="224000" accountCode="224100" currencyIsoName="USD" description="SALES TAX COLLECTED CA" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="224200" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="224000" accountCode="224200" currencyIsoName="USD" description="SALES TAX COLLECTED NY" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="224300" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="224000" accountCode="224300" currencyIsoName="USD" description="SALES TAX COLLECTED UT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="224400" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="224000" accountCode="224400" currencyIsoName="USD" description="SALES TAX COLLECTED TX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="224500" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="224000" accountCode="224400" currencyIsoName="USD" description="SALES TAX COLLECTED IA" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="225000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="220000" accountCode="225000" currencyIsoName="USD" description="ACCRUED USE TAX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="226000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="220000" accountCode="226000" currencyIsoName="USD" description="ACCRUED RETIREMENT PLAN EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="229000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="220000" accountCode="229000" currencyIsoName="USD" description="OTHER ACCRUED EXPENSES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="230000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="200000" accountCode="230000" currencyIsoName="USD" description="CURRENT NOTES PAYABLE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="231000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="230000" accountCode="231000" currencyIsoName="USD" description="SHORT TERM OBLIGATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="239000" isDefault="false" glAccountCategoryName="CURRENT_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="230000" accountCode="239000" currencyIsoName="USD" description="CURRENT PORTION OF LONG-TERM DEBT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="240000" isDefault="false" glAccountCategoryName="LONG_TERM_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="200000" accountCode="240000" currencyIsoName="USD" description="LONG-TERM NOTES PAYABLE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="241000" isDefault="false" glAccountCategoryName="LONG_TERM_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="240000" accountCode="241000" currencyIsoName="USD" description="LONG-TERM OBLIGATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="242000" isDefault="false" glAccountCategoryName="LONG_TERM_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="240000" accountCode="242000" currencyIsoName="USD" description="MORTGAGE NOTE PAYABLE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="243000" isDefault="false" glAccountCategoryName="LONG_TERM_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="240000" accountCode="243000" currencyIsoName="USD" description="LOAN FROM OWNER OR STOCKHOLDER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="248000" isDefault="false" glAccountCategoryName="LONG_TERM_LIABILITY" glAccountClassName="LIABILITY" glResourceTypeName="MONEY" parentGlAccountName="240000" accountCode="248000" currencyIsoName="USD" description="OTHER LONG TERM OBLIGATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="249000" isDefault="false" glAccountCategoryName="LONG_TERM_LIABILITY" glAccountClassName="ASSET" glResourceTypeName="MONEY" parentGlAccountName="240000" accountCode="249000" currencyIsoName="USD" description="CURRENT PORTION OF LONG-TERM DEBT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="300000" glAccountClassName="EQUITY" glResourceTypeName="MONEY" accountCode="300000" currencyIsoName="USD" description="OWNERS EQUITY AND NET WORTH" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="310000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="300000" accountCode="310000" currencyIsoName="USD" description="CAPITAL" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="311000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="310000" accountCode="311000" currencyIsoName="USD" description="DRAWINGS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="320000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="300000" accountCode="320000" currencyIsoName="USD" description="CAPITAL" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="320100" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="320000" accountCode="320100" currencyIsoName="USD" description="CAPITAL - PARTNER 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="320200" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="320000" accountCode="320200" currencyIsoName="USD" description="CAPITAL - PARTNER 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="320300" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="320000" accountCode="320300" currencyIsoName="USD" description="CAPITAL - PARTNER 3" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="321000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="320000" accountCode="321000" currencyIsoName="USD" description="DRAWINGS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="321100" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="321000" accountCode="321100" currencyIsoName="USD" description="DRAWINGS - PARTNER 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="321200" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="321000" accountCode="321200" currencyIsoName="USD" description="DRAWINGS - PARTNER 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="321300" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="321000" accountCode="321300" currencyIsoName="USD" description="DRAWINGS - PARTNER 3" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="330000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="300000" accountCode="330000" currencyIsoName="USD" description="COMMON STOCK" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="331000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="330000" accountCode="331000" currencyIsoName="USD" description="PAID-IN CAPITAL IN EXCESS OF PAR ON COMMON STOCK" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="332000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="330000" accountCode="332000" currencyIsoName="USD" description="PREFERRED STOCK" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="333000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="330000" accountCode="333000" currencyIsoName="USD" description="PAID-IN CAPITAL IN EXCESS OF PAR ON PREFERRED STOCK" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="334000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="330000" accountCode="334000" currencyIsoName="USD" description="DIVIDENDS, COMMON STOCK" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="335000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="330000" accountCode="335000" currencyIsoName="USD" description="DIVIDENDS, PREFERRED STOCK" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="336000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="330000" accountCode="336000" currencyIsoName="USD" description="RETAINED EARNINGS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="340000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="300000" accountCode="340000" currencyIsoName="USD" description="COMMON STOCK" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="341000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="340000" accountCode="341000" currencyIsoName="USD" description="PAID-IN CAPITAL IN EXCESS OF PAR ON COMMON STOCK" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="342000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="340000" accountCode="342000" currencyIsoName="USD" description="DIVIDENDS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="342100" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="342000" accountCode="342100" currencyIsoName="USD" description="DIVIDENDS - SHAREHOLDER 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="342200" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="342000" accountCode="342200" currencyIsoName="USD" description="DIVIDENDS - SHAREHOLDER 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="342300" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="342000" accountCode="342300" currencyIsoName="USD" description="DIVIDENDS - SHAREHOLDER 3" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="343000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="300000" accountCode="343000" currencyIsoName="USD" description="DRAWINGS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="343100" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="343000" accountCode="343100" currencyIsoName="USD" description="DRAWINGS - SHAREHOLDER 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="343200" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="343000" accountCode="343200" currencyIsoName="USD" description="DRAWINGS - SHAREHOLDER 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="343300" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="DISTRIBUTION" glResourceTypeName="MONEY" parentGlAccountName="343000" accountCode="343300" currencyIsoName="USD" description="DRAWINGS - SHAREHOLDER 3" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="344000" isDefault="false" glAccountCategoryName="OWNERS_EQUITY" glAccountClassName="EQUITY" glResourceTypeName="MONEY" parentGlAccountName="340000" accountCode="344000" currencyIsoName="USD" description="RETAINED EARNINGS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="400000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" accountCode="400000" currencyIsoName="USD" description="SALES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="401000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="400000" accountCode="401000" currencyIsoName="USD" description="GENERAL SALES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="409000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="400000" accountCode="409000" currencyIsoName="USD" description="MISCELLANEOUS SALES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="410000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="400000" accountCode="410000" currencyIsoName="USD" description="DISCOUNTS ON SALES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="420000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="400000" accountCode="420000" currencyIsoName="USD" description="CUSTOMER RETURNS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="500000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" accountCode="500000" currencyIsoName="USD" description="COST OF GOODS SOLD" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="501000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="500000" accountCode="501000" currencyIsoName="USD" description="MERCHANDISE PURCHASES - CATEGORY 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="502000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="500000" accountCode="502000" currencyIsoName="USD" description="MERCHANDISE PURCHASES - CATEGORY 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="510000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="500000" accountCode="510000" currencyIsoName="USD" description="FREIGHT IN" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="510200" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="510000" accountCode="510200" currencyIsoName="USD" description="FREIGHT IN - CATEGORY 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="511000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="510000" accountCode="511000" currencyIsoName="USD" description="PROMPT PAYMENT DISCOUNTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="511100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="511000" accountCode="511100" currencyIsoName="USD" description="PROMPT PMT DISC - CAT 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="511200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="511000" accountCode="511200" currencyIsoName="USD" description="PROMPT PMT DISC - CAT 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="512000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="510000" accountCode="512000" currencyIsoName="USD" description="RETURNS EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="512050" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="512000" accountCode="512050" currencyIsoName="USD" description="RETURNS PENALTIES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="512100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="512000" accountCode="512100" currencyIsoName="USD" description="RETURNS FREIGHT - CATEGORY 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="512200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="512000" accountCode="512200" currencyIsoName="USD" description="RETURNS FREIGHT - CATEGORY 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="513000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="500000" accountCode="513000" currencyIsoName="USD" description="RETURNS TO VENDORS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="513100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="513000" accountCode="513100" currencyIsoName="USD" description="RETURNS TO VENDORS - CATEGORY 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="513200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="513000" accountCode="513200" currencyIsoName="USD" description="RETURNS TO VENDORS - CATEGORY 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="514000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="510000" accountCode="514000" currencyIsoName="USD" description="INVENTORY SHRINKAGE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="515000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="510000" accountCode="515000" currencyIsoName="USD" description="WRITE DOWNS BELOW COST" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="515100" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="515000" accountCode="515100" currencyIsoName="USD" description="WRITE DOWNS BELOW COST - CAT 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="515200" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="515000" accountCode="515200" currencyIsoName="USD" description="WRITE DOWNS BELOW COST - CAT 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="519000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="510000" accountCode="519000" currencyIsoName="USD" description="INVENTORY ADJUSTMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="519100" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="519000" accountCode="519100" currencyIsoName="USD" description="INVENTORY ADJUSTMENT - CAT 1" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="519200" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="519000" accountCode="519200" currencyIsoName="USD" description="INVENTORY ADJUSTMENT - CAT 2" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="600000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" accountCode="600000" currencyIsoName="USD" description="EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="601000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="601000" currencyIsoName="USD" description="WAGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="601100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="601000" accountCode="601100" currencyIsoName="USD" description="WAGES - EMPLOYEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="601200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="601000" accountCode="601200" currencyIsoName="USD" description="WAGES - OWNERS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="602000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="602000" currencyIsoName="USD" description="VACATION PAY" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="602100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="602000" accountCode="602100" currencyIsoName="USD" description="VACATION PAY - EMPLOYEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="602200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="602000" accountCode="602200" currencyIsoName="USD" description="VACATION PAY - OWNERS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="603000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="603000" currencyIsoName="USD" description="SICK PAY" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="603100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="603000" accountCode="603100" currencyIsoName="USD" description="SICK PAY - EMPLOYEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="603200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="603000" accountCode="603200" currencyIsoName="USD" description="SICK PAY - OWNERS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="604000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="604000" currencyIsoName="USD" description="FICA TAX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="604100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="604000" accountCode="604100" currencyIsoName="USD" description="FICA TAX - EMPLOYEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="604200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="604000" accountCode="604200" currencyIsoName="USD" description="FICA TAX - OWNERS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="604500" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="604000" accountCode="604500" currencyIsoName="USD" description="FEDERAL / STATE UNEMPLOYMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="604600" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="604000" accountCode="604600" currencyIsoName="USD" description="FEDERAL / STATE UNEMPLOYMENT - EMPLOYEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="604700" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="604000" accountCode="604700" currencyIsoName="USD" description="FEDERAL / STATE UNEMPLOYMENT - OWNERS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="605000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="605000" currencyIsoName="USD" description="GROUP HEALTH INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="605100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="605000" accountCode="605100" currencyIsoName="USD" description="GROUP HEALTH INSURANCE - PREMIUMS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="605200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="605000" accountCode="605200" currencyIsoName="USD" description="GROUP HEALTH INSURANCE - PREMIUMS OWNER or STOCKHOLDER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="605800" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="605000" accountCode="605800" currencyIsoName="USD" description="EMPLOYEE HEALTH INSURANCE PREMIUM CONTRIBUTIONS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="605900" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="605000" accountCode="605900" currencyIsoName="USD" description="FORMER EMPLOYEE&apos;S COBRA PAYMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="606000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="606000" currencyIsoName="USD" description="WORKERS COMP. INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="607000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="607000" currencyIsoName="USD" description="DISABILITY INCOME INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="607100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="607000" accountCode="607100" currencyIsoName="USD" description="DISABILITY INCOME INSURANCE PREMIUMS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="607200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="607000" accountCode="607200" currencyIsoName="USD" description="DISABILITY INCOME INSURANCE PREMIUMS OWNER or STOCKHOLDER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="607400" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="607000" accountCode="607400" currencyIsoName="USD" description="EMPLOYEE DISABILITY INSURANCE CO-PAYMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="607500" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="607000" accountCode="607500" currencyIsoName="USD" description="LIFE INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="607600" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="607000" accountCode="607600" currencyIsoName="USD" description="GROUP LIFE INSURANCE PREMIUMS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="607700" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="607000" accountCode="607700" currencyIsoName="USD" description="GROUP LIFE INSURANCE PREMIUMS OWNER or STOCKHOLDER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="607900" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="607000" accountCode="607900" currencyIsoName="USD" description="EMPLOYEE LIFE INSURANCE CO-PAYMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="608000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="608000" currencyIsoName="USD" description="RETIREMENT (PENSION / PROFIT SHARING / 401(k)" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="609000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="609000" currencyIsoName="USD" description="OTHER BENEFIT EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="609100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="609000" accountCode="609100" currencyIsoName="USD" description="STAFF GIFTS AND PERQS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="609200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="609000" accountCode="609200" currencyIsoName="USD" description="STAFF PICNIC / CHRISTMAS PARTY (100% DEDUCTIBLE)" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="609500" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="609000" accountCode="609500" currencyIsoName="USD" description="PAYROLL PROCESSING EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="610000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="610000" currencyIsoName="USD" description="OCCUPANCY COST" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="611000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="610000" accountCode="611000" currencyIsoName="USD" description="RENT EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="611100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="611000" accountCode="611100" currencyIsoName="USD" description="BASIC RENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="611200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="611000" accountCode="611200" currencyIsoName="USD" description="PERCENTAGE RENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="611300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="611000" accountCode="611300" currencyIsoName="USD" description="COMMON AREA CHARGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="612000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="610000" accountCode="612000" currencyIsoName="USD" description="UTILITIES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="612100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="612000" accountCode="612100" currencyIsoName="USD" description="UTILITIES - HEATING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="612200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="612000" accountCode="612200" currencyIsoName="USD" description="UTILITIES - ELECTRICITY" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="612300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="612000" accountCode="612300" currencyIsoName="USD" description="UTILITIES - WATER AND SEWER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="612400" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="612000" accountCode="612400" currencyIsoName="USD" description="UTILITIES - RUBBISH REMOVAL / RECYCLING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="613000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="610000" accountCode="613000" currencyIsoName="USD" description="OTHER OCCUPANCY COSTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="613100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="613000" accountCode="613100" currencyIsoName="USD" description="CUSTOMER PARKING SUBSIDY" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="613200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="613000" accountCode="613200" currencyIsoName="USD" description="JANITORIAL AND OTHER CONTRACT SERVICES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="613300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="613000" accountCode="613300" currencyIsoName="USD" description="OTHER OCCUPANCY COSTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="620000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="620000" currencyIsoName="USD" description="ADVERTISING AND PROMOTION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="621000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="620000" accountCode="621000" currencyIsoName="USD" description="ADVERTISING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="621100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="621000" accountCode="621100" currencyIsoName="USD" description="ADVERTISING - PRINT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="621200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="621000" accountCode="621200" currencyIsoName="USD" description="ADVERTISING - RADIO" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="621300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="621000" accountCode="621300" currencyIsoName="USD" description="ADVERTISING - TELEVISION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="621400" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="621000" accountCode="621400" currencyIsoName="USD" description="ADVERTISING - YELLOW PAGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="621500" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="621000" accountCode="621500" currencyIsoName="USD" description="ADVERTISING - OTHER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="622000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="620000" accountCode="622000" currencyIsoName="USD" description="CATALOG / NEWSLETTER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="622100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="622000" accountCode="622100" currencyIsoName="USD" description="CATALOG / NEWSLETTER - LAYOUT / PRODUCTION / PRINTG" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="622200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="622000" accountCode="622200" currencyIsoName="USD" description="CATALOG / NEWSLETTER - POSTAGE / HANDLING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="623000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="620000" accountCode="623000" currencyIsoName="USD" description="SPECIAL EVENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="623100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="623000" accountCode="623100" currencyIsoName="USD" description="STORE EVENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="623200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="623000" accountCode="623200" currencyIsoName="USD" description="OTHER EVENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="624000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="620000" accountCode="624000" currencyIsoName="USD" description="JOINT ADVERTISING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="624100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="624000" accountCode="624100" currencyIsoName="USD" description="JOINT ADVERTISING - MALL ASSOCIATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="624200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="624000" accountCode="624200" currencyIsoName="USD" description="JOINT ADVERTISING - FRANCHISER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="624300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="624000" accountCode="624300" currencyIsoName="USD" description="JOINT ADVERTISING - TRADE ASSOCIATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="624400" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="624000" accountCode="624400" currencyIsoName="USD" description="JOINT ADVERTISING - WEB REFERRAL FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="625000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="620000" accountCode="625000" currencyIsoName="USD" description="OTHER ADVERTISING / PROMOTION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="626000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="620000" accountCode="626000" currencyIsoName="USD" description="PUBLISHER / VENDOR ADVERTISING ALLOWANCES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="626100" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="626000" accountCode="626100" currencyIsoName="USD" description="CO-OPERATIVE ADVERTISING ALLOWANCES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="626200" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="626000" accountCode="626200" currencyIsoName="USD" description="RETAIL DISPLAY AND SHELF ALLOWANCES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="626300" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="626000" accountCode="626300" currencyIsoName="USD" description="CATALOG SPACE SALES REVENUES ALLOWANCES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="626400" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="626000" accountCode="626400" currencyIsoName="USD" description="OTHER ADVERTISING ALLOWANCES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="630000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="630000" currencyIsoName="USD" description="TELEPHONE AND OTHER COMMUNICATIONS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="631000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="630000" accountCode="631000" currencyIsoName="USD" description="TELEPHONE COMPANY USE CHARGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="631100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="631000" accountCode="631100" currencyIsoName="USD" description="TELEPHONE CO CHARGES - LOCAL" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="631200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="631000" accountCode="631200" currencyIsoName="USD" description="TELEPHONE CO CHARGES - LONG DISTANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="631300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="631000" accountCode="631300" currencyIsoName="USD" description="TELEPHONE CO CHARGES - FAX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="631400" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="631000" accountCode="631400" currencyIsoName="USD" description="TELEPHONE CO CHARGES - CELL PHONE AND PAGER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="632000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="630000" accountCode="632000" currencyIsoName="USD" description="NETWORK CHARGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="640000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="640000" currencyIsoName="USD" description="PROFESSIONAL SERVICES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="641000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="640000" accountCode="641000" currencyIsoName="USD" description="LEGAL FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="642000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="640000" accountCode="642000" currencyIsoName="USD" description="ACCOUNTING FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="643000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="640000" accountCode="643000" currencyIsoName="USD" description="INVENTORY VERIFICATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="649000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="640000" accountCode="649000" currencyIsoName="USD" description="OTHER CONSULTING FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="650000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="650000" currencyIsoName="USD" description="STATIONERY AND SUPPLIES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="651000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="650000" accountCode="651000" currencyIsoName="USD" description="STATIONERY AND SUPPLIES - OFFICE USE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="652000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="650000" accountCode="652000" currencyIsoName="USD" description="WRAPPINGS AND BAGS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="653000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="650000" accountCode="653000" currencyIsoName="USD" description="PRINTED ITEMS - NOT OTHERWISE ALLOCATED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="654000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="650000" accountCode="654000" currencyIsoName="USD" description="JANITORIAL SUPPLIES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="659000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="650000" accountCode="659000" currencyIsoName="USD" description="OTHER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="660000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="660000" currencyIsoName="USD" description="DATA PROCESSING EXPENSE - NOT WEB SITE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="661000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="660000" accountCode="661000" currencyIsoName="USD" description="DATA PROCESSING SUPPLIES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="662000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="660000" accountCode="662000" currencyIsoName="USD" description="DATA PROCESSING EQUIPEMENT AND SOFTWARE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="663000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="660000" accountCode="663000" currencyIsoName="USD" description="OUTSIDE COMPUTER SERVICES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="669000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="660000" accountCode="669000" currencyIsoName="USD" description="OTHER DATA PROCESSING EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="670000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="670000" currencyIsoName="USD" description="DEPRECIATION EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="671000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="671000" currencyIsoName="USD" description="DEPRECIATION - BUILDING" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="672000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="672000" currencyIsoName="USD" description="DEPRECIATION - LAND IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="673000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="673000" currencyIsoName="USD" description="DEPRECIATION - BUILDING IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="674000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="674000" currencyIsoName="USD" description="DEPRECIATION - LEASEHOLD IMPROVEMENTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="675000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="675000" currencyIsoName="USD" description="DEPRECIATION - FURNITURE /FIXTURES / EQUIPMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="675100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="675100" currencyIsoName="USD" description="DEPRECIATION - FURNITURE /FIXTURES / EQUIPMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="675200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="675200" currencyIsoName="USD" description="DEPRECIATION - DATA PROCESSING EQUIPMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="675300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="675300" currencyIsoName="USD" description="DEPRECIATION - DATA PROCESSING SOFTWARE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="675400" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="670000" accountCode="675400" currencyIsoName="USD" description="DEPRECIATION - VEHICLES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="680000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="680000" currencyIsoName="USD" description="TRAVEL AND ENTERTAINMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="681000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="680000" accountCode="681000" currencyIsoName="USD" description="BUSINESS TRAVEL" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="682000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="680000" accountCode="682000" currencyIsoName="USD" description="BUSINESS MEALS AND ENTERTAINMENT (50% DEDUCTIBLE)" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="683000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="680000" accountCode="683000" currencyIsoName="USD" description="FOOD - STAFF MEETINGS, ETC.  (100% DEDUCTIBLE - DE MINIMIS)" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="690000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="600000" accountCode="690000" currencyIsoName="USD" description="INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="691000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="690000" accountCode="691000" currencyIsoName="USD" description="BUSINESS INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="692000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="690000" accountCode="692000" currencyIsoName="USD" description="REAL ESTATE INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="693000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="690000" accountCode="693000" currencyIsoName="USD" description="VEHICLE INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="694000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="690000" accountCode="694000" currencyIsoName="USD" description="OTHER INSURANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="700000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" accountCode="700000" currencyIsoName="USD" description="OTHER EXPENSES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="701000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="701000" currencyIsoName="USD" description="CREDIT CARD SERVICE CHARGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="701100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="701000" accountCode="701100" currencyIsoName="USD" description="CREDIT CARD SERVICE CHARGE MASTER CARD / VISA" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="701200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="701000" accountCode="701200" currencyIsoName="USD" description="CREDIT CARD SERVICE CHARGE AMEX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="701300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="701000" accountCode="701300" currencyIsoName="USD" description="CREDIT CARD SERVICE CHARGE DISCOVER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="701400" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="701000" accountCode="701400" currencyIsoName="USD" description="CREDIT CARD SERVICE CHARGE DEBIT / ATM CARD" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="702000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="702000" currencyIsoName="USD" description="BANK SERVICE CHARGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="709000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="709000" currencyIsoName="USD" description="OTHER SERVICE CHARGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="710000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="710000" currencyIsoName="USD" description="DUES AND SUBSCRIPTIONS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="711000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="710000" accountCode="711000" currencyIsoName="USD" description="ASSOCIATION MEMBERSHIP FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="712000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="710000" accountCode="712000" currencyIsoName="USD" description="SUBSCRIPTION FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="712100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="712000" accountCode="712100" currencyIsoName="USD" description="SUBSCRIPTION FEES - PROFESSIONAL PUBLICATIONS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="712200" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="712000" accountCode="712200" currencyIsoName="USD" description="SUBSCRIPTION FEES - BOUND REFERENCE TOOLS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="712300" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="712000" accountCode="712300" currencyIsoName="USD" description="SUBSCRIPTION FEES - ELECTRONIC REFER TOOLS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="720000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="720000" currencyIsoName="USD" description="OFFICE EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="721000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="720000" accountCode="721000" currencyIsoName="USD" description="OFFICE EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="730000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="730000" currencyIsoName="USD" description="POSTAGE / SHIPPING EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="731000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="730000" accountCode="731000" currencyIsoName="USD" description="POSTAGE EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="731100" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="731000" accountCode="731100" currencyIsoName="USD" description="CUSTOMER PACKAGE CHARGES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="731200" glAccountClassName="REVENUE" glResourceTypeName="MONEY" parentGlAccountName="731000" accountCode="731200" currencyIsoName="USD" description="POSTAGE AND HANDLING FEES RECEIVED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="739000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="730000" accountCode="739000" currencyIsoName="USD" description="OTHER POSTAGE EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="740000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="740000" currencyIsoName="USD" description="TAXES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="741000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="740000" accountCode="741000" currencyIsoName="USD" description="INVENTORY AND USE TAXES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="742000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="740000" accountCode="742000" currencyIsoName="USD" description="REAL ESTATE TAXES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="743000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="740000" accountCode="743000" currencyIsoName="USD" description="BUSINESS LICENSES AND FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="744000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="740000" accountCode="744000" currencyIsoName="USD" description="OTHER BUSINESS TAXES AND FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="750000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="750000" currencyIsoName="USD" description="EDUCATION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="751000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="750000" accountCode="751000" currencyIsoName="USD" description="EDUCATION - COURSE FEES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="752000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="750000" accountCode="752000" currencyIsoName="USD" description="EDUCATION - TRAVEL" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="753000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="750000" accountCode="753000" currencyIsoName="USD" description="EDUCATION - MEALS AND ENTERTAINMENT ( 50% DEDUCTIBLE)" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="754000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="750000" accountCode="754000" currencyIsoName="USD" description="EDUCATION - OTHER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="760000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="760000" currencyIsoName="USD" description="EQUIPMENT RENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="761000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="760000" accountCode="761000" currencyIsoName="USD" description="OFFICE EQUIPMENT RENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="762000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="760000" accountCode="762000" currencyIsoName="USD" description="STORE EQUIPMENT RENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="763000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="760000" accountCode="763000" currencyIsoName="USD" description="OTHER EQUIPMENT RENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="770000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="770000" currencyIsoName="USD" description="REPAIRS AND MAINTENANCE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="771000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="770000" accountCode="771000" currencyIsoName="USD" description="REPAIRS AND MAINTENANCE - BUILDING EQUIP" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="772000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="770000" accountCode="772000" currencyIsoName="USD" description="REPAIRS AND MAINTENANCE - FURNITURE, FIXTURES, AND EQUIPMENT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="773000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="770000" accountCode="773000" currencyIsoName="USD" description="REPAIRS AND MAINTENANCE - DATA PROCESSING EQUIP" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="774000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="770000" accountCode="774000" currencyIsoName="USD" description="REPAIRS AND MAINTENANCE - VEHICLE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="779000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="770000" accountCode="779000" currencyIsoName="USD" description="REPAIRS AND MAINTENANCE - OTHER" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="780000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="700000" accountCode="780000" currencyIsoName="USD" description="OTHER OPERATING EXPENSES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="781000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="781000" currencyIsoName="USD" description="BAD DEBTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="782000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="782000" currencyIsoName="USD" description="COLLECTION EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="783000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="783000" currencyIsoName="USD" description="CASH OVER / SHORT" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="784000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="784000" currencyIsoName="USD" description="CLASSIFIED ADS - HELP WANTED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="785000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="785000" currencyIsoName="USD" description="CONTRIBUTIONS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="786000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="786000" currencyIsoName="USD" description="VEHICLE EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="787000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="787000" currencyIsoName="USD" description="AMORTIZATION EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="788000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="788000" currencyIsoName="USD" description="PENALTIES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="789000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="789000" currencyIsoName="USD" description="FRANCHISE FEE / ROYALTY" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="790000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="780000" accountCode="790000" currencyIsoName="USD" description="MISCELLANEOUS EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="800000" glAccountClassName="REVENUE" glResourceTypeName="MONEY" accountCode="800000" currencyIsoName="USD" description="OTHER INCOME" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="801000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="801000" currencyIsoName="USD" description="INCOME / LOSS FROM BUSINESS (NET OF EXPENSES)" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="802000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="802000" currencyIsoName="USD" description="RENTAL INCOME" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="803000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="803000" currencyIsoName="USD" description="SALES TAX COMMISSION" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="804000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="804000" currencyIsoName="USD" description="SPECIAL FEES COLLECTED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="805000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="805000" currencyIsoName="USD" description="OTHER FEES COLLECTED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="806000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="806000" currencyIsoName="USD" description="MEMBERSHIP FEES COLLECTED" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="810000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="810000" currencyIsoName="USD" description="INTEREST INCOME ON FINANCE CHARGES OR CUSTOMER ACCOUNTS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="811000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="811000" currencyIsoName="USD" description="OTHER INTEREST INCOME" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="812000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="812000" currencyIsoName="USD" description="DIVIDEND INCOME" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="813000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="813000" currencyIsoName="USD" description="CAPITAL GAINS INCOME" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="814000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="814000" currencyIsoName="USD" description="GAIN ON SALE OF FIXED ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="819000" glAccountClassName="INCOME" glResourceTypeName="MONEY" parentGlAccountName="800000" accountCode="819000" currencyIsoName="USD" description="OTHER INCOME" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="820000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" accountCode="820000" currencyIsoName="USD" description="OTHER EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="821000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="820000" accountCode="821000" currencyIsoName="USD" description="INTEREST EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="822000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="820000" accountCode="822000" currencyIsoName="USD" description="MORTGAGE INTEREST EXPENSE" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="823000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="820000" accountCode="823000" currencyIsoName="USD" description="LOSS ON SALE OF FIXED ASSETS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="824000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="820000" accountCode="824000" currencyIsoName="USD" description="UNINSURED CASUALTY LOSS" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="829000" glAccountClassName="EXPENSE" glResourceTypeName="MONEY" parentGlAccountName="820000" accountCode="829000" currencyIsoName="USD" description="OTHER EXPENSES" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="900000" glAccountClassName="NON_POSTING" glResourceTypeName="MONEY" accountCode="900000" currencyIsoName="USD" description="INCOME TAX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="901000" glAccountClassName="NON_POSTING" glResourceTypeName="MONEY" parentGlAccountName="900000" accountCode="901000" currencyIsoName="USD" description="FEDERAL INCOME TAX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="902000" glAccountClassName="NON_POSTING" glResourceTypeName="MONEY" parentGlAccountName="900000" accountCode="902000" currencyIsoName="USD" description="STATE INCOME TAX" />
+        <glAccount glAccountTypeName="POSTING" glAccountName="903000" glAccountClassName="NON_POSTING" glResourceTypeName="MONEY" parentGlAccountName="900000" accountCode="903000" currencyIsoName="USD" description="LOCAL INCOME TAX" />
+    </glAccounts>
+</initialData>

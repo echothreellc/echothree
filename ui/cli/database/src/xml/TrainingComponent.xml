@@ -1,0 +1,750 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Training">
+            <tables>
+                <table namePlural="TrainingClasses" nameSingular="TrainingClass" columnPrefix="trncls">
+                    <columns>
+                        <column name="TrainingClassId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassDetails" destinationColumn="TrainingClassDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassDetails" destinationColumn="TrainingClassDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassDetails" nameSingular="TrainingClassDetail" columnPrefix="trnclsdt">
+                    <columns>
+                        <column name="TrainingClassDetailId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClasses" destinationColumn="TrainingClassId" />
+                        <column name="TrainingClassName" type="Name" nullAllowed="false" />
+                        <column name="EstimatedReadingTime" type="Time" nullAllowed="true" />
+                        <column name="ReadingTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="EstimatedTestingTime" type="Time" nullAllowed="true" />
+                        <column name="TestingTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="RequiredCompletionTime" type="Time" nullAllowed="true" />
+                        <column name="WorkEffortScopeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
+                        <column name="DefaultPercentageToPass" type="Percent" nullAllowed="true" />
+                        <column name="OverallQuestionCount" type="Integer" nullAllowed="true" />
+                        <column name="TestingValidityTime" type="Time" nullAllowed="true" />
+                        <column name="ExpiredRetentionTime" type="Time" nullAllowed="true" />
+                        <column name="AlwaysReassignOnExpiration" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TrainingClassName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkEffortScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassTranslations" nameSingular="TrainingClassTranslation" columnPrefix="trnclstr">
+                    <columns>
+                        <column name="TrainingClassTranslationId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClasses" destinationColumn="TrainingClassId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="OverviewMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Overview" type="CLOB" nullAllowed="true" />                        
+                        <column name="IntroductionMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Introduction" type="CLOB" nullAllowed="true" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TrainingClassId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="OverviewMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="IntroductionMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassSections" nameSingular="TrainingClassSection" columnPrefix="trnclss">
+                    <columns>
+                        <column name="TrainingClassSectionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassSectionDetails" destinationColumn="TrainingClassSectionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassSectionDetails" destinationColumn="TrainingClassSectionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassSectionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassSectionDetails" nameSingular="TrainingClassSectionDetail" columnPrefix="trnclssdt">
+                    <columns>
+                        <column name="TrainingClassSectionDetailId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassSectionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassSections" destinationColumn="TrainingClassSectionId" />
+                        <column name="TrainingClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClasses" destinationColumn="TrainingClassId" />
+                        <column name="TrainingClassSectionName" type="Name" nullAllowed="false" />
+                        <column name="PercentageToPass" type="Percent" nullAllowed="true" />
+                        <column name="QuestionCount" type="Integer" nullAllowed="true" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassSectionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassSectionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TrainingClassId" />
+                            <indexColumn name="TrainingClassSectionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassSectionTranslations" nameSingular="TrainingClassSectionTranslation" columnPrefix="trnclsstr">
+                    <columns>
+                        <column name="TrainingClassSectionTranslationId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassSectionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassSections" destinationColumn="TrainingClassSectionId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="OverviewMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Overview" type="CLOB" nullAllowed="true" />                        
+                        <column name="IntroductionMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Introduction" type="CLOB" nullAllowed="true" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassSectionTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassSectionId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TrainingClassSectionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="OverviewMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="IntroductionMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassPages" nameSingular="TrainingClassPage" columnPrefix="trnclsp">
+                    <columns>
+                        <column name="TrainingClassPageId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassPageDetails" destinationColumn="TrainingClassPageDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassPageDetails" destinationColumn="TrainingClassPageDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassPageId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassPageDetails" nameSingular="TrainingClassPageDetail" columnPrefix="trnclspdt">
+                    <columns>
+                        <column name="TrainingClassPageDetailId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassPageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassPages" destinationColumn="TrainingClassPageId" />
+                        <column name="TrainingClassSectionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassSections" destinationColumn="TrainingClassSectionId" />
+                        <column name="TrainingClassPageName" type="Name" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassPageDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassPageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TrainingClassSectionId" />
+                            <indexColumn name="TrainingClassPageName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassPageTranslations" nameSingular="TrainingClassPageTranslation" columnPrefix="trnclsptr">
+                    <columns>
+                        <column name="TrainingClassPageTranslationId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassPageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassPages" destinationColumn="TrainingClassPageId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="PageMimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Page" type="CLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassPageTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassPageId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TrainingClassPageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PageMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassQuestions" nameSingular="TrainingClassQuestion" columnPrefix="trnclsqus">
+                    <columns>
+                        <column name="TrainingClassQuestionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassQuestionDetails" destinationColumn="TrainingClassQuestionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassQuestionDetails" destinationColumn="TrainingClassQuestionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassQuestionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassQuestionDetails" nameSingular="TrainingClassQuestionDetail" columnPrefix="trnclsqusdt">
+                    <columns>
+                        <column name="TrainingClassQuestionDetailId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassQuestionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassQuestions" destinationColumn="TrainingClassQuestionId" />
+                        <column name="TrainingClassSectionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassSections" destinationColumn="TrainingClassSectionId" />
+                        <column name="TrainingClassQuestionName" type="Name" nullAllowed="false" />
+                        <column name="AskingRequired" type="Boolean" nullAllowed="false" />
+                        <column name="PassingRequired" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassQuestionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassQuestionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TrainingClassSectionId" />
+                            <indexColumn name="TrainingClassQuestionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassQuestionTranslations" nameSingular="TrainingClassQuestionTranslation" columnPrefix="trnclsqustr">
+                    <columns>
+                        <column name="TrainingClassQuestionTranslationId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassQuestionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassQuestions" destinationColumn="TrainingClassQuestionId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="QuestionMimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Question" type="CLOB" nullAllowed="false" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassQuestionTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassQuestionId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TrainingClassQuestionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="QuestionMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassAnswers" nameSingular="TrainingClassAnswer" columnPrefix="trnclsans">
+                    <columns>
+                        <column name="TrainingClassAnswerId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassAnswerDetails" destinationColumn="TrainingClassAnswerDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassAnswerDetails" destinationColumn="TrainingClassAnswerDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassAnswerId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassAnswerDetails" nameSingular="TrainingClassAnswerDetail" columnPrefix="trnclsansdt">
+                    <columns>
+                        <column name="TrainingClassAnswerDetailId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassAnswerId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassAnswers" destinationColumn="TrainingClassAnswerId" />
+                        <column name="TrainingClassQuestionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassQuestions" destinationColumn="TrainingClassQuestionId" />
+                        <column name="TrainingClassAnswerName" type="Name" nullAllowed="false" />
+                        <column name="IsCorrect" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassAnswerDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassAnswerId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TrainingClassQuestionId" />
+                            <indexColumn name="TrainingClassAnswerName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TrainingClassAnswerTranslations" nameSingular="TrainingClassAnswerTranslation" columnPrefix="trnclsanstr">
+                    <columns>
+                        <column name="TrainingClassAnswerTranslationId" type="EID" nullAllowed="false" />
+                        <column name="TrainingClassAnswerId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassAnswers" destinationColumn="TrainingClassAnswerId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="AnswerMimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Answer" type="CLOB" nullAllowed="false" />                        
+                        <column name="SelectedMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Selected" type="CLOB" nullAllowed="true" />                        
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TrainingClassAnswerTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TrainingClassAnswerId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TrainingClassAnswerId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="AnswerMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="SelectedMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClasses" nameSingular="PartyTrainingClass" columnPrefix="ptrncls">
+                    <columns>
+                        <column name="PartyTrainingClassId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassDetails" destinationColumn="PartyTrainingClassDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassDetails" destinationColumn="PartyTrainingClassDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassDetails" nameSingular="PartyTrainingClassDetail" columnPrefix="ptrnclsdt">
+                    <columns>
+                        <column name="PartyTrainingClassDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClasses" destinationColumn="PartyTrainingClassId" />
+                        <column name="PartyTrainingClassName" type="Name" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="TrainingClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClasses" destinationColumn="TrainingClassId" />
+                        <column name="CompletedTime" type="Time" nullAllowed="true" />
+                        <column name="ValidUntilTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTrainingClassId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyTrainingClassName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="TrainingClassId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassStatuses" nameSingular="PartyTrainingClassStatus" columnPrefix="ptrnclsst">
+                    <columns>
+                        <column name="PartyTrainingClassStatusId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClasses" destinationColumn="PartyTrainingClassId" />
+                        <column name="PartyTrainingClassSessionSequence" type="Integer" nullAllowed="false" />
+                        <column name="LastPartyTrainingClassSessionId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassSessions" destinationColumn="PartyTrainingClassSessionId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="PartyTrainingClassId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastPartyTrainingClassSessionId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessions" nameSingular="PartyTrainingClassSession" columnPrefix="ptrnclssess">
+                    <columns>
+                        <column name="PartyTrainingClassSessionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassSessionDetails" destinationColumn="PartyTrainingClassSessionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassSessionDetails" destinationColumn="PartyTrainingClassSessionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessionDetails" nameSingular="PartyTrainingClassSessionDetail" columnPrefix="ptrnclssessdt">
+                    <columns>
+                        <column name="PartyTrainingClassSessionDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassSessionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClassSessions" destinationColumn="PartyTrainingClassSessionId" />
+                        <column name="PartyTrainingClassId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClasses" destinationColumn="PartyTrainingClassId" />
+                        <column name="PartyTrainingClassSessionSequence" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyTrainingClassId" />
+                            <indexColumn name="PartyTrainingClassSessionSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyTrainingClassId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessionStatuses" nameSingular="PartyTrainingClassSessionStatus" columnPrefix="ptrnclssessst">
+                    <columns>
+                        <column name="PartyTrainingClassSessionStatusId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassSessionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClassSessions" destinationColumn="PartyTrainingClassSessionId" />
+                        <column name="PartyTrainingClassSessionSectionSequence" type="Integer" nullAllowed="false" />
+                        <column name="PartyTrainingClassSessionPageSequence" type="Integer" nullAllowed="false" />
+                        <column name="LastPartyTrainingClassSessionSectionId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassSessionSections" destinationColumn="PartyTrainingClassSessionSectionId" />
+                        <column name="LastPartyTrainingClassSessionPageId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassSessionPages" destinationColumn="PartyTrainingClassSessionPageId" />
+                        <column name="LastPartyTrainingClassSessionQuestionId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassSessionQuestions" destinationColumn="PartyTrainingClassSessionQuestionId" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastPartyTrainingClassSessionSectionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastPartyTrainingClassSessionPageId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastPartyTrainingClassSessionQuestionId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessionSections" nameSingular="PartyTrainingClassSessionSection" columnPrefix="ptrnclss">
+                    <columns>
+                        <column name="PartyTrainingClassSessionSectionId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassSessionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClassSessions" destinationColumn="PartyTrainingClassSessionId" />
+                        <column name="PartyTrainingClassSessionSectionSequence" type="Integer" nullAllowed="false" />
+                        <column name="TrainingClassSectionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassSections" destinationColumn="TrainingClassSectionId" />
+                        <column name="ReadingStartTime" type="Time" nullAllowed="false" />
+                        <column name="ReadingEndTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionSectionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                            <indexColumn name="PartyTrainingClassSessionSectionSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TrainingClassSectionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessionPages" nameSingular="PartyTrainingClassSessionPage" columnPrefix="ptrnclsp">
+                    <columns>
+                        <column name="PartyTrainingClassSessionPageId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassSessionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClassSessions" destinationColumn="PartyTrainingClassSessionId" />
+                        <column name="PartyTrainingClassSessionPageSequence" type="Integer" nullAllowed="false" />
+                        <column name="TrainingClassPageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassPages" destinationColumn="TrainingClassPageId" />
+                        <column name="ReadingStartTime" type="Time" nullAllowed="false" />
+                        <column name="ReadingEndTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionPageId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                            <indexColumn name="PartyTrainingClassSessionPageSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TrainingClassPageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessionQuestions" nameSingular="PartyTrainingClassSessionQuestion" columnPrefix="ptrnclsqus">
+                    <columns>
+                        <column name="PartyTrainingClassSessionQuestionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassSessionQuestionDetails" destinationColumn="PartyTrainingClassSessionQuestionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyTrainingClassSessionQuestionDetails" destinationColumn="PartyTrainingClassSessionQuestionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionQuestionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessionQuestionDetails" nameSingular="PartyTrainingClassSessionQuestionDetail" columnPrefix="ptrnclsqusdt">
+                    <columns>
+                        <column name="PartyTrainingClassSessionQuestionDetailId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassSessionQuestionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClassSessionQuestions" destinationColumn="PartyTrainingClassSessionQuestionId" />
+                        <column name="PartyTrainingClassSessionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClassSessions" destinationColumn="PartyTrainingClassSessionId" />
+                        <column name="TrainingClassQuestionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TrainingClassQuestions" destinationColumn="TrainingClassQuestionId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionQuestionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTrainingClassSessionQuestionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                            <indexColumn name="TrainingClassQuestionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PartyTrainingClassSessionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="TrainingClassQuestionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessionQuestionStatuses" nameSingular="PartyTrainingClassSessionQuestionStatus" columnPrefix="ptrnclsqusst">
+                    <columns>
+                        <column name="PartyTrainingClassSessionQuestionStatusId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassSessionQuestionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClassSessionQuestions" destinationColumn="PartyTrainingClassSessionQuestionId" />
+                        <column name="PartyTrainingClassSessionAnswerSequence" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionQuestionStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="PartyTrainingClassSessionQuestionId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PartyTrainingClassSessionAnswers" nameSingular="PartyTrainingClassSessionAnswer" columnPrefix="ptrnclsans">
+                    <columns>
+                        <column name="PartyTrainingClassSessionAnswerId" type="EID" nullAllowed="false" />
+                        <column name="PartyTrainingClassSessionQuestionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTrainingClassSessionQuestions" destinationColumn="PartyTrainingClassSessionQuestionId" />
+                        <column name="PartyTrainingClassSessionAnswerSequence" type="Integer" nullAllowed="false" />
+                        <column name="TrainingClassAnswerId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TrainingClassAnswers" destinationColumn="TrainingClassAnswerId" />
+                        <column name="QuestionStartTime" type="Time" nullAllowed="false" />
+                        <column name="QuestionEndTime" type="Time" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyTrainingClassSessionAnswerId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyTrainingClassSessionQuestionId" />
+                            <indexColumn name="PartyTrainingClassSessionAnswerSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTrainingClassSessionQuestionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TrainingClassAnswerId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

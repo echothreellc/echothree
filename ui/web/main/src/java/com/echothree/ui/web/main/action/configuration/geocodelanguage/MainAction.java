@@ -1,0 +1,83 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.configuration.geocodelanguage;
+
+import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.remote.form.GetGeoCodeLanguagesForm;
+import com.echothree.control.user.geo.remote.result.GetGeoCodeLanguagesResult;
+import com.echothree.model.control.geo.remote.transfer.GeoCodeTransfer;
+import com.echothree.ui.web.main.framework.AttributeConstants;
+import com.echothree.ui.web.main.framework.ForwardConstants;
+import com.echothree.ui.web.main.framework.MainBaseAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
+import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+@SproutAction(
+    path = "/Configuration/GeoCodeLanguage/Main",
+    mappingClass = SecureActionMapping.class,
+    properties = {
+        @SproutProperty(property = "secure", value = "true")
+    },
+    forwards = {
+        @SproutForward(name = "Display", path = "/configuration/geocodelanguage/main.jsp")
+    }
+)
+public class MainAction
+        extends MainBaseAction<ActionForm> {
+    
+    @Override
+    public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        String forwardKey = null;
+        
+        try {
+            String geoCodeName = request.getParameter(ParameterConstants.GEO_CODE_NAME);
+            GetGeoCodeLanguagesForm commandForm = GeoUtil.getHome().getGetGeoCodeLanguagesForm();
+            
+            commandForm.setGeoCodeName(geoCodeName);
+            
+            CommandResult commandResult = GeoUtil.getHome().getGeoCodeLanguages(getUserVisitPK(request), commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetGeoCodeLanguagesResult result = (GetGeoCodeLanguagesResult)executionResult.getResult();
+            GeoCodeTransfer geoCode = result.getGeoCode();
+            
+            if(geoCode == null) {
+                forwardKey = ForwardConstants.ERROR_404;
+            } else {
+                request.setAttribute(AttributeConstants.GEO_CODE, geoCode);
+                request.setAttribute(AttributeConstants.GEO_CODE_LANGUAGES, result.getGeoCodeLanguages());
+                forwardKey = ForwardConstants.DISPLAY;
+            }
+        } catch (NamingException ne) {
+            forwardKey = ForwardConstants.ERROR_500;
+        }
+        
+        return mapping.findForward(forwardKey);
+    }
+    
+}

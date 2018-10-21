@@ -1,0 +1,337 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.geo.server.command;
+
+import com.echothree.control.user.geo.remote.edit.CountryEdit;
+import com.echothree.control.user.geo.remote.edit.GeoEditFactory;
+import com.echothree.control.user.geo.remote.form.EditCountryForm;
+import com.echothree.control.user.geo.remote.result.EditCountryResult;
+import com.echothree.control.user.geo.remote.result.GeoResultFactory;
+import com.echothree.control.user.geo.remote.spec.GeoCodeSpec;
+import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
+import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
+import com.echothree.model.data.geo.server.entity.GeoCodeCountry;
+import com.echothree.model.data.geo.server.entity.GeoCodeDescription;
+import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
+import com.echothree.model.data.geo.server.entity.GeoCodeScope;
+import com.echothree.model.data.geo.server.entity.GeoCodeType;
+import com.echothree.model.data.geo.server.value.GeoCodeAliasValue;
+import com.echothree.model.data.geo.server.value.GeoCodeCountryValue;
+import com.echothree.model.data.geo.server.value.GeoCodeDescriptionValue;
+import com.echothree.model.data.geo.server.value.GeoCodeDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditCountryCommand
+        extends BaseAbstractEditCommand<GeoCodeSpec, CountryEdit, EditCountryResult, GeoCode, GeoCode> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                    new SecurityRoleDefinition(SecurityRoleGroups.Country.name(), SecurityRoles.Edit.name())
+                    )))
+                )));
+
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Iso3Number", FieldType.NUMBER_3, true, null, null),
+                new FieldDefinition("Iso3Letter", FieldType.UPPER_LETTER_3, true, null, null),
+                new FieldDefinition("Iso2Letter", FieldType.UPPER_LETTER_2, true, null, null),
+                new FieldDefinition("TelephoneCode", FieldType.STRING, false, 1L, 5L),
+                new FieldDefinition("AreaCodePattern", FieldType.REGULAR_EXPRESSION, false, null, null),
+                new FieldDefinition("AreaCodeRequired", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("AreaCodeExample", FieldType.STRING, false, 1L, 5L),
+                new FieldDefinition("TelephoneNumberPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
+                new FieldDefinition("TelephoneNumberExample", FieldType.STRING, false, 1L, 25L),
+                new FieldDefinition("PostalAddressFormatName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CityRequired", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("CityGeoCodeRequired", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("StateRequired", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("StateGeoCodeRequired", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("PostalCodePattern", FieldType.REGULAR_EXPRESSION, false, null, null),
+                new FieldDefinition("PostalCodeRequired", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("PostalCodeGeoCodeRequired", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("PostalCodeLength", FieldType.UNSIGNED_INTEGER, false, null, null),
+                new FieldDefinition("PostalCodeGeoCodeLength", FieldType.UNSIGNED_INTEGER, false, null, null),
+                new FieldDefinition("PostalCodeExample", FieldType.STRING, false, 1L, 15L),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+
+    /** Creates a new instance of EditCountryCommand */
+    public EditCountryCommand(UserVisitPK userVisitPK, EditCountryForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+
+    @Override
+    public EditCountryResult getResult() {
+        return GeoResultFactory.getEditCountryResult();
+    }
+
+    @Override
+    public CountryEdit getEdit() {
+        return GeoEditFactory.getCountryEdit();
+    }
+
+    @Override
+    public GeoCode getEntity(EditCountryResult result) {
+        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        GeoCode geoCode = null;
+        String geoCodeName = spec.getGeoCodeName();
+
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            geoCode = geoControl.getGeoCodeByName(geoCodeName);
+        } else { // EditMode.UPDATE
+            geoCode = geoControl.getGeoCodeByNameForUpdate(geoCodeName);
+        }
+
+        if(geoCode != null) {
+            String geoCodeTypeName = geoCode.getLastDetail().getGeoCodeType().getLastDetail().getGeoCodeTypeName();
+            
+            if(!geoCodeTypeName.equals(GeoConstants.GeoCodeType_COUNTRY)) {
+                addExecutionError(ExecutionErrors.InvalidGeoCodeType.name(), geoCodeTypeName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
+        }
+
+        return geoCode;
+    }
+
+    @Override
+    public GeoCode getLockEntity(GeoCode geoCode) {
+        return geoCode;
+    }
+
+    @Override
+    public void fillInResult(EditCountryResult result, GeoCode geoCode) {
+        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+
+        result.setCountry(geoControl.getCountryTransfer(getUserVisit(), geoCode));
+    }
+
+    @Override
+    public void doLock(CountryEdit edit, GeoCode geoCode) {
+        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
+        GeoCodeDescription geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, getPreferredLanguage());
+        GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
+        GeoCodeCountry geoCodeCountry = geoControl.getGeoCodeCountry(geoCode);
+        Integer postalCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
+        Integer postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
+
+        GeoCodeAlias geoCodeAlias = geoCodeLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+        edit.setCountryName(geoCodeAlias.getAlias());
+
+        geoCodeAlias = geoCodeLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
+        edit.setIso3Number(geoCodeAlias.getAlias());
+
+        geoCodeAlias = geoCodeLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
+        edit.setIso3Letter(geoCodeAlias.getAlias());
+
+        geoCodeAlias = geoCodeLogic.getGeoCodeAliasUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        edit.setIso2Letter(geoCodeAlias.getAlias());
+
+        edit.setTelephoneCode(geoCodeCountry.getTelephoneCode());
+        edit.setAreaCodePattern(geoCodeCountry.getAreaCodePattern());
+        edit.setAreaCodeRequired(geoCodeCountry.getAreaCodeRequired().toString());
+        edit.setAreaCodeExample(geoCodeCountry.getAreaCodeExample());
+        edit.setTelephoneNumberPattern(geoCodeCountry.getTelephoneNumberPattern());
+        edit.setTelephoneNumberExample(geoCodeCountry.getTelephoneNumberExample());
+        edit.setPostalAddressFormatName(geoCodeCountry.getPostalAddressFormat().getLastDetail().getPostalAddressFormatName());
+        edit.setCityRequired(geoCodeCountry.getCityRequired().toString());
+        edit.setCityGeoCodeRequired(geoCodeCountry.getCityGeoCodeRequired().toString());
+        edit.setStateRequired(geoCodeCountry.getStateRequired().toString());
+        edit.setStateGeoCodeRequired(geoCodeCountry.getStateGeoCodeRequired().toString());
+        edit.setPostalCodePattern(geoCodeCountry.getPostalCodePattern());
+        edit.setPostalCodeRequired(geoCodeCountry.getPostalCodeRequired().toString());
+        edit.setPostalCodeGeoCodeRequired(geoCodeCountry.getPostalCodeGeoCodeRequired().toString());
+        edit.setPostalCodeLength(postalCodeLength == null ? null : postalCodeLength.toString());
+        edit.setPostalCodeGeoCodeLength(postalCodeGeoCodeLength == null ? null : postalCodeGeoCodeLength.toString());
+        edit.setPostalCodeExample(geoCodeCountry.getPostalCodeExample());
+        edit.setIsDefault(geoCodeDetail.getIsDefault().toString());
+        edit.setSortOrder(geoCodeDetail.getSortOrder().toString());
+
+        if(geoCodeDescription != null) {
+            edit.setDescription(geoCodeDescription.getDescription());
+        }
+    }
+
+    PostalAddressFormat postalAddressFormat;
+
+    @Override
+    public void canUpdate(GeoCode geoCode) {
+        GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
+        GeoCodeType geoCodeType = geoCodeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
+
+        if(!hasExecutionErrors()) {
+            GeoCodeScope geoCodeScope = geoCodeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
+
+            if(!hasExecutionErrors()) {
+                String iso3Number = edit.getIso3Number();
+                GeoCode duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, iso3Number);
+
+                if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
+                    String iso3Letter = edit.getIso3Letter();
+
+                    duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_LETTER, iso3Letter);
+
+                    if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
+                        String iso2Letter = edit.getIso2Letter();
+
+                        duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_2_LETTER, iso2Letter);
+
+                        if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
+                            String countryName = edit.getCountryName();
+
+                            duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_COUNTRY_NAME, countryName);
+
+                            if((duplicateGeoCode == null || duplicateGeoCode.equals(geoCode)) && !hasExecutionErrors()) {
+                                ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                                String postalAddressFormatName = edit.getPostalAddressFormatName();
+
+                                postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
+
+                                if(postalAddressFormat == null) {
+                                    addExecutionError(ExecutionErrors.UnknownPostalAddressFormatName.name(), postalAddressFormatName);
+                                }
+                            } else {
+                                if(geoCode != null) {
+                                    addExecutionError(ExecutionErrors.DuplicateCountryName.name(), countryName);
+                                }
+                            }
+                        } else {
+                            if(geoCode != null) {
+                                addExecutionError(ExecutionErrors.DuplicateIso2Letter.name(), iso2Letter);
+                            }
+                        }
+                    } else {
+                        if(geoCode != null) {
+                            addExecutionError(ExecutionErrors.DuplicateIso3Letter.name(), iso3Letter);
+                        }
+                    }
+                } else {
+                    if(geoCode != null) {
+                        addExecutionError(ExecutionErrors.DuplicateIso3Number.name(), iso3Number);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void doUpdate(GeoCode geoCode) {
+        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
+        PartyPK partyPK = getPartyPK();
+        GeoCodeDetailValue geoCodeDetailValue = geoControl.getGeoCodeDetailValueForUpdate(geoCode);
+        GeoCodeDescription geoCodeDescription = geoControl.getGeoCodeDescriptionForUpdate(geoCode, getPreferredLanguage());
+        GeoCodeCountryValue geoCodeCountryValue = geoControl.getGeoCodeCountryValueForUpdate(geoCode);
+        String strPostalCodeLength = edit.getPostalCodeLength();
+        Integer postalCodeLength = strPostalCodeLength == null ? null : Integer.valueOf(strPostalCodeLength);
+        String strPostalCodeGeoCodeLength = edit.getPostalCodeGeoCodeLength();
+        Integer postalCodeGeoCodeLength = strPostalCodeGeoCodeLength == null ? null : Integer.valueOf(strPostalCodeGeoCodeLength);
+        String description = edit.getDescription();
+
+        GeoCodeAliasValue geoCodeAliasValue = geoCodeLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+        geoCodeAliasValue.setAlias(edit.getCountryName());
+        geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
+
+        geoCodeAliasValue = geoCodeLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
+        geoCodeAliasValue.setAlias(edit.getIso3Number());
+        geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
+
+        geoCodeAliasValue = geoCodeLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
+        geoCodeAliasValue.setAlias(edit.getIso3Letter());
+        geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
+
+        geoCodeAliasValue = geoCodeLogic.getGeoCodeAliasValueUsingNames(null, geoCode, GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        geoCodeAliasValue.setAlias(edit.getIso2Letter());
+        geoControl.updateGeoCodeAliasFromValue(geoCodeAliasValue, partyPK);
+
+        geoCodeCountryValue.setTelephoneCode(edit.getTelephoneCode());
+        geoCodeCountryValue.setAreaCodePattern(edit.getAreaCodePattern());
+        geoCodeCountryValue.setAreaCodeRequired(Boolean.valueOf(edit.getAreaCodeRequired()));
+        geoCodeCountryValue.setAreaCodeExample(edit.getAreaCodeExample());
+        geoCodeCountryValue.setTelephoneNumberPattern(edit.getTelephoneNumberPattern());
+        geoCodeCountryValue.setTelephoneNumberExample(edit.getTelephoneNumberExample());
+        geoCodeCountryValue.setPostalAddressFormatPK(postalAddressFormat.getPrimaryKey());
+        geoCodeCountryValue.setCityRequired(Boolean.valueOf(edit.getCityRequired()));
+        geoCodeCountryValue.setCityGeoCodeRequired(Boolean.valueOf(edit.getCityGeoCodeRequired()));
+        geoCodeCountryValue.setStateRequired(Boolean.valueOf(edit.getStateRequired()));
+        geoCodeCountryValue.setStateGeoCodeRequired(Boolean.valueOf(edit.getStateGeoCodeRequired()));
+        geoCodeCountryValue.setPostalCodePattern(edit.getPostalCodePattern());
+        geoCodeCountryValue.setPostalCodeRequired(Boolean.valueOf(edit.getPostalCodeRequired()));
+        geoCodeCountryValue.setPostalCodeGeoCodeRequired(Boolean.valueOf(edit.getPostalCodeGeoCodeRequired()));
+        geoCodeCountryValue.setPostalCodeLength(postalCodeLength);
+        geoCodeCountryValue.setPostalCodeGeoCodeLength(postalCodeGeoCodeLength);
+        geoCodeCountryValue.setPostalCodeExample(edit.getPostalCodeExample());
+        
+        geoCodeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        geoCodeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        geoControl.updateGeoCodeFromValue(geoCodeDetailValue, partyPK);
+        geoControl.updateGeoCodeCountryFromValue(geoCodeCountryValue, partyPK);
+
+        if(geoCodeDescription == null && description != null) {
+            geoControl.createGeoCodeDescription(geoCode, getPreferredLanguage(), description, partyPK);
+        } else {
+            if(geoCodeDescription != null && description == null) {
+                geoControl.deleteGeoCodeDescription(geoCodeDescription, partyPK);
+            } else {
+                if(geoCodeDescription != null && description != null) {
+                    GeoCodeDescriptionValue geoCodeDescriptionValue = geoControl.getGeoCodeDescriptionValue(geoCodeDescription);
+
+                    geoCodeDescriptionValue.setDescription(description);
+                    geoControl.updateGeoCodeDescriptionFromValue(geoCodeDescriptionValue, partyPK);
+                }
+            }
+        }
+    }
+
+}

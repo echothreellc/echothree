@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <itemDescriptionTypeUseTypes>
+        <itemDescriptionTypeUseType itemDescriptionTypeUseTypeName="SCREENSHOTS" isDefault="true" sortOrder="0">
+            <itemDescriptionTypeUseTypeDescription languageIsoName="en" description="Screenshots" />
+        </itemDescriptionTypeUseType>
+    </itemDescriptionTypeUseTypes>
+    <itemImageTypes>
+        <itemImageType itemImageTypeName="PHOTO" preferredMimeTypeName="image/jpeg" quality="75" isDefault="true" sortOrder="1">
+            <itemImageTypeDescription languageIsoName="en" description="Photo" />
+        </itemImageType>
+        <itemImageType itemImageTypeName="LINE_ART" preferredMimeTypeName="image/png" isDefault="false" sortOrder="1">
+            <itemImageTypeDescription languageIsoName="en" description="Line Art" />
+        </itemImageType>
+    </itemImageTypes>
+    <itemDescriptionTypes>
+        <itemDescriptionType itemDescriptionTypeName="DEFAULT_DESCRIPTION" useParentIfMissing="false" checkContentWebAddress="false" includeInIndex="true"
+        indexDefault="false" isDefault="true" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Default Description" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="INDEXED_DESCRIPTION" parentItemDescriptionTypeName="DEFAULT_DESCRIPTION" useParentIfMissing="true"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="true" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Indexed Description" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="INVOICE_DESCRIPTION" parentItemDescriptionTypeName="DEFAULT_DESCRIPTION" useParentIfMissing="true"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Invoice Description" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="ORDER_DESCRIPTION" parentItemDescriptionTypeName="DEFAULT_DESCRIPTION" useParentIfMissing="true"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Order Description" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="PURCHASE_ORDER_DESCRIPTION" parentItemDescriptionTypeName="DEFAULT_DESCRIPTION" useParentIfMissing="true"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Purchase Order Description" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="WEB_DESCRIPTION" parentItemDescriptionTypeName="DEFAULT_DESCRIPTION" useParentIfMissing="true"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Web Description" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="PRIMARY_IMAGE" useParentIfMissing="false" mimeTypeUsageTypeName="IMAGE"
+        checkContentWebAddress="false" includeInIndex="false" indexDefault="false" isDefault="false" sortOrder="0" scaleFromParent="false">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Primary Image" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="LARGE_IMAGE" parentItemDescriptionTypeName="PRIMARY_IMAGE" useParentIfMissing="true" mimeTypeUsageTypeName="IMAGE"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0" preferredHeight="300" preferredWidth="300" scaleFromParent="true">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Large Image" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="SMALL_IMAGE" parentItemDescriptionTypeName="PRIMARY_IMAGE" useParentIfMissing="true" mimeTypeUsageTypeName="IMAGE"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0" preferredHeight="200" preferredWidth="200" scaleFromParent="true">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Small Image" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="DEFAULT_DETAILS" useParentIfMissing="false" mimeTypeUsageTypeName="TEXT"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Default Details" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="WEB_DETAILS" parentItemDescriptionTypeName="DEFAULT_DETAILS" useParentIfMissing="true" mimeTypeUsageTypeName="TEXT"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Web Details" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="WEB_CATEGORY_DETAILS" parentItemDescriptionTypeName="WEB_DETAILS" useParentIfMissing="true" mimeTypeUsageTypeName="TEXT"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Web Category Details" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="WEB_ITEM_DETAILS" parentItemDescriptionTypeName="WEB_DETAILS" useParentIfMissing="true" mimeTypeUsageTypeName="TEXT"
+        checkContentWebAddress="false" includeInIndex="true" indexDefault="false" isDefault="false" sortOrder="0">
+            <itemDescriptionTypeDescription languageIsoName="en" description="Web Item Details" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="SCREENSHOT_1" useParentIfMissing="false" mimeTypeUsageTypeName="IMAGE" checkContentWebAddress="false" includeInIndex="false"
+        indexDefault="false" isDefault="false" sortOrder="0" scaleFromParent="false" >
+            <itemDescriptionTypeDescription languageIsoName="en" description="Screenshot 1" />
+            <itemDescriptionTypeUse itemDescriptionTypeUseTypeName="SCREENSHOTS" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="SCREENSHOT_2" useParentIfMissing="false" mimeTypeUsageTypeName="IMAGE" checkContentWebAddress="false" includeInIndex="false"
+        indexDefault="false" isDefault="false" sortOrder="0" scaleFromParent="false" >
+            <itemDescriptionTypeDescription languageIsoName="en" description="Screenshot 2" />
+            <itemDescriptionTypeUse itemDescriptionTypeUseTypeName="SCREENSHOTS" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="SCREENSHOT_3" useParentIfMissing="false" mimeTypeUsageTypeName="IMAGE" checkContentWebAddress="false" includeInIndex="false"
+        indexDefault="false" isDefault="false" sortOrder="0" scaleFromParent="false" >
+            <itemDescriptionTypeDescription languageIsoName="en" description="Screenshot 3" />
+            <itemDescriptionTypeUse itemDescriptionTypeUseTypeName="SCREENSHOTS" />
+        </itemDescriptionType>
+        <itemDescriptionType itemDescriptionTypeName="SCREENSHOT_4" useParentIfMissing="false" mimeTypeUsageTypeName="IMAGE" checkContentWebAddress="false" includeInIndex="false"
+        indexDefault="false" isDefault="false" sortOrder="0" scaleFromParent="false" >
+            <itemDescriptionTypeDescription languageIsoName="en" description="Screenshot 4" />
+            <itemDescriptionTypeUse itemDescriptionTypeUseTypeName="SCREENSHOTS" />
+        </itemDescriptionType>
+    </itemDescriptionTypes>
+    <itemTypes>
+        <itemType itemTypeName="REGULAR" isDefault="true" sortOrder="1">
+            <itemTypeDescription languageIsoName="en" description="Regular" />
+        </itemType>
+        <itemType itemTypeName="KIT" isDefault="false" sortOrder="2">
+            <itemTypeDescription languageIsoName="en" description="Kit" />
+        </itemType>
+        <itemType itemTypeName="STYLE" isDefault="false" sortOrder="3">
+            <itemTypeDescription languageIsoName="en" description="Style" />
+        </itemType>
+    </itemTypes>
+    <itemDeliveryTypes>
+        <itemDeliveryType itemDeliveryTypeName="PHYSICAL" isDefault="true" sortOrder="1">
+            <itemDeliveryTypeDescription languageIsoName="en" description="Physical" />
+        </itemDeliveryType>
+        <itemDeliveryType itemDeliveryTypeName="ELECTRONIC" isDefault="false" sortOrder="2">
+            <itemDeliveryTypeDescription languageIsoName="en" description="Electronic" />
+        </itemDeliveryType>
+        <itemDeliveryType itemDeliveryTypeName="NONE" isDefault="false" sortOrder="3">
+            <itemDeliveryTypeDescription languageIsoName="en" description="None" />
+        </itemDeliveryType>
+    </itemDeliveryTypes>
+    <itemInventoryTypes>
+        <itemInventoryType itemInventoryTypeName="INVENTORY" isDefault="false" sortOrder="1">
+            <itemInventoryTypeDescription languageIsoName="en" description="Inventory" />
+        </itemInventoryType>
+        <itemInventoryType itemInventoryTypeName="NONINVENTORY" isDefault="true" sortOrder="2">
+            <itemInventoryTypeDescription languageIsoName="en" description="Non-inventory" />
+        </itemInventoryType>
+        <itemInventoryType itemInventoryTypeName="DROP_SHIP" isDefault="false" sortOrder="3">
+            <itemInventoryTypeDescription languageIsoName="en" description="Drop Ship" />
+        </itemInventoryType>
+    </itemInventoryTypes>
+    <itemUseTypes>
+        <itemUseType itemUseTypeName="REGULAR" isDefault="true" sortOrder="0">
+            <itemUseTypeDescription languageIsoName="en" description="Regular" />
+        </itemUseType>
+        <itemUseType itemUseTypeName="CLUB" isDefault="false" sortOrder="0">
+            <itemUseTypeDescription languageIsoName="en" description="Club" />
+        </itemUseType>
+    </itemUseTypes>
+    <itemAliasChecksumTypes>
+        <itemAliasChecksumType itemAliasChecksumTypeName="NONE" isDefault="true" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="None" />
+        </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="UPC_A" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="UPC-A" />
+        </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="ISBN_10" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="ISBN-10" />
+        </itemAliasChecksumType>
+        <itemAliasChecksumType itemAliasChecksumTypeName="ISBN_13" isDefault="false" sortOrder="1">
+            <itemAliasChecksumTypeDescription languageIsoName="en" description="ISBN-13" />
+        </itemAliasChecksumType>
+    </itemAliasChecksumTypes>
+    <itemAliasTypes>
+        <itemAliasType itemAliasTypeName="ADDTL_ITEM_NAME" itemAliasChecksumTypeName="NONE" allowMultiple="true" isDefault="true" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="Additional Item Name" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="UPC" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="Universal Product Code" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="ISBN10" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="International Standard Book Number, 10 Digits" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="ISBN13" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="International Standard Book Number, 13 Digits" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="EAN" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="European Article Number" />
+        </itemAliasType>
+        <itemAliasType itemAliasTypeName="BOOKLAND_EAN" itemAliasChecksumTypeName="NONE" allowMultiple="false" isDefault="false" sortOrder="0">
+            <itemAliasTypeDescription languageIsoName="en" description="Bookland European Article Number" />
+        </itemAliasType>
+    </itemAliasTypes>
+    <itemPriceTypes>
+        <itemPriceType itemPriceTypeName="FIXED" isDefault="true" sortOrder="0">
+            <itemPriceTypeDescription languageIsoName="en" description="Fixed" />
+        </itemPriceType>
+        <itemPriceType itemPriceTypeName="VARIABLE" isDefault="false" sortOrder="0">
+            <itemPriceTypeDescription languageIsoName="en" description="Variable" />
+        </itemPriceType>
+    </itemPriceTypes>
+    <harmonizedTariffScheduleCodeUseTypes>
+        <harmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseTypeName="EXPORT" isDefault="true" sortOrder="0">
+            <harmonizedTariffScheduleCodeUseTypeDescription languageIsoName="en" description="Export" />
+        </harmonizedTariffScheduleCodeUseType>
+        <harmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseTypeName="IMPORT" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUseTypeDescription languageIsoName="en" description="Import" />
+        </harmonizedTariffScheduleCodeUseType>
+    </harmonizedTariffScheduleCodeUseTypes>
+    <harmonizedTariffScheduleCodeUnits>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="BBL" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Barrels" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="CAR" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Carat" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="CGM" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Content Gram" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="CKG" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Content Kilogram" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="CM2" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Square Centimeters" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="CTN" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Content Ton" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="CYK" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Clean Yield Kilogram" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="DOZ" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Dozen" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="DPC" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Dozen Pieces" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="DPR" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Dozen Pairs" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="DS" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Doses" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="FBM" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Fiber M" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="G" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Gram" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="GBQ" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Giqabecquerel" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="GCN" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Gross Containers" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="GM" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Gram" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="GRL" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Gross Lines" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="GRS" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Gross" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="HUN" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Hundreds" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="JWL" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Number of Jewels" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="KG" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="1,000 Grams" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="KM3" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="1,000 Cubic Meters" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="KTS" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Kilogram Total Sugars" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="L" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Liter" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="LNM" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Linear Meters" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="M" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Meters" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="M2" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Square Meters" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="M3" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Cubic Meters" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="MBQ" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Megabecquerel" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="MWH" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Megawatt Hours" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="NO" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Number" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="ODE" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Ozone Depletion Equivalent" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="PCS" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Pieces" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="PFL" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Proof Liter" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="PK" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Pack" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="PRS" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Pairs" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="SQ" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Square" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="T" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Metric Ton" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="THM" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Thousand Meters" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="THS" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Thousand" />
+        </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="X" isDefault="true" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Quantity Not Required (valid only for HTS statistical reporting)" />
+        </harmonizedTariffScheduleCodeUnit>
+    </harmonizedTariffScheduleCodeUnits>
+    <relatedItemTypes>
+        <relatedItemType relatedItemTypeName="SALES_ORDER_CROSS_SELLS" isDefault="true" sortOrder="1">
+            <relatedItemTypeDescription languageIsoName="en" description="Sales Order - Cross-Sells" />
+        </relatedItemType>
+        <relatedItemType relatedItemTypeName="SALES_ORDER_UPSELLS" isDefault="true" sortOrder="2">
+            <relatedItemTypeDescription languageIsoName="en" description="Sales Order - Upsells" />
+        </relatedItemType>
+        <relatedItemType relatedItemTypeName="SALES_ORDER_INTERESTED_IN" isDefault="true" sortOrder="3">
+            <relatedItemTypeDescription languageIsoName="en" description="Sales Order - Customers Interested In" />
+        </relatedItemType>
+        <relatedItemType relatedItemTypeName="SALES_ORDER_ALSO_BOUGHT" isDefault="true" sortOrder="4">
+            <relatedItemTypeDescription languageIsoName="en" description="Sales Order - Customers Also Bought" />
+        </relatedItemType>
+        <relatedItemType relatedItemTypeName="SUGGESTED_REPLACEMENTS_OUT_OF_STOCK" isDefault="false" sortOrder="5">
+            <relatedItemTypeDescription languageIsoName="en" description="Suggested Replacements - Out of Stock" />
+        </relatedItemType>
+        <relatedItemType relatedItemTypeName="SUGGESTED_REPLACEMENTS_DISCONTINUED" isDefault="false" sortOrder="6">
+            <relatedItemTypeDescription languageIsoName="en" description="Suggested Replacements - Discontinued" />
+        </relatedItemType>
+    </relatedItemTypes>
+    <itemAccountingCategories>
+        <itemAccountingCategory itemAccountingCategoryName="DEFAULT" isDefault="true" sortOrder="0">
+            <itemAccountingCategoryDescription languageIsoName="en" description="Default" />
+        </itemAccountingCategory>
+    </itemAccountingCategories>
+    <itemPurchasingCategories>
+        <itemPurchasingCategory itemPurchasingCategoryName="DEFAULT" isDefault="true" sortOrder="0">
+            <itemPurchasingCategoryDescription languageIsoName="en" description="Default" />
+        </itemPurchasingCategory>
+    </itemPurchasingCategories>
+    <itemCategories>
+        <itemCategory itemCategoryName="DEFAULT" isDefault="true" sortOrder="0">
+            <itemCategoryDescription languageIsoName="en" description="Default" />
+        </itemCategory>
+        <itemCategory itemCategoryName="DEFAULT_CHILD_1" parentItemCategoryName="DEFAULT" isDefault="false" sortOrder="0">
+            <itemCategoryDescription languageIsoName="en" description="Default Child 1" />
+        </itemCategory>
+        <itemCategory itemCategoryName="DEFAULT_CHILD_2" parentItemCategoryName="DEFAULT" isDefault="false" sortOrder="0">
+            <itemCategoryDescription languageIsoName="en" description="Default Child 2" />
+        </itemCategory>
+    </itemCategories>
+    <items>
+        <item itemName="MINIMAL" itemTypeName="REGULAR" itemUseTypeName="REGULAR" itemCategoryName="DEFAULT" itemAccountingCategoryName="DEFAULT"
+        itemPurchasingCategoryName="DEFAULT" itemDeliveryTypeName="PHYSICAL" itemInventoryTypeName="INVENTORY" inventorySerialized="false" shippingChargeExempt="false"
+        allowClubDiscounts="true" allowCouponDiscounts="true" allowAssociatePayments="true" itemStatus="NEW_ACTIVE" unitOfMeasureKindName="BASIC" itemPriceTypeName="FIXED"
+        companyName="TEST_COMPANY" salesOrderStartTime="11/1/2006" salesOrderEndTime="11/30/2006" purchaseOrderStartTime="11/15/2006 8:00 AM"
+        purchaseOrderEndTime="12/01/2006 5:00 PM">
+            <itemUnitOfMeasureType unitOfMeasureTypeName="EACH" isDefault="true" sortOrder="1" />
+            <itemAlias unitOfMeasureTypeName="EACH" itemAliasTypeName="ADDTL_ITEM_NAME" alias="TEST_OTHER" />
+            <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Test Item (Default)" />
+            <itemDescription itemDescriptionTypeName="WEB_DESCRIPTION" languageIsoName="en" stringDescription="Test Item (Web)" />
+            <itemDescription itemDescriptionTypeName="DEFAULT_DETAILS" languageIsoName="en" mimeTypeName="text/html">
+                <![CDATA[
+                    <p>This is an example of a default product description.</p>
+                ]]>
+            </itemDescription>
+            <itemDescription itemDescriptionTypeName="WEB_DETAILS" languageIsoName="en" mimeTypeName="text/html">
+                <![CDATA[
+                    <p>This is an example of a default web product description.</p>
+                ]]>
+            </itemDescription>
+            <itemDescription itemDescriptionTypeName="WEB_CATEGORY_DETAILS" languageIsoName="en" mimeTypeName="text/html">
+                <![CDATA[
+                    <p>This is an example of an item category description that overrides the default item details.</p>
+                ]]>
+            </itemDescription>
+            <itemDescription itemDescriptionTypeName="WEB_ITEM_DETAILS" languageIsoName="en" mimeTypeName="text/html">
+                <![CDATA[
+                    <p>This is an example of an item description that overrides the default item details.</p>
+                ]]>
+            </itemDescription>
+            <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="14.95" />
+            <itemWeight unitOfMeasureTypeName="EACH" weightUnitOfMeasureTypeName="POUND" weight="5" />
+            <itemVolume unitOfMeasureTypeName="EACH" heightUnitOfMeasureTypeName="INCH" height="1"
+            widthUnitOfMeasureTypeName="INCH" width="1" depthUnitOfMeasureTypeName="INCH" depth="1" />
+            <itemCountryOfOrigin countryName="UNITED_STATES" percent="50%" />
+            <itemCountryOfOrigin countryName="CANADA" percent="50%" />
+            <itemUnitLimit inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" minimumQuantity="1" maximumQuantity="5" />
+            <itemUnitPriceLimit inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" minimumUnitPrice="1.00" maximumUnitPrice="100.00" />
+            <partyInventoryLevel inventoryConditionName="GOOD" minimumInventoryUnitOfMeasureTypeName="EACH" minimumInventory="10"
+                maximumInventoryUnitOfMeasureTypeName="EACH" maximumInventory="100" reorderQuantityUnitOfMeasureTypeName="EACH"
+                reorderQuantity="20" />
+            <partyInventoryLevel warehouseName="WAREHOUSE_1" inventoryConditionName="GOOD" minimumInventoryUnitOfMeasureTypeName="EACH"
+                minimumInventory="10" maximumInventoryUnitOfMeasureTypeName="EACH" maximumInventory="100"
+                reorderQuantityUnitOfMeasureTypeName="EACH" reorderQuantity="20" />
+            <entityAttributes>
+                <entityNameAttribute entityAttributeName="EXAMPLE_NAME" nameAttribute="NAME_ATTRIBUTE" />
+                <entityIntegerAttribute entityAttributeName="EXAMPLE_INTEGER" integerAttribute="500" />
+                <entityLongAttribute entityAttributeName="EXAMPLE_LONG" longAttribute="123456789" />
+                <entityBooleanAttribute entityAttributeName="EXAMPLE_BOOLEAN" booleanAttribute="false" />
+                <entityStringAttribute entityAttributeName="EXAMPLE_STRING" languageIsoName="en" stringAttribute="String Attribute" />
+                <entityListItemAttribute entityAttributeName="EXAMPLE_LISTITEM" entityListItemName="CHOICE_1" />
+                <entityMultipleListItemAttributes entityAttributeName="EXAMPLE_MULTIPLELISTITEM">
+                    <entityMultipleListItemAttribute entityListItemName="CHOICE_1" />
+                    <entityMultipleListItemAttribute entityListItemName="CHOICE_2" />
+                </entityMultipleListItemAttributes>
+            </entityAttributes>
+        </item>
+        <item itemName="KIT_MEMBER_1" itemTypeName="REGULAR" itemUseTypeName="REGULAR" itemCategoryName="DEFAULT" itemAccountingCategoryName="DEFAULT"
+        itemPurchasingCategoryName="DEFAULT" itemDeliveryTypeName="PHYSICAL" itemInventoryTypeName="INVENTORY"  inventorySerialized="false" shippingChargeExempt="false"
+        allowClubDiscounts="true" allowCouponDiscounts="true" allowAssociatePayments="true" itemStatus="NEW_ACTIVE" unitOfMeasureKindName="BASIC" itemPriceTypeName="FIXED"
+        companyName="TEST_COMPANY">
+            <itemUnitOfMeasureType unitOfMeasureTypeName="EACH" isDefault="true" sortOrder="1" />
+            <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Kit Member 1" />
+            <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="12.95" />
+        </item>
+        <item itemName="KIT_MEMBER_2" itemTypeName="REGULAR" itemUseTypeName="REGULAR" itemCategoryName="DEFAULT" itemAccountingCategoryName="DEFAULT"
+        itemPurchasingCategoryName="DEFAULT" itemDeliveryTypeName="PHYSICAL" itemInventoryTypeName="INVENTORY"  inventorySerialized="false" shippingChargeExempt="false"
+        allowClubDiscounts="true" allowCouponDiscounts="true" allowAssociatePayments="true" itemStatus="NEW_ACTIVE" unitOfMeasureKindName="BASIC" itemPriceTypeName="FIXED"
+        companyName="TEST_COMPANY">
+            <itemUnitOfMeasureType unitOfMeasureTypeName="EACH" isDefault="true" sortOrder="1" />
+            <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Kit Member 2" />
+            <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="12.95" />
+        </item>
+        <item itemName="KIT_EXAMPLE" itemTypeName="KIT" itemUseTypeName="REGULAR" itemCategoryName="DEFAULT" shippingChargeExempt="false"
+        allowClubDiscounts="true" allowCouponDiscounts="true" allowAssociatePayments="true" itemStatus="NEW_ACTIVE"
+        unitOfMeasureKindName="BASIC" itemPriceTypeName="FIXED" companyName="TEST_COMPANY">
+            <itemUnitOfMeasureType unitOfMeasureTypeName="EACH" isDefault="true" sortOrder="1" />
+            <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Kit Example" />
+            <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="19.95" />
+            <itemKitMember inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" memberItemName="KIT_MEMBER_1"
+            memberInventoryConditionName="GOOD" memberUnitOfMeasureTypeName="EACH" quantity="1" />
+            <itemKitMember inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" memberItemName="KIT_MEMBER_2"
+            memberInventoryConditionName="GOOD" memberUnitOfMeasureTypeName="EACH" quantity="1" />
+        </item>
+        <item itemName="CLUB_INITIAL" itemTypeName="REGULAR" itemUseTypeName="CLUB" itemCategoryName="DEFAULT" itemAccountingCategoryName="DEFAULT"
+        itemPurchasingCategoryName="DEFAULT" itemDeliveryTypeName="PHYSICAL" itemInventoryTypeName="INVENTORY"  inventorySerialized="false" shippingChargeExempt="true"
+        allowClubDiscounts="false" allowCouponDiscounts="false" allowAssociatePayments="false" itemStatus="NEW_ACTIVE" unitOfMeasureKindName="BASIC" itemPriceTypeName="FIXED"
+        companyName="TEST_COMPANY">
+            <itemUnitOfMeasureType unitOfMeasureTypeName="EACH" isDefault="true" sortOrder="1" />
+            <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Club Initital Item" />
+            <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="9.95" />
+            <relatedItem relatedItemTypeName="SALES_ORDER_CROSS_SELLS" toItemName="MINIMAL" sortOrder="1" />
+        </item>
+        <item itemName="CLUB_RENEWAL" itemTypeName="REGULAR" itemUseTypeName="CLUB" itemCategoryName="DEFAULT" itemAccountingCategoryName="DEFAULT"
+        itemPurchasingCategoryName="DEFAULT" itemDeliveryTypeName="PHYSICAL" itemInventoryTypeName="INVENTORY"  inventorySerialized="false" shippingChargeExempt="true"
+        allowClubDiscounts="false" allowCouponDiscounts="false" allowAssociatePayments="false" itemStatus="NEW_ACTIVE" unitOfMeasureKindName="BASIC" itemPriceTypeName="FIXED"
+        companyName="TEST_COMPANY">
+            <itemUnitOfMeasureType unitOfMeasureTypeName="EACH" isDefault="true" sortOrder="1" />
+            <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Club Renewal Item" />
+            <itemPrice inventoryConditionName="GOOD" unitOfMeasureTypeName="EACH" currencyIsoName="USD" unitPrice="9.95" />
+        </item>
+    </items>
+</initialData>

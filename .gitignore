@@ -1,0 +1,16 @@
+.DS_Store
+Scratch.txt
+generated
+ChangeLog.txt
+build
+Notes.txt
+.move.sh.swp
+.ivy.xml.swp
+nbproject/private
+ui/cli/amazon/build
+ui/cli/database/build
+ui/cli/dataloader/build
+ui/cli/form/build
+ui/cli/logging/build
+ui/cli/mailtransfer/build
+.idea/workspace.xml

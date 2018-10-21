@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Customer">
+            <tables>
+                <table namePlural="CustomerTypes" nameSingular="CustomerType" columnPrefix="cuty">
+                    <columns>
+                        <column name="CustomerTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CustomerTypeDetails" destinationColumn="CustomerTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CustomerTypeDetails" destinationColumn="CustomerTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CustomerTypeDetails" nameSingular="CustomerTypeDetail" columnPrefix="cutydt">
+                    <columns>
+                        <column name="CustomerTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="CustomerTypeName" type="Name" nullAllowed="false" />
+                        <column name="CustomerSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="DefaultOfferUseId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
+                        <column name="DefaultTermId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Terms" destinationColumn="TermId" />
+                        <column name="DefaultCancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="DefaultReturnPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="DefaultCustomerStatusId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="DefaultCustomerCreditStatusId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="DefaultArGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="DefaultHoldUntilComplete" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultAllowBackorders" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultAllowSubstitutions" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultAllowCombiningShipments" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultRequireReference" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultAllowReferenceDuplicates" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultReferenceValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="DefaultTaxable" type="Boolean" nullAllowed="false" />
+                        <column name="AllocationPriorityId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="AllocationPriorities" destinationColumn="AllocationPriorityId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CustomerTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CustomerSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="DefaultOfferUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="DefaultTermId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="DefaultCancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="DefaultReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="DefaultCustomerStatusId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index10">
+                            <indexColumn name="DefaultCustomerCreditStatusId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index11">
+                            <indexColumn name="DefaultArGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index12">
+                            <indexColumn name="AllocationPriorityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CustomerTypeDescriptions" nameSingular="CustomerTypeDescription" columnPrefix="cutyd">
+                    <columns>
+                        <column name="CustomerTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CustomerTypePaymentMethods" nameSingular="CustomerTypePaymentMethod" columnPrefix="cutypm">
+                    <columns>
+                        <column name="CustomerTypePaymentMethodId" type="EID" nullAllowed="false" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="PaymentMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentMethods" destinationColumn="PaymentMethodId" />
+                        <column name="DefaultSelectionPriority" type="Integer" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerTypePaymentMethodId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="PaymentMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PaymentMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CustomerTypeShippingMethods" nameSingular="CustomerTypeShippingMethod" columnPrefix="cutyshm">
+                    <columns>
+                        <column name="CustomerTypeShippingMethodId" type="EID" nullAllowed="false" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="ShippingMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShippingMethods" destinationColumn="ShippingMethodId" />
+                        <column name="DefaultSelectionPriority" type="Integer" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerTypeShippingMethodId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Customers" nameSingular="Customer" columnPrefix="cu">
+                    <columns>
+                        <column name="CustomerId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="CustomerName" type="Name" nullAllowed="false" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="InitialOfferUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
+                        <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="ReturnPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="ArGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="HoldUntilComplete" type="Boolean" nullAllowed="false" />
+                        <column name="AllowBackorders" type="Boolean" nullAllowed="false" />
+                        <column name="AllowSubstitutions" type="Boolean" nullAllowed="false" />
+                        <column name="AllowCombiningShipments" type="Boolean" nullAllowed="false" />
+                        <column name="RequireReference" type="Boolean" nullAllowed="false" />
+                        <column name="AllowReferenceDuplicates" type="Boolean" nullAllowed="false" />
+                        <column name="ReferenceValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CustomerId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CustomerName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InitialOfferUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ArGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <commandMessageTypes>
+        <commandMessageType commandMessageTypeName="Security" isDefault="true" sortOrder="1">
+            <commandMessageTypeDescription languageIsoName="en" description="Security" />
+            <commandMessage commandMessageKey="UnknownSecurityRoleGroupName">
+                <commandMessageTranslation languageIsoName="en" translation="The security role group name, {0}, is not known." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownSecurityRoleName">
+                <commandMessageTranslation languageIsoName="en" translation="The security role name, {1}, is not known in the security role group {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="InsufficientSecurity">
+                <commandMessageTranslation languageIsoName="en" translation="Insufficient security." />
+            </commandMessage>
+        </commandMessageType>
+        <commandMessageType commandMessageTypeName="Warning" isDefault="false" sortOrder="1">
+            <commandMessageTypeDescription languageIsoName="en" description="Warning" />
+            <commandMessage commandMessageKey="PasswordExpiration">
+                <commandMessageTranslation languageIsoName="en" translation="Your password will be expiring in {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordExpired">
+                <commandMessageTranslation languageIsoName="en" translation="Your password has expired." />
+            </commandMessage>
+            <commandMessage commandMessageKey="ForcePasswordChange">
+                <commandMessageTranslation languageIsoName="en" translation="You must change your password." />
+            </commandMessage>
+        </commandMessageType>
+        <commandMessageType commandMessageTypeName="Error" isDefault="false" sortOrder="1">
+            <commandMessageTypeDescription languageIsoName="en" description="Error" />
+            <commandMessage commandMessageKey="EntityLockFailed">
+                <commandMessageTranslation languageIsoName="en" translation="Editing is currently reserved for another user." />
+            </commandMessage>
+            <commandMessage commandMessageKey="EntityLockStale">
+                <commandMessageTranslation languageIsoName="en" translation="Editing was not completed by the expiration time." />
+            </commandMessage>
+            <commandMessage commandMessageKey="IncorrectPassword">
+                <commandMessageTranslation languageIsoName="en" translation="Incorrect password." />
+            </commandMessage>
+            <commandMessage commandMessageKey="LockoutFailureCountExceeded">
+                <commandMessageTranslation languageIsoName="en" translation="Maximum number of login failures has been exceeded, and the account has been locked." />
+            </commandMessage>
+            <commandMessage commandMessageKey="LockoutInactiveTimeExceeded">
+                <commandMessageTranslation languageIsoName="en" translation="The account has been inactive for too long of a period of time, and has been locked." />
+            </commandMessage>
+            <commandMessage commandMessageKey="LockoutManualResetRequired">
+                <commandMessageTranslation languageIsoName="en" translation="The account has been locked and must be unlocked by an administrator." />
+            </commandMessage>
+            <commandMessage commandMessageKey="MaximumExpiredLoginsPermittedExceeded">
+                <commandMessageTranslation languageIsoName="en" translation="The password has expired, and only {0} logins are permitted to change the password." />
+            </commandMessage>
+            <commandMessage commandMessageKey="MismatchedPasswords">
+                <commandMessageTranslation languageIsoName="en" translation="The new passwords do not match." />
+            </commandMessage>
+            <commandMessage commandMessageKey="MissingOldPassword">
+                <commandMessageTranslation languageIsoName="en" translation="The current password must be supplied." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordChangeNotAllowed">
+                <commandMessageTranslation languageIsoName="en" translation="Password changes are not permitted for the account." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordGreaterThanMaximumLength">
+                <commandMessageTranslation languageIsoName="en" translation="The pasword is longer than the maximum length of {0} characters." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordInRecentHistory">
+                <commandMessageTranslation languageIsoName="en" translation="The new pasword has been used recently, you must select one that's different than the last {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordLessThanMinimumLength">
+                <commandMessageTranslation languageIsoName="en" translation="The password does not meet the minimum length requirement of {0} characters." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordMaximumRepeatedExceeded">
+                <commandMessageTranslation languageIsoName="en" translation="The password may not repeat more than {0} characters in a row." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordMinimumCharacterTypesNotMet">
+                <commandMessageTranslation languageIsoName="en" translation="The password policy requires {0} or more character types." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordMinimumLifetimeNotMet">
+                <commandMessageTranslation languageIsoName="en" translation="The password was changed {1} ago, and it may be changed no sooner than {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordRequiredDigitCountNotMet">
+                <commandMessageTranslation languageIsoName="en" translation="The password must contain at least {0} digits." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordRequiredLetterCountNotMet">
+                <commandMessageTranslation languageIsoName="en" translation="The password must contain at least {0} letters." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordRequiredLowerCaseCountNotMet">
+                <commandMessageTranslation languageIsoName="en" translation="The password must contain at least {0} lower-case characters." />
+            </commandMessage>
+            <commandMessage commandMessageKey="PasswordRequiredUpperCaseCountNotMet">
+                <commandMessageTranslation languageIsoName="en" translation="The password must contain at least {0} upper-case characters." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownCurrencyIsoName">
+                <commandMessageTranslation languageIsoName="en" translation="The currency name, {0}, is not known." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownItemUnitOfMeasureType">
+                <commandMessageTranslation languageIsoName="en" translation="{1} is not an acceptable Unit of Measure Type for {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownVendorName">
+                <commandMessageTranslation languageIsoName="en" translation="The vendor name, {0}, is not known." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownUsername">
+                <commandMessageTranslation languageIsoName="en" translation="The username, {0}, is not known." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownPartyRelationship">
+                <commandMessageTranslation languageIsoName="en" translation="There was no {0} relationship found between {1} ({2}) and {3} ({4})." />
+            </commandMessage>
+            <commandMessage commandMessageKey="SearchIOError">
+                <commandMessageTranslation languageIsoName="en" translation="I/O error occurred while searching: {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="SearchParseError">
+                <commandMessageTranslation languageIsoName="en" translation="Search query could not be parsed: {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="GraphQlError">
+                <commandMessageTranslation languageIsoName="en" translation="An error occurred during the execution of the supplied GraphQL query: {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="JsonParseError">
+                <commandMessageTranslation languageIsoName="en" translation="An error occurred parsing the supplied JSON: {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="EndTimeEqualToStartTime">
+                <commandMessageTranslation languageIsoName="en" translation="The ending time can not be equal to the starting time." />
+            </commandMessage>
+            <commandMessage commandMessageKey="EndTimeBeforeStartTime">
+                <commandMessageTranslation languageIsoName="en" translation="The ending time can not be before the starting time." />
+            </commandMessage>
+            <commandMessage commandMessageKey="InvalidFormat">
+                <commandMessageTranslation languageIsoName="en" translation="The specified value, {0}, is not in an acceptable format." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownQueueTypeName">
+                <commandMessageTranslation languageIsoName="en" translation="The queue type name, {0}, is not known." />
+            </commandMessage>
+            <commandMessage commandMessageKey="CannotRelateToSelf">
+                <commandMessageTranslation languageIsoName="en" translation="The from item ({0}) and the to item ({1}) for a related item cannot be the same item." />
+            </commandMessage>
+            <commandMessage commandMessageKey="LicenseCheckFailed">
+                <commandMessageTranslation languageIsoName="en" translation="The license check for the application server executing the command has failed." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UserVisitHasNoParty">
+                <commandMessageTranslation languageIsoName="en" translation="There is no authenticated user." />
+            </commandMessage>
+        </commandMessageType>
+        <commandMessageType commandMessageTypeName="Validation" isDefault="false" sortOrder="1">
+            <commandMessageTypeDescription languageIsoName="en" description="Validation" />
+            <commandMessage commandMessageKey="InternalError">
+                <commandMessageTranslation languageIsoName="en" translation="Internal error." />
+            </commandMessage>
+            <commandMessage commandMessageKey="InvalidFormat">
+                <commandMessageTranslation languageIsoName="en" translation="The specified value is not in an acceptable format." />
+            </commandMessage>
+            <commandMessage commandMessageKey="MinimumLength">
+                <commandMessageTranslation languageIsoName="en" translation="The value must be at least {0} characters in length." />
+            </commandMessage>
+            <commandMessage commandMessageKey="MaximumLength">
+                <commandMessageTranslation languageIsoName="en" translation="The value may not be longer than {0} characters." />
+            </commandMessage>
+            <commandMessage commandMessageKey="MinimumValue">
+                <commandMessageTranslation languageIsoName="en" translation="The value must be equal to or greater than {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="MaximumValue">
+                <commandMessageTranslation languageIsoName="en" translation="The value may not be greater than {0}." />
+            </commandMessage>
+            <commandMessage commandMessageKey="RequiredField">
+                <commandMessageTranslation languageIsoName="en" translation="This is a required field, and must be completed." />
+            </commandMessage>
+            <commandMessage commandMessageKey="NoValueAllowed">
+                <commandMessageTranslation languageIsoName="en" translation="No value is allowed in this field and it must be left empty." />
+            </commandMessage>
+        </commandMessageType>
+    </commandMessageTypes>
+</initialData>

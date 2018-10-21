@@ -1,0 +1,6232 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.party.server;
+
+import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.carrier.server.CarrierControl;
+import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.document.server.DocumentControl;
+import com.echothree.model.control.employee.server.EmployeeControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.remote.choice.BirthdayFormatChoicesBean;
+import com.echothree.model.control.party.remote.choice.CompanyChoicesBean;
+import com.echothree.model.control.party.remote.choice.DateTimeFormatChoicesBean;
+import com.echothree.model.control.party.remote.choice.DepartmentChoicesBean;
+import com.echothree.model.control.party.remote.choice.DivisionChoicesBean;
+import com.echothree.model.control.party.remote.choice.GenderChoicesBean;
+import com.echothree.model.control.party.remote.choice.LanguageChoicesBean;
+import com.echothree.model.control.party.remote.choice.MoodChoicesBean;
+import com.echothree.model.control.party.remote.choice.NameSuffixChoicesBean;
+import com.echothree.model.control.party.remote.choice.PartyAliasTypeChoicesBean;
+import com.echothree.model.control.party.remote.choice.PartyTypeChoicesBean;
+import com.echothree.model.control.party.remote.choice.PersonalTitleChoicesBean;
+import com.echothree.model.control.party.remote.choice.TimeZoneChoicesBean;
+import com.echothree.model.control.party.remote.transfer.BirthdayFormatDescriptionTransfer;
+import com.echothree.model.control.party.remote.transfer.BirthdayFormatTransfer;
+import com.echothree.model.control.party.remote.transfer.CompanyTransfer;
+import com.echothree.model.control.party.remote.transfer.DateTimeFormatDescriptionTransfer;
+import com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer;
+import com.echothree.model.control.party.remote.transfer.DepartmentTransfer;
+import com.echothree.model.control.party.remote.transfer.DivisionTransfer;
+import com.echothree.model.control.party.remote.transfer.GenderDescriptionTransfer;
+import com.echothree.model.control.party.remote.transfer.GenderTransfer;
+import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.remote.transfer.MoodDescriptionTransfer;
+import com.echothree.model.control.party.remote.transfer.MoodTransfer;
+import com.echothree.model.control.party.remote.transfer.NameSuffixTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyAliasTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyAliasTypeDescriptionTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyAliasTypeTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyGroupTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyRelationshipTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyTypeAuditPolicyTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyTypeLockoutPolicyTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyTypePasswordStringPolicyTransfer;
+import com.echothree.model.control.party.remote.transfer.PartyTypeTransfer;
+import com.echothree.model.control.party.remote.transfer.PersonTransfer;
+import com.echothree.model.control.party.remote.transfer.PersonalTitleTransfer;
+import com.echothree.model.control.party.remote.transfer.ProfileTransfer;
+import com.echothree.model.control.party.remote.transfer.RoleTypeTransfer;
+import com.echothree.model.control.party.remote.transfer.TimeZoneDescriptionTransfer;
+import com.echothree.model.control.party.remote.transfer.TimeZoneTransfer;
+import com.echothree.model.control.party.server.transfer.BirthdayFormatDescriptionTransferCache;
+import com.echothree.model.control.party.server.transfer.BirthdayFormatTransferCache;
+import com.echothree.model.control.party.server.transfer.CompanyTransferCache;
+import com.echothree.model.control.party.server.transfer.DateTimeFormatDescriptionTransferCache;
+import com.echothree.model.control.party.server.transfer.DateTimeFormatTransferCache;
+import com.echothree.model.control.party.server.transfer.DepartmentTransferCache;
+import com.echothree.model.control.party.server.transfer.DivisionTransferCache;
+import com.echothree.model.control.party.server.transfer.GenderDescriptionTransferCache;
+import com.echothree.model.control.party.server.transfer.GenderTransferCache;
+import com.echothree.model.control.party.server.transfer.LanguageTransferCache;
+import com.echothree.model.control.party.server.transfer.MoodDescriptionTransferCache;
+import com.echothree.model.control.party.server.transfer.MoodTransferCache;
+import com.echothree.model.control.party.server.transfer.NameSuffixTransferCache;
+import com.echothree.model.control.party.server.transfer.PartyAliasTransferCache;
+import com.echothree.model.control.party.server.transfer.PartyAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.party.server.transfer.PartyAliasTypeTransferCache;
+import com.echothree.model.control.party.server.transfer.PartyRelationshipTransferCache;
+import com.echothree.model.control.party.server.transfer.PartyTransferCaches;
+import com.echothree.model.control.party.server.transfer.PartyTypeTransferCache;
+import com.echothree.model.control.party.server.transfer.PersonalTitleTransferCache;
+import com.echothree.model.control.party.server.transfer.TimeZoneDescriptionTransferCache;
+import com.echothree.model.control.party.server.transfer.TimeZoneTransferCache;
+import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.printer.server.PrinterControl;
+import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.scale.server.ScaleControl;
+import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.term.server.TermControl;
+import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
+import com.echothree.model.data.accounting.remote.pk.CurrencyPK;
+import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.core.remote.pk.MimeTypePK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.entity.MimeType;
+import com.echothree.model.data.icon.remote.pk.IconPK;
+import com.echothree.model.data.icon.server.entity.Icon;
+import com.echothree.model.data.party.remote.pk.BirthdayFormatPK;
+import com.echothree.model.data.party.remote.pk.DateTimeFormatDetailPK;
+import com.echothree.model.data.party.remote.pk.DateTimeFormatPK;
+import com.echothree.model.data.party.remote.pk.GenderPK;
+import com.echothree.model.data.party.remote.pk.LanguagePK;
+import com.echothree.model.data.party.remote.pk.MoodPK;
+import com.echothree.model.data.party.remote.pk.NameSuffixDetailPK;
+import com.echothree.model.data.party.remote.pk.NameSuffixPK;
+import com.echothree.model.data.party.remote.pk.PartyAliasTypePK;
+import com.echothree.model.data.party.remote.pk.PartyDetailPK;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.remote.pk.PartyTypeAuditPolicyPK;
+import com.echothree.model.data.party.remote.pk.PartyTypeLockoutPolicyPK;
+import com.echothree.model.data.party.remote.pk.PartyTypePK;
+import com.echothree.model.data.party.remote.pk.PartyTypePasswordStringPolicyPK;
+import com.echothree.model.data.party.remote.pk.PersonalTitleDetailPK;
+import com.echothree.model.data.party.remote.pk.PersonalTitlePK;
+import com.echothree.model.data.party.remote.pk.TimeZoneDetailPK;
+import com.echothree.model.data.party.remote.pk.TimeZonePK;
+import com.echothree.model.data.party.server.entity.BirthdayFormat;
+import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
+import com.echothree.model.data.party.server.entity.BirthdayFormatDetail;
+import com.echothree.model.data.party.server.entity.DateTimeFormat;
+import com.echothree.model.data.party.server.entity.DateTimeFormatDescription;
+import com.echothree.model.data.party.server.entity.DateTimeFormatDetail;
+import com.echothree.model.data.party.server.entity.Gender;
+import com.echothree.model.data.party.server.entity.GenderDescription;
+import com.echothree.model.data.party.server.entity.GenderDetail;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.LanguageDescription;
+import com.echothree.model.data.party.server.entity.Mood;
+import com.echothree.model.data.party.server.entity.MoodDescription;
+import com.echothree.model.data.party.server.entity.MoodDetail;
+import com.echothree.model.data.party.server.entity.NameSuffix;
+import com.echothree.model.data.party.server.entity.NameSuffixDetail;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.entity.PartyAlias;
+import com.echothree.model.data.party.server.entity.PartyAliasType;
+import com.echothree.model.data.party.server.entity.PartyAliasTypeDescription;
+import com.echothree.model.data.party.server.entity.PartyAliasTypeDetail;
+import com.echothree.model.data.party.server.entity.PartyCompany;
+import com.echothree.model.data.party.server.entity.PartyDepartment;
+import com.echothree.model.data.party.server.entity.PartyDetail;
+import com.echothree.model.data.party.server.entity.PartyDivision;
+import com.echothree.model.data.party.server.entity.PartyGroup;
+import com.echothree.model.data.party.server.entity.PartyRelationship;
+import com.echothree.model.data.party.server.entity.PartyRelationshipType;
+import com.echothree.model.data.party.server.entity.PartyRelationshipTypeDescription;
+import com.echothree.model.data.party.server.entity.PartyStatus;
+import com.echothree.model.data.party.server.entity.PartyType;
+import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
+import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicyDetail;
+import com.echothree.model.data.party.server.entity.PartyTypeDescription;
+import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
+import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicyDetail;
+import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicy;
+import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicyDetail;
+import com.echothree.model.data.party.server.entity.PartyTypeUse;
+import com.echothree.model.data.party.server.entity.PartyTypeUseType;
+import com.echothree.model.data.party.server.entity.PartyTypeUseTypeDescription;
+import com.echothree.model.data.party.server.entity.Person;
+import com.echothree.model.data.party.server.entity.PersonalTitle;
+import com.echothree.model.data.party.server.entity.PersonalTitleDetail;
+import com.echothree.model.data.party.server.entity.Profile;
+import com.echothree.model.data.party.server.entity.RoleType;
+import com.echothree.model.data.party.server.entity.RoleTypeDescription;
+import com.echothree.model.data.party.server.entity.TimeZone;
+import com.echothree.model.data.party.server.entity.TimeZoneDescription;
+import com.echothree.model.data.party.server.entity.TimeZoneDetail;
+import com.echothree.model.data.party.server.factory.BirthdayFormatDescriptionFactory;
+import com.echothree.model.data.party.server.factory.BirthdayFormatDetailFactory;
+import com.echothree.model.data.party.server.factory.BirthdayFormatFactory;
+import com.echothree.model.data.party.server.factory.DateTimeFormatDescriptionFactory;
+import com.echothree.model.data.party.server.factory.DateTimeFormatDetailFactory;
+import com.echothree.model.data.party.server.factory.DateTimeFormatFactory;
+import com.echothree.model.data.party.server.factory.GenderDescriptionFactory;
+import com.echothree.model.data.party.server.factory.GenderDetailFactory;
+import com.echothree.model.data.party.server.factory.GenderFactory;
+import com.echothree.model.data.party.server.factory.LanguageDescriptionFactory;
+import com.echothree.model.data.party.server.factory.LanguageFactory;
+import com.echothree.model.data.party.server.factory.MoodDescriptionFactory;
+import com.echothree.model.data.party.server.factory.MoodDetailFactory;
+import com.echothree.model.data.party.server.factory.MoodFactory;
+import com.echothree.model.data.party.server.factory.NameSuffixDetailFactory;
+import com.echothree.model.data.party.server.factory.NameSuffixFactory;
+import com.echothree.model.data.party.server.factory.PartyAliasFactory;
+import com.echothree.model.data.party.server.factory.PartyAliasTypeDescriptionFactory;
+import com.echothree.model.data.party.server.factory.PartyAliasTypeDetailFactory;
+import com.echothree.model.data.party.server.factory.PartyAliasTypeFactory;
+import com.echothree.model.data.party.server.factory.PartyCompanyFactory;
+import com.echothree.model.data.party.server.factory.PartyDepartmentFactory;
+import com.echothree.model.data.party.server.factory.PartyDetailFactory;
+import com.echothree.model.data.party.server.factory.PartyDivisionFactory;
+import com.echothree.model.data.party.server.factory.PartyFactory;
+import com.echothree.model.data.party.server.factory.PartyGroupFactory;
+import com.echothree.model.data.party.server.factory.PartyRelationshipFactory;
+import com.echothree.model.data.party.server.factory.PartyRelationshipTypeDescriptionFactory;
+import com.echothree.model.data.party.server.factory.PartyRelationshipTypeFactory;
+import com.echothree.model.data.party.server.factory.PartyStatusFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeAuditPolicyDetailFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeAuditPolicyFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeDescriptionFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeLockoutPolicyDetailFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeLockoutPolicyFactory;
+import com.echothree.model.data.party.server.factory.PartyTypePasswordStringPolicyDetailFactory;
+import com.echothree.model.data.party.server.factory.PartyTypePasswordStringPolicyFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeUseFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeUseTypeDescriptionFactory;
+import com.echothree.model.data.party.server.factory.PartyTypeUseTypeFactory;
+import com.echothree.model.data.party.server.factory.PersonFactory;
+import com.echothree.model.data.party.server.factory.PersonalTitleDetailFactory;
+import com.echothree.model.data.party.server.factory.PersonalTitleFactory;
+import com.echothree.model.data.party.server.factory.ProfileFactory;
+import com.echothree.model.data.party.server.factory.RoleTypeDescriptionFactory;
+import com.echothree.model.data.party.server.factory.RoleTypeFactory;
+import com.echothree.model.data.party.server.factory.TimeZoneDescriptionFactory;
+import com.echothree.model.data.party.server.factory.TimeZoneDetailFactory;
+import com.echothree.model.data.party.server.factory.TimeZoneFactory;
+import com.echothree.model.data.party.server.value.BirthdayFormatDescriptionValue;
+import com.echothree.model.data.party.server.value.BirthdayFormatDetailValue;
+import com.echothree.model.data.party.server.value.DateTimeFormatDescriptionValue;
+import com.echothree.model.data.party.server.value.GenderDescriptionValue;
+import com.echothree.model.data.party.server.value.GenderDetailValue;
+import com.echothree.model.data.party.server.value.MoodDescriptionValue;
+import com.echothree.model.data.party.server.value.MoodDetailValue;
+import com.echothree.model.data.party.server.value.NameSuffixDetailValue;
+import com.echothree.model.data.party.server.value.PartyAliasTypeDescriptionValue;
+import com.echothree.model.data.party.server.value.PartyAliasTypeDetailValue;
+import com.echothree.model.data.party.server.value.PartyAliasValue;
+import com.echothree.model.data.party.server.value.PartyCompanyValue;
+import com.echothree.model.data.party.server.value.PartyDepartmentValue;
+import com.echothree.model.data.party.server.value.PartyDetailValue;
+import com.echothree.model.data.party.server.value.PartyDivisionValue;
+import com.echothree.model.data.party.server.value.PartyGroupValue;
+import com.echothree.model.data.party.server.value.PartyTypeAuditPolicyDetailValue;
+import com.echothree.model.data.party.server.value.PartyTypeLockoutPolicyDetailValue;
+import com.echothree.model.data.party.server.value.PartyTypePasswordStringPolicyDetailValue;
+import com.echothree.model.data.party.server.value.PersonValue;
+import com.echothree.model.data.party.server.value.PersonalTitleDetailValue;
+import com.echothree.model.data.party.server.value.ProfileValue;
+import com.echothree.model.data.party.server.value.TimeZoneDescriptionValue;
+import com.echothree.model.data.sequence.server.entity.Sequence;
+import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.exception.PersistenceDatabaseException;
+import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.server.control.BaseModelControl;
+import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+public class PartyControl
+        extends BaseModelControl {
+    
+    /** Creates a new instance of PartyControl */
+    public PartyControl() {
+        super();
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Transfer Caches
+    // --------------------------------------------------------------------------------
+    
+    private PartyTransferCaches partyTransferCaches = null;
+    
+    public PartyTransferCaches getPartyTransferCaches(UserVisit userVisit) {
+        if(partyTransferCaches == null) {
+            partyTransferCaches = new PartyTransferCaches(userVisit, this);
+        }
+        
+        return partyTransferCaches;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Languages
+    // --------------------------------------------------------------------------------
+    
+    public Language createLanguage(String languageIsoName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        Language language = LanguageFactory.getInstance().create(languageIsoName, isDefault, sortOrder);
+        
+        sendEventUsingNames(language.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return language;
+    }
+    
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Language */
+    public Language getLanguageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        LanguagePK pk = new LanguagePK(entityInstance.getEntityUniqueId());
+        Language language = LanguageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        
+        return language;
+    }
+
+    public Language getLanguageByEntityInstance(EntityInstance entityInstance) {
+        return getLanguageByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Language getLanguageByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLanguageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
+    public Language getDefaultLanguage() {
+        Language language;
+        PreparedStatement ps = LanguageFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM languages " +
+                "WHERE lang_isdefault = 1");
+        
+        language = LanguageFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        
+        return language;
+    }
+    
+    private static final Map<EntityPermission, String> getLanguageByIsoNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM languages " +
+                "WHERE lang_languageisoname = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM languages " +
+                "WHERE lang_languageisoname = ? " +
+                "FOR UPDATE");
+        getLanguageByIsoNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+    
+    public Language getLanguageByIsoName(String languageIsoName, EntityPermission entityPermission) {
+        return LanguageFactory.getInstance().getEntityFromQuery(entityPermission, getLanguageByIsoNameQueries, languageIsoName);
+    }
+    
+    public Language getLanguageByIsoName(String languageIsoName) {
+        return getLanguageByIsoName(languageIsoName, EntityPermission.READ_ONLY);
+    }
+    
+    public Language getLanguageByIsoNameForUpdate(String languageIsoName) {
+        return getLanguageByIsoName(languageIsoName, EntityPermission.READ_WRITE);
+    }
+    
+    public List<Language> getLanguages() {
+        List<Language> languages;
+        PreparedStatement ps = LanguageFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM languages " +
+                "ORDER BY lang_sortorder, lang_languageisoname");
+        
+        languages = LanguageFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        
+        return languages;
+    }
+    
+    public LanguageChoicesBean getLanguageChoices(String defaultLanguageChoice, Language descriptionLanguage, boolean allowNullChoice) {
+        List<Language> languages = getLanguages();
+        int size = languages.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultLanguageChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(Language language: languages) {
+            String label = getBestLanguageDescription(language, descriptionLanguage);
+            String value = language.getLanguageIsoName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultLanguageChoice == null? false: defaultLanguageChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && language.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new LanguageChoicesBean(labels, values, defaultValue);
+    }
+    
+    public LanguageTransfer getLanguageTransfer(UserVisit userVisit, Language language) {
+        return getPartyTransferCaches(userVisit).getLanguageTransferCache().getLanguageTransfer(language);
+    }
+    
+    public List<LanguageTransfer> getLanguageTransfers(UserVisit userVisit, Collection<Language> languages) {
+        List<LanguageTransfer> languageTransfers = new ArrayList<>(languages.size());
+        LanguageTransferCache languageTransferCache = getPartyTransferCaches(userVisit).getLanguageTransferCache();
+        
+        languages.stream().forEach((language) -> {
+            languageTransfers.add(languageTransferCache.getLanguageTransfer(language));
+        });
+        
+        return languageTransfers;
+    }
+    
+    public List<LanguageTransfer> getLanguageTransfers(UserVisit userVisit) {
+        return getLanguageTransfers(userVisit, getLanguages());
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Language Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public LanguageDescription createLanguageDescription(Language language, Language descriptionLanguage, String description,
+            BasePK createdBy) {
+        LanguageDescription languageDescription = LanguageDescriptionFactory.getInstance().create(language, descriptionLanguage, description);
+        
+        sendEventUsingNames(language.getPrimaryKey(), EventTypes.MODIFY.name(), languageDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return languageDescription;
+    }
+    
+    public LanguageDescription getLanguageDescription(Language language, Language descriptionLanguage) {
+        LanguageDescription languageDescription = null;
+        
+        try {
+            PreparedStatement ps = LanguageDescriptionFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM languagedescriptions " +
+                    "WHERE langd_lang_languageid = ? AND langd_descriptionlanguageid = ?");
+            
+            ps.setLong(1, language.getPrimaryKey().getEntityId());
+            ps.setLong(2, descriptionLanguage.getPrimaryKey().getEntityId());
+            
+            languageDescription = LanguageDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return languageDescription;
+    }
+    
+    
+    public String getBestLanguageDescription(Language language, Language descriptionLanguage) {
+        String description;
+        LanguageDescription languageDescription = getLanguageDescription(language, descriptionLanguage);
+
+        if(languageDescription == null && !descriptionLanguage.getIsDefault()) {
+            languageDescription = getLanguageDescription(language, getDefaultLanguage());
+        }
+
+        if(languageDescription == null) {
+            description = language.getLanguageIsoName();
+        } else {
+            description = languageDescription.getDescription();
+        }
+
+        return description;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Types
+    // --------------------------------------------------------------------------------
+    
+    public PartyType createPartyType(String partyTypeName, PartyType parentPartyType, SequenceType billingAccountSequenceType, Boolean allowUserLogins,
+            Boolean allowPartyAliases, Boolean isDefault, Integer sortOrder) {
+        return PartyTypeFactory.getInstance().create(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowUserLogins, isDefault,
+                sortOrder);
+    }
+    
+    public List<PartyType> getPartyTypes() {
+        PreparedStatement ps = PartyTypeFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM partytypes " +
+                "ORDER BY ptyp_sortorder, ptyp_partytypename");
+        
+        return PartyTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+    }
+    
+    public PartyType getPartyTypeByName(String partyTypeName) {
+        PartyType partyType = null;
+        
+        try {
+            PreparedStatement ps = PartyTypeFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM partytypes " +
+                    "WHERE ptyp_partytypename = ?");
+            
+            ps.setString(1, partyTypeName);
+            
+            partyType = PartyTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyType;
+    }
+    
+    public PartyTypeChoicesBean getPartyTypeChoices(String defaultPartyTypeChoice, Language language, boolean allowNullChoice) {
+        List<PartyType> partyTypes = getPartyTypes();
+        int size = partyTypes.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+        }
+        
+        for(PartyType partyType: partyTypes) {
+            String label = getBestPartyTypeDescription(partyType, language);
+            String value = partyType.getPartyTypeName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultPartyTypeChoice == null? false: defaultPartyTypeChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && partyType.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new PartyTypeChoicesBean(labels, values, defaultValue);
+    }
+    
+    public PartyTypeTransfer getPartyTypeTransfer(UserVisit userVisit, PartyType partyType) {
+        return getPartyTransferCaches(userVisit).getPartyTypeTransferCache().getPartyTypeTransfer(partyType);
+    }
+    
+    public List<PartyTypeTransfer> getPartyTypeTransfers(UserVisit userVisit, List<PartyType> partyTypes) {
+        List<PartyTypeTransfer> partyTypeTransfers = new ArrayList<>(partyTypes.size());
+        PartyTypeTransferCache partyTypeTransferCache = getPartyTransferCaches(userVisit).getPartyTypeTransferCache();
+        
+        partyTypes.stream().forEach((partyType) -> {
+            partyTypeTransfers.add(partyTypeTransferCache.getPartyTypeTransfer(partyType));
+        });
+        
+        return partyTypeTransfers;
+    }
+    
+    public List<PartyTypeTransfer> getPartyTypeTransfers(UserVisit userVisit) {
+        return getPartyTypeTransfers(userVisit, getPartyTypes());
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Type Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public PartyTypeDescription createPartyTypeDescription(PartyType partyType, Language language, String description) {
+        return PartyTypeDescriptionFactory.getInstance().create(partyType, language, description);
+    }
+    
+    public PartyTypeDescription getPartyTypeDescription(PartyType partyType, Language language) {
+        PartyTypeDescription partyTypeDescription = null;
+        
+        try {
+            PreparedStatement ps = PartyTypeDescriptionFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM partytypedescriptions " +
+                    "WHERE ptypd_ptyp_partytypeid = ? AND ptypd_lang_languageid = ?");
+            
+            ps.setLong(1, partyType.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            
+            partyTypeDescription = PartyTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyTypeDescription;
+    }
+    
+    public String getBestPartyTypeDescription(PartyType partyType, Language language) {
+        String description;
+        PartyTypeDescription partyTypeDescription = getPartyTypeDescription(partyType, language);
+        
+        if(partyTypeDescription == null && !language.getIsDefault()) {
+            partyTypeDescription = getPartyTypeDescription(partyType, getPartyControl().getDefaultLanguage());
+        }
+        
+        if(partyTypeDescription == null) {
+            description = partyType.getPartyTypeName();
+        } else {
+            description = partyTypeDescription.getDescription();
+        }
+        
+        return description;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Type Use Types
+    // --------------------------------------------------------------------------------
+    
+    public PartyTypeUseType createPartyTypeUseType(String partyTypeUseTypeName, Boolean isDefault, Integer sortOrder) {
+        return PartyTypeUseTypeFactory.getInstance().create(partyTypeUseTypeName, isDefault, sortOrder);
+    }
+    
+    public PartyTypeUseType getPartyTypeUseTypeByName(String partyTypeUseTypeName) {
+        PartyTypeUseType partyTypeUseType = null;
+        
+        try {
+            PreparedStatement ps = PartyTypeUseTypeFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM partytypeusetypes " +
+                    "WHERE ptyput_partytypeusetypename = ?");
+            
+            ps.setString(1, partyTypeUseTypeName);
+            
+            partyTypeUseType = PartyTypeUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyTypeUseType;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Type Use Type Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public PartyTypeUseTypeDescription createPartyTypeUseTypeDescription(PartyTypeUseType partyTypeUseType, Language language,
+            String description) {
+        return PartyTypeUseTypeDescriptionFactory.getInstance().create(partyTypeUseType, language, description);
+    }
+    
+    public PartyTypeUseTypeDescription getPartyTypeUseTypeDescription(PartyTypeUseType partyTypeUseType, Language language) {
+        PartyTypeUseTypeDescription partyTypeUseTypeDescription = null;
+        
+        try {
+            PreparedStatement ps = PartyTypeUseTypeDescriptionFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM partytypeusetypedescriptions " +
+                    "WHERE ptyputd_ptyput_partytypeusetypeid = ? AND ptyputd_lang_languageid = ?");
+            
+            ps.setLong(1, partyTypeUseType.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            
+            partyTypeUseTypeDescription = PartyTypeUseTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+                    EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyTypeUseTypeDescription;
+    }
+    
+    public String getBestPartyTypeUseTypeDescription(PartyTypeUseType partyTypeUseType, Language language) {
+        String description;
+        PartyTypeUseTypeDescription partyTypeUseTypeDescription = getPartyTypeUseTypeDescription(partyTypeUseType, language);
+        
+        if(partyTypeUseTypeDescription == null && !language.getIsDefault()) {
+            partyTypeUseTypeDescription = getPartyTypeUseTypeDescription(partyTypeUseType, getPartyControl().getDefaultLanguage());
+        }
+        
+        if(partyTypeUseTypeDescription == null) {
+            description = partyTypeUseType.getPartyTypeUseTypeName();
+        } else {
+            description = partyTypeUseTypeDescription.getDescription();
+        }
+        
+        return description;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Type Uses
+    // --------------------------------------------------------------------------------
+    
+    public PartyTypeUse createPartyTypeUse(PartyTypeUseType partyTypeUseType, PartyType partyType, Boolean isDefault) {
+        return PartyTypeUseFactory.getInstance().create(partyTypeUseType, partyType, isDefault);
+    }
+    
+    public PartyTypeUse getPartyTypeUse(PartyTypeUseType partyTypeUseType, PartyType partyType) {
+        PartyTypeUse partyTypeUse = null;
+        
+        try {
+            PreparedStatement ps = PartyTypeUseFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM partytypeuses " +
+                    "WHERE ptypu_ptyput_partytypeusetypeid = ? AND ptypu_ptyp_partytypeid = ?");
+            
+            ps.setLong(1, partyTypeUseType.getPrimaryKey().getEntityId());
+            ps.setLong(2, partyType.getPrimaryKey().getEntityId());
+            
+            partyTypeUse = PartyTypeUseFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyTypeUse;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Personal Titles
+    // --------------------------------------------------------------------------------
+    
+    public PersonalTitle createPersonalTitle(String description, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        PersonalTitle defaultPersonalTitle = getDefaultPersonalTitle();
+        boolean defaultFound = defaultPersonalTitle != null;
+        
+        if(defaultFound && isDefault) {
+            PersonalTitleDetailValue defaultPersonalTitleDetailValue = getDefaultPersonalTitleDetailValueForUpdate();
+            
+            defaultPersonalTitleDetailValue.setIsDefault(Boolean.FALSE);
+            updatePersonalTitleFromValue(defaultPersonalTitleDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+        
+        PersonalTitle personalTitle = PersonalTitleFactory.getInstance().create((PersonalTitleDetailPK)null,
+                (PersonalTitleDetailPK)null);
+        PersonalTitleDetail personalTitleDetail = PersonalTitleDetailFactory.getInstance().create(personalTitle,
+                description, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                personalTitle.getPrimaryKey());
+        personalTitle.setActiveDetail(personalTitleDetail);
+        personalTitle.setLastDetail(personalTitleDetail);
+        personalTitle.store();
+        
+        sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return personalTitle;
+    }
+    
+    private List<PersonalTitle> getPersonalTitles(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM personaltitles, personaltitledetails " +
+                    "WHERE pert_activedetailid = pertd_personaltitledetailid " +
+                    "ORDER BY pertd_sortorder, pertd_description";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM personaltitles, personaltitledetails " +
+                    "WHERE pert_activedetailid = pertd_personaltitledetailid " +
+                    "ORDER BY pertd_sortorder, pertd_description " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = PersonalTitleFactory.getInstance().prepareStatement(query);
+        
+        return PersonalTitleFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+    }
+    
+    public List<PersonalTitle> getPersonalTitles() {
+        return getPersonalTitles(EntityPermission.READ_ONLY);
+    }
+    
+    public List<PersonalTitle> getPersonalTitlesForUpdate() {
+        return getPersonalTitles(EntityPermission.READ_WRITE);
+    }
+    
+    public List<PersonalTitleDetail> getPersonalTitleDetails() {
+        PreparedStatement ps = PersonalTitleDetailFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM personaltitles, personaltitledetails " +
+                "WHERE pert_activedetailid = pertd_personaltitledetailid " +
+                "ORDER BY pertd_sortorder, pertd_description");
+        
+        return PersonalTitleDetailFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+    }
+    
+    private PersonalTitle getDefaultPersonalTitle(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM personaltitles, personaltitledetails " +
+                    "WHERE pert_activedetailid = pertd_personaltitledetailid AND pertd_isdefault = 1";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM personaltitles, personaltitledetails " +
+                    "WHERE pert_activedetailid = pertd_personaltitledetailid AND pertd_isdefault = 1 " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = PersonalTitleFactory.getInstance().prepareStatement(query);
+        
+        return PersonalTitleFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    }
+    
+    public PersonalTitle getDefaultPersonalTitle() {
+        return getDefaultPersonalTitle(EntityPermission.READ_ONLY);
+    }
+    
+    public PersonalTitle getDefaultPersonalTitleForUpdate() {
+        return getDefaultPersonalTitle(EntityPermission.READ_WRITE);
+    }
+    
+    public PersonalTitleDetailValue getDefaultPersonalTitleDetailValueForUpdate() {
+        return getDefaultPersonalTitleForUpdate().getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
+    }
+    
+    public PersonalTitleChoicesBean getPersonalTitleChoices(String defaultPersonalTitleChoice, boolean allowNullChoice) {
+        List<PersonalTitleDetail> personalTitleDetails = getPersonalTitleDetails();
+        int size = personalTitleDetails.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultPersonalTitleChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(PersonalTitleDetail personalTitleDetail: personalTitleDetails) {
+            String label = personalTitleDetail.getDescription();
+            String value = personalTitleDetail.getPersonalTitlePK().getEntityId().toString();
+            
+            labels.add(label == null? "": label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultPersonalTitleChoice == null? false: defaultPersonalTitleChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && personalTitleDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new PersonalTitleChoicesBean(labels, values, defaultValue);
+    }
+    
+    public boolean validPersonalTitlePK(PersonalTitlePK personalTitlePK) {
+        return PersonalTitleFactory.getInstance().validPK(session, personalTitlePK);
+    }
+    
+    public PersonalTitlePK convertPersonalTitleIdToPK(String personalTitleId) {
+        PersonalTitlePK personalTitlePK = new PersonalTitlePK(Long.valueOf(personalTitleId));
+        
+        return validPersonalTitlePK(personalTitlePK)? personalTitlePK: null;
+    }
+    
+    public PersonalTitle convertPersonalTitleIdToEntity(String personalTitleId, EntityPermission entityPermission) {
+        PersonalTitlePK personalTitlePK = convertPersonalTitleIdToPK(personalTitleId);
+        PersonalTitle personalTitle = personalTitlePK == null? null: PersonalTitleFactory.getInstance().getEntityFromPK(session,
+                entityPermission, personalTitlePK);
+        
+        return personalTitle;
+    }
+    
+    public PersonalTitleDetailValue getPersonalTitleDetailValueByPKForUpdate(PersonalTitlePK personalTitlePK) {
+        PersonalTitle personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                personalTitlePK);
+        PersonalTitleDetail personalTitleDetail = personalTitle.getActiveDetailForUpdate();
+        
+        return personalTitleDetail.getPersonalTitleDetailValue().clone();
+    }
+    
+    private void updatePersonalTitleFromValue(PersonalTitleDetailValue personalTitleDetailValue, boolean checkDefault,
+            BasePK updatedBy) {
+        if(personalTitleDetailValue.hasBeenModified()) {
+            PersonalTitle personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    personalTitleDetailValue.getPersonalTitlePK());
+            PersonalTitleDetail personalTitleDetail = personalTitle.getActiveDetailForUpdate();
+            
+            personalTitleDetail.setThruTime(session.START_TIME_LONG);
+            personalTitleDetail.store();
+            
+            String description = personalTitleDetailValue.getDescription();
+            Integer sortOrder = personalTitleDetailValue.getSortOrder();
+            Boolean isDefault = personalTitleDetailValue.getIsDefault();
+            
+            if(checkDefault) {
+                PersonalTitle defaultPersonalTitle = getDefaultPersonalTitle();
+                boolean defaultFound = defaultPersonalTitle != null && !defaultPersonalTitle.equals(personalTitle);
+                
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    PersonalTitleDetailValue defaultPersonalTitleDetailValue = getDefaultPersonalTitleDetailValueForUpdate();
+                    
+                    defaultPersonalTitleDetailValue.setIsDefault(Boolean.FALSE);
+                    updatePersonalTitleFromValue(defaultPersonalTitleDetailValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+            
+            personalTitleDetail = PersonalTitleDetailFactory.getInstance().create(personalTitle, description, isDefault,
+                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            personalTitle.setActiveDetail(personalTitleDetail);
+            personalTitle.setLastDetail(personalTitleDetail);
+            
+            sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+    
+    public void updatePersonalTitleFromValue(PersonalTitleDetailValue personalTitleDetailValue, BasePK updatedBy) {
+        updatePersonalTitleFromValue(personalTitleDetailValue, true, updatedBy);
+    }
+    
+    public PersonalTitleTransfer getPersonalTitleTransfer(UserVisit userVisit, PersonalTitle personalTitle) {
+        return getPartyTransferCaches(userVisit).getPersonalTitleTransferCache().getPersonalTitleTransfer(personalTitle);
+    }
+    
+    public List<PersonalTitleTransfer> getPersonalTitleTransfers(UserVisit userVisit, Collection<PersonalTitle> personalTitles) {
+        List<PersonalTitleTransfer> personalTitleTransfers = new ArrayList<>(personalTitles.size());
+        PersonalTitleTransferCache personalTitleTransferCache = getPartyTransferCaches(userVisit).getPersonalTitleTransferCache();
+        
+        personalTitles.stream().forEach((personalTitle) -> {
+            personalTitleTransfers.add(personalTitleTransferCache.getPersonalTitleTransfer(personalTitle));
+        });
+        
+        return personalTitleTransfers;
+    }
+    
+    public List<PersonalTitleTransfer> getPersonalTitleTransfers(UserVisit userVisit) {
+        return getPersonalTitleTransfers(userVisit, getPersonalTitles());
+    }
+    
+    public void deletePersonalTitle(PersonalTitle personalTitle, BasePK deletedBy) {
+        PersonalTitleDetail personalTitleDetail = personalTitle.getLastDetailForUpdate();
+        personalTitleDetail.setThruTime(session.START_TIME_LONG);
+        personalTitle.setActiveDetail(null);
+        personalTitle.store();
+        
+        // Check for default, and pick one if necessary
+        PersonalTitle defaultPersonalTitle = getDefaultPersonalTitle();
+        if(defaultPersonalTitle == null) {
+            List<PersonalTitle> personalTitles = getPersonalTitlesForUpdate();
+            
+            if(!personalTitles.isEmpty()) {
+                Iterator<PersonalTitle> iter = personalTitles.iterator();
+                if(iter.hasNext()) {
+                    defaultPersonalTitle = iter.next();
+                }
+                PersonalTitleDetailValue personalTitleDetailValue = defaultPersonalTitle.getLastDetailForUpdate().getPersonalTitleDetailValue().clone();
+                
+                personalTitleDetailValue.setIsDefault(Boolean.TRUE);
+                updatePersonalTitleFromValue(personalTitleDetailValue, false, deletedBy);
+            }
+        }
+        
+        sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Name Suffixes
+    // --------------------------------------------------------------------------------
+    
+    public NameSuffix createNameSuffix(String description, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        NameSuffix defaultNameSuffix = getDefaultNameSuffix();
+        boolean defaultFound = defaultNameSuffix != null;
+        
+        if(defaultFound && isDefault) {
+            NameSuffixDetailValue defaultNameSuffixDetailValue = getDefaultNameSuffixDetailValueForUpdate();
+            
+            defaultNameSuffixDetailValue.setIsDefault(Boolean.FALSE);
+            updateNameSuffixFromValue(defaultNameSuffixDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+        
+        NameSuffix nameSuffix = NameSuffixFactory.getInstance().create((NameSuffixDetailPK)null, (NameSuffixDetailPK)null);
+        NameSuffixDetail nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description,
+                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, nameSuffix.getPrimaryKey());
+        nameSuffix.setActiveDetail(nameSuffixDetail);
+        nameSuffix.setLastDetail(nameSuffixDetail);
+        nameSuffix.store();
+        
+        sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return nameSuffix;
+    }
+    
+    private List<NameSuffix> getNameSuffixes(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM namesuffixes, namesuffixdetails " +
+                    "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
+                    "ORDER BY nsfxd_sortorder, nsfxd_description";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM namesuffixes, namesuffixdetails " +
+                    "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
+                    "ORDER BY nsfxd_sortorder, nsfxd_description " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = NameSuffixFactory.getInstance().prepareStatement(query);
+        
+        return NameSuffixFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+    }
+    
+    public List<NameSuffix> getNameSuffixes() {
+        return getNameSuffixes(EntityPermission.READ_ONLY);
+    }
+    
+    public List<NameSuffix> getNameSuffixesForUpdate() {
+        return getNameSuffixes(EntityPermission.READ_WRITE);
+    }
+    
+    public List<NameSuffixDetail> getNameSuffixDetails() {
+        PreparedStatement ps = NameSuffixDetailFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM namesuffixes, namesuffixdetails " +
+                "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
+                "ORDER BY nsfxd_sortorder, nsfxd_description");
+        
+        return NameSuffixDetailFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+    }
+    
+    private NameSuffix getDefaultNameSuffix(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM namesuffixes, namesuffixdetails " +
+                    "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid AND nsfxd_isdefault = 1";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM namesuffixes, namesuffixdetails " +
+                    "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid AND nsfxd_isdefault = 1 " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = NameSuffixFactory.getInstance().prepareStatement(query);
+        
+        return NameSuffixFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    }
+    
+    public NameSuffix getDefaultNameSuffix() {
+        return getDefaultNameSuffix(EntityPermission.READ_ONLY);
+    }
+    
+    public NameSuffix getDefaultNameSuffixForUpdate() {
+        return getDefaultNameSuffix(EntityPermission.READ_WRITE);
+    }
+    
+    public NameSuffixDetailValue getDefaultNameSuffixDetailValueForUpdate() {
+        return getDefaultNameSuffixForUpdate().getLastDetailForUpdate().getNameSuffixDetailValue().clone();
+    }
+    
+    public NameSuffixChoicesBean getNameSuffixChoices(String defaultNameSuffixChoice, boolean allowNullChoice) {
+        List<NameSuffixDetail> nameSuffixDetails = getNameSuffixDetails();
+        int size = nameSuffixDetails.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultNameSuffixChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(NameSuffixDetail nameSuffixDetail: nameSuffixDetails) {
+            String label = nameSuffixDetail.getDescription();
+            String value = nameSuffixDetail.getNameSuffixPK().getEntityId().toString();
+            
+            labels.add(label == null? "": label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultNameSuffixChoice == null? false: defaultNameSuffixChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && nameSuffixDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new NameSuffixChoicesBean(labels, values, defaultValue);
+    }
+    
+    public boolean validNameSuffixPK(NameSuffixPK nameSuffixPK) {
+        return NameSuffixFactory.getInstance().validPK(session, nameSuffixPK);
+    }
+    
+    public NameSuffixPK convertNameSuffixIdToPK(String nameSuffixId) {
+        NameSuffixPK nameSuffixPK = new NameSuffixPK(Long.valueOf(nameSuffixId));
+        
+        return validNameSuffixPK(nameSuffixPK)? nameSuffixPK: null;
+    }
+    
+    public NameSuffix convertNameSuffixIdToEntity(String nameSuffixId, EntityPermission entityPermission) {
+        NameSuffixPK nameSuffixPK = convertNameSuffixIdToPK(nameSuffixId);
+        NameSuffix nameSuffix = nameSuffixPK == null? null: NameSuffixFactory.getInstance().getEntityFromPK(session,
+                entityPermission, nameSuffixPK);
+        
+        return nameSuffix;
+    }
+    
+    public NameSuffixDetailValue getNameSuffixDetailValueByPKForUpdate(NameSuffixPK nameSuffixPK) {
+        NameSuffix nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, nameSuffixPK);
+        NameSuffixDetail nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
+        
+        return nameSuffixDetail.getNameSuffixDetailValue().clone();
+    }
+    
+    private void updateNameSuffixFromValue(NameSuffixDetailValue nameSuffixDetailValue, boolean checkDefault, BasePK updatedBy) {
+        if(nameSuffixDetailValue.hasBeenModified()) {
+            NameSuffix nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    nameSuffixDetailValue.getNameSuffixPK());
+            NameSuffixDetail nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
+            
+            nameSuffixDetail.setThruTime(session.START_TIME_LONG);
+            nameSuffixDetail.store();
+            
+            String description = nameSuffixDetailValue.getDescription();
+            Integer sortOrder = nameSuffixDetailValue.getSortOrder();
+            Boolean isDefault = nameSuffixDetailValue.getIsDefault();
+            
+            if(checkDefault) {
+                NameSuffix defaultNameSuffix = getDefaultNameSuffix();
+                boolean defaultFound = defaultNameSuffix != null && !defaultNameSuffix.equals(nameSuffix);
+                
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    NameSuffixDetailValue defaultNameSuffixDetailValue = getDefaultNameSuffixDetailValueForUpdate();
+                    
+                    defaultNameSuffixDetailValue.setIsDefault(Boolean.FALSE);
+                    updateNameSuffixFromValue(defaultNameSuffixDetailValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+            
+            nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description, isDefault, sortOrder,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            nameSuffix.setActiveDetail(nameSuffixDetail);
+            nameSuffix.setLastDetail(nameSuffixDetail);
+            
+            sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+    
+    public void updateNameSuffixFromValue(NameSuffixDetailValue nameSuffixDetailValue, BasePK updatedBy) {
+        updateNameSuffixFromValue(nameSuffixDetailValue, true, updatedBy);
+    }
+    
+    public NameSuffixTransfer getNameSuffixTransfer(UserVisit userVisit, NameSuffix nameSuffix) {
+        return getPartyTransferCaches(userVisit).getNameSuffixTransferCache().getNameSuffixTransfer(nameSuffix);
+    }
+    
+    public List<NameSuffixTransfer> getNameSuffixTransfers(UserVisit userVisit, Collection<NameSuffix> nameSuffixes) {
+        List<NameSuffixTransfer> nameSuffixTransfers = new ArrayList<>(nameSuffixes.size());
+        NameSuffixTransferCache nameSuffixTransferCache = getPartyTransferCaches(userVisit).getNameSuffixTransferCache();
+        
+        nameSuffixes.stream().forEach((nameSuffix) -> {
+            nameSuffixTransfers.add(nameSuffixTransferCache.getNameSuffixTransfer(nameSuffix));
+        });
+        
+        return nameSuffixTransfers;
+    }
+    
+    public List<NameSuffixTransfer> getNameSuffixTransfers(UserVisit userVisit) {
+        return getNameSuffixTransfers(userVisit, getNameSuffixes());
+    }
+    
+    public void deleteNameSuffix(NameSuffix nameSuffix, BasePK deletedBy) {
+        NameSuffixDetail nameSuffixDetail = nameSuffix.getLastDetailForUpdate();
+        nameSuffixDetail.setThruTime(session.START_TIME_LONG);
+        nameSuffix.setActiveDetail(null);
+        nameSuffix.store();
+        
+        // Check for default, and pick one if necessary
+        NameSuffix defaultNameSuffix = getDefaultNameSuffix();
+        if(defaultNameSuffix == null) {
+            List<NameSuffix> nameSuffixes = getNameSuffixesForUpdate();
+            
+            if(!nameSuffixes.isEmpty()) {
+                Iterator<NameSuffix> iter = nameSuffixes.iterator();
+                if(iter.hasNext()) {
+                    defaultNameSuffix = iter.next();
+                }
+                NameSuffixDetailValue nameSuffixDetailValue = defaultNameSuffix.getLastDetailForUpdate().getNameSuffixDetailValue().clone();
+                
+                nameSuffixDetailValue.setIsDefault(Boolean.TRUE);
+                updateNameSuffixFromValue(nameSuffixDetailValue, false, deletedBy);
+            }
+        }
+        
+        sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Time Zones
+    // --------------------------------------------------------------------------------
+    
+    public TimeZone createTimeZone(String javaTimeZoneName, String unixTimeZoneName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        
+        TimeZone timeZone = TimeZoneFactory.getInstance().create((TimeZoneDetailPK)null, (TimeZoneDetailPK)null);
+        TimeZoneDetail timeZoneDetail = TimeZoneDetailFactory.getInstance().create(timeZone, javaTimeZoneName,
+                unixTimeZoneName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        timeZone = TimeZoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, timeZone.getPrimaryKey());
+        timeZone.setActiveDetail(timeZoneDetail);
+        timeZone.setLastDetail(timeZoneDetail);
+        timeZone.store();
+        
+        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return timeZone;
+    }
+    
+    public List<TimeZone> getTimeZones() {
+        List<TimeZone> timeZones = null;
+        
+        try {
+            PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM timezones, timezonedetails " +
+                    "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_thrutime = ? " +
+                    "ORDER BY tzdt_sortorder, tzdt_javatimezonename");
+            
+            ps.setLong(1, Session.MAX_TIME);
+            
+            timeZones = TimeZoneFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return timeZones;
+    }
+    
+    public TimeZone getDefaultTimeZone() {
+        TimeZone timeZone = null;
+        
+        try {
+            PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM timezones, timezonedetails " +
+                    "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_isdefault = 1 AND tzdt_thrutime = ?");
+            
+            ps.setLong(1, Session.MAX_TIME);
+            
+            timeZone = TimeZoneFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return timeZone;
+    }
+    
+    public TimeZone getTimeZoneByJavaName(String javaTimeZoneName) {
+        TimeZone timeZone = null;
+        
+        try {
+            PreparedStatement ps = TimeZoneFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM timezones, timezonedetails " +
+                    "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_javatimezonename = ? AND tzdt_thrutime = ?");
+            
+            ps.setString(1, javaTimeZoneName);
+            ps.setLong(2, Session.MAX_TIME);
+            
+            timeZone = TimeZoneFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return timeZone;
+    }
+    
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TimeZone */
+    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        TimeZonePK pk = new TimeZonePK(entityInstance.getEntityUniqueId());
+        TimeZone timeZone = TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        
+        return timeZone;
+    }
+
+    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance) {
+        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TimeZone getTimeZoneByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public TimeZoneChoicesBean getTimeZoneChoices(String defaultTimeZoneChoice, Language language, boolean allowNullChoice) {
+        List<TimeZone> timeZones = getTimeZones();
+        int size = timeZones.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultTimeZoneChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(TimeZone timeZone: timeZones) {
+            TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
+            String value = timeZoneDetail.getJavaTimeZoneName();
+            
+            labels.add(getBestTimeZoneDescription(timeZone, language));
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultTimeZoneChoice == null? false: defaultTimeZoneChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && timeZoneDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new TimeZoneChoicesBean(labels, values, defaultValue);
+    }
+    
+    public TimeZoneTransfer getTimeZoneTransfer(UserVisit userVisit, TimeZone timeZone) {
+        return getPartyTransferCaches(userVisit).getTimeZoneTransferCache().getTimeZoneTransfer(timeZone);
+    }
+    
+    public List<TimeZoneTransfer> getTimeZoneTransfers(UserVisit userVisit, Collection<TimeZone> timeZones) {
+        List<TimeZoneTransfer> timeZoneTransfers = new ArrayList<>(timeZones.size());
+        TimeZoneTransferCache timeZoneTransferCache = getPartyTransferCaches(userVisit).getTimeZoneTransferCache();
+        
+        timeZones.stream().forEach((timeZone) -> {
+            timeZoneTransfers.add(timeZoneTransferCache.getTimeZoneTransfer(timeZone));
+        });
+        
+        return timeZoneTransfers;
+    }
+    
+    public List<TimeZoneTransfer> getTimeZoneTransfers(UserVisit userVisit) {
+        return getTimeZoneTransfers(userVisit, getTimeZones());
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Time Zone Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public TimeZoneDescription createTimeZoneDescription(TimeZone timeZone, Language language, String description, BasePK createdBy) {
+        TimeZoneDescription timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language,
+                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return timeZoneDescription;
+    }
+    
+    private List<TimeZoneDescription> getTimeZoneDescriptionsByTimeZone(TimeZone timeZone, EntityPermission entityPermission) {
+        List<TimeZoneDescription> timeZoneDescriptions = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM timezonedescriptions, languages " +
+                        "WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ? AND tzd_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM timezonedescriptions " +
+                        "WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            timeZoneDescriptions = TimeZoneDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return timeZoneDescriptions;
+    }
+    
+    public List<TimeZoneDescription> getTimeZoneDescriptionsByTimeZone(TimeZone timeZone) {
+        return getTimeZoneDescriptionsByTimeZone(timeZone, EntityPermission.READ_ONLY);
+    }
+    
+    public List<TimeZoneDescription> getTimeZoneDescriptionsByTimeZoneForUpdate(TimeZone timeZone) {
+        return getTimeZoneDescriptionsByTimeZone(timeZone, EntityPermission.READ_WRITE);
+    }
+    
+    private TimeZoneDescription getTimeZoneDescription(TimeZone timeZone, Language language, EntityPermission entityPermission) {
+        TimeZoneDescription timeZoneDescription = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM timezonedescriptions " +
+                        "WHERE tzd_tz_timezoneid = ? AND tzd_lang_languageid = ? AND tzd_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM timezonedescriptions " +
+                        "WHERE tzd_tz_timezoneid = ? AND tzd_lang_languageid = ? AND tzd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = TimeZoneDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+            
+            timeZoneDescription = TimeZoneDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return timeZoneDescription;
+    }
+    
+    public TimeZoneDescription getTimeZoneDescription(TimeZone timeZone, Language language) {
+        return getTimeZoneDescription(timeZone, language, EntityPermission.READ_ONLY);
+    }
+    
+    public TimeZoneDescription getTimeZoneDescriptionForUpdate(TimeZone timeZone, Language language) {
+        return getTimeZoneDescription(timeZone, language, EntityPermission.READ_WRITE);
+    }
+    
+    public TimeZoneDescriptionValue getTimeZoneDescriptionValue(TimeZoneDescription timeZoneDescription) {
+        return timeZoneDescription == null? null: timeZoneDescription.getTimeZoneDescriptionValue().clone();
+    }
+    
+    public TimeZoneDescriptionValue getTimeZoneDescriptionValueForUpdate(TimeZone timeZone, Language language) {
+        return getTimeZoneDescriptionValue(getTimeZoneDescriptionForUpdate(timeZone, language));
+    }
+    
+    public String getBestTimeZoneDescription(TimeZone timeZone, Language language) {
+        String description;
+        TimeZoneDescription timeZoneDescription = getTimeZoneDescription(timeZone, language);
+        
+        if(timeZoneDescription == null && !language.getIsDefault()) {
+            timeZoneDescription = getTimeZoneDescription(timeZone, getPartyControl().getDefaultLanguage());
+        }
+        
+        if(timeZoneDescription == null) {
+            description = timeZone.getLastDetail().getJavaTimeZoneName();
+        } else {
+            description = timeZoneDescription.getDescription();
+        }
+        
+        return description;
+    }
+    
+    public TimeZoneDescriptionTransfer getTimeZoneDescriptionTransfer(UserVisit userVisit, TimeZoneDescription timeZoneDescription) {
+        return getPartyTransferCaches(userVisit).getTimeZoneDescriptionTransferCache().getTimeZoneDescriptionTransfer(timeZoneDescription);
+    }
+    
+    public List<TimeZoneDescriptionTransfer> getTimeZoneDescriptionTransfers(UserVisit userVisit, TimeZone timeZone) {
+        List<TimeZoneDescription> timeZoneDescriptions = getTimeZoneDescriptionsByTimeZone(timeZone);
+        List<TimeZoneDescriptionTransfer> timeZoneDescriptionTransfers = new ArrayList<>(timeZoneDescriptions.size());
+        TimeZoneDescriptionTransferCache timeZoneDescriptionTransferCache = getPartyTransferCaches(userVisit).getTimeZoneDescriptionTransferCache();
+        
+        timeZoneDescriptions.stream().forEach((timeZoneDescription) -> {
+            timeZoneDescriptionTransfers.add(timeZoneDescriptionTransferCache.getTimeZoneDescriptionTransfer(timeZoneDescription));
+        });
+        
+        return timeZoneDescriptionTransfers;
+    }
+    
+    public void updateTimeZoneDescriptionFromValue(TimeZoneDescriptionValue timeZoneDescriptionValue, BasePK updatedBy) {
+        if(timeZoneDescriptionValue.hasBeenModified()) {
+            TimeZoneDescription timeZoneDescription = TimeZoneDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     timeZoneDescriptionValue.getPrimaryKey());
+            
+            timeZoneDescription.setThruTime(session.START_TIME_LONG);
+            timeZoneDescription.store();
+            
+            TimeZone timeZone = timeZoneDescription.getTimeZone();
+            Language language = timeZoneDescription.getLanguage();
+            String description = timeZoneDescriptionValue.getDescription();
+            
+            timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deleteTimeZoneDescription(TimeZoneDescription timeZoneDescription, BasePK deletedBy) {
+        timeZoneDescription.setThruTime(session.START_TIME_LONG);
+        
+        sendEventUsingNames(timeZoneDescription.getTimeZonePK(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+    }
+    
+    public void deleteTimeZoneDescriptionsByTimeZone(TimeZone timeZone, BasePK deletedBy) {
+        List<TimeZoneDescription> timeZoneDescriptions = getTimeZoneDescriptionsByTimeZoneForUpdate(timeZone);
+        
+        timeZoneDescriptions.stream().forEach((timeZoneDescription) -> {
+            deleteTimeZoneDescription(timeZoneDescription, deletedBy);
+        });
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Date Time Formats
+    // --------------------------------------------------------------------------------
+    
+    public DateTimeFormat createDateTimeFormat(String dateTimeFormatName, String javaShortDateFormat, String javaAbbrevDateFormat,
+            String javaAbbrevDateFormatWeekday, String javaLongDateFormat, String javaLongDateFormatWeekday, String javaTimeFormat,
+            String javaTimeFormatSeconds, String unixShortDateFormat, String unixAbbrevDateFormat,
+            String unixAbbrevDateFormatWeekday, String unixLongDateFormat, String unixLongDateFormatWeekday, String unixTimeFormat,
+            String unixTimeFormatSeconds, String shortDateSeparator, String timeSeparator, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        DateTimeFormat dateTimeFormat = DateTimeFormatFactory.getInstance().create((DateTimeFormatDetailPK)null,
+                (DateTimeFormatDetailPK)null);
+        DateTimeFormatDetail dateTimeFormatDetail = DateTimeFormatDetailFactory.getInstance().create(dateTimeFormat,
+                dateTimeFormatName, javaShortDateFormat, javaAbbrevDateFormat, javaAbbrevDateFormatWeekday, javaLongDateFormat,
+                javaLongDateFormatWeekday, javaTimeFormat, javaTimeFormatSeconds, unixShortDateFormat, unixAbbrevDateFormat,
+                unixAbbrevDateFormatWeekday, unixLongDateFormat, unixLongDateFormatWeekday, unixTimeFormat, unixTimeFormatSeconds,
+                shortDateSeparator, timeSeparator, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                dateTimeFormat.getPrimaryKey());
+        dateTimeFormat.setActiveDetail(dateTimeFormatDetail);
+        dateTimeFormat.setLastDetail(dateTimeFormatDetail);
+        dateTimeFormat.store();
+        
+        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return dateTimeFormat;
+    }
+    
+    public List<DateTimeFormat> getDateTimeFormats() {
+        List<DateTimeFormat> dateTimeFormats = null;
+        
+        try {
+            PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM datetimeformats, datetimeformatdetails " +
+                    "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_thrutime = ? " +
+                    "ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname");
+            
+            ps.setLong(1, Session.MAX_TIME);
+            
+            dateTimeFormats = DateTimeFormatFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return dateTimeFormats;
+    }
+    
+    public DateTimeFormat getDefaultDateTimeFormat() {
+        DateTimeFormat dateTimeFormat = null;
+        
+        try {
+            PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM datetimeformats, datetimeformatdetails " +
+                    "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_isdefault = 1 AND dtfdt_thrutime = ?");
+            
+            ps.setLong(1, Session.MAX_TIME);
+            
+            dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return dateTimeFormat;
+    }
+    
+    public DateTimeFormat getDateTimeFormatByName(String dateTimeFormatName) {
+        DateTimeFormat dateTimeFormat = null;
+        
+        try {
+            PreparedStatement ps = DateTimeFormatFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM datetimeformats, datetimeformatdetails " +
+                    "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_datetimeformatname = ? AND dtfdt_thrutime = ?");
+            
+            ps.setString(1, dateTimeFormatName);
+            ps.setLong(2, Session.MAX_TIME);
+            
+            dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return dateTimeFormat;
+    }
+    
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.DateTimeFormat */
+    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        DateTimeFormatPK pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
+        DateTimeFormat dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        
+        return dateTimeFormat;
+    }
+
+    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance) {
+        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public DateTimeFormat getDateTimeFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public DateTimeFormatChoicesBean getDateTimeFormatChoices(String defaultDateTimeFormatChoice, Language language, boolean allowNullChoice) {
+        List<DateTimeFormat> dateTimeFormats = getDateTimeFormats();
+        int size = dateTimeFormats.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultDateTimeFormatChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(DateTimeFormat dateTimeFormat: dateTimeFormats) {
+            DateTimeFormatDetail dateTimeFormatDetail = dateTimeFormat.getLastDetail();
+            String value = dateTimeFormatDetail.getDateTimeFormatName();
+            
+            labels.add(getBestDateTimeFormatDescription(dateTimeFormat, language));
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultDateTimeFormatChoice == null? false: defaultDateTimeFormatChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && dateTimeFormatDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new DateTimeFormatChoicesBean(labels, values, defaultValue);
+    }
+    
+    public DateTimeFormatTransfer getDateTimeFormatTransfer(UserVisit userVisit, DateTimeFormat dateTimeFormat) {
+        return getPartyTransferCaches(userVisit).getDateTimeFormatTransferCache().getDateTimeFormatTransfer(dateTimeFormat);
+    }
+    
+    public List<DateTimeFormatTransfer> getDateTimeFormatTransfers(UserVisit userVisit, Collection<DateTimeFormat> dateTimeFormats) {
+        List<DateTimeFormatTransfer> dateTimeFormatTransfers = new ArrayList<>(dateTimeFormats.size());
+        DateTimeFormatTransferCache dateTimeFormatTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatTransferCache();
+        
+        dateTimeFormats.stream().forEach((dateTimeFormat) -> {
+            dateTimeFormatTransfers.add(dateTimeFormatTransferCache.getDateTimeFormatTransfer(dateTimeFormat));
+        });
+        
+        return dateTimeFormatTransfers;
+    }
+    
+    public List<DateTimeFormatTransfer> getDateTimeFormatTransfers(UserVisit userVisit) {
+        return getDateTimeFormatTransfers(userVisit, getDateTimeFormats());
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Date Time Format Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public DateTimeFormatDescription createDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language,
+            String description, BasePK createdBy) {
+        DateTimeFormatDescription dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(session,
+                dateTimeFormat, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return dateTimeFormatDescription;
+    }
+    
+    private List<DateTimeFormatDescription> getDateTimeFormatDescriptionsByDateTimeFormat(DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
+        List<DateTimeFormatDescription> dateTimeFormatDescriptions = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM datetimeformatdescriptions, languages " +
+                        "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ? AND dtfd_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM datetimeformatdescriptions " +
+                        "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            dateTimeFormatDescriptions = DateTimeFormatDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return dateTimeFormatDescriptions;
+    }
+    
+    public List<DateTimeFormatDescription> getDateTimeFormatDescriptionsByDateTimeFormat(DateTimeFormat dateTimeFormat) {
+        return getDateTimeFormatDescriptionsByDateTimeFormat(dateTimeFormat, EntityPermission.READ_ONLY);
+    }
+    
+    public List<DateTimeFormatDescription> getDateTimeFormatDescriptionsByDateTimeFormatForUpdate(DateTimeFormat dateTimeFormat) {
+        return getDateTimeFormatDescriptionsByDateTimeFormat(dateTimeFormat, EntityPermission.READ_WRITE);
+    }
+    
+    private DateTimeFormatDescription getDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language, EntityPermission entityPermission) {
+        DateTimeFormatDescription dateTimeFormatDescription = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM datetimeformatdescriptions " +
+                        "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_lang_languageid = ? AND dtfd_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM datetimeformatdescriptions " +
+                        "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_lang_languageid = ? AND dtfd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = DateTimeFormatDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+            
+            dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return dateTimeFormatDescription;
+    }
+    
+    public DateTimeFormatDescription getDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language) {
+        return getDateTimeFormatDescription(dateTimeFormat, language, EntityPermission.READ_ONLY);
+    }
+    
+    public DateTimeFormatDescription getDateTimeFormatDescriptionForUpdate(DateTimeFormat dateTimeFormat, Language language) {
+        return getDateTimeFormatDescription(dateTimeFormat, language, EntityPermission.READ_WRITE);
+    }
+    
+    public DateTimeFormatDescriptionValue getDateTimeFormatDescriptionValue(DateTimeFormatDescription dateTimeFormatDescription) {
+        return dateTimeFormatDescription == null? null: dateTimeFormatDescription.getDateTimeFormatDescriptionValue().clone();
+    }
+    
+    public DateTimeFormatDescriptionValue getDateTimeFormatDescriptionValueForUpdate(DateTimeFormat dateTimeFormat, Language language) {
+        return getDateTimeFormatDescriptionValue(getDateTimeFormatDescriptionForUpdate(dateTimeFormat, language));
+    }
+    
+    public String getBestDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language) {
+        String description;
+        DateTimeFormatDescription dateTimeFormatDescription = getDateTimeFormatDescription(dateTimeFormat, language);
+        
+        if(dateTimeFormatDescription == null && !language.getIsDefault()) {
+            dateTimeFormatDescription = getDateTimeFormatDescription(dateTimeFormat, getPartyControl().getDefaultLanguage());
+        }
+        
+        if(dateTimeFormatDescription == null) {
+            description = dateTimeFormat.getLastDetail().getDateTimeFormatName();
+        } else {
+            description = dateTimeFormatDescription.getDescription();
+        }
+        
+        return description;
+    }
+    
+    public DateTimeFormatDescriptionTransfer getDateTimeFormatDescriptionTransfer(UserVisit userVisit, DateTimeFormatDescription dateTimeFormatDescription) {
+        return getPartyTransferCaches(userVisit).getDateTimeFormatDescriptionTransferCache().getDateTimeFormatDescriptionTransfer(dateTimeFormatDescription);
+    }
+    
+    public List<DateTimeFormatDescriptionTransfer> getDateTimeFormatDescriptionTransfers(UserVisit userVisit, DateTimeFormat dateTimeFormat) {
+        List<DateTimeFormatDescription> dateTimeFormatDescriptions = getDateTimeFormatDescriptionsByDateTimeFormat(dateTimeFormat);
+        List<DateTimeFormatDescriptionTransfer> dateTimeFormatDescriptionTransfers = new ArrayList<>(dateTimeFormatDescriptions.size());
+        DateTimeFormatDescriptionTransferCache dateTimeFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getDateTimeFormatDescriptionTransferCache();
+        
+        dateTimeFormatDescriptions.stream().forEach((dateTimeFormatDescription) -> {
+            dateTimeFormatDescriptionTransfers.add(dateTimeFormatDescriptionTransferCache.getDateTimeFormatDescriptionTransfer(dateTimeFormatDescription));
+        });
+        
+        return dateTimeFormatDescriptionTransfers;
+    }
+    
+    public void updateDateTimeFormatDescriptionFromValue(DateTimeFormatDescriptionValue dateTimeFormatDescriptionValue, BasePK updatedBy) {
+        if(dateTimeFormatDescriptionValue.hasBeenModified()) {
+            DateTimeFormatDescription dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     dateTimeFormatDescriptionValue.getPrimaryKey());
+            
+            dateTimeFormatDescription.setThruTime(session.START_TIME_LONG);
+            dateTimeFormatDescription.store();
+            
+            DateTimeFormat dateTimeFormat = dateTimeFormatDescription.getDateTimeFormat();
+            Language language = dateTimeFormatDescription.getLanguage();
+            String description = dateTimeFormatDescriptionValue.getDescription();
+            
+            dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(dateTimeFormat, language,
+                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deleteDateTimeFormatDescription(DateTimeFormatDescription dateTimeFormatDescription, BasePK deletedBy) {
+        dateTimeFormatDescription.setThruTime(session.START_TIME_LONG);
+        
+        sendEventUsingNames(dateTimeFormatDescription.getDateTimeFormatPK(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        
+    }
+    
+    public void deleteDateTimeFormatDescriptionsByDateTimeFormat(DateTimeFormat dateTimeFormat, BasePK deletedBy) {
+        List<DateTimeFormatDescription> dateTimeFormatDescriptions = getDateTimeFormatDescriptionsByDateTimeFormatForUpdate(dateTimeFormat);
+        
+        dateTimeFormatDescriptions.stream().forEach((dateTimeFormatDescription) -> {
+            deleteDateTimeFormatDescription(dateTimeFormatDescription, deletedBy);
+        });
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Parties
+    // --------------------------------------------------------------------------------
+    
+    public Party createParty(String partyName, PartyType partyType, Language preferredLanguage, Currency preferredCurrency,
+            TimeZone preferredTimeZone, DateTimeFormat preferredDateTimeFormat, BasePK createdBy) {
+        Party party = PartyFactory.getInstance().create((PartyDetailPK)null, (PartyDetailPK)null);
+        
+        if(createdBy == null) {
+            createdBy = party.getPrimaryKey();
+        }
+        
+        if(partyName == null) {
+            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_PARTY);
+            if(sequenceType != null) {
+                Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
+                
+                if(sequence != null) {
+                    partyName = sequenceControl.getNextSequenceValue(sequence);
+                }
+            }
+        }
+        
+        if(partyName == null) {
+            party.remove();
+            party = null;
+        } else {
+            PartyDetail partyDetail = PartyDetailFactory.getInstance().create(party, partyName, partyType, preferredLanguage,
+                    preferredCurrency, preferredTimeZone, preferredDateTimeFormat, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            // Convert to R/W
+            party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, party.getPrimaryKey());
+            party.setActiveDetail(partyDetail);
+            party.setLastDetail(partyDetail);
+            
+            sendEventUsingNames(party.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        }
+        
+        return party;
+    }
+    
+    public long countPartiesByPartyType(PartyType partyType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM parties, partydetails " +
+                "WHERE par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ?",
+                partyType);
+    }
+    
+    public long countPartiesByPartyTypeUsingNames(String partyTypeName) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partytypes, parties, partydetails " +
+                "WHERE ptyp_partytypename = ? " +
+                "AND par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ptyp_partytypeid",
+                partyTypeName);
+    }
+    
+    private static final Map<EntityPermission, String> getPartyByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM parties, partydetails " +
+                "WHERE par_activedetailid = pardt_partydetailid AND pardt_partyname = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM parties, partydetails " +
+                "WHERE par_activedetailid = pardt_partydetailid AND pardt_partyname = ? " +
+                "FOR UPDATE");
+        getPartyByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+    
+    public Party getPartyByName(String partyName, EntityPermission entityPermission) {
+        return PartyFactory.getInstance().getEntityFromQuery(entityPermission, getPartyByNameQueries, partyName);
+    }
+    
+    public Party getPartyByName(String partyName) {
+        return getPartyByName(partyName, EntityPermission.READ_ONLY);
+    }
+    
+    public Party getPartyByNameForUpdate(String partyName) {
+        return getPartyByName(partyName, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyDetailValue getPartyDetailValueForUpdate(Party party) {
+        return party == null? null: party.getLastDetailForUpdate().getPartyDetailValue().clone();
+    }
+    
+    public PartyDetailValue getPartyDetailValueByNameForUpdate(String partyName) {
+        return getPartyDetailValueForUpdate(getPartyByNameForUpdate(partyName));
+    }
+    
+    public PartyDetailValue getPartyDetailValueByPKForUpdate(PartyPK partyPK) {
+        Party party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
+        PartyDetail partyDetail = party.getActiveDetailForUpdate();
+        
+        return partyDetail.getPartyDetailValue().clone();
+    }
+    
+    private static final Map<EntityPermission, String> getPartyByAliasQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliases, parties, partydetails " +
+                "WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ? " +
+                "AND pal_par_partyid = par_partyid " +
+                "AND par_activedetailid = pardt_partydetailid");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliases, parties, partydetails " +
+                "WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ? " +
+                "AND pal_par_partyid = par_partyid " +
+                "AND par_activedetailid = pardt_partydetailid " +
+                "FOR UPDATE");
+        getPartyByAliasQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private Party getPartyByAlias(PartyAliasType partyAliasType, String alias, EntityPermission entityPermission) {
+        return PartyFactory.getInstance().getEntityFromQuery(entityPermission, getPartyByAliasQueries, partyAliasType, alias, Session.MAX_TIME);
+    }
+
+    public Party getPartyByAlias(PartyAliasType partyAliasType, String alias) {
+        return getPartyByAlias(partyAliasType, alias, EntityPermission.READ_ONLY);
+    }
+
+    public Party getPartyByAliasForUpdate(PartyAliasType partyAliasType, String alias) {
+        return getPartyByAlias(partyAliasType, alias, EntityPermission.READ_WRITE);
+    }
+
+    public List<Party> getPartiesByPartyType(PartyType partyType) {
+        List<Party> parties = null;
+        
+        try {
+            PreparedStatement ps = PartyFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM parties, partydetails " +
+                    "WHERE par_partyid = pardt_par_partyid AND pardt_ptyp_partytypeid = ? AND pardt_thrutime = ?");
+            
+            ps.setLong(1, partyType.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            parties = PartyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return parties;
+    }
+    
+    public Language getPreferredLanguage(Party party) {
+        Language language = party.getLastDetail().getPreferredLanguage();
+        
+        if(language == null) {
+            language = getDefaultLanguage();
+        }
+        
+        return language;
+    }
+    
+    public Currency getPreferredCurrency(Party party) {
+        Currency currency = party.getLastDetail().getPreferredCurrency();
+        
+        if(currency == null) {
+            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            
+            currency = accountingControl.getDefaultCurrency();
+        }
+        
+        return currency;
+    }
+    
+    public TimeZone getPreferredTimeZone(Party party) {
+        TimeZone timeZone = party.getLastDetail().getPreferredTimeZone();
+        
+        if(timeZone == null) {
+            timeZone = getDefaultTimeZone();
+        }
+        
+        return timeZone;
+    }
+    
+    public DateTimeFormat getPreferredDateTimeFormat(Party party) {
+        DateTimeFormat dateTimeFormat = party.getLastDetail().getPreferredDateTimeFormat();
+        
+        if(dateTimeFormat == null) {
+            dateTimeFormat = getDefaultDateTimeFormat();
+        }
+        
+        return dateTimeFormat;
+    }
+    
+    public void updatePartyFromValue(PartyDetailValue partyDetailValue, BasePK updatedBy) {
+        if(partyDetailValue.hasBeenModified()) {
+            PartyPK partyPK = partyDetailValue.getPartyPK();
+            Party party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
+            PartyDetail partyDetail = party.getActiveDetailForUpdate();
+            
+            partyDetail.setThruTime(session.START_TIME_LONG);
+            partyDetail.store();
+            
+            String partyName = partyDetailValue.getPartyName();
+            PartyTypePK partyTypePK = partyDetailValue.getPartyTypePK();
+            LanguagePK preferredLanguagePK = partyDetailValue.getPreferredLanguagePK();
+            CurrencyPK preferredCurrencyPK = partyDetailValue.getPreferredCurrencyPK();
+            TimeZonePK preferredTimeZonePK = partyDetailValue.getPreferredTimeZonePK();
+            DateTimeFormatPK preferredDateTimeFormatPK = partyDetailValue.getPreferredDateTimeFormatPK();
+            
+            partyDetail = PartyDetailFactory.getInstance().create(partyPK, partyName, partyTypePK, preferredLanguagePK,
+                    preferredCurrencyPK, preferredTimeZonePK, preferredDateTimeFormatPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            party.setActiveDetail(partyDetail);
+            party.setLastDetail(partyDetail);
+            
+            sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+    
+    public Party getPartyByPK(PartyPK partyPK) {
+        return PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
+    }
+    
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Party */
+    public Party getPartyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        PartyPK pk = new PartyPK(entityInstance.getEntityUniqueId());
+        Party party = PartyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        
+        return party;
+    }
+
+    public Party getPartyByEntityInstance(EntityInstance entityInstance) {
+        return getPartyByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Party getPartyByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
+    public void deleteParty(Party party, BasePK deletedBy) {
+        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        PartyDetail partyDetail = party.getLastDetailForUpdate();
+        PartyType partyType = partyDetail.getPartyType();
+        String partyTypeName = partyType.getPartyTypeName();
+        
+        // TODO: Doesn't clean up all relationships
+        getCoreControl().deletePartyApplicationEditorUsesByParty(party, deletedBy);
+        contactListControl.deletePartyContactListsByParty(party, deletedBy);
+        documentControl.deletePartyDocumentsByParty(party, deletedBy);
+        printerControl.deletePartyPrinterGroupUsesByParty(party, deletedBy);
+        scaleControl.deletePartyScaleUsesByParty(party, deletedBy);
+        searchControl.deletePartySearchTypePreferencesByParty(party, deletedBy);
+        searchControl.deleteSearchesByParty(party, deletedBy);
+        securityControl.deletePartyEntitySecurityRolesByParty(party, deletedBy);
+        securityControl.deletePartySecurityRoleTemplateUseByParty(party, deletedBy);
+        termControl.deletePartyCreditLimitsByParty(party, deletedBy);
+        termControl.deletePartyTermByParty(party, deletedBy);
+        
+        if(partyType.getAllowUserLogins()) {
+            userControl.deleteRecoveryAnswerByParty(party, deletedBy);
+            userControl.deleteUserLoginByParty(party, deletedBy);
+        }
+        
+        if(partyTypeName.equals(PartyConstants.PartyType_COMPANY) || partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)
+                || partyTypeName.equals(PartyConstants.PartyType_VENDOR)) {
+            CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+
+            carrierControl.deletePartyCarriersByParty(party, deletedBy);
+            carrierControl.deletePartyCarrierAccountsByParty(party, deletedBy);
+        }
+
+        if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER) || partyTypeName.equals(PartyConstants.PartyType_VENDOR)) {
+            CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+            ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+
+            cancellationPolicyControl.deletePartyCancellationPoliciesByParty(party, deletedBy);
+            returnPolicyControl.deletePartyReturnPoliciesByParty(party, deletedBy);
+        }
+
+        if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
+            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            
+            paymentControl.deletePartyPaymentMethodsByParty(party, deletedBy);
+        }
+        
+        if(partyTypeName.equals(PartyConstants.PartyType_EMPLOYEE)) {
+            EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+            WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+
+            employeeControl.deleteEmploymentsByParty(party, deletedBy);
+            employeeControl.deleteLeavesByParty(party, deletedBy);
+            employeeControl.deletePartyEmployeeByParty(party, deletedBy);
+            employeeControl.deletePartyResponsibilityByParty(party, deletedBy);
+            employeeControl.deletePartySkillByParty(party, deletedBy);
+            
+            trainingControl.deletePartyTrainingClassByParty(party, deletedBy);
+            
+            workRequirementControl.deleteWorkAssignmentsByParty(party, deletedBy);
+            workRequirementControl.deleteWorkTimesByParty(party, deletedBy);
+        }
+        
+        deletePartyRelationshipsByParty(party, deletedBy);
+        deletePersonByParty(party, deletedBy);
+        deletePartyGroupByParty(party, deletedBy);
+        deleteProfileByParty(party, deletedBy);
+        deletePartyAliasesByParty(party, deletedBy); 
+        
+        removePartyStatusByParty(party);
+
+        partyDetail.setThruTime(session.START_TIME_LONG);
+        partyDetail.store();
+        party.setActiveDetail(null);
+        
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+    
+    public PartyTransfer getPartyTransfer(UserVisit userVisit, Party party) {
+        return getPartyTransferCaches(userVisit).getPartyTransferCache().getPartyTransfer(party);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public String getBestPartyDescription(final Party party, final Language language) {
+        StringBuilder sb = new StringBuilder();
+
+        if(party != null) {
+            PartyDetail partyDetail = party.getLastDetail();
+            PartyType originalPartyType = partyDetail.getPartyType();
+            PartyType partyType = originalPartyType;
+
+            while(partyType.getParentPartyTypePK() != null) {
+                partyType = partyType.getParentPartyType();
+            }
+
+            String partyTypeName = partyType.getPartyTypeName();
+            sb.append(getBestPartyTypeDescription(originalPartyType, language));
+
+            if(partyTypeName.equals(PartyConstants.PartyType_UTILITY)) {
+                // If its a UTILITY, description will be "partyTypeDescription.description, partyTypeName"
+                sb.append(", ").append(partyDetail.getPartyName());
+            } else {
+                Person person = getPerson(party);
+                PartyGroup partyGroup = getPartyGroup(party);
+                String firstName = person == null? null: person.getFirstName();
+                String lastName = person == null? null: person.getLastName();
+                String name = partyGroup == null? null: partyGroup.getName();
+
+                if((firstName != null || lastName != null || name != null)) {
+                    sb.append(", ");
+
+                    if(partyTypeName.equals(PartyConstants.PartyType_PERSON)) {
+                        // If its a PERSON, description will be "firstName lastName, name"
+                        if(firstName != null) {
+                            sb.append(firstName);
+                        }
+
+                        if(lastName != null) {
+                            if(firstName != null) {
+                                sb.append(' ');
+                            }
+                            sb.append(lastName);
+                        }
+
+                        if(name != null) {
+                            if(firstName != null || lastName != null) {
+                                sb.append(", ");
+                            }
+
+                            sb.append(name);
+                        }
+                    } else if(partyTypeName.equals(PartyConstants.PartyType_GROUP) || partyTypeName.equals(PartyConstants.PartyType_FACILITY)) {
+                        // If its a GROUP or FACILITY, description will be "name, firstName lastName"
+                        if(name != null) {
+                            sb.append(name);
+                        }
+
+                        if(firstName != null || lastName != null) {
+                            if(name != null) {
+                                sb.append(", ");
+                            }
+
+                            if(firstName != null) {
+                                sb.append(firstName);
+                            }
+
+                            if(lastName != null) {
+                                if(firstName != null) {
+                                    sb.append(' ');
+                                }
+                                sb.append(lastName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return sb.toString();
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Statuses
+    // --------------------------------------------------------------------------------
+
+    public PartyStatus createPartyStatus(Party party) {
+        return PartyStatusFactory.getInstance().create(party, 0);
+    }
+
+    private static final Map<EntityPermission, String> getPartyStatusQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partystatuses " +
+                "WHERE parst_par_partyid = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partystatuses " +
+                "WHERE parst_par_partyid = ? " +
+                "FOR UPDATE");
+        getPartyStatusQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private PartyStatus getPartyStatus(Party party, EntityPermission entityPermission) {
+        return PartyStatusFactory.getInstance().getEntityFromQuery(entityPermission, getPartyStatusQueries, party);
+    }
+
+    public PartyStatus getPartyStatus(Party party) {
+        PartyStatus partyStatus = getPartyStatus(party, EntityPermission.READ_ONLY);
+
+        return partyStatus == null ? createPartyStatus(party) : partyStatus;
+    }
+
+    public PartyStatus getPartyStatusForUpdate(Party party) {
+        PartyStatus partyStatus = getPartyStatus(party, EntityPermission.READ_WRITE);
+
+        return partyStatus == null
+                ? PartyStatusFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, createPartyStatus(party).getPrimaryKey())
+                : partyStatus;
+    }
+
+    public void removePartyStatusByParty(Party party) {
+        PartyStatus partyStatus = getPartyStatusForUpdate(party);
+
+        if(partyStatus != null) {
+            partyStatus.remove();
+        }
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Party Aliases
+    // --------------------------------------------------------------------------------
+
+    public PartyAlias createPartyAlias(Party party, PartyAliasType partyAliasType, String alias, BasePK createdBy) {
+        PartyAlias partyAlias = PartyAliasFactory.getInstance().create(party, partyAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return partyAlias;
+    }
+
+    private static final Map<EntityPermission, String> getPartyAliasQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliases " +
+                "WHERE pal_par_partyid = ? AND pal_pat_partyaliastypeid = ? AND pal_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliases " +
+                "WHERE pal_par_partyid = ? AND pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyAliasQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private PartyAlias getPartyAlias(Party party, PartyAliasType partyAliasType, EntityPermission entityPermission) {
+        return PartyAliasFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasQueries,
+                party, partyAliasType, Session.MAX_TIME);
+    }
+
+    public PartyAlias getPartyAlias(Party party, PartyAliasType partyAliasType) {
+        return getPartyAlias(party, partyAliasType, EntityPermission.READ_ONLY);
+    }
+
+    public PartyAlias getPartyAliasForUpdate(Party party, PartyAliasType partyAliasType) {
+        return getPartyAlias(party, partyAliasType, EntityPermission.READ_WRITE);
+    }
+
+    public PartyAliasValue getPartyAliasValue(PartyAlias partyAlias) {
+        return partyAlias == null? null: partyAlias.getPartyAliasValue().clone();
+    }
+
+    public PartyAliasValue getPartyAliasValueForUpdate(Party party, PartyAliasType partyAliasType) {
+        return getPartyAliasValue(getPartyAliasForUpdate(party, partyAliasType));
+    }
+
+    private static final Map<EntityPermission, String> getPartyAliasByAliasQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliases " +
+                "WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliases " +
+                "WHERE pal_pat_partyaliastypeid = ? AND pal_alias = ? AND pal_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private PartyAlias getPartyAliasByAlias(PartyAliasType partyAliasType, String alias, EntityPermission entityPermission) {
+        return PartyAliasFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasByAliasQueries, partyAliasType, alias, Session.MAX_TIME);
+    }
+
+    public PartyAlias getPartyAliasByAlias(PartyAliasType partyAliasType, String alias) {
+        return getPartyAliasByAlias(partyAliasType, alias, EntityPermission.READ_ONLY);
+    }
+
+    public PartyAlias getPartyAliasByAliasForUpdate(PartyAliasType partyAliasType, String alias) {
+        return getPartyAliasByAlias(partyAliasType, alias, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getPartyAliasesByPartyQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliases, partyaliastypes, partyaliastypedetails " +
+                "WHERE pal_par_partyid = ? AND pal_thrutime = ? " +
+                "AND pal_pat_partyaliastypeid = pat_partyaliastypeid AND pat_lastdetailid = patdt_partyaliastypedetailid " +
+                "ORDER BY patdt_sortorder, patdt_partyaliastypename " +
+                "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliases " +
+                "WHERE pal_par_partyid = ? AND pal_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyAliasesByPartyQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyAlias> getPartyAliasesByParty(Party party, EntityPermission entityPermission) {
+        return PartyAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyAliasesByPartyQueries,
+                party, Session.MAX_TIME);
+    }
+
+    public List<PartyAlias> getPartyAliasesByParty(Party party) {
+        return getPartyAliasesByParty(party, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyAlias> getPartyAliasesByPartyForUpdate(Party party) {
+        return getPartyAliasesByParty(party, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getPartyAliasesByPartyAliasTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliases, partyes, partydetails " +
+                "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
+                "AND pal_par_partyid = par_partyid AND p_lastdetailid = pdt_partydetailid " +
+                "ORDER BY lang_sortorder, lang_languageisoname");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliases " +
+                "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyAliasesByPartyAliasTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyAlias> getPartyAliasesByPartyAliasType(PartyAliasType partyAliasType, EntityPermission entityPermission) {
+        return PartyAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyAliasesByPartyAliasTypeQueries,
+                partyAliasType, Session.MAX_TIME);
+    }
+
+    public List<PartyAlias> getPartyAliasesByPartyAliasType(PartyAliasType partyAliasType) {
+        return getPartyAliasesByPartyAliasType(partyAliasType, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyAlias> getPartyAliasesByPartyAliasTypeForUpdate(PartyAliasType partyAliasType) {
+        return getPartyAliasesByPartyAliasType(partyAliasType, EntityPermission.READ_WRITE);
+    }
+
+    public PartyAliasTransfer getPartyAliasTransfer(UserVisit userVisit, PartyAlias partyAlias) {
+        return getPartyTransferCaches(userVisit).getPartyAliasTransferCache().getPartyAliasTransfer(partyAlias);
+    }
+
+    public List<PartyAliasTransfer> getPartyAliasTransfersByParty(UserVisit userVisit, Party party) {
+        List<PartyAlias> partyaliases = getPartyAliasesByParty(party);
+        List<PartyAliasTransfer> partyAliasTransfers = new ArrayList<>(partyaliases.size());
+        PartyAliasTransferCache partyAliasTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTransferCache();
+
+        partyaliases.stream().forEach((partyAlias) -> {
+            partyAliasTransfers.add(partyAliasTransferCache.getPartyAliasTransfer(partyAlias));
+        });
+
+        return partyAliasTransfers;
+    }
+
+    public void updatePartyAliasFromValue(PartyAliasValue partyAliasValue, BasePK updatedBy) {
+        if(partyAliasValue.hasBeenModified()) {
+            PartyAlias partyAlias = PartyAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyAliasValue.getPrimaryKey());
+
+            partyAlias.setThruTime(session.START_TIME_LONG);
+            partyAlias.store();
+
+            PartyPK partyPK = partyAlias.getPartyPK();
+            PartyAliasTypePK partyAliasTypePK = partyAlias.getPartyAliasTypePK();
+            String alias  = partyAliasValue.getAlias();
+
+            partyAlias = PartyAliasFactory.getInstance().create(partyPK, partyAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+
+    public void deletePartyAlias(PartyAlias partyAlias, BasePK deletedBy) {
+        partyAlias.setThruTime(session.START_TIME_LONG);
+
+        sendEventUsingNames(partyAlias.getPartyPK(), EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+
+    }
+
+    public void deletePartyAliasesByPartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
+        List<PartyAlias> partyaliases = getPartyAliasesByPartyAliasTypeForUpdate(partyAliasType);
+
+        partyaliases.stream().forEach((partyAlias) -> {
+            deletePartyAlias(partyAlias, deletedBy);
+        });
+    }
+
+    public void deletePartyAliasesByParty(Party party, BasePK deletedBy) {
+        List<PartyAlias> partyaliases = getPartyAliasesByPartyForUpdate(party);
+
+        partyaliases.stream().forEach((partyAlias) -> {
+            deletePartyAlias(partyAlias, deletedBy);
+        });
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Party Relationship Types
+    // --------------------------------------------------------------------------------
+    
+    public PartyRelationshipType createPartyRelationshipType(String partyRelationshipTypeName) {
+        return PartyRelationshipTypeFactory.getInstance().create(partyRelationshipTypeName);
+    }
+    
+    public PartyRelationshipType getPartyRelationshipTypeByName(String partyRelationshipTypeName) {
+        PartyRelationshipType partyRelationshipType = null;
+        
+        try {
+            PreparedStatement ps = PartyRelationshipTypeFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM partyrelationshiptypes " +
+                    "WHERE prt_partyrelationshiptypename = ?");
+            
+            ps.setString(1, partyRelationshipTypeName);
+            
+            partyRelationshipType = PartyRelationshipTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyRelationshipType;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Relationship Type Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public PartyRelationshipTypeDescription createPartyRelationshipTypeDescription(PartyRelationshipType partyRelationshipType,
+            Language language, String description) {
+        return PartyRelationshipTypeDescriptionFactory.getInstance().create(partyRelationshipType, language, description);
+    }
+    
+    public PartyRelationshipTypeDescription getPartyRelationshipTypeDescription(PartyRelationshipType partyRelationshipType,
+            Language language) {
+        PartyRelationshipTypeDescription partyRelationshipTypeDescription = null;
+        
+        try {
+            PreparedStatement ps = PartyRelationshipTypeDescriptionFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM partyrelationshiptypedescriptions " +
+                    "WHERE prtd_prt_partyrelationshiptypeid = ? AND prtd_lang_languageid = ?");
+            
+            ps.setLong(1, partyRelationshipType.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            
+            partyRelationshipTypeDescription = PartyRelationshipTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+                    EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyRelationshipTypeDescription;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Alias Types
+    // --------------------------------------------------------------------------------
+
+    public PartyAliasType createPartyAliasType(PartyType partyType, String partyAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        PartyAliasType defaultPartyAliasType = getDefaultPartyAliasType(partyType);
+        boolean defaultFound = defaultPartyAliasType != null;
+
+        if(defaultFound && isDefault) {
+            PartyAliasTypeDetailValue defaultPartyAliasTypeDetailValue = getDefaultPartyAliasTypeDetailValueForUpdate(partyType);
+
+            defaultPartyAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            updatePartyAliasTypeFromValue(defaultPartyAliasTypeDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
+        PartyAliasType partyAliasType = PartyAliasTypeFactory.getInstance().create();
+        PartyAliasTypeDetail partyAliasTypeDetail = PartyAliasTypeDetailFactory.getInstance().create(partyAliasType, partyType, partyAliasTypeName,
+                validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        // Convert to R/W
+        partyAliasType = PartyAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyAliasType.getPrimaryKey());
+        partyAliasType.setActiveDetail(partyAliasTypeDetail);
+        partyAliasType.setLastDetail(partyAliasTypeDetail);
+        partyAliasType.store();
+
+        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return partyAliasType;
+    }
+
+    private static final Map<EntityPermission, String> getPartyAliasTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypes, partyaliastypedetails " +
+                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                "AND patdt_partyaliastypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypes, partyaliastypedetails " +
+                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                "AND patdt_partyaliastypename = ? " +
+                "FOR UPDATE");
+        getPartyAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private PartyAliasType getPartyAliasTypeByName(PartyType partyType, String partyAliasTypeName, EntityPermission entityPermission) {
+        return PartyAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasTypeByNameQueries,
+                partyType, partyAliasTypeName);
+    }
+
+    public PartyAliasType getPartyAliasTypeByName(PartyType partyType, String partyAliasTypeName) {
+        return getPartyAliasTypeByName(partyType, partyAliasTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public PartyAliasType getPartyAliasTypeByNameForUpdate(PartyType partyType, String partyAliasTypeName) {
+        return getPartyAliasTypeByName(partyType, partyAliasTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public PartyAliasTypeDetailValue getPartyAliasTypeDetailValueForUpdate(PartyAliasType partyAliasType) {
+        return partyAliasType == null? null: partyAliasType.getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
+    }
+
+    public PartyAliasTypeDetailValue getPartyAliasTypeDetailValueByNameForUpdate(PartyType partyType,
+            String partyAliasTypeName) {
+        return getPartyAliasTypeDetailValueForUpdate(getPartyAliasTypeByNameForUpdate(partyType, partyAliasTypeName));
+    }
+
+    private static final Map<EntityPermission, String> getDefaultPartyAliasTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypes, partyaliastypedetails " +
+                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                "AND patdt_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypes, partyaliastypedetails " +
+                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                "AND patdt_isdefault = 1 " +
+                "FOR UPDATE");
+        getDefaultPartyAliasTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private PartyAliasType getDefaultPartyAliasType(PartyType partyType, EntityPermission entityPermission) {
+        return PartyAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyAliasTypeQueries, partyType);
+    }
+
+    public PartyAliasType getDefaultPartyAliasType(PartyType partyType) {
+        return getDefaultPartyAliasType(partyType, EntityPermission.READ_ONLY);
+    }
+
+    public PartyAliasType getDefaultPartyAliasTypeForUpdate(PartyType partyType) {
+        return getDefaultPartyAliasType(partyType, EntityPermission.READ_WRITE);
+    }
+
+    public PartyAliasTypeDetailValue getDefaultPartyAliasTypeDetailValueForUpdate(PartyType partyType) {
+        return getDefaultPartyAliasTypeForUpdate(partyType).getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
+    }
+
+    private static final Map<EntityPermission, String> getPartyAliasTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypes, partyaliastypedetails " +
+                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                "ORDER BY patdt_sortorder, patdt_partyaliastypename");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypes, partyaliastypedetails " +
+                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                "FOR UPDATE");
+        getPartyAliasTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyAliasType> getPartyAliasTypes(PartyType partyType, EntityPermission entityPermission) {
+        return PartyAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyAliasTypesQueries, partyType);
+    }
+
+    public List<PartyAliasType> getPartyAliasTypes(PartyType partyType) {
+        return getPartyAliasTypes(partyType, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyAliasType> getPartyAliasTypesForUpdate(PartyType partyType) {
+        return getPartyAliasTypes(partyType, EntityPermission.READ_WRITE);
+    }
+
+    public PartyAliasTypeTransfer getPartyAliasTypeTransfer(UserVisit userVisit, PartyAliasType partyAliasType) {
+        return getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache().getPartyAliasTypeTransfer(partyAliasType);
+    }
+
+    public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, PartyType partyType) {
+        List<PartyAliasType> partyAliasTypes = getPartyAliasTypes(partyType);
+        List<PartyAliasTypeTransfer> partyAliasTypeTransfers = new ArrayList<>(partyAliasTypes.size());
+        PartyAliasTypeTransferCache partyAliasTypeTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache();
+
+        partyAliasTypes.stream().forEach((partyAliasType) -> {
+            partyAliasTypeTransfers.add(partyAliasTypeTransferCache.getPartyAliasTypeTransfer(partyAliasType));
+        });
+
+        return partyAliasTypeTransfers;
+    }
+
+    public PartyAliasTypeChoicesBean getPartyAliasTypeChoices(String defaultPartyAliasTypeChoice, Language language,
+            boolean allowNullChoice, PartyType partyType) {
+        List<PartyAliasType> partyAliasTypes = getPartyAliasTypes(partyType);
+        int size = partyAliasTypes.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultPartyAliasTypeChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(PartyAliasType partyAliasType: partyAliasTypes) {
+            PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetail();
+
+            String label = getBestPartyAliasTypeDescription(partyAliasType, language);
+            String value = partyAliasTypeDetail.getPartyAliasTypeName();
+
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            boolean usingDefaultChoice = defaultPartyAliasTypeChoice == null? false: defaultPartyAliasTypeChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && partyAliasTypeDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+
+        return new PartyAliasTypeChoicesBean(labels, values, defaultValue);
+    }
+
+    private void updatePartyAliasTypeFromValue(PartyAliasTypeDetailValue partyAliasTypeDetailValue, boolean checkDefault,
+            BasePK updatedBy) {
+        if(partyAliasTypeDetailValue.hasBeenModified()) {
+            PartyAliasType partyAliasType = PartyAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    partyAliasTypeDetailValue.getPartyAliasTypePK());
+            PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getActiveDetailForUpdate();
+
+            partyAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+            partyAliasTypeDetail.store();
+
+            PartyAliasTypePK partyAliasTypePK = partyAliasTypeDetail.getPartyAliasTypePK();
+            PartyType partyType = partyAliasTypeDetail.getPartyType();
+            PartyTypePK partyTypePK = partyType.getPrimaryKey();
+            String partyAliasTypeName = partyAliasTypeDetailValue.getPartyAliasTypeName();
+            String validationPattern = partyAliasTypeDetailValue.getValidationPattern();
+            Boolean isDefault = partyAliasTypeDetailValue.getIsDefault();
+            Integer sortOrder = partyAliasTypeDetailValue.getSortOrder();
+
+            if(checkDefault) {
+                PartyAliasType defaultPartyAliasType = getDefaultPartyAliasType(partyType);
+                boolean defaultFound = defaultPartyAliasType != null && !defaultPartyAliasType.equals(partyAliasType);
+
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    PartyAliasTypeDetailValue defaultPartyAliasTypeDetailValue = getDefaultPartyAliasTypeDetailValueForUpdate(partyType);
+
+                    defaultPartyAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    updatePartyAliasTypeFromValue(defaultPartyAliasTypeDetailValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+
+            partyAliasTypeDetail = PartyAliasTypeDetailFactory.getInstance().create(partyAliasTypePK, partyTypePK, partyAliasTypeName,
+                    validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            partyAliasType.setActiveDetail(partyAliasTypeDetail);
+            partyAliasType.setLastDetail(partyAliasTypeDetail);
+
+            sendEventUsingNames(partyAliasTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+
+    public void updatePartyAliasTypeFromValue(PartyAliasTypeDetailValue partyAliasTypeDetailValue, BasePK updatedBy) {
+        updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, true, updatedBy);
+    }
+
+    public void deletePartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
+        deletePartyAliasesByPartyAliasType(partyAliasType, deletedBy);
+        deletePartyAliasTypeDescriptionsByPartyAliasType(partyAliasType, deletedBy);
+
+        PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetailForUpdate();
+        partyAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+        partyAliasType.setActiveDetail(null);
+        partyAliasType.store();
+
+        // Check for default, and pick one if necessary
+        PartyType partyType = partyAliasTypeDetail.getPartyType();
+        PartyAliasType defaultPartyAliasType = getDefaultPartyAliasType(partyType);
+        if(defaultPartyAliasType == null) {
+            List<PartyAliasType> partyAliasTypes = getPartyAliasTypesForUpdate(partyType);
+
+            if(!partyAliasTypes.isEmpty()) {
+                Iterator<PartyAliasType> iter = partyAliasTypes.iterator();
+                if(iter.hasNext()) {
+                    defaultPartyAliasType = iter.next();
+                }
+                PartyAliasTypeDetailValue partyAliasTypeDetailValue = defaultPartyAliasType.getLastDetailForUpdate().getPartyAliasTypeDetailValue().clone();
+
+                partyAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, false, deletedBy);
+            }
+        }
+
+        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+
+    public void deletePartyAliasTypes(List<PartyAliasType> partyAliasTypes, BasePK deletedBy) {
+        partyAliasTypes.stream().forEach((partyAliasType) -> {
+            deletePartyAliasType(partyAliasType, deletedBy);
+        });
+    }
+
+    public void deletePartyAliasTypesByPartyType(PartyType partyType, BasePK deletedBy) {
+        deletePartyAliasTypes(getPartyAliasTypesForUpdate(partyType), deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Party Alias Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    public PartyAliasTypeDescription createPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language, String description, BasePK createdBy) {
+        PartyAliasTypeDescription partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language,
+                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return partyAliasTypeDescription;
+    }
+
+    private static final Map<EntityPermission, String> getPartyAliasTypeDescriptionQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypedescriptions " +
+                "WHERE patd_pat_partyaliastypeid = ? AND patd_lang_languageid = ? AND patd_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypedescriptions " +
+                "WHERE patd_pat_partyaliastypeid = ? AND patd_lang_languageid = ? AND patd_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private PartyAliasTypeDescription getPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language, EntityPermission entityPermission) {
+        return PartyAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasTypeDescriptionQueries,
+                partyAliasType, language, Session.MAX_TIME);
+    }
+
+    public PartyAliasTypeDescription getPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language) {
+        return getPartyAliasTypeDescription(partyAliasType, language, EntityPermission.READ_ONLY);
+    }
+
+    public PartyAliasTypeDescription getPartyAliasTypeDescriptionForUpdate(PartyAliasType partyAliasType, Language language) {
+        return getPartyAliasTypeDescription(partyAliasType, language, EntityPermission.READ_WRITE);
+    }
+
+    public PartyAliasTypeDescriptionValue getPartyAliasTypeDescriptionValue(PartyAliasTypeDescription partyAliasTypeDescription) {
+        return partyAliasTypeDescription == null? null: partyAliasTypeDescription.getPartyAliasTypeDescriptionValue().clone();
+    }
+
+    public PartyAliasTypeDescriptionValue getPartyAliasTypeDescriptionValueForUpdate(PartyAliasType partyAliasType, Language language) {
+        return getPartyAliasTypeDescriptionValue(getPartyAliasTypeDescriptionForUpdate(partyAliasType, language));
+    }
+
+    private static final Map<EntityPermission, String> getPartyAliasTypeDescriptionsByPartyAliasTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypedescriptions, languages " +
+                "WHERE patd_pat_partyaliastypeid = ? AND patd_thrutime = ? AND patd_lang_languageid = lang_languageid " +
+                "ORDER BY lang_sortorder, lang_languageisoname");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyaliastypedescriptions " +
+                "WHERE patd_pat_partyaliastypeid = ? AND patd_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyAliasTypeDescriptionsByPartyAliasTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyAliasTypeDescription> getPartyAliasTypeDescriptionsByPartyAliasType(PartyAliasType partyAliasType, EntityPermission entityPermission) {
+        return PartyAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyAliasTypeDescriptionsByPartyAliasTypeQueries,
+                partyAliasType, Session.MAX_TIME);
+    }
+
+    public List<PartyAliasTypeDescription> getPartyAliasTypeDescriptionsByPartyAliasType(PartyAliasType partyAliasType) {
+        return getPartyAliasTypeDescriptionsByPartyAliasType(partyAliasType, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyAliasTypeDescription> getPartyAliasTypeDescriptionsByPartyAliasTypeForUpdate(PartyAliasType partyAliasType) {
+        return getPartyAliasTypeDescriptionsByPartyAliasType(partyAliasType, EntityPermission.READ_WRITE);
+    }
+
+    public String getBestPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language) {
+        String description;
+        PartyAliasTypeDescription partyAliasTypeDescription = getPartyAliasTypeDescription(partyAliasType, language);
+
+        if(partyAliasTypeDescription == null && !language.getIsDefault()) {
+            partyAliasTypeDescription = getPartyAliasTypeDescription(partyAliasType, getPartyControl().getDefaultLanguage());
+        }
+
+        if(partyAliasTypeDescription == null) {
+            description = partyAliasType.getLastDetail().getPartyAliasTypeName();
+        } else {
+            description = partyAliasTypeDescription.getDescription();
+        }
+
+        return description;
+    }
+
+    public PartyAliasTypeDescriptionTransfer getPartyAliasTypeDescriptionTransfer(UserVisit userVisit, PartyAliasTypeDescription partyAliasTypeDescription) {
+        return getPartyTransferCaches(userVisit).getPartyAliasTypeDescriptionTransferCache().getPartyAliasTypeDescriptionTransfer(partyAliasTypeDescription);
+    }
+
+    public List<PartyAliasTypeDescriptionTransfer> getPartyAliasTypeDescriptionTransfersByPartyAliasType(UserVisit userVisit, PartyAliasType partyAliasType) {
+        List<PartyAliasTypeDescription> partyAliasTypeDescriptions = getPartyAliasTypeDescriptionsByPartyAliasType(partyAliasType);
+        List<PartyAliasTypeDescriptionTransfer> partyAliasTypeDescriptionTransfers = new ArrayList<>(partyAliasTypeDescriptions.size());
+        PartyAliasTypeDescriptionTransferCache partyAliasTypeDescriptionTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeDescriptionTransferCache();
+
+        partyAliasTypeDescriptions.stream().forEach((partyAliasTypeDescription) -> {
+            partyAliasTypeDescriptionTransfers.add(partyAliasTypeDescriptionTransferCache.getPartyAliasTypeDescriptionTransfer(partyAliasTypeDescription));
+        });
+
+        return partyAliasTypeDescriptionTransfers;
+    }
+
+    public void updatePartyAliasTypeDescriptionFromValue(PartyAliasTypeDescriptionValue partyAliasTypeDescriptionValue, BasePK updatedBy) {
+        if(partyAliasTypeDescriptionValue.hasBeenModified()) {
+            PartyAliasTypeDescription partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     partyAliasTypeDescriptionValue.getPrimaryKey());
+
+            partyAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+            partyAliasTypeDescription.store();
+
+            PartyAliasType partyAliasType = partyAliasTypeDescription.getPartyAliasType();
+            Language language = partyAliasTypeDescription.getLanguage();
+            String description = partyAliasTypeDescriptionValue.getDescription();
+
+            partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+
+    public void deletePartyAliasTypeDescription(PartyAliasTypeDescription partyAliasTypeDescription, BasePK deletedBy) {
+        partyAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+
+        sendEventUsingNames(partyAliasTypeDescription.getPartyAliasTypePK(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+
+    }
+
+    public void deletePartyAliasTypeDescriptionsByPartyAliasType(PartyAliasType partyAliasType, BasePK deletedBy) {
+        List<PartyAliasTypeDescription> partyAliasTypeDescriptions = getPartyAliasTypeDescriptionsByPartyAliasTypeForUpdate(partyAliasType);
+
+        partyAliasTypeDescriptions.stream().forEach((partyAliasTypeDescription) -> {
+            deletePartyAliasTypeDescription(partyAliasTypeDescription, deletedBy);
+        });
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Role Types
+    // --------------------------------------------------------------------------------
+    
+    public RoleType createRoleType(String roleTypeName, RoleType parentRoleType) {
+        return RoleTypeFactory.getInstance().create(roleTypeName, parentRoleType);
+    }
+    
+    public RoleType getRoleTypeByName(String roleTypeName) {
+        RoleType roleType = null;
+        
+        try {
+            PreparedStatement ps = RoleTypeFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM roletypes " +
+                    "WHERE rtyp_roletypename = ?");
+            
+            ps.setString(1, roleTypeName);
+            
+            roleType = RoleTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return roleType;
+    }
+    
+    public RoleTypeTransfer getRoleTypeTransfer(UserVisit userVisit, RoleType roleType) {
+        return getPartyTransferCaches(userVisit).getRoleTypeTransferCache().getRoleTypeTransfer(roleType);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Role Type Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public RoleTypeDescription createRoleTypeDescription(RoleType roleType, Language language, String description) {
+        return RoleTypeDescriptionFactory.getInstance().create(roleType, language, description);
+    }
+    
+    public RoleTypeDescription getRoleTypeDescription(RoleType roleType, Language language) {
+        RoleTypeDescription roleTypeDescription = null;
+        
+        try {
+            PreparedStatement ps = RoleTypeDescriptionFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM roletypedescriptions " +
+                    "WHERE rtypd_rtyp_roletypeid = ? AND rtypd_lang_languageid = ?");
+            
+            ps.setLong(1, roleType.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            
+            roleTypeDescription = RoleTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return roleTypeDescription;
+    }
+    
+    public String getBestRoleTypeDescription(RoleType roleType, Language language) {
+        String description;
+        RoleTypeDescription roleTypeDescription = getRoleTypeDescription(roleType, language);
+        
+        if(roleTypeDescription == null && !language.getIsDefault()) {
+            roleTypeDescription = getRoleTypeDescription(roleType, getPartyControl().getDefaultLanguage());
+        }
+        
+        if(roleTypeDescription == null) {
+            description = roleType.getRoleTypeName();
+        } else {
+            description = roleTypeDescription.getDescription();
+        }
+        
+        return description;
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Groups
+    // --------------------------------------------------------------------------------
+    
+    public PartyGroup createPartyGroup(Party party, String name, BasePK createdBy) {
+        PartyGroup partyGroup = PartyGroupFactory.getInstance().create(party, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return partyGroup;
+    }
+    
+    private PartyGroup getPartyGroup(Party party, EntityPermission entityPermission) {
+        PartyGroup partyGroup = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partygroups " +
+                        "WHERE pgp_par_partyid = ? AND pgp_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partygroups " +
+                        "WHERE pgp_par_partyid = ? AND pgp_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyGroupFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, party.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            partyGroup = PartyGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyGroup;
+    }
+    
+    public PartyGroup getPartyGroup(Party party) {
+        return getPartyGroup(party, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyGroup getPartyGroupForUpdate(Party party) {
+        return getPartyGroup(party, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyGroupValue getPartyGroupValue(PartyGroup partyGroup) {
+        return partyGroup == null? null: partyGroup.getPartyGroupValue().clone();
+    }
+    
+    public PartyGroupValue getPartyGroupValueForUpdate(Party party) {
+        return getPartyGroupValue(getPartyGroupForUpdate(party));
+    }
+    
+    public void updatePartyGroupFromValue(PartyGroupValue partyGroupValue, BasePK updatedBy) {
+        if(partyGroupValue.hasBeenModified()) {
+            PartyGroup partyGroup = PartyGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    partyGroupValue.getPrimaryKey());
+            
+            partyGroup.setThruTime(session.START_TIME_LONG);
+            partyGroup.store();
+            
+            PartyPK partyPK = partyGroup.getPartyPK();
+            String name = partyGroupValue.getName();
+            
+            partyGroup = PartyGroupFactory.getInstance().create(partyPK, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deletePartyGroup(PartyGroup partyGroup, BasePK deletedBy) {
+        partyGroup.setThruTime(session.START_TIME_LONG);
+        partyGroup.store();
+        
+        sendEventUsingNames(partyGroup.getPartyPK(), EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+    }
+    
+    public void deletePartyGroupByParty(Party party, BasePK deletedBy) {
+        PartyGroup partyGroup = getPartyGroupForUpdate(party);
+        
+        if(partyGroup != null) {
+            deletePartyGroup(partyGroup, deletedBy);
+        }
+    }
+    
+    public PartyGroupTransfer getPartyGroupTransfer(UserVisit userVisit, PartyGroup partyGroup) {
+        return getPartyTransferCaches(userVisit).getPartyGroupTransferCache().getPartyGroupTransfer(partyGroup);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Companies
+    // --------------------------------------------------------------------------------
+    
+    public PartyCompany createPartyCompany(Party party, String partyCompanyName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        PartyCompany defaultPartyCompany = getDefaultPartyCompany();
+        boolean defaultFound = defaultPartyCompany != null;
+        
+        if(defaultFound && isDefault) {
+            PartyCompanyValue defaultPartyCompanyValue = getDefaultPartyCompanyValueForUpdate();
+            
+            defaultPartyCompanyValue.setIsDefault(Boolean.FALSE);
+            updatePartyCompanyFromValue(defaultPartyCompanyValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+        
+        PartyCompany partyCompany = PartyCompanyFactory.getInstance().create(party, partyCompanyName, isDefault, sortOrder,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyCompany.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return partyCompany;
+    }
+    
+    public PartyCompanyValue getPartyCompanyValueForUpdate(PartyCompany partyCompany) {
+        return partyCompany == null? null: partyCompany.getPartyCompanyValue().clone();
+    }
+    
+    private PartyCompany getPartyCompany(Party party, EntityPermission entityPermission) {
+        PartyCompany partyCompany = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partycompanies " +
+                        "WHERE pcomp_par_partyid = ? AND pcomp_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partycompanies " +
+                        "WHERE pcomp_par_partyid = ? AND pcomp_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, party.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            partyCompany = PartyCompanyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyCompany;
+    }
+    
+    public PartyCompany getPartyCompany(Party party) {
+        return getPartyCompany(party, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyCompany getPartyCompanyForUpdate(Party party) {
+        return getPartyCompany(party, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyCompanyValue getPartyCompanyValueForUpdate(Party party) {
+        return getPartyCompanyValueForUpdate(getPartyCompanyForUpdate(party));
+    }
+    
+    private PartyCompany getDefaultPartyCompany(EntityPermission entityPermission) {
+        PartyCompany partyCompany = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partycompanies, partydetails " +
+                        "WHERE pcomp_isdefault = 1 AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid " +
+                        "AND pardt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partycompanies, partydetails " +
+                        "WHERE pcomp_isdefault = 1 AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid " +
+                        "AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, Session.MAX_TIME);
+            ps.setLong(2, Session.MAX_TIME);
+            
+            partyCompany = PartyCompanyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyCompany;
+    }
+    
+    public PartyCompany getDefaultPartyCompany() {
+        return getDefaultPartyCompany(EntityPermission.READ_ONLY);
+    }
+    
+    public PartyCompany getDefaultPartyCompanyForUpdate() {
+        return getDefaultPartyCompany(EntityPermission.READ_WRITE);
+    }
+    
+    public PartyCompanyValue getDefaultPartyCompanyValueForUpdate() {
+        return getPartyCompanyValueForUpdate(getDefaultPartyCompanyForUpdate());
+    }
+    
+    private PartyCompany getPartyCompanyByName(String partyCompanyName, EntityPermission entityPermission) {
+        PartyCompany partyCompany = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partycompanies, partydetails " +
+                        "WHERE pcomp_partycompanyname = ? AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid " +
+                        "AND pardt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partycompanies, partydetails " +
+                        "WHERE pcomp_partycompanyname = ? AND pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid " +
+                        "AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+            
+            ps.setString(1, partyCompanyName);
+            ps.setLong(2, Session.MAX_TIME);
+            ps.setLong(3, Session.MAX_TIME);
+            
+            partyCompany = PartyCompanyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyCompany;
+    }
+    
+    public PartyCompany getPartyCompanyByName(String partyCompanyName) {
+        return getPartyCompanyByName(partyCompanyName, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyCompany getPartyCompanyByNameForUpdate(String partyCompanyName) {
+        return getPartyCompanyByName(partyCompanyName, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyCompanyValue getPartyCompanyValueByNameForUpdate(String partyCompanyName) {
+        return getPartyCompanyValueForUpdate(getPartyCompanyByNameForUpdate(partyCompanyName));
+    }
+    
+    private List<PartyCompany> getCompanies(EntityPermission entityPermission) {
+        List<PartyCompany> partyCompanies = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partycompanies, partydetails " +
+                        "WHERE pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "ORDER BY pcomp_sortorder, pcomp_partycompanyname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partycompanies, partydetails " +
+                        "WHERE pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyCompanyFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, Session.MAX_TIME);
+            ps.setLong(2, Session.MAX_TIME);
+            
+            partyCompanies = PartyCompanyFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyCompanies;
+    }
+    
+    public List<PartyCompany> getCompanies() {
+        return getCompanies(EntityPermission.READ_ONLY);
+    }
+    
+    public List<PartyCompany> getCompaniesForUpdate() {
+        return getCompanies(EntityPermission.READ_WRITE);
+    }
+    
+    public CompanyChoicesBean getCompanyChoices(String defaultCompanyChoice, boolean allowNullChoice) {
+        List<PartyCompany> partyCompanies = getCompanies();
+        int size = partyCompanies.size() + (allowNullChoice ? 1 : 0);
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultCompanyChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(PartyCompany partyCompany: partyCompanies) {
+            PartyGroup partyGroup = getPartyGroup(partyCompany.getParty());
+            
+            String label = partyGroup.getName();
+            String value = partyCompany.getPartyCompanyName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultCompanyChoice == null? false: defaultCompanyChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && partyCompany.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new CompanyChoicesBean(labels, values, defaultValue);
+    }
+    
+    private List<CompanyTransfer> getCompanyTransfers(UserVisit userVisit, List<PartyCompany> partyCompanies) {
+        List<CompanyTransfer> companyTransfers = new ArrayList<>(partyCompanies.size());
+        CompanyTransferCache companyTransferCache = getPartyTransferCaches(userVisit).getCompanyTransferCache();
+        
+        partyCompanies.stream().forEach((partyCompany) -> {
+            companyTransfers.add(companyTransferCache.getCompanyTransfer(partyCompany));
+        });
+        
+        return companyTransfers;
+    }
+    
+    public List<CompanyTransfer> getCompanyTransfers(UserVisit userVisit) {
+        return getCompanyTransfers(userVisit, getCompanies());
+    }
+    
+    public CompanyTransfer getCompanyTransfer(UserVisit userVisit, PartyCompany partyCompany) {
+        return getPartyTransferCaches(userVisit).getCompanyTransferCache().getCompanyTransfer(partyCompany);
+    }
+    
+    public CompanyTransfer getCompanyTransfer(UserVisit userVisit, Party party) {
+        return getCompanyTransfer(userVisit, getPartyCompany(party));
+    }
+    
+    private void updatePartyCompanyFromValue(PartyCompanyValue partyCompanyValue, boolean checkDefault, BasePK updatedBy) {
+        if(partyCompanyValue.hasBeenModified()) {
+            PartyCompany partyCompany = PartyCompanyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     partyCompanyValue.getPrimaryKey());
+            
+            partyCompany.setThruTime(session.START_TIME_LONG);
+            partyCompany.store();
+            
+            PartyPK partyPK = partyCompanyValue.getPartyPK();
+            String partyCompanyName = partyCompanyValue.getPartyCompanyName();
+            Boolean isDefault = partyCompanyValue.getIsDefault();
+            Integer sortOrder = partyCompanyValue.getSortOrder();
+            
+            if(checkDefault) {
+                PartyCompany defaultPartyCompany = getDefaultPartyCompany();
+                boolean defaultFound = defaultPartyCompany != null && !defaultPartyCompany.equals(partyCompany);
+                
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    PartyCompanyValue defaultPartyCompanyValue = getDefaultPartyCompanyValueForUpdate();
+                    
+                    defaultPartyCompanyValue.setIsDefault(Boolean.FALSE);
+                    updatePartyCompanyFromValue(defaultPartyCompanyValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+            
+            partyCompany = PartyCompanyFactory.getInstance().create(partyPK, partyCompanyName, isDefault, sortOrder,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyCompany.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void updatePartyCompanyFromValue(PartyCompanyValue partyCompanyValue, BasePK updatedBy) {
+        updatePartyCompanyFromValue(partyCompanyValue, true, updatedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Divisions
+    // --------------------------------------------------------------------------------
+    
+    public PartyDivision createPartyDivision(Party party, Party companyParty, String partyDivisionName, Boolean isDefault,
+            Integer sortOrder, BasePK createdBy) {
+        PartyDivision defaultPartyDivision = getDefaultPartyDivision(companyParty);
+        boolean defaultFound = defaultPartyDivision != null;
+        
+        if(defaultFound && isDefault) {
+            PartyDivisionValue defaultPartyDivisionValue = getDefaultPartyDivisionValueForUpdate(companyParty);
+            
+            defaultPartyDivisionValue.setIsDefault(Boolean.FALSE);
+            updatePartyDivisionFromValue(defaultPartyDivisionValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+        
+        PartyDivision partyDivision = PartyDivisionFactory.getInstance().create(party, companyParty, partyDivisionName,
+                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyDivision.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return partyDivision;
+    }
+    
+    public PartyDivisionValue getPartyDivisionValueForUpdate(PartyDivision partyDivision) {
+        return partyDivision == null? null: partyDivision.getPartyDivisionValue().clone();
+    }
+    
+    private PartyDivision getPartyDivision(Party party, EntityPermission entityPermission) {
+        PartyDivision partyDivision = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions " +
+                        "WHERE pdiv_par_partyid = ? AND pdiv_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions " +
+                        "WHERE pdiv_par_partyid = ? AND pdiv_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, party.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            partyDivision = PartyDivisionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyDivision;
+    }
+    
+    public PartyDivision getPartyDivision(Party party) {
+        return getPartyDivision(party, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyDivision getPartyDivisionForUpdate(Party party) {
+        return getPartyDivision(party, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyDivisionValue getPartyDivisionValueForUpdate(Party party) {
+        return getPartyDivisionValueForUpdate(getPartyDivisionForUpdate(party));
+    }
+    
+    private PartyDivision getDefaultPartyDivision(Party companyParty, EntityPermission entityPermission) {
+        PartyDivision partyDivision = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, partydetails " +
+                        "WHERE pdiv_companypartyid = ? AND pdiv_isdefault = 1 AND pdiv_thrutime = ? " +
+                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, partydetails " +
+                        "WHERE pdiv_companypartyid = ? AND pdiv_isdefault = 1 AND pdiv_thrutime = ? " +
+                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            ps.setLong(3, Session.MAX_TIME);
+            
+            partyDivision = PartyDivisionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyDivision;
+    }
+    
+    public PartyDivision getDefaultPartyDivision(Party companyParty) {
+        return getDefaultPartyDivision(companyParty, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyDivision getDefaultPartyDivisionForUpdate(Party companyParty) {
+        return getDefaultPartyDivision(companyParty, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyDivisionValue getDefaultPartyDivisionValueForUpdate(Party companyParty) {
+        return getPartyDivisionValueForUpdate(getDefaultPartyDivisionForUpdate(companyParty));
+    }
+    
+    private PartyDivision getPartyDivisionByName(Party companyParty, String partyDivisionName, EntityPermission entityPermission) {
+        PartyDivision partyDivision = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, partydetails " +
+                        "WHERE pdiv_companypartyid = ? AND pdiv_partydivisionname = ? " +
+                        "AND pdiv_thrutime = ? AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, partydetails " +
+                        "WHERE pdiv_companypartyid = ? AND pdiv_partydivisionname = ? " +
+                        "AND pdiv_thrutime = ? AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
+            ps.setString(2, partyDivisionName);
+            ps.setLong(3, Session.MAX_TIME);
+            ps.setLong(4, Session.MAX_TIME);
+            
+            partyDivision = PartyDivisionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyDivision;
+    }
+    
+    public PartyDivision getPartyDivisionByName(Party companyParty, String partyDivisionName) {
+        return getPartyDivisionByName(companyParty, partyDivisionName, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyDivision getPartyDivisionByNameForUpdate(Party companyParty, String partyDivisionName) {
+        return getPartyDivisionByName(companyParty, partyDivisionName, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyDivisionValue getPartyDivisionValueByNameForUpdate(Party companyParty, String partyDivisionName) {
+        return getPartyDivisionValueForUpdate(getPartyDivisionByNameForUpdate(companyParty, partyDivisionName));
+    }
+    
+    private List<PartyDivision> getDivisionsByCompany(Party companyParty, EntityPermission entityPermission) {
+        List<PartyDivision> partyDivisions = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, partydetails " +
+                        "WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ? " +
+                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "ORDER BY pdiv_sortorder, pdiv_partydivisionname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, partydetails " +
+                        "WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ? " +
+                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            ps.setLong(3, Session.MAX_TIME);
+            
+            partyDivisions = PartyDivisionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyDivisions;
+    }
+    
+    public List<PartyDivision> getDivisionsByCompany(Party companyParty) {
+        return getDivisionsByCompany(companyParty, EntityPermission.READ_ONLY);
+    }
+    
+    public List<PartyDivision> getDivisionsByCompanyForUpdate(Party companyParty) {
+        return getDivisionsByCompany(companyParty, EntityPermission.READ_WRITE);
+    }
+    
+    public DivisionChoicesBean getDivisionChoices(Party companyParty, String defaultDivisionChoice, boolean allowNullChoice) {
+        List<PartyDivision> partyDivisions = getDivisionsByCompany(companyParty);
+        int size = partyDivisions.size() + (allowNullChoice ? 1 : 0);
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultDivisionChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(PartyDivision partyDivision: partyDivisions) {
+            PartyGroup partyGroup = getPartyGroup(partyDivision.getParty());
+            
+            String label = partyGroup.getName();
+            String value = partyDivision.getPartyDivisionName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultDivisionChoice == null? false: defaultDivisionChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && partyDivision.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new DivisionChoicesBean(labels, values, defaultValue);
+    }
+    
+    private List<DivisionTransfer> getDivisionTransfers(UserVisit userVisit, List<PartyDivision> partyDivisions) {
+        List<DivisionTransfer> divisionTransfers = new ArrayList<>(partyDivisions.size());
+        DivisionTransferCache divisionTransferCache = getPartyTransferCaches(userVisit).getDivisionTransferCache();
+        
+        partyDivisions.stream().forEach((partyDivision) -> {
+            divisionTransfers.add(divisionTransferCache.getDivisionTransfer(partyDivision));
+        });
+        
+        return divisionTransfers;
+    }
+    
+    public List<DivisionTransfer> getDivisionTransfersByCompany(UserVisit userVisit, Party companyParty) {
+        return getDivisionTransfers(userVisit, getDivisionsByCompany(companyParty));
+    }
+    
+    public DivisionTransfer getDivisionTransfer(UserVisit userVisit, PartyDivision partyDivision) {
+        return getPartyTransferCaches(userVisit).getDivisionTransferCache().getDivisionTransfer(partyDivision);
+    }
+    
+    public DivisionTransfer getDivisionTransfer(UserVisit userVisit, Party party) {
+        return getDivisionTransfer(userVisit, getPartyDivision(party));
+    }
+    
+    private void updatePartyDivisionFromValue(PartyDivisionValue partyDivisionValue, boolean checkDefault, BasePK updatedBy) {
+        if(partyDivisionValue.hasBeenModified()) {
+            PartyDivision partyDivision = PartyDivisionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     partyDivisionValue.getPrimaryKey());
+            
+            partyDivision.setThruTime(session.START_TIME_LONG);
+            partyDivision.store();
+            
+            PartyPK partyPK = partyDivisionValue.getPartyPK();
+            Party companyParty = partyDivision.getCompanyParty(); // Not Updated
+            String partyDivisionName = partyDivisionValue.getPartyDivisionName();
+            Boolean isDefault = partyDivisionValue.getIsDefault();
+            Integer sortOrder = partyDivisionValue.getSortOrder();
+            
+            if(checkDefault) {
+                PartyDivision defaultPartyDivision = getDefaultPartyDivision(companyParty);
+                boolean defaultFound = defaultPartyDivision != null && !defaultPartyDivision.equals(partyDivision);
+                
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    PartyDivisionValue defaultPartyDivisionValue = getDefaultPartyDivisionValueForUpdate(companyParty);
+                    
+                    defaultPartyDivisionValue.setIsDefault(Boolean.FALSE);
+                    updatePartyDivisionFromValue(defaultPartyDivisionValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+            
+            partyDivision = PartyDivisionFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDivisionName,
+                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyDivision.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void updatePartyDivisionFromValue(PartyDivisionValue partyDivisionValue, BasePK updatedBy) {
+        updatePartyDivisionFromValue(partyDivisionValue, true, updatedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Departments
+    // --------------------------------------------------------------------------------
+    
+    public PartyDepartment createPartyDepartment(Party party, Party divisionParty, String partyDepartmentName, Boolean isDefault,
+            Integer sortOrder, BasePK createdBy) {
+        PartyDepartment defaultPartyDepartment = getDefaultPartyDepartment(divisionParty);
+        boolean defaultFound = defaultPartyDepartment != null;
+        
+        if(defaultFound && isDefault) {
+            PartyDepartmentValue defaultPartyDepartmentValue = getDefaultPartyDepartmentValueForUpdate(divisionParty);
+            
+            defaultPartyDepartmentValue.setIsDefault(Boolean.FALSE);
+            updatePartyDepartmentFromValue(defaultPartyDepartmentValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+        
+        PartyDepartment partyDepartment = PartyDepartmentFactory.getInstance().create(party, divisionParty,
+                partyDepartmentName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyDepartment.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return partyDepartment;
+    }
+    
+    public PartyDepartmentValue getPartyDepartmentValueForUpdate(PartyDepartment partyDepartment) {
+        return partyDepartment == null? null: partyDepartment.getPartyDepartmentValue().clone();
+    }
+    
+    private PartyDepartment getPartyDepartment(Party party, EntityPermission entityPermission) {
+        PartyDepartment partyDepartment = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments " +
+                        "WHERE pdept_par_partyid = ? AND pdept_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments " +
+                        "WHERE pdept_par_partyid = ? AND pdept_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, party.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyDepartment;
+    }
+    
+    public PartyDepartment getPartyDepartment(Party party) {
+        return getPartyDepartment(party, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyDepartment getPartyDepartmentForUpdate(Party party) {
+        return getPartyDepartment(party, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyDepartmentValue getPartyDepartmentValueForUpdate(Party party) {
+        return getPartyDepartmentValueForUpdate(getPartyDepartmentForUpdate(party));
+    }
+    
+    private PartyDepartment getDefaultPartyDepartment(Party divisionParty, EntityPermission entityPermission) {
+        PartyDepartment partyDepartment = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, partydetails " +
+                        "WHERE pdept_divisionpartyid = ? AND pdept_isdefault = 1 AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, partydetails " +
+                        "WHERE pdept_divisionpartyid = ? AND pdept_isdefault = 1 AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            ps.setLong(3, Session.MAX_TIME);
+            
+            partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyDepartment;
+    }
+    
+    public PartyDepartment getDefaultPartyDepartment(Party divisionParty) {
+        return getDefaultPartyDepartment(divisionParty, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyDepartment getDefaultPartyDepartmentForUpdate(Party divisionParty) {
+        return getDefaultPartyDepartment(divisionParty, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyDepartmentValue getDefaultPartyDepartmentValueForUpdate(Party divisionParty) {
+        return getPartyDepartmentValueForUpdate(getDefaultPartyDepartmentForUpdate(divisionParty));
+    }
+    
+    private PartyDepartment getPartyDepartmentByName(Party divisionParty, String partyDepartmentName,
+            EntityPermission entityPermission) {
+        PartyDepartment partyDepartment = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, partydetails " +
+                        "WHERE pdept_divisionpartyid = ? AND pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, partydetails " +
+                        "WHERE pdept_divisionpartyid = ? AND pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
+            ps.setString(2, partyDepartmentName);
+            ps.setLong(3, Session.MAX_TIME);
+            ps.setLong(4, Session.MAX_TIME);
+            
+            partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyDepartment;
+    }
+    
+    public PartyDepartment getPartyDepartmentByName(Party divisionParty, String partyDepartmentName) {
+        return getPartyDepartmentByName(divisionParty, partyDepartmentName, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyDepartment getPartyDepartmentByNameForUpdate(Party divisionParty, String partyDepartmentName) {
+        return getPartyDepartmentByName(divisionParty, partyDepartmentName, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyDepartmentValue getPartyDepartmentValueByNameForUpdate(Party divisionParty, String partyDepartmentName) {
+        return getPartyDepartmentValueForUpdate(getPartyDepartmentByNameForUpdate(divisionParty, partyDepartmentName));
+    }
+    
+    private List<PartyDepartment> getDepartmentsByDivision(Party divisionParty, EntityPermission entityPermission) {
+        List<PartyDepartment> partyDepartments = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, partydetails " +
+                        "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, partydetails " +
+                        "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            ps.setLong(3, Session.MAX_TIME);
+            
+            partyDepartments = PartyDepartmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyDepartments;
+    }
+    
+    public List<PartyDepartment> getDepartmentsByDivision(Party divisionParty) {
+        return getDepartmentsByDivision(divisionParty, EntityPermission.READ_ONLY);
+    }
+    
+    public List<PartyDepartment> getDepartmentsByDivisionForUpdate(Party divisionParty) {
+        return getDepartmentsByDivision(divisionParty, EntityPermission.READ_WRITE);
+    }
+    
+    public DepartmentChoicesBean getDepartmentChoices(Party divisionParty, String defaultDepartmentChoice, boolean allowNullChoice) {
+        List<PartyDepartment> partyDepartments = getDepartmentsByDivision(divisionParty);
+        int size = partyDepartments.size() + (allowNullChoice ? 1 : 0);
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultDepartmentChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(PartyDepartment partyDepartment: partyDepartments) {
+            PartyGroup partyGroup = getPartyGroup(partyDepartment.getParty());
+            
+            String label = partyGroup.getName();
+            String value = partyDepartment.getPartyDepartmentName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            boolean usingDefaultChoice = defaultDepartmentChoice == null? false: defaultDepartmentChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && partyDepartment.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new DepartmentChoicesBean(labels, values, defaultValue);
+    }
+    
+    private List<DepartmentTransfer> getDepartmentTransfers(UserVisit userVisit, List<PartyDepartment> partyDepartments) {
+        List<DepartmentTransfer> departmentTransfers = new ArrayList<>(partyDepartments.size());
+        DepartmentTransferCache departmentTransferCache = getPartyTransferCaches(userVisit).getDepartmentTransferCache();
+        
+        partyDepartments.stream().forEach((partyDepartment) -> {
+            departmentTransfers.add(departmentTransferCache.getDepartmentTransfer(partyDepartment));
+        });
+        
+        return departmentTransfers;
+    }
+    
+    public List<DepartmentTransfer> getDepartmentTransfersByDivision(UserVisit userVisit, Party divisionParty) {
+        return getDepartmentTransfers(userVisit, getDepartmentsByDivision(divisionParty));
+    }
+    
+    public DepartmentTransfer getDepartmentTransfer(UserVisit userVisit, PartyDepartment partyDepartment) {
+        return getPartyTransferCaches(userVisit).getDepartmentTransferCache().getDepartmentTransfer(partyDepartment);
+    }
+    
+    public DepartmentTransfer getDepartmentTransfer(UserVisit userVisit, Party party) {
+        return getDepartmentTransfer(userVisit, getPartyDepartment(party));
+    }
+    
+    private void updatePartyDepartmentFromValue(PartyDepartmentValue partyDepartmentValue, boolean checkDefault, BasePK updatedBy) {
+        if(partyDepartmentValue.hasBeenModified()) {
+            PartyDepartment partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     partyDepartmentValue.getPrimaryKey());
+            
+            partyDepartment.setThruTime(session.START_TIME_LONG);
+            partyDepartment.store();
+            
+            PartyPK partyPK = partyDepartmentValue.getPartyPK();
+            Party companyParty = partyDepartment.getDivisionParty(); // Not Updated
+            String partyDepartmentName = partyDepartmentValue.getPartyDepartmentName();
+            Boolean isDefault = partyDepartmentValue.getIsDefault();
+            Integer sortOrder = partyDepartmentValue.getSortOrder();
+            
+            if(checkDefault) {
+                PartyDepartment defaultPartyDepartment = getDefaultPartyDepartment(companyParty);
+                boolean defaultFound = defaultPartyDepartment != null && !defaultPartyDepartment.equals(partyDepartment);
+                
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    PartyDepartmentValue defaultPartyDepartmentValue = getDefaultPartyDepartmentValueForUpdate(companyParty);
+                    
+                    defaultPartyDepartmentValue.setIsDefault(Boolean.FALSE);
+                    updatePartyDepartmentFromValue(defaultPartyDepartmentValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+            
+            partyDepartment = PartyDepartmentFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDepartmentName,
+                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyDepartment.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void updatePartyDepartmentFromValue(PartyDepartmentValue partyDepartmentValue, BasePK updatedBy) {
+        updatePartyDepartmentFromValue(partyDepartmentValue, true, updatedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   People
+    // --------------------------------------------------------------------------------
+    
+    public Person createPerson(Party party, PersonalTitle personalTitle, String firstName, String firstNameSdx, String middleName, String middleNameSdx,
+            String lastName, String lastNameSdx, NameSuffix nameSuffix, BasePK createdBy) {
+        Person person = PersonFactory.getInstance().create(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
+                nameSuffix, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return person;
+    }
+    
+    public Person getPerson(Party party, EntityPermission entityPermission) {
+        Person person = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM people " +
+                        "WHERE peop_par_partyid = ? AND peop_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM people " +
+                        "WHERE peop_par_partyid = ? AND peop_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PersonFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, party.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            person = PersonFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return person;
+    }
+    
+    public Person getPerson(Party party) {
+        return getPerson(party, EntityPermission.READ_ONLY);
+    }
+    
+    public Person getPersonForUpdate(Party party) {
+        return getPerson(party, EntityPermission.READ_WRITE);
+    }
+    
+    public PersonValue getPersonValue(Person person) {
+        return person == null? null: person.getPersonValue().clone();
+    }
+    
+    public PersonValue getPersonValueForUpdate(Party party) {
+        return getPersonValue(getPersonForUpdate(party));
+    }
+    
+    public void updatePersonFromValue(PersonValue personValue, BasePK updatedBy) {
+        if(personValue.hasBeenModified()) {
+            Person person = PersonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    personValue.getPrimaryKey());
+            
+            person.setThruTime(session.START_TIME_LONG);
+            person.store();
+            
+            PartyPK partyPK = person.getPartyPK();
+            PersonalTitlePK personalTitlePK = personValue.getPersonalTitlePK();
+            String firstName = personValue.getFirstName();
+            String firstNameSdx = personValue.getFirstNameSdx();
+            String middleName = personValue.getMiddleName();
+            String middleNameSdx = personValue.getMiddleNameSdx();
+            String lastName = personValue.getLastName();
+            String lastNameSdx = personValue.getLastNameSdx();
+            NameSuffixPK nameSuffixPK = personValue.getNameSuffixPK();
+            
+            person = PersonFactory.getInstance().create(partyPK, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
+                    nameSuffixPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deletePerson(Person person, BasePK deletedBy) {
+        person.setThruTime(session.START_TIME_LONG);
+        person.store();
+        
+        sendEventUsingNames(person.getPartyPK(), EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+    }
+    
+    public void deletePersonByParty(Party party, BasePK deletedBy) {
+        Person person = getPersonForUpdate(party);
+        
+        if(person != null) {
+            deletePerson(person, deletedBy);
+        }
+    }
+    
+    public PersonTransfer getPersonTransfer(UserVisit userVisit, Person person) {
+        return getPartyTransferCaches(userVisit).getPersonTransferCache().getPersonTransfer(person);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Relationships
+    // --------------------------------------------------------------------------------
+    
+    public PartyRelationship createPartyRelationship(PartyRelationshipType partyRelationshipType, Party fromParty,
+            RoleType fromRoleType, Party toParty, RoleType toRoleType, BasePK createdBy) {
+        PartyRelationship partyRelationship = PartyRelationshipFactory.getInstance().create(partyRelationshipType,
+                fromParty, fromRoleType, toParty, toRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(fromParty.getPrimaryKey(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(toParty.getPrimaryKey(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return partyRelationship;
+    }
+    
+    public long countPartyRelationships(final PartyRelationshipType partyRelationshipType, final Party fromParty, final RoleType fromRoleType,
+            final Party toParty, final RoleType toRoleType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partyrelationships " +
+                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
+                "AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ?",
+                partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType, Session.MAX_TIME);
+    }
+
+    private static final Map<EntityPermission, String> getPartyRelationshipQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
+                "AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
+                "AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyRelationshipQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public PartyRelationship getPartyRelationship(PartyRelationshipType partyRelationshipType, Party fromParty, RoleType fromRoleType, Party toParty,
+            RoleType toRoleType, EntityPermission entityPermission) {
+        return PartyRelationshipFactory.getInstance().getEntityFromQuery(entityPermission, getPartyRelationshipQueries, partyRelationshipType, fromParty,
+                fromRoleType, toParty, toRoleType, Session.MAX_TIME);
+    }
+
+    public PartyRelationship getPartyRelationship(PartyRelationshipType partyRelationshipType, Party fromParty, RoleType fromRoleType, Party toParty,
+            RoleType toRoleType) {
+        return getPartyRelationship(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType, EntityPermission.READ_ONLY);
+    }
+
+    public PartyRelationship getPartyRelationshipForUpdate(PartyRelationshipType partyRelationshipType, Party fromParty, RoleType fromRoleType, Party toParty,
+            RoleType toRoleType) {
+        return getPartyRelationship(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getPartyRelationshipsByFromRelationshipQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
+                "AND prel_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
+                "AND prel_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyRelationshipsByFromRelationshipQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyRelationship> getPartyRelationshipsByFromRelationship(PartyRelationshipType partyRelationshipType,
+            Party fromParty, RoleType fromRoleType, EntityPermission entityPermission) {
+        return PartyRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyRelationshipsByFromRelationshipQueries,
+                partyRelationshipType, fromParty, fromRoleType, Session.MAX_TIME);
+    }
+    
+    public List<PartyRelationship> getPartyRelationshipsByFromRelationship(PartyRelationshipType partyRelationshipType,
+            Party fromParty, RoleType fromRoleType) {
+        return getPartyRelationshipsByFromRelationship(partyRelationshipType, fromParty, fromRoleType, EntityPermission.READ_ONLY);
+    }
+    
+    public List<PartyRelationship> getPartyRelationshipsByFromRelationshipForUpdate(PartyRelationshipType partyRelationshipType,
+            Party fromParty, RoleType fromRoleType) {
+        return getPartyRelationshipsByFromRelationship(partyRelationshipType, fromParty, fromRoleType, EntityPermission.READ_WRITE);
+    }
+    
+    private static final Map<EntityPermission, String> getPartyRelationshipsByToRelationshipQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ? " +
+                "AND prel_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ? " +
+                "AND prel_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyRelationshipsByToRelationshipQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyRelationship> getPartyRelationshipsByToRelationship(PartyRelationshipType partyRelationshipType,
+            Party toParty, RoleType toRoleType, EntityPermission entityPermission) {
+        return PartyRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyRelationshipsByToRelationshipQueries, partyRelationshipType,
+                toParty, toRoleType, Session.MAX_TIME);
+    }
+    
+    public List<PartyRelationship> getPartyRelationshipsByToRelationship(PartyRelationshipType partyRelationshipType,
+            Party toParty, RoleType toRoleType) {
+        return getPartyRelationshipsByToRelationship(partyRelationshipType, toParty, toRoleType, EntityPermission.READ_ONLY);
+    }
+    
+    public List<PartyRelationship> getPartyRelationshipsByToRelationshipForUpdate(PartyRelationshipType partyRelationshipType,
+            Party toParty, RoleType toRoleType) {
+        return getPartyRelationshipsByToRelationship(partyRelationshipType, toParty, toRoleType, EntityPermission.READ_WRITE);
+    }
+    
+    private static final Map<EntityPermission, String> getPartyRelationshipsByFromPartyQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_frompartyid = ? AND prel_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_frompartyid = ? AND prel_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyRelationshipsByFromPartyQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyRelationship> getPartyRelationshipsByFromParty(Party fromParty, EntityPermission entityPermission) {
+        return PartyRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyRelationshipsByFromPartyQueries, fromParty,
+                Session.MAX_TIME);
+    }
+    
+    public List<PartyRelationship> getPartyRelationshipsByFromParty(Party fromParty) {
+        return getPartyRelationshipsByFromParty(fromParty, EntityPermission.READ_ONLY);
+    }
+    
+    public List<PartyRelationship> getPartyRelationshipsByFromPartyForUpdate(Party fromParty) {
+        return getPartyRelationshipsByFromParty(fromParty, EntityPermission.READ_WRITE);
+    }
+    
+    private static final Map<EntityPermission, String> getPartyRelationshipsByToPartyQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_topartyid = ? AND prel_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM partyrelationships " +
+                "WHERE prel_topartyid = ? AND prel_thrutime = ? " +
+                "FOR UPDATE");
+        getPartyRelationshipsByToPartyQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyRelationship> getPartyRelationshipsByToParty(Party toParty, EntityPermission entityPermission) {
+        return PartyRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyRelationshipsByToPartyQueries, toParty,
+                Session.MAX_TIME);
+    }
+    
+    public List<PartyRelationship> getPartyRelationshipsByToParty(Party toParty) {
+        return getPartyRelationshipsByToParty(toParty, EntityPermission.READ_ONLY);
+    }
+    
+    public List<PartyRelationship> getPartyRelationshipsByToPartyForUpdate(Party toParty) {
+        return getPartyRelationshipsByToParty(toParty, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyRelationshipTransfer getPartyRelationshipTransfer(UserVisit userVisit, PartyRelationship partyRelationship) {
+        return getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache().getPartyRelationshipTransfer(partyRelationship);
+    }
+    
+    public List<PartyRelationshipTransfer> getPartyRelationshipTransfers(UserVisit userVisit, List<PartyRelationship> partyRelationships) {
+        List<PartyRelationshipTransfer> partyRelationshipTransfers = new ArrayList<>(partyRelationships.size());
+        PartyRelationshipTransferCache partyRelationshipTransferCache = getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache();
+        
+        partyRelationships.stream().forEach((partyRelationship) -> {
+            partyRelationshipTransfers.add(partyRelationshipTransferCache.getPartyRelationshipTransfer(partyRelationship));
+        });
+        
+        return partyRelationshipTransfers;
+    }
+    
+    public List<PartyRelationshipTransfer> getPartyRelationshipTransfersByFromRelationship(UserVisit userVisit,
+            PartyRelationshipType partyRelationshipType, Party fromParty, RoleType fromRoleType) {
+        return getPartyRelationshipTransfers(userVisit, getPartyRelationshipsByFromRelationship(partyRelationshipType, fromParty,
+                fromRoleType));
+    }
+    
+    public List<PartyRelationshipTransfer> getPartyRelationshipTransfersByToRelationship(UserVisit userVisit,
+            PartyRelationshipType partyRelationshipType, Party toParty, RoleType toRoleType) {
+        return getPartyRelationshipTransfers(userVisit, getPartyRelationshipsByToRelationship(partyRelationshipType, toParty,
+                toRoleType));
+    }
+    
+    public List<PartyRelationshipTransfer> getPartyRelationshipTransfersByFromParty(UserVisit userVisit, Party fromParty) {
+        return getPartyRelationshipTransfers(userVisit, getPartyRelationshipsByFromParty(fromParty));
+    }
+
+    public List<PartyRelationshipTransfer> getPartyRelationshipTransfersByToParty(UserVisit userVisit, Party toParty) {
+        return getPartyRelationshipTransfers(userVisit, getPartyRelationshipsByToParty(toParty));
+    }
+
+    public void deletePartyRelationship(PartyRelationship partyRelationship, BasePK deletedBy) {
+        partyRelationship.setThruTime(session.START_TIME_LONG);
+        
+        sendEventUsingNames(partyRelationship.getFromPartyPK(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partyRelationship.getToPartyPK(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+    }
+    
+    public void deletePartyRelationships(List<PartyRelationship> partyRelationships, BasePK deletedBy) {
+        partyRelationships.stream().forEach((partyRelationship) -> {
+            deletePartyRelationship(partyRelationship, deletedBy);
+        });
+    }
+    
+    public void deletePartyRelationshipsByParty(Party party, BasePK deletedBy) {
+        deletePartyRelationships(getPartyRelationshipsByFromPartyForUpdate(party), deletedBy);
+        deletePartyRelationships(getPartyRelationshipsByToPartyForUpdate(party), deletedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Type Audit Policies
+    // --------------------------------------------------------------------------------
+    
+    public PartyTypeAuditPolicy createPartyTypeAuditPolicy(PartyType partyType, Boolean auditCommands, Long retainUserVisitsTime, BasePK createdBy) {
+        PartyTypeAuditPolicy partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().create();
+        PartyTypeAuditPolicyDetail partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicy, partyType, auditCommands, retainUserVisitsTime,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        // Convert to R/W
+        partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyTypeAuditPolicy.getPrimaryKey());
+        partyTypeAuditPolicy.setActiveDetail(partyTypeAuditPolicyDetail);
+        partyTypeAuditPolicy.setLastDetail(partyTypeAuditPolicyDetail);
+        partyTypeAuditPolicy.store();
+
+        sendEventUsingNames(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return partyTypeAuditPolicy;
+    }
+    
+    private PartyTypeAuditPolicy getPartyTypeAuditPolicy(PartyType partyType, EntityPermission entityPermission) {
+        PartyTypeAuditPolicy partyTypeAuditPolicy = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partytypeauditpolicies, partytypeauditpolicydetails " +
+                        "WHERE ptypap_activedetailid = ptypapdt_partytypeauditpolicydetailid AND ptypapdt_ptyp_partytypeid = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partytypeauditpolicies, partytypeauditpolicydetails " +
+                        "WHERE ptypap_activedetailid = ptypapdt_partytypeauditpolicydetailid AND ptypapdt_ptyp_partytypeid = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyTypeAuditPolicyFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, partyType.getPrimaryKey().getEntityId());
+            
+            partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyTypeAuditPolicy;
+    }
+    
+    public PartyTypeAuditPolicy getPartyTypeAuditPolicy(PartyType partyType) {
+        return getPartyTypeAuditPolicy(partyType, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyTypeAuditPolicy getPartyTypeAuditPolicyForUpdate(PartyType partyType) {
+        return getPartyTypeAuditPolicy(partyType, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyTypeAuditPolicyDetailValue getPartyTypeAuditPolicyDetailValueForUpdate(PartyTypeAuditPolicy partyTypeAuditPolicy) {
+        return partyTypeAuditPolicy == null? null: partyTypeAuditPolicy.getLastDetailForUpdate().getPartyTypeAuditPolicyDetailValue().clone();
+    }
+    
+    public PartyTypeAuditPolicyDetailValue getPartyTypeAuditPolicyDetailValueByNameForUpdate(PartyType partyType) {
+        return getPartyTypeAuditPolicyDetailValueForUpdate(getPartyTypeAuditPolicyForUpdate(partyType));
+    }
+    
+    public PartyTypeAuditPolicyTransfer getPartyTypeAuditPolicyTransfer(UserVisit userVisit, PartyTypeAuditPolicy partyTypeAuditPolicy) {
+        return getPartyTransferCaches(userVisit).getPartyTypeAuditPolicyTransferCache().getPartyTypeAuditPolicyTransfer(partyTypeAuditPolicy);
+    }
+    
+    public PartyTypeAuditPolicyTransfer getPartyTypeAuditPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
+        return getPartyTransferCaches(userVisit).getPartyTypeAuditPolicyTransferCache().getPartyTypeAuditPolicyTransfer(getPartyTypeAuditPolicy(partyType));
+    }
+    
+    public void updatePartyTypeAuditPolicyFromValue(PartyTypeAuditPolicyDetailValue partyTypeAuditPolicyDetailValue, BasePK updatedBy) {
+        if(partyTypeAuditPolicyDetailValue.hasBeenModified()) {
+            PartyTypeAuditPolicy partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    partyTypeAuditPolicyDetailValue.getPartyTypeAuditPolicyPK());
+            PartyTypeAuditPolicyDetail partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getActiveDetailForUpdate();
+
+            partyTypeAuditPolicyDetail.setThruTime(session.START_TIME_LONG);
+            partyTypeAuditPolicyDetail.store();
+
+            PartyTypeAuditPolicyPK partyTypeAuditPolicyPK = partyTypeAuditPolicyDetail.getPartyTypeAuditPolicyPK();
+            PartyTypePK partyTypePK = partyTypeAuditPolicyDetail.getPartyTypePK(); // Not updated
+            Boolean auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
+            Long retainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
+
+            partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicyPK, partyTypePK, auditCommands, retainUserVisitsTime,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            partyTypeAuditPolicy.setActiveDetail(partyTypeAuditPolicyDetail);
+            partyTypeAuditPolicy.setLastDetail(partyTypeAuditPolicyDetail);
+
+            sendEventUsingNames(partyTypeAuditPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+    
+    public void deletePartyTypeAuditPolicy(PartyTypeAuditPolicy partyTypeAuditPolicy, BasePK deletedBy) {
+        PartyTypeAuditPolicyDetail partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getLastDetailForUpdate();
+        partyTypeAuditPolicyDetail.setThruTime(session.START_TIME_LONG);
+        partyTypeAuditPolicy.setActiveDetail(null);
+        partyTypeAuditPolicy.store();
+        
+        sendEventUsingNames(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Type Lockout Policies
+    // --------------------------------------------------------------------------------
+    
+    public PartyTypeLockoutPolicy createPartyTypeLockoutPolicy(PartyType partyType, Integer lockoutFailureCount,
+            Long resetFailureCountTime, Boolean manualLockoutReset, Long lockoutInactiveTime, BasePK createdBy) {
+        PartyTypeLockoutPolicy partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().create();
+        PartyTypeLockoutPolicyDetail partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
+                partyTypeLockoutPolicy, partyType, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
+                lockoutInactiveTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                partyTypeLockoutPolicy.getPrimaryKey());
+        partyTypeLockoutPolicy.setActiveDetail(partyTypeLockoutPolicyDetail);
+        partyTypeLockoutPolicy.setLastDetail(partyTypeLockoutPolicyDetail);
+        partyTypeLockoutPolicy.store();
+        
+        sendEventUsingNames(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return partyTypeLockoutPolicy;
+    }
+    
+    private PartyTypeLockoutPolicy getPartyTypeLockoutPolicy(PartyType partyType, EntityPermission entityPermission) {
+        PartyTypeLockoutPolicy partyTypeLockoutPolicy = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partytypelockoutpolicies, partytypelockoutpolicydetails " +
+                        "WHERE ptyplp_activedetailid = ptyplpdt_partytypelockoutpolicydetailid AND ptyplpdt_ptyp_partytypeid = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partytypelockoutpolicies, partytypelockoutpolicydetails " +
+                        "WHERE ptyplp_activedetailid = ptyplpdt_partytypelockoutpolicydetailid AND ptyplpdt_ptyp_partytypeid = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyTypeLockoutPolicyFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, partyType.getPrimaryKey().getEntityId());
+            
+            partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyTypeLockoutPolicy;
+    }
+    
+    public PartyTypeLockoutPolicy getPartyTypeLockoutPolicy(PartyType partyType) {
+        return getPartyTypeLockoutPolicy(partyType, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyTypeLockoutPolicy getPartyTypeLockoutPolicyForUpdate(PartyType partyType) {
+        return getPartyTypeLockoutPolicy(partyType, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyTypeLockoutPolicyDetailValue getPartyTypeLockoutPolicyDetailValueForUpdate(PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
+        return partyTypeLockoutPolicy == null? null: partyTypeLockoutPolicy.getLastDetailForUpdate().getPartyTypeLockoutPolicyDetailValue().clone();
+    }
+    
+    public PartyTypeLockoutPolicyDetailValue getPartyTypeLockoutPolicyDetailValueByPartyTypeForUpdate(PartyType partyType) {
+        return getPartyTypeLockoutPolicyDetailValueForUpdate(getPartyTypeLockoutPolicyForUpdate(partyType));
+    }
+    
+    public PartyTypeLockoutPolicyTransfer getPartyTypeLockoutPolicyTransfer(UserVisit userVisit, PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
+        return getPartyTransferCaches(userVisit).getPartyTypeLockoutPolicyTransferCache().getPartyTypeLockoutPolicyTransfer(partyTypeLockoutPolicy);
+    }
+    
+    public PartyTypeLockoutPolicyTransfer getPartyTypeLockoutPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
+        return getPartyTransferCaches(userVisit).getPartyTypeLockoutPolicyTransferCache().getPartyTypeLockoutPolicyTransfer(getPartyTypeLockoutPolicy(partyType));
+    }
+    
+    public void updatePartyTypeLockoutPolicyFromValue(PartyTypeLockoutPolicyDetailValue partyTypeLockoutPolicyDetailValue, BasePK updatedBy) {
+        if(partyTypeLockoutPolicyDetailValue.hasBeenModified()) {
+            PartyTypeLockoutPolicy partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     partyTypeLockoutPolicyDetailValue.getPartyTypeLockoutPolicyPK());
+            PartyTypeLockoutPolicyDetail partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getActiveDetailForUpdate();
+            
+            partyTypeLockoutPolicyDetail.setThruTime(session.START_TIME_LONG);
+            partyTypeLockoutPolicyDetail.store();
+            
+            PartyTypeLockoutPolicyPK partyTypeLockoutPolicyPK = partyTypeLockoutPolicyDetail.getPartyTypeLockoutPolicyPK();
+            PartyTypePK partyTypePK = partyTypeLockoutPolicyDetail.getPartyTypePK(); // Not updated
+            Integer lockoutFailureCount = partyTypeLockoutPolicyDetailValue.getLockoutFailureCount();
+            Long resetFailureCountTime = partyTypeLockoutPolicyDetailValue.getResetFailureCountTime();
+            Boolean manualLockoutReset = partyTypeLockoutPolicyDetailValue.getManualLockoutReset();
+            Long lockoutInactiveTime = partyTypeLockoutPolicyDetailValue.getLockoutInactiveTime();
+            
+            partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
+                    partyTypeLockoutPolicyPK, partyTypePK, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
+                    lockoutInactiveTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            partyTypeLockoutPolicy.setActiveDetail(partyTypeLockoutPolicyDetail);
+            partyTypeLockoutPolicy.setLastDetail(partyTypeLockoutPolicyDetail);
+            
+            sendEventUsingNames(partyTypeLockoutPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+    
+    public void deletePartyTypeLockoutPolicy(PartyTypeLockoutPolicy partyTypeLockoutPolicy, BasePK deletedBy) {
+        PartyTypeLockoutPolicyDetail partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getLastDetailForUpdate();
+        partyTypeLockoutPolicyDetail.setThruTime(session.START_TIME_LONG);
+        partyTypeLockoutPolicy.setActiveDetail(null);
+        partyTypeLockoutPolicy.store();
+        
+        sendEventUsingNames(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Party Type Password String Policies
+    // --------------------------------------------------------------------------------
+    
+    public PartyTypePasswordStringPolicy createPartyTypePasswordStringPolicy(PartyType partyType, Boolean forceChangeAfterCreate,
+            Boolean forceChangeAfterReset, Boolean allowChange, Integer passwordHistory, Long minimumPasswordLifetime, Long maximumPasswordLifetime,
+            Long expirationWarningTime, Integer expiredLoginsPermitted, Integer minimumLength, Integer maximumLength,
+            Integer requiredDigitCount, Integer requiredLetterCount, Integer requiredUpperCaseCount, Integer requiredLowerCaseCount,
+            Integer maximumRepeated, Integer minimumCharacterTypes, BasePK createdBy) {
+        PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().create();
+        PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(session,
+                partyTypePasswordStringPolicy, partyType, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
+                minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
+                maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
+                maximumRepeated, minimumCharacterTypes, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(session,
+                EntityPermission.READ_WRITE, partyTypePasswordStringPolicy.getPrimaryKey());
+        partyTypePasswordStringPolicy.setActiveDetail(partyTypePasswordStringPolicyDetail);
+        partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
+        partyTypePasswordStringPolicy.store();
+        
+        sendEventUsingNames(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return partyTypePasswordStringPolicy;
+    }
+    
+    private PartyTypePasswordStringPolicy getPartyTypePasswordStringPolicy(PartyType partyType, EntityPermission entityPermission) {
+        PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partytypepasswordstringpolicies, partytypepasswordstringpolicydetails " +
+                        "WHERE ptyppsp_activedetailid = ptyppspdt_partytypepasswordstringpolicydetailid AND ptyppspdt_ptyp_partytypeid = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partytypepasswordstringpolicies, partytypepasswordstringpolicydetails " +
+                        "WHERE ptyppsp_activedetailid = ptyppspdt_partytypepasswordstringpolicydetailid AND ptyppspdt_ptyp_partytypeid = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = PartyTypePasswordStringPolicyFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, partyType.getPrimaryKey().getEntityId());
+            
+            partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return partyTypePasswordStringPolicy;
+    }
+    
+    public PartyTypePasswordStringPolicy getPartyTypePasswordStringPolicy(PartyType partyType) {
+        return getPartyTypePasswordStringPolicy(partyType, EntityPermission.READ_ONLY);
+    }
+    
+    public PartyTypePasswordStringPolicy getPartyTypePasswordStringPolicyForUpdate(PartyType partyType) {
+        return getPartyTypePasswordStringPolicy(partyType, EntityPermission.READ_WRITE);
+    }
+    
+    public PartyTypePasswordStringPolicyDetailValue getPartyTypePasswordStringPolicyDetailValueForUpdate(PartyTypePasswordStringPolicy partyTypePasswordStringPolicy) {
+        return partyTypePasswordStringPolicy == null? null: partyTypePasswordStringPolicy.getLastDetailForUpdate().getPartyTypePasswordStringPolicyDetailValue().clone();
+    }
+    
+    public PartyTypePasswordStringPolicyDetailValue getPartyTypePasswordStringPolicyDetailValueByPartyTypeForUpdate(PartyType partyType) {
+        return getPartyTypePasswordStringPolicyDetailValueForUpdate(getPartyTypePasswordStringPolicyForUpdate(partyType));
+    }
+    
+    public PartyTypePasswordStringPolicyTransfer getPartyTypePasswordStringPolicyTransfer(UserVisit userVisit, PartyTypePasswordStringPolicy partyTypePasswordStringPolicy) {
+        return getPartyTransferCaches(userVisit).getPartyTypePasswordStringPolicyTransferCache().getPartyTypePasswordStringPolicyTransfer(partyTypePasswordStringPolicy);
+    }
+    
+    public PartyTypePasswordStringPolicyTransfer getPartyTypePasswordStringPolicyTransferByPartyType(UserVisit userVisit, PartyType partyType) {
+        return getPartyTransferCaches(userVisit).getPartyTypePasswordStringPolicyTransferCache().getPartyTypePasswordStringPolicyTransfer(getPartyTypePasswordStringPolicy(partyType));
+    }
+    
+    public void updatePartyTypePasswordStringPolicyFromValue(PartyTypePasswordStringPolicyDetailValue partyTypePasswordStringPolicyDetailValue, BasePK updatedBy) {
+        if(partyTypePasswordStringPolicyDetailValue.hasBeenModified()) {
+            PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     partyTypePasswordStringPolicyDetailValue.getPartyTypePasswordStringPolicyPK());
+            PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getActiveDetailForUpdate();
+            
+            partyTypePasswordStringPolicyDetail.setThruTime(session.START_TIME_LONG);
+            partyTypePasswordStringPolicyDetail.store();
+            
+            PartyTypePasswordStringPolicyPK partyTypePasswordStringPolicyPK = partyTypePasswordStringPolicyDetail.getPartyTypePasswordStringPolicyPK();
+            PartyTypePK partyTypePK = partyTypePasswordStringPolicyDetail.getPartyTypePK(); // Not updated
+            Boolean forceChangeAfterCreate = partyTypePasswordStringPolicyDetailValue.getForceChangeAfterCreate();
+            Boolean forceChangeAfterReset = partyTypePasswordStringPolicyDetailValue.getForceChangeAfterReset();
+            Boolean allowChange = partyTypePasswordStringPolicyDetailValue.getAllowChange();
+            Integer passwordHistory = partyTypePasswordStringPolicyDetailValue.getPasswordHistory();
+            Long minimumPasswordLifetime = partyTypePasswordStringPolicyDetailValue.getMinimumPasswordLifetime();
+            Long maximumPasswordLifetime = partyTypePasswordStringPolicyDetailValue.getMaximumPasswordLifetime();
+            Long expirationWarningTime = partyTypePasswordStringPolicyDetailValue.getExpirationWarningTime();
+            Integer expiredLoginsPermitted = partyTypePasswordStringPolicyDetailValue.getExpiredLoginsPermitted();
+            Integer minimumLength = partyTypePasswordStringPolicyDetailValue.getMinimumLength();
+            Integer maximumLength = partyTypePasswordStringPolicyDetailValue.getMaximumLength();
+            Integer requiredDigitCount = partyTypePasswordStringPolicyDetailValue.getRequiredDigitCount();
+            Integer requiredLetterCount = partyTypePasswordStringPolicyDetailValue.getRequiredLetterCount();
+            Integer requiredUpperCaseCount = partyTypePasswordStringPolicyDetailValue.getRequiredUpperCaseCount();
+            Integer requiredLowerCaseCount = partyTypePasswordStringPolicyDetailValue.getRequiredLowerCaseCount();
+            Integer maximumRepeated = partyTypePasswordStringPolicyDetailValue.getMaximumRepeated();
+            Integer minimumCharacterTypes = partyTypePasswordStringPolicyDetailValue.getMinimumCharacterTypes();
+            
+            partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(session,
+                    partyTypePasswordStringPolicyPK, partyTypePK, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
+                    minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
+                    maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
+                    maximumRepeated, minimumCharacterTypes, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            partyTypePasswordStringPolicy.setActiveDetail(partyTypePasswordStringPolicyDetail);
+            partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
+            
+            sendEventUsingNames(partyTypePasswordStringPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+    
+    public void deletePartyTypePasswordStringPolicy(PartyTypePasswordStringPolicy partyTypePasswordStringPolicy, BasePK deletedBy) {
+        PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetailForUpdate();
+        partyTypePasswordStringPolicyDetail.setThruTime(session.START_TIME_LONG);
+        partyTypePasswordStringPolicy.setActiveDetail(null);
+        partyTypePasswordStringPolicy.store();
+        
+        sendEventUsingNames(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Genders
+    // --------------------------------------------------------------------------------
+    
+    public Gender createGender(String genderName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        Gender defaultGender = getDefaultGender();
+        boolean defaultFound = defaultGender != null;
+        
+        if(defaultFound && isDefault) {
+            GenderDetailValue defaultGenderDetailValue = getDefaultGenderDetailValueForUpdate();
+            
+            defaultGenderDetailValue.setIsDefault(Boolean.FALSE);
+            updateGenderFromValue(defaultGenderDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+        
+        Gender gender = GenderFactory.getInstance().create();
+        GenderDetail genderDetail = GenderDetailFactory.getInstance().create(gender, genderName, isDefault, sortOrder,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        gender = GenderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, gender.getPrimaryKey());
+        gender.setActiveDetail(genderDetail);
+        gender.setLastDetail(genderDetail);
+        gender.store();
+        
+        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return gender;
+    }
+    
+    private Gender getGenderByName(String genderName, EntityPermission entityPermission) {
+        Gender gender = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM genders, genderdetails " +
+                        "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_gendername = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM genders, genderdetails " +
+                        "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_gendername = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = GenderFactory.getInstance().prepareStatement(query);
+            
+            ps.setString(1, genderName);
+            
+            gender = GenderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return gender;
+    }
+    
+    public Gender getGenderByName(String genderName) {
+        return getGenderByName(genderName, EntityPermission.READ_ONLY);
+    }
+    
+    public Gender getGenderByNameForUpdate(String genderName) {
+        return getGenderByName(genderName, EntityPermission.READ_WRITE);
+    }
+    
+    public GenderDetailValue getGenderDetailValueForUpdate(Gender gender) {
+        return gender == null? null: gender.getLastDetailForUpdate().getGenderDetailValue().clone();
+    }
+    
+    public GenderDetailValue getGenderDetailValueByNameForUpdate(String genderName) {
+        return getGenderDetailValueForUpdate(getGenderByNameForUpdate(genderName));
+    }
+    
+    private Gender getDefaultGender(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM genders, genderdetails " +
+                    "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_isdefault = 1";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM genders, genderdetails " +
+                    "WHERE gndr_activedetailid = gndrdt_genderdetailid AND gndrdt_isdefault = 1 " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = GenderFactory.getInstance().prepareStatement(query);
+        
+        return GenderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    }
+    
+    public Gender getDefaultGender() {
+        return getDefaultGender(EntityPermission.READ_ONLY);
+    }
+    
+    public Gender getDefaultGenderForUpdate() {
+        return getDefaultGender(EntityPermission.READ_WRITE);
+    }
+    
+    public GenderDetailValue getDefaultGenderDetailValueForUpdate() {
+        return getDefaultGender(EntityPermission.READ_WRITE).getLastDetailForUpdate().getGenderDetailValue();
+    }
+    
+    private List<Gender> getGenders(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM genders, genderdetails " +
+                    "WHERE gndr_activedetailid = gndrdt_genderdetailid " +
+                    "ORDER BY gndrdt_sortorder, gndrdt_gendername";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM genders, genderdetails " +
+                    "WHERE gndr_activedetailid = gndrdt_genderdetailid " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = GenderFactory.getInstance().prepareStatement(query);
+        
+        return GenderFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+    }
+    
+    public List<Gender> getGenders() {
+        return getGenders(EntityPermission.READ_ONLY);
+    }
+    
+    public List<Gender> getGendersForUpdate() {
+        return getGenders(EntityPermission.READ_WRITE);
+    }
+    
+    public GenderChoicesBean getGenderChoices(String defaultGenderChoice, Language language, boolean allowNullChoice) {
+        List<Gender> genders = getGenders();
+        int size = genders.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultGenderChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(Gender gender: genders) {
+            GenderDetail genderDetail = gender.getLastDetail();
+            
+            String label = getBestGenderDescription(gender, language);
+            String value = genderDetail.getGenderName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultGenderChoice == null? false: defaultGenderChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && genderDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new GenderChoicesBean(labels, values, defaultValue);
+    }
+    
+    public GenderTransfer getGenderTransfer(UserVisit userVisit, Gender gender) {
+        return getPartyTransferCaches(userVisit).getGenderTransferCache().getGenderTransfer(gender);
+    }
+    
+    public List<GenderTransfer> getGenderTransfers(UserVisit userVisit) {
+        List<Gender> genders = getGenders();
+        List<GenderTransfer> genderTransfers = new ArrayList<>(genders.size());
+        GenderTransferCache genderTransferCache = getPartyTransferCaches(userVisit).getGenderTransferCache();
+        
+        genders.stream().forEach((gender) -> {
+            genderTransfers.add(genderTransferCache.getGenderTransfer(gender));
+        });
+        
+        return genderTransfers;
+    }
+    
+    private void updateGenderFromValue(GenderDetailValue genderDetailValue, boolean checkDefault, BasePK updatedBy) {
+        Gender gender = GenderFactory.getInstance().getEntityFromPK(session,
+                EntityPermission.READ_WRITE, genderDetailValue.getGenderPK());
+        GenderDetail genderDetail = gender.getActiveDetailForUpdate();
+        
+        genderDetail.setThruTime(session.START_TIME_LONG);
+        genderDetail.store();
+        
+        GenderPK genderPK = genderDetail.getGenderPK();
+        String genderName = genderDetailValue.getGenderName();
+        Boolean isDefault = genderDetailValue.getIsDefault();
+        Integer sortOrder = genderDetailValue.getSortOrder();
+        
+        if(checkDefault) {
+            Gender defaultGender = getDefaultGender();
+            boolean defaultFound = defaultGender != null && !defaultGender.equals(gender);
+            
+            if(isDefault && defaultFound) {
+                // If I'm the default, and a default already existed...
+                GenderDetailValue defaultGenderDetailValue = getDefaultGenderDetailValueForUpdate();
+                
+                defaultGenderDetailValue.setIsDefault(Boolean.FALSE);
+                updateGenderFromValue(defaultGenderDetailValue, false, updatedBy);
+            } else if(!isDefault && !defaultFound) {
+                // If I'm not the default, and no other default exists...
+                isDefault = Boolean.TRUE;
+            }
+        }
+        
+        genderDetail = GenderDetailFactory.getInstance().create(genderPK, genderName, isDefault, sortOrder,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        gender.setActiveDetail(genderDetail);
+        gender.setLastDetail(genderDetail);
+        gender.store();
+        
+        sendEventUsingNames(genderPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+    }
+    
+    public void updateGenderFromValue(GenderDetailValue genderDetailValue, BasePK updatedBy) {
+        updateGenderFromValue(genderDetailValue, true, updatedBy);
+    }
+    
+    public void deleteGender(Gender gender, BasePK deletedBy) {
+        deleteGenderDescriptionsByGender(gender, deletedBy);
+        
+        GenderDetail genderDetail = gender.getLastDetailForUpdate();
+        genderDetail.setThruTime(session.START_TIME_LONG);
+        gender.setActiveDetail(null);
+        gender.store();
+        
+        // Check for default, and pick one if necessary
+        Gender defaultGender = getDefaultGender();
+        if(defaultGender == null) {
+            List<Gender> genders = getGendersForUpdate();
+            
+            if(!genders.isEmpty()) {
+                Iterator<Gender> iter = genders.iterator();
+                if(iter.hasNext()) {
+                    defaultGender = iter.next();
+                }
+                GenderDetailValue genderDetailValue = defaultGender.getLastDetailForUpdate().getGenderDetailValue().clone();
+                
+                genderDetailValue.setIsDefault(Boolean.TRUE);
+                updateGenderFromValue(genderDetailValue, false, deletedBy);
+            }
+        }
+        
+        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Gender Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public GenderDescription createGenderDescription(Gender gender, Language language, String description, BasePK createdBy) {
+        GenderDescription genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return genderDescription;
+    }
+    
+    private GenderDescription getGenderDescription(Gender gender, Language language, EntityPermission entityPermission) {
+        GenderDescription genderDescription = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM genderdescriptions " +
+                        "WHERE gndrd_gndr_genderid = ? AND gndrd_lang_languageid = ? AND gndrd_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM genderdescriptions " +
+                        "WHERE gndrd_gndr_genderid = ? AND gndrd_lang_languageid = ? AND gndrd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, gender.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+            
+            genderDescription = GenderDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return genderDescription;
+    }
+    
+    public GenderDescription getGenderDescription(Gender gender, Language language) {
+        return getGenderDescription(gender, language, EntityPermission.READ_ONLY);
+    }
+    
+    public GenderDescription getGenderDescriptionForUpdate(Gender gender, Language language) {
+        return getGenderDescription(gender, language, EntityPermission.READ_WRITE);
+    }
+    
+    public GenderDescriptionValue getGenderDescriptionValue(GenderDescription genderDescription) {
+        return genderDescription == null? null: genderDescription.getGenderDescriptionValue().clone();
+    }
+    
+    public GenderDescriptionValue getGenderDescriptionValueForUpdate(Gender gender, Language language) {
+        return getGenderDescriptionValue(getGenderDescriptionForUpdate(gender, language));
+    }
+    
+    private List<GenderDescription> getGenderDescriptionsByGender(Gender gender, EntityPermission entityPermission) {
+        List<GenderDescription> genderDescriptions = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM genderdescriptions, languages " +
+                        "WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ? AND gndrd_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM genderdescriptions " +
+                        "WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = GenderDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, gender.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            genderDescriptions = GenderDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return genderDescriptions;
+    }
+    
+    public List<GenderDescription> getGenderDescriptionsByGender(Gender gender) {
+        return getGenderDescriptionsByGender(gender, EntityPermission.READ_ONLY);
+    }
+    
+    public List<GenderDescription> getGenderDescriptionsByGenderForUpdate(Gender gender) {
+        return getGenderDescriptionsByGender(gender, EntityPermission.READ_WRITE);
+    }
+    
+    public String getBestGenderDescription(Gender gender, Language language) {
+        String description;
+        GenderDescription genderDescription = getGenderDescription(gender, language);
+        
+        if(genderDescription == null && !language.getIsDefault()) {
+            genderDescription = getGenderDescription(gender, getPartyControl().getDefaultLanguage());
+        }
+        
+        if(genderDescription == null) {
+            description = gender.getLastDetail().getGenderName();
+        } else {
+            description = genderDescription.getDescription();
+        }
+        
+        return description;
+    }
+    
+    public GenderDescriptionTransfer getGenderDescriptionTransfer(UserVisit userVisit, GenderDescription genderDescription) {
+        return getPartyTransferCaches(userVisit).getGenderDescriptionTransferCache().getGenderDescriptionTransfer(genderDescription);
+    }
+    
+    public List<GenderDescriptionTransfer> getGenderDescriptionTransfersByGender(UserVisit userVisit, Gender gender) {
+        List<GenderDescription> genderDescriptions = getGenderDescriptionsByGender(gender);
+        List<GenderDescriptionTransfer> genderDescriptionTransfers = new ArrayList<>(genderDescriptions.size());
+        GenderDescriptionTransferCache genderDescriptionTransferCache = getPartyTransferCaches(userVisit).getGenderDescriptionTransferCache();
+        
+        genderDescriptions.stream().forEach((genderDescription) -> {
+            genderDescriptionTransfers.add(genderDescriptionTransferCache.getGenderDescriptionTransfer(genderDescription));
+        });
+        
+        return genderDescriptionTransfers;
+    }
+    
+    public void updateGenderDescriptionFromValue(GenderDescriptionValue genderDescriptionValue, BasePK updatedBy) {
+        if(genderDescriptionValue.hasBeenModified()) {
+            GenderDescription genderDescription = GenderDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     genderDescriptionValue.getPrimaryKey());
+            
+            genderDescription.setThruTime(session.START_TIME_LONG);
+            genderDescription.store();
+            
+            Gender gender = genderDescription.getGender();
+            Language language = genderDescription.getLanguage();
+            String description = genderDescriptionValue.getDescription();
+            
+            genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(gender.getPrimaryKey(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deleteGenderDescription(GenderDescription genderDescription, BasePK deletedBy) {
+        genderDescription.setThruTime(session.START_TIME_LONG);
+        
+        sendEventUsingNames(genderDescription.getGenderPK(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        
+    }
+    
+    public void deleteGenderDescriptionsByGender(Gender gender, BasePK deletedBy) {
+        List<GenderDescription> genderDescriptions = getGenderDescriptionsByGenderForUpdate(gender);
+        
+        genderDescriptions.stream().forEach((genderDescription) -> {
+            deleteGenderDescription(genderDescription, deletedBy);
+        });
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Moods
+    // --------------------------------------------------------------------------------
+    
+    public Mood createMood(String moodName, Icon icon, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        Mood defaultMood = getDefaultMood();
+        boolean defaultFound = defaultMood != null;
+        
+        if(defaultFound && isDefault) {
+            MoodDetailValue defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
+            
+            defaultMoodDetailValue.setIsDefault(Boolean.FALSE);
+            updateMoodFromValue(defaultMoodDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+        
+        Mood mood = MoodFactory.getInstance().create();
+        MoodDetail moodDetail = MoodDetailFactory.getInstance().create(mood, moodName, icon, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        mood = MoodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, mood.getPrimaryKey());
+        mood.setActiveDetail(moodDetail);
+        mood.setLastDetail(moodDetail);
+        mood.store();
+        
+        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return mood;
+    }
+    
+    private Mood getMoodByName(String moodName, EntityPermission entityPermission) {
+        Mood mood = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM moods, mooddetails " +
+                        "WHERE md_activedetailid = mddt_mooddetailid AND mddt_moodname = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM moods, mooddetails " +
+                        "WHERE md_activedetailid = mddt_mooddetailid AND mddt_moodname = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = MoodFactory.getInstance().prepareStatement(query);
+            
+            ps.setString(1, moodName);
+            
+            mood = MoodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return mood;
+    }
+    
+    public Mood getMoodByName(String moodName) {
+        return getMoodByName(moodName, EntityPermission.READ_ONLY);
+    }
+    
+    public Mood getMoodByNameForUpdate(String moodName) {
+        return getMoodByName(moodName, EntityPermission.READ_WRITE);
+    }
+    
+    public MoodDetailValue getMoodDetailValueForUpdate(Mood mood) {
+        return mood == null? null: mood.getLastDetailForUpdate().getMoodDetailValue().clone();
+    }
+    
+    public MoodDetailValue getMoodDetailValueByNameForUpdate(String moodName) {
+        return getMoodDetailValueForUpdate(getMoodByNameForUpdate(moodName));
+    }
+    
+    private Mood getDefaultMood(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM moods, mooddetails " +
+                    "WHERE md_activedetailid = mddt_mooddetailid AND mddt_isdefault = 1";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM moods, mooddetails " +
+                    "WHERE md_activedetailid = mddt_mooddetailid AND mddt_isdefault = 1 " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = MoodFactory.getInstance().prepareStatement(query);
+        
+        return MoodFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    }
+    
+    public Mood getDefaultMood() {
+        return getDefaultMood(EntityPermission.READ_ONLY);
+    }
+    
+    public Mood getDefaultMoodForUpdate() {
+        return getDefaultMood(EntityPermission.READ_WRITE);
+    }
+    
+    public MoodDetailValue getDefaultMoodDetailValueForUpdate() {
+        return getDefaultMood(EntityPermission.READ_WRITE).getLastDetailForUpdate().getMoodDetailValue();
+    }
+    
+    private List<Mood> getMoods(EntityPermission entityPermission) {
+        String query = null;
+        
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM moods, mooddetails " +
+                    "WHERE md_activedetailid = mddt_mooddetailid " +
+                    "ORDER BY mddt_sortorder, mddt_moodname";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM moods, mooddetails " +
+                    "WHERE md_activedetailid = mddt_mooddetailid " +
+                    "FOR UPDATE";
+        }
+        
+        PreparedStatement ps = MoodFactory.getInstance().prepareStatement(query);
+        
+        return MoodFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+    }
+    
+    public List<Mood> getMoods() {
+        return getMoods(EntityPermission.READ_ONLY);
+    }
+    
+    public List<Mood> getMoodsForUpdate() {
+        return getMoods(EntityPermission.READ_WRITE);
+    }
+    
+    public MoodChoicesBean getMoodChoices(String defaultMoodChoice, Language language, boolean allowNullChoice) {
+        List<Mood> moods = getMoods();
+        int size = moods.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultMoodChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(Mood mood: moods) {
+            MoodDetail moodDetail = mood.getLastDetail();
+            
+            String label = getBestMoodDescription(mood, language);
+            String value = moodDetail.getMoodName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultMoodChoice == null? false: defaultMoodChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && moodDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+        
+        return new MoodChoicesBean(labels, values, defaultValue);
+    }
+    
+    public MoodTransfer getMoodTransfer(UserVisit userVisit, Mood mood) {
+        return getPartyTransferCaches(userVisit).getMoodTransferCache().getMoodTransfer(mood);
+    }
+    
+    public List<MoodTransfer> getMoodTransfers(UserVisit userVisit) {
+        List<Mood> moods = getMoods();
+        List<MoodTransfer> moodTransfers = new ArrayList<>(moods.size());
+        MoodTransferCache moodTransferCache = getPartyTransferCaches(userVisit).getMoodTransferCache();
+        
+        moods.stream().forEach((mood) -> {
+            moodTransfers.add(moodTransferCache.getMoodTransfer(mood));
+        });
+        
+        return moodTransfers;
+    }
+    
+    private void updateMoodFromValue(MoodDetailValue moodDetailValue, boolean checkDefault, BasePK updatedBy) {
+        Mood mood = MoodFactory.getInstance().getEntityFromPK(session,
+                EntityPermission.READ_WRITE, moodDetailValue.getMoodPK());
+        MoodDetail moodDetail = mood.getActiveDetailForUpdate();
+        
+        moodDetail.setThruTime(session.START_TIME_LONG);
+        moodDetail.store();
+        
+        MoodPK moodPK = moodDetail.getMoodPK();
+        String moodName = moodDetailValue.getMoodName();
+        IconPK iconPK = moodDetailValue.getIconPK();
+        Boolean isDefault = moodDetailValue.getIsDefault();
+        Integer sortOrder = moodDetailValue.getSortOrder();
+        
+        if(checkDefault) {
+            Mood defaultMood = getDefaultMood();
+            boolean defaultFound = defaultMood != null && !defaultMood.equals(mood);
+            
+            if(isDefault && defaultFound) {
+                // If I'm the default, and a default already existed...
+                MoodDetailValue defaultMoodDetailValue = getDefaultMoodDetailValueForUpdate();
+                
+                defaultMoodDetailValue.setIsDefault(Boolean.FALSE);
+                updateMoodFromValue(defaultMoodDetailValue, false, updatedBy);
+            } else if(!isDefault && !defaultFound) {
+                // If I'm not the default, and no other default exists...
+                isDefault = Boolean.TRUE;
+            }
+        }
+        
+        moodDetail = MoodDetailFactory.getInstance().create(moodPK, moodName, iconPK, isDefault, sortOrder,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        mood.setActiveDetail(moodDetail);
+        mood.setLastDetail(moodDetail);
+        mood.store();
+        
+        sendEventUsingNames(moodPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+    }
+    
+    public void updateMoodFromValue(MoodDetailValue moodDetailValue, BasePK updatedBy) {
+        updateMoodFromValue(moodDetailValue, true, updatedBy);
+    }
+    
+    public void deleteMood(Mood mood, BasePK deletedBy) {
+        deleteMoodDescriptionsByMood(mood, deletedBy);
+        
+        MoodDetail moodDetail = mood.getLastDetailForUpdate();
+        moodDetail.setThruTime(session.START_TIME_LONG);
+        mood.setActiveDetail(null);
+        mood.store();
+        
+        // Check for default, and pick one if necessary
+        Mood defaultMood = getDefaultMood();
+        if(defaultMood == null) {
+            List<Mood> moods = getMoodsForUpdate();
+            
+            if(!moods.isEmpty()) {
+                Iterator<Mood> iter = moods.iterator();
+                if(iter.hasNext()) {
+                    defaultMood = iter.next();
+                }
+                MoodDetailValue moodDetailValue = defaultMood.getLastDetailForUpdate().getMoodDetailValue().clone();
+                
+                moodDetailValue.setIsDefault(Boolean.TRUE);
+                updateMoodFromValue(moodDetailValue, false, deletedBy);
+            }
+        }
+        
+        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Mood Descriptions
+    // --------------------------------------------------------------------------------
+    
+    public MoodDescription createMoodDescription(Mood mood, Language language, String description, BasePK createdBy) {
+        MoodDescription moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return moodDescription;
+    }
+    
+    private MoodDescription getMoodDescription(Mood mood, Language language, EntityPermission entityPermission) {
+        MoodDescription moodDescription = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM mooddescriptions " +
+                        "WHERE mdd_md_moodid = ? AND mdd_lang_languageid = ? AND mdd_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM mooddescriptions " +
+                        "WHERE mdd_md_moodid = ? AND mdd_lang_languageid = ? AND mdd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = MoodDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, mood.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+            
+            moodDescription = MoodDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return moodDescription;
+    }
+    
+    public MoodDescription getMoodDescription(Mood mood, Language language) {
+        return getMoodDescription(mood, language, EntityPermission.READ_ONLY);
+    }
+    
+    public MoodDescription getMoodDescriptionForUpdate(Mood mood, Language language) {
+        return getMoodDescription(mood, language, EntityPermission.READ_WRITE);
+    }
+    
+    public MoodDescriptionValue getMoodDescriptionValue(MoodDescription moodDescription) {
+        return moodDescription == null? null: moodDescription.getMoodDescriptionValue().clone();
+    }
+    
+    public MoodDescriptionValue getMoodDescriptionValueForUpdate(Mood mood, Language language) {
+        return getMoodDescriptionValue(getMoodDescriptionForUpdate(mood, language));
+    }
+    
+    private List<MoodDescription> getMoodDescriptionsByMood(Mood mood, EntityPermission entityPermission) {
+        List<MoodDescription> moodDescriptions = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM mooddescriptions, languages " +
+                        "WHERE mdd_md_moodid = ? AND mdd_thrutime = ? AND mdd_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM mooddescriptions " +
+                        "WHERE mdd_md_moodid = ? AND mdd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = MoodDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, mood.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            moodDescriptions = MoodDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return moodDescriptions;
+    }
+    
+    public List<MoodDescription> getMoodDescriptionsByMood(Mood mood) {
+        return getMoodDescriptionsByMood(mood, EntityPermission.READ_ONLY);
+    }
+    
+    public List<MoodDescription> getMoodDescriptionsByMoodForUpdate(Mood mood) {
+        return getMoodDescriptionsByMood(mood, EntityPermission.READ_WRITE);
+    }
+    
+    public String getBestMoodDescription(Mood mood, Language language) {
+        String description;
+        MoodDescription moodDescription = getMoodDescription(mood, language);
+        
+        if(moodDescription == null && !language.getIsDefault()) {
+            moodDescription = getMoodDescription(mood, getPartyControl().getDefaultLanguage());
+        }
+        
+        if(moodDescription == null) {
+            description = mood.getLastDetail().getMoodName();
+        } else {
+            description = moodDescription.getDescription();
+        }
+        
+        return description;
+    }
+    
+    public MoodDescriptionTransfer getMoodDescriptionTransfer(UserVisit userVisit, MoodDescription moodDescription) {
+        return getPartyTransferCaches(userVisit).getMoodDescriptionTransferCache().getMoodDescriptionTransfer(moodDescription);
+    }
+    
+    public List<MoodDescriptionTransfer> getMoodDescriptionTransfersByMood(UserVisit userVisit, Mood mood) {
+        List<MoodDescription> moodDescriptions = getMoodDescriptionsByMood(mood);
+        List<MoodDescriptionTransfer> moodDescriptionTransfers = new ArrayList<>(moodDescriptions.size());
+        MoodDescriptionTransferCache moodDescriptionTransferCache = getPartyTransferCaches(userVisit).getMoodDescriptionTransferCache();
+        
+        moodDescriptions.stream().forEach((moodDescription) -> {
+            moodDescriptionTransfers.add(moodDescriptionTransferCache.getMoodDescriptionTransfer(moodDescription));
+        });
+        
+        return moodDescriptionTransfers;
+    }
+    
+    public void updateMoodDescriptionFromValue(MoodDescriptionValue moodDescriptionValue, BasePK updatedBy) {
+        if(moodDescriptionValue.hasBeenModified()) {
+            MoodDescription moodDescription = MoodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     moodDescriptionValue.getPrimaryKey());
+            
+            moodDescription.setThruTime(session.START_TIME_LONG);
+            moodDescription.store();
+            
+            Mood mood = moodDescription.getMood();
+            Language language = moodDescription.getLanguage();
+            String description = moodDescriptionValue.getDescription();
+            
+            moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(mood.getPrimaryKey(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deleteMoodDescription(MoodDescription moodDescription, BasePK deletedBy) {
+        moodDescription.setThruTime(session.START_TIME_LONG);
+        
+        sendEventUsingNames(moodDescription.getMoodPK(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        
+    }
+    
+    public void deleteMoodDescriptionsByMood(Mood mood, BasePK deletedBy) {
+        List<MoodDescription> moodDescriptions = getMoodDescriptionsByMoodForUpdate(mood);
+        
+        moodDescriptions.stream().forEach((moodDescription) -> {
+            deleteMoodDescription(moodDescription, deletedBy);
+        });
+    }
+    
+    // --------------------------------------------------------------------------------
+    //   Birthday Formats
+    // --------------------------------------------------------------------------------
+
+    public BirthdayFormat createBirthdayFormat(String birthdayFormatName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        BirthdayFormat defaultBirthdayFormat = getDefaultBirthdayFormat();
+        boolean defaultFound = defaultBirthdayFormat != null;
+
+        if(defaultFound && isDefault) {
+            BirthdayFormatDetailValue defaultBirthdayFormatDetailValue = getDefaultBirthdayFormatDetailValueForUpdate();
+
+            defaultBirthdayFormatDetailValue.setIsDefault(Boolean.FALSE);
+            updateBirthdayFormatFromValue(defaultBirthdayFormatDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
+        BirthdayFormat birthdayFormat = BirthdayFormatFactory.getInstance().create();
+        BirthdayFormatDetail birthdayFormatDetail = BirthdayFormatDetailFactory.getInstance().create(birthdayFormat,
+                birthdayFormatName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        // Convert to R/W
+        birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                birthdayFormat.getPrimaryKey());
+        birthdayFormat.setActiveDetail(birthdayFormatDetail);
+        birthdayFormat.setLastDetail(birthdayFormatDetail);
+        birthdayFormat.store();
+
+        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return birthdayFormat;
+    }
+
+    private List<BirthdayFormat> getBirthdayFormats(EntityPermission entityPermission) {
+        String query = null;
+
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM birthdayformats, birthdayformatdetails " +
+                    "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
+                    "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM birthdayformats, birthdayformatdetails " +
+                    "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
+                    "FOR UPDATE";
+        }
+
+        PreparedStatement ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+
+        return BirthdayFormatFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+    }
+
+    public List<BirthdayFormat> getBirthdayFormats() {
+        return getBirthdayFormats(EntityPermission.READ_ONLY);
+    }
+
+    public List<BirthdayFormat> getBirthdayFormatsForUpdate() {
+        return getBirthdayFormats(EntityPermission.READ_WRITE);
+    }
+
+    private List<BirthdayFormat> getBirthdayFormatsByEntityType(EntityType entityType, EntityPermission entityPermission) {
+        List<BirthdayFormat> birthdayFormats = null;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes " +
+                        "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
+                        "AND bdyf_birthdayformatid = tent_bdyf_birthdayformatid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
+                        "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes " +
+                        "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
+                        "AND bdyf_birthdayformatid = tent_bdyf_birthdayformatid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            birthdayFormats = BirthdayFormatFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return birthdayFormats;
+    }
+
+    public List<BirthdayFormat> getBirthdayFormatsByEntityType(EntityType entityType) {
+        return getBirthdayFormatsByEntityType(entityType, EntityPermission.READ_ONLY);
+    }
+
+    public List<BirthdayFormat> getBirthdayFormatsByEntityTypeForUpdate(EntityType entityType) {
+        return getBirthdayFormatsByEntityType(entityType, EntityPermission.READ_WRITE);
+    }
+
+    private BirthdayFormat getDefaultBirthdayFormat(EntityPermission entityPermission) {
+        String query = null;
+
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM birthdayformats, birthdayformatdetails " +
+                    "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_isdefault = 1";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM birthdayformats, birthdayformatdetails " +
+                    "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_isdefault = 1 " +
+                    "FOR UPDATE";
+        }
+
+        PreparedStatement ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+
+        return BirthdayFormatFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    }
+
+    public BirthdayFormat getDefaultBirthdayFormat() {
+        return getDefaultBirthdayFormat(EntityPermission.READ_ONLY);
+    }
+
+    public BirthdayFormat getDefaultBirthdayFormatForUpdate() {
+        return getDefaultBirthdayFormat(EntityPermission.READ_WRITE);
+    }
+
+    public BirthdayFormatDetailValue getDefaultBirthdayFormatDetailValueForUpdate() {
+        return getDefaultBirthdayFormatForUpdate().getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
+    }
+
+    private BirthdayFormat getBirthdayFormatByName(String birthdayFormatName, EntityPermission entityPermission) {
+        BirthdayFormat birthdayFormat = null;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM birthdayformats, birthdayformatdetails " +
+                        "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_birthdayformatname = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM birthdayformats, birthdayformatdetails " +
+                        "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid AND bdyfdt_birthdayformatname = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = BirthdayFormatFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, birthdayFormatName);
+
+            birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return birthdayFormat;
+    }
+
+    public BirthdayFormat getBirthdayFormatByName(String birthdayFormatName) {
+        return getBirthdayFormatByName(birthdayFormatName, EntityPermission.READ_ONLY);
+    }
+
+    public BirthdayFormat getBirthdayFormatByNameForUpdate(String birthdayFormatName) {
+        return getBirthdayFormatByName(birthdayFormatName, EntityPermission.READ_WRITE);
+    }
+
+    public BirthdayFormatDetailValue getBirthdayFormatDetailValueForUpdate(BirthdayFormat birthdayFormat) {
+        return birthdayFormat == null? null: birthdayFormat.getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
+    }
+
+    public BirthdayFormatDetailValue getBirthdayFormatDetailValueByNameForUpdate(String birthdayFormatName) {
+        return getBirthdayFormatDetailValueForUpdate(getBirthdayFormatByNameForUpdate(birthdayFormatName));
+    }
+
+    public BirthdayFormatChoicesBean getBirthdayFormatChoices(String defaultBirthdayFormatChoice, Language language, boolean allowNullChoice) {
+        List<BirthdayFormat> birthdayFormats = getBirthdayFormats();
+        int size = birthdayFormats.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultBirthdayFormatChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(BirthdayFormat birthdayFormat: birthdayFormats) {
+            BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetail();
+            String label = getBestBirthdayFormatDescription(birthdayFormat, language);
+            String value = birthdayFormatDetail.getBirthdayFormatName();
+
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            boolean usingDefaultChoice = defaultBirthdayFormatChoice == null? false: defaultBirthdayFormatChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && birthdayFormatDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+
+        return new BirthdayFormatChoicesBean(labels, values, defaultValue);
+    }
+
+    public BirthdayFormatTransfer getBirthdayFormatTransfer(UserVisit userVisit, BirthdayFormat birthdayFormat) {
+        return getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache().getBirthdayFormatTransfer(birthdayFormat);
+    }
+
+    public List<BirthdayFormatTransfer> getBirthdayFormatTransfers(UserVisit userVisit, List<BirthdayFormat> birthdayFormats) {
+        List<BirthdayFormatTransfer> birthdayFormatTransfers = new ArrayList<>(birthdayFormats.size());
+        BirthdayFormatTransferCache birthdayFormatTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache();
+
+        birthdayFormats.stream().forEach((birthdayFormat) -> {
+            birthdayFormatTransfers.add(birthdayFormatTransferCache.getBirthdayFormatTransfer(birthdayFormat));
+        });
+
+        return birthdayFormatTransfers;
+    }
+
+    public List<BirthdayFormatTransfer> getBirthdayFormatTransfers(UserVisit userVisit) {
+        return getBirthdayFormatTransfers(userVisit, getBirthdayFormats());
+    }
+
+    public List<BirthdayFormatTransfer> getBirthdayFormatTransfersByEntityType(UserVisit userVisit, EntityType entityType) {
+        return getBirthdayFormatTransfers(userVisit, getBirthdayFormatsByEntityType(entityType));
+    }
+
+    private void updateBirthdayFormatFromValue(BirthdayFormatDetailValue birthdayFormatDetailValue, boolean checkDefault, BasePK updatedBy) {
+        if(birthdayFormatDetailValue.hasBeenModified()) {
+            BirthdayFormat birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     birthdayFormatDetailValue.getBirthdayFormatPK());
+            BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getActiveDetailForUpdate();
+
+            birthdayFormatDetail.setThruTime(session.START_TIME_LONG);
+            birthdayFormatDetail.store();
+
+            BirthdayFormatPK birthdayFormatPK = birthdayFormatDetail.getBirthdayFormatPK();
+            String birthdayFormatName = birthdayFormatDetailValue.getBirthdayFormatName();
+            Boolean isDefault = birthdayFormatDetailValue.getIsDefault();
+            Integer sortOrder = birthdayFormatDetailValue.getSortOrder();
+
+            if(checkDefault) {
+                BirthdayFormat defaultBirthdayFormat = getDefaultBirthdayFormat();
+                boolean defaultFound = defaultBirthdayFormat != null && !defaultBirthdayFormat.equals(birthdayFormat);
+
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    BirthdayFormatDetailValue defaultBirthdayFormatDetailValue = getDefaultBirthdayFormatDetailValueForUpdate();
+
+                    defaultBirthdayFormatDetailValue.setIsDefault(Boolean.FALSE);
+                    updateBirthdayFormatFromValue(defaultBirthdayFormatDetailValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+
+            birthdayFormatDetail = BirthdayFormatDetailFactory.getInstance().create(birthdayFormatPK, birthdayFormatName,
+                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            birthdayFormat.setActiveDetail(birthdayFormatDetail);
+            birthdayFormat.setLastDetail(birthdayFormatDetail);
+
+            sendEventUsingNames(birthdayFormatPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+
+    public void updateBirthdayFormatFromValue(BirthdayFormatDetailValue birthdayFormatDetailValue, BasePK updatedBy) {
+        updateBirthdayFormatFromValue(birthdayFormatDetailValue, true, updatedBy);
+    }
+
+    public void deleteBirthdayFormat(BirthdayFormat birthdayFormat, BasePK deletedBy) {
+        deleteBirthdayFormatDescriptionsByBirthdayFormat(birthdayFormat, deletedBy);
+
+        BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetailForUpdate();
+        birthdayFormatDetail.setThruTime(session.START_TIME_LONG);
+        birthdayFormat.setActiveDetail(null);
+        birthdayFormat.store();
+
+        // Check for default, and pick one if necessary
+        BirthdayFormat defaultBirthdayFormat = getDefaultBirthdayFormat();
+        if(defaultBirthdayFormat == null) {
+            List<BirthdayFormat> birthdayFormats = getBirthdayFormatsForUpdate();
+
+            if(!birthdayFormats.isEmpty()) {
+                Iterator<BirthdayFormat> iter = birthdayFormats.iterator();
+                if(iter.hasNext()) {
+                    defaultBirthdayFormat = iter.next();
+                }
+                BirthdayFormatDetailValue birthdayFormatDetailValue = defaultBirthdayFormat.getLastDetailForUpdate().getBirthdayFormatDetailValue().clone();
+
+                birthdayFormatDetailValue.setIsDefault(Boolean.TRUE);
+                updateBirthdayFormatFromValue(birthdayFormatDetailValue, false, deletedBy);
+            }
+        }
+
+        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Birthday Format Descriptions
+    // --------------------------------------------------------------------------------
+
+    public BirthdayFormatDescription createBirthdayFormatDescription(BirthdayFormat birthdayFormat, Language language, String description,
+            BasePK createdBy) {
+        BirthdayFormatDescription birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat,
+                language, description,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return birthdayFormatDescription;
+    }
+
+    private BirthdayFormatDescription getBirthdayFormatDescription(BirthdayFormat birthdayFormat, Language language, EntityPermission entityPermission) {
+        BirthdayFormatDescription birthdayFormatDescription = null;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM birthdayformatdescriptions " +
+                        "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_lang_languageid = ? AND bdyfd_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM birthdayformatdescriptions " +
+                        "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_lang_languageid = ? AND bdyfd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, birthdayFormat.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+
+            birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return birthdayFormatDescription;
+    }
+
+    public BirthdayFormatDescription getBirthdayFormatDescription(BirthdayFormat birthdayFormat, Language language) {
+        return getBirthdayFormatDescription(birthdayFormat, language, EntityPermission.READ_ONLY);
+    }
+
+    public BirthdayFormatDescription getBirthdayFormatDescriptionForUpdate(BirthdayFormat birthdayFormat, Language language) {
+        return getBirthdayFormatDescription(birthdayFormat, language, EntityPermission.READ_WRITE);
+    }
+
+    public BirthdayFormatDescriptionValue getBirthdayFormatDescriptionValue(BirthdayFormatDescription birthdayFormatDescription) {
+        return birthdayFormatDescription == null? null: birthdayFormatDescription.getBirthdayFormatDescriptionValue().clone();
+    }
+
+    public BirthdayFormatDescriptionValue getBirthdayFormatDescriptionValueForUpdate(BirthdayFormat birthdayFormat, Language language) {
+        return getBirthdayFormatDescriptionValue(getBirthdayFormatDescriptionForUpdate(birthdayFormat, language));
+    }
+
+    private List<BirthdayFormatDescription> getBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, EntityPermission entityPermission) {
+        List<BirthdayFormatDescription> birthdayFormatDescriptions = null;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM birthdayformatdescriptions, languages " +
+                        "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_thrutime = ? " +
+                        "AND bdyfd_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM birthdayformatdescriptions " +
+                        "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = BirthdayFormatDescriptionFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, birthdayFormat.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            birthdayFormatDescriptions = BirthdayFormatDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return birthdayFormatDescriptions;
+    }
+
+    public List<BirthdayFormatDescription> getBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat) {
+        return getBirthdayFormatDescriptionsByBirthdayFormat(birthdayFormat, EntityPermission.READ_ONLY);
+    }
+
+    public List<BirthdayFormatDescription> getBirthdayFormatDescriptionsByBirthdayFormatForUpdate(BirthdayFormat birthdayFormat) {
+        return getBirthdayFormatDescriptionsByBirthdayFormat(birthdayFormat, EntityPermission.READ_WRITE);
+    }
+
+    public String getBestBirthdayFormatDescription(BirthdayFormat birthdayFormat, Language language) {
+        String description;
+        BirthdayFormatDescription birthdayFormatDescription = getBirthdayFormatDescription(birthdayFormat, language);
+
+        if(birthdayFormatDescription == null && !language.getIsDefault()) {
+            birthdayFormatDescription = getBirthdayFormatDescription(birthdayFormat, getPartyControl().getDefaultLanguage());
+        }
+
+        if(birthdayFormatDescription == null) {
+            description = birthdayFormat.getLastDetail().getBirthdayFormatName();
+        } else {
+            description = birthdayFormatDescription.getDescription();
+        }
+
+        return description;
+    }
+
+    public BirthdayFormatDescriptionTransfer getBirthdayFormatDescriptionTransfer(UserVisit userVisit, BirthdayFormatDescription birthdayFormatDescription) {
+        return getPartyTransferCaches(userVisit).getBirthdayFormatDescriptionTransferCache().getBirthdayFormatDescriptionTransfer(birthdayFormatDescription);
+    }
+
+    public List<BirthdayFormatDescriptionTransfer> getBirthdayFormatDescriptionTransfers(UserVisit userVisit, BirthdayFormat birthdayFormat) {
+        List<BirthdayFormatDescription> birthdayFormatDescriptions = getBirthdayFormatDescriptionsByBirthdayFormat(birthdayFormat);
+        List<BirthdayFormatDescriptionTransfer> birthdayFormatDescriptionTransfers = new ArrayList<>(birthdayFormatDescriptions.size());
+        BirthdayFormatDescriptionTransferCache birthdayFormatDescriptionTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatDescriptionTransferCache();
+
+        birthdayFormatDescriptions.stream().forEach((birthdayFormatDescription) -> {
+            birthdayFormatDescriptionTransfers.add(birthdayFormatDescriptionTransferCache.getBirthdayFormatDescriptionTransfer(birthdayFormatDescription));
+        });
+
+        return birthdayFormatDescriptionTransfers;
+    }
+
+    public void updateBirthdayFormatDescriptionFromValue(BirthdayFormatDescriptionValue birthdayFormatDescriptionValue, BasePK updatedBy) {
+        if(birthdayFormatDescriptionValue.hasBeenModified()) {
+            BirthdayFormatDescription birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     birthdayFormatDescriptionValue.getPrimaryKey());
+
+            birthdayFormatDescription.setThruTime(session.START_TIME_LONG);
+            birthdayFormatDescription.store();
+
+            BirthdayFormat birthdayFormat = birthdayFormatDescription.getBirthdayFormat();
+            Language language = birthdayFormatDescription.getLanguage();
+            String description = birthdayFormatDescriptionValue.getDescription();
+
+            birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat, language,
+                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+
+    public void deleteBirthdayFormatDescription(BirthdayFormatDescription birthdayFormatDescription, BasePK deletedBy) {
+        birthdayFormatDescription.setThruTime(session.START_TIME_LONG);
+
+        sendEventUsingNames(birthdayFormatDescription.getBirthdayFormatPK(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+    }
+
+    public void deleteBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, BasePK deletedBy) {
+        List<BirthdayFormatDescription> birthdayFormatDescriptions = getBirthdayFormatDescriptionsByBirthdayFormatForUpdate(birthdayFormat);
+
+        birthdayFormatDescriptions.stream().forEach((birthdayFormatDescription) -> {
+            deleteBirthdayFormatDescription(birthdayFormatDescription, deletedBy);
+        });
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Profiles
+    // --------------------------------------------------------------------------------
+    
+    public Profile createProfile(Party party, String nickname, Icon icon, Gender gender, Mood mood, Integer birthday, BirthdayFormat birthdayFormat,
+            String occupation, String hobbies, String location, MimeType bioMimeType, String bio, MimeType signatureMimeType,
+            String signature, BasePK createdBy) {
+        Profile profile = ProfileFactory.getInstance().create(party, nickname, icon, gender, mood, birthday, birthdayFormat,
+                occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature, session.START_TIME_LONG,
+                Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return profile;
+    }
+    
+    private Profile getProfile(Party party, EntityPermission entityPermission) {
+        Profile profile = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM profiles " +
+                        "WHERE prfl_par_partyid = ? AND prfl_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM profiles " +
+                        "WHERE prfl_par_partyid = ? AND prfl_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ProfileFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, party.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            profile = ProfileFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return profile;
+    }
+    
+    public Profile getProfile(Party party) {
+        return getProfile(party, EntityPermission.READ_ONLY);
+    }
+    
+    public Profile getProfileForUpdate(Party party) {
+        return getProfile(party, EntityPermission.READ_WRITE);
+    }
+    
+    public ProfileValue getProfileValue(Profile profile) {
+        return profile == null ? null : profile.getProfileValue().clone();
+    }
+
+    public ProfileValue getProfileValueForUpdate(Party party) {
+        return getProfileForUpdate(party).getProfileValue().clone();
+    }
+    
+    private Profile getProfileByNickname(String nickname, EntityPermission entityPermission) {
+        Profile profile = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM profiles " +
+                        "WHERE prfl_nickname = ? AND prfl_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM profiles " +
+                        "WHERE prfl_nickname = ? AND prfl_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ProfileFactory.getInstance().prepareStatement(query);
+            
+            ps.setString(1, nickname);
+            ps.setLong(2, Session.MAX_TIME);
+            
+            profile = ProfileFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return profile;
+    }
+    
+    public Profile getProfileByNickname(String nickname) {
+        return getProfileByNickname(nickname, EntityPermission.READ_ONLY);
+    }
+    
+    public Profile getProfileByNicknameForUpdate(String nickname) {
+        return getProfileByNickname(nickname, EntityPermission.READ_WRITE);
+    }
+    
+    public void updateProfileFromValue(ProfileValue profileValue, BasePK updatedBy) {
+        if(profileValue.hasBeenModified()) {
+            Profile profile = ProfileFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    profileValue.getPrimaryKey());
+            
+            profile.setThruTime(session.START_TIME_LONG);
+            profile.store();
+            
+            PartyPK partyPK = profile.getPartyPK();
+            String nickname = profileValue.getNickname();
+            IconPK iconPK = profileValue.getIconPK();
+            GenderPK genderPK = profileValue.getGenderPK();
+            MoodPK moodPK = profileValue.getMoodPK();
+            Integer birthday = profileValue.getBirthday();
+            BirthdayFormatPK birthdayFormatPK = profileValue.getBirthdayFormatPK();
+            String occupation = profileValue.getOccupation();
+            String hobbies = profileValue.getHobbies();
+            String location = profileValue.getLocation();
+            MimeTypePK bioMimeTypePK = profileValue.getBioMimeTypePK();
+            String bio = profileValue.getBio();
+            MimeTypePK signatureMimeTypePK = profileValue.getSignatureMimeTypePK();
+            String signature = profileValue.getSignature();
+            
+            profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, genderPK, moodPK, birthday, birthdayFormatPK,
+                    occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK, signature, session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deleteProfile(Profile profile, BasePK deletedBy) {
+        profile.setThruTime(session.START_TIME_LONG);
+        profile.store();
+        
+        sendEventUsingNames(profile.getPartyPK(), EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+    }
+    
+    public void deleteProfileByParty(Party party, BasePK deletedBy) {
+        Profile profile = getProfileForUpdate(party);
+        
+        if(profile != null) {
+            deleteProfile(profile, deletedBy);
+        }
+    }
+    
+    public ProfileTransfer getProfileTransfer(UserVisit userVisit, Profile profile) {
+        return getPartyTransferCaches(userVisit).getProfileTransferCache().getProfileTransfer(profile);
+    }
+    
+}

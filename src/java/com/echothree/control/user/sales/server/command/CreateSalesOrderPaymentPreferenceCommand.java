@@ -1,0 +1,122 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.sales.server.command;
+
+import com.echothree.control.user.sales.remote.form.CreateSalesOrderPaymentPreferenceForm;
+import com.echothree.control.user.sales.remote.result.CreateSalesOrderPaymentPreferenceResult;
+import com.echothree.control.user.sales.remote.result.SalesResultFactory;
+import com.echothree.model.control.order.server.logic.OrderLogic;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
+import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
+import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.order.server.entity.Order;
+import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
+import com.echothree.model.data.order.server.entity.OrderPaymentPreferenceDetail;
+import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
+import com.echothree.model.data.payment.server.entity.PaymentMethod;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.validation.Validator;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class CreateSalesOrderPaymentPreferenceCommand
+        extends BaseSimpleCommand<CreateSalesOrderPaymentPreferenceForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                    new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderPaymentPreference.name(), SecurityRoles.Create.name())
+                    )))
+                )));
+
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("OrderPaymentPreferenceSequence", FieldType.UNSIGNED_INTEGER, false, null, null),
+                new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WasPresent", FieldType.BOOLEAN, false, null, null),
+                new FieldDefinition("MaximumAmount", FieldType.PRICE_UNIT, false, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                ));
+    }
+
+    /** Creates a new instance of CreateSalesOrderPaymentPreferenceCommand */
+    public CreateSalesOrderPaymentPreferenceCommand(UserVisitPK userVisitPK, CreateSalesOrderPaymentPreferenceForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+
+    @Override
+    protected void setupValidator(Validator validator) {
+        String orderName = form.getOrderName();
+        Order order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        
+        if(order != null) {
+            validator.setCurrency(OrderLogic.getInstance().getOrderCurrency(order));
+        }
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        CreateSalesOrderPaymentPreferenceResult result = SalesResultFactory.getCreateSalesOrderPaymentPreferenceResult();
+        String orderName = form.getOrderName();
+        Order order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        String paymentMethodName = form.getPaymentMethodName();
+        PaymentMethod paymentMethod = paymentMethodName == null ? null : PaymentMethodLogic.getInstance().getPaymentMethodByName(this, paymentMethodName);
+        String partyPaymentMethodName = form.getPartyPaymentMethodName();
+        PartyPaymentMethod partyPaymentMethod = partyPaymentMethodName == null ? null : PartyPaymentMethodLogic.getInstance().getPartyPaymentMethodByName(this, partyPaymentMethodName);
+        OrderPaymentPreference orderPaymentPreference = null;
+        
+        if(!hasExecutionErrors()) {
+            String strOrderPaymentPreferenceSequence = form.getOrderPaymentPreferenceSequence();
+            Integer orderPaymentPreferenceSequence = strOrderPaymentPreferenceSequence == null ? null : Integer.valueOf(strOrderPaymentPreferenceSequence);
+            String strWasPresent = form.getWasPresent();
+            Boolean wasPresent = strWasPresent == null ? null : Boolean.valueOf(strWasPresent);
+            String strMaximumAmount = form.getMaximumAmount();
+            Long maximumAmount = strMaximumAmount == null ? null : Long.valueOf(strMaximumAmount);
+            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+
+            orderPaymentPreference = SalesOrderLogic.getInstance().createSalesOrderPaymentPreference(session, this, order, orderPaymentPreferenceSequence,
+                    paymentMethod, partyPaymentMethod, wasPresent, maximumAmount, sortOrder, getPartyPK());
+        }
+        
+        if(orderPaymentPreference != null) {
+            OrderPaymentPreferenceDetail orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetail();
+            
+            result.setOrderName(orderPaymentPreferenceDetail.getOrder().getLastDetail().getOrderName());
+            result.setOrderPaymentPreferenceSequence(orderPaymentPreferenceDetail.getOrderPaymentPreferenceSequence().toString());
+            result.setEntityRef(orderPaymentPreference.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
+    }
+
+}

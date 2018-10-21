@@ -1,0 +1,429 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="CancellationPolicy">
+            <tables>
+                <table namePlural="PartyCancellationPolicies" nameSingular="PartyCancellationPolicy" columnPrefix="pcnclplcy">
+                    <columns>
+                        <column name="PartyCancellationPolicyId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PartyCancellationPolicyId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationKinds" nameSingular="CancellationKind" columnPrefix="cnclk">
+                    <columns>
+                        <column name="CancellationKindId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationKindDetails" destinationColumn="CancellationKindDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationKindDetails" destinationColumn="CancellationKindDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationKindId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationKindDetails" nameSingular="CancellationKindDetail" columnPrefix="cnclkdt">
+                    <columns>
+                        <column name="CancellationKindDetailId" type="EID" nullAllowed="false" />
+                        <column name="CancellationKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationKinds" destinationColumn="CancellationKindId" />
+                        <column name="CancellationKindName" type="Name" nullAllowed="false" />
+                        <column name="CancellationSequenceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationKindDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CancellationKindName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CancellationSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationKindDescriptions" nameSingular="CancellationKindDescription" columnPrefix="cnclkd">
+                    <columns>
+                        <column name="CancellationKindDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CancellationKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationKinds" destinationColumn="CancellationKindId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationKindDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationKindId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationPolicies" nameSingular="CancellationPolicy" columnPrefix="cnclplcy">
+                    <columns>
+                        <column name="CancellationPolicyId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicyDetails" destinationColumn="CancellationPolicyDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicyDetails" destinationColumn="CancellationPolicyDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationPolicyId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationPolicyDetails" nameSingular="CancellationPolicyDetail" columnPrefix="cnclplcydt">
+                    <columns>
+                        <column name="CancellationPolicyDetailId" type="EID" nullAllowed="false" />
+                        <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="CancellationKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationKinds" destinationColumn="CancellationKindId" />
+                        <column name="CancellationPolicyName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationPolicyDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CancellationKindId" />
+                            <indexColumn name="CancellationPolicyName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CancellationKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationPolicyTranslations" nameSingular="CancellationPolicyTranslation" columnPrefix="cnclplcytr">
+                    <columns>
+                        <column name="CancellationPolicyTranslationId" type="EID" nullAllowed="false" />
+                        <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="PolicyMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Policy" type="CLOB" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationPolicyTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PolicyMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationPolicyReasons" nameSingular="CancellationPolicyReason" columnPrefix="cnclplcyrsn">
+                    <columns>
+                        <column name="CancellationPolicyReasonId" type="EID" nullAllowed="false" />
+                        <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="CancellationReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationReasons" destinationColumn="CancellationReasonId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationPolicyReasonId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="CancellationReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CancellationReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationReasons" nameSingular="CancellationReason" columnPrefix="cnclrsn">
+                    <columns>
+                        <column name="CancellationReasonId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationReasonDetails" destinationColumn="CancellationReasonDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationReasonDetails" destinationColumn="CancellationReasonDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationReasonId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationReasonDetails" nameSingular="CancellationReasonDetail" columnPrefix="cnclrsndt">
+                    <columns>
+                        <column name="CancellationReasonDetailId" type="EID" nullAllowed="false" />
+                        <column name="CancellationReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationReasons" destinationColumn="CancellationReasonId" />
+                        <column name="CancellationKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationKinds" destinationColumn="CancellationKindId" />
+                        <column name="CancellationReasonName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationReasonDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CancellationKindId" />
+                            <indexColumn name="CancellationReasonName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CancellationKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationReasonDescriptions" nameSingular="CancellationReasonDescription" columnPrefix="cnclrsnd">
+                    <columns>
+                        <column name="CancellationReasonDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CancellationReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationReasons" destinationColumn="CancellationReasonId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationReasonDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationReasonId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationReasonTypes" nameSingular="CancellationReasonType" columnPrefix="cnclrsntyp">
+                    <columns>
+                        <column name="CancellationReasonTypeId" type="EID" nullAllowed="false" />
+                        <column name="CancellationReasonId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationReasons" destinationColumn="CancellationReasonId" />
+                        <column name="CancellationTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationTypes" destinationColumn="CancellationTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationReasonTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationReasonId" />
+                            <indexColumn name="CancellationTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CancellationReasonId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CancellationTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CancellationReasonId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationTypes" nameSingular="CancellationType" columnPrefix="cncltyp">
+                    <columns>
+                        <column name="CancellationTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationTypeDetails" destinationColumn="CancellationTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationTypeDetails" destinationColumn="CancellationTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationTypeDetails" nameSingular="CancellationTypeDetail" columnPrefix="cncltypdt">
+                    <columns>
+                        <column name="CancellationTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="CancellationTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationTypes" destinationColumn="CancellationTypeId" />
+                        <column name="CancellationKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationKinds" destinationColumn="CancellationKindId" />
+                        <column name="CancellationTypeName" type="Name" nullAllowed="false" />
+                        <column name="CancellationSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CancellationKindId" />
+                            <indexColumn name="CancellationTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CancellationSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CancellationKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CancellationTypeDescriptions" nameSingular="CancellationTypeDescription" columnPrefix="cncltypd">
+                    <columns>
+                        <column name="CancellationTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CancellationTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CancellationTypes" destinationColumn="CancellationTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CancellationTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CancellationTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

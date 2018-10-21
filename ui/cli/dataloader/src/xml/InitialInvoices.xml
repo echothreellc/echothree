@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <invoiceRoleTypes>
+       <invoiceRoleType invoiceRoleTypeName="INVOICE_FROM" sortOrder="1">
+            <invoiceRoleTypeDescription languageIsoName="en" description="Invoice From" />
+        </invoiceRoleType>
+       <invoiceRoleType invoiceRoleTypeName="INVOICE_TO" sortOrder="1">
+            <invoiceRoleTypeDescription languageIsoName="en" description="Invoice To" />
+        </invoiceRoleType>
+    </invoiceRoleTypes>
+    <invoiceLineUseTypes>
+       <invoiceLineUseType invoiceLineUseTypeName="ITEM">
+            <invoiceLineUseTypeDescription languageIsoName="en" description="Item" />
+        </invoiceLineUseType>
+       <invoiceLineUseType invoiceLineUseTypeName="GL_ACCOUNT">
+            <invoiceLineUseTypeDescription languageIsoName="en" description="Gl Account" />
+        </invoiceLineUseType>
+    </invoiceLineUseTypes>
+    <invoiceTypes>
+        <invoiceType invoiceTypeName="SALES_INVOICE" invoiceSequenceTypeName="SALES_INVOICE" isDefault="true" sortOrder="1">
+            <invoiceTypeDescription languageIsoName="en" description="Sales Invoice" />
+            <invoiceTimeType invoiceTimeTypeName="INVOICED" isDefault="true" sortOrder="1">
+                <invoiceTimeTypeDescription languageIsoName="en" description="Invoiced" />
+            </invoiceTimeType>
+            <invoiceTimeType invoiceTimeTypeName="DUE" isDefault="true" sortOrder="1">
+                <invoiceTimeTypeDescription languageIsoName="en" description="Due" />
+            </invoiceTimeType>
+            <invoiceTimeType invoiceTimeTypeName="PAID" isDefault="false" sortOrder="1">
+                <invoiceTimeTypeDescription languageIsoName="en" description="Paid" />
+            </invoiceTimeType>
+            <invoiceLineType invoiceLineTypeName="INVOICE_ADJ" isDefault="true" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Adjustment" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_PROMOTION_ADJ" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="410000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Promotion" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_DISCOUNT_ADJ" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="410000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Discount" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_FEE" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="804000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Fee" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_MISC_CHARGE" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Miscellaneous Charges" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_SALES_TAX" parentInvoiceLineTypeName="INVOICE_ADJ" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Sales Tax" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_SHIPPING_CHARGES" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Shipping and Handling" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_SURCHARGE_ADJ" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Surcharge" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_ADD_FEATURE" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Additional Feature" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_WARRANTY_ADJ" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="409000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Warranty" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="INV_INTRST_CHRG" parentInvoiceLineTypeName="INVOICE_ADJ" glAccountName="810000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Interest Charge" />
+            </invoiceLineType>
+        </invoiceType>
+        <invoiceType invoiceTypeName="PURCHASE_INVOICE" invoiceSequenceTypeName="PURCHASE_INVOICE" isDefault="false" sortOrder="1">
+            <invoiceTypeDescription languageIsoName="en" description="Purchase Invoice" />
+            <invoiceTimeType invoiceTimeTypeName="INVOICED" isDefault="true" sortOrder="1">
+                <invoiceTimeTypeDescription languageIsoName="en" description="Invoiced" />
+            </invoiceTimeType>
+            <invoiceTimeType invoiceTimeTypeName="DUE" isDefault="true" sortOrder="1">
+                <invoiceTimeTypeDescription languageIsoName="en" description="Due" />
+            </invoiceTimeType>
+            <invoiceTimeType invoiceTimeTypeName="PAID" isDefault="false" sortOrder="1">
+                <invoiceTimeTypeDescription languageIsoName="en" description="Paid" />
+            </invoiceTimeType>
+            <invoiceLineType invoiceLineTypeName="PINVOICE_ADJ" isDefault="true" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Adjustment" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_PROMOTION_ADJ" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="516100" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Promotion" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_DISCOUNT_ADJ" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="516100" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Discount" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_FEE" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="516100" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Fee" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_MISC_CHARGE" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="516100" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Miscellaneous Charges" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_SALES_TAX" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="516100" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Sales Tax" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_SHIP_CHARGES" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="510000" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Shipping and Handling" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_SURCHARGE_ADJ" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="516100" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Surcharge" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_ADD_FEATURE" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="516100" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Additional Feature" />
+            </invoiceLineType>
+            <invoiceLineType invoiceLineTypeName="PINV_WARRANTY_ADJ" parentInvoiceLineTypeName="PINVOICE_ADJ" glAccountName="516100" isDefault="false" sortOrder="1">
+                <invoiceLineTypeDescription languageIsoName="en" description="Invoice Warranty" />
+            </invoiceLineType>
+        </invoiceType>
+    </invoiceTypes>
+</initialData>

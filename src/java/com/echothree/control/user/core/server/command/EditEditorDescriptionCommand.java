@@ -1,0 +1,146 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.core.server.command;
+
+import com.echothree.control.user.core.remote.edit.CoreEditFactory;
+import com.echothree.control.user.core.remote.edit.EditorDescriptionEdit;
+import com.echothree.control.user.core.remote.form.EditEditorDescriptionForm;
+import com.echothree.control.user.core.remote.result.CoreResultFactory;
+import com.echothree.control.user.core.remote.result.EditEditorDescriptionResult;
+import com.echothree.control.user.core.remote.spec.EditorDescriptionSpec;
+import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.Editor;
+import com.echothree.model.data.core.server.entity.EditorDescription;
+import com.echothree.model.data.core.server.value.EditorDescriptionValue;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditEditorDescriptionCommand
+        extends BaseAbstractEditCommand<EditorDescriptionSpec, EditorDescriptionEdit, EditEditorDescriptionResult, EditorDescription, Editor> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Editor.name(), SecurityRoles.Description.name())
+                        )))
+                )));
+        
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("EditorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+        
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of EditEditorDescriptionCommand */
+    public EditEditorDescriptionCommand(UserVisitPK userVisitPK, EditEditorDescriptionForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+    
+    @Override
+    public EditEditorDescriptionResult getResult() {
+        return CoreResultFactory.getEditEditorDescriptionResult();
+    }
+
+    @Override
+    public EditorDescriptionEdit getEdit() {
+        return CoreEditFactory.getEditorDescriptionEdit();
+    }
+
+    @Override
+    public EditorDescription getEntity(EditEditorDescriptionResult result) {
+        CoreControl coreControl = getCoreControl();
+        EditorDescription editorDescription = null;
+        String editorName = spec.getEditorName();
+        Editor editor = coreControl.getEditorByName(editorName);
+
+        if(editor != null) {
+            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = spec.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+
+            if(language != null) {
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                    editorDescription = coreControl.getEditorDescription(editor, language);
+                } else { // EditMode.UPDATE
+                    editorDescription = coreControl.getEditorDescriptionForUpdate(editor, language);
+                }
+
+                if(editorDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownEditorDescription.name(), editorName, languageIsoName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownEditorName.name(), editorName);
+        }
+
+        return editorDescription;
+    }
+
+    @Override
+    public Editor getLockEntity(EditorDescription editorDescription) {
+        return editorDescription.getEditor();
+    }
+
+    @Override
+    public void fillInResult(EditEditorDescriptionResult result, EditorDescription editorDescription) {
+        CoreControl coreControl = getCoreControl();
+
+        result.setEditorDescription(coreControl.getEditorDescriptionTransfer(getUserVisit(), editorDescription));
+    }
+
+    @Override
+    public void doLock(EditorDescriptionEdit edit, EditorDescription editorDescription) {
+        edit.setDescription(editorDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(EditorDescription editorDescription) {
+        CoreControl coreControl = getCoreControl();
+        EditorDescriptionValue editorDescriptionValue = coreControl.getEditorDescriptionValue(editorDescription);
+        editorDescriptionValue.setDescription(edit.getDescription());
+
+        coreControl.updateEditorDescriptionFromValue(editorDescriptionValue, getPartyPK());
+    }
+    
+}

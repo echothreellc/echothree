@@ -1,0 +1,103 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.financial.server.transfer;
+
+import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.remote.transfer.GlAccountTransfer;
+import com.echothree.model.control.accounting.server.AccountingControl;
+import com.echothree.model.control.financial.common.FinancialOptions;
+import com.echothree.model.control.financial.common.transfer.FinancialAccountRoleTransfer;
+import com.echothree.model.control.financial.common.transfer.FinancialAccountTransfer;
+import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
+import com.echothree.model.control.financial.server.FinancialControl;
+import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.financial.server.entity.FinancialAccount;
+import com.echothree.model.data.financial.server.entity.FinancialAccountDetail;
+import com.echothree.model.data.financial.server.entity.FinancialAccountStatus;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.string.AmountUtils;
+import java.util.List;
+import java.util.Set;
+
+public class FinancialAccountTransferCache
+        extends BaseFinancialTransferCache<FinancialAccount, FinancialAccountTransfer> {
+    
+    AccountingControl accountingControl;
+    boolean includeRoles;
+    boolean includeTransactions;
+    
+    /** Creates a new instance of FinancialAccountTransferCache */
+    public FinancialAccountTransferCache(UserVisit userVisit, FinancialControl financialControl) {
+        super(userVisit, financialControl);
+        
+        accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+
+        Set<String> options = session.getOptions();
+        if(options != null) {
+            includeRoles = options.contains(FinancialOptions.FinancialAccountIncludeRoles);
+            includeTransactions = options.contains(FinancialOptions.FinancialAccountIncludeTransactions);
+        }
+        
+        setIncludeEntityInstance(true);
+    }
+    
+    public FinancialAccountTransfer getFinancialAccountTransfer(FinancialAccount financialAccount) {
+        FinancialAccountTransfer financialAccountTransfer = get(financialAccount);
+        
+        if(financialAccountTransfer == null) {
+            FinancialAccountDetail financialAccountDetail = financialAccount.getLastDetail();
+            FinancialAccountTypeTransfer financialAccountType = financialControl.getFinancialAccountTypeTransfer(userVisit, financialAccountDetail.getFinancialAccountType());
+            String financialAccountName = financialAccountDetail.getFinancialAccountName();
+            Currency currency = financialAccountDetail.getCurrency();
+            CurrencyTransfer currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currency);
+            GlAccountTransfer glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountDetail.getGlAccount());
+            String reference = financialAccountDetail.getReference();
+            String description = financialAccountDetail.getDescription();
+            FinancialAccountStatus financialAccountStatus = financialControl.createFinancialAccountStatus(financialAccount);
+            Long unformattedActualBalance = financialAccountStatus.getActualBalance();
+            AmountUtils amountUtils = AmountUtils.getInstance();
+            String actualBalance = amountUtils.formatPriceLine(currency, unformattedActualBalance);
+            Long unformattedAvailableBalance = financialAccountStatus.getAvailableBalance();
+            String availableBalance = amountUtils.formatPriceLine(currency, unformattedAvailableBalance);
+            
+            financialAccountTransfer = new FinancialAccountTransfer(financialAccountType, financialAccountName, currencyTransfer, glAccountTransfer, reference,
+                    description, unformattedActualBalance, actualBalance, unformattedAvailableBalance, availableBalance);
+            put(financialAccount, financialAccountTransfer);
+            
+            if(includeRoles) {
+                List<FinancialAccountRoleTransfer> financialAccountRoleTransfers = financialControl.getFinancialAccountRoleTransfersByFinancialAccount(userVisit, financialAccount);
+                MapWrapper<FinancialAccountRoleTransfer> financialAccountRolesMap = new MapWrapper<>(financialAccountRoleTransfers.size());
+
+                financialAccountRoleTransfers.stream().forEach((financialAccountRoleTransfer) -> {
+                    financialAccountRolesMap.put(financialAccountRoleTransfer.getFinancialAccountRoleType().getFinancialAccountRoleTypeName(), financialAccountRoleTransfer);
+                });
+
+                financialAccountTransfer.setFinancialAccountRoles(financialAccountRolesMap);
+            }
+            
+            if(includeTransactions) {
+                 financialAccountTransfer.setFinancialAccountTransactions(new ListWrapper<>(financialControl.getFinancialAccountTransactionTransfersByFinancialAccount(userVisit, financialAccount)));
+            }
+        }
+        
+        return financialAccountTransfer;
+    }
+    
+}

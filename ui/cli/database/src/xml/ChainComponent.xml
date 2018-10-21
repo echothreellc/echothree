@@ -1,0 +1,754 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Chain">
+            <tables>
+                <table namePlural="ChainKinds" nameSingular="ChainKind" columnPrefix="chnk">
+                    <columns>
+                        <column name="ChainKindId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainKindDetails" destinationColumn="ChainKindDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainKindDetails" destinationColumn="ChainKindDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainKindId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainKindDetails" nameSingular="ChainKindDetail" columnPrefix="chnkdt">
+                    <columns>
+                        <column name="ChainKindDetailId" type="EID" nullAllowed="false" />
+                        <column name="ChainKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainKinds" destinationColumn="ChainKindId" />
+                        <column name="ChainKindName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainKindDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ChainKindName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainKindDescriptions" nameSingular="ChainKindDescription" columnPrefix="chnkd">
+                    <columns>
+                        <column name="ChainKindDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ChainKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainKinds" destinationColumn="ChainKindId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainKindDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainKindId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainTypes" nameSingular="ChainType" columnPrefix="chntyp">
+                    <columns>
+                        <column name="ChainTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainTypeDetails" destinationColumn="ChainTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainTypeDetails" destinationColumn="ChainTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainTypeDetails" nameSingular="ChainTypeDetail" columnPrefix="chntypdt">
+                    <columns>
+                        <column name="ChainTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ChainTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainTypes" destinationColumn="ChainTypeId" />
+                        <column name="ChainKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainKinds" destinationColumn="ChainKindId" />
+                        <column name="ChainTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ChainKindId" />
+                            <indexColumn name="ChainTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ChainKindId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainTypeDescriptions" nameSingular="ChainTypeDescription" columnPrefix="chntypd">
+                    <columns>
+                        <column name="ChainTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ChainTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainTypes" destinationColumn="ChainTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainEntityRoleTypes" nameSingular="ChainEntityRoleType" columnPrefix="chnertyp">
+                    <columns>
+                        <column name="ChainEntityRoleTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainEntityRoleTypeDetails" destinationColumn="ChainEntityRoleTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainEntityRoleTypeDetails" destinationColumn="ChainEntityRoleTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainEntityRoleTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainEntityRoleTypeDetails" nameSingular="ChainEntityRoleTypeDetail" columnPrefix="chnertypdt">
+                    <columns>
+                        <column name="ChainEntityRoleTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ChainEntityRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainEntityRoleTypes" destinationColumn="ChainEntityRoleTypeId" />
+                        <column name="ChainTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainTypes" destinationColumn="ChainTypeId" />
+                        <column name="ChainEntityRoleTypeName" type="Name" nullAllowed="false" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainEntityRoleTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainEntityRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="ChainEntityRoleTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainEntityRoleTypeDescriptions" nameSingular="ChainEntityRoleTypeDescription" columnPrefix="chnertypd">
+                    <columns>
+                        <column name="ChainEntityRoleTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ChainEntityRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainEntityRoleTypes" destinationColumn="ChainEntityRoleTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainEntityRoleTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainEntityRoleTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainEntityRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionTypes" nameSingular="ChainActionType" columnPrefix="chnacttyp">
+                    <columns>
+                        <column name="ChainActionTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainActionTypeDetails" destinationColumn="ChainActionTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainActionTypeDetails" destinationColumn="ChainActionTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionTypeDetails" nameSingular="ChainActionTypeDetail" columnPrefix="chnacttypdt">
+                    <columns>
+                        <column name="ChainActionTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionTypes" destinationColumn="ChainActionTypeId" />
+                        <column name="ChainActionTypeName" type="Name" nullAllowed="false" />
+                        <column name="AllowMultiple" type="Boolean" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ChainActionTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionTypeDescriptions" nameSingular="ChainActionTypeDescription" columnPrefix="chnacttypd">
+                    <columns>
+                        <column name="ChainActionTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionTypes" destinationColumn="ChainActionTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainActionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionTypeUses" nameSingular="ChainActionTypeUse" columnPrefix="chnacttypu">
+                    <columns>
+                        <column name="ChainActionTypeUseId" type="EID" nullAllowed="false" />
+                        <column name="ChainKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainKinds" destinationColumn="ChainKindId" />
+                        <column name="ChainActionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionTypes" destinationColumn="ChainActionTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionTypeUseId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainKindId" />
+                            <indexColumn name="ChainActionTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainActionTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ChainKindId" />
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Chains" nameSingular="Chain" columnPrefix="chn">
+                    <columns>
+                        <column name="ChainId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainDetails" destinationColumn="ChainDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainDetails" destinationColumn="ChainDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainDetails" nameSingular="ChainDetail" columnPrefix="chndt">
+                    <columns>
+                        <column name="ChainDetailId" type="EID" nullAllowed="false" />
+                        <column name="ChainId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="ChainTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainTypes" destinationColumn="ChainTypeId" />
+                        <column name="ChainName" type="Name" nullAllowed="false" />
+                        <column name="ChainInstanceSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="ChainName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ChainInstanceSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainDescriptions" nameSingular="ChainDescription" columnPrefix="chnd">
+                    <columns>
+                        <column name="ChainDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ChainId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionSets" nameSingular="ChainActionSet" columnPrefix="chnactst">
+                    <columns>
+                        <column name="ChainActionSetId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainActionSetDetails" destinationColumn="ChainActionSetDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainActionSetDetails" destinationColumn="ChainActionSetDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionSetId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionSetDetails" nameSingular="ChainActionSetDetail" columnPrefix="chnactstdt">
+                    <columns>
+                        <column name="ChainActionSetDetailId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionSetId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionSets" destinationColumn="ChainActionSetId" />
+                        <column name="ChainId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="ChainActionSetName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionSetDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionSetId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="ChainActionSetName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionSetDescriptions" nameSingular="ChainActionSetDescription" columnPrefix="chnactstd">
+                    <columns>
+                        <column name="ChainActionSetDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionSetId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionSets" destinationColumn="ChainActionSetId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionSetDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionSetId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActions" nameSingular="ChainAction" columnPrefix="chnact">
+                    <columns>
+                        <column name="ChainActionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainActionDetails" destinationColumn="ChainActionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainActionDetails" destinationColumn="ChainActionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionDetails" nameSingular="ChainActionDetail" columnPrefix="chnactdt">
+                    <columns>
+                        <column name="ChainActionDetailId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActions" destinationColumn="ChainActionId" />
+                        <column name="ChainActionSetId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionSets" destinationColumn="ChainActionSetId" />
+                        <column name="ChainActionName" type="Name" nullAllowed="false" />
+                        <column name="ChainActionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionTypes" destinationColumn="ChainActionTypeId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainActionSetId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ChainActionSetId" />
+                            <indexColumn name="ChainActionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ChainActionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionDescriptions" nameSingular="ChainActionDescription" columnPrefix="chnactd">
+                    <columns>
+                        <column name="ChainActionDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActions" destinationColumn="ChainActionId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionLetters" nameSingular="ChainActionLetter" columnPrefix="chnactlttr">
+                    <columns>
+                        <column name="ChainActionLetterId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActions" destinationColumn="ChainActionId" />
+                        <column name="LetterId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Letters" destinationColumn="LetterId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionLetterId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LetterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionSurveys" nameSingular="ChainActionSurvey" columnPrefix="chnactsrvy">
+                    <columns>
+                        <column name="ChainActionSurveyId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActions" destinationColumn="ChainActionId" />
+                        <column name="SurveyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Surveys" destinationColumn="SurveyId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionSurveyId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SurveyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainActionChainActionSets" nameSingular="ChainActionChainActionSet" columnPrefix="chnactchnactst">
+                    <columns>
+                        <column name="ChainActionChainActionSetId" type="EID" nullAllowed="false" />
+                        <column name="ChainActionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActions" destinationColumn="ChainActionId" />
+                        <column name="NextChainActionSetId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionSets" destinationColumn="ChainActionSetId" />
+                        <column name="DelayTime" type="Time" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainActionChainActionSetId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainActionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="NextChainActionSetId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainInstances" nameSingular="ChainInstance" columnPrefix="chni">
+                    <columns>
+                        <column name="ChainInstanceId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainInstanceDetails" destinationColumn="ChainInstanceDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ChainInstanceDetails" destinationColumn="ChainInstanceDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainInstanceId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainInstanceDetails" nameSingular="ChainInstanceDetail" columnPrefix="chnidt">
+                    <columns>
+                        <column name="ChainInstanceDetailId" type="EID" nullAllowed="false" />
+                        <column name="ChainInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainInstances" destinationColumn="ChainInstanceId" />
+                        <column name="ChainInstanceName" type="Name" nullAllowed="false" />
+                        <column name="ChainId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainInstanceDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ChainInstanceName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainInstanceStatuses" nameSingular="ChainInstanceStatus" columnPrefix="chnist">
+                    <columns>
+                        <column name="ChainInstanceStatusId" type="EID" nullAllowed="false" />
+                        <column name="ChainInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainInstances" destinationColumn="ChainInstanceId"/>
+                        <column name="NextChainActionSetId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainActionSets" destinationColumn="ChainActionSetId"/>
+                        <column name="NextChainActionSetTime" type="Time" nullAllowed="false" />
+                        <column name="QueuedLetterSequence" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainInstanceStatusId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ChainInstanceId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="NextChainActionSetId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="NextChainActionSetTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ChainInstanceEntityRoles" nameSingular="ChainInstanceEntityRole" columnPrefix="chnier">
+                    <columns>
+                        <column name="ChainInstanceEntityRoleId" type="EID" nullAllowed="false" />
+                        <column name="ChainInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainInstances" destinationColumn="ChainInstanceId" />
+                        <column name="ChainEntityRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainEntityRoleTypes" destinationColumn="ChainEntityRoleTypeId" />
+                        <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ChainInstanceEntityRoleId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ChainInstanceId" />
+                            <indexColumn name="ChainEntityRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ChainEntityRoleTypeId" />
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ChainEntityRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="cms" default="war" basedir=".">
+
+    <property file="build.properties"/>
+    <property file="${component.home}/environment.properties"/>
+    <property file="${component.home}/build.properties"/>
+
+    <path id="build.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${build.lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+        <pathelement location="${build.dir}/jars/echothree-client.jar"/>
+    </path>
+
+    <path id="shared.class.path">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+        <pathelement path="${java.class.path}" />
+    </path>
+
+    <target name="prepare">
+        <mkdir dir="${ui.web.cms.classbindir}" />
+        <mkdir dir="${ui.web.cms.metadatabindir}" />
+        <mkdir dir="${ui.web.cms.wardir}" />
+    </target>
+
+    <target name="compile" depends="prepare">
+        <javac
+            debug="on"
+            source="1.8"
+            target="1.8"
+            srcdir="${ui.web.cms.javasrc}"
+            destdir="${ui.web.cms.classbindir}"
+            includeAntRuntime="false"
+            classpathref="build.classpath" >
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+        </javac>
+    </target>
+
+    <target name="war" depends="compile">
+        <manifest file="${ui.web.cms.metadatabindir}/MANIFEST.MF">
+            <attribute name="Dependencies" value="org.infinispan services"/>
+        </manifest>
+        <war
+            warfile="${ui.web.cms.warfile}"
+            webxml="${ui.web.cms.metadatasrc}/web.xml"
+            manifest="${ui.web.cms.metadatabindir}/MANIFEST.MF">
+            <fileset dir="${ui.web.cms.websrc}" />
+            <classes dir="${ui.web.cms.classbindir}"/>
+            <classes dir="${ui.web.cms.metadatasrc}">
+                <include name="*.properties"/>
+            </classes>
+            <webinf dir="${ui.web.cms.metadatasrc}">
+                <include name="jboss-all.xml"/>
+                <include name="struts-config.xml"/>
+            </webinf>
+            <!-- EchoThree and SSLExt -->
+            <lib dir="${component.home}/build/jars">
+                <include name="echothree-client.jar"/>
+            </lib>
+            <webinf dir="${build.dir}/metadata/client/taglib">
+                <include name="*.tld"/>
+            </webinf>
+            <lib dir="${build.lib.dir}">
+                <include name="textile4j.jar"/>
+                <include name="nekohtml.jar"/>
+                <include name="guava.jar"/>
+            </lib>
+            <!-- Apache Commons Lang -->
+            <lib dir="${build.lib.dir}">
+                <include name="commons-lang.jar"/>
+            </lib>
+            <!-- EZMorph -->
+            <lib dir="${build.lib.dir}">
+                <include name="ezmorph.jar"/>
+            </lib>
+            <!-- JSON-lib -->
+            <lib dir="${build.lib.dir}">
+                <include name="json-lib-jdk15.jar"/>
+            </lib>
+            <!-- iText -->
+            <lib dir="${build.lib.dir}">
+                <include name="itext.jar"/>
+            </lib>
+            <!-- Xerces -->
+            <lib dir="${build.lib.dir}">
+                <include name="xercesImpl.jar"/>
+                <include name="xml-apis.jar"/>
+            </lib>
+            <!-- Commons Validator -->
+            <lib dir="${build.lib.dir}">
+                <include name="commons-validator.jar"/>
+            </lib>
+            <!-- ROME -->
+            <lib dir="${build.lib.dir}">
+                <include name="jdom.jar"/>
+                <include name="rome.jar"/>
+            </lib>
+            <!-- FastClasspathScanner -->
+            <lib dir="${build.lib.dir}">
+                <include name="classgraph.jar"/>
+            </lib>
+            <!-- Struts -->
+            <lib dir="${build.lib.dir}">
+                <include name="commons-beanutils.jar"/>
+                <include name="commons-collections.jar"/>
+                <include name="commons-digester.jar"/>
+                <include name="commons-fileupload.jar"/>
+                <include name="commons-io.jar"/>
+                <include name="commons-logging.jar"/>
+            </lib>
+            <lib dir="${lib.dir}/struts">
+                <include name="bsf.jar"/>
+                <include name="commons-chain.jar"/>
+                <include name="oro.jar"/>
+                <include name="struts-core.jar"/>
+                <include name="struts-el.jar"/>
+                <include name="struts-extras.jar"/>
+                <include name="struts-faces.jar"/>
+                <include name="struts-mailreader-dao.jar"/>
+                <include name="struts-scripting.jar"/>
+                <include name="struts-taglib.jar"/>
+                <include name="struts-tiles.jar"/>
+            </lib>
+            <!-- Spring -->
+            <lib dir="${build.lib.dir}">
+                <include name="spring-beans.jar"/>
+                <include name="spring-context.jar"/>
+                <include name="spring-core.jar"/>
+                <include name="spring-expression.jar"/>
+                <include name="spring-web.jar"/>
+                <include name="spring-struts.jar"/>
+                <include name="reactive-streams.jar"/>
+            </lib>
+            <webinf dir="${ui.web.cms.metadatasrc}">
+                <include name="beans.xml"/>
+                <include name="applicationContext.xml"/>
+                <include name="cms-servlet.xml"/>
+            </webinf>
+            <!-- Jakarta Taglibs Standard -->
+            <lib dir="${lib.dir}/jakarta-taglibs-standard/lib">
+                <include name="*.jar"/>
+            </lib>
+            <webinf dir="${lib.dir}/jakarta-taglibs-standard/tld">
+                <include name="*.tld"/>
+            </webinf>
+        </war>
+    </target>
+
+    <target name="deploy" depends="war">
+        <copy file="${ui.web.cms.warfile}" todir="../../${wildfly.home.deploy}" />
+    </target>
+
+    <target name="clean">
+        <echo message="Deleting directory ${ui.web.cms.builddir}" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="${ui.web.cms.builddir}">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+
+</project>
+

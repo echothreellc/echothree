@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Echo Three Unit Tests" default="test" basedir=".">
+
+    <target name="init">
+        <!-- where all application jars are stored -->
+        <property name="dir.lib" value="../../lib" />
+        <!-- where all application src is stored -->
+        <property name="dir.src" value="." />
+        <!-- The component root directory of the workspace -->
+        <property name="dir.home" value="../../" />
+
+        <property file="../../environment.properties" />
+        <property file="../../build.properties" />
+        <property name="metadata.dir" value="src/metadata"/>
+    </target>
+
+    <target name="compile" depends="init" description="Compile Unit Tests">
+        <mkdir dir="${test.junit.classes.dir}" />
+        <javac
+            debug="true"
+            source="1.8"
+            target="1.8"
+            srcdir="${test.junit.src.dir}"
+            destdir="${test.junit.classes.dir}"
+            includeAntRuntime="false">
+            <classpath>
+                <pathelement location="./"/>
+                <fileset dir="../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+        </javac>
+    </target>
+
+    <target name="test" depends="compile" description="Execute Unit Tests">
+        <mkdir dir="${test.junit.results.dir}" />
+        <junit
+            printsummary="${test.junit.printsummary}" 
+            haltonfailure="${test.junit.haltonfailure}" 
+            haltonerror="${test.junit.haltonerror}" 
+            fork="${test.junit.fork}"
+            dir="${test.junit.classes.dir}" 
+            timeout="${test.junit.timeout}">
+            <jvmarg value="${test.junit.java.opts}" />
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../${wildfly.home.modules}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+                <pathelement path="${test.junit.classes.dir}" />
+                <pathelement path="${test.junit.pathelement.1}" />
+                <pathelement path="${test.junit.pathelement.2}" />
+                <pathelement path="${test.junit.pathelement.3}" />
+                <pathelement path="${test.junit.pathelement.4}" />
+                <pathelement path="${test.junit.pathelement.5}" />
+                <pathelement path="${test.junit.pathelement.6}" />
+                <pathelement path="${test.junit.pathelement.7}" />
+                <pathelement path="${test.junit.pathelement.8}" />
+                <pathelement path="${test.junit.pathelement.9}" />
+                <pathelement path="${test.junit.pathelement.10}" />
+                <pathelement path="${test.junit.component.src.metadata}" />
+            </classpath>
+            <formatter type="plain" />
+            <batchtest todir="${test.junit.results.dir}">
+                <fileset dir="${test.junit.classes.dir}">
+                    <include name="${test.junit.classes.include.1}" />
+                    <include name="${test.junit.classes.include.2}" />
+                    <include name="${test.junit.classes.include.3}" />
+                    <include name="${test.junit.classes.include.4}" />
+                    <include name="${test.junit.classes.include.5}" />
+                    <include name="${test.junit.classes.include.6}" />
+                    <include name="${test.junit.classes.include.7}" />
+                    <include name="${test.junit.classes.include.8}" />
+                    <include name="${test.junit.classes.include.9}" />
+                    <include name="${test.junit.classes.include.10}" />
+                </fileset>
+            </batchtest>
+            <formatter type="xml" />
+        </junit>
+        <junitreport todir="${test.junit.results.dir}">
+            <fileset dir="${test.junit.results.dir}">
+                <include name="${test.junit.junitreport.include}"/>
+            </fileset>
+            <report
+                format="${test.junit.junitreport.format}"
+                styledir="${test.junit.junitreport.styledir}"
+                todir="${test.junit.results.dir}"/>
+        </junitreport>
+    </target>
+
+    <target name="clean" depends="init">
+        <delete dir="${test.junit.classes.dir}" />
+        <delete dir="${test.junit.results.dir}" />
+    </target>
+
+</project>

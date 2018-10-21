@@ -1,0 +1,63 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.service.job;
+
+import com.echothree.control.user.index.common.IndexUtil;
+import com.echothree.control.user.index.remote.result.UpdateIndexesResult;
+import com.echothree.control.user.selector.common.SelectorUtil;
+import com.echothree.model.control.job.common.Jobs;
+import com.echothree.util.common.service.job.BaseScheduledJob;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import javax.ejb.Schedule;
+import javax.ejb.Singleton;
+import javax.naming.NamingException;
+
+@Singleton
+public class DataIndexerJob
+        extends BaseScheduledJob {
+    
+    /** Creates a new instance of DataIndexerJob */
+    public DataIndexerJob() {
+        super(Jobs.DATA_INDEXER.name());
+    }
+
+    @Override
+    @Schedule(second = "0", minute = "*", hour = "*", persistent = false)
+    public void executeJob()
+            throws NamingException {
+        super.executeJob();
+    }
+
+    @Override
+    public void execute()
+            throws NamingException {
+        CommandResult commandResult = IndexUtil.getHome().updateIndexes(userVisitPK);
+        
+        if(commandResult.hasErrors()) {
+            getLog().error(commandResult.toString());
+        } else {
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            UpdateIndexesResult updateIndexesResult = (UpdateIndexesResult)executionResult.getResult();
+
+            if(updateIndexesResult.getIndexingComplete()) {
+                SelectorUtil.getHome().evaluateSelectors(userVisitPK);
+            }
+        }
+    }
+    
+}

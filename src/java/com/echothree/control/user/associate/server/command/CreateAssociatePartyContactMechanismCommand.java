@@ -1,0 +1,142 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.associate.server.command;
+
+import com.echothree.control.user.associate.remote.form.CreateAssociatePartyContactMechanismForm;
+import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.data.associate.server.entity.Associate;
+import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
+import com.echothree.model.data.associate.server.entity.AssociateProgram;
+import com.echothree.model.data.contact.server.entity.ContactMechanism;
+import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
+import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
+import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class CreateAssociatePartyContactMechanismCommand
+        extends BaseSimpleCommand<CreateAssociatePartyContactMechanismForm> {
+    
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+    
+    static {
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AssociateName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AssociatePartyContactMechanismName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ContactMechanismAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of CreateAssociatePartyContactMechanismCommand */
+    public CreateAssociatePartyContactMechanismCommand(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form) {
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        String contactMechanismName = form.getContactMechanismName();
+        String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
+        String alias = form.getAlias();
+        int parameterCount = (contactMechanismName == null? 0: 1) + (contactMechanismAliasTypeName == null && alias == null? 0: 1);
+        
+        if(parameterCount == 1) {
+            AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+            String associateProgramName = form.getAssociateProgramName();
+            AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+            
+            if(associateProgram != null) {
+                String associateName = form.getAssociateName();
+                Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
+                
+                if(associate != null) {
+                    String associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
+                    AssociatePartyContactMechanism associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByName(associate,
+                            associatePartyContactMechanismName);
+                    
+                    if(associatePartyContactMechanism == null) {
+                        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                        ContactMechanism contactMechanism = null;
+                        
+                        if(contactMechanismName != null) {
+                            contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+                            
+                            if(contactMechanism == null) {
+                                addExecutionError(ExecutionErrors.UnknownContactMechanismName.name(), contactMechanismName);
+                            }
+                        } else {
+                            ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
+                            
+                            if(contactMechanismAliasType != null) {
+                                ContactMechanismAlias contactMechanismAlias = contactControl.getContactMechanismAliasByAlias(contactMechanismAliasType,
+                                        alias);
+                                
+                                if(contactMechanismAlias != null) {
+                                    contactMechanism = contactMechanismAlias.getContactMechanism();
+                                } else {
+                                    addExecutionError(ExecutionErrors.UnknownContactMechanismAlias.name(), alias);
+                                }
+                            } else {
+                                addExecutionError(ExecutionErrors.UnknownContactMechanismAliasTypeName.name(), contactMechanismAliasTypeName);
+                            }
+                        }
+                        
+                        if(!hasExecutionErrors()) {
+                            PartyContactMechanism partyContactMechanism = contactControl.getPartyContactMechanism(associate.getLastDetail().getParty(),
+                                    contactMechanism);
+                            
+                            if(partyContactMechanism != null) {
+                                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                                Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                                
+                                associateControl.createAssociatePartyContactMechanism(associate, associatePartyContactMechanismName,
+                                        partyContactMechanism, isDefault, sortOrder, getPartyPK());
+                            } else {
+                                addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name(), contactMechanismName);
+                            }
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.DuplicateAssociatePartyContactMechanismName.name(), associatePartyContactMechanismName);
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownAssociateName.name(), associateName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownAssociateProgramName.name(), associateProgramName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+        
+        return null;
+    }
+    
+}

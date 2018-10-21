@@ -1,0 +1,129 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.index.server.command;
+
+import com.echothree.control.user.index.remote.form.CreateIndexForm;
+import com.echothree.model.control.index.server.IndexControl;
+import com.echothree.model.control.index.server.logic.IndexLogic;
+import com.echothree.model.control.index.server.logic.IndexTypeLogic;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.index.server.entity.Index;
+import com.echothree.model.data.index.server.entity.IndexType;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class CreateIndexCommand
+        extends BaseSimpleCommand<CreateIndexForm> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Index.name(), SecurityRoles.Create.name())
+                        )))
+                )));
+        
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("IndexName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Directory", FieldType.STRING, true, null, 80L),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of CreateIndexCommand */
+    public CreateIndexCommand(UserVisitPK userVisitPK, CreateIndexForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        String indexName = form.getIndexName();
+        Index index = indexControl.getIndexByName(indexName);
+        
+        if(index == null) {
+            String directory = form.getDirectory();
+            
+            index = indexControl.getIndexByDirectory(directory);
+            
+            if(index == null) {
+                String indexTypeName = form.getIndexTypeName();
+                IndexType indexType = IndexTypeLogic.getInstance().getIndexTypeByName(this, indexTypeName);
+
+                if(!hasExecutionErrors()) {
+                    String languageIsoName = form.getLanguageIsoName();
+                    Language language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
+
+                    if(!hasExecutionErrors()) {
+                        index = language == null ? null : indexControl.getIndex(indexType, language);
+
+                        if(index == null) {
+                            EntityType entityType = indexType.getLastDetail().getEntityType();
+                            PartyPK partyPK = getPartyPK();
+                            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                            String description = form.getDescription();
+
+                            index = indexControl.createIndex(indexName, indexType, language, directory, isDefault, sortOrder, partyPK);
+
+                            if(description != null) {
+                                indexControl.createIndexDescription(index, getPreferredLanguage(), description, partyPK);
+                            }
+                            
+                            if(entityType != null) {
+                                IndexLogic.getInstance().reindex(session, this, entityType);
+                            }
+                        } else {
+                            addExecutionError(ExecutionErrors.DuplicateIndex.name(), indexTypeName, languageIsoName);
+                        }
+                    }
+                }
+            } else {
+                addExecutionError(ExecutionErrors.DuplicateDirectory.name(), directory);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateIndexName.name(), indexName);
+        }
+        
+        return null;
+    }
+    
+}

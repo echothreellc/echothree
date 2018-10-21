@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <selectorBooleanTypes>
+        <selectorBooleanType selectorBooleanTypeName="AND" isDefault="true" sortOrder="0">
+            <selectorBooleanTypeDescription languageIsoName="en" description="And" />
+        </selectorBooleanType>
+        <selectorBooleanType selectorBooleanTypeName="OR" isDefault="false" sortOrder="0">
+            <selectorBooleanTypeDescription languageIsoName="en" description="Or" />
+        </selectorBooleanType>
+    </selectorBooleanTypes>
+    <selectorComparisonTypes>
+        <selectorComparisonType selectorComparisonTypeName="GT" isDefault="true" sortOrder="0">
+            <selectorComparisonTypeDescription languageIsoName="en" description="Greater Than" />
+        </selectorComparisonType>
+        <selectorComparisonType selectorComparisonTypeName="LT" isDefault="false" sortOrder="0">
+            <selectorComparisonTypeDescription languageIsoName="en" description="Less Than" />
+        </selectorComparisonType>
+        <selectorComparisonType selectorComparisonTypeName="EQUAL" isDefault="false" sortOrder="1">
+            <selectorComparisonTypeDescription languageIsoName="en" description="Equal" />
+        </selectorComparisonType>
+        <selectorComparisonType selectorComparisonTypeName="GT_EQUAL" isDefault="false" sortOrder="2">
+            <selectorComparisonTypeDescription languageIsoName="en" description="Greater Than or Equal" />
+        </selectorComparisonType>
+        <selectorComparisonType selectorComparisonTypeName="LT_EQUAL" isDefault="false" sortOrder="2">
+            <selectorComparisonTypeDescription languageIsoName="en" description="Less Than or Equal" />
+        </selectorComparisonType>
+    </selectorComparisonTypes>
+    <selectorNodeTypes>
+        <selectorNodeType selectorNodeTypeName="BOOLEAN" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Boolean" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ITEM_ACCOUNTING_CATEGORY" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Item Accounting Category" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ITEM_CATEGORY" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Item Category" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ITEM_PURCHASING_CATEGORY" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Item Purchasing Category" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ITEM_DESCRIPTION" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Item Description" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ENTITY_LIST_ITEM" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Entity List Item" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ENTITY_LONG" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Entity Long" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ENTITY_INTEGER" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Entity Integer" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ENTITY_DATE" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Entity Date" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ENTITY_TIME" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Entity Time" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ENTITY_STRING" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Entity String" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ENTITY_CLOB" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Entity Clob" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="ENTITY_BOOLEAN" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Entity Boolean" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="RESPONSIBILITY_TYPE" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Responsibility" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="SKILL_TYPE" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Skill Type" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="TRAINING_CLASS" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Training Class" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="WORKFLOW_STEP" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Workflow Step" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="GEO_CODE" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Geo Code" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="PAYMENT_METHOD" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Payment Method" />
+        </selectorNodeType>
+        <selectorNodeType selectorNodeTypeName="PAYMENT_PROCESSOR" sortOrder="1">
+            <selectorNodeTypeDescription languageIsoName="en" description="Payment Processor" />
+        </selectorNodeType>
+    </selectorNodeTypes>
+    <selectorTextSearchTypes>
+        <selectorTextSearchType selectorTextSearchTypeName="CONTAINS_WORD" isDefault="true" sortOrder="0">
+            <selectorTextSearchTypeDescription languageIsoName="en" description="Contains Word" />
+        </selectorTextSearchType>
+        <selectorTextSearchType selectorTextSearchTypeName="STARTS_WITH" isDefault="false" sortOrder="0">
+            <selectorTextSearchTypeDescription languageIsoName="en" description="Starts With" />
+        </selectorTextSearchType>
+    </selectorTextSearchTypes>
+    <selectorKinds>
+        <selectorKind selectorKindName="CUSTOMER" isDefault="true" sortOrder="1">
+            <selectorKindDescription languageIsoName="en" description="Customer" />
+            <selectorType selectorTypeName="SECURITY_ROLE" isDefault="true" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Security Role" />
+            </selectorType>
+        </selectorKind>
+        <selectorKind selectorKindName="EMPLOYEE" isDefault="false" sortOrder="1">
+            <selectorKindDescription languageIsoName="en" description="Employee" />
+            <selectorNodeTypeUse selectorNodeTypeName="BOOLEAN" isDefault="true" />
+            <selectorNodeTypeUse selectorNodeTypeName="ENTITY_LIST_ITEM" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="RESPONSIBILITY_TYPE" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="SKILL_TYPE" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="TRAINING_CLASS" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="WORKFLOW_STEP" isDefault="false" />
+            <workflowSelectorKind workflowName="EMPLOYEE_AVAILABILITY" />
+            <workflowSelectorKind workflowName="EMPLOYEE_STATUS" />
+            <selectorType selectorTypeName="WORK_ASSIGNMENT" isDefault="true" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Work Assignment" />
+                <selector selectorName="EXAMPLE_WORK_ASSIGNMENT_1" isDefault="true" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example Work Assignment Selector 1" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="true" selectorNodeTypeName="RESPONSIBILITY_TYPE"
+                    responsibilityTypeName="TEST_RESPONSIBILITY_TYPE" negate="false" />
+                </selector>
+                <selector selectorName="EXAMPLE_WORK_ASSIGNMENT_2" isDefault="false" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example Work Assignment Selector 2" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="true" selectorNodeTypeName="SKILL_TYPE"
+                    skillTypeName="TEST_SKILL_TYPE" negate="false" />
+                </selector>
+                <selector selectorName="EXAMPLE_WORK_ASSIGNMENT_3" isDefault="false" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example Work Assignment Selector 3" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="true" selectorNodeTypeName="TRAINING_CLASS"
+                    trainingClassName="TEST_TRAINING_CLASS" negate="false" />
+                </selector>
+            </selectorType>
+            <selectorType selectorTypeName="EMAIL_REVIEW" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Email Reivew" />
+            </selectorType>
+            <selectorType selectorTypeName="SECURITY_ROLE" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Security Role" />
+            </selectorType>
+        </selectorKind>
+        <selectorKind selectorKindName="VENDOR" isDefault="false" sortOrder="1">
+            <selectorKindDescription languageIsoName="en" description="Vendor" />
+            <selectorType selectorTypeName="SECURITY_ROLE" isDefault="true" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Security Role" />
+            </selectorType>
+        </selectorKind>
+        <selectorKind selectorKindName="INVOICE" isDefault="false" sortOrder="1">
+            <selectorKindDescription languageIsoName="en" description="Invoice" />
+        </selectorKind>
+        <selectorKind selectorKindName="ITEM" isDefault="false" sortOrder="1">
+            <selectorNodeTypeUse selectorNodeTypeName="BOOLEAN" isDefault="true" />
+            <selectorNodeTypeUse selectorNodeTypeName="ITEM_CATEGORY" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="ITEM_ACCOUNTING_CATEGORY" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="ITEM_PURCHASING_CATEGORY" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="ENTITY_LIST_ITEM" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="WORKFLOW_STEP" isDefault="false" />
+            <selectorKindDescription languageIsoName="en" description="Item" />
+            <workflowSelectorKind workflowName="ITEM_STATUS" />
+            <selectorType selectorTypeName="SHIPPING_METHOD" isDefault="true" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Shipping Method" />
+            </selectorType>
+            <selectorType selectorTypeName="CARRIER" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier" />
+            </selectorType>
+            <selectorType selectorTypeName="CARRIER_OPTION" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier Option" />
+            </selectorType>
+            <selectorType selectorTypeName="CARRIER_SERVICE" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier Service" />
+            </selectorType>
+            <selectorType selectorTypeName="CARRIER_SERVICE_OPTION" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier Service Option" />
+            </selectorType>
+            <selectorType selectorTypeName="CONTENT_CATEGORY" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Content Category" />
+                <selector selectorName="EXAMPLE_CONTENT_CATEGORY_ITEM_1" isDefault="true" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example Content Category Item Selector 1" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="true" selectorNodeTypeName="WORKFLOW_STEP"
+                    workflowName="ITEM_STATUS" workflowStepName="ACTIVE" negate="false" />
+                </selector>
+            </selectorType>
+            <selectorType selectorTypeName="FILTER" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Filter" />
+                <selector selectorName="ACTIVE_ITEM" isDefault="true" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="ACTIVE Filter Item Selector" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="true" selectorNodeTypeName="WORKFLOW_STEP"
+                    workflowName="ITEM_STATUS" workflowStepName="ACTIVE" negate="false" />
+                </selector>
+                <selector selectorName="EXAMPLE_FILTER_ITEM" isDefault="false" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example Filter Item Selector" />
+                    <selectorNode selectorNodeName="TEST_2" isRootSelectorNode="true" selectorNodeTypeName="ENTITY_LIST_ITEM"
+                    componentVendorName="ECHOTHREE" entityTypeName="Item" entityAttributeName="EXAMPLE_LISTITEM"
+                    entityListItemName="CHOICE_1" negate="false" />
+                </selector>
+            </selectorType>
+            <selectorType selectorTypeName="OFFER" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Offer" />
+                <selector selectorName="EXAMPLE_OFFER_ITEM_1" isDefault="true" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example Offer Item Selector 1" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="true" selectorNodeTypeName="WORKFLOW_STEP"
+                    workflowName="ITEM_STATUS" workflowStepName="ACTIVE" negate="false">
+                        <selectorNodeDescription languageIsoName="en" description="Example Offer Item Selector 1 Test Node 1" />
+                    </selectorNode>
+                </selector>
+                <selector selectorName="EXAMPLE_OFFER_ITEM_2" isDefault="false" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example Offer Item Selector 2" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="false" selectorNodeTypeName="WORKFLOW_STEP"
+                    workflowName="ITEM_STATUS" workflowStepName="ACTIVE" negate="false" />
+                    <selectorNode selectorNodeName="TEST_2" isRootSelectorNode="false" selectorNodeTypeName="ENTITY_LIST_ITEM"
+                    componentVendorName="ECHOTHREE" entityTypeName="Item" entityAttributeName="EXAMPLE_LISTITEM"
+                    entityListItemName="CHOICE_1" negate="false" />
+                    <selectorNode selectorNodeName="TEST_3" isRootSelectorNode="true" selectorNodeTypeName="BOOLEAN"
+                    selectorBooleanTypeName="AND" leftSelectorNodeName="TEST_1" rightSelectorNodeName="TEST_2" negate="false" />
+                </selector>
+            </selectorType>
+            <selectorType selectorTypeName="OFFER_DISCOUNT" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Offer Discount" />
+            </selectorType>
+            <selectorType selectorTypeName="PAYMENT_METHOD" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Payment Method" />
+            </selectorType>
+        </selectorKind>
+        <selectorKind selectorKindName="SALES_ORDER_ITEM" isDefault="false" sortOrder="1">
+            <selectorKindDescription languageIsoName="en" description="Sales Order Item" />
+            <selectorType selectorTypeName="PAYMENT_METHOD" isDefault="true" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Payment Method" />
+            </selectorType>
+        </selectorKind>
+        <selectorKind selectorKindName="POSTAL_ADDRESS" isDefault="false" sortOrder="1">
+            <selectorNodeTypeUse selectorNodeTypeName="BOOLEAN" isDefault="true" />
+            <selectorNodeTypeUse selectorNodeTypeName="GEO_CODE" isDefault="false" />
+            <selectorNodeTypeUse selectorNodeTypeName="WORKFLOW_STEP" isDefault="false" />
+            <selectorKindDescription languageIsoName="en" description="Postal Address" />
+            <selectorType selectorTypeName="CUSTOMER_PAYMENT_METHOD" isDefault="true" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Customer Payment Method" />
+                <selector selectorName="EXAMPLE_US_SELECTOR" isDefault="true" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example US Selector" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="true" selectorNodeTypeName="GEO_CODE"
+                    countryName="UNITED_STATES" negate="false" />
+                </selector>
+                <selector selectorName="EXAMPLE_INTL_SELECTOR" isDefault="false" sortOrder="1">
+                    <selectorDescription languageIsoName="en" description="Example Intl. Selector" />
+                    <selectorNode selectorNodeName="TEST_1" isRootSelectorNode="true" selectorNodeTypeName="GEO_CODE"
+                    countryName="UNITED_STATES" negate="true" />
+                </selector>
+            </selectorType>
+            <selectorType selectorTypeName="SHIPPING_METHOD" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Shipping Method" />
+            </selectorType>
+            <selectorType selectorTypeName="CARRIER" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier" />
+            </selectorType>
+            <selectorType selectorTypeName="CARRIER_OPTION" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier Option" />
+            </selectorType>
+            <selectorType selectorTypeName="CARRIER_SERVICE" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier Service" />
+            </selectorType>
+            <selectorType selectorTypeName="CARRIER_SERVICE_OPTION" isDefault="false" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier Service Option" />
+            </selectorType>
+        </selectorKind>
+        <selectorKind selectorKindName="ORDER" isDefault="false" sortOrder="1">
+            <selectorKindDescription languageIsoName="en" description="Order" />
+            <selectorType selectorTypeName="CARRIER_OPTION" isDefault="true" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier Option" />
+            </selectorType>
+        </selectorKind>
+        <selectorKind selectorKindName="SHIPMENT" isDefault="false" sortOrder="1">
+            <selectorKindDescription languageIsoName="en" description="Shipment" />
+            <selectorType selectorTypeName="CARRIER_OPTION" isDefault="true" sortOrder="1">
+                <selectorTypeDescription languageIsoName="en" description="Carrier Option" />
+            </selectorType>
+        </selectorKind>
+    </selectorKinds>
+</initialData>

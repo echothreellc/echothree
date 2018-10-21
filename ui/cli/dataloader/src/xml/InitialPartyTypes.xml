@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <partyTypes>
+        <partyType partyTypeName="PERSON" allowUserLogins="false" allowPartyAliases="false" isDefault="false" sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Person" />
+        </partyType>
+        <partyType partyTypeName="GROUP" allowUserLogins="false" allowPartyAliases="false" isDefault="false" sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Group" />
+        </partyType>
+        <partyType partyTypeName="LEGAL_ORGANIZATION" parentPartyTypeName="GROUP" allowUserLogins="false" allowPartyAliases="false" isDefault="false"
+        sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Legal Organization" />
+        </partyType>
+        <partyType partyTypeName="INFORMAL_ORGANIZATION" parentPartyTypeName="GROUP" allowUserLogins="false" allowPartyAliases="false" isDefault="false"
+        sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Informal Organization" />
+        </partyType>
+        <partyType partyTypeName="COMPANY" parentPartyTypeName="LEGAL_ORGANIZATION" allowUserLogins="false" allowPartyAliases="false" isDefault="false"
+        sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Company" />
+        </partyType>
+        <partyType partyTypeName="DEPARTMENT" parentPartyTypeName="INFORMAL_ORGANIZATION" allowUserLogins="false" allowPartyAliases="false" isDefault="false"
+        sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Department" />
+        </partyType>
+        <partyType partyTypeName="DIVISION" parentPartyTypeName="INFORMAL_ORGANIZATION" allowUserLogins="false" allowPartyAliases="false" isDefault="false"
+        sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Division" />
+        </partyType>
+        <partyType partyTypeName="EMPLOYEE" parentPartyTypeName="PERSON" allowUserLogins="true" allowPartyAliases="false" isDefault="false" sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Employee" />
+        </partyType>
+        <partyType partyTypeName="CUSTOMER" parentPartyTypeName="PERSON" billingAccountSequenceTypeName="CUSTOMER_BILLING_ACCOUNT"
+        allowUserLogins="true" allowPartyAliases="true" isDefault="true" sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Customer" />
+        </partyType>
+        <partyType partyTypeName="FACILITY" allowUserLogins="false" allowPartyAliases="false" isDefault="false" sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Facility" />
+        </partyType>
+        <partyType partyTypeName="CARRIER" parentPartyTypeName="LEGAL_ORGANIZATION" allowUserLogins="false" allowPartyAliases="false" isDefault="false"
+        sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Carrier" />
+        </partyType>
+        <partyType partyTypeName="VENDOR" parentPartyTypeName="LEGAL_ORGANIZATION" billingAccountSequenceTypeName="VENDOR_BILLING_ACCOUNT"
+        allowUserLogins="true" allowPartyAliases="false" isDefault="false" sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Vendor" />
+        </partyType>
+        <partyType partyTypeName="WAREHOUSE" parentPartyTypeName="FACILITY" allowUserLogins="false" allowPartyAliases="false" isDefault="false" sortOrder="1">
+            <partyTypeDescription languageIsoName="en" description="Warehouse" />
+        </partyType>
+    </partyTypes>
+    <partyTypeUseTypes>
+        <partyTypeUseType partyTypeUseTypeName="FORUM_PARTY_TYPE_ROLES" isDefault="false" sortOrder="1">
+            <partyTypeUseTypeDescription languageIsoName="en" description="Forum Party Type Roles" />
+            <partyTypeUse partyTypeName="CUSTOMER" isDefault="true" />
+            <partyTypeUse partyTypeName="EMPLOYEE" isDefault="false" />
+        </partyTypeUseType>
+    </partyTypeUseTypes>
+</initialData>

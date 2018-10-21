@@ -1,0 +1,328 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Batch">
+            <tables>
+                <table namePlural="BatchTypes" nameSingular="BatchType" columnPrefix="btchtyp">
+                    <columns>
+                        <column name="BatchTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BatchTypeDetails" destinationColumn="BatchTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BatchTypeDetails" destinationColumn="BatchTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchTypeDetails" nameSingular="BatchTypeDetail" columnPrefix="btchtypdt">
+                    <columns>
+                        <column name="BatchTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="BatchTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BatchTypes" destinationColumn="BatchTypeId" />
+                        <column name="BatchTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentBatchTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BatchTypes" destinationColumn="BatchTypeId" />
+                        <column name="BatchSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="BatchWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="BatchWorkflowEntranceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="BatchTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentBatchTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="BatchSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="BatchWorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="BatchWorkflowEntranceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchTypeDescriptions" nameSingular="BatchTypeDescription" columnPrefix="btchtypd">
+                    <columns>
+                        <column name="BatchTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="BatchTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BatchTypes" destinationColumn="BatchTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchTypeEntityTypes" nameSingular="BatchTypeEntityType" columnPrefix="btchtypent">
+                    <columns>
+                        <column name="BatchTypeEntityTypeId" type="EID" nullAllowed="false" />
+                        <column name="BatchTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BatchTypes" destinationColumn="BatchTypeId" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchTypeEntityTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchAliasTypes" nameSingular="BatchAliasType" columnPrefix="btchat">
+                    <columns>
+                        <column name="BatchAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BatchAliasTypeDetails" destinationColumn="BatchAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BatchAliasTypeDetails" destinationColumn="BatchAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchAliasTypeDetails" nameSingular="BatchAliasTypeDetail" columnPrefix="btchatdt">
+                    <columns>
+                        <column name="BatchAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="BatchAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BatchAliasTypes" destinationColumn="BatchAliasTypeId" />
+                        <column name="BatchTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BatchTypes" destinationColumn="BatchTypeId" />
+                        <column name="BatchAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="BatchAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="BatchAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchAliasTypeDescriptions" nameSingular="BatchAliasTypeDescription" columnPrefix="btchatd">
+                    <columns>
+                        <column name="BatchAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="BatchAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BatchAliasTypes" destinationColumn="BatchAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="BatchAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="BatchAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Batches" nameSingular="Batch" columnPrefix="btch">
+                    <columns>
+                        <column name="BatchId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BatchDetails" destinationColumn="BatchDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BatchDetails" destinationColumn="BatchDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchDetails" nameSingular="BatchDetail" columnPrefix="btchdt">
+                    <columns>
+                        <column name="BatchDetailId" type="EID" nullAllowed="false" />
+                        <column name="BatchId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Batches" destinationColumn="BatchId" />
+                        <column name="BatchTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BatchTypes" destinationColumn="BatchTypeId" />
+                        <column name="BatchName" type="Name" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="BatchId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="BatchName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="BatchTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchAliases" nameSingular="BatchAlias" columnPrefix="btchal">
+                    <columns>
+                        <column name="BatchAliasId" type="EID" nullAllowed="false" />
+                        <column name="BatchId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Batches" destinationColumn="BatchId" />
+                        <column name="BatchAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BatchAliasTypes" destinationColumn="BatchAliasTypeId" />
+                        <column name="Alias" type="BatchAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchAliasId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="BatchId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="BatchAliasTypeId" />
+                            <indexColumn name="Alias" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="BatchAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="BatchEntities" nameSingular="BatchEntity" columnPrefix="btche">
+                    <columns>
+                        <column name="BatchEntityId" type="EID" nullAllowed="false" />
+                        <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="BatchId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Batches" destinationColumn="BatchId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="BatchEntityId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="BatchId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="BatchId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

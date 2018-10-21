@@ -1,0 +1,1584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <workflowTypes>
+        <workflowType workflowTypeName="SYSTEM" isDefault="false" sortOrder="1">
+            <workflowTypeDescription languageIsoName="en" description="System Defined" />
+        </workflowType>
+        <workflowType workflowTypeName="USER" isDefault="true" sortOrder="1">
+            <workflowTypeDescription languageIsoName="en" description="User Defined" />
+        </workflowType>
+    </workflowTypes>
+    <workflowStepTypes>
+        <workflowStepType workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+            <workflowStepTypeDescription languageIsoName="en" description="Manual Transition" />
+        </workflowStepType>
+        <workflowStepType workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="1">
+            <workflowStepTypeDescription languageIsoName="en" description="Automatic Transition" />
+        </workflowStepType>
+        <workflowStepType workflowStepTypeName="COMPLETE" isDefault="false" sortOrder="1">
+            <workflowStepTypeDescription languageIsoName="en" description="Complete" />
+        </workflowStepType>
+    </workflowStepTypes>
+    <workflows>
+        <workflow workflowName="ITEM_CUSTOMER_COMMENT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Item Customer Comment" />
+            <workflowStep workflowStepName="REVIEW" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Review" />
+            </workflowStep>
+            <workflowStep workflowStepName="APPROVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Approved" />
+            </workflowStep>
+            <workflowStep workflowStepName="REJECTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Rejected" />
+            </workflowStep>
+            <workflowDestination workflowStepName="REVIEW" workflowDestinationName="REVIEW_TO_APPROVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Review to Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="REVIEW" workflowDestinationName="REVIEW_TO_REJECTED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Review to Rejected" />
+                <workflowDestinationStep destinationWorkflowStepName="REJECTED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="REJECTED" workflowDestinationName="REJECTED_TO_APPROVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Rejected to Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="APPROVED" workflowDestinationName="APPROVED_TO_REJECTED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Approved to Rejected" />
+                <workflowDestinationStep destinationWorkflowStepName="REJECTED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_REVIEW" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Item Customer Comment" />
+                <workflowEntranceStep entranceWorkflowStepName="REVIEW" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_APPROVED" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Approved Item Customer Comment" />
+                <workflowEntranceStep entranceWorkflowStepName="APPROVED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Comment" />
+        </workflow>
+        <workflow workflowName="ITEM_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Item Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="DISCONTINUED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Discontinued" />
+            </workflowStep>
+            <workflowStep workflowStepName="CANCEL_IF_NOT_IN_STOCK" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Cancel If Not In Stock" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_DISCONTINUED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Active to Discontinued" />
+                <workflowDestinationStep destinationWorkflowStepName="DISCONTINUED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_CANCEL_IF_NOT_IN_STOCK" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Active to Cancel If Not In Stock" />
+                <workflowDestinationStep destinationWorkflowStepName="CANCEL_IF_NOT_IN_STOCK" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="DISCONTINUED" workflowDestinationName="DISCONTINUED_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Discontinued to Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="DISCONTINUED" workflowDestinationName="DISCONTINUED_TO_CANCEL_IF_NOT_IN_STOCK" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Discontinued to Cancel If Not In Stock" />
+                <workflowDestinationStep destinationWorkflowStepName="CANCEL_IF_NOT_IN_STOCK" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="CANCEL_IF_NOT_IN_STOCK" workflowDestinationName="CANCEL_IF_NOT_IN_STOCK_TO_ACTIVE" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Cancel If Not In Stock to Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="CANCEL_IF_NOT_IN_STOCK" workflowDestinationName="CANCEL_IF_NOT_IN_STOCK_TO_DISCONTINUED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Cancel If Not In Stock to Discontinued" />
+                <workflowDestinationStep destinationWorkflowStepName="DISCONTINUED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Active Item" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_DISCONTINUED" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Discontinued Item" />
+                <workflowEntranceStep entranceWorkflowStepName="DISCONTINUED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_CANCEL_IF_NOT_IN_STOCK" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Cancel If Not In Stock" />
+                <workflowEntranceStep entranceWorkflowStepName="CANCEL_IF_NOT_IN_STOCK" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Item" />
+        </workflow>
+        <workflow workflowName="EMPLOYEE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="EmployeeStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Employee Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Employee is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Employee is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Employee" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="EMPLOYEE_AVAILABILITY" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Vendor Availability" />
+            <workflowStep workflowStepName="AVAILABLE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Available" />
+            </workflowStep>
+            <workflowStep workflowStepName="UNAVAILABLE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Unavailable" />
+            </workflowStep>
+            <workflowStep workflowStepName="BREAK" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Break" />
+            </workflowStep>
+            <workflowStep workflowStepName="OUT_OF_OFFICE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Out of Office" />
+            </workflowStep>
+            <workflowStep workflowStepName="BREAKFAST" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="4">
+                <workflowStepDescription languageIsoName="en" description="Breakfast" />
+            </workflowStep>
+            <workflowStep workflowStepName="LUNCH" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="4">
+                <workflowStepDescription languageIsoName="en" description="Lunch" />
+            </workflowStep>
+            <workflowStep workflowStepName="DINNER" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="4">
+                <workflowStepDescription languageIsoName="en" description="Dinner" />
+            </workflowStep>
+            <workflowDestination workflowStepName="AVAILABLE" workflowDestinationName="AVAILABLE_TO_UNAVAILABLE" isDefault="false" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Unavailable" />
+                <workflowDestinationStep destinationWorkflowStepName="UNAVAILABLE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="UNAVAILABLE" workflowDestinationName="UNAVAILABLE_TO_AVAILABLE" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Available" />
+                <workflowDestinationStep destinationWorkflowStepName="AVAILABLE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="AVAILABLE" workflowDestinationName="AVAILABLE_TO_BREAK" isDefault="true" sortOrder="2">
+                <workflowDestinationDescription languageIsoName="en" description="Break" />
+                <workflowDestinationStep destinationWorkflowStepName="BREAK" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="BREAK" workflowDestinationName="BREAK_TO_AVAILABLE" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Available" />
+                <workflowDestinationStep destinationWorkflowStepName="AVAILABLE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="AVAILABLE" workflowDestinationName="AVAILABLE_TO_OUT_OF_OFFICE" isDefault="false" sortOrder="3">
+                <workflowDestinationDescription languageIsoName="en" description="Out of Office" />
+                <workflowDestinationStep destinationWorkflowStepName="OUT_OF_OFFICE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="OUT_OF_OFFICE" workflowDestinationName="OUT_OF_OFFICE_TO_AVAILABLE" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Available" />
+                <workflowDestinationStep destinationWorkflowStepName="AVAILABLE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="AVAILABLE" workflowDestinationName="AVAILABLE_TO_BREAKFAST" isDefault="false" sortOrder="4">
+                <workflowDestinationDescription languageIsoName="en" description="Breakfast" />
+                <workflowDestinationStep destinationWorkflowStepName="BREAKFAST" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="BREAKFAST" workflowDestinationName="BREAKFAST_TO_AVAILABLE" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Available" />
+                <workflowDestinationStep destinationWorkflowStepName="AVAILABLE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="AVAILABLE" workflowDestinationName="AVAILABLE_TO_LUNCH" isDefault="false" sortOrder="5">
+                <workflowDestinationDescription languageIsoName="en" description="Lunch" />
+                <workflowDestinationStep destinationWorkflowStepName="LUNCH" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="LUNCH" workflowDestinationName="LUNCH_TO_AVAILABLE" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Available" />
+                <workflowDestinationStep destinationWorkflowStepName="AVAILABLE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="AVAILABLE" workflowDestinationName="AVAILABLE_TO_DINNER" isDefault="false" sortOrder="6">
+                <workflowDestinationDescription languageIsoName="en" description="Dinner" />
+                <workflowDestinationStep destinationWorkflowStepName="DINNER" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="DINNER" workflowDestinationName="DINNER_TO_AVAILABLE" isDefault="true" sortOrder="7">
+                <workflowDestinationDescription languageIsoName="en" description="Available" />
+                <workflowDestinationStep destinationWorkflowStepName="AVAILABLE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_AVAILABLE" isDefault="true" sortOrder="1">
+                <workflowEntranceDescription languageIsoName="en" description="New Vendor" />
+                <workflowEntranceStep entranceWorkflowStepName="AVAILABLE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="CUSTOMER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CustomerStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Customer Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Customer is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Customer is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Customer" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="CUSTOMER_CREDIT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Customer Credit Status" />
+            <workflowStep workflowStepName="APPROVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Credit Approved" />
+            </workflowStep>
+            <workflowStep workflowStepName="NOT_APPROVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Credit Not Approved" />
+            </workflowStep>
+            <workflowStep workflowStepName="CUT_OFF" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Credit Cut Off" />
+            </workflowStep>
+            <workflowStep workflowStepName="OVER_POTENTIAL" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="4">
+                <workflowStepDescription languageIsoName="en" description="Over Potential Credit Limit" />
+            </workflowStep>
+            <workflowStep workflowStepName="OVER" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="5">
+                <workflowStepDescription languageIsoName="en" description="Over Credit Limit" />
+            </workflowStep>
+            <workflowStep workflowStepName="WAIT_APPROVAL" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="6">
+                <workflowStepDescription languageIsoName="en" description="Waiting for Approval" />
+            </workflowStep>
+            <workflowStep workflowStepName="WAIT_INFORMATION" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="7">
+                <workflowStepDescription languageIsoName="en" description="Waiting for Information" />
+            </workflowStep>
+            <workflowDestination workflowStepName="APPROVED" workflowDestinationName="APPROVED_TO_CUT_OFF" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Approved to Cut Off" />
+                <workflowDestinationStep destinationWorkflowStepName="CUT_OFF" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="CUT_OFF" workflowDestinationName="CUT_OFF_TO_WAIT_APPROVAL" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Cut Off to Waiting Approval" />
+                <workflowDestinationStep destinationWorkflowStepName="WAIT_APPROVAL" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="OVER_POTENTIAL" workflowDestinationName="OVER_POTENTIAL_TO_APPROVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Over Potential to Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="OVER_POTENTIAL" workflowDestinationName="OVER_POTENTIAL_TO_WAIT_INFORMATION" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Over Potential to Waiting for Credit Information" />
+                <workflowDestinationStep destinationWorkflowStepName="WAIT_INFORMATION" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="OVER" workflowDestinationName="OVER_TO_APPROVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Over to Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="OVER" workflowDestinationName="OVER_TO_WAIT_INFORMATION" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Over to Waiting for Credit Information" />
+                <workflowDestinationStep destinationWorkflowStepName="WAIT_INFORMATION" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="WAIT_APPROVAL" workflowDestinationName="WAIT_APPROVAL_TO_APPROVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Waiting for Approval to Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="WAIT_APPROVAL" workflowDestinationName="WAIT_APPROVAL_TO_NOT_APPROVED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Waiting for Approval to Not Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="NOT_APPROVED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="WAIT_APPROVAL" workflowDestinationName="WAIT_APPROVAL_TO_WAIT_INFORMATION" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Waiting for Approval to Waiting for Credit Information" />
+                <workflowDestinationStep destinationWorkflowStepName="WAIT_INFORMATION" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="WAIT_INFORMATION" workflowDestinationName="WAIT_INFORMATION_TO_APPROVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Waiting for Information to Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="WAIT_INFORMATION" workflowDestinationName="WAIT_INFORMATION_TO_NOT_APPROVED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Waiting for Information to Not Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="NOT_APPROVED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="APPROVED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Credit Approved" />
+                <workflowEntranceStep entranceWorkflowStepName="APPROVED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="WAITING_APPROVAL" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Waiting for Approval" />
+                <workflowEntranceStep entranceWorkflowStepName="WAITING_APPROVAL" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="SALES_ORDER_BATCH_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="SalesOrderBatchStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Sales Order Batch Status" />
+            <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry" />
+            </workflowStep>
+            <workflowStep workflowStepName="AUDIT" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Audit" />
+            </workflowStep>
+            <workflowStep workflowStepName="COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Complete" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_AUDIT" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry to Audit" />
+                <workflowDestinationStep destinationWorkflowStepName="AUDIT" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Audit" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="AUDIT" workflowDestinationName="AUDIT_TO_ENTRY" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Audit to Entry" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Entry" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="AUDIT" workflowDestinationName="AUDIT_TO_COMPLETE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Audit to Complete" />
+                <workflowDestinationStep destinationWorkflowStepName="COMPLETE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Complete" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="ENTRY" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Entry" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Batch" />
+        </workflow>
+        <workflow workflowName="SALES_ORDER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="SalesOrderStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Sales Order Status" />
+            <workflowStep workflowStepName="ENTRY_ALLOCATED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry (Inventory Allocated)" />
+            </workflowStep>
+            <workflowStep workflowStepName="ENTRY_UNALLOCATED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry (Inventory Not Allocated)" />
+            </workflowStep>
+            <workflowStep workflowStepName="BATCH_AUDIT" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Batch Audit" />
+            </workflowStep>
+            <workflowStep workflowStepName="ENTRY_COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry Complete" />
+            </workflowStep>
+            <workflowEntrance workflowEntranceName="ENTRY_ALLOCATED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Entry (Inventory Allocated)" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY_ALLOCATED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="ENTRY_UNALLOCATED" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Entry (Inventory Not Allocated)" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY_UNALLOCATED" />
+            </workflowEntrance>
+            <workflowDestination workflowStepName="ENTRY_ALLOCATED" workflowDestinationName="ENTRY_ALLOCATED_TO_UNALLOCATED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry Allocated to Unallocated" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_UNALLOCATED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ENTRY_UNALLOCATED" workflowDestinationName="ENTRY_UNALLOCATED_TO_ALLOCATED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry Unallocated to Allocated" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_ALLOCATED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ENTRY_ALLOCATED" workflowDestinationName="ENTRY_ALLOCATED_TO_BATCH_AUDIT" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry Allocated to Batch Audit" />
+                <workflowDestinationStep destinationWorkflowStepName="BATCH_AUDIT" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ENTRY_ALLOCATED" workflowDestinationName="ENTRY_ALLOCATED_TO_COMPLETE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry Allocated to Complete" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_COMPLETE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="BATCH_AUDIT" workflowDestinationName="BATCH_AUDIT_TO_COMPLETE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Batch Audit to Complete" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY_COMPLETE" />
+            </workflowDestination>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
+        </workflow>
+        <workflow workflowName="EVENT_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Event Group Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowStep workflowStepName="ARCHIVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Archived" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Event Group is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ARCHIVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Event Group is Archived" />
+                <workflowDestinationStep destinationWorkflowStepName="ARCHIVED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Event Group" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="EventGroup" />
+        </workflow>
+        <workflow workflowName="USER_VISIT_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="User Visit Group Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowStep workflowStepName="ARCHIVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Archived" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="User Visit Group is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ARCHIVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="User Visit Group is Archived" />
+                <workflowDestinationStep destinationWorkflowStepName="ARCHIVED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New User Visit Group" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="UserVisitGroup" />
+        </workflow>
+        <workflow workflowName="TRANSACTION_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Transaction Group Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowStep workflowStepName="ARCHIVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Archived" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Transaction Group is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ARCHIVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Transaction Group is Archived" />
+                <workflowDestinationStep destinationWorkflowStepName="ARCHIVED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Transaction Group" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="TransactionGroup" />
+        </workflow>
+        <workflow workflowName="PRINTER_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Printer Status" />
+            <workflowStep workflowStepName="ACCEPTING_JOBS" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Accepting Jobs" />
+            </workflowStep>
+            <workflowStep workflowStepName="PAUSED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Paused" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACCEPTING_JOBS" workflowDestinationName="ACCEPTING_JOBS_TO_PAUSED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Accepting Jobs to Paused" />
+                <workflowDestinationStep destinationWorkflowStepName="PAUSED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="PAUSED" workflowDestinationName="PAUSED_TO_ACCEPTING_JOBS" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Paused to Accepting Jobs" />
+                <workflowDestinationStep destinationWorkflowStepName="ACCEPTING_JOBS" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_PRINTER" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Printer" />
+                <workflowEntranceStep entranceWorkflowStepName="ACCEPTING_JOBS" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Printer" />
+        </workflow>
+        <workflow workflowName="PRINTER_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Printer Group Status" />
+            <workflowStep workflowStepName="QUEUEING_JOBS" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Queueing Jobs" />
+            </workflowStep>
+            <workflowStep workflowStepName="PAUSED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Paused" />
+            </workflowStep>
+            <workflowDestination workflowStepName="QUEUEING_JOBS" workflowDestinationName="QUEUEING_JOBS_TO_PAUSED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Queueing Jobs to Paused" />
+                <workflowDestinationStep destinationWorkflowStepName="PAUSED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="PAUSED" workflowDestinationName="PAUSED_TO_QUEUEING_JOBS" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Paused to Queueing Jobs" />
+                <workflowDestinationStep destinationWorkflowStepName="QUEUEING_JOBS" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_PRINTER_GROUP" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Printer Group" />
+                <workflowEntranceStep entranceWorkflowStepName="QUEUEING_JOBS" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PrinterGroup" />
+        </workflow>
+        <workflow workflowName="PRINTER_GROUP_JOB_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Printer Group Job Status" />
+            <workflowStep workflowStepName="QUEUED" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Queued" />
+            </workflowStep>
+            <workflowStep workflowStepName="PRINTED" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Printed" />
+            </workflowStep>
+            <workflowStep workflowStepName="ERRORED" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Errored" />
+            </workflowStep>
+            <workflowStep workflowStepName="DELETED" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Deleted" />
+            </workflowStep>
+            <workflowDestination workflowStepName="QUEUED" workflowDestinationName="QUEUED_TO_PRINTED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Job Queued" />
+                <workflowDestinationStep destinationWorkflowStepName="PRINTED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="QUEUED" workflowDestinationName="QUEUED_TO_ERRORED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Job Errored" />
+                <workflowDestinationStep destinationWorkflowStepName="ERRORED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="QUEUED" workflowDestinationName="QUEUED_TO_DELETED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Job Deleted" />
+                <workflowDestinationStep destinationWorkflowStepName="DELETED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="PRINTED" workflowDestinationName="PRINTED_TO_QUEUED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Requeue Job" />
+                <workflowDestinationStep destinationWorkflowStepName="QUEUED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="PRINTED" workflowDestinationName="PRINTED_TO_DELETED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Job Deleted" />
+                <workflowDestinationStep destinationWorkflowStepName="DELETED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ERRORED" workflowDestinationName="ERRORED_TO_QUEUED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Requeue Job" />
+                <workflowDestinationStep destinationWorkflowStepName="QUEUED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ERRORED" workflowDestinationName="ERRORED_TO_DELETED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Job Deleted" />
+                <workflowDestinationStep destinationWorkflowStepName="DELETED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="DELETED" workflowDestinationName="DELETED_TO_QUEUED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Requeue Job" />
+                <workflowDestinationStep destinationWorkflowStepName="QUEUED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_PRINTER_GROUP_JOB" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Printer Group Job" />
+                <workflowEntranceStep entranceWorkflowStepName="QUEUED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PrinterGroupJob" />
+        </workflow>
+        <workflow workflowName="LOCATION_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Location Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INVENTORY_PREP" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inventory Prep" />
+            </workflowStep>
+            <workflowStep workflowStepName="INVENTORY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inventory" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INVENTORY_PREP" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Active to Inventory Prep" />
+                <workflowDestinationStep destinationWorkflowStepName="INVENTORY_PREP" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Active to Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INVENTORY_PREP" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVENTORY_PREP" workflowDestinationName="INVENTORY_PREP_TO_ACTIVE" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Inventory Prep to Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVENTORY_PREP" workflowDestinationName="INVENTORY_PREP_TO_INVENTORY" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Inventory Prep to Inventory" />
+                <workflowDestinationStep destinationWorkflowStepName="INVENTORY" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVENTORY" workflowDestinationName="INVENTORY_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Inventory to Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Inactive to Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_LOCATION_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Location (Active)" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_LOCATION_INVENTORY_PREP" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Location (Inventory Prep)" />
+                <workflowEntranceStep entranceWorkflowStepName="INVENTORY_PREP" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_LOCATION_INVENTORY" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Location (Inventory)" />
+                <workflowEntranceStep entranceWorkflowStepName="INVENTORY" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Location" />
+        </workflow>
+        <workflow workflowName="INVENTORY_LOCATION_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Location Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INVENTORY_PREP" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inventory Prep" />
+            </workflowStep>
+            <workflowStep workflowStepName="INVENTORY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inventory" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INVENTORY_PREP" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Active to Inventory Prep" />
+                <workflowDestinationStep destinationWorkflowStepName="INVENTORY_PREP" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVENTORY_PREP" workflowDestinationName="INVENTORY_PREP_TO_ACTIVE" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Inventory Prep to Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVENTORY_PREP" workflowDestinationName="INVENTORY_PREP_TO_INVENTORY" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Inventory Prep to Inventory" />
+                <workflowDestinationStep destinationWorkflowStepName="INVENTORY" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVENTORY" workflowDestinationName="INVENTORY_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Inventory to Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_INVENTORY_LOCATION_GROUP" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Inventory Location Group" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="InventoryLocationGroup" />
+        </workflow>
+        <workflow workflowName="POSTAL_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Postal Address Status" />
+            <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Valid" />
+            </workflowStep>
+            <workflowStep workflowStepName="NIXIE_A" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Attempted, not known" />
+            </workflowStep>
+            <workflowDestination workflowStepName="VALID" workflowDestinationName="VALID_TO_NIXIE_A" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Valid to Attempted, not known" />
+                <workflowDestinationStep destinationWorkflowStepName="NIXIE_A" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="NIXIE_A" workflowDestinationName="NIXIE_A_TO_VALID" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Attempted, not known to Valid" />
+                <workflowDestinationStep destinationWorkflowStepName="VALID" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_POSTAL_ADDRESS" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Postal Address" />
+                <workflowEntranceStep entranceWorkflowStepName="VALID" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+        </workflow>
+        <workflow workflowName="EMAIL_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Email Address Status" />
+            <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Valid" />
+            </workflowStep>
+            <workflowStep workflowStepName="INVALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Invalid" />
+            </workflowStep>
+            <workflowDestination workflowStepName="VALID" workflowDestinationName="VALID_TO_INVALID" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Valid to Invalid" />
+                <workflowDestinationStep destinationWorkflowStepName="INVALID" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVALID" workflowDestinationName="INVALID_TO_VALID" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Invalid to Valid" />
+                <workflowDestinationStep destinationWorkflowStepName="VALID" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_EMAIL_ADDRESS" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Email Address" />
+                <workflowEntranceStep entranceWorkflowStepName="VALID" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+        </workflow>
+        <workflow workflowName="EMAIL_ADDRESS_VERIFICATION" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Email Address Verification" />
+            <workflowStep workflowStepName="NOT_VERIFIED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Not Verified" />
+            </workflowStep>
+            <workflowStep workflowStepName="VERIFIED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Verified" />
+            </workflowStep>
+            <workflowDestination workflowStepName="NOT_VERIFIED" workflowDestinationName="NOT_VERIFIED_TO_VERIFIED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Not Verified to Verified" />
+                <workflowDestinationStep destinationWorkflowStepName="VERIFIED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="VERIFIED" workflowDestinationName="VERIFIED_TO_NOT_VERIFIED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Verified to Not Verified" />
+                <workflowDestinationStep destinationWorkflowStepName="NOT_VERIFIED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_EMAIL_ADDRESS" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Email Address" />
+                <workflowEntranceStep entranceWorkflowStepName="NOT_VERIFIED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+        </workflow>
+        <workflow workflowName="TELEPHONE_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Telephone Status" />
+            <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Valid" />
+            </workflowStep>
+            <workflowStep workflowStepName="INVALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Invalid" />
+            </workflowStep>
+            <workflowDestination workflowStepName="VALID" workflowDestinationName="VALID_TO_INVALID" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Valid to Invalid" />
+                <workflowDestinationStep destinationWorkflowStepName="INVALID" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVALID" workflowDestinationName="INVALID_TO_VALID" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Invalid to Valid" />
+                <workflowDestinationStep destinationWorkflowStepName="VALID" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_TELEPHONE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Telephone" />
+                <workflowEntranceStep entranceWorkflowStepName="VALID" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+        </workflow>
+        <workflow workflowName="WEB_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Web Address Status" />
+            <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Valid" />
+            </workflowStep>
+            <workflowStep workflowStepName="INVALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Invalid" />
+            </workflowStep>
+            <workflowDestination workflowStepName="VALID" workflowDestinationName="VALID_TO_INVALID" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Valid to Invalid" />
+                <workflowDestinationStep destinationWorkflowStepName="INVALID" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INVALID" workflowDestinationName="INVALID_TO_VALID" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Invalid to Valid" />
+                <workflowDestinationStep destinationWorkflowStepName="VALID" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_WEB_ADDRESS" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Web Address" />
+                <workflowEntranceStep entranceWorkflowStepName="VALID" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+        </workflow>
+        <workflow workflowName="WORK_REQUIREMENT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Work Requirement Status" />
+            <workflowStep workflowStepName="UNASSIGNED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Unassigned" />
+            </workflowStep>
+            <workflowStep workflowStepName="ASSIGNED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Assigned" />
+            </workflowStep>
+            <workflowStep workflowStepName="COMPLETED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Completed" />
+            </workflowStep>
+            <workflowDestination workflowStepName="UNASSIGNED" workflowDestinationName="UNASSIGNED_TO_ASSIGNED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Assigned Requirement" />
+                <workflowDestinationStep destinationWorkflowStepName="ASSIGNED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ASSIGNED" workflowDestinationName="ASSIGNED_TO_UNASSIGNED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Unassigned Requirement" />
+                <workflowDestinationStep destinationWorkflowStepName="UNASSIGNED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ASSIGNED" workflowDestinationName="ASSIGNED_TO_COMPLETED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Completed Requirement" />
+                <workflowDestinationStep destinationWorkflowStepName="COMPLETED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_UNASSIGNED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Unassigned" />
+                <workflowEntranceStep entranceWorkflowStepName="UNASSIGNED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_ASSIGNED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Assigned" />
+                <workflowEntranceStep entranceWorkflowStepName="ASSIGNED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="WorkRequirement" />
+        </workflow>
+        <workflow workflowName="WORK_ASSIGNMENT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Work Assignment Status" />
+            <workflowStep workflowStepName="ASSIGNED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Assigned" />
+            </workflowStep>
+            <workflowStep workflowStepName="ACCEPTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Accepted" />
+            </workflowStep>
+            <workflowStep workflowStepName="COMPLETED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Completed" />
+            </workflowStep>
+            <workflowStep workflowStepName="REASSIGN" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="4">
+                <workflowStepDescription languageIsoName="en" description="Reassign" />
+            </workflowStep>
+            <workflowStep workflowStepName="SUSPENDED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="5">
+                <workflowStepDescription languageIsoName="en" description="Suspended" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ASSIGNED" workflowDestinationName="ASSIGNED_TO_ACCEPTED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Accepted Assignment" />
+                <workflowDestinationStep destinationWorkflowStepName="ACCEPTED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ASSIGNED" workflowDestinationName="ASSIGNED_TO_REASSIGN" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Reassign Assignment" />
+                <workflowDestinationStep destinationWorkflowStepName="REASSIGN" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ACCEPTED" workflowDestinationName="ACCEPTED_TO_COMPLETED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Complete Assignment" />
+                <workflowDestinationStep destinationWorkflowStepName="COMPLETED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ACCEPTED" workflowDestinationName="ACCEPTED_TO_REASSIGN" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Reassign Assignment" />
+                <workflowDestinationStep destinationWorkflowStepName="REASSIGN" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ACCEPTED" workflowDestinationName="ACCEPTED_TO_SUSPENDED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Suspend Assignment" />
+                <workflowDestinationStep destinationWorkflowStepName="SUSPENDED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="REASSIGN" workflowDestinationName="REASSIGN_TO_ASSIGNED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Assigned Assignment" />
+                <workflowDestinationStep destinationWorkflowStepName="ASSIGNED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="REASSIGN" workflowDestinationName="REASSIGN_TO_ACCEPTED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Accepted Assignment" />
+                <workflowDestinationStep destinationWorkflowStepName="ACCEPTED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="SUSPENDED" workflowDestinationName="SUSPENDED_TO_ACCEPTED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Resume Assignment" />
+                <workflowDestinationStep destinationWorkflowStepName="ACCEPTED" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ASSIGNED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Assigned" />
+                <workflowEntranceStep entranceWorkflowStepName="ASSIGNED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_ACCEPTED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Accepted" />
+                <workflowEntranceStep entranceWorkflowStepName="ACCEPTED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="WorkAssignment" />
+        </workflow>
+        <workflow workflowName="WORK_TIME_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Work Time Status" />
+            <workflowStep workflowStepName="IN_PROGRESS" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="In Progress" />
+            </workflowStep>
+            <workflowStep workflowStepName="COMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Complete" />
+            </workflowStep>
+            <workflowStep workflowStepName="INCOMPLETE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Incomplete" />
+            </workflowStep>
+            <workflowDestination workflowStepName="IN_PROGRESS" workflowDestinationName="IN_PROGRESS_TO_COMPLETE" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Complete Time" />
+                <workflowDestinationStep destinationWorkflowStepName="COMPLETE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="IN_PROGRESS" workflowDestinationName="IN_PROGRESS_TO_INCOMPLETE" isDefault="false" sortOrder="2">
+                <workflowDestinationDescription languageIsoName="en" description="Incomplete Time" />
+                <workflowDestinationStep destinationWorkflowStepName="INCOMPLETE" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_IN_PROGRESS" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New In Progress" />
+                <workflowEntranceStep entranceWorkflowStepName="IN_PROGRESS" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_COMPLETE" isDefault="false" sortOrder="1">
+                <workflowEntranceDescription languageIsoName="en" description="New Complete" />
+                <workflowEntranceStep entranceWorkflowStepName="COMPLETE" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_INCOMPLETE" isDefault="false" sortOrder="2">
+                <workflowEntranceDescription languageIsoName="en" description="New Incomplete" />
+                <workflowEntranceStep entranceWorkflowStepName="COMPLETE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="WorkTime" />
+        </workflow>
+        <workflow workflowName="INCOMING_CUSTOMER_EMAIL" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Incoming Customer Email" />
+            <workflowStep workflowStepName="CLASSIFY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Classify" />
+            </workflowStep>
+            <!-- TODO: Incomplete -->
+            <workflowEntrance workflowEntranceName="NEW_COMMUNICATION_EVENT" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Communication Event" />
+                <workflowEntranceStep entranceWorkflowStepName="CLASSIFY" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CommunicationEvents" />
+        </workflow>
+        <workflow workflowName="OUTGOING_CUSTOMER_EMAIL" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Outgoing Customer Email" />
+            <workflowStep workflowStepName="REVIEW" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Review" />
+            </workflowStep>
+            <workflowStep workflowStepName="SEND" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Send" />
+            </workflowStep>
+            <!-- TODO: Incomplete -->
+            <workflowEntrance workflowEntranceName="NEW_COMMUNICATION_EVENT_REVIEW" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Communication Event Review" />
+                <workflowEntranceStep entranceWorkflowStepName="REVIEW" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_COMMUNICATION_EVENT_SEND" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Communication Event Send" />
+                <workflowEntranceStep entranceWorkflowStepName="SEND" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CommunicationEvents" />
+        </workflow>
+        <workflow workflowName="PARTY_CONTACT_LIST_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Party Contact List Status" />
+            <workflowStep workflowStepName="AWAITING_VERIFICATION" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Awaiting Verification" />
+            </workflowStep>
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="SUSPENDED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Suspended" />
+            </workflowStep>
+            <workflowDestination workflowStepName="AWAITING_VERIFICATION" workflowDestinationName="VERIFIED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Verified" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="SUSPEND_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Suspend" />
+                <workflowDestinationStep destinationWorkflowStepName="SUSPENDED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="SUSPENDED" workflowDestinationName="RESUME_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Resume" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_AWAITING_VERIFICATION" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Awaiting Verification" />
+                <workflowEntranceStep entranceWorkflowStepName="AWAITING_VERIFICATION" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="Active" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyContactList" />
+        </workflow>
+        <workflow workflowName="JOB_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="JobStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Job Status" />
+            <workflowStep workflowStepName="ENABLED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Enabled" />
+            </workflowStep>
+            <workflowStep workflowStepName="DISABLED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Disabled" />
+            </workflowStep>
+            <workflowStep workflowStepName="ERROR" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Error" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ENABLED" workflowDestinationName="ENABLED_TO_DISABLED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Enabled to Disabled" />
+                <workflowDestinationStep destinationWorkflowStepName="DISABLED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Disable" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="ENABLED" workflowDestinationName="ENABLED_TO_ERROR" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Enabled to Error" />
+                <workflowDestinationStep destinationWorkflowStepName="ERROR" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="DISABLED" workflowDestinationName="DISABLED_TO_ENABLED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Disabled to Enabled" />
+                <workflowDestinationStep destinationWorkflowStepName="ENABLED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Enable" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="ERROR" workflowDestinationName="ERROR_TO_ENABLED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Error to Enabled" />
+                <workflowDestinationStep destinationWorkflowStepName="ENABLED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Enable" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ENABLED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Enabled Job" />
+                <workflowEntranceStep entranceWorkflowStepName="ENABLED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_DISABLED" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Disabled Job" />
+                <workflowEntranceStep entranceWorkflowStepName="DISABLED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Job" />
+        </workflow>
+        <workflow workflowName="BASE_ENCRYPTION_KEY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="BaseEncryptionKeyStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Base Encryption Key Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowStep workflowStepName="DESTROYED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="3">
+                <workflowStepDescription languageIsoName="en" description="Destroyed" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Base Encryption Key is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_DESTROYED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Base Encryption Key has been Destroyed" />
+                <workflowDestinationStep destinationWorkflowStepName="DESTROYED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Destroyed" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Base Encryption Key" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="BaseEncryptionKey" />
+        </workflow>
+        <workflow workflowName="PURCHASE_INVOICE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PurchaseInvoiceStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Purchase Invoice Status" />
+            <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Entry" />
+            </workflowStep>
+            <workflowStep workflowStepName="CODING_APPROVAL" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Coding Approval" />
+            </workflowStep>
+            <workflowStep workflowStepName="PAYMENT_APPROVAL" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Payment Approval" />
+            </workflowStep>
+            <workflowStep workflowStepName="APPROVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Approved" />
+            </workflowStep>
+            <workflowStep workflowStepName="READY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Ready" />
+            </workflowStep>
+            <workflowStep workflowStepName="PAID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Paid" />
+            </workflowStep>
+            <workflowStep workflowStepName="WRITEOFF" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Writeoff" />
+            </workflowStep>
+            <workflowStep workflowStepName="CANCELLED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Cancelled" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ENTRY" workflowDestinationName="ENTRY_TO_CODING_APPROVAL" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Entry to Coding Approval" />
+                <workflowDestinationStep destinationWorkflowStepName="CODING_APPROVAL" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="EntryToCodingApproval" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="CODING_APPROVAL" workflowDestinationName="CODING_APPROVAL_TO_ENTRY" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Coding Approval To Entry" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="CodingApprovalToEntry" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="CODING_APPROVAL" workflowDestinationName="CODING_APPROVAL_TO_PAYMENT_APPROVAL" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Coding Approval To Payment Approval" />
+                <workflowDestinationStep destinationWorkflowStepName="PAYMENT_APPROVAL" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="CodingApprovalToPaymentApproval" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="PAYMENT_APPROVAL" workflowDestinationName="PAYMENT_APPROVAL_TO_ENTRY" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Payment Approval To Entry" />
+                <workflowDestinationStep destinationWorkflowStepName="ENTRY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="PaymentApprovalToEntry" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="PAYMENT_APPROVAL" workflowDestinationName="PAYMENT_APPROVAL_TO_APPROVED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Payment Approval To Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="PaymentApprovalToApproved" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ENTRY" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Entry" />
+                <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Invoice" />
+        </workflow>
+        <workflow workflowName="FISCAL_PERIOD_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="FiscalPeriodStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Fiscal Period Status" />
+            <workflowStep workflowStepName="OPEN" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Open" />
+            </workflowStep>
+            <workflowStep workflowStepName="CLOSED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Closed" />
+            </workflowStep>
+            <workflowStep workflowStepName="FINAL" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Final" />
+            </workflowStep>
+            <workflowDestination workflowStepName="OPEN" workflowDestinationName="OPEN_TO_CLOSED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Open to Closed" />
+                <workflowDestinationStep destinationWorkflowStepName="CLOSED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="OpenToClosed" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="CLOSED" workflowDestinationName="CLOSED_TO_OPEN" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Closed to Open" />
+                <workflowDestinationStep destinationWorkflowStepName="OPEN" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="ClosedToOpen" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="CLOSED" workflowDestinationName="CLOSED_TO_FINAL" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Closed to Final" />
+                <workflowDestinationStep destinationWorkflowStepName="FINAL" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="ClosedToFinal" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_FISCAL_PERIOD" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Fiscal Period" />
+                <workflowEntranceStep entranceWorkflowStepName="OPEN" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Period" />
+        </workflow>
+        <workflow workflowName="VENDOR_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="VendorStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Vendor Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Vendor is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Vendor is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Vendor" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="VENDOR_ITEM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="VendorItemStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Vendor Item Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Vendor Item is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Vendor Item is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Vendor Item" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="VendorItem" />
+        </workflow>
+        <workflow workflowName="PARTY_TRAINING_CLASS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Party Training Class Status" />
+            <workflowStep workflowStepName="ASSIGNED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Assigned" />
+            </workflowStep>
+            <workflowStep workflowStepName="TRAINING" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Training" />
+            </workflowStep>
+            <workflowStep workflowStepName="PASSED" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Passed" />
+            </workflowStep>
+            <workflowStep workflowStepName="FAILED" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Failed" />
+            </workflowStep>
+            <workflowStep workflowStepName="EXPIRED" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="false" sortOrder="1">
+                <workflowStepDescription languageIsoName="en" description="Expired" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ASSIGNED" workflowDestinationName="ASSIGNED_TO_TRAINING" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Assigned to Training" />
+                <workflowDestinationStep destinationWorkflowStepName="TRAINING" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="TRAINING" workflowDestinationName="TRAINING_TO_PASSED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Training to Passed" />
+                <workflowDestinationStep destinationWorkflowStepName="PASSED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="TRAINING" workflowDestinationName="TRAINING_TO_FAILED" isDefault="false" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Training to Failed" />
+                <workflowDestinationStep destinationWorkflowStepName="FAILED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="PASSED" workflowDestinationName="PASSED_TO_EXPIRED" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Passed to Expired" />
+                <workflowDestinationStep destinationWorkflowStepName="EXPIRED" />
+            </workflowDestination>
+            <workflowDestination workflowStepName="FAILED" workflowDestinationName="FAILED_TO_TRAINING" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Failed to Training" />
+                <workflowDestinationStep destinationWorkflowStepName="TRAINING" />
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ASSIGNED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Assigned" />
+                <workflowEntranceStep entranceWorkflowStepName="ASSIGNED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_PASSED" isDefault="false" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Passed" />
+                <workflowEntranceStep entranceWorkflowStepName="PASSED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyTrainingClass" />
+        </workflow>
+        <workflow workflowName="PARTY_CANCELLATION_POLICY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PartyCancellationPolicyStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Party Cancellation Policy Status" />
+            <workflowStep workflowStepName="NOT_ACCEPTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Not Accepted" />
+            </workflowStep>
+            <workflowStep workflowStepName="ACCEPTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Accepted" />
+            </workflowStep>
+            <workflowDestination workflowStepName="NOT_ACCEPTED" workflowDestinationName="ACCEPT_CANCELLATION_POLICY" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Accept Cancellation Policy" />
+                <workflowDestinationStep destinationWorkflowStepName="ACCEPTED" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Accept" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_PARTY_CANCELLATION_POLICY" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Party Cancellation Policy" />
+                <workflowEntranceStep entranceWorkflowStepName="NOT_ACCEPTED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyCancellationPolicy" />
+        </workflow>
+        <workflow workflowName="PARTY_RETURN_POLICY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PartyReturnPolicyStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Party Return Policy Status" />
+            <workflowStep workflowStepName="NOT_ACCEPTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Not Accepted" />
+            </workflowStep>
+            <workflowStep workflowStepName="ACCEPTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Accepted" />
+            </workflowStep>
+            <workflowDestination workflowStepName="NOT_ACCEPTED" workflowDestinationName="ACCEPT_RETURN_POLICY" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Accept Return Policy" />
+                <workflowDestinationStep destinationWorkflowStepName="ACCEPTED" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Accept" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_PARTY_RETURN_POLICY" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Party Return Policy" />
+                <workflowEntranceStep entranceWorkflowStepName="NOT_ACCEPTED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyReturnPolicy" />
+        </workflow>
+        <workflow workflowName="LEAVE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="LeaveStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Leave Status" />
+            <workflowStep workflowStepName="SUBMITTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Submitted" />
+            </workflowStep>
+            <workflowStep workflowStepName="APPROVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Approved" />
+            </workflowStep>
+            <workflowStep workflowStepName="DENIED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Denied" />
+            </workflowStep>
+            <workflowStep workflowStepName="REVISED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Revised" />
+            </workflowStep>
+            <workflowStep workflowStepName="TAKEN" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Taken" />
+            </workflowStep>
+            <workflowStep workflowStepName="NOT_TAKEN" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Not Taken" />
+            </workflowStep>
+            <workflowDestination workflowStepName="SUBMITTED" workflowDestinationName="SUBMITTED_TO_APPROVED" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Leave Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Submitted" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="SUBMITTED" workflowDestinationName="SUBMITTED_TO_DENIED" isDefault="false" sortOrder="2">
+                <workflowDestinationDescription languageIsoName="en" description="Leave Denied" />
+                <workflowDestinationStep destinationWorkflowStepName="DENIED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Submitted" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="APPROVED" workflowDestinationName="APPROVED_TO_TAKEN" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Approved Leave Taken" />
+                <workflowDestinationStep destinationWorkflowStepName="TAKEN" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Approved" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="APPROVED" workflowDestinationName="APPROVED_TO_NOT_TAKEN" isDefault="false" sortOrder="2">
+                <workflowDestinationDescription languageIsoName="en" description="Approved Leave Not Taken" />
+                <workflowDestinationStep destinationWorkflowStepName="NOT_TAKEN" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Approved" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="APPROVED" workflowDestinationName="APPROVED_TO_REVISED" isDefault="false" sortOrder="3">
+                <workflowDestinationDescription languageIsoName="en" description="Approved Leave Revised" />
+                <workflowDestinationStep destinationWorkflowStepName="REVISED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Approved" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="DENIED" workflowDestinationName="DENIED_TO_REVISED" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Denied Leave Revised" />
+                <workflowDestinationStep destinationWorkflowStepName="REVISED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Denied" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="REVISED" workflowDestinationName="REVISED_TO_APPROVED" isDefault="true" sortOrder="1">
+                <workflowDestinationDescription languageIsoName="en" description="Revised Leave Approved" />
+                <workflowDestinationStep destinationWorkflowStepName="APPROVED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Revised" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="REVISED" workflowDestinationName="REVISED_TO_DENIED" isDefault="false" sortOrder="2">
+                <workflowDestinationDescription languageIsoName="en" description="Revised Leave Denied" />
+                <workflowDestinationStep destinationWorkflowStepName="DENIED" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Revised" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_SUBMITTED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Submitted" />
+                <workflowEntranceStep entranceWorkflowStepName="SUBMITTED" />
+            </workflowEntrance>
+            <workflowEntrance workflowEntranceName="NEW_APPROVED" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Approved" />
+                <workflowEntranceStep entranceWorkflowStepName="APPROVED" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Leave" />
+        </workflow>
+        <workflow workflowName="CAMPAIGN_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Campaign Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Campaign" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="CAMPAIGN_SOURCE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignSourceStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Campaign Source Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign Source is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign Source is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Campaign Source" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="CAMPAIGN_MEDIUM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignMediumStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Campaign Medium Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign Medium is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign Medium is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Campaign Medium" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="CAMPAIGN_TERM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignTermStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Campaign Term Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign Term is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign Term is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Campaign Term" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="CAMPAIGN_CONTENT_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignContentStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Campaign Content Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign Content is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Campaign Content is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Campaign Content" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+        <workflow workflowName="TRACK_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="TrackStatus" sortOrder="0">
+            <workflowDescription languageIsoName="en" description="Track Status" />
+            <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Active" />
+            </workflowStep>
+            <workflowStep workflowStepName="INACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="0">
+                <workflowStepDescription languageIsoName="en" description="Inactive" />
+            </workflowStep>
+            <workflowDestination workflowStepName="ACTIVE" workflowDestinationName="ACTIVE_TO_INACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Track is Inactive" />
+                <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Inactive" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowDestinationDescription languageIsoName="en" description="Track is Active" />
+                <workflowDestinationStep destinationWorkflowStepName="ACTIVE" />
+                <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Active" />
+                </workflowDestinationPartyType>
+            </workflowDestination>
+            <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
+                <workflowEntranceDescription languageIsoName="en" description="New Track" />
+                <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+            </workflowEntrance>
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+        </workflow>
+    </workflows>
+</initialData>

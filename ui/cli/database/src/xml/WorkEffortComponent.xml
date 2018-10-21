@@ -1,0 +1,244 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="WorkEffort">
+            <tables>
+                <table namePlural="WorkEffortTypes" nameSingular="WorkEffortType" columnPrefix="wet">
+                    <columns>
+                        <column name="WorkEffortTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkEffortTypeDetails" destinationColumn="WorkEffortTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkEffortTypeDetails" destinationColumn="WorkEffortTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkEffortTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkEffortTypeDetails" nameSingular="WorkEffortTypeDetail" columnPrefix="wetdt">
+                    <columns>
+                        <column name="WorkEffortTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkEffortTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortTypes" destinationColumn="WorkEffortTypeId" />
+                        <column name="WorkEffortTypeName" type="Name" nullAllowed="false" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="WorkEffortSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="ScheduledTime" type="Time" nullAllowed="true" />
+                        <column name="EstimatedTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="MaximumTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkEffortTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkEffortTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkEffortTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="WorkEffortSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkEffortTypeDescriptions" nameSingular="WorkEffortTypeDescription" columnPrefix="wetd">
+                    <columns>
+                        <column name="WorkEffortTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkEffortTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortTypes" destinationColumn="WorkEffortTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkEffortTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkEffortTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkEffortScopes" nameSingular="WorkEffortScope" columnPrefix="wes">
+                    <columns>
+                        <column name="WorkEffortScopeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkEffortScopeDetails" destinationColumn="WorkEffortScopeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkEffortScopeDetails" destinationColumn="WorkEffortScopeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkEffortScopeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkEffortScopeDetails" nameSingular="WorkEffortScopeDetail" columnPrefix="wesdt">
+                    <columns>
+                        <column name="WorkEffortScopeDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkEffortScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
+                        <column name="WorkEffortTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortTypes" destinationColumn="WorkEffortTypeId" />
+                        <column name="WorkEffortScopeName" type="Name" nullAllowed="false" />
+                        <column name="WorkEffortSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="ScheduledTime" type="Time" nullAllowed="true" />
+                        <column name="EstimatedTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="MaximumTimeAllowed" type="Time" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkEffortScopeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkEffortScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkEffortTypeId" />
+                            <indexColumn name="WorkEffortScopeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkEffortTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="WorkEffortSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkEffortScopeDescriptions" nameSingular="WorkEffortScopeDescription" columnPrefix="wesd">
+                    <columns>
+                        <column name="WorkEffortScopeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkEffortScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkEffortScopeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkEffortScopeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkEfforts" nameSingular="WorkEffort" columnPrefix="weff">
+                    <columns>
+                        <column name="WorkEffortId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkEffortDetails" destinationColumn="WorkEffortDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkEffortDetails" destinationColumn="WorkEffortDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkEffortId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkEffortDetails" nameSingular="WorkEffortDetail" columnPrefix="weffdt">
+                    <columns>
+                        <column name="WorkEffortDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkEffortId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEfforts" destinationColumn="WorkEffortId" />
+                        <column name="WorkEffortName" type="Name" nullAllowed="false" />
+                        <column name="OwningEntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="WorkEffortScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
+                        <column name="ScheduledTime" type="Time" nullAllowed="false" />
+                        <column name="ScheduledStartTime" type="Time" nullAllowed="true" />
+                        <column name="ScheduledEndTime" type="Time" nullAllowed="true" />
+                        <column name="EstimatedTimeAllowed" type="Time" nullAllowed="false" />
+                        <column name="MaximumTimeAllowed" type="Time" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkEffortDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkEffortId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkEffortName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="OwningEntityInstanceId" />
+                            <indexColumn name="WorkEffortScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="OwningEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="WorkEffortScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

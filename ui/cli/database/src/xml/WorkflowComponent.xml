@@ -1,0 +1,700 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Workflow">
+            <tables>
+                <table namePlural="WorkflowTypes" nameSingular="WorkflowType" columnPrefix="wkflt">
+                    <columns>
+                        <column name="WorkflowTypeId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="WorkflowTypeName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowTypeDescriptions" nameSingular="WorkflowTypeDescription" columnPrefix="wkfltd">
+                    <columns>
+                        <column name="WorkflowTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowTypes" destinationColumn="WorkflowTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowStepTypes" nameSingular="WorkflowStepType" columnPrefix="wkflst">
+                    <columns>
+                        <column name="WorkflowStepTypeId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowStepTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowStepTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="WorkflowStepTypeName" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="IsDefault" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowStepTypeDescriptions" nameSingular="WorkflowStepTypeDescription" columnPrefix="wkflstd">
+                    <columns>
+                        <column name="WorkflowStepTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowStepTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowStepTypes" destinationColumn="WorkflowStepTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowStepTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowStepTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Workflows" nameSingular="Workflow" columnPrefix="wkfl">
+                    <columns>
+                        <column name="WorkflowId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowDetails" destinationColumn="WorkflowDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowDetails" destinationColumn="WorkflowDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDetails" nameSingular="WorkflowDetail" columnPrefix="wkfldt">
+                    <columns>
+                        <column name="WorkflowDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="WorkflowName" type="Name" nullAllowed="false" />
+                        <column name="WorkflowTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowTypes" destinationColumn="WorkflowTypeId" />
+                        <column name="SelectorTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SelectorTypes" destinationColumn="SelectorTypeId" />
+                        <column name="SecurityRoleGroupId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SecurityRoleGroups" destinationColumn="SecurityRoleGroupId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkflowName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkflowTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SelectorTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="SecurityRoleGroupId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDescriptions" nameSingular="WorkflowDescription" columnPrefix="wkfld">
+                    <columns>
+                        <column name="WorkflowDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowSteps" nameSingular="WorkflowStep" columnPrefix="wkfls">
+                    <columns>
+                        <column name="WorkflowStepId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowStepDetails" destinationColumn="WorkflowStepDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowStepDetails" destinationColumn="WorkflowStepDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowStepId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowStepDetails" nameSingular="WorkflowStepDetail" columnPrefix="wkflsdt">
+                    <columns>
+                        <column name="WorkflowStepDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowSteps" destinationColumn="WorkflowStepId" />
+                        <column name="WorkflowId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="WorkflowStepName" type="Name" nullAllowed="false" />
+                        <column name="WorkflowStepTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowStepTypes" destinationColumn="WorkflowStepTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowStepDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="WorkflowStepName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="WorkflowStepTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowStepDescriptions" nameSingular="WorkflowStepDescription" columnPrefix="wkflsd">
+                    <columns>
+                        <column name="WorkflowStepDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowSteps" destinationColumn="WorkflowStepId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowStepDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntityTypes" nameSingular="WorkflowEntityType" columnPrefix="wkflent">
+                    <columns>
+                        <column name="WorkflowEntityTypeId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntityTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntrances" nameSingular="WorkflowEntrance" columnPrefix="wkflen">
+                    <columns>
+                        <column name="WorkflowEntranceId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntranceDetails" destinationColumn="WorkflowEntranceDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntranceDetails" destinationColumn="WorkflowEntranceDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntranceId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntranceDetails" nameSingular="WorkflowEntranceDetail" columnPrefix="wkflendt">
+                    <columns>
+                        <column name="WorkflowEntranceDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowEntranceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="WorkflowId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="WorkflowEntranceName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntranceDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowEntranceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="WorkflowEntranceName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntranceDescriptions" nameSingular="WorkflowEntranceDescription" columnPrefix="wkflend">
+                    <columns>
+                        <column name="WorkflowEntranceDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowEntranceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntranceDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowEntranceId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntranceSelectors" nameSingular="WorkflowEntranceSelector" columnPrefix="wkflensl">
+                    <columns>
+                        <column name="WorkflowEntranceSelectorId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowEntranceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="SelectorId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntranceSelectorId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowEntranceId" />
+                            <indexColumn name="SelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntrancePartyTypes" nameSingular="WorkflowEntrancePartyType" columnPrefix="wkflenptyp">
+                    <columns>
+                        <column name="WorkflowEntrancePartyTypeId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowEntranceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntrancePartyTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowEntranceId" />
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntranceSecurityRoles" nameSingular="WorkflowEntranceSecurityRole" columnPrefix="wkflensrol">
+                    <columns>
+                        <column name="WorkflowEntranceSecurityRoleId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowEntrancePartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowEntrancePartyTypes" destinationColumn="WorkflowEntrancePartyTypeId" />
+                        <column name="SecurityRoleId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SecurityRoles" destinationColumn="SecurityRoleId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntranceSecurityRoleId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowEntrancePartyTypeId" />
+                            <indexColumn name="SecurityRoleId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SecurityRoleId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntranceSteps" nameSingular="WorkflowEntranceStep" columnPrefix="wkflens">
+                    <columns>
+                        <column name="WorkflowEntranceStepId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowEntranceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="WorkflowStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowSteps" destinationColumn="WorkflowStepId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntranceStepId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowEntranceId" />
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDestinations" nameSingular="WorkflowDestination" columnPrefix="wkfldn">
+                    <columns>
+                        <column name="WorkflowDestinationId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowDestinationDetails" destinationColumn="WorkflowDestinationDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowDestinationDetails" destinationColumn="WorkflowDestinationDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDestinationId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDestinationDetails" nameSingular="WorkflowDestinationDetail" columnPrefix="wkfldndt">
+                    <columns>
+                        <column name="WorkflowDestinationDetailId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowDestinationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowDestinations" destinationColumn="WorkflowDestinationId" />
+                        <column name="WorkflowStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowSteps" destinationColumn="WorkflowStepId" />
+                        <column name="WorkflowDestinationName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDestinationDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowDestinationId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="WorkflowDestinationName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDestinationDescriptions" nameSingular="WorkflowDestinationDescription" columnPrefix="wkfldnd">
+                    <columns>
+                        <column name="WorkflowDestinationDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowDestinationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowDestinations" destinationColumn="WorkflowDestinationId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDestinationDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowDestinationId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDestinationSelectors" nameSingular="WorkflowDestinationSelector" columnPrefix="wkfldnsl">
+                    <columns>
+                        <column name="WorkflowDestinationSelectorId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowDestinationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowDestinations" destinationColumn="WorkflowDestinationId" />
+                        <column name="SelectorId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDestinationSelectorId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowDestinationId" />
+                            <indexColumn name="SelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDestinationPartyTypes" nameSingular="WorkflowDestinationPartyType" columnPrefix="wkfldnptyp">
+                    <columns>
+                        <column name="WorkflowDestinationPartyTypeId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowDestinationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowDestinations" destinationColumn="WorkflowDestinationId" />
+                        <column name="PartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyTypes" destinationColumn="PartyTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDestinationPartyTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowDestinationId" />
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDestinationSecurityRoles" nameSingular="WorkflowDestinationSecurityRole" columnPrefix="wkfldnsrol">
+                    <columns>
+                        <column name="WorkflowDestinationSecurityRoleId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowDestinationPartyTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowDestinationPartyTypes" destinationColumn="WorkflowDestinationPartyTypeId" />
+                        <column name="SecurityRoleId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SecurityRoles" destinationColumn="SecurityRoleId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDestinationSecurityRoleId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowDestinationPartyTypeId" />
+                            <indexColumn name="SecurityRoleId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="SecurityRoleId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowDestinationSteps" nameSingular="WorkflowDestinationStep" columnPrefix="wkfldns">
+                    <columns>
+                        <column name="WorkflowDestinationStepId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowDestinationId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowDestinations" destinationColumn="WorkflowDestinationId" />
+                        <column name="WorkflowStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowSteps" destinationColumn="WorkflowStepId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowDestinationStepId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowDestinationId" />
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowEntityStatuses" nameSingular="WorkflowEntityStatus" columnPrefix="wkfles">
+                    <columns>
+                        <column name="WorkflowEntityStatusId" type="EID" nullAllowed="false" />
+                        <column name="EntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="WorkflowStepId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowSteps" destinationColumn="WorkflowStepId" />
+                        <column name="WorkEffortScopeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowEntityStatusId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="WorkflowStepId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="WorkEffortScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowTriggers" nameSingular="WorkflowTrigger" columnPrefix="wkfltrg">
+                    <columns>
+                        <column name="WorkflowTriggerId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowEntityStatusId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkflowEntityStatuses" destinationColumn="WorkflowEntityStatusId" />
+                        <column name="TriggerTime" type="Time" nullAllowed="false" />
+                        <column name="ErrorsOccurred" type="Boolean" nullAllowed="true" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="WorkflowTriggerId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowEntityStatusId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TriggerTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="WorkflowSelectorKinds" nameSingular="WorkflowSelectorKind" columnPrefix="wkflslk">
+                    <columns>
+                        <column name="SelectorKindWorkflowId" type="EID" nullAllowed="false" />
+                        <column name="WorkflowId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="SelectorKindId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="SelectorKinds" destinationColumn="SelectorKindId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SelectorKindWorkflowId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="SelectorKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="WorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="SelectorKindId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

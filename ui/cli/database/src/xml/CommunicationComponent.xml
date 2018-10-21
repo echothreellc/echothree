@@ -1,0 +1,432 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Communication">
+            <tables>
+                <table namePlural="CommunicationSourceTypes" nameSingular="CommunicationSourceType" columnPrefix="cmmnsrctyp">
+                    <columns>
+                        <column name="CommunicationSourceTypeId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationSourceTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationSourceTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="CommunicationSourceTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationSourceTypeDescriptions" nameSingular="CommunicationSourceTypeDescription" columnPrefix="cmmnsrctypd">
+                    <columns>
+                        <column name="CommunicationSourceTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationSourceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationSourceTypes" destinationColumn="CommunicationSourceTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationSourceTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationSourceTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationSources" nameSingular="CommunicationSource" columnPrefix="cmmnsrc">
+                    <columns>
+                        <column name="CommunicationSourceId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationSourceDetails" destinationColumn="CommunicationSourceDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationSourceDetails" destinationColumn="CommunicationSourceDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationSourceId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationSourceDetails" nameSingular="CommunicationSourceDetail" columnPrefix="cmmnsrcdt">
+                    <columns>
+                        <column name="CommunicationSourceDetailId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationSources" destinationColumn="CommunicationSourceId" />
+                        <column name="CommunicationSourceName" type="Name" nullAllowed="false" />
+                        <column name="CommunicationSourceTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationSourceTypes" destinationColumn="CommunicationSourceTypeId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationSourceDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationSourceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CommunicationSourceName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CommunicationSourceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationSourceDescriptions" nameSingular="CommunicationSourceDescription" columnPrefix="cmmnsrcd">
+                    <columns>
+                        <column name="CommunicationSourceDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationSources" destinationColumn="CommunicationSourceId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationSourceDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationSourceId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CommunicationSourceId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEmailSources" nameSingular="CommunicationEmailSource" columnPrefix="cmmnesrc">
+                    <columns>
+                        <column name="CommunicationEmailSourceId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationSourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationSources" destinationColumn="CommunicationSourceId" />
+                        <column name="ServerId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Servers" destinationColumn="ServerId" />
+                        <column name="Username" type="Username" nullAllowed="false" />
+                        <column name="Password" type="EncodedValue" nullAllowed="false" />
+                        <column name="ReceiveWorkEffortScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
+                        <column name="SendWorkEffortScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
+                        <column name="ReviewEmployeeSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEmailSourceId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationSourceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ServerId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ReceiveWorkEffortScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SendWorkEffortScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ReviewEmployeeSelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventPurposes" nameSingular="CommunicationEventPurpose" columnPrefix="cmmnevpr">
+                    <columns>
+                        <column name="CommunicationEventPurposeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationEventPurposeDetails" destinationColumn="CommunicationEventPurposeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationEventPurposeDetails" destinationColumn="CommunicationEventPurposeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventPurposeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventPurposeDetails" nameSingular="CommunicationEventPurposeDetail" columnPrefix="cmmnevprdt">
+                    <columns>
+                        <column name="CommunicationEventPurposeDetailId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationEventPurposeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEventPurposes" destinationColumn="CommunicationEventPurposeId" />
+                        <column name="CommunicationEventPurposeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventPurposeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationEventPurposeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CommunicationEventPurposeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventPurposeDescriptions" nameSingular="CommunicationEventPurposeDescription" columnPrefix="cmmnevprd">
+                    <columns>
+                        <column name="CommunicationEventPurposeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationEventPurposeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEventPurposes" destinationColumn="CommunicationEventPurposeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventPurposeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationEventPurposeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="CommunicationEventPurposeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventTypes" nameSingular="CommunicationEventType" columnPrefix="cmmnevtyp">
+                    <columns>
+                        <column name="CommunicationEventTypeId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationEventTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="CommunicationEventTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventTypeDescriptions" nameSingular="CommunicationEventTypeDescription" columnPrefix="cmmnevtypd">
+                    <columns>
+                        <column name="CommunicationEventTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationEventTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEventTypes" destinationColumn="CommunicationEventTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationEventTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEvents" nameSingular="CommunicationEvent" columnPrefix="cmmnev">
+                    <columns>
+                        <column name="CommunicationEventId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationEventDetails" destinationColumn="CommunicationEventDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationEventDetails" destinationColumn="CommunicationEventDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventDetails" nameSingular="CommunicationEventDetail" columnPrefix="cmmnevdt">
+                    <columns>
+                        <column name="CommunicationEventDetailId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationEventId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEvents" destinationColumn="CommunicationEventId" />
+                        <column name="CommunicationEventName" type="Name" nullAllowed="false" />
+                        <column name="CommunicationEventTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEventTypes" destinationColumn="CommunicationEventTypeId" />
+                        <column name="CommunicationSourceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationSources" destinationColumn="CommunicationSourceId" />
+                        <column name="CommunicationEventPurposeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEventPurposes" destinationColumn="CommunicationEventPurposeId" />
+                        <column name="OriginalCommunicationEventId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationEvents" destinationColumn="CommunicationEventId" />
+                        <column name="ParentCommunicationEventId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CommunicationEvents" destinationColumn="CommunicationEventId" />
+                        <column name="PartyContactMechanismId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyContactMechanisms" destinationColumn="PartyContactMechanismId" />
+                        <column name="DocumentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Documents" destinationColumn="DocumentId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationEventId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="CommunicationEventName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CommunicationEventTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="CommunicationSourceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="CommunicationEventPurposeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="OriginalCommunicationEventId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ParentCommunicationEventId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="PartyContactMechanismId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index9">
+                            <indexColumn name="DocumentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventRoleTypes" nameSingular="CommunicationEventRoleType" columnPrefix="cmmnevrtyp">
+                    <columns>
+                        <column name="CommunicationEventRoleTypeId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationEventRoleTypeName" type="Name" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventRoleTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="CommunicationEventRoleTypeName" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventRoleTypeDescriptions" nameSingular="CommunicationEventRoleTypeDescription" columnPrefix="cmmnevrtypd">
+                    <columns>
+                        <column name="CommunicationEventRoleTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationEventRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEventRoleTypes" destinationColumn="CommunicationEventRoleTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventRoleTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationEventRoleTypeId" />
+                            <indexColumn name="LanguageId" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="CommunicationEventRoles" nameSingular="CommunicationEventRole" columnPrefix="cmmnevr">
+                    <columns>
+                        <column name="CommunicationEventRoleId" type="EID" nullAllowed="false" />
+                        <column name="CommunicationEventId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEvents" destinationColumn="CommunicationEventId"/>
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId"/>
+                        <column name="CommunicationEventRoleTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CommunicationEventRoleTypes" destinationColumn="CommunicationEventRoleTypeId"/>
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="CommunicationEventRoleId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="CommunicationEventId" />
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="CommunicationEventRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="CommunicationEventRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CommunicationEventId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="CommunicationEventRoleTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

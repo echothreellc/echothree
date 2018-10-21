@@ -1,0 +1,698 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Offer">
+            <tables>
+                <table namePlural="OfferNameElements" nameSingular="OfferNameElement" columnPrefix="ofrne">
+                    <columns>
+                        <column name="OfferNameElementId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OfferNameElementDetails" destinationColumn="OfferNameElementDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OfferNameElementDetails" destinationColumn="OfferNameElementDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferNameElementId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferNameElementDetails" nameSingular="OfferNameElementDetail" columnPrefix="ofrnedt">
+                    <columns>
+                        <column name="OfferNameElementDetailId" type="EID" nullAllowed="false" />
+                        <column name="OfferNameElementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferNameElements" destinationColumn="OfferNameElementId"/>
+                        <column name="OfferNameElementName" type="Name" nullAllowed="false" />
+                        <column name="Offset" type="Integer" nullAllowed="false" />
+                        <column name="Length" type="Integer" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferNameElementDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferNameElementId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="OfferNameElementName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferNameElementDescriptions" nameSingular="OfferNameElementDescription" columnPrefix="ofrned">
+                    <columns>
+                        <column name="OfferNameElementDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="OfferNameElementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferNameElements" destinationColumn="OfferNameElementId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferNameElementDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferNameElementId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OfferNameElementId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Offers" nameSingular="Offer" columnPrefix="ofr">
+                    <columns>
+                        <column name="OfferId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OfferDetails" destinationColumn="OfferDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OfferDetails" destinationColumn="OfferDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferDetails" nameSingular="OfferDetail" columnPrefix="ofrdt">
+                    <columns>
+                        <column name="OfferDetailId" type="EID" nullAllowed="false" />
+                        <column name="OfferId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Offers" destinationColumn="OfferId" />
+                        <column name="OfferName" type="Name" nullAllowed="false" />
+                        <column name="SalesOrderSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <column name="DepartmentPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="OfferItemSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="OfferItemPriceFilterId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Filters" destinationColumn="FilterId" />
+                        <!-- TODO: Details Go Here -->
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="OfferName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="SalesOrderSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="DepartmentPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="OfferItemSelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="OfferItemPriceFilterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferDescriptions" nameSingular="OfferDescription" columnPrefix="ofrd">
+                    <columns>
+                        <column name="OfferDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="OfferId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Offers" destinationColumn="OfferId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferCustomerTypes" nameSingular="OfferCustomerType" columnPrefix="ofrcuty">
+                    <columns>
+                        <column name="OfferCustomerTypeId" type="EID" nullAllowed="false" />
+                        <column name="OfferId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Offers" destinationColumn="OfferId" />
+                        <column name="CustomerTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="CustomerTypes" destinationColumn="CustomerTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferCustomerTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="CustomerTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferChainTypes" nameSingular="OfferChainType" columnPrefix="ofrchntyp">
+                    <columns>
+                        <column name="OfferChainTypeId" type="EID" nullAllowed="false" />
+                        <column name="OfferId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Offers" destinationColumn="OfferId" />
+                        <column name="ChainTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ChainTypes" destinationColumn="ChainTypeId" />
+                        <column name="ChainId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Chains" destinationColumn="ChainId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferChainTypeId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ChainTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ChainId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UseNameElements" nameSingular="UseNameElement" columnPrefix="usene">
+                    <columns>
+                        <column name="UseNameElementId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UseNameElementDetails" destinationColumn="UseNameElementDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UseNameElementDetails" destinationColumn="UseNameElementDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseNameElementId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UseNameElementDetails" nameSingular="UseNameElementDetail" columnPrefix="usenedt">
+                    <columns>
+                        <column name="UseNameElementDetailId" type="EID" nullAllowed="false" />
+                        <column name="UseNameElementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UseNameElements" destinationColumn="UseNameElementId"/>
+                        <column name="UseNameElementName" type="Name" nullAllowed="false" />
+                        <column name="Offset" type="Integer" nullAllowed="false" />
+                        <column name="Length" type="Integer" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseNameElementDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UseNameElementId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="UseNameElementName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UseNameElementDescriptions" nameSingular="UseNameElementDescription" columnPrefix="usened">
+                    <columns>
+                        <column name="UseNameElementDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="UseNameElementId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UseNameElements" destinationColumn="UseNameElementId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseNameElementDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UseNameElementId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="UseNameElementId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UseTypes" nameSingular="UseType" columnPrefix="usetyp">
+                    <columns>
+                        <column name="UseTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UseTypeDetails" destinationColumn="UseTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UseTypeDetails" destinationColumn="UseTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UseTypeDetails" nameSingular="UseTypeDetail" columnPrefix="usetypdt">
+                    <columns>
+                        <column name="UseTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="UseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UseTypes" destinationColumn="UseTypeId" />
+                        <column name="UseTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="UseTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UseTypeDescriptions" nameSingular="UseTypeDescription" columnPrefix="usetypd">
+                    <columns>
+                        <column name="UseTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="UseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UseTypes" destinationColumn="UseTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UseTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Uses" nameSingular="Use" columnPrefix="use">
+                    <columns>
+                        <column name="UseId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UseDetails" destinationColumn="UseDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UseDetails" destinationColumn="UseDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UseDetails" nameSingular="UseDetail" columnPrefix="usedt">
+                    <columns>
+                        <column name="UseDetailId" type="EID" nullAllowed="false" />
+                        <column name="UseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Uses" destinationColumn="UseId" />
+                        <column name="UseName" type="Name" nullAllowed="false" />
+                        <column name="UseTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UseTypes" destinationColumn="UseTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="UseName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UseTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="UseDescriptions" nameSingular="UseDescription" columnPrefix="used">
+                    <columns>
+                        <column name="UseDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="UseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Uses" destinationColumn="UseId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="UseDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="UseId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferUses" nameSingular="OfferUse" columnPrefix="ofruse">
+                    <columns>
+                        <column name="OfferUseId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OfferUseDetails" destinationColumn="OfferUseDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OfferUseDetails" destinationColumn="OfferUseDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferUseId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferUseDetails" nameSingular="OfferUseDetail" columnPrefix="ofrusedt">
+                    <columns>
+                        <column name="OfferUseDetailId" type="EID" nullAllowed="false" />
+                        <column name="OfferUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
+                        <column name="OfferId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Offers" destinationColumn="OfferId" />
+                        <column name="UseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Uses" destinationColumn="UseId" />
+                        <column name="SalesOrderSequenceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Sequences" destinationColumn="SequenceId" />
+                        <!-- TODO: Details Go Here -->
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferUseDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="UseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="UseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SalesOrderSequenceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Sources" nameSingular="Source" columnPrefix="src">
+                    <columns>
+                        <column name="SourceId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SourceDetails" destinationColumn="SourceDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SourceDetails" destinationColumn="SourceDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SourceId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="SourceDetails" nameSingular="SourceDetail" columnPrefix="srcdt">
+                    <columns>
+                        <column name="SourceDetailId" type="EID" nullAllowed="false" />
+                        <column name="SourceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Sources" destinationColumn="SourceId" />
+                        <column name="SourceName" type="Name" nullAllowed="false" />
+                        <column name="OfferUseId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferUses" destinationColumn="OfferUseId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="SourceDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="SourceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="SourceName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="OfferUseId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferItemTimes" nameSingular="OfferItemTime" columnPrefix="ofrit">
+                   <columns>
+                        <column name="OfferItemTimeId" type="EID" nullAllowed="false" />
+                        <column name="OfferId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Offers" destinationColumn="OfferId" />
+                        <column name="MaxItemCreatedTime" type="Time" nullAllowed="true" />
+                        <column name="MaxItemModifiedTime" type="Time" nullAllowed="true" />
+                        <column name="MaxItemDeletedTime" type="Time" nullAllowed="true" />
+                   </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferItemTimeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="OfferId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferItems" nameSingular="OfferItem" columnPrefix="ofri">
+                    <columns>
+                        <column name="OfferItemId" type="EID" nullAllowed="false" />
+                        <column name="OfferId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Offers" destinationColumn="OfferId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferItemId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="OfferId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferItemPrices" nameSingular="OfferItemPrice" columnPrefix="ofritmp">
+                    <columns>
+                        <column name="OfferItemPriceId" type="EID" nullAllowed="false" />
+                        <column name="OfferItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferItems" destinationColumn="OfferItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="CurrencyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Currencies" destinationColumn="CurrencyId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferItemPriceId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OfferItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="OfferItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="CurrencyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferItemFixedPrices" nameSingular="OfferItemFixedPrice" columnPrefix="ofritmfp">
+                    <columns>
+                        <column name="OfferItemFixedPriceId" type="EID" nullAllowed="false" />
+                        <column name="OfferItemPriceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferItemPrices" destinationColumn="OfferItemPriceId" />
+                        <column name="UnitPrice" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferItemFixedPriceId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferItemPriceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="OfferItemVariablePrices" nameSingular="OfferItemVariablePrice" columnPrefix="ofritmvp">
+                    <columns>
+                        <column name="OfferItemVariablePriceId" type="EID" nullAllowed="false" />
+                        <column name="OfferItemPriceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="OfferItemPrices" destinationColumn="OfferItemPriceId" />
+                        <column name="MinimumUnitPrice" type="Currency" nullAllowed="false" />
+                        <column name="MaximumUnitPrice" type="Currency" nullAllowed="false" />
+                        <column name="UnitPriceIncrement" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OfferItemVariablePriceId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OfferItemPriceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

@@ -1,0 +1,251 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.util.common.string;
+
+import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactOptions;
+import com.echothree.model.control.contact.remote.transfer.ContactPostalAddressTransfer;
+import com.echothree.model.control.contact.remote.transfer.PostalAddressFormatTransfer;
+import com.echothree.model.control.contact.remote.transfer.PostalAddressLineElementTransfer;
+import com.echothree.model.control.contact.remote.transfer.PostalAddressLineTransfer;
+import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.GeoOptions;
+import com.echothree.model.control.geo.remote.transfer.CityTransfer;
+import com.echothree.model.control.geo.remote.transfer.CountryTransfer;
+import com.echothree.model.control.geo.remote.transfer.CountyTransfer;
+import com.echothree.model.control.geo.remote.transfer.GeoCodeAliasTransfer;
+import com.echothree.model.control.geo.remote.transfer.PostalCodeTransfer;
+import com.echothree.model.control.geo.remote.transfer.StateTransfer;
+import com.echothree.model.control.party.remote.transfer.NameSuffixTransfer;
+import com.echothree.model.control.party.remote.transfer.PersonalTitleTransfer;
+import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.remote.transfer.MapWrapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+public class ContactPostalAddressUtils {
+    
+    private ContactPostalAddressUtils() {
+        super();
+    }
+    
+    private static class ContactPostalAddressUtilsHolder {
+        static ContactPostalAddressUtils instance = new ContactPostalAddressUtils();
+    }
+    
+    public static ContactPostalAddressUtils getInstance() {
+        return ContactPostalAddressUtilsHolder.instance;
+    }
+    
+    public Set<String> addOptions(Set<String> options) {
+        options.add(ContactOptions.PostalAddressFormatIncludeLines);
+        options.add(ContactOptions.PostalAddressLineIncludeElements);
+        options.add(GeoOptions.CountryIncludeAliases);
+        options.add(GeoOptions.StateIncludeAliases);
+        
+        return options;
+    }
+    
+    private String getCountryAlias(final String geoCodeAliasTypeName, final ContactPostalAddressTransfer contactPostalAddress) {
+        String addition;
+        CountryTransfer country = contactPostalAddress.getCountryGeoCode();
+        
+        if(country == null) {
+            throw new IllegalArgumentException("CountryGeoCode is not available to get " + geoCodeAliasTypeName + " Alias on ContactPostalAddress TO");
+        } else {
+            MapWrapper<GeoCodeAliasTransfer> geoCodeAliases = country.getGeoCodeAliases();
+
+            if(geoCodeAliases == null) {
+                throw new IllegalArgumentException("CountryIncludeAliases is a required Option to format ContactPostalAddress TO");
+            } else {
+                GeoCodeAliasTransfer geoCodeAlias = geoCodeAliases.getMap().get(geoCodeAliasTypeName);
+
+                if(geoCodeAlias == null) {
+                    throw new IllegalArgumentException(geoCodeAliasTypeName + " Alias is not available on ContactPostalAddress TO");
+                } else {
+                    addition = geoCodeAlias.getAlias();
+                }
+            }
+        }
+        
+        return addition;
+    }
+    
+    private String getLineElementAddition(final ContactPostalAddressTransfer contactPostalAddress, final String postalAddressElementTypeName) {
+        String addition = null;
+        
+        if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_PERSONAL_TITLE)) {
+            PersonalTitleTransfer personalTitle = contactPostalAddress.getPersonalTitle();
+            
+            if(personalTitle != null) {
+                addition = personalTitle.getDescription();
+            }
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_FIRST_NAME)) {
+            addition = contactPostalAddress.getFirstName();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_MIDDLE_NAME)) {
+            addition = contactPostalAddress.getMiddleName();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_LAST_NAME)) {
+            addition = contactPostalAddress.getLastName();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_NAME_SUFFIX)) {
+            NameSuffixTransfer nameSuffix = contactPostalAddress.getNameSuffix();
+            
+            if(nameSuffix != null) {
+                addition = nameSuffix.getDescription();
+            }
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COMPANY_NAME)) {
+            addition = contactPostalAddress.getCompanyName();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_ATTENTION)) {
+            addition = contactPostalAddress.getAttention();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_ADDRESS_1)) {
+            addition = contactPostalAddress.getAddress1();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_ADDRESS_2)) {
+            addition = contactPostalAddress.getAddress2();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_ADDRESS_3)) {
+            addition = contactPostalAddress.getAddress3();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_CITY)) {
+            CityTransfer city = contactPostalAddress.getCityGeoCode();
+            
+            addition = city == null? contactPostalAddress.getCity(): city.getDescription();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTY)) {
+            CountyTransfer county = contactPostalAddress.getCountyGeoCode();
+            
+            if(county != null) {
+                addition = county.getDescription();
+            }
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_STATE)) {
+            StateTransfer state = contactPostalAddress.getStateGeoCode();
+            
+            addition = state == null? contactPostalAddress.getState(): state.getDescription();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_STATE_POSTAL_2_LETTER)) {
+            StateTransfer state = contactPostalAddress.getStateGeoCode();
+            
+            if(state == null) {
+                throw new IllegalArgumentException("StateGeoCode is not available to get STATE_POSTAL_2_LETTER Alias on ContactPostalAddress TO");
+            } else {
+                MapWrapper<GeoCodeAliasTransfer> geoCodeAliases = state.getGeoCodeAliases();
+                
+                if(geoCodeAliases == null) {
+                    throw new IllegalArgumentException("StateIncludeAliases is a required Option to format ContactPostalAddress TO");
+                } else {
+                    GeoCodeAliasTransfer geoCodeAlias = geoCodeAliases.getMap().get(GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+                    
+                    if(geoCodeAlias == null) {
+                        throw new IllegalArgumentException("STATE_POSTAL_2_LETTER Alias is not available on ContactPostalAddress TO");
+                    } else {
+                        addition = geoCodeAlias.getAlias();
+                    }
+                }
+            }
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_POSTAL_CODE)) {
+            PostalCodeTransfer postalCode = contactPostalAddress.getPostalCodeGeoCode();
+            
+            addition = postalCode == null? contactPostalAddress.getPostalCode(): postalCode.getDescription();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTRY)) {
+            addition = contactPostalAddress.getCountryGeoCode().getDescription();
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTRY_ISO_3_NUMBER)) {
+            addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, contactPostalAddress);
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTRY_ISO_3_LETTER)) {
+            addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_3_LETTER, contactPostalAddress);
+        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTRY_ISO_2_LETTER)) {
+            addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_2_LETTER, contactPostalAddress);
+        }
+        
+        return addition == null? "": addition;
+    }
+    
+    private StringBuilder formatContactPostalAddressLine(final ContactPostalAddressTransfer contactPostalAddress, final PostalAddressLineTransfer postalAddressLine) {
+        ListWrapper<PostalAddressLineElementTransfer> postalAddressLineElements = postalAddressLine.getPostalAddressLineElements();
+        StringBuilder lineAddition = new StringBuilder();
+        
+        postalAddressLineElements.getList().stream().forEach((postalAddressLineElement) -> {
+            String lineElement = getLineElementAddition(contactPostalAddress, postalAddressLineElement.getPostalAddressElementType().getPostalAddressElementTypeName());
+            boolean lineElementHasLength = lineElement.length() != 0;
+            boolean alwaysIncludePrefix = postalAddressLineElement.getAlwaysIncludePrefix();
+            boolean alwaysIncludeSuffix = postalAddressLineElement.getAlwaysIncludeSuffix();
+            boolean addedToLine = false;
+            if (lineElementHasLength || alwaysIncludePrefix || alwaysIncludeSuffix) {
+                String prefix = postalAddressLineElement.getPrefix();
+                String suffix = postalAddressLineElement.getSuffix();
+                if(prefix != null && (lineElementHasLength || alwaysIncludePrefix)) {
+                    lineAddition.append(prefix);
+                    addedToLine = true;
+                }
+                if(lineElement.length() > 0) {
+                    lineAddition.append(lineElement);
+                    addedToLine = true;
+                }
+                if(suffix != null && (lineElementHasLength || alwaysIncludeSuffix)) {
+                    lineAddition.append(suffix);
+                    addedToLine = true;
+                }
+                if (addedToLine) {
+                    lineAddition.append(' ');
+                }
+            }
+        });
+        
+        return lineAddition;
+    }
+    
+    public List<String> formatContactPostalAddress(final ContactPostalAddressTransfer contactPostalAddress) {
+        PostalAddressFormatTransfer postalAddressFormat = contactPostalAddress.getCountryGeoCode().getPostalAddressFormat();
+        ListWrapper<PostalAddressLineTransfer> postalAddressLines = postalAddressFormat.getPostalAddressLines();
+        List<String> result = null;
+        
+        if(postalAddressLines == null) {
+            throw new IllegalArgumentException("PostalAddressFormatIncludeLines is a required Option to format ContactPostalAddress TO");
+        } else {
+            result = new ArrayList<>(postalAddressLines.getSize());
+            
+            for(PostalAddressLineTransfer postalAddressLine: postalAddressLines.getList()) {
+                StringBuilder resultLine = new StringBuilder();
+                ListWrapper<PostalAddressLineElementTransfer> postalAddressLineElements = postalAddressLine.getPostalAddressLineElements();
+                
+                if(postalAddressLineElements == null) {
+                    throw new IllegalArgumentException("PostalAddressLineIncludeElements is a required Option to format ContactPostalAddress TO");
+                } else {
+                    resultLine.append(formatContactPostalAddressLine(contactPostalAddress, postalAddressLine));
+                    
+                    boolean resultLineHasLength = resultLine.length() != 0;
+                    if(resultLineHasLength || !postalAddressLine.getCollapseIfEmpty()) {
+                        boolean alwaysIncludePrefix = postalAddressLine.getAlwaysIncludePrefix();
+                        boolean alwaysIncludeSuffix = postalAddressLine.getAlwaysIncludeSuffix();
+
+                        if(resultLineHasLength || alwaysIncludePrefix || alwaysIncludeSuffix) {
+                            String prefix = postalAddressLine.getPrefix();
+                            String suffix = postalAddressLine.getSuffix();
+
+                            if(prefix != null && (resultLineHasLength || alwaysIncludePrefix)) {
+                                resultLine = new StringBuilder(prefix).append(' ').append(resultLine);
+                            }
+
+                            if(suffix != null && (resultLineHasLength || alwaysIncludeSuffix)) {
+                                resultLine.append(suffix);
+                            }
+                        }
+
+                        result.add(resultLine.toString().trim());
+                    }
+                }
+            }
+        }
+        
+        return result;
+    }
+    
+}

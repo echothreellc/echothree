@@ -1,0 +1,190 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.cancellationpolicy.server.command;
+
+import com.echothree.control.user.cancellationpolicy.remote.edit.CancellationPolicyEditFactory;
+import com.echothree.control.user.cancellationpolicy.remote.edit.CancellationTypeEdit;
+import com.echothree.control.user.cancellationpolicy.remote.form.EditCancellationTypeForm;
+import com.echothree.control.user.cancellationpolicy.remote.result.CancellationPolicyResultFactory;
+import com.echothree.control.user.cancellationpolicy.remote.result.EditCancellationTypeResult;
+import com.echothree.control.user.cancellationpolicy.remote.spec.CancellationTypeSpec;
+import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationTypeDescription;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationTypeDetail;
+import com.echothree.model.data.cancellationpolicy.server.value.CancellationTypeDescriptionValue;
+import com.echothree.model.data.cancellationpolicy.server.value.CancellationTypeDetailValue;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.sequence.server.entity.Sequence;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditCancellationTypeCommand
+        extends BaseEditCommand<CancellationTypeSpec, CancellationTypeEdit> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.CancellationType.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+        
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CancellationTypeName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+        
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("CancellationTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CancellationSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of EditCancellationTypeCommand */
+    public EditCancellationTypeCommand(UserVisitPK userVisitPK, EditCancellationTypeForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        EditCancellationTypeResult result = CancellationPolicyResultFactory.getEditCancellationTypeResult();
+        String cancellationKindName = spec.getCancellationKindName();
+        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+        
+        if(cancellationKind != null) {
+            if(editMode.equals(EditMode.LOCK)) {
+                String cancellationTypeName = spec.getCancellationTypeName();
+                CancellationType cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
+                
+                if(cancellationType != null) {
+                    result.setCancellationType(cancellationPolicyControl.getCancellationTypeTransfer(getUserVisit(), cancellationType));
+                    
+                    if(lockEntity(cancellationType)) {
+                        CancellationTypeDescription cancellationTypeDescription = cancellationPolicyControl.getCancellationTypeDescription(cancellationType, getPreferredLanguage());
+                        CancellationTypeEdit edit = CancellationPolicyEditFactory.getCancellationTypeEdit();
+                        CancellationTypeDetail cancellationTypeDetail = cancellationType.getLastDetail();
+                        Sequence cancellationSequence = cancellationTypeDetail.getCancellationSequence();
+                        
+                        result.setEdit(edit);
+                        edit.setCancellationTypeName(cancellationTypeDetail.getCancellationTypeName());
+                        edit.setCancellationSequenceName(cancellationSequence == null? null: cancellationSequence.getLastDetail().getSequenceName());
+                        edit.setIsDefault(cancellationTypeDetail.getIsDefault().toString());
+                        edit.setSortOrder(cancellationTypeDetail.getSortOrder().toString());
+                        
+                        if(cancellationTypeDescription != null)
+                            edit.setDescription(cancellationTypeDescription.getDescription());
+                    } else {
+                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                    }
+                    
+                    result.setEntityLock(getEntityLockTransfer(cancellationType));
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownCancellationTypeName.name(), cancellationTypeName);
+                }
+            } else if(editMode.equals(EditMode.UPDATE)) {
+                String cancellationTypeName = spec.getCancellationTypeName();
+                CancellationType cancellationType = cancellationPolicyControl.getCancellationTypeByNameForUpdate(cancellationKind, cancellationTypeName);
+                
+                if(cancellationType != null) {
+                    cancellationTypeName = edit.getCancellationTypeName();
+                    CancellationType duplicateCancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
+                    
+                    if(duplicateCancellationType == null || cancellationType.equals(duplicateCancellationType)) {
+                        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                        String cancellationSequenceName = edit.getCancellationSequenceName();
+                        Sequence cancellationSequence = null;
+                        
+                        if(cancellationSequenceName != null) {
+                            cancellationSequence = sequenceControl.getSequenceByName(cancellationKind.getLastDetail().getCancellationSequenceType(),
+                                    cancellationSequenceName);
+                        }
+                        
+                        if(cancellationSequenceName == null || cancellationSequence != null) {
+                            if(lockEntityForUpdate(cancellationType)) {
+                                try {
+                                    PartyPK partyPK = getPartyPK();
+                                    CancellationTypeDetailValue cancellationTypeDetailValue = cancellationPolicyControl.getCancellationTypeDetailValueForUpdate(cancellationType);
+                                    CancellationTypeDescription cancellationTypeDescription = cancellationPolicyControl.getCancellationTypeDescriptionForUpdate(cancellationType, getPreferredLanguage());
+                                    String description = edit.getDescription();
+                                    
+                                    cancellationTypeDetailValue.setCancellationTypeName(edit.getCancellationTypeName());
+                                    cancellationTypeDetailValue.setCancellationSequencePK(cancellationSequence == null? null: cancellationSequence.getPrimaryKey());
+                                    cancellationTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+                                    cancellationTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+                                    
+                                    cancellationPolicyControl.updateCancellationTypeFromValue(cancellationTypeDetailValue, partyPK);
+                                    
+                                    if(cancellationTypeDescription == null && description != null) {
+                                        cancellationPolicyControl.createCancellationTypeDescription(cancellationType, getPreferredLanguage(), description, partyPK);
+                                    } else if(cancellationTypeDescription != null && description == null) {
+                                        cancellationPolicyControl.deleteCancellationTypeDescription(cancellationTypeDescription, partyPK);
+                                    } else if(cancellationTypeDescription != null && description != null) {
+                                        CancellationTypeDescriptionValue cancellationTypeDescriptionValue = cancellationPolicyControl.getCancellationTypeDescriptionValue(cancellationTypeDescription);
+                                        
+                                        cancellationTypeDescriptionValue.setDescription(description);
+                                        cancellationPolicyControl.updateCancellationTypeDescriptionFromValue(cancellationTypeDescriptionValue, partyPK);
+                                    }
+                                } finally {
+                                    unlockEntity(cancellationType);
+                                }
+                            } else {
+                                addExecutionError(ExecutionErrors.EntityLockStale.name());
+                            }
+                        } else {
+                            addExecutionError(ExecutionErrors.UnknownCancellationSequenceName.name(), cancellationSequenceName);
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.DuplicateCancellationTypeName.name(), cancellationTypeName);
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownCancellationTypeName.name(), cancellationTypeName);
+                }
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
+        }
+        
+        return result;
+    }
+    
+}

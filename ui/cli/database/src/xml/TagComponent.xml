@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Tag">
+            <tables>
+                <table namePlural="TagScopes" nameSingular="TagScope" columnPrefix="ts">
+                    <columns>
+                        <column name="TagScopeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TagScopeDetails" destinationColumn="TagScopeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TagScopeDetails" destinationColumn="TagScopeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TagScopeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TagScopeDetails" nameSingular="TagScopeDetail" columnPrefix="tsdt">
+                    <columns>
+                        <column name="TagScopeDetailId" type="EID" nullAllowed="false" />
+                        <column name="TagScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TagScopes" destinationColumn="TagScopeId" />
+                        <column name="TagScopeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TagScopeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TagScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TagScopeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TagScopeDescriptions" nameSingular="TagScopeDescription" columnPrefix="tsd">
+                    <columns>
+                        <column name="TagScopeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="TagScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TagScopes" destinationColumn="TagScopeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TagScopeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TagScopeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TagScopeEntityTypes" nameSingular="TagScopeEntityType" columnPrefix="tent">
+                    <columns>
+                        <column name="TagScopeEntityTypeId" type="EID" nullAllowed="false" />
+                        <column name="TagScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TagScopes" destinationColumn="TagScopeId" />
+                        <column name="EntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TagScopeEntityTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="TagScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="TagScopeId" />
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Tags" nameSingular="Tag" columnPrefix="t">
+                    <columns>
+                        <column name="TagId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TagDetails" destinationColumn="TagDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="TagDetails" destinationColumn="TagDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TagId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="TagDetails" nameSingular="TagDetail" columnPrefix="tdt">
+                    <columns>
+                        <column name="TagDetailId" type="EID" nullAllowed="false" />
+                        <column name="TagId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Tags" destinationColumn="TagId" />
+                        <column name="TagScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="TagScopes" destinationColumn="TagScopeId" />
+                        <column name="TagName" type="Name" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="TagDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TagId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="TagScopeId" />
+                            <indexColumn name="TagName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TagScopeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="EntityTags" nameSingular="EntityTag" columnPrefix="et">
+                    <columns>
+                        <column name="EntityTagId" type="EID" nullAllowed="false" />
+                        <column name="TaggedEntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="TagId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Tags" destinationColumn="TagId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="EntityTagId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="TaggedEntityInstanceId" />
+                            <indexColumn name="TagId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="TaggedEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="TagId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

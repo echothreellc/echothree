@@ -1,0 +1,20 @@
+----------------------------------------------------------------------
+
+2013 HTS (AES Filer) Record Layout
+
+----------------------------------------------------------------------
+
+Character  Name        Description of Field
+
+1-10       COMMODITY   Import Harmonized Code
+16-165     DESCRIP_1   Description of 10-digit commodity - Long
+171-173    QUANTITY_1  Alphabetic abbreviation of the first unit of quantity (as required by HTSUSA)
+179-181    QUANTITY_2  Alphabetic abbreviation of the second unit of quantity (if required by HTSUSA)
+
+----------------------------------------------------------------------
+NOTE: This structure applies to the file IMPAES.TXT found online at 
+http://www.census.gov/foreign-trade/aes/documentlibrary/index.html#concordance
+
+Update: This file was last updated on 31 December 2012
+Source: U.S. Census Bureau, Foreign Trade Division, Washington, DC 20233
+--------------------------------------------------------------------------------------

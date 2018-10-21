@@ -1,0 +1,184 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.item.remote.transfer;
+
+import com.echothree.model.control.core.remote.transfer.MimeTypeTransfer;
+import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.remote.transfer.BaseTransfer;
+
+public class ItemDescriptionTransfer
+        extends BaseTransfer {
+    
+    private ItemDescriptionTypeTransfer itemDescriptionType;
+    private ItemTransfer item;
+    private LanguageTransfer language;
+    private MimeTypeTransfer mimeType;
+    private ByteArray blobDescription;
+    private String clobDescription;
+    private String stringDescription;
+    private ItemImageTypeTransfer itemImageType;
+    private Integer height;
+    private Integer width;
+    private Boolean scaledFromParent;
+    private String eTag;
+    
+    /** Creates a new instance of ItemDescriptionTransfer */
+    public ItemDescriptionTransfer(ItemDescriptionTypeTransfer itemDescriptionType, ItemTransfer item, LanguageTransfer language, MimeTypeTransfer mimeType,
+            ByteArray blobDescription, String clobDescription, String stringDescription, ItemImageTypeTransfer itemImageType, Integer height, Integer width,
+            Boolean scaledFromParent, String eTag) {
+        this.itemDescriptionType = itemDescriptionType;
+        this.item = item;
+        this.language = language;
+        this.mimeType = mimeType;
+        this.blobDescription = blobDescription;
+        this.clobDescription = clobDescription;
+        this.stringDescription = stringDescription;
+        this.itemImageType = itemImageType;
+        this.height = height;
+        this.width = width;
+        this.scaledFromParent = scaledFromParent;
+        this.eTag = eTag;
+    }
+    
+    public ItemDescriptionTypeTransfer getItemDescriptionType() {
+        return itemDescriptionType;
+    }
+    
+    public void setItemDescriptionType(ItemDescriptionTypeTransfer itemDescriptionType) {
+        this.itemDescriptionType = itemDescriptionType;
+    }
+    
+    public ItemTransfer getItem() {
+        return item;
+    }
+    
+    public void setItem(ItemTransfer item) {
+        this.item = item;
+    }
+    
+    public LanguageTransfer getLanguage() {
+        return language;
+    }
+    
+    public void setLanguage(LanguageTransfer language) {
+        this.language = language;
+    }
+    
+    public MimeTypeTransfer getMimeType() {
+        return mimeType;
+    }
+    
+    public void setMimeType(MimeTypeTransfer mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    public ByteArray getBlobDescription() {
+        return blobDescription;
+    }
+
+    public void setBlobDescription(ByteArray blobDescription) {
+        this.blobDescription = blobDescription;
+    }
+
+    public String getClobDescription() {
+        return clobDescription;
+    }
+
+    public void setClobDescription(String clobDescription) {
+        this.clobDescription = clobDescription;
+    }
+
+    public String getStringDescription() {
+        return stringDescription;
+    }
+
+    public void setStringDescription(String stringDescription) {
+        this.stringDescription = stringDescription;
+    }
+
+    /**
+     * @return the itemImageType
+     */
+    public ItemImageTypeTransfer getItemImageType() {
+        return itemImageType;
+    }
+
+    /**
+     * @param itemImageType the itemImageType to set
+     */
+    public void setItemImageType(ItemImageTypeTransfer itemImageType) {
+        this.itemImageType = itemImageType;
+    }
+
+    /**
+     * @return the height
+     */
+    public Integer getHeight() {
+        return height;
+    }
+
+    /**
+     * @param height the height to set
+     */
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    /**
+     * @return the width
+     */
+    public Integer getWidth() {
+        return width;
+    }
+
+    /**
+     * @param width the width to set
+     */
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    /**
+     * @return the scaledFromParent
+     */
+    public Boolean getScaledFromParent() {
+        return scaledFromParent;
+    }
+
+    /**
+     * @param scaledFromParent the scaledFromParent to set
+     */
+    public void setScaledFromParent(Boolean scaledFromParent) {
+        this.scaledFromParent = scaledFromParent;
+    }
+
+    /**
+     * @return the eTag
+     */
+    public String getETag() {
+        return eTag;
+    }
+
+    /**
+     * @param eTag the eTag to set
+     */
+    public void setETag(String eTag) {
+        this.eTag = eTag;
+    }
+
+}

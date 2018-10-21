@@ -1,0 +1,169 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.training.server.command;
+
+import com.echothree.control.user.training.remote.edit.PartyTrainingClassEdit;
+import com.echothree.control.user.training.remote.edit.TrainingEditFactory;
+import com.echothree.control.user.training.remote.form.EditPartyTrainingClassForm;
+import com.echothree.control.user.training.remote.result.EditPartyTrainingClassResult;
+import com.echothree.control.user.training.remote.result.TrainingResultFactory;
+import com.echothree.control.user.training.remote.spec.PartyTrainingClassSpec;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.training.server.TrainingControl;
+import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.server.entity.DateTimeFormat;
+import com.echothree.model.data.training.server.entity.PartyTrainingClass;
+import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;
+import com.echothree.model.data.training.server.value.PartyTrainingClassDetailValue;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.string.DateUtils;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditPartyTrainingClassCommand
+        extends BaseAbstractEditCommand<PartyTrainingClassSpec, PartyTrainingClassEdit, EditPartyTrainingClassResult, PartyTrainingClass, PartyTrainingClass> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyTrainingClass.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("PartyTrainingClassName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("CompletedTime", FieldType.DATE_TIME, false, null, null),
+                new FieldDefinition("ValidUntilTime", FieldType.DATE_TIME, false, null, null)
+                ));
+    }
+    
+    /** Creates a new instance of EditPartyTrainingClassCommand */
+    public EditPartyTrainingClassCommand(UserVisitPK userVisitPK, EditPartyTrainingClassForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+    
+    @Override
+    public EditPartyTrainingClassResult getResult() {
+        return TrainingResultFactory.getEditPartyTrainingClassResult();
+    }
+
+    @Override
+    public PartyTrainingClassEdit getEdit() {
+        return TrainingEditFactory.getPartyTrainingClassEdit();
+    }
+
+    @Override
+    public PartyTrainingClass getEntity(EditPartyTrainingClassResult result) {
+        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        PartyTrainingClass partyTrainingClass;
+        String partyTrainingClassName = spec.getPartyTrainingClassName();
+
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
+        } else { // EditMode.UPDATE
+            partyTrainingClass = trainingControl.getPartyTrainingClassByNameForUpdate(partyTrainingClassName);
+        }
+
+        if(partyTrainingClass != null) {
+            result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(getUserVisit(), partyTrainingClass));
+        } else {
+            addExecutionError(ExecutionErrors.UnknownPartyTrainingClassName.name(), partyTrainingClassName);
+        }
+
+        return partyTrainingClass;
+    }
+
+    @Override
+    public PartyTrainingClass getLockEntity(PartyTrainingClass partyTrainingClass) {
+        return partyTrainingClass;
+    }
+
+    @Override
+    public void fillInResult(EditPartyTrainingClassResult result, PartyTrainingClass partyTrainingClass) {
+        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+
+        result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(getUserVisit(), partyTrainingClass));
+    }
+
+    @Override
+    public void doLock(PartyTrainingClassEdit edit, PartyTrainingClass partyTrainingClass) {
+        DateUtils dateUtils = DateUtils.getInstance();
+        PartyTrainingClassDetail partyTrainingClassDetail = partyTrainingClass.getLastDetail();
+        UserVisit userVisit = getUserVisit();
+        DateTimeFormat preferredDateTimeFormat = getPreferredDateTimeFormat();
+        
+        edit.setCompletedTime(dateUtils.formatTypicalDateTime(userVisit, preferredDateTimeFormat, partyTrainingClassDetail.getCompletedTime()));
+        edit.setValidUntilTime(dateUtils.formatTypicalDateTime(userVisit, preferredDateTimeFormat, partyTrainingClassDetail.getValidUntilTime()));
+    }
+
+    Long completedTime;
+    Long validUntilTime;
+    
+    @Override
+    public void canUpdate(PartyTrainingClass partyTrainingClass) {
+        String strCompletedTime = edit.getCompletedTime();
+        
+        completedTime = strCompletedTime == null ? null : Long.valueOf(strCompletedTime);
+
+        if(completedTime == null || completedTime < session.START_TIME) {
+            String strValidUntilTime = edit.getValidUntilTime();
+            
+            validUntilTime = strValidUntilTime == null ? null : Long.valueOf(strValidUntilTime);
+
+            if(validUntilTime != null && validUntilTime <= session.START_TIME) {
+                addExecutionError(ExecutionErrors.InvalidValidUntilTime.name());
+            }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidCompletedTime.name());
+        }
+    }
+
+    @Override
+    public void doUpdate(PartyTrainingClass partyTrainingClass) {
+        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        PartyPK partyPK = getPartyPK();
+        PartyTrainingClassDetailValue partyTrainingClassDetailValue = trainingControl.getPartyTrainingClassDetailValueForUpdate(partyTrainingClass);
+
+        partyTrainingClassDetailValue.setCompletedTime(completedTime);
+        partyTrainingClassDetailValue.setValidUntilTime(validUntilTime);
+
+        PartyTrainingClassLogic.getInstance().updatePartyTrainingClassFromValue(partyTrainingClassDetailValue, partyPK);
+    }
+
+}

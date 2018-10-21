@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <shippingMethods>
+        <shippingMethod shippingMethodName="TEST_SHIPPING_METHOD_1" sortOrder="1">
+            <shippingMethodDescription languageIsoName="en" description="Test Shipping Method 1" />
+            <shippingMethodCarrierService carrierName="TEST_CARRIER" carrierServiceName="TEST_CARRIER_SERVICE_1" />
+            <shippingMethodCarrierService carrierName="TEST_CARRIER" carrierServiceName="TEST_CARRIER_SERVICE_2" />
+        </shippingMethod>
+        <shippingMethod shippingMethodName="TEST_SHIPPING_METHOD_2" sortOrder="1">
+            <shippingMethodDescription languageIsoName="en" description="Test Shipping Method 2" />
+            <shippingMethodCarrierService carrierName="TEST_CARRIER" carrierServiceName="TEST_CARRIER_SERVICE_3" />
+        </shippingMethod>
+        <shippingMethod shippingMethodName="RETURN_SHIPPING_METHOD" sortOrder="1">
+            <shippingMethodDescription languageIsoName="en" description="Return Shipping Method" />
+            <shippingMethodCarrierService carrierName="TEST_CARRIER" carrierServiceName="TEST_CARRIER_SERVICE_3" />
+        </shippingMethod>
+    </shippingMethods>
+    <shipmentTypes>
+        <shipmentType shipmentTypeName="INCOMING_SHIPMENT" isDefault="false" sortOrder="1">
+            <shipmentTypeDescription languageIsoName="en" description="Incoming Shipment" />
+        </shipmentType>
+        <shipmentType shipmentTypeName="OUTGOING_SHIPMENT" isDefault="false" sortOrder="1">
+            <shipmentTypeDescription languageIsoName="en" description="Outgoing Shipment" />
+        </shipmentType>
+        <shipmentType shipmentTypeName="DROP_SHIPMENT" isDefault="false" sortOrder="1">
+            <shipmentTypeDescription languageIsoName="en" description="Drop Shipment" />
+        </shipmentType>
+        <shipmentType shipmentTypeName="TRANSFER" isDefault="false" sortOrder="1">
+            <shipmentTypeDescription languageIsoName="en" description="Transfer" />
+        </shipmentType>
+        <shipmentType shipmentTypeName="CUSTOMER_RETURN" parentShipmentTypeName="INCOMING_SHIPMENT" isDefault="false" sortOrder="1">
+            <shipmentTypeDescription languageIsoName="en" description="Customer Return" />
+            <shipmentTypeShippingMethod shippingMethodName="RETURN_SHIPPING_METHOD" isDefault="true" sortOrder="1" />
+        </shipmentType>
+        <shipmentType shipmentTypeName="PURCHASE_SHIPMENT" parentShipmentTypeName="INCOMING_SHIPMENT" isDefault="false" sortOrder="1">
+            <shipmentTypeDescription languageIsoName="en" description="Purchase Shipment" />
+        </shipmentType>
+        <shipmentType shipmentTypeName="CUSTOMER_SHIPMENT" parentShipmentTypeName="OUTGOING_SHIPMENT" isDefault="false" sortOrder="1">
+            <shipmentTypeDescription languageIsoName="en" description="Customer Shipment" />
+            <shipmentTimeType shipmentTimeTypeName="ESTIMATED_READY" isDefault="true" sortOrder="1">
+                <shipmentTimeTypeDescription languageIsoName="en" description="Estimated Ready" />
+            </shipmentTimeType>
+            <shipmentTimeType shipmentTimeTypeName="ESTIMATED_SHIP" isDefault="false" sortOrder="1">
+                <shipmentTimeTypeDescription languageIsoName="en" description="Estimated Ship" />
+            </shipmentTimeType>
+            <shipmentTimeType shipmentTimeTypeName="ESTIMATED_DELIVERY" isDefault="false" sortOrder="1">
+                <shipmentTimeTypeDescription languageIsoName="en" description="Estimated Delivery" />
+            </shipmentTimeType>
+            <shipmentAliasType shipmentAliasTypeName="TEST_SHIPMENT_ALIAS_TYPE" isDefault="true" sortOrder="1">
+                <shipmentAliasTypeDescription languageIsoName="en" description="Test Shipment Alias Type" />
+            </shipmentAliasType>
+            <shipmentTypeShippingMethod shippingMethodName="TEST_SHIPPING_METHOD_1" isDefault="true" sortOrder="1" />
+            <shipmentTypeShippingMethod shippingMethodName="TEST_SHIPPING_METHOD_2" isDefault="false" sortOrder="1" />
+        </shipmentType>
+        <shipmentType shipmentTypeName="PURCHASE_RETURN" parentShipmentTypeName="OUTGOING_SHIPMENT" isDefault="false" sortOrder="1">
+            <shipmentTypeDescription languageIsoName="en" description="Purchase Return" />
+        </shipmentType>
+    </shipmentTypes>
+</initialData>

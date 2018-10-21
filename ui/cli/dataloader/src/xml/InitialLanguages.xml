@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <languages>
+        <language languageIsoName="en" isDefault="true" sortOrder="1">
+            <languageDescription descriptionLanguageIsoName="en" description="English" />
+        </language>
+        <language languageIsoName="de" isDefault="false" sortOrder="2">
+            <languageDescription descriptionLanguageIsoName="en" description="German" />
+            <languageDescription descriptionLanguageIsoName="de" description="Deutsch" />
+        </language>
+        <language languageIsoName="es" isDefault="false" sortOrder="2">
+            <languageDescription descriptionLanguageIsoName="en" description="Spanish" />
+            <languageDescription descriptionLanguageIsoName="es" description="Español" />
+        </language>
+        <language languageIsoName="fr" isDefault="false" sortOrder="2">
+            <languageDescription descriptionLanguageIsoName="en" description="French" />
+            <languageDescription descriptionLanguageIsoName="fr" description="Français" />
+        </language>
+        <language languageIsoName="jp" isDefault="false" sortOrder="2">
+            <languageDescription descriptionLanguageIsoName="en" description="Japanese" />
+            <languageDescription descriptionLanguageIsoName="jp" description="日本語" />
+        </language>
+        <language languageIsoName="ko" isDefault="false" sortOrder="2">
+            <languageDescription descriptionLanguageIsoName="en" description="Korean" />
+            <languageDescription descriptionLanguageIsoName="ko" description="한국어" />
+        </language>
+        <language languageIsoName="zh" isDefault="false" sortOrder="2">
+            <languageDescription descriptionLanguageIsoName="en" description="Chinese" />
+            <languageDescription descriptionLanguageIsoName="zh" description="中文" />
+        </language>
+    </languages>
+</initialData>

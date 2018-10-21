@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="dataloader" default="Help" basedir=".">
+
+    <property file="build.properties"/>
+    <property file="${component.home}/environment.properties"/>
+    <property name="metadata.dir" value="src/metadata"/>
+    
+    <target name="compile">
+        <mkdir dir="build"/>
+        <mkdir dir="build/classes"/>
+        <javac
+            compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
+            debug="true"
+            source="1.8"
+            target="1.8"
+            srcdir="./src/java"
+            destdir="./build/classes"
+            includeAntRuntime="false">
+            <classpath>
+                <pathelement location="./"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+            <compilerclasspath>
+                <pathelement location="../../../build/lib/error_prone_ant.jar"/>
+            </compilerclasspath>
+        </javac>
+    </target>
+    
+    <target name="generated_directory" depends="compile">
+        <mkdir dir="generated"/>
+    </target>
+    
+    <target name="Reload" depends="compile">
+        <ant dir="../database" target="RegenerateDatabase"/>
+        <ant target="Load"/>
+    </target>
+    
+    <target name="ReloadAll" depends="compile">
+        <ant target="Reload"/>
+        <ant target="LoadAll"/>
+    </target>
+    
+    <target name="Load" depends="compile">
+        <java classname="DataLoaderUtility" fork="true">
+            <arg value="--initial"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../${wildfly.home.modules}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="LoadKeys" depends="compile">
+        <java classname="DataLoaderUtility" fork="true">
+            <arg value="--file"/>
+            <arg value="src/xml/LoadKeys.xml"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../${wildfly.home.modules}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="ChangeKeys" depends="compile">
+        <java classname="DataLoaderUtility" fork="true">
+            <arg value="--file"/>
+            <arg value="src/xml/ChangeKeys.xml"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../${wildfly.home.modules}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="LoadAll" depends="compile">
+        <ant target="Load"/>
+        <ant target="LoadZipCodes"/>
+        <ant target="LoadHarmonizedTariffCodes"/>
+    </target>
+    
+    <target name="LoadZipCodes" depends="compile">
+        <java classname="DataLoaderUtility" fork="true">
+            <arg value="--zipcode"/>
+            <arg value="src/text/city-state-product.txt"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../${wildfly.home.modules}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+    
+    <target name="LoadHarmonizedTariffCodes" depends="compile">
+        <java classname="DataLoaderUtility" fork="true">
+            <arg value="--hts"/>
+            <arg value="src/text/harmonized-tariff-schedule"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../${wildfly.home.modules}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="clean">
+        <echo message="Deleting directory build" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="build">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+        
+    <target name="Help">
+        <echo>+---------------------------------------------+</echo>
+        <echo>+ Available targets for dataloader utilities: +</echo>
+        <echo>+                                             +</echo>
+        <echo>+        ant Reload                           +</echo>
+        <echo>+        ant ReloadAll                        +</echo>
+        <echo>+        ant Load                             +</echo>
+        <echo>+        ant LoadKeys                         +</echo>
+        <echo>+        ant ChangeKeys                       +</echo>
+        <echo>+        ant LoadAll                          +</echo>
+        <echo>+        ant LoadZipCodes                     +</echo>
+        <echo>+        ant LoadHarmonizedTariffCodes        +</echo>
+        <echo>+                                             +</echo>
+        <echo>+---------------------------------------------+</echo>
+    </target>
+
+</project>

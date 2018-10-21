@@ -1,0 +1,85 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.advertising.offer;
+
+import com.echothree.control.user.offer.common.OfferUtil;
+import com.echothree.control.user.offer.remote.form.DeleteOfferForm;
+import com.echothree.control.user.offer.remote.form.GetOfferForm;
+import com.echothree.control.user.offer.remote.result.GetOfferResult;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.ui.web.main.framework.AttributeConstants;
+import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
+import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+
+@SproutAction(
+    path = "/Advertising/Offer/Delete",
+    mappingClass = SecureActionMapping.class,
+    name = "OfferDelete",
+    properties = {
+        @SproutProperty(property = "secure", value = "true")
+    },
+    forwards = {
+        @SproutForward(name = "Display", path = "/action/Advertising/Offer/Main", redirect = true),
+        @SproutForward(name = "Form", path = "/advertising/offer/delete.jsp")
+    }
+)
+public class DeleteAction
+        extends MainBaseDeleteAction<DeleteActionForm> {
+
+    @Override
+    public String getEntityTypeName() {
+        return EntityTypes.Offer.name();
+    }
+
+    @Override
+    public void setupParameters(DeleteActionForm actionForm, HttpServletRequest request) {
+        actionForm.setOfferName(findParameter(request, ParameterConstants.OFFER_NAME, actionForm.getOfferName()));
+    }
+
+    @Override
+    public void setupTransfer(DeleteActionForm actionForm, HttpServletRequest request)
+            throws NamingException {
+        GetOfferForm commandForm = OfferUtil.getHome().getGetOfferForm();
+
+        commandForm.setOfferName(actionForm.getOfferName());
+
+        CommandResult commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
+        ExecutionResult executionResult = commandResult.getExecutionResult();
+        GetOfferResult result = (GetOfferResult)executionResult.getResult();
+
+        request.setAttribute(AttributeConstants.OFFER, result.getOffer());
+    }
+
+    @Override
+    public CommandResult doDelete(DeleteActionForm actionForm, HttpServletRequest request)
+            throws NamingException {
+        DeleteOfferForm commandForm = OfferUtil.getHome().getDeleteOfferForm();
+
+        commandForm.setOfferName(actionForm.getOfferName());
+
+        return OfferUtil.getHome().deleteOffer(getUserVisitPK(request), commandForm);
+    }
+
+}

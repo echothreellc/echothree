@@ -1,0 +1,330 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.customer.customer;
+
+import com.echothree.control.user.accounting.common.AccountingUtil;
+import com.echothree.control.user.accounting.remote.form.GetGlAccountChoicesForm;
+import com.echothree.control.user.accounting.remote.result.GetGlAccountChoicesResult;
+import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
+import com.echothree.control.user.cancellationpolicy.remote.form.GetCancellationPolicyChoicesForm;
+import com.echothree.control.user.cancellationpolicy.remote.result.GetCancellationPolicyChoicesResult;
+import com.echothree.control.user.customer.common.CustomerUtil;
+import com.echothree.control.user.customer.remote.form.GetCustomerTypeChoicesForm;
+import com.echothree.control.user.customer.remote.result.GetCustomerTypeChoicesResult;
+import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
+import com.echothree.control.user.returnpolicy.remote.form.GetReturnPolicyChoicesForm;
+import com.echothree.control.user.returnpolicy.remote.result.GetReturnPolicyChoicesResult;
+import com.echothree.model.control.accounting.common.AccountingConstants;
+import com.echothree.model.control.accounting.remote.choice.GlAccountChoicesBean;
+import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.remote.choice.CancellationPolicyChoicesBean;
+import com.echothree.model.control.customer.remote.choice.CustomerTypeChoicesBean;
+import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.remote.choice.ReturnPolicyChoicesBean;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.BasePersonActionForm;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
+import java.util.List;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.util.LabelValueBean;
+
+@SproutForm(name="CustomerEdit")
+public class CustomerEditActionForm
+        extends BasePersonActionForm {
+    
+    private CustomerTypeChoicesBean customerTypeChoices;
+    private CancellationPolicyChoicesBean cancellationPolicyChoices;
+    private ReturnPolicyChoicesBean returnPolicyChoices;
+    private GlAccountChoicesBean arGlAccountChoices;
+    
+    private String customerName;
+    private String customerTypeChoice;
+    private String cancellationPolicyChoice;
+    private String returnPolicyChoice;
+    private String arGlAccountChoice;
+    private String name;
+    private Boolean holdUntilComplete;
+    private Boolean allowBackorders;
+    private Boolean allowSubstitutions;
+    private Boolean allowCombiningShipments;
+    private Boolean requireReference;
+    private Boolean allowReferenceDuplicates;
+    private String referenceValidationPattern;
+    
+    public void setupCustomerTypeChoices() {
+        if(customerTypeChoices == null) {
+            try {
+                GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
+                
+                form.setDefaultCustomerTypeChoice(customerTypeChoice);
+                form.setAllowNullChoice(Boolean.FALSE.toString());
+                
+                CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetCustomerTypeChoicesResult getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
+                customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
+                
+                if(customerTypeChoice == null) {
+                    customerTypeChoice = customerTypeChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, customerTypeChoices remains null, no default
+            }
+        }
+    }
+    
+    public void setupCancellationPolicyChoices() {
+        if(cancellationPolicyChoices == null) {
+            try {
+                GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+
+                form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
+                form.setDefaultCancellationPolicyChoice(cancellationPolicyChoice);
+                form.setAllowNullChoice(Boolean.TRUE.toString());
+
+                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+                cancellationPolicyChoices = result.getCancellationPolicyChoices();
+
+                if(cancellationPolicyChoice == null)
+                    cancellationPolicyChoice = cancellationPolicyChoices.getDefaultValue();
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, cancellationPolicyChoices remains null, no
+            }
+        }
+    }
+
+    public void setupReturnPolicyChoices() {
+        if(returnPolicyChoices == null) {
+            try {
+                GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+
+                form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+                form.setDefaultReturnPolicyChoice(returnPolicyChoice);
+                form.setAllowNullChoice(Boolean.TRUE.toString());
+
+                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+                returnPolicyChoices = result.getReturnPolicyChoices();
+
+                if(returnPolicyChoice == null)
+                    returnPolicyChoice = returnPolicyChoices.getDefaultValue();
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, returnPolicyChoices remains null, no
+            }
+        }
+    }
+
+    public void setupArGlAccountChoices() {
+        if(arGlAccountChoices == null) {
+            try {
+                GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+                
+                form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
+                form.setDefaultGlAccountChoice(arGlAccountChoice);
+                form.setAllowNullChoice(Boolean.TRUE.toString());
+                
+                CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+                arGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
+                
+                if(arGlAccountChoice == null) {
+                    arGlAccountChoice = arGlAccountChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, arGlAccountChoices remains null, no default
+            }
+        }
+    }
+    
+    public String getCustomerName() {
+        return customerName;
+    }
+    
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    
+    public List<LabelValueBean> getCustomerTypeChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupCustomerTypeChoices();
+        if(customerTypeChoices != null) {
+            choices = convertChoices(customerTypeChoices);
+        }
+        
+        return choices;
+    }
+    
+    public void setCustomerTypeChoice(String customerTypeChoice) {
+        this.customerTypeChoice = customerTypeChoice;
+    }
+    
+    public String getCustomerTypeChoice() {
+        setupCustomerTypeChoices();
+        
+        return customerTypeChoice;
+    }
+    
+    public List<LabelValueBean> getCancellationPolicyChoices() {
+        List<LabelValueBean> choices = null;
+
+        setupCancellationPolicyChoices();
+        if(cancellationPolicyChoices != null)
+            choices = convertChoices(cancellationPolicyChoices);
+
+        return choices;
+    }
+
+    public void setCancellationPolicyChoice(String cancellationPolicyChoice) {
+        this.cancellationPolicyChoice = cancellationPolicyChoice;
+    }
+
+    public String getCancellationPolicyChoice() {
+        setupCancellationPolicyChoices();
+
+        return cancellationPolicyChoice;
+    }
+
+    public List<LabelValueBean> getReturnPolicyChoices() {
+        List<LabelValueBean> choices = null;
+
+        setupReturnPolicyChoices();
+        if(returnPolicyChoices != null)
+            choices = convertChoices(returnPolicyChoices);
+
+        return choices;
+    }
+
+    public void setReturnPolicyChoice(String returnPolicyChoice) {
+        this.returnPolicyChoice = returnPolicyChoice;
+    }
+
+    public String getReturnPolicyChoice() {
+        setupReturnPolicyChoices();
+
+        return returnPolicyChoice;
+    }
+
+    public List<LabelValueBean> getArGlAccountChoices() {
+        List<LabelValueBean> choices = null;
+
+        setupArGlAccountChoices();
+        if(arGlAccountChoices != null) {
+            choices = convertChoices(arGlAccountChoices);
+        }
+
+        return choices;
+    }
+
+    public void setArGlAccountChoice(String arGlAccountChoice) {
+        this.arGlAccountChoice = arGlAccountChoice;
+    }
+
+    public String getArGlAccountChoice() {
+        setupArGlAccountChoices();
+
+        return arGlAccountChoice;
+    }
+
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public Boolean getHoldUntilComplete() {
+        return holdUntilComplete;
+    }
+
+    public void setHoldUntilComplete(Boolean holdUntilComplete) {
+        this.holdUntilComplete = holdUntilComplete;
+    }
+
+    public Boolean getAllowBackorders() {
+        return allowBackorders;
+    }
+
+    public void setAllowBackorders(Boolean allowBackorders) {
+        this.allowBackorders = allowBackorders;
+    }
+
+    public Boolean getAllowSubstitutions() {
+        return allowSubstitutions;
+    }
+
+    public void setAllowSubstitutions(Boolean allowSubstitutions) {
+        this.allowSubstitutions = allowSubstitutions;
+    }
+
+    public Boolean getAllowCombiningShipments() {
+        return allowCombiningShipments;
+    }
+
+    public void setAllowCombiningShipments(Boolean allowCombiningShipments) {
+        this.allowCombiningShipments = allowCombiningShipments;
+    }
+
+    public Boolean getRequireReference() {
+        return requireReference;
+    }
+
+    public void setRequireReference(Boolean requireReference) {
+        this.requireReference = requireReference;
+    }
+
+    public Boolean getAllowReferenceDuplicates() {
+        return allowReferenceDuplicates;
+    }
+
+    public void setAllowReferenceDuplicates(Boolean allowReferenceDuplicates) {
+        this.allowReferenceDuplicates = allowReferenceDuplicates;
+    }
+    
+    public String getReferenceValidationPattern() {
+        return referenceValidationPattern;
+    }
+
+    public void setReferenceValidationPattern(String referenceValidationPattern) {
+        this.referenceValidationPattern = referenceValidationPattern;
+    }
+    
+    @Override
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        super.reset(mapping, request);
+        
+        setHoldUntilComplete(Boolean.FALSE);
+        setAllowBackorders(Boolean.FALSE);
+        setAllowSubstitutions(Boolean.FALSE);
+        setAllowCombiningShipments(Boolean.FALSE);
+        setRequireReference(Boolean.FALSE);
+        setAllowReferenceDuplicates(Boolean.FALSE);
+    }
+
+}

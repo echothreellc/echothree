@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="ui">
+    
+    <target name="compile">
+        <parallel>
+            <ant dir="junit" target="compile"/>
+            <ant dir="cucumber" target="compile"/>
+        </parallel>
+    </target>
+    
+    <target name="test">
+        <parallel>
+            <ant dir="junit" target="test"/>
+            <ant dir="cucumber" target="test"/>
+        </parallel>
+    </target>
+    
+    <target name="clean">
+        <parallel>
+            <ant dir="junit" target="clean"/>
+            <ant dir="cucumber" target="clean"/>
+        </parallel>
+    </target>
+        
+</project>

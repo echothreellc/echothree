@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <geoCodeScopes>
+        <geoCodeScope geoCodeScopeName="COUNTRIES" isDefault="false" sortOrder="0">
+            <geoCodeScopeDescription languageIsoName="en" description="Countries" />
+        </geoCodeScope>
+        <geoCodeScope geoCodeScopeName="US_STATES" isDefault="true" sortOrder="0">
+            <geoCodeScopeDescription languageIsoName="en" description="United States States" />
+        </geoCodeScope>
+        <geoCodeScope geoCodeScopeName="US_IA_COUNTIES" isDefault="false" sortOrder="0">
+            <geoCodeScopeDescription languageIsoName="en" description="United States Iowa Counties" />
+        </geoCodeScope>
+        <geoCodeScope geoCodeScopeName="US_IA_CITIES" isDefault="false" sortOrder="0">
+            <geoCodeScopeDescription languageIsoName="en" description="United States Iowa Cities" />
+        </geoCodeScope>
+        <geoCodeScope geoCodeScopeName="US_ZIP_CODES" isDefault="false" sortOrder="0">
+            <geoCodeScopeDescription languageIsoName="en" description="United States Zip Codes" />
+        </geoCodeScope>
+        <geoCodeScope geoCodeScopeName="CA_STATES" isDefault="false" sortOrder="0">
+            <geoCodeScopeDescription languageIsoName="en" description="Canadian Provinces" />
+        </geoCodeScope>
+    </geoCodeScopes>
+</initialData>

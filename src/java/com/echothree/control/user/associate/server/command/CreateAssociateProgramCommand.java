@@ -1,0 +1,145 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.associate.server.command;
+
+import com.echothree.control.user.associate.remote.form.CreateAssociateProgramForm;
+import com.echothree.model.control.associate.server.AssociateControl;
+import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.data.associate.server.entity.AssociateProgram;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.sequence.server.entity.Sequence;
+import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class CreateAssociateProgramCommand
+        extends BaseSimpleCommand<CreateAssociateProgramForm> {
+    
+    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
+    
+    static {
+        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+            new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
+            new FieldDefinition("AssociateSequenceName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("AssociatePartyContactMechanismSequenceName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("AssociateReferralSequenceName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("ItemIndirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null),
+            new FieldDefinition("ItemDirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null),
+            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+        ));
+    }
+    
+    /** Creates a new instance of CreateAssociateProgramCommand */
+    public CreateAssociateProgramCommand(UserVisitPK userVisitPK, CreateAssociateProgramForm form) {
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        String associateProgramName = form.getAssociateProgramName();
+        AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
+        
+        if(associateProgram == null) {
+            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            String associateSequenceName = form.getAssociateSequenceName();
+            Sequence associateSequence = null;
+            
+            if(associateSequenceName != null) {
+                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE);
+                
+                if(sequenceType != null) {
+                    associateSequence = sequenceControl.getSequenceByName(sequenceType, associateSequenceName);
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE);
+                }
+            }
+            
+            if(associateSequenceName == null || associateSequence != null) {
+                String associatePartyContactMechanismSequenceName = form.getAssociatePartyContactMechanismSequenceName();
+                Sequence associatePartyContactMechanismSequence = null;
+                
+                if(associatePartyContactMechanismSequenceName != null) {
+                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE_PARTY_CONTACT_MECHANISM);
+                    
+                    if(sequenceType != null) {
+                        associatePartyContactMechanismSequence = sequenceControl.getSequenceByName(sequenceType, associatePartyContactMechanismSequenceName);
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE_PARTY_CONTACT_MECHANISM);
+                    }
+                }
+                
+                if(associatePartyContactMechanismSequenceName == null || associatePartyContactMechanismSequence != null) {
+                    String associateReferralSequenceName = form.getAssociateReferralSequenceName();
+                    Sequence associateReferralSequence = null;
+                    
+                    if(associateReferralSequenceName != null) {
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE_REFERRAL);
+                        
+                        if(sequenceType != null) {
+                            associateReferralSequence = sequenceControl.getSequenceByName(sequenceType, associateReferralSequenceName);
+                        } else {
+                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE_REFERRAL);
+                        }
+                    }
+                    
+                    if(associateReferralSequenceName == null || associateReferralSequence != null) {
+                        PartyPK createdBy = getPartyPK();
+                        String strItemIndirectSalePercent = form.getItemIndirectSalePercent();
+                        Integer itemIndirectSalePercent = strItemIndirectSalePercent == null? null: Integer.valueOf(strItemIndirectSalePercent);
+                        String strItemDirectSalePercent = form.getItemDirectSalePercent();
+                        Integer itemDirectSalePercent = strItemDirectSalePercent == null? null: Integer.valueOf(strItemDirectSalePercent);
+                        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+                        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+                        String description = form.getDescription();
+                        
+                        associateProgram = associateControl.createAssociateProgram(associateProgramName, associateSequence,
+                                associatePartyContactMechanismSequence, associateReferralSequence, itemIndirectSalePercent,
+                                itemDirectSalePercent, isDefault, sortOrder, createdBy);
+                        
+                        if(description != null) {
+                            associateControl.createAssociateProgramDescription(associateProgram, getPreferredLanguage(), description,
+                                    createdBy);
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownSequenceName.name(), associateReferralSequenceName);
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownSequenceName.name(), associatePartyContactMechanismSequenceName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownSequenceName.name(), associateSequenceName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateAssociateProgramName.name(), associateProgramName);
+        }
+        
+        return null;
+    }
+    
+}

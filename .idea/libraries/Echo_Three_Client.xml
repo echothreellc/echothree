@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Echo Three Client">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/jars/echothree-client.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

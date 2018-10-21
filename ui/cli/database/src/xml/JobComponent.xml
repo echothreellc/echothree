@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Job">
+            <tables>
+                <table namePlural="Jobs" nameSingular="Job" columnPrefix="jb">
+                    <columns>
+                        <column name="JobId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="JobDetails" destinationColumn="JobDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="JobDetails" destinationColumn="JobDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="JobId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="JobDetails" nameSingular="JobDetail" columnPrefix="jbdt">
+                    <columns>
+                        <column name="JobDetailId" type="EID" nullAllowed="false" />
+                        <column name="JobId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Jobs" destinationColumn="JobId" />
+                        <column name="JobName" type="Name" nullAllowed="false" />
+                        <column name="RunAsPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="JobDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="JobId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="JobName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="RunAsPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="JobDescriptions" nameSingular="JobDescription" columnPrefix="jbd">
+                    <columns>
+                        <column name="JobDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="JobId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Jobs" destinationColumn="JobId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="JobDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="JobId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="JobStatuses" nameSingular="JobStatus" columnPrefix="jbst">
+                    <columns>
+                        <column name="JobStatusId" type="EID" nullAllowed="false" />
+                        <column name="JobId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Jobs" destinationColumn="JobId"/>
+                        <column name="LastStartTime" type="Time" nullAllowed="true" />
+                        <column name="LastEndTime" type="Time" nullAllowed="true" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="JobStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="JobId" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

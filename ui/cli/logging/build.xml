@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="logging" default="jars" basedir=".">
+
+    <property name="component.home" value="./"/>
+    <property name="metadata.dir" value="${component.home}/src/metadata"/>
+    
+    <target name="compile">
+        <mkdir dir="build"/>
+        <mkdir dir="build/classes"/>
+        <mkdir dir="build/jars"/>
+        <javac
+            compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
+            debug="true"
+            source="1.8"
+            target="1.8"
+	        srcdir="./src/java"
+	        destdir="./build/classes"
+	        includeAntRuntime="false">
+            <classpath>
+                <pathelement location="./"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+            <compilerclasspath>
+                <pathelement location="../../../build/lib/error_prone_ant.jar"/>
+            </compilerclasspath>
+        </javac>
+    </target>
+    
+    <target name="jars" depends="compile">
+        <jar jarfile="build/jars/LoggingUtility.jar">
+            <fileset dir="build/classes">
+                <include name="**/*.class" />
+            </fileset>
+        </jar>
+    </target>
+    
+    <target name="clean">
+        <echo message="Deleting directory build" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="build">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+    
+</project>

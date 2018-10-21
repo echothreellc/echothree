@@ -1,0 +1,684 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Shipment">
+            <tables>
+                <table namePlural="ShipmentTypes" nameSingular="ShipmentType" columnPrefix="shptyp">
+                    <columns>
+                        <column name="ShipmentTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentTypeDetails" destinationColumn="ShipmentTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentTypeDetails" destinationColumn="ShipmentTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentTypeDetails" nameSingular="ShipmentTypeDetail" columnPrefix="shptypdt">
+                    <columns>
+                        <column name="ShipmentTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
+                        <column name="ShipmentTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentShipmentTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
+                        <column name="ShipmentSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="ShipmentPackageSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
+                        <column name="ShipmentWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
+                        <column name="ShipmentWorkflowEntranceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ShipmentTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentShipmentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ShipmentSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ShipmentPackageSequenceTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ShipmentWorkflowId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ShipmentWorkflowEntranceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentTypeDescriptions" nameSingular="ShipmentTypeDescription" columnPrefix="shptypd">
+                    <columns>
+                        <column name="ShipmentTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentTimeTypes" nameSingular="ShipmentTimeType" columnPrefix="shptimtyp">
+                    <columns>
+                        <column name="ShipmentTimeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentTimeTypeDetails" destinationColumn="ShipmentTimeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentTimeTypeDetails" destinationColumn="ShipmentTimeTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentTimeTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentTimeTypeDetails" nameSingular="ShipmentTimeTypeDetail" columnPrefix="shptimtypdt">
+                    <columns>
+                        <column name="ShipmentTimeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTimeTypes" destinationColumn="ShipmentTimeTypeId" />
+                        <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
+                        <column name="ShipmentTimeTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentTimeTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ShipmentTimeTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentTimeTypeDescriptions" nameSingular="ShipmentTimeTypeDescription" columnPrefix="shptimtypd">
+                    <columns>
+                        <column name="ShipmentTimeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTimeTypes" destinationColumn="ShipmentTimeTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentTimeTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentTimeTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ShipmentTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentTypeShippingMethods" nameSingular="ShipmentTypeShippingMethod" columnPrefix="shptypshm">
+                    <columns>
+                        <column name="ShipmentTypeShippingMethodId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
+                        <column name="ShippingMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShippingMethods" destinationColumn="ShippingMethodId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentTypeShippingMethodId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentAliasTypes" nameSingular="ShipmentAliasType" columnPrefix="shpaltyp">
+                    <columns>
+                        <column name="ShipmentAliasTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentAliasTypeDetails" destinationColumn="ShipmentAliasTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentAliasTypeDetails" destinationColumn="ShipmentAliasTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentAliasTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentAliasTypeDetails" nameSingular="ShipmentAliasTypeDetail" columnPrefix="shpaltypdt">
+                    <columns>
+                        <column name="ShipmentAliasTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentAliasTypes" destinationColumn="ShipmentAliasTypeId" />
+                        <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
+                        <column name="ShipmentAliasTypeName" type="Name" nullAllowed="false" />
+                        <column name="ValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentAliasTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ShipmentAliasTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentAliasTypeDescriptions" nameSingular="ShipmentAliasTypeDescription" columnPrefix="shpaltypd">
+                    <columns>
+                        <column name="ShipmentAliasTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentAliasTypes" destinationColumn="ShipmentAliasTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentAliasTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentAliasTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ShipmentAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentAliases" nameSingular="ShipmentAlias" columnPrefix="shpal">
+                    <columns>
+                        <column name="ShipmentAliasId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Shipments" destinationColumn="ShipmentId" />
+                        <column name="ShipmentAliasTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentAliasTypes" destinationColumn="ShipmentAliasTypeId" />
+                        <column name="Alias" type="ShipmentAlias" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentAliasId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ShipmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ShipmentAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ShipmentAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="Alias" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Shipments" nameSingular="Shipment" columnPrefix="shp">
+                    <columns>
+                        <column name="ShipmentId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentDetails" destinationColumn="ShipmentDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentDetails" destinationColumn="ShipmentDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentDetails" nameSingular="ShipmentDetail" columnPrefix="shpdt">
+                    <columns>
+                        <column name="ShipmentDetailId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Shipments" destinationColumn="ShipmentId" />
+                        <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
+                        <column name="ShipmentName" type="Name" nullAllowed="false" />
+                        <column name="OriginPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="OriginWarehousePartyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="OriginPartyContactMechanismId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyContactMechanisms" destinationColumn="PartyContactMechanismId" />
+                        <column name="DestinationPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="DestinationWarehousePartyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="DestinationPartyContactMechanismId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyContactMechanisms" destinationColumn="PartyContactMechanismId" />
+                        <column name="ShippingMethodId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShippingMethods" destinationColumn="ShippingMethodId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ShipmentName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="OriginPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="OriginWarehousePartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="OriginPartyContactMechanismId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="DestinationPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="DestinationWarehousePartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="DestinationPartyContactMechanismId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index10">
+                            <indexColumn name="ShippingMethodId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentStatuses" nameSingular="ShipmentStatus" columnPrefix="shpst">
+                    <columns>
+                        <column name="ShipmentStatusId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Shipments" destinationColumn="ShipmentId"/>
+                        <column name="ShipmentLineSequence" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ShipmentId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentTimes" nameSingular="ShipmentTime" columnPrefix="shptim">
+                    <columns>
+                        <column name="ShipmentTimeId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Shipments" destinationColumn="ShipmentId" />
+                        <column name="ShipmentTimeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTimeTypes" destinationColumn="ShipmentTimeTypeId" />
+                        <column name="Time" type="Time" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentTimeId" />
+                        </index>
+                        <index type="Multiple" name="Index1">
+                            <indexColumn name="ShipmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ShipmentId" />
+                            <indexColumn name="ShipmentTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ShipmentTimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentLines" nameSingular="ShipmentLine" columnPrefix="shpl">
+                    <columns>
+                        <column name="ShipmentLineId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentLineDetails" destinationColumn="ShipmentLineDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentLineDetails" destinationColumn="ShipmentLineDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentLineId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentLineDetails" nameSingular="ShipmentLineDetail" columnPrefix="shpldt">
+                    <columns>
+                        <column name="ShipmentLineDetailId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentLines" destinationColumn="ShipmentLineId" />
+                        <column name="ShipmentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Shipments" destinationColumn="ShipmentId" />
+                        <column name="ShipmentLineSequence" type="Integer" nullAllowed="false" />
+                        <column name="ParentShipmentLineId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentLines" destinationColumn="ShipmentLineId" />
+                        <column name="OrderLineId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="OrderLines" destinationColumn="OrderLineId"/>
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentLineDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentLineId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ShipmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ShipmentId" />
+                            <indexColumn name="ShipmentLineSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ParentShipmentLineId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="OrderLineId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentPackages" nameSingular="ShipmentPackage" columnPrefix="shppckg">
+                    <columns>
+                        <column name="ShipmentPackageId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentPackageDetails" destinationColumn="ShipmentPackageDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentPackageDetails" destinationColumn="ShipmentPackageDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentPackageId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentPackageDetails" nameSingular="ShipmentPackageDetail" columnPrefix="shppckgdt">
+                    <columns>
+                        <column name="ShipmentPackageDetailId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentPackageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentPackages" destinationColumn="ShipmentPackageId" />
+                        <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
+                        <column name="ShipmentPackageName" type="Name" nullAllowed="false" />
+                        <column name="ShipmentId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Shipments" destinationColumn="ShipmentId" />
+                        <column name="BoxTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BoxTypes" destinationColumn="BoxTypeId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Weight" type="Measurement" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentPackageDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentPackageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ShipmentPackageName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ShipmentTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="ShipmentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentPackageStatuses" nameSingular="ShipmentPackageStatus" columnPrefix="shppckgst">
+                    <columns>
+                        <column name="ShipmentPackageStatusId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentPackageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentPackages" destinationColumn="ShipmentPackageId"/>
+                        <column name="ShipmentPackageLineSequence" type="Integer" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentPackageStatusId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ShipmentPackageId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentPackageLines" nameSingular="ShipmentPackageLine" columnPrefix="shppckgl">
+                    <columns>
+                        <column name="ShipmentPackageLineId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentPackageLineDetails" destinationColumn="ShipmentPackageLineDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentPackageLineDetails" destinationColumn="ShipmentPackageLineDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentPackageLineId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ShipmentPackageLineDetails" nameSingular="ShipmentPackageLineDetail" columnPrefix="shppckgldt">
+                    <columns>
+                        <column name="ShipmentPackageLineDetailId" type="EID" nullAllowed="false" />
+                        <column name="ShipmentPackageLineId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentPackageLines" destinationColumn="ShipmentPackageLineId" />
+                        <column name="ShipmentPackageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentPackages" destinationColumn="ShipmentPackageId" />
+                        <column name="ShipmentPackageLineSequence" type="Integer" nullAllowed="false" />
+                        <column name="ShipmentLineId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentLines" destinationColumn="ShipmentLineId"/>
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="Quantity" type="Measurement" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ShipmentPackageLineDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ShipmentPackageLineId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ShipmentPackageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="ShipmentPackageId" />
+                            <indexColumn name="ShipmentPackageLineSequence" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="ShipmentLineId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

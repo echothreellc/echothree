@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Icon">
+            <tables>
+                <table namePlural="Icons" nameSingular="Icon" columnPrefix="icn">
+                    <columns>
+                        <column name="IconId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IconDetails" destinationColumn="IconDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IconDetails" destinationColumn="IconDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IconId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IconDetails" nameSingular="IconDetail" columnPrefix="icndt">
+                    <columns>
+                        <column name="IconDetailId" type="EID" nullAllowed="false" />
+                        <column name="IconId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Icons" destinationColumn="IconId" />
+                        <column name="IconName" type="Name" nullAllowed="false" />
+                        <column name="DocumentId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Documents" destinationColumn="DocumentId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IconDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IconId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="IconName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="DocumentId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IconUsageTypes" nameSingular="IconUsageType" columnPrefix="icnutyp">
+                    <columns>
+                        <column name="IconUsageTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IconUsageTypeDetails" destinationColumn="IconUsageTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="IconUsageTypeDetails" destinationColumn="IconUsageTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IconUsageTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IconUsageTypeDetails" nameSingular="IconUsageTypeDetail" columnPrefix="icnutypdt">
+                    <columns>
+                        <column name="IconUsageTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="IconUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IconUsageTypes" destinationColumn="IconUsageTypeId" />
+                        <column name="IconUsageTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IconUsageTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IconUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="IconUsageTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IconUsageTypeDescriptions" nameSingular="IconUsageTypeDescription" columnPrefix="icnutypd">
+                    <columns>
+                        <column name="IconUsageTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="IconUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IconUsageTypes" destinationColumn="IconUsageTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IconUsageTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IconUsageTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="IconUsages" nameSingular="IconUsage" columnPrefix="icnu">
+                    <columns>
+                        <column name="IconUsageId" type="EID" nullAllowed="false" />
+                        <column name="IconUsageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="IconUsageTypes" destinationColumn="IconUsageTypeId" />
+                        <column name="IconId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Icons" destinationColumn="IconId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="IconUsageId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="IconUsageTypeId" />
+                            <indexColumn name="IconId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="IconUsageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IconId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

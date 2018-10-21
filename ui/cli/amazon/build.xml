@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="amazon" default="Help" basedir=".">
+
+    <property file="build.properties"/>
+    <property file="${component.home}/environment.properties"/>
+    <property name="metadata.dir" value="src/metadata"/>
+    
+    <target name="compile">
+        <mkdir dir="build"/>
+        <mkdir dir="build/classes"/>
+        <javac
+            compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
+            debug="true"
+            source="1.8"
+            target="1.8"
+            srcdir="./src/java"
+            destdir="./build/classes"
+            includeAntRuntime="true">
+            <classpath>
+                <pathelement location="./"/>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+            <compilerarg value="-Xlint:-options" />
+            <!-- <compilerarg value="-Xlint:deprecation" /> -->
+            <!-- <compilerarg value="-Xlint:unchecked" /> -->
+            <compilerclasspath>
+                <pathelement location="../../../build/lib/error_prone_ant.jar"/>
+            </compilerclasspath>
+        </javac>
+    </target>
+    
+    <target name="generated_directory" depends="compile">
+        <mkdir dir="generated"/>
+    </target>
+
+    <target name="Amazon_sample_orders" depends="compile">
+        <java classname="AmazonUtility" fork="true">
+            <arg value="--directory"/>
+            <arg value="/Users/rich/amazon"/>
+            <classpath>
+                <pathelement path="${metadata.dir}" />
+                <pathelement location="./build/classes"/>
+                <fileset dir="../../${wildfly.home.modules}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/lib">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="../../../build/jars">
+                    <include name="echothree-client.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="clean">
+        <echo message="Deleting directory build" />
+        <delete includeemptydirs="true" quiet="true">
+            <fileset dir="build">
+                <include name="**" />
+            </fileset>
+        </delete>
+    </target>
+        
+    <target name="Help">
+        <echo>+----------------------------------------------+</echo>
+        <echo>+ Available targets for Amazon utilities:       +</echo>
+        <echo>+                                              +</echo>
+        <echo>+        ant Amazon_sample_orders              +</echo>
+        <echo>+                                              +</echo>
+        <echo>+----------------------------------------------+</echo>
+    </target>
+
+</project>

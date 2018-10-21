@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<initialData>
+    <wishlistTypes>
+        <wishlistType wishlistTypeName="WISHLIST_EXAMPLE_1" isDefault="true" sortOrder="1">
+            <wishlistTypeDescription languageIsoName="en" description="Wishlist Example 1" />
+            <wishlistTypePriority wishlistTypePriorityName="HIGHEST" isDefault="false" sortOrder="1">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Highest" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="HIGH" isDefault="false" sortOrder="2">
+                <wishlistTypePriorityDescription languageIsoName="en" description="High" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="MEDIUM" isDefault="true" sortOrder="3">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Medium" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="LOW" isDefault="false" sortOrder="4">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Low" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="LOWEST" isDefault="false" sortOrder="5">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Lowest" />
+            </wishlistTypePriority>
+        </wishlistType>
+        <wishlistType wishlistTypeName="WISHLIST_EXAMPLE_2" isDefault="false" sortOrder="1">
+            <wishlistTypeDescription languageIsoName="en" description="Wishlist Example 2" />
+            <wishlistTypePriority wishlistTypePriorityName="HIGHEST" isDefault="false" sortOrder="1">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Highest" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="HIGH" isDefault="false" sortOrder="2">
+                <wishlistTypePriorityDescription languageIsoName="en" description="High" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="MEDIUM" isDefault="true" sortOrder="3">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Medium" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="LOW" isDefault="false" sortOrder="4">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Low" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="LOWEST" isDefault="false" sortOrder="5">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Lowest" />
+            </wishlistTypePriority>
+        </wishlistType>
+        <wishlistType wishlistTypeName="WISHLIST_EXAMPLE_3" isDefault="false" sortOrder="1">
+            <wishlistTypeDescription languageIsoName="en" description="Wishlist Example 3" />
+            <wishlistTypePriority wishlistTypePriorityName="HIGHEST" isDefault="false" sortOrder="1">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Highest" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="HIGH" isDefault="false" sortOrder="2">
+                <wishlistTypePriorityDescription languageIsoName="en" description="High" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="MEDIUM" isDefault="true" sortOrder="3">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Medium" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="LOW" isDefault="false" sortOrder="4">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Low" />
+            </wishlistTypePriority>
+            <wishlistTypePriority wishlistTypePriorityName="LOWEST" isDefault="false" sortOrder="5">
+                <wishlistTypePriorityDescription languageIsoName="en" description="Lowest" />
+            </wishlistTypePriority>
+        </wishlistType>
+    </wishlistTypes>
+</initialData>

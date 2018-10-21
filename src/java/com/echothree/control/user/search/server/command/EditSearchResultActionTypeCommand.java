@@ -1,0 +1,178 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.search.server.command;
+
+import com.echothree.control.user.search.remote.edit.SearchEditFactory;
+import com.echothree.control.user.search.remote.edit.SearchResultActionTypeEdit;
+import com.echothree.control.user.search.remote.form.EditSearchResultActionTypeForm;
+import com.echothree.control.user.search.remote.result.EditSearchResultActionTypeResult;
+import com.echothree.control.user.search.remote.result.SearchResultFactory;
+import com.echothree.control.user.search.remote.spec.SearchResultActionTypeSpec;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.search.server.entity.SearchResultActionType;
+import com.echothree.model.data.search.server.entity.SearchResultActionTypeDescription;
+import com.echothree.model.data.search.server.entity.SearchResultActionTypeDetail;
+import com.echothree.model.data.search.server.value.SearchResultActionTypeDescriptionValue;
+import com.echothree.model.data.search.server.value.SearchResultActionTypeDetailValue;
+import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class EditSearchResultActionTypeCommand
+        extends BaseAbstractEditCommand<SearchResultActionTypeSpec, SearchResultActionTypeEdit, EditSearchResultActionTypeResult, SearchResultActionType, SearchResultActionType> {
+    
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
+    private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
+    
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.SearchResultActionType.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+        
+        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, true, null, null)
+                ));
+        
+        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("SearchResultActionTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                ));
+    }
+    
+    /** Creates a new instance of EditSearchResultActionTypeCommand */
+    public EditSearchResultActionTypeCommand(UserVisitPK userVisitPK, EditSearchResultActionTypeForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+    }
+    
+    @Override
+    public EditSearchResultActionTypeResult getResult() {
+        return SearchResultFactory.getEditSearchResultActionTypeResult();
+    }
+
+    @Override
+    public SearchResultActionTypeEdit getEdit() {
+        return SearchEditFactory.getSearchResultActionTypeEdit();
+    }
+
+    @Override
+    public SearchResultActionType getEntity(EditSearchResultActionTypeResult result) {
+        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        SearchResultActionType searchResultActionType;
+        String searchResultActionTypeName = spec.getSearchResultActionTypeName();
+
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
+        } else { // EditMode.UPDATE
+            searchResultActionType = searchControl.getSearchResultActionTypeByNameForUpdate(searchResultActionTypeName);
+        }
+
+        if(searchResultActionType == null) {
+            addExecutionError(ExecutionErrors.UnknownSearchResultActionTypeName.name(), searchResultActionTypeName);
+        }
+
+        return searchResultActionType;
+    }
+
+    @Override
+    public SearchResultActionType getLockEntity(SearchResultActionType searchResultActionType) {
+        return searchResultActionType;
+    }
+
+    @Override
+    public void fillInResult(EditSearchResultActionTypeResult result, SearchResultActionType searchResultActionType) {
+        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+
+        result.setSearchResultActionType(searchControl.getSearchResultActionTypeTransfer(getUserVisit(), searchResultActionType));
+    }
+
+    @Override
+    public void doLock(SearchResultActionTypeEdit edit, SearchResultActionType searchResultActionType) {
+        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        SearchResultActionTypeDescription searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescription(searchResultActionType, getPreferredLanguage());
+        SearchResultActionTypeDetail searchResultActionTypeDetail = searchResultActionType.getLastDetail();
+
+        edit.setSearchResultActionTypeName(searchResultActionTypeDetail.getSearchResultActionTypeName());
+        edit.setIsDefault(searchResultActionTypeDetail.getIsDefault().toString());
+        edit.setSortOrder(searchResultActionTypeDetail.getSortOrder().toString());
+
+        if(searchResultActionTypeDescription != null) {
+            edit.setDescription(searchResultActionTypeDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(SearchResultActionType searchResultActionType) {
+        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        String searchResultActionTypeName = edit.getSearchResultActionTypeName();
+        SearchResultActionType duplicateSearchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
+
+        if(duplicateSearchResultActionType != null && !searchResultActionType.equals(duplicateSearchResultActionType)) {
+            addExecutionError(ExecutionErrors.DuplicateSearchResultActionTypeName.name(), searchResultActionTypeName);
+        }
+    }
+
+    @Override
+    public void doUpdate(SearchResultActionType searchResultActionType) {
+        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        PartyPK partyPK = getPartyPK();
+        SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = searchControl.getSearchResultActionTypeDetailValueForUpdate(searchResultActionType);
+        SearchResultActionTypeDescription searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescriptionForUpdate(searchResultActionType, getPreferredLanguage());
+        String description = edit.getDescription();
+
+        searchResultActionTypeDetailValue.setSearchResultActionTypeName(edit.getSearchResultActionTypeName());
+        searchResultActionTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        searchResultActionTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        searchControl.updateSearchResultActionTypeFromValue(searchResultActionTypeDetailValue, partyPK);
+
+        if(searchResultActionTypeDescription == null && description != null) {
+            searchControl.createSearchResultActionTypeDescription(searchResultActionType, getPreferredLanguage(), description, partyPK);
+        } else {
+            if(searchResultActionTypeDescription != null && description == null) {
+                searchControl.deleteSearchResultActionTypeDescription(searchResultActionTypeDescription, partyPK);
+            } else {
+                if(searchResultActionTypeDescription != null && description != null) {
+                    SearchResultActionTypeDescriptionValue searchResultActionTypeDescriptionValue = searchControl.getSearchResultActionTypeDescriptionValue(searchResultActionTypeDescription);
+
+                    searchResultActionTypeDescriptionValue.setDescription(description);
+                    searchControl.updateSearchResultActionTypeDescriptionFromValue(searchResultActionTypeDescriptionValue, partyPK);
+                }
+            }
+        }
+    }
+    
+}

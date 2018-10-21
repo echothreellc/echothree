@@ -1,0 +1,371 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
+<!--                                                                                  -->
+<!-- Copyright 2002-2018 Echo Three, LLC                                              -->
+<!--                                                                                  -->
+<!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
+<!-- you may not use this file except in compliance with the License.                 -->
+<!-- You may obtain a copy of the License at                                          -->
+<!--                                                                                  -->
+<!--     http://www.apache.org/licenses/LICENSE-2.0                                   -->
+<!--                                                                                  -->
+<!-- Unless required by applicable law or agreed to in writing, software              -->
+<!-- distributed under the License is distributed on an "AS IS" BASIS,                -->
+<!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.         -->
+<!-- See the License for the specific language governing permissions and              -->
+<!-- limitations under the License.                                                   -->
+<!--                                                                                  -->
+<database name="echothree">
+    <components>
+        <component name="Vendor">
+            <tables>
+                <table namePlural="VendorTypes" nameSingular="VendorType" columnPrefix="vndrty">
+                    <columns>
+                        <column name="VendorTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="VendorTypeDetails" destinationColumn="VendorTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="VendorTypeDetails" destinationColumn="VendorTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="VendorTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="VendorTypeDetails" nameSingular="VendorTypeDetail" columnPrefix="vndrtydt">
+                    <columns>
+                        <column name="VendorTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="VendorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="VendorTypes" destinationColumn="VendorTypeId" />
+                        <column name="VendorTypeName" type="Name" nullAllowed="false" />
+                        <column name="DefaultCancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="DefaultReturnPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="DefaultApGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="DefaultHoldUntilComplete" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultAllowBackorders" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultAllowSubstitutions" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultAllowCombiningShipments" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultRequireReference" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultAllowReferenceDuplicates" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultReferenceValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="VendorTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="VendorTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="VendorTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="DefaultCancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="DefaultReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="DefaultApGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="VendorTypeDescriptions" nameSingular="VendorTypeDescription" columnPrefix="vndrtyd">
+                    <columns>
+                        <column name="VendorTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="VendorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="VendorTypes" destinationColumn="VendorTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="VendorTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="VendorTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="Vendors" nameSingular="Vendor" columnPrefix="vndr">
+                    <columns>
+                        <column name="VendorId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="VendorName" type="Name" nullAllowed="false" />
+                        <column name="VendorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="VendorTypes" destinationColumn="VendorTypeId" />
+                        <column name="MinimumPurchaseOrderLines" type="Integer" nullAllowed="true" />
+                        <column name="MaximumPurchaseOrderLines" type="Integer" nullAllowed="true" />
+                        <column name="MinimumPurchaseOrderAmount" type="Currency" nullAllowed="true" />
+                        <column name="MaximumPurchaseOrderAmount" type="Currency" nullAllowed="true" />
+                        <column name="UseItemPurchasingCategories" type="Boolean" nullAllowed="false" />
+                        <column name="DefaultItemAliasTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemAliasTypes" destinationColumn="ItemAliasTypeId" />
+                        <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="ReturnPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="ApGlAccountId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="GlAccounts" destinationColumn="GlAccountId" />
+                        <column name="HoldUntilComplete" type="Boolean" nullAllowed="false" />
+                        <column name="AllowBackorders" type="Boolean" nullAllowed="false" />
+                        <column name="AllowSubstitutions" type="Boolean" nullAllowed="false" />
+                        <column name="AllowCombiningShipments" type="Boolean" nullAllowed="false" />
+                        <column name="RequireReference" type="Boolean" nullAllowed="false" />
+                        <column name="AllowReferenceDuplicates" type="Boolean" nullAllowed="false" />
+                        <column name="ReferenceValidationPattern" type="RegExp" nullAllowed="true" />
+                        <column name="VendorItemSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="VendorItemCostFilterId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Filters" destinationColumn="FilterId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="VendorId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="VendorName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="VendorTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="DefaultItemAliasTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="ApGlAccountId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="VendorItemSelectorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index9">
+                            <indexColumn name="VendorItemCostFilterId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="VendorItems" nameSingular="VendorItem" columnPrefix="vndritm">
+                    <columns>
+                        <column name="VendorItemId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="VendorItemDetails" destinationColumn="VendorItemDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="VendorItemDetails" destinationColumn="VendorItemDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="VendorItemId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="VendorItemDetails" nameSingular="VendorItemDetail" columnPrefix="vndritmdt">
+                    <columns>
+                        <column name="VendorItemDetailId" type="EID" nullAllowed="false" />
+                        <column name="VendorItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="VendorItems" destinationColumn="VendorItemId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="VendorPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="VendorItemName" type="Name" nullAllowed="false" />
+                        <column name="Description" type="Description" nullAllowed="true" />
+                        <column name="Priority" type="Integer" nullAllowed="false" />
+                        <column name="CancellationPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="CancellationPolicies" destinationColumn="CancellationPolicyId" />
+                        <column name="ReturnPolicyId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ReturnPolicies" destinationColumn="ReturnPolicyId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="VendorItemDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="VendorItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="VendorPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="VendorPartyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index5">
+                            <indexColumn name="VendorPartyId" />
+                            <indexColumn name="ThruTime" />
+                            <indexColumn name="VendorItemName" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="VendorItemName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="CancellationPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="ReturnPolicyId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="VendorItemCosts" nameSingular="VendorItemCost" columnPrefix="vndritmc">
+                    <columns>
+                        <column name="VendorItemCostId" type="EID" nullAllowed="false" />
+                        <column name="VendorItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="VendorItems" destinationColumn="VendorItemId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="UnitCost" type="Currency" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="VendorItemCostId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="VendorItemId" />
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="VendorItemId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryConditionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemPurchasingCategories" nameSingular="ItemPurchasingCategory" columnPrefix="iprchc">
+                    <columns>
+                        <column name="ItemPurchasingCategoryId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemPurchasingCategoryDetails" destinationColumn="ItemPurchasingCategoryDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemPurchasingCategoryDetails" destinationColumn="ItemPurchasingCategoryDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemPurchasingCategoryId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemPurchasingCategoryDetails" nameSingular="ItemPurchasingCategoryDetail" columnPrefix="iprchcdt">
+                    <columns>
+                        <column name="ItemPurchasingCategoryDetailId" type="EID" nullAllowed="false" />
+                        <column name="ItemPurchasingCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemPurchasingCategories" destinationColumn="ItemPurchasingCategoryId" />
+                        <column name="ItemPurchasingCategoryName" type="Name" nullAllowed="false" />
+                        <column name="ParentItemPurchasingCategoryId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ItemPurchasingCategories" destinationColumn="ItemPurchasingCategoryId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemPurchasingCategoryDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemPurchasingCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="ItemPurchasingCategoryName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentItemPurchasingCategoryId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="ItemPurchasingCategoryDescriptions" nameSingular="ItemPurchasingCategoryDescription" columnPrefix="iprchcd">
+                    <columns>
+                        <column name="ItemPurchasingCategoryDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="ItemPurchasingCategoryId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ItemPurchasingCategories" destinationColumn="ItemPurchasingCategoryId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="ItemPurchasingCategoryDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="ItemPurchasingCategoryId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="ItemPurchasingCategoryId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+            </tables>
+        </component>
+    </components>
+</database>

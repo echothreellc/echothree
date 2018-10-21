@@ -1,0 +1,142 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.web.main.action.forum.forumpartytyperole;
+
+import com.echothree.control.user.forum.common.ForumUtil;
+import com.echothree.control.user.forum.remote.form.GetForumRoleTypeChoicesForm;
+import com.echothree.control.user.forum.remote.result.GetForumRoleTypeChoicesResult;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.remote.form.GetPartyTypeChoicesForm;
+import com.echothree.control.user.party.remote.result.GetPartyTypeChoicesResult;
+import com.echothree.model.control.forum.remote.choice.ForumRoleTypeChoicesBean;
+import com.echothree.model.control.party.remote.choice.PartyTypeChoicesBean;
+import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.view.client.web.struts.BaseActionForm;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
+import java.util.List;
+import javax.naming.NamingException;
+import org.apache.struts.util.LabelValueBean;
+
+@SproutForm(name="ForumPartyTypeRoleAdd")
+public class AddActionForm
+        extends BaseActionForm {
+    
+    private PartyTypeChoicesBean partyTypeChoices;
+    private ForumRoleTypeChoicesBean forumRoleTypeChoices;
+    
+    private String forumName;
+    private String partyTypeChoice;
+    private String forumRoleTypeChoice;
+    
+    private void setupPartyTypeChoices() {
+        if(partyTypeChoices == null) {
+            try {
+                GetPartyTypeChoicesForm form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
+                
+                form.setDefaultPartyTypeChoice(partyTypeChoice);
+                form.setAllowNullChoice(Boolean.FALSE.toString());
+                
+                CommandResult commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetPartyTypeChoicesResult getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
+                partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
+                
+                if(partyTypeChoice == null) {
+                    partyTypeChoice = partyTypeChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, partyTypeChoices remains null, no default
+            }
+        }
+    }
+    
+    private void setupForumRoleTypeChoices() {
+        if(forumRoleTypeChoices == null) {
+            try {
+                GetForumRoleTypeChoicesForm form = ForumUtil.getHome().getGetForumRoleTypeChoicesForm();
+                
+                form.setDefaultForumRoleTypeChoice(forumRoleTypeChoice);
+                form.setAllowNullChoice(Boolean.FALSE.toString());
+                
+                CommandResult commandResult = ForumUtil.getHome().getForumRoleTypeChoices(userVisitPK, form);
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                GetForumRoleTypeChoicesResult getForumRoleTypeChoicesResult = (GetForumRoleTypeChoicesResult)executionResult.getResult();
+                forumRoleTypeChoices = getForumRoleTypeChoicesResult.getForumRoleTypeChoices();
+                
+                if(forumRoleTypeChoice == null) {
+                    forumRoleTypeChoice = forumRoleTypeChoices.getDefaultValue();
+                }
+            } catch (NamingException ne) {
+                ne.printStackTrace();
+                // failed, forumRoleTypeChoices remains null, no default
+            }
+        }
+    }
+    
+    public String getForumName() {
+        return forumName;
+    }
+    
+    public void setForumName(String forumName) {
+        this.forumName = forumName;
+    }
+    
+    public String getPartyTypeChoice() {
+        setupPartyTypeChoices();
+        
+        return partyTypeChoice;
+    }
+    
+    public void setPartyTypeChoice(String partyTypeChoice) {
+        this.partyTypeChoice = partyTypeChoice;
+    }
+    
+    public List<LabelValueBean> getPartyTypeChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupPartyTypeChoices();
+        if(partyTypeChoices != null) {
+            choices = convertChoices(partyTypeChoices);
+        }
+        
+        return choices;
+    }
+    
+    public String getForumRoleTypeChoice() {
+        setupForumRoleTypeChoices();
+        
+        return forumRoleTypeChoice;
+    }
+    
+    public void setForumRoleTypeChoice(String forumRoleTypeChoice) {
+        this.forumRoleTypeChoice = forumRoleTypeChoice;
+    }
+    
+    public List<LabelValueBean> getForumRoleTypeChoices() {
+        List<LabelValueBean> choices = null;
+        
+        setupForumRoleTypeChoices();
+        if(forumRoleTypeChoices != null) {
+            choices = convertChoices(forumRoleTypeChoices);
+        }
+        
+        return choices;
+    }
+    
+}

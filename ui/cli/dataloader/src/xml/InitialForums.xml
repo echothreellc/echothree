@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <forumRoleTypes>
+        <forumRoleType forumRoleTypeName="AUTHOR" isDefault="true" sortOrder="1">
+            <forumRoleTypeDescription languageIsoName="en" description="Author" />
+        </forumRoleType>
+        <forumRoleType forumRoleTypeName="COMMENTOR" isDefault="false" sortOrder="1">
+            <forumRoleTypeDescription languageIsoName="en" description="Commentor" />
+        </forumRoleType>
+        <forumRoleType forumRoleTypeName="MODERATOR" isDefault="false" sortOrder="1">
+            <forumRoleTypeDescription languageIsoName="en" description="Moderator" />
+        </forumRoleType>
+        <forumRoleType forumRoleTypeName="READER" isDefault="false" sortOrder="1">
+            <forumRoleTypeDescription languageIsoName="en" description="Reader" />
+        </forumRoleType>
+    </forumRoleTypes>
+    <forumMessagePartTypes>
+        <forumMessagePartType forumMessagePartTypeName="TITLE" sortOrder="1">
+            <forumMessagePartTypeDescription languageIsoName="en" description="Title" />
+        </forumMessagePartType>
+        <forumMessagePartType forumMessagePartTypeName="FEED_SUMMARY" mimeTypeUsageTypeName="TEXT" sortOrder="2">
+            <forumMessagePartTypeDescription languageIsoName="en" description="FEED Summary" />
+        </forumMessagePartType>
+        <forumMessagePartType forumMessagePartTypeName="SUMMARY" mimeTypeUsageTypeName="TEXT" sortOrder="3">
+            <forumMessagePartTypeDescription languageIsoName="en" description="Summary" />
+        </forumMessagePartType>
+        <forumMessagePartType forumMessagePartTypeName="CONTENT" mimeTypeUsageTypeName="TEXT" sortOrder="4">
+            <forumMessagePartTypeDescription languageIsoName="en" description="Content" />
+        </forumMessagePartType>
+    </forumMessagePartTypes>
+    <forumMessageTypes>
+        <forumMessageType forumMessageTypeName="BLOG_ENTRY" isDefault="true" sortOrder="1">
+            <forumMessageTypeDescription languageIsoName="en" description="Blog Entry" />
+            <forumMessageTypePartType checkContentWebAddress="false" includeInIndex="true" indexDefault="false" sortOrder="1" forumMessagePartTypeName="TITLE" />
+            <forumMessageTypePartType checkContentWebAddress="false" includeInIndex="true" indexDefault="false" sortOrder="2" forumMessagePartTypeName="FEED_SUMMARY" />
+            <forumMessageTypePartType checkContentWebAddress="false" includeInIndex="true" indexDefault="false" sortOrder="3" forumMessagePartTypeName="SUMMARY" />
+            <forumMessageTypePartType checkContentWebAddress="false" includeInIndex="true" indexDefault="true" sortOrder="4" forumMessagePartTypeName="CONTENT" />
+        </forumMessageType>
+        <forumMessageType forumMessageTypeName="BLOG_COMMENT" isDefault="false" sortOrder="1">
+            <forumMessageTypeDescription languageIsoName="en" description="Blog Comment" />
+            <forumMessageTypePartType checkContentWebAddress="false" includeInIndex="true" indexDefault="false" sortOrder="1" forumMessagePartTypeName="TITLE" />
+            <forumMessageTypePartType checkContentWebAddress="false" includeInIndex="true" indexDefault="true" sortOrder="2" forumMessagePartTypeName="CONTENT" />
+        </forumMessageType>
+    </forumMessageTypes>
+    <forumTypes>
+        <forumType forumTypeName="BLOG" isDefault="true" sortOrder="1">
+            <forumTypeDescription languageIsoName="en" description="Blog" />
+            <forumTypeMessageType forumMessageTypeName="BLOG_ENTRY" isDefault="true" sortOrder="1" />
+            <forumTypeMessageType forumMessageTypeName="BLOG_COMMENT" isDefault="false" sortOrder="2" />
+        </forumType>
+    </forumTypes>
+    <forumGroups>
+        <forumGroup forumGroupName="TEST_BLOGS" sortOrder="1">
+            <forumGroupDescription languageIsoName="en" description="Test Blogs" />
+        </forumGroup>
+    </forumGroups>
+    <forums>
+        <forum forumName="TEST_BLOG_1" forumTypeName="BLOG" sortOrder="1">
+            <forumDescription languageIsoName="en" description="Test Blog 1" />
+            <forumGroupForum forumGroupName="TEST_BLOGS" isDefault="true" sortOrder="1" />
+            <forumMimeType mimeTypeName="text/html" isDefault="false" sortOrder="1" />
+            <forumMimeType mimeTypeName="text/x-markup" isDefault="true" sortOrder="1" />
+            <forumMimeType mimeTypeName="text/x-textile" isDefault="false" sortOrder="1" />
+            <forumPartyTypeRole partyTypeName="UTILITY" forumRoleTypeName="AUTHOR" />
+            <forumPartyTypeRole partyTypeName="EMPLOYEE" forumRoleTypeName="AUTHOR" />
+            <forumPartyTypeRole partyTypeName="UTILITY" forumRoleTypeName="COMMENTOR" />
+            <forumPartyTypeRole partyTypeName="EMPLOYEE" forumRoleTypeName="COMMENTOR" />
+            <forumPartyTypeRole partyTypeName="CUSTOMER" forumRoleTypeName="COMMENTOR" />
+            <!--
+            <blogEntry sortOrder="1" title="Test Blog Entry 1" contentMimeTypeName="text/html" content="Test blog entry.">
+                <blogComment sortOrder="1" title="Test Blog Comment 1.1" contentMimeTypeName="text/html" content="Test blog comment." />
+                <blogComment sortOrder="1" title="Test Blog Comment 1.2" contentMimeTypeName="text/html" content="Test blog comment.">
+                    <blogComment sortOrder="1" title="Test Blog Comment 1.2.1" contentMimeTypeName="text/html" content="Test blog comment." />
+                    <blogComment sortOrder="1" title="Test Blog Comment 1.2.2" contentMimeTypeName="text/html" content="Test blog comment." />
+                </blogComment>
+            </blogEntry>
+            <blogEntry sortOrder="1" title="Test Blog Entry 2" contentMimeTypeName="text/html" content="Test blog entry." />
+            -->
+        </forum>
+        <forum forumName="TEST_BLOG_2" forumTypeName="BLOG" sortOrder="1">
+            <forumDescription languageIsoName="en" description="Test Blog 2" />
+            <forumGroupForum forumGroupName="TEST_BLOGS" isDefault="true" sortOrder="1" />
+            <forumMimeType mimeTypeName="text/html" isDefault="false" sortOrder="1" />
+            <forumMimeType mimeTypeName="text/x-markup" isDefault="true" sortOrder="1" />
+            <forumMimeType mimeTypeName="text/x-textile" isDefault="false" sortOrder="1" />
+            <forumPartyTypeRole partyTypeName="EMPLOYEE" forumRoleTypeName="AUTHOR" />
+            <forumPartyTypeRole partyTypeName="EMPLOYEE" forumRoleTypeName="COMMENTOR" />
+            <forumPartyTypeRole partyTypeName="CUSTOMER" forumRoleTypeName="COMMENTOR" />
+        </forum>
+    </forums>
+</initialData>
