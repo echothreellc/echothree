@@ -16,7 +16,7 @@ deploying these applications.
 * Java JDK 1.8.0_181
 * Apache Ant 1.10.5
 * MySQL 5.7.23
-* WildFly 14.0.0
+* WildFly 14.0.1
 
 ## Recommended Directory Structure
 
@@ -24,8 +24,8 @@ deploying these applications.
 /usr/local/jboss
     ... EchoThree
     ... share
-    ... wildfly-14.0.0.Final
-    ... wildfly-latest -> wildfly-14.0.0.Final
+    ... wildfly-14.0.1.Final
+    ... wildfly-latest -> wildfly-14.0.1.Final
 ```
 
 `/usr/local/jboss` and all files below it are owned by the jboss user and group.
@@ -56,8 +56,8 @@ change the setting to `unlimited`:
 crypto.policy=unlimited
 ```
 
-If this is not available, the source code to the Echo Three application will need to be modified appropriate to
-use algorithms avialable in your jurisdiction.
+If this is not available, the source code to the Echo Three application will need to be modified appropriately to
+use algorithms available in your jurisdiction.
 
 ## Git Checkout
 
@@ -151,8 +151,33 @@ Customize it as needed, the /main application should be protected from outside a
 
 As jboss:
 ```
-$ cd Java/wildfly-14.0.0.Final/bin
-$ add-user.sh
+$ cd Java/wildfly-14.0.1.Final/bin
+$ ./add-user.sh
+
+What type of user do you wish to add? 
+ a) Management User (mgmt-users.properties) 
+ b) Application User (application-users.properties)
+(a): a
+
+Enter the details of the new user to add.
+Using realm 'ManagementRealm' as discovered from the existing property files.
+Username : lukeskywalker
+Password recommendations are listed below. To modify these restrictions edit the add-user.properties configuration file.
+ - The password should be different from the username
+ - The password should not be one of the following restricted values {root, admin, administrator}
+ - The password should contain at least 8 characters, 1 alphabetic character(s), 1 digit(s), 1 non-alphanumeric symbol(s)
+Password : 
+Re-enter Password : 
+What groups do you want this user to belong to? (Please enter a comma separated list, or leave blank for none)[  ]: 
+About to add user 'lukeskywalker' for realm 'ManagementRealm'
+Is this correct yes/no? yes
+Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-14.0.1.Final/standalone/configuration/mgmt-users.properties'
+Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-14.0.1.Final/domain/configuration/mgmt-users.properties'
+Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-14.0.1.Final/standalone/configuration/mgmt-groups.properties'
+Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-14.0.1.Final/domain/configuration/mgmt-groups.properties'
+Is this new user going to be used for one AS process to connect to another AS process? 
+e.g. for a slave host controller connecting to the master or for a Remoting connection for server to server EJB calls.
+yes/no? no
 ```
 
 ### Configure CentOS to Start WildFly Automatically
