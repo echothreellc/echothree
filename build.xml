@@ -25,40 +25,31 @@
     </target>
     
     <target name="build-properties" depends="build-properties-instance">
-        <exec executable="svn" outputproperty="subversion.output">
-            <arg line="info" />
+        <exec executable="git" outputproperty="git.branch">
+            <arg line="rev-parse --abbrev-ref HEAD"/>
+        </exec>
+
+        <exec executable="git" outputproperty="git.tagtemp">
+            <arg value="describe"/>
+        </exec>
+
+        <condition property="git.tag"
+            value="none"
+            else="${git.tagtemp}">
+            <matches pattern="cannot" string="${git.tagtemp}"/>
+        </condition>
+
+        <exec executable="git" outputproperty="git.revision">
+            <arg value="rev-parse"/>
+            <arg value="HEAD"/>
         </exec>
         
-        <loadresource property="subversion.url">
-            <propertyresource name="subversion.output" />
-            <filterchain>
-                <linecontainsregexp>
-                    <regexp pattern="^URL:" />
-                </linecontainsregexp>
-                <tokenfilter>
-                    <replaceregex pattern="^URL: (.*)$" replace="\1" flags="g"/>
-                </tokenfilter>
-                <striplinebreaks />
-            </filterchain>
-        </loadresource>
-        <loadresource property="subversion.revision">
-            <propertyresource name="subversion.output" />
-            <filterchain>
-                <linecontainsregexp>
-                    <regexp pattern="^Revision:" />
-                </linecontainsregexp>
-                <tokenfilter>
-                    <replaceregex pattern="^Revision: (.*)$" replace="\1" flags="g"/>
-                </tokenfilter>
-                <striplinebreaks />
-            </filterchain>
-        </loadresource>
-        
         <propertyfile file="${build.properties.file}" comment="${build.properties.comment}">
-          <entry key="subversion.url" value="${subversion.url}" />
-          <entry key="subversion.revision" value="${subversion.revision}" />
-          <entry key="build.time" type="date" value="now" pattern="MM/dd/yy hh:mm:ss aa Z" />
-          <entry key="build.user" value="${user.name}" />
+            <entry key="git.branch" value="${git.branch}" />
+            <entry key="git.tag" value="${git.tag}" />
+            <entry key="git.revision" value="${git.revision}" />
+            <entry key="build.time" type="date" value="now" pattern="MM/dd/yy hh:mm:ss aa Z" />
+            <entry key="build.user" value="${user.name}" />
         </propertyfile>
     </target>
     

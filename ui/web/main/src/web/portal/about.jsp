@@ -33,10 +33,11 @@
             <li class="breadcrumb-item active" aria-current="page"><fmt:message key="navigation.about" /></li>
         <%@ include file="../include/breadcrumb/breadcrumbs-end.jsp" %>
         <fmt:setBundle basename="echothree-build" var="buildProperties" />
-        <p>Subversion information:</p>
+        <p>Git information:</p>
         <ul>
-            <li>URL: <fmt:message key="subversion.url" bundle="${buildProperties}" /></li>
-            <li>Revision: <fmt:message key="subversion.revision" bundle="${buildProperties}" /></li>
+            <li>Branch: <fmt:message key="git.branch" bundle="${buildProperties}" /></li>
+            <li>Tag: <fmt:message key="git.tag" bundle="${buildProperties}" /></li>
+            <li>Revision: <fmt:message key="git.revision" bundle="${buildProperties}" /></li>
         </ul>
         <p>Build:</p>
         <ul>
