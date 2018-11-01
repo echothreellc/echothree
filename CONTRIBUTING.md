@@ -158,11 +158,13 @@ There are no official releases at this time other than tagged milestones availab
 
 If you have any questions or if you would like to get involved in the Echo Three community you can check out:
 
+- [Twitter](https://twitter.com/echothree/)
 - [reddit](https://www.reddit.com/r/echothree/)
-- [GitLab](https://gitlab.com/echothree/echothree/)
+- [Bugzilla](https://www.echothree.com/bugzilla/)
 
 Source Code Mirrors:
 
+- [GitLab Mirror (Preferred)](https://gitlab.com/echothree/echothree/)
 - [GitHub Mirror](https://github.com/echothreellc/echothree/)
 
 ## Acknowledgements
