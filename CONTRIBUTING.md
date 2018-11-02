@@ -15,6 +15,17 @@ issue in the corresponding GitLab project. All of our Open Source Software can b
 We ask you not to submit security concerns via GitLab. For details on submitting potential security issues
 please see <https://www.echothree.com/security/>
 
+## Supported IDEs
+
+Using an IDE is not required, but sometimes they can make life easier. The Echo Three project is set up
+with project files for two major IDEs:
+
+* [NetBeans](https://netbeans.apache.org)
+* [IntelliJ IDEA](https://www.jetbrains.com/idea/)
+
+If you're adding or removing libraries from the project, it's important to make sure that references are
+added and removed from the IDE projects as appropriate.
+
 ## Contribution Process
 
 We have a 3 step process for contributions:
@@ -147,11 +158,13 @@ There are no official releases at this time other than tagged milestones availab
 
 If you have any questions or if you would like to get involved in the Echo Three community you can check out:
 
+- [Twitter](https://twitter.com/echothree/)
 - [reddit](https://www.reddit.com/r/echothree/)
-- [GitLab](https://gitlab.com/echothree/echothree/)
+- [Bugzilla](https://www.echothree.com/bugzilla/)
 
 Source Code Mirrors:
 
+- [GitLab Mirror (Preferred)](https://gitlab.com/echothree/echothree/)
 - [GitHub Mirror](https://github.com/echothreellc/echothree/)
 
 ## Acknowledgements
