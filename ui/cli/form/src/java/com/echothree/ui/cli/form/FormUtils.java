@@ -61,9 +61,9 @@ public class FormUtils {
         }
     }
 
-    private List<String> getInterfaces(String remoteBase, String packageName, String interfaceSuffix) {
+    private List<String> getInterfaces(String commonBase, String packageName, String interfaceSuffix) {
         List<String> interfaces = new ArrayList<>();
-        String editBase = new StringBuilder(remoteBase).append("/").append(packageName).toString();
+        String editBase = new StringBuilder(commonBase).append("/").append(packageName).toString();
         File editDirectory = new File(editBase);
         
         if(editDirectory.exists()) {
@@ -107,12 +107,12 @@ public class FormUtils {
                             String beanFileName = beanFile.getName();
 
                             if(beanFile.isFile() && beanFileName.endsWith("Bean.java")) {
-                                String remoteBase = new StringBuilder(componentBase).append('/').append(componentDirectory.getName()).append("/common").toString();
+                                String commonBase = new StringBuilder(componentBase).append('/').append(componentDirectory.getName()).append("/common").toString();
                                 String name = beanFileName.substring(0, beanFileName.length() - 9);
-                                List<String> editInterfaces = getInterfaces(remoteBase, "edit", "Edit");
-                                List<String> formInterfaces = getInterfaces(remoteBase, "form", "Form");
-                                List<String> specInterfaces = getInterfaces(remoteBase, "spec", "Spec");
-                                List<String> resultInterfaces = getInterfaces(remoteBase, "result", "Result");
+                                List<String> editInterfaces = getInterfaces(commonBase, "edit", "Edit");
+                                List<String> formInterfaces = getInterfaces(commonBase, "form", "Form");
+                                List<String> specInterfaces = getInterfaces(commonBase, "spec", "Spec");
+                                List<String> resultInterfaces = getInterfaces(commonBase, "result", "Result");
 
                                 components.add(new ComponentInformation(name, packageName, editInterfaces, formInterfaces, specInterfaces, resultInterfaces));
                             }
