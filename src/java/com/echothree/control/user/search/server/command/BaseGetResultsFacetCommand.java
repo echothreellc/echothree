@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.BaseGetResultsFacetForm;
-import com.echothree.control.user.search.remote.result.BaseGetResultsFacetResult;
+import com.echothree.control.user.search.common.form.BaseGetResultsFacetForm;
+import com.echothree.control.user.search.common.result.BaseGetResultsFacetResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
@@ -29,12 +29,12 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.persistence.Session;

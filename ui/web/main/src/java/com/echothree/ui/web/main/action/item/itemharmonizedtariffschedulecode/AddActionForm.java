@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.item.itemharmonizedtariffschedulecode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.form.GetCountryChoicesForm;
-import com.echothree.control.user.geo.remote.result.GetCountryChoicesResult;
+import com.echothree.control.user.geo.common.form.GetCountryChoicesForm;
+import com.echothree.control.user.geo.common.result.GetCountryChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.form.GetHarmonizedTariffScheduleCodeUseTypeChoicesForm;
-import com.echothree.control.user.item.remote.result.GetHarmonizedTariffScheduleCodeUseTypeChoicesResult;
-import com.echothree.model.control.geo.remote.choice.CountryChoicesBean;
-import com.echothree.model.control.item.remote.choice.HarmonizedTariffScheduleCodeUseTypeChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUseTypeChoicesForm;
+import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUseTypeChoicesResult;
+import com.echothree.model.control.geo.common.choice.CountryChoicesBean;
+import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUseTypeChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

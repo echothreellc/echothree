@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTypeDescriptionTransfer;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTypeTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

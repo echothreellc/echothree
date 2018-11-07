@@ -16,20 +16,20 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
-import com.echothree.model.control.contact.remote.transfer.ContactPostalAddressTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.geo.remote.transfer.CityTransfer;
-import com.echothree.model.control.geo.remote.transfer.CountryTransfer;
-import com.echothree.model.control.geo.remote.transfer.CountyTransfer;
-import com.echothree.model.control.geo.remote.transfer.PostalCodeTransfer;
-import com.echothree.model.control.geo.remote.transfer.StateTransfer;
+import com.echothree.model.control.geo.common.transfer.CityTransfer;
+import com.echothree.model.control.geo.common.transfer.CountryTransfer;
+import com.echothree.model.control.geo.common.transfer.CountyTransfer;
+import com.echothree.model.control.geo.common.transfer.PostalCodeTransfer;
+import com.echothree.model.control.geo.common.transfer.StateTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
-import com.echothree.model.control.party.remote.transfer.NameSuffixTransfer;
-import com.echothree.model.control.party.remote.transfer.PersonalTitleTransfer;
+import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
+import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.core.server.entity.EntityInstance;

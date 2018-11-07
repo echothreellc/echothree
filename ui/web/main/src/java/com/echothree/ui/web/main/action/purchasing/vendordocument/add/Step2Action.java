@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument.add;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.remote.form.GetDocumentTypeUsagesForm;
-import com.echothree.control.user.document.remote.result.GetDocumentTypeUsagesResult;
+import com.echothree.control.user.document.common.form.GetDocumentTypeUsagesForm;
+import com.echothree.control.user.document.common.result.GetDocumentTypeUsagesResult;
 import com.echothree.ui.web.main.action.purchasing.vendordocument.BaseVendorDocumentAction;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

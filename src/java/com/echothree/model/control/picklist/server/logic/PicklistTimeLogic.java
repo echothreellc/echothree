@@ -24,7 +24,7 @@ import com.echothree.model.data.picklist.server.entity.PicklistTimeType;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.picklist.server.value.PicklistTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 

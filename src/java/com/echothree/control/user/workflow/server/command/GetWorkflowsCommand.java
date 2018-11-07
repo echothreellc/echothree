@@ -16,18 +16,18 @@
 
 package com.echothree.control.user.workflow.server.command;
 
-import com.echothree.control.user.workflow.remote.form.GetWorkflowsForm;
-import com.echothree.control.user.workflow.remote.result.GetWorkflowsResult;
-import com.echothree.control.user.workflow.remote.result.WorkflowResultFactory;
+import com.echothree.control.user.workflow.common.form.GetWorkflowsForm;
+import com.echothree.control.user.workflow.common.result.GetWorkflowsResult;
+import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

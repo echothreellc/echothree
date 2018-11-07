@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.CountEmployeeResultsForm;
-import com.echothree.control.user.search.remote.result.CountEmployeeResultsResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
+import com.echothree.control.user.search.common.form.CountEmployeeResultsForm;
+import com.echothree.control.user.search.common.result.CountEmployeeResultsResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 
 public class CountEmployeeResultsCommand
         extends BaseCountResultsCommand<CountEmployeeResultsForm, CountEmployeeResultsResult> {

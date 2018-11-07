@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.uom.remote.transfer.UnitOfMeasureTypeTransfer;
+import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.uom.server.transfer.UnitOfMeasureTypeTransferCache;
-import com.echothree.model.control.warehouse.remote.transfer.LocationCapacityTransfer;
-import com.echothree.model.control.warehouse.remote.transfer.LocationTransfer;
+import com.echothree.model.control.warehouse.common.transfer.LocationCapacityTransfer;
+import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;

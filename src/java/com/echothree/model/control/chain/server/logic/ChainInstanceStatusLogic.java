@@ -40,7 +40,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class ChainInstanceStatusLogic {

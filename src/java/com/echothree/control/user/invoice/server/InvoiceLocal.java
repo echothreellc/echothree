@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.invoice.server;
 
-import com.echothree.control.user.invoice.remote.InvoiceService;
+import com.echothree.control.user.invoice.common.InvoiceService;
 import javax.ejb.Local;
 
 @Local

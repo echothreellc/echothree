@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.license.common;
 
-import com.echothree.control.user.license.remote.LicenseRemote;
+import com.echothree.control.user.license.common.LicenseRemote;
 import com.echothree.control.user.license.server.LicenseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class LicenseUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (LicenseRemote)ctx.lookup("ejb:echothree/echothree-server/LicenseBean!com.echothree.control.user.license.remote.LicenseRemote");
+            cachedRemote = (LicenseRemote)ctx.lookup("ejb:echothree/echothree-server/LicenseBean!com.echothree.control.user.license.common.LicenseRemote");
         }
         
         return cachedRemote;

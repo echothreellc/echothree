@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.order.server;
 
-import com.echothree.control.user.order.remote.OrderService;
+import com.echothree.control.user.order.common.OrderService;
 import javax.ejb.Local;
 
 @Local

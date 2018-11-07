@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.period.server.choice;
 
-import com.echothree.model.control.workflow.remote.choice.BaseWorkflowChoicesBean;
+import com.echothree.model.control.workflow.common.choice.BaseWorkflowChoicesBean;
 
 public class FiscalPeriodStatusChoicesBean
         extends BaseWorkflowChoicesBean {

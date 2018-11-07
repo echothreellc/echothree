@@ -17,7 +17,7 @@
 package com.echothree.view.client.web.util;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import java.io.Serializable;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSessionBindingEvent;

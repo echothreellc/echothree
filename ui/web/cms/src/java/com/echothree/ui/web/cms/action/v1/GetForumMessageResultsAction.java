@@ -17,12 +17,12 @@
 package com.echothree.ui.web.cms.action.v1;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.form.GetForumMessageResultsForm;
+import com.echothree.control.user.search.common.form.GetForumMessageResultsForm;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.cms.framework.CmsBaseJsonAction;
 import com.echothree.ui.web.cms.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.transfer.Limit;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;

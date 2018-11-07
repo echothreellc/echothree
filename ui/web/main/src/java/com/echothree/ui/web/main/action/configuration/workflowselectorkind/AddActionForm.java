@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowselectorkind;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.remote.form.GetSelectorKindChoicesForm;
-import com.echothree.control.user.selector.remote.result.GetSelectorKindChoicesResult;
-import com.echothree.model.control.selector.remote.choice.SelectorKindChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.selector.common.form.GetSelectorKindChoicesForm;
+import com.echothree.control.user.selector.common.result.GetSelectorKindChoicesResult;
+import com.echothree.model.control.selector.common.choice.SelectorKindChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

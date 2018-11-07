@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.ApplicationEditorTransfer;
-import com.echothree.model.control.core.remote.transfer.ApplicationTransfer;
-import com.echothree.model.control.core.remote.transfer.EditorTransfer;
+import com.echothree.model.control.core.common.transfer.ApplicationEditorTransfer;
+import com.echothree.model.control.core.common.transfer.ApplicationTransfer;
+import com.echothree.model.control.core.common.transfer.EditorTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.ApplicationEditorDetail;

@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.customer.customercarrieraccount;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.remote.edit.PartyCarrierAccountEdit;
-import com.echothree.control.user.carrier.remote.form.EditPartyCarrierAccountForm;
-import com.echothree.control.user.carrier.remote.result.EditPartyCarrierAccountResult;
-import com.echothree.control.user.carrier.remote.spec.PartyCarrierAccountSpec;
+import com.echothree.control.user.carrier.common.edit.PartyCarrierAccountEdit;
+import com.echothree.control.user.carrier.common.form.EditPartyCarrierAccountForm;
+import com.echothree.control.user.carrier.common.result.EditPartyCarrierAccountResult;
+import com.echothree.control.user.carrier.common.spec.PartyCarrierAccountSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

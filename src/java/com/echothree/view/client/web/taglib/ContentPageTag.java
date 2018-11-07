@@ -30,12 +30,12 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.form.GetContentPageForm;
-import com.echothree.control.user.content.remote.result.GetContentPageResult;
+import com.echothree.control.user.content.common.form.GetContentPageForm;
+import com.echothree.control.user.content.common.result.GetContentPageResult;
 import com.echothree.model.control.content.common.ContentOptions;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.TransferProperties;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;

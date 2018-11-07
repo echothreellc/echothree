@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.PartyTypeAuditPolicyTransfer;
-import com.echothree.model.control.party.remote.transfer.PartyTypeTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTypeAuditPolicyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;

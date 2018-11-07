@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.remote.JobService;
+import com.echothree.control.user.job.common.JobService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

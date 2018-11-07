@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.scaletype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.remote.form.SetDefaultScaleTypeForm;
+import com.echothree.control.user.scale.common.form.SetDefaultScaleTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

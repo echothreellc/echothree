@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.customer.remote.transfer.CustomerTypeTransfer;
+import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.offer.remote.transfer.OfferCustomerTypeTransfer;
-import com.echothree.model.control.offer.remote.transfer.OfferTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;

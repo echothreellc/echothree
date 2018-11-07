@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.index.server;
 
-import com.echothree.control.user.index.remote.IndexService;
+import com.echothree.control.user.index.common.IndexService;
 import javax.ejb.Local;
 
 @Local

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.comment.server.command;
 
-import com.echothree.control.user.comment.remote.edit.CommentEditFactory;
-import com.echothree.control.user.comment.remote.edit.CommentTypeEdit;
-import com.echothree.control.user.comment.remote.form.EditCommentTypeForm;
-import com.echothree.control.user.comment.remote.result.CommentResultFactory;
-import com.echothree.control.user.comment.remote.result.EditCommentTypeResult;
-import com.echothree.control.user.comment.remote.spec.CommentTypeSpec;
+import com.echothree.control.user.comment.common.edit.CommentEditFactory;
+import com.echothree.control.user.comment.common.edit.CommentTypeEdit;
+import com.echothree.control.user.comment.common.form.EditCommentTypeForm;
+import com.echothree.control.user.comment.common.result.CommentResultFactory;
+import com.echothree.control.user.comment.common.result.EditCommentTypeResult;
+import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
 import com.echothree.model.control.comment.server.CommentControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.sequence.common.SequenceConstants;
@@ -33,15 +33,15 @@ import com.echothree.model.data.comment.server.value.CommentTypeDescriptionValue
 import com.echothree.model.data.comment.server.value.CommentTypeDetailValue;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

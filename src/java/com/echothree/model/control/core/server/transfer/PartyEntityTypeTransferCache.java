@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityTypeTransfer;
-import com.echothree.model.control.core.remote.transfer.PartyEntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.PartyEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -29,7 +29,7 @@ import com.echothree.model.data.selector.server.entity.SelectorNodeItemCategory;
 import com.echothree.model.data.selector.server.entity.SelectorNodeItemPurchasingCategory;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class BaseItemSelectorEvaluator

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.payment.server;
 
-import com.echothree.control.user.payment.remote.PaymentService;
+import com.echothree.control.user.payment.common.PaymentService;
 import javax.ejb.Local;
 
 @Local

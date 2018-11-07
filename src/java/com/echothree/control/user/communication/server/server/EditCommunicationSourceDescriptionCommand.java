@@ -16,24 +16,24 @@
 
 package com.echothree.control.user.communication.server.server;
 
-import com.echothree.control.user.communication.remote.edit.CommunicationEditFactory;
-import com.echothree.control.user.communication.remote.edit.CommunicationSourceDescriptionEdit;
-import com.echothree.control.user.communication.remote.form.EditCommunicationSourceDescriptionForm;
-import com.echothree.control.user.communication.remote.result.CommunicationResultFactory;
-import com.echothree.control.user.communication.remote.result.EditCommunicationSourceDescriptionResult;
-import com.echothree.control.user.communication.remote.spec.CommunicationSourceDescriptionSpec;
+import com.echothree.control.user.communication.common.edit.CommunicationEditFactory;
+import com.echothree.control.user.communication.common.edit.CommunicationSourceDescriptionEdit;
+import com.echothree.control.user.communication.common.form.EditCommunicationSourceDescriptionForm;
+import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
+import com.echothree.control.user.communication.common.result.EditCommunicationSourceDescriptionResult;
+import com.echothree.control.user.communication.common.spec.CommunicationSourceDescriptionSpec;
 import com.echothree.model.control.communication.server.CommunicationControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceDescription;
 import com.echothree.model.data.communication.server.value.CommunicationSourceDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;

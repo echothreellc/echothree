@@ -16,18 +16,18 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.remote.form.GetContentForumsForm;
-import com.echothree.control.user.content.remote.result.ContentResultFactory;
-import com.echothree.control.user.content.remote.result.GetContentForumsResult;
+import com.echothree.control.user.content.common.form.GetContentForumsForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.GetContentForumsResult;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentForum;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

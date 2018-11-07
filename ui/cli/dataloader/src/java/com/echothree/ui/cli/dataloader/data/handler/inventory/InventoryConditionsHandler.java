@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.remote.InventoryService;
-import com.echothree.control.user.inventory.remote.form.CreateInventoryConditionForm;
-import com.echothree.control.user.inventory.remote.form.InventoryFormFactory;
+import com.echothree.control.user.inventory.common.InventoryService;
+import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -107,7 +107,7 @@ public class FormUtils {
                             String beanFileName = beanFile.getName();
 
                             if(beanFile.isFile() && beanFileName.endsWith("Bean.java")) {
-                                String remoteBase = new StringBuilder(componentBase).append('/').append(componentDirectory.getName()).append("/remote").toString();
+                                String remoteBase = new StringBuilder(componentBase).append('/').append(componentDirectory.getName()).append("/common").toString();
                                 String name = beanFileName.substring(0, beanFileName.length() - 9);
                                 List<String> editInterfaces = getInterfaces(remoteBase, "edit", "Edit");
                                 List<String> formInterfaces = getInterfaces(remoteBase, "form", "Form");
@@ -183,7 +183,7 @@ public class FormUtils {
 
     private void exportForms(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String interfacePackage = "com.echothree.control.user." + componentInformation.packageName + ".remote";
+        String interfacePackage = "com.echothree.control.user." + componentInformation.packageName + ".common";
         String interfaceDirectory = createDirectoryForClassPackage(interfacePackage, generatedDirectory);
 
         String className = componentInformation.name + "Forms";
@@ -198,13 +198,13 @@ public class FormUtils {
             writePackage(pw, interfacePackage);
             
             if(componentInformation.editInterfaces.size() > 0) {
-                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".remote.edit.*;");
+                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.edit.*;");
             }
             if(componentInformation.formInterfaces.size() > 0) {
-                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".remote.form.*;");
+                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.form.*;");
             }
             if(componentInformation.specInterfaces.size() > 0) {
-                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".remote.spec.*;");
+                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.spec.*;");
             }
             pw.println("");
             
@@ -241,13 +241,13 @@ public class FormUtils {
             writePackage(pw, interfacePackage);
             
             if(componentInformation.editInterfaces.size() > 0) {
-                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".remote.edit.*;");
+                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.edit.*;");
             }
             if(componentInformation.formInterfaces.size() > 0) {
-                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".remote.form.*;");
+                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.form.*;");
             }
             if(componentInformation.specInterfaces.size() > 0) {
-                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".remote.spec.*;");
+                pw.println("import com.echothree.control.user." + componentInformation.packageName + ".common.spec.*;");
             }
             if(componentInformation.editInterfaces.size() > 0 || componentInformation.formInterfaces.size() > 0 || componentInformation.specInterfaces.size() > 0) {
                 pw.println("");
@@ -297,7 +297,7 @@ public class FormUtils {
 
     private void exportEditFactory(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".remote.edit";
+        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.edit";
         String classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
 
         String className = componentInformation.name + "EditFactory";
@@ -311,7 +311,7 @@ public class FormUtils {
             writeVersion(pw, classFileName);
             writePackage(pw, classPackage);
             
-            pw.println("import com.echothree.util.remote.form.BaseFormFactory;");
+            pw.println("import com.echothree.util.common.form.BaseFormFactory;");
             pw.println("");
             
             pw.println("public class " + className);
@@ -335,7 +335,7 @@ public class FormUtils {
 
     private void exportFormFactory(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".remote.form";
+        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.form";
         String classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
 
         String className = componentInformation.name + "FormFactory";
@@ -349,7 +349,7 @@ public class FormUtils {
             writeVersion(pw, classFileName);
             writePackage(pw, classPackage);
             
-            pw.println("import com.echothree.util.remote.form.BaseFormFactory;");
+            pw.println("import com.echothree.util.common.form.BaseFormFactory;");
             pw.println("");
             
             pw.println("public class " + className);
@@ -373,7 +373,7 @@ public class FormUtils {
 
     private void exportSpecFactory(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".remote.spec";
+        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.spec";
         String classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
 
         String className = componentInformation.name + "SpecFactory";
@@ -387,7 +387,7 @@ public class FormUtils {
             writeVersion(pw, classFileName);
             writePackage(pw, classPackage);
             
-            pw.println("import com.echothree.util.remote.form.BaseFormFactory;");
+            pw.println("import com.echothree.util.common.form.BaseFormFactory;");
             pw.println("");
             
             pw.println("public class " + className);
@@ -411,7 +411,7 @@ public class FormUtils {
 
     private void exportResultFactory(String generatedDirectory, ComponentInformation componentInformation)
             throws Exception {
-        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".remote.result";
+        String classPackage = "com.echothree.control.user." + componentInformation.packageName + ".common.result";
         String classDirectory = createDirectoryForClassPackage(classPackage, generatedDirectory);
 
         String className = componentInformation.name + "ResultFactory";
@@ -425,7 +425,7 @@ public class FormUtils {
             writeVersion(pw, classFileName);
             writePackage(pw, classPackage);
             
-            pw.println("import com.echothree.util.remote.command.BaseResultFactory;");
+            pw.println("import com.echothree.util.common.command.BaseResultFactory;");
             pw.println("");
             
             pw.println("public class " + className);

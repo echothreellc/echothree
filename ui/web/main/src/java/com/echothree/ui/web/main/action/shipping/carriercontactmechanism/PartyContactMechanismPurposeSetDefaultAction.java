@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.shipping.carriercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.form.SetDefaultPartyContactMechanismPurposeForm;
+import com.echothree.control.user.contact.common.form.SetDefaultPartyContactMechanismPurposeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

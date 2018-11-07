@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.remote.WarehouseService;
-import com.echothree.control.user.warehouse.remote.form.CreateLocationUseTypeDescriptionForm;
-import com.echothree.control.user.warehouse.remote.form.WarehouseFormFactory;
+import com.echothree.control.user.warehouse.common.WarehouseService;
+import com.echothree.control.user.warehouse.common.form.CreateLocationUseTypeDescriptionForm;
+import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

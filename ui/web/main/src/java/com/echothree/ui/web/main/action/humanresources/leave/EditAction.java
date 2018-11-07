@@ -17,19 +17,19 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.edit.LeaveEdit;
-import com.echothree.control.user.employee.remote.form.EditLeaveForm;
-import com.echothree.control.user.employee.remote.result.EditLeaveResult;
-import com.echothree.control.user.employee.remote.spec.LeaveSpec;
-import com.echothree.model.control.employee.remote.transfer.LeaveTransfer;
+import com.echothree.control.user.employee.common.edit.LeaveEdit;
+import com.echothree.control.user.employee.common.form.EditLeaveForm;
+import com.echothree.control.user.employee.common.result.EditLeaveResult;
+import com.echothree.control.user.employee.common.spec.LeaveSpec;
+import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.message.Messages;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.message.Messages;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

@@ -16,14 +16,14 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.offer.remote.transfer.OfferUseTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.order.remote.transfer.OrderTypeTransfer;
+import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.wishlist.remote.transfer.WishlistTransfer;
-import com.echothree.model.control.wishlist.remote.transfer.WishlistTypeTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderDetail;

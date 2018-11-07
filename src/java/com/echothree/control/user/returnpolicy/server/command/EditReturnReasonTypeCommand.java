@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.returnpolicy.server.command;
 
-import com.echothree.control.user.returnpolicy.remote.edit.ReturnPolicyEditFactory;
-import com.echothree.control.user.returnpolicy.remote.edit.ReturnReasonTypeEdit;
-import com.echothree.control.user.returnpolicy.remote.form.EditReturnReasonTypeForm;
-import com.echothree.control.user.returnpolicy.remote.result.EditReturnReasonTypeResult;
-import com.echothree.control.user.returnpolicy.remote.result.ReturnPolicyResultFactory;
-import com.echothree.control.user.returnpolicy.remote.spec.ReturnReasonTypeSpec;
+import com.echothree.control.user.returnpolicy.common.edit.ReturnPolicyEditFactory;
+import com.echothree.control.user.returnpolicy.common.edit.ReturnReasonTypeEdit;
+import com.echothree.control.user.returnpolicy.common.form.EditReturnReasonTypeForm;
+import com.echothree.control.user.returnpolicy.common.result.EditReturnReasonTypeResult;
+import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
+import com.echothree.control.user.returnpolicy.common.spec.ReturnReasonTypeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,12 +31,12 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonType;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
 import com.echothree.model.data.returnpolicy.server.value.ReturnReasonTypeValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

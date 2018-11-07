@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.workflow.remote.transfer.WorkflowTypeTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowTypeTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowType;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.content.contentcatalog;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.form.SetDefaultContentCatalogForm;
+import com.echothree.control.user.content.common.form.SetDefaultContentCatalogForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

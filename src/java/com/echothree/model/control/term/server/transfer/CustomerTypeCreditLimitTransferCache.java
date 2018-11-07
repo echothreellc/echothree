@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.term.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.customer.remote.transfer.CustomerTypeTransfer;
+import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.term.remote.transfer.CustomerTypeCreditLimitTransfer;
+import com.echothree.model.control.term.common.transfer.CustomerTypeCreditLimitTransfer;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;

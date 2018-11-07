@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.remote.form.DeleteLotAliasForm;
+import com.echothree.control.user.inventory.common.form.DeleteLotAliasForm;
 import com.echothree.control.user.inventory.server.command.util.LotAliasUtil;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -26,11 +26,11 @@ import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotAlias;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.inventory.server.entity.LotType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

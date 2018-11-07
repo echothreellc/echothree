@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.core.application;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.DeleteApplicationDescriptionForm;
-import com.echothree.control.user.core.remote.form.GetApplicationDescriptionForm;
-import com.echothree.control.user.core.remote.result.GetApplicationDescriptionResult;
+import com.echothree.control.user.core.common.form.DeleteApplicationDescriptionForm;
+import com.echothree.control.user.core.common.form.GetApplicationDescriptionForm;
+import com.echothree.control.user.core.common.result.GetApplicationDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.remote.PrinterService;
-import com.echothree.control.user.printer.remote.form.CreatePrinterGroupUseTypeForm;
-import com.echothree.control.user.printer.remote.form.PrinterFormFactory;
+import com.echothree.control.user.printer.common.PrinterService;
+import com.echothree.control.user.printer.common.form.CreatePrinterGroupUseTypeForm;
+import com.echothree.control.user.printer.common.form.PrinterFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

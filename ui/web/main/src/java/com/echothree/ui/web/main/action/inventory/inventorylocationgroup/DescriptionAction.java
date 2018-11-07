@@ -17,13 +17,13 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroup;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.remote.form.GetInventoryLocationGroupDescriptionsForm;
-import com.echothree.control.user.inventory.remote.result.GetInventoryLocationGroupDescriptionsResult;
+import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupDescriptionsForm;
+import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupDescriptionsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

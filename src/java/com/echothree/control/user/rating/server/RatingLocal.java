@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.rating.server;
 
-import com.echothree.control.user.rating.remote.RatingService;
+import com.echothree.control.user.rating.common.RatingService;
 import javax.ejb.Local;
 
 @Local

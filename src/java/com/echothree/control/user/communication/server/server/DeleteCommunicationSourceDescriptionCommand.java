@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.communication.server.server;
 
-import com.echothree.control.user.communication.remote.form.DeleteCommunicationSourceDescriptionForm;
+import com.echothree.control.user.communication.common.form.DeleteCommunicationSourceDescriptionForm;
 import com.echothree.model.control.communication.server.CommunicationControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceDescription;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

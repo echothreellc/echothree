@@ -17,24 +17,24 @@
 package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.contact.remote.transfer.PartyContactMechanismTransfer;
+import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.remote.transfer.NameSuffixTransfer;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
-import com.echothree.model.control.party.remote.transfer.PersonalTitleTransfer;
+import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
+import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
 import com.echothree.model.control.payment.common.PaymentOptions;
-import com.echothree.model.control.payment.remote.transfer.PartyPaymentMethodTransfer;
-import com.echothree.model.control.payment.remote.transfer.PaymentMethodTransfer;
+import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.UserControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardPaymentMethodConstants.Workflow_CUSTOMER_CREDIT_CARD_PAYMENT_METHOD;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -46,7 +46,7 @@ import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCa
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.index.server.command;
 
-import com.echothree.control.user.index.remote.form.GetIndexChoicesForm;
-import com.echothree.control.user.index.remote.result.GetIndexChoicesResult;
-import com.echothree.control.user.index.remote.result.IndexResultFactory;
+import com.echothree.control.user.index.common.form.GetIndexChoicesForm;
+import com.echothree.control.user.index.common.result.GetIndexChoicesResult;
+import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.IndexControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

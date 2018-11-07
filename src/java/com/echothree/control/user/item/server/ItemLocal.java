@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.item.server;
 
-import com.echothree.control.user.item.remote.ItemService;
+import com.echothree.control.user.item.common.ItemService;
 import javax.ejb.Local;
 
 @Local

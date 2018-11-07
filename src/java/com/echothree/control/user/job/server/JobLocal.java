@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.job.server;
 
-import com.echothree.control.user.job.remote.JobService;
+import com.echothree.control.user.job.common.JobService;
 import javax.ejb.Local;
 
 @Local

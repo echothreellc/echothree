@@ -17,12 +17,12 @@
 package com.echothree.ui.web.main.action.chain.lettercontactmechanismpurpose;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.form.GetContactMechanismPurposeChoicesForm;
-import com.echothree.control.user.contact.remote.result.GetContactMechanismPurposeChoicesResult;
-import com.echothree.model.control.contact.remote.choice.ContactMechanismPurposeChoicesBean;
-import com.echothree.model.control.letter.remote.choice.LetterSourceChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
+import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
+import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
+import com.echothree.model.control.letter.common.choice.LetterSourceChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

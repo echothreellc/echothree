@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityTypeTransfer;
-import com.echothree.model.control.core.remote.transfer.MimeTypeUsageTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.message.remote.transfer.MessageTypeTransfer;
+import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
 import com.echothree.model.control.message.server.MessageControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.message.server.entity.MessageType;

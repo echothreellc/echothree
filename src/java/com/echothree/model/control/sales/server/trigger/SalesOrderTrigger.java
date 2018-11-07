@@ -22,7 +22,7 @@ import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;

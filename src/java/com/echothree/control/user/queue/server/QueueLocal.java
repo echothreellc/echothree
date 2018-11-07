@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.queue.server;
 
-import com.echothree.control.user.queue.remote.QueueService;
+import com.echothree.control.user.queue.common.QueueService;
 import javax.ejb.Local;
 
 @Local

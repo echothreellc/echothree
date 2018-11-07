@@ -16,20 +16,20 @@
 
 package com.echothree.control.user.scale.server.command;
 
-import com.echothree.control.user.scale.remote.form.GetPartyScaleUsesForm;
-import com.echothree.control.user.scale.remote.result.GetPartyScaleUsesResult;
-import com.echothree.control.user.scale.remote.result.ScaleResultFactory;
+import com.echothree.control.user.scale.common.form.GetPartyScaleUsesForm;
+import com.echothree.control.user.scale.common.result.GetPartyScaleUsesResult;
+import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

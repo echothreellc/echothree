@@ -54,7 +54,7 @@ public class Component {
     
     public String getPKPackage() {
         if(pkPackage == null) {
-            pkPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase()).append(".remote.pk").toString();
+            pkPackage = new StringBuilder("com.echothree.model.data.").append(attrName.toLowerCase()).append(".common.pk").toString();
         }
         
         return pkPackage;

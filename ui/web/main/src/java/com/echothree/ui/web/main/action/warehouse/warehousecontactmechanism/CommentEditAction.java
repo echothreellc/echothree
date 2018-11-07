@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.warehouse.warehousecontactmechanism;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.edit.CommentEdit;
-import com.echothree.control.user.comment.remote.form.EditCommentForm;
-import com.echothree.control.user.comment.remote.result.EditCommentResult;
-import com.echothree.control.user.comment.remote.spec.CommentSpec;
-import com.echothree.model.control.comment.remote.transfer.CommentTransfer;
+import com.echothree.control.user.comment.common.edit.CommentEdit;
+import com.echothree.control.user.comment.common.form.EditCommentForm;
+import com.echothree.control.user.comment.common.result.EditCommentResult;
+import com.echothree.control.user.comment.common.spec.CommentSpec;
+import com.echothree.model.control.comment.common.transfer.CommentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

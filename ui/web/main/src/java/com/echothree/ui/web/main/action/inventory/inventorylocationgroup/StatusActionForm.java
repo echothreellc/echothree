@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroup;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.remote.form.GetInventoryLocationGroupStatusChoicesForm;
-import com.echothree.control.user.inventory.remote.result.GetInventoryLocationGroupStatusChoicesResult;
-import com.echothree.model.control.inventory.remote.choice.InventoryLocationGroupStatusChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupStatusChoicesForm;
+import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupStatusChoicesResult;
+import com.echothree.model.control.inventory.common.choice.InventoryLocationGroupStatusChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

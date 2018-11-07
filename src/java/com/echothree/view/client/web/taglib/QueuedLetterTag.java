@@ -31,11 +31,11 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.remote.form.GetQueuedLetterForm;
-import com.echothree.control.user.letter.remote.result.GetQueuedLetterResult;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.control.user.letter.common.form.GetQueuedLetterForm;
+import com.echothree.control.user.letter.common.result.GetQueuedLetterResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;

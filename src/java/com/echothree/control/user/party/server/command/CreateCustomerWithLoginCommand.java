@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.party.remote.form.CreateCustomerWithLoginForm;
-import com.echothree.control.user.party.remote.result.CreateCustomerWithLoginResult;
-import com.echothree.control.user.party.remote.result.PartyResultFactory;
+import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
+import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
@@ -64,7 +64,7 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
 import com.echothree.model.data.term.server.entity.Term;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserLoginPassword;
@@ -75,9 +75,9 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.form.ValidationResult;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;

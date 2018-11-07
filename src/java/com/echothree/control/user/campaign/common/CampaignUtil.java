@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.campaign.common;
 
-import com.echothree.control.user.campaign.remote.CampaignRemote;
+import com.echothree.control.user.campaign.common.CampaignRemote;
 import com.echothree.control.user.campaign.server.CampaignLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class CampaignUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (CampaignRemote)ctx.lookup("ejb:echothree/echothree-server/CampaignBean!com.echothree.control.user.campaign.remote.CampaignRemote");
+            cachedRemote = (CampaignRemote)ctx.lookup("ejb:echothree/echothree-server/CampaignBean!com.echothree.control.user.campaign.common.CampaignRemote");
         }
         
         return cachedRemote;

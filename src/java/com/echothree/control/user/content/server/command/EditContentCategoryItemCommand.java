@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.remote.edit.ContentCategoryItemEdit;
-import com.echothree.control.user.content.remote.edit.ContentEditFactory;
-import com.echothree.control.user.content.remote.form.EditContentCategoryItemForm;
-import com.echothree.control.user.content.remote.result.ContentResultFactory;
-import com.echothree.control.user.content.remote.result.EditContentCategoryItemResult;
-import com.echothree.control.user.content.remote.spec.ContentCategoryItemSpec;
+import com.echothree.control.user.content.common.edit.ContentCategoryItemEdit;
+import com.echothree.control.user.content.common.edit.ContentEditFactory;
+import com.echothree.control.user.content.common.form.EditContentCategoryItemForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.EditContentCategoryItemResult;
+import com.echothree.control.user.content.common.spec.ContentCategoryItemSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentLogic;
@@ -43,11 +43,11 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

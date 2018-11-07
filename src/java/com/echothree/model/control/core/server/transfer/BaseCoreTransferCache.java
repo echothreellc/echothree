@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
 

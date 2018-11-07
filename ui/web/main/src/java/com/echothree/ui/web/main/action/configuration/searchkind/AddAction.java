@@ -17,9 +17,9 @@
 package com.echothree.ui.web.main.action.configuration.searchkind;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.form.CreateSearchKindForm;
+import com.echothree.control.user.search.common.form.CreateSearchKindForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

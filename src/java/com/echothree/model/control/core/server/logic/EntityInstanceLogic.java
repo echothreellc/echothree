@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.core.server.logic;
 
-import com.echothree.control.user.core.remote.spec.EntityRefSpec;
-import com.echothree.control.user.core.remote.spec.GuidSpec;
-import com.echothree.control.user.core.remote.spec.KeySpec;
-import com.echothree.control.user.core.remote.spec.UlidSpec;
-import com.echothree.control.user.core.remote.spec.UniversalEntitySpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.core.common.spec.GuidSpec;
+import com.echothree.control.user.core.common.spec.KeySpec;
+import com.echothree.control.user.core.common.spec.UlidSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.model.control.core.common.exception.InvalidEntityTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityRefException;

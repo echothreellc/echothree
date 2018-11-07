@@ -18,8 +18,8 @@ package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.payment.common.PaymentOptions;
-import com.echothree.model.control.payment.remote.transfer.PaymentProcessorTransfer;
-import com.echothree.model.control.payment.remote.transfer.PaymentProcessorTypeTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDetail;

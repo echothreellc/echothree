@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.advertising.offernameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.remote.form.DeleteOfferNameElementForm;
+import com.echothree.control.user.offer.common.form.DeleteOfferNameElementForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

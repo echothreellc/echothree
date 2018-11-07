@@ -20,7 +20,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.period.server.PeriodControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodType;

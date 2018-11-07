@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.vendor.common;
 
-import com.echothree.control.user.vendor.remote.VendorRemote;
+import com.echothree.control.user.vendor.common.VendorRemote;
 import com.echothree.control.user.vendor.server.VendorLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class VendorUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (VendorRemote)ctx.lookup("ejb:echothree/echothree-server/VendorBean!com.echothree.control.user.vendor.remote.VendorRemote");
+            cachedRemote = (VendorRemote)ctx.lookup("ejb:echothree/echothree-server/VendorBean!com.echothree.control.user.vendor.common.VendorRemote");
         }
         
         return cachedRemote;

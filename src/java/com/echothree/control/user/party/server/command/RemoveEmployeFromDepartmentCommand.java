@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.party.remote.form.RemoveEmployeeFromDepartmentForm;
+import com.echothree.control.user.party.common.form.RemoveEmployeeFromDepartmentForm;
 import com.echothree.model.control.party.server.logic.CompanyLogic;
 import com.echothree.model.control.party.server.logic.DepartmentLogic;
 import com.echothree.model.control.party.server.logic.DivisionLogic;
@@ -27,10 +27,10 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.Arrays;
 import java.util.Collections;

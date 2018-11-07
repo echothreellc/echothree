@@ -16,20 +16,20 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.security.remote.transfer.SecurityRoleGroupTransfer;
+import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
 import com.echothree.model.control.security.server.SecurityControl;
-import com.echothree.model.control.selector.remote.transfer.SelectorTypeTransfer;
+import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.workflow.common.WorkflowProperties;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowTypeTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowTypeTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDetail;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

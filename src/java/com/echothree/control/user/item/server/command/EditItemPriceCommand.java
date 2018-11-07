@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.edit.ItemEditFactory;
-import com.echothree.control.user.item.remote.edit.ItemPriceEdit;
-import com.echothree.control.user.item.remote.form.EditItemPriceForm;
-import com.echothree.control.user.item.remote.result.EditItemPriceResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
-import com.echothree.control.user.item.remote.spec.ItemPriceSpec;
+import com.echothree.control.user.item.common.edit.ItemEditFactory;
+import com.echothree.control.user.item.common.edit.ItemPriceEdit;
+import com.echothree.control.user.item.common.form.EditItemPriceForm;
+import com.echothree.control.user.item.common.result.EditItemPriceResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.item.common.ItemConstants;
@@ -37,11 +37,11 @@ import com.echothree.model.data.item.server.entity.ItemVariablePrice;
 import com.echothree.model.data.item.server.value.ItemFixedPriceValue;
 import com.echothree.model.data.item.server.value.ItemVariablePriceValue;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.form.BaseForm;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;

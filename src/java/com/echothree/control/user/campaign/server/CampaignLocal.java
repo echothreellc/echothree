@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.campaign.server;
 
-import com.echothree.control.user.campaign.remote.CampaignService;
+import com.echothree.control.user.campaign.common.CampaignService;
 import javax.ejb.Local;
 
 @Local

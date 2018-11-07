@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.order.server.transfer;
 
-import com.echothree.model.control.order.remote.transfer.OrderLineAdjustmentTypeTransfer;
+import com.echothree.model.control.order.common.transfer.OrderLineAdjustmentTypeTransfer;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentTypeDetail;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.security.server.command;
 
-import com.echothree.control.user.security.remote.edit.SecurityEditFactory;
-import com.echothree.control.user.security.remote.edit.SecurityRoleGroupDescriptionEdit;
-import com.echothree.control.user.security.remote.form.EditSecurityRoleGroupDescriptionForm;
-import com.echothree.control.user.security.remote.result.EditSecurityRoleGroupDescriptionResult;
-import com.echothree.control.user.security.remote.result.SecurityResultFactory;
-import com.echothree.control.user.security.remote.spec.SecurityRoleGroupDescriptionSpec;
+import com.echothree.control.user.security.common.edit.SecurityEditFactory;
+import com.echothree.control.user.security.common.edit.SecurityRoleGroupDescriptionEdit;
+import com.echothree.control.user.security.common.form.EditSecurityRoleGroupDescriptionForm;
+import com.echothree.control.user.security.common.result.EditSecurityRoleGroupDescriptionResult;
+import com.echothree.control.user.security.common.result.SecurityResultFactory;
+import com.echothree.control.user.security.common.spec.SecurityRoleGroupDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,11 +31,11 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroupDescription;
 import com.echothree.model.data.security.server.value.SecurityRoleGroupDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

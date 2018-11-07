@@ -31,7 +31,7 @@ import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.geo.server.value.GeoCodeAliasValue;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;

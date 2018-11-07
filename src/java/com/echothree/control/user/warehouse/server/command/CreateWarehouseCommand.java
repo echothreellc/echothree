@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.warehouse.server.command;
 
-import com.echothree.control.user.warehouse.remote.form.CreateWarehouseForm;
-import com.echothree.control.user.warehouse.remote.result.CreateWarehouseResult;
-import com.echothree.control.user.warehouse.remote.result.WarehouseResultFactory;
+import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
+import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
+import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -33,13 +33,13 @@ import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

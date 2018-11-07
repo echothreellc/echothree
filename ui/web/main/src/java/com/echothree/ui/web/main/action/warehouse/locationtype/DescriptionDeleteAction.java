@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.warehouse.locationtype;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.remote.form.DeleteLocationTypeDescriptionForm;
+import com.echothree.control.user.warehouse.common.form.DeleteLocationTypeDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

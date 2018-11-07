@@ -19,7 +19,7 @@ package com.echothree.model.control.graphql.server.graphql;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;

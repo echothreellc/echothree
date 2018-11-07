@@ -18,7 +18,7 @@ package com.echothree.model.control.workflow.server.logic;
 
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.factory.PartyFactory;

@@ -17,14 +17,14 @@
 package com.echothree.ui.cli.dataloader.data.handler.geo;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.GeoService;
-import com.echothree.control.user.geo.remote.form.CreateCountryForm;
-import com.echothree.control.user.geo.remote.form.GeoFormFactory;
-import com.echothree.control.user.geo.remote.result.CreateCountryResult;
+import com.echothree.control.user.geo.common.GeoService;
+import com.echothree.control.user.geo.common.form.CreateCountryForm;
+import com.echothree.control.user.geo.common.form.GeoFormFactory;
+import com.echothree.control.user.geo.common.result.CreateCountryResult;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

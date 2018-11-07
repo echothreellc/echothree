@@ -17,13 +17,13 @@
 package com.echothree.ui.web.main.action.core.tagscope;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.remote.edit.TagScopeEdit;
-import com.echothree.control.user.tag.remote.form.EditTagScopeForm;
-import com.echothree.control.user.tag.remote.result.EditTagScopeResult;
-import com.echothree.control.user.tag.remote.spec.TagScopeSpec;
+import com.echothree.control.user.tag.common.edit.TagScopeEdit;
+import com.echothree.control.user.tag.common.form.EditTagScopeForm;
+import com.echothree.control.user.tag.common.result.EditTagScopeResult;
+import com.echothree.control.user.tag.common.spec.TagScopeSpec;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.postage.server;
 
-import com.echothree.control.user.postage.remote.PostageRemote;
+import com.echothree.control.user.postage.common.PostageRemote;
 import javax.ejb.Stateless;
 
 @Stateless

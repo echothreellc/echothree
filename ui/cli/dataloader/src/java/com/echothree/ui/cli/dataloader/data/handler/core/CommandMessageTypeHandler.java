@@ -17,10 +17,10 @@
 package com.echothree.ui.cli.dataloader.data.handler.core;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.CoreService;
-import com.echothree.control.user.core.remote.form.CoreFormFactory;
-import com.echothree.control.user.core.remote.form.CreateCommandMessageForm;
-import com.echothree.control.user.core.remote.form.CreateCommandMessageTypeDescriptionForm;
+import com.echothree.control.user.core.common.CoreService;
+import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.core.common.form.CreateCommandMessageForm;
+import com.echothree.control.user.core.common.form.CreateCommandMessageTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

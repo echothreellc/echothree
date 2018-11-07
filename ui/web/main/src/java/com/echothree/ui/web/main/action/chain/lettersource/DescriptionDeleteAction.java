@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.remote.form.DeleteLetterSourceDescriptionForm;
+import com.echothree.control.user.letter.common.form.DeleteLetterSourceDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

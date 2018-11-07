@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.geo.server.command;
 
-import com.echothree.control.user.geo.remote.edit.GeoCodeAliasTypeDescriptionEdit;
-import com.echothree.control.user.geo.remote.edit.GeoEditFactory;
-import com.echothree.control.user.geo.remote.form.EditGeoCodeAliasTypeDescriptionForm;
-import com.echothree.control.user.geo.remote.result.EditGeoCodeAliasTypeDescriptionResult;
-import com.echothree.control.user.geo.remote.result.GeoResultFactory;
-import com.echothree.control.user.geo.remote.spec.GeoCodeAliasTypeDescriptionSpec;
+import com.echothree.control.user.geo.common.edit.GeoCodeAliasTypeDescriptionEdit;
+import com.echothree.control.user.geo.common.edit.GeoEditFactory;
+import com.echothree.control.user.geo.common.form.EditGeoCodeAliasTypeDescriptionForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeAliasTypeDescriptionResult;
+import com.echothree.control.user.geo.common.result.GeoResultFactory;
+import com.echothree.control.user.geo.common.spec.GeoCodeAliasTypeDescriptionSpec;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -32,11 +32,11 @@ import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDescription;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.geo.server.value.GeoCodeAliasTypeDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

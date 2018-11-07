@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.warehouse.common;
 
-import com.echothree.control.user.warehouse.remote.WarehouseRemote;
+import com.echothree.control.user.warehouse.common.WarehouseRemote;
 import com.echothree.control.user.warehouse.server.WarehouseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class WarehouseUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (WarehouseRemote)ctx.lookup("ejb:echothree/echothree-server/WarehouseBean!com.echothree.control.user.warehouse.remote.WarehouseRemote");
+            cachedRemote = (WarehouseRemote)ctx.lookup("ejb:echothree/echothree-server/WarehouseBean!com.echothree.control.user.warehouse.common.WarehouseRemote");
         }
         
         return cachedRemote;

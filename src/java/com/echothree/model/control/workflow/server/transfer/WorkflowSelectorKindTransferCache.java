@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.selector.remote.transfer.SelectorKindTransfer;
+import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowSelectorKindTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowSelectorKindTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;

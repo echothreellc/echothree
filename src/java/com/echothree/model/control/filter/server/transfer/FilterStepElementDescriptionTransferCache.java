@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
-import com.echothree.model.control.filter.remote.transfer.FilterStepElementDescriptionTransfer;
-import com.echothree.model.control.filter.remote.transfer.FilterStepElementTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterStepElementDescriptionTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterStepElementTransfer;
 import com.echothree.model.control.filter.server.FilterControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.filter.server.entity.FilterStepElementDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

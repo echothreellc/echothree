@@ -17,19 +17,19 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.form.GetEmployeeForm;
-import com.echothree.control.user.employee.remote.result.GetEmployeeResult;
+import com.echothree.control.user.employee.common.form.GetEmployeeForm;
+import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.spec.PartyUniversalSpec;
+import com.echothree.control.user.party.common.spec.PartyUniversalSpec;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.remote.edit.UserLoginEdit;
-import com.echothree.control.user.user.remote.form.EditUserLoginForm;
-import com.echothree.control.user.user.remote.result.EditUserLoginResult;
+import com.echothree.control.user.user.common.edit.UserLoginEdit;
+import com.echothree.control.user.user.common.form.EditUserLoginForm;
+import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

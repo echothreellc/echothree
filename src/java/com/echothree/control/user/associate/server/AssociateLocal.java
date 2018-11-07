@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.associate.server;
 
-import com.echothree.control.user.associate.remote.AssociateService;
+import com.echothree.control.user.associate.common.AssociateService;
 import javax.ejb.Local;
 
 @Local

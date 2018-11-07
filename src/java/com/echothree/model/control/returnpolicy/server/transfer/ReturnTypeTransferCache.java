@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.returnpolicy.remote.transfer.ReturnKindTransfer;
-import com.echothree.model.control.returnpolicy.remote.transfer.ReturnTypeTransfer;
+import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
+import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeDetail;

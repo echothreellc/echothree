@@ -16,16 +16,16 @@
 
 package com.echothree.control.user.warehouse.server.command;
 
-import com.echothree.control.user.warehouse.remote.edit.LocationTypeEdit;
-import com.echothree.control.user.warehouse.remote.edit.WarehouseEditFactory;
-import com.echothree.control.user.warehouse.remote.form.EditLocationTypeForm;
-import com.echothree.control.user.warehouse.remote.result.EditLocationTypeResult;
-import com.echothree.control.user.warehouse.remote.result.WarehouseResultFactory;
-import com.echothree.control.user.warehouse.remote.spec.LocationTypeSpec;
+import com.echothree.control.user.warehouse.common.edit.LocationTypeEdit;
+import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
+import com.echothree.control.user.warehouse.common.form.EditLocationTypeForm;
+import com.echothree.control.user.warehouse.common.result.EditLocationTypeResult;
+import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
+import com.echothree.control.user.warehouse.common.spec.LocationTypeSpec;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDescription;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDetail;
@@ -35,8 +35,8 @@ import com.echothree.model.data.warehouse.server.value.LocationTypeDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

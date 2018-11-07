@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.period.server;
 
-import com.echothree.control.user.period.remote.PeriodService;
+import com.echothree.control.user.period.common.PeriodService;
 import javax.ejb.Local;
 
 @Local

@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.securityrole;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.remote.edit.SecurityRoleEdit;
-import com.echothree.control.user.security.remote.form.EditSecurityRoleForm;
-import com.echothree.control.user.security.remote.result.EditSecurityRoleResult;
-import com.echothree.control.user.security.remote.spec.SecurityRoleSpec;
+import com.echothree.control.user.security.common.edit.SecurityRoleEdit;
+import com.echothree.control.user.security.common.form.EditSecurityRoleForm;
+import com.echothree.control.user.security.common.result.EditSecurityRoleResult;
+import com.echothree.control.user.security.common.spec.SecurityRoleSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

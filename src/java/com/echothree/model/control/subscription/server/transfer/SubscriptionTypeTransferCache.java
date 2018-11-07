@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.sequence.remote.transfer.SequenceTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.subscription.remote.transfer.SubscriptionKindTransfer;
-import com.echothree.model.control.subscription.remote.transfer.SubscriptionTypeTransfer;
+import com.echothree.model.control.subscription.common.transfer.SubscriptionKindTransfer;
+import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;

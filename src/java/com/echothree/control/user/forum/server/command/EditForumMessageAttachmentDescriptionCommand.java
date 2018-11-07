@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.forum.server.command;
 
-import com.echothree.control.user.forum.remote.edit.ForumEditFactory;
-import com.echothree.control.user.forum.remote.edit.ForumMessageAttachmentDescriptionEdit;
-import com.echothree.control.user.forum.remote.form.EditForumMessageAttachmentDescriptionForm;
-import com.echothree.control.user.forum.remote.result.EditForumMessageAttachmentDescriptionResult;
-import com.echothree.control.user.forum.remote.result.ForumResultFactory;
-import com.echothree.control.user.forum.remote.spec.ForumMessageAttachmentDescriptionSpec;
+import com.echothree.control.user.forum.common.edit.ForumEditFactory;
+import com.echothree.control.user.forum.common.edit.ForumMessageAttachmentDescriptionEdit;
+import com.echothree.control.user.forum.common.form.EditForumMessageAttachmentDescriptionForm;
+import com.echothree.control.user.forum.common.result.EditForumMessageAttachmentDescriptionResult;
+import com.echothree.control.user.forum.common.result.ForumResultFactory;
+import com.echothree.control.user.forum.common.spec.ForumMessageAttachmentDescriptionSpec;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
@@ -29,11 +29,11 @@ import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDescription;
 import com.echothree.model.data.forum.server.value.ForumMessageAttachmentDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

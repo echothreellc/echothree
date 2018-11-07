@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
-import com.echothree.model.control.contact.remote.transfer.ContactMechanismPurposeTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactMechanismPurposeTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.letter.remote.transfer.LetterContactMechanismPurposeTransfer;
-import com.echothree.model.control.letter.remote.transfer.LetterTransfer;
+import com.echothree.model.control.letter.common.transfer.LetterContactMechanismPurposeTransfer;
+import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurpose;
 import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurposeDetail;

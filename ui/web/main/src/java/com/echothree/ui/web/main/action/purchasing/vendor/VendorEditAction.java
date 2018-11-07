@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.remote.edit.VendorEdit;
-import com.echothree.control.user.vendor.remote.form.EditVendorForm;
-import com.echothree.control.user.vendor.remote.result.EditVendorResult;
-import com.echothree.control.user.vendor.remote.spec.VendorSpec;
+import com.echothree.control.user.vendor.common.edit.VendorEdit;
+import com.echothree.control.user.vendor.common.form.EditVendorForm;
+import com.echothree.control.user.vendor.common.result.EditVendorResult;
+import com.echothree.control.user.vendor.common.spec.VendorSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

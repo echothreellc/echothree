@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocodedatetimeformat;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.GetDateTimeFormatChoicesForm;
-import com.echothree.control.user.party.remote.result.GetDateTimeFormatChoicesResult;
-import com.echothree.model.control.party.remote.choice.DateTimeFormatChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.party.common.form.GetDateTimeFormatChoicesForm;
+import com.echothree.control.user.party.common.result.GetDateTimeFormatChoicesResult;
+import com.echothree.model.control.party.common.choice.DateTimeFormatChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

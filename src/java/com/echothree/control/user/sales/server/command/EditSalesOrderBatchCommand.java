@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.sales.server.command;
 
-import com.echothree.control.user.sales.remote.edit.SalesEditFactory;
-import com.echothree.control.user.sales.remote.edit.SalesOrderBatchEdit;
-import com.echothree.control.user.sales.remote.form.EditSalesOrderBatchForm;
-import com.echothree.control.user.sales.remote.result.EditSalesOrderBatchResult;
-import com.echothree.control.user.sales.remote.result.SalesResultFactory;
-import com.echothree.control.user.sales.remote.spec.SalesOrderBatchSpec;
+import com.echothree.control.user.sales.common.edit.SalesEditFactory;
+import com.echothree.control.user.sales.common.edit.SalesOrderBatchEdit;
+import com.echothree.control.user.sales.common.form.EditSalesOrderBatchForm;
+import com.echothree.control.user.sales.common.result.EditSalesOrderBatchResult;
+import com.echothree.control.user.sales.common.result.SalesResultFactory;
+import com.echothree.control.user.sales.common.spec.SalesOrderBatchSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -34,15 +34,15 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.order.server.entity.OrderBatch;
 import com.echothree.model.data.order.server.value.OrderBatchValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.sales.server.entity.SalesOrderBatch;
 import com.echothree.model.data.sales.server.value.SalesOrderBatchValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

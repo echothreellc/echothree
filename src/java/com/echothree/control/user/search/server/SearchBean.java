@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.search.server;
 
-import com.echothree.control.user.search.remote.SearchRemote;
-import com.echothree.control.user.search.remote.form.*;
+import com.echothree.control.user.search.common.SearchRemote;
+import com.echothree.control.user.search.common.form.*;
 import com.echothree.control.user.search.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

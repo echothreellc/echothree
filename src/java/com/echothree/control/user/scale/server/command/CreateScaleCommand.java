@@ -16,21 +16,21 @@
 
 package com.echothree.control.user.scale.server.command;
 
-import com.echothree.control.user.scale.remote.form.CreateScaleForm;
+import com.echothree.control.user.scale.common.form.CreateScaleForm;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.data.core.server.entity.Server;
 import com.echothree.model.data.core.server.entity.ServerService;
 import com.echothree.model.data.core.server.entity.Service;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.model.data.scale.server.entity.ScaleType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

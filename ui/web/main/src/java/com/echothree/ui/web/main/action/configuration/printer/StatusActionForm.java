@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.remote.form.GetPrinterStatusChoicesForm;
-import com.echothree.control.user.printer.remote.result.GetPrinterStatusChoicesResult;
-import com.echothree.model.control.printer.remote.choice.PrinterStatusChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.printer.common.form.GetPrinterStatusChoicesForm;
+import com.echothree.control.user.printer.common.result.GetPrinterStatusChoicesResult;
+import com.echothree.model.control.printer.common.choice.PrinterStatusChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

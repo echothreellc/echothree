@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.postage.common.PostageUtil;
-import com.echothree.control.user.postage.remote.PostageService;
+import com.echothree.control.user.postage.common.PostageService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.ForumService;
+import com.echothree.control.user.forum.common.ForumService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

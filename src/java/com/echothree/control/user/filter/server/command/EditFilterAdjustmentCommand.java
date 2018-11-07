@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.filter.server.command;
 
-import com.echothree.control.user.filter.remote.edit.FilterAdjustmentEdit;
-import com.echothree.control.user.filter.remote.edit.FilterEditFactory;
-import com.echothree.control.user.filter.remote.form.EditFilterAdjustmentForm;
-import com.echothree.control.user.filter.remote.result.EditFilterAdjustmentResult;
-import com.echothree.control.user.filter.remote.result.FilterResultFactory;
-import com.echothree.control.user.filter.remote.spec.FilterAdjustmentSpec;
+import com.echothree.control.user.filter.common.edit.FilterAdjustmentEdit;
+import com.echothree.control.user.filter.common.edit.FilterEditFactory;
+import com.echothree.control.user.filter.common.form.EditFilterAdjustmentForm;
+import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
+import com.echothree.control.user.filter.common.result.FilterResultFactory;
+import com.echothree.control.user.filter.common.spec.FilterAdjustmentSpec;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentDescription;
@@ -30,13 +30,13 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.value.FilterAdjustmentDescriptionValue;
 import com.echothree.model.data.filter.server.value.FilterAdjustmentDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

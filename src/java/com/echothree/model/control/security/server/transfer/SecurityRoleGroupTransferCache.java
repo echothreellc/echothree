@@ -17,13 +17,13 @@
 package com.echothree.model.control.security.server.transfer;
 
 import com.echothree.model.control.security.common.SecurityOptions;
-import com.echothree.model.control.security.remote.transfer.SecurityRoleGroupTransfer;
-import com.echothree.model.control.security.remote.transfer.SecurityRoleTransfer;
+import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
+import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroupDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 import java.util.List;
 import java.util.Set;
 

@@ -17,9 +17,9 @@
 package com.echothree.view.client.web.json;
 
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.transfer.BaseTransfer;
-import com.echothree.util.remote.transfer.BaseWrapper;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.BaseWrapper;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
 import java.lang.reflect.Proxy;

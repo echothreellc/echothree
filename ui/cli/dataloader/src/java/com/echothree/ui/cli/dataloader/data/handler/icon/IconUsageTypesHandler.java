@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.icon;
 
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.remote.IconService;
-import com.echothree.control.user.icon.remote.form.CreateIconUsageTypeForm;
-import com.echothree.control.user.icon.remote.form.IconFormFactory;
+import com.echothree.control.user.icon.common.IconService;
+import com.echothree.control.user.icon.common.form.CreateIconUsageTypeForm;
+import com.echothree.control.user.icon.common.form.IconFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

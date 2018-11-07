@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.core.editor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.DeleteEditorDescriptionForm;
-import com.echothree.control.user.core.remote.form.GetEditorDescriptionForm;
-import com.echothree.control.user.core.remote.result.GetEditorDescriptionResult;
+import com.echothree.control.user.core.common.form.DeleteEditorDescriptionForm;
+import com.echothree.control.user.core.common.form.GetEditorDescriptionForm;
+import com.echothree.control.user.core.common.result.GetEditorDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

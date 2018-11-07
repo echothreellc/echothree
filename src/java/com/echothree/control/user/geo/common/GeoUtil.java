@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.geo.common;
 
-import com.echothree.control.user.geo.remote.GeoRemote;
+import com.echothree.control.user.geo.common.GeoRemote;
 import com.echothree.control.user.geo.server.GeoLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class GeoUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (GeoRemote)ctx.lookup("ejb:echothree/echothree-server/GeoBean!com.echothree.control.user.geo.remote.GeoRemote");
+            cachedRemote = (GeoRemote)ctx.lookup("ejb:echothree/echothree-server/GeoBean!com.echothree.control.user.geo.common.GeoRemote");
         }
         
         return cachedRemote;

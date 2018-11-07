@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.icon.server;
 
-import com.echothree.control.user.icon.remote.IconService;
+import com.echothree.control.user.icon.common.IconService;
 import javax.ejb.Local;
 
 @Local

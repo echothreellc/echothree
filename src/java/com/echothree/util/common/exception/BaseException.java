@@ -17,7 +17,7 @@
 package com.echothree.util.common.exception;
 
 import com.echothree.model.control.core.common.CommandMessageTypes;
-import com.echothree.util.remote.message.Message;
+import com.echothree.util.common.message.Message;
 import com.echothree.util.server.message.MessageUtils;
 
 /**

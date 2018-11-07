@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.sales.server.command;
 
-import com.echothree.control.user.sales.remote.edit.SalesEditFactory;
-import com.echothree.control.user.sales.remote.edit.SalesOrderTimeEdit;
-import com.echothree.control.user.sales.remote.form.EditSalesOrderTimeForm;
-import com.echothree.control.user.sales.remote.result.EditSalesOrderTimeResult;
-import com.echothree.control.user.sales.remote.result.SalesResultFactory;
-import com.echothree.control.user.sales.remote.spec.SalesOrderTimeSpec;
+import com.echothree.control.user.sales.common.edit.SalesEditFactory;
+import com.echothree.control.user.sales.common.edit.SalesOrderTimeEdit;
+import com.echothree.control.user.sales.common.form.EditSalesOrderTimeForm;
+import com.echothree.control.user.sales.common.result.EditSalesOrderTimeResult;
+import com.echothree.control.user.sales.common.result.SalesResultFactory;
+import com.echothree.control.user.sales.common.spec.SalesOrderTimeSpec;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.data.order.server.entity.Order;
@@ -29,11 +29,11 @@ import com.echothree.model.data.order.server.entity.OrderTime;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderTimeValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;

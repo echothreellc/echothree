@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.edit.MimeTypeEdit;
-import com.echothree.control.user.core.remote.form.EditMimeTypeForm;
-import com.echothree.control.user.core.remote.result.EditMimeTypeResult;
-import com.echothree.control.user.core.remote.spec.MimeTypeSpec;
+import com.echothree.control.user.core.common.edit.MimeTypeEdit;
+import com.echothree.control.user.core.common.form.EditMimeTypeForm;
+import com.echothree.control.user.core.common.result.EditMimeTypeResult;
+import com.echothree.control.user.core.common.spec.MimeTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

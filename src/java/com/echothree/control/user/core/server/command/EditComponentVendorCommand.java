@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.edit.ComponentVendorEdit;
-import com.echothree.control.user.core.remote.edit.CoreEditFactory;
-import com.echothree.control.user.core.remote.form.EditComponentVendorForm;
-import com.echothree.control.user.core.remote.result.CoreResultFactory;
-import com.echothree.control.user.core.remote.result.EditComponentVendorResult;
-import com.echothree.control.user.core.remote.spec.ComponentVendorSpec;
+import com.echothree.control.user.core.common.edit.ComponentVendorEdit;
+import com.echothree.control.user.core.common.edit.CoreEditFactory;
+import com.echothree.control.user.core.common.form.EditComponentVendorForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditComponentVendorResult;
+import com.echothree.control.user.core.common.spec.ComponentVendorSpec;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,11 +29,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
 import com.echothree.model.data.core.server.value.ComponentVendorDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

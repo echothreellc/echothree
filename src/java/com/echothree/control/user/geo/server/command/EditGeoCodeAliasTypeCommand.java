@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.geo.server.command;
 
-import com.echothree.control.user.geo.remote.edit.GeoCodeAliasTypeEdit;
-import com.echothree.control.user.geo.remote.edit.GeoEditFactory;
-import com.echothree.control.user.geo.remote.form.EditGeoCodeAliasTypeForm;
-import com.echothree.control.user.geo.remote.result.EditGeoCodeAliasTypeResult;
-import com.echothree.control.user.geo.remote.result.GeoResultFactory;
-import com.echothree.control.user.geo.remote.spec.GeoCodeAliasTypeSpec;
+import com.echothree.control.user.geo.common.edit.GeoCodeAliasTypeEdit;
+import com.echothree.control.user.geo.common.edit.GeoEditFactory;
+import com.echothree.control.user.geo.common.form.EditGeoCodeAliasTypeForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeAliasTypeResult;
+import com.echothree.control.user.geo.common.result.GeoResultFactory;
+import com.echothree.control.user.geo.common.spec.GeoCodeAliasTypeSpec;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,12 +32,12 @@ import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDetail;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.geo.server.value.GeoCodeAliasTypeDescriptionValue;
 import com.echothree.model.data.geo.server.value.GeoCodeAliasTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

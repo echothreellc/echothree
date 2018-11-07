@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.subscription;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.remote.SubscriptionService;
-import com.echothree.control.user.subscription.remote.form.CreateSubscriptionKindForm;
-import com.echothree.control.user.subscription.remote.form.SubscriptionFormFactory;
+import com.echothree.control.user.subscription.common.SubscriptionService;
+import com.echothree.control.user.subscription.common.form.CreateSubscriptionKindForm;
+import com.echothree.control.user.subscription.common.form.SubscriptionFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

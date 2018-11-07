@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.inventory.remote.transfer.InventoryLocationGroupTransfer;
-import com.echothree.model.control.inventory.remote.transfer.InventoryLocationGroupVolumeTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupVolumeTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;

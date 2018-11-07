@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.customer.customertypecreditlimit;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.remote.edit.CustomerTypeCreditLimitEdit;
-import com.echothree.control.user.term.remote.form.EditCustomerTypeCreditLimitForm;
-import com.echothree.control.user.term.remote.result.EditCustomerTypeCreditLimitResult;
-import com.echothree.control.user.term.remote.spec.CustomerTypeCreditLimitSpec;
+import com.echothree.control.user.term.common.edit.CustomerTypeCreditLimitEdit;
+import com.echothree.control.user.term.common.form.EditCustomerTypeCreditLimitForm;
+import com.echothree.control.user.term.common.result.EditCustomerTypeCreditLimitResult;
+import com.echothree.control.user.term.common.spec.CustomerTypeCreditLimitSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.cancellationpolicy.server.command;
 
-import com.echothree.control.user.cancellationpolicy.remote.edit.CancellationPolicyEditFactory;
-import com.echothree.control.user.cancellationpolicy.remote.edit.CancellationReasonDescriptionEdit;
-import com.echothree.control.user.cancellationpolicy.remote.form.EditCancellationReasonDescriptionForm;
-import com.echothree.control.user.cancellationpolicy.remote.result.CancellationPolicyResultFactory;
-import com.echothree.control.user.cancellationpolicy.remote.result.EditCancellationReasonDescriptionResult;
-import com.echothree.control.user.cancellationpolicy.remote.spec.CancellationReasonDescriptionSpec;
+import com.echothree.control.user.cancellationpolicy.common.edit.CancellationPolicyEditFactory;
+import com.echothree.control.user.cancellationpolicy.common.edit.CancellationReasonDescriptionEdit;
+import com.echothree.control.user.cancellationpolicy.common.form.EditCancellationReasonDescriptionForm;
+import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
+import com.echothree.control.user.cancellationpolicy.common.result.EditCancellationReasonDescriptionResult;
+import com.echothree.control.user.cancellationpolicy.common.spec.CancellationReasonDescriptionSpec;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -32,12 +32,12 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationRea
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonDescription;
 import com.echothree.model.data.cancellationpolicy.server.value.CancellationReasonDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

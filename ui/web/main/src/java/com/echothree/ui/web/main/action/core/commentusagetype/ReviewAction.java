@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.core.commentusagetype;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.form.GetCommentUsageTypeForm;
-import com.echothree.control.user.comment.remote.result.GetCommentUsageTypeResult;
-import com.echothree.model.control.comment.remote.transfer.CommentUsageTypeTransfer;
+import com.echothree.control.user.comment.common.form.GetCommentUsageTypeForm;
+import com.echothree.control.user.comment.common.result.GetCommentUsageTypeResult;
+import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

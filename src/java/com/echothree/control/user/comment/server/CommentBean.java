@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.comment.server;
 
-import com.echothree.control.user.comment.remote.CommentRemote;
-import com.echothree.control.user.comment.remote.form.*;
+import com.echothree.control.user.comment.common.CommentRemote;
+import com.echothree.control.user.comment.common.form.*;
 import com.echothree.control.user.comment.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

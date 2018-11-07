@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.tag.server.command;
 
-import com.echothree.control.user.tag.remote.edit.TagEdit;
-import com.echothree.control.user.tag.remote.edit.TagEditFactory;
-import com.echothree.control.user.tag.remote.form.EditTagForm;
-import com.echothree.control.user.tag.remote.result.EditTagResult;
-import com.echothree.control.user.tag.remote.result.TagResultFactory;
-import com.echothree.control.user.tag.remote.spec.TagSpec;
+import com.echothree.control.user.tag.common.edit.TagEdit;
+import com.echothree.control.user.tag.common.edit.TagEditFactory;
+import com.echothree.control.user.tag.common.form.EditTagForm;
+import com.echothree.control.user.tag.common.result.EditTagResult;
+import com.echothree.control.user.tag.common.result.TagResultFactory;
+import com.echothree.control.user.tag.common.spec.TagSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,11 +30,11 @@ import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.tag.server.entity.TagDetail;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.tag.server.value.TagDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

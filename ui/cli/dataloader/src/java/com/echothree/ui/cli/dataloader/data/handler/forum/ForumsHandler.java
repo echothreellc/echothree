@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.ForumService;
-import com.echothree.control.user.forum.remote.form.CreateForumForm;
-import com.echothree.control.user.forum.remote.form.ForumFormFactory;
+import com.echothree.control.user.forum.common.ForumService;
+import com.echothree.control.user.forum.common.form.CreateForumForm;
+import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.item.itemunitlimit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.edit.ItemUnitLimitEdit;
-import com.echothree.control.user.item.remote.form.EditItemUnitLimitForm;
-import com.echothree.control.user.item.remote.result.EditItemUnitLimitResult;
-import com.echothree.control.user.item.remote.spec.ItemUnitLimitSpec;
+import com.echothree.control.user.item.common.edit.ItemUnitLimitEdit;
+import com.echothree.control.user.item.common.form.EditItemUnitLimitForm;
+import com.echothree.control.user.item.common.result.EditItemUnitLimitResult;
+import com.echothree.control.user.item.common.spec.ItemUnitLimitSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

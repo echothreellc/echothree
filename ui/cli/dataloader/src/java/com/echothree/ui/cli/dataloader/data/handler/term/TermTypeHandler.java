@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.term;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.remote.TermService;
-import com.echothree.control.user.term.remote.form.CreateTermTypeDescriptionForm;
-import com.echothree.control.user.term.remote.form.TermFormFactory;
+import com.echothree.control.user.term.common.TermService;
+import com.echothree.control.user.term.common.form.CreateTermTypeDescriptionForm;
+import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

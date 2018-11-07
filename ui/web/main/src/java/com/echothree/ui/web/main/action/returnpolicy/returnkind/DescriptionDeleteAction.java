@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnkind;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.remote.form.DeleteReturnKindDescriptionForm;
+import com.echothree.control.user.returnpolicy.common.form.DeleteReturnKindDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.humanresources.employment;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.edit.EmploymentEdit;
-import com.echothree.control.user.employee.remote.form.EditEmploymentForm;
-import com.echothree.control.user.employee.remote.result.EditEmploymentResult;
-import com.echothree.control.user.employee.remote.spec.EmploymentSpec;
-import com.echothree.model.control.employee.remote.transfer.EmploymentTransfer;
+import com.echothree.control.user.employee.common.edit.EmploymentEdit;
+import com.echothree.control.user.employee.common.form.EditEmploymentForm;
+import com.echothree.control.user.employee.common.result.EditEmploymentResult;
+import com.echothree.control.user.employee.common.spec.EmploymentSpec;
+import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

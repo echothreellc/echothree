@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.batch.server.transfer;
 
-import com.echothree.model.control.batch.remote.transfer.BatchTypeEntityTypeTransfer;
-import com.echothree.model.control.batch.remote.transfer.BatchTypeTransfer;
+import com.echothree.model.control.batch.common.transfer.BatchTypeEntityTypeTransfer;
+import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
 import com.echothree.model.control.batch.server.BatchControl;
-import com.echothree.model.control.core.remote.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.batch.server.entity.BatchTypeEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.remote.form.EmployeeLoginForm;
-import com.echothree.control.user.authentication.remote.result.GetEmployeeLoginDefaultsResult;
+import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
+import com.echothree.control.user.authentication.common.result.GetEmployeeLoginDefaultsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.message.ExecutionWarnings;
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.message.Messages;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.message.Messages;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

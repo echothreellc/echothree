@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacity.Add;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.remote.form.CreateInventoryLocationGroupCapacityForm;
+import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupCapacityForm;
 import com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacity.AddActionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.edit.CommandDescriptionEdit;
-import com.echothree.control.user.core.remote.edit.CoreEditFactory;
-import com.echothree.control.user.core.remote.form.EditCommandDescriptionForm;
-import com.echothree.control.user.core.remote.result.CoreResultFactory;
-import com.echothree.control.user.core.remote.result.EditCommandDescriptionResult;
-import com.echothree.control.user.core.remote.spec.CommandDescriptionSpec;
+import com.echothree.control.user.core.common.edit.CommandDescriptionEdit;
+import com.echothree.control.user.core.common.edit.CoreEditFactory;
+import com.echothree.control.user.core.common.form.EditCommandDescriptionForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditCommandDescriptionResult;
+import com.echothree.control.user.core.common.spec.CommandDescriptionSpec;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.Command;
@@ -29,11 +29,11 @@ import com.echothree.model.data.core.server.entity.CommandDescription;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.value.CommandDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

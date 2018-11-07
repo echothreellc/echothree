@@ -17,10 +17,10 @@
 package com.echothree.ui.cli.dataloader.data.handler.comment;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.CommentService;
-import com.echothree.control.user.comment.remote.form.CommentFormFactory;
-import com.echothree.control.user.comment.remote.form.CreateCommentTypeDescriptionForm;
-import com.echothree.control.user.comment.remote.form.CreateCommentUsageTypeForm;
+import com.echothree.control.user.comment.common.CommentService;
+import com.echothree.control.user.comment.common.form.CommentFormFactory;
+import com.echothree.control.user.comment.common.form.CreateCommentTypeDescriptionForm;
+import com.echothree.control.user.comment.common.form.CreateCommentUsageTypeForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -17,10 +17,10 @@
 package com.echothree.ui.cli.dataloader.data.handler.period;
 
 import com.echothree.control.user.period.common.PeriodUtil;
-import com.echothree.control.user.period.remote.PeriodService;
-import com.echothree.control.user.period.remote.form.CreateFiscalYearForm;
-import com.echothree.control.user.period.remote.form.CreatePeriodKindForm;
-import com.echothree.control.user.period.remote.form.PeriodFormFactory;
+import com.echothree.control.user.period.common.PeriodService;
+import com.echothree.control.user.period.common.form.CreateFiscalYearForm;
+import com.echothree.control.user.period.common.form.CreatePeriodKindForm;
+import com.echothree.control.user.period.common.form.PeriodFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

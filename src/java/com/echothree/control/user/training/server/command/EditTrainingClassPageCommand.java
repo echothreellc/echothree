@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.training.server.command;
 
-import com.echothree.control.user.training.remote.edit.TrainingClassPageEdit;
-import com.echothree.control.user.training.remote.edit.TrainingEditFactory;
-import com.echothree.control.user.training.remote.form.EditTrainingClassPageForm;
-import com.echothree.control.user.training.remote.result.EditTrainingClassPageResult;
-import com.echothree.control.user.training.remote.result.TrainingResultFactory;
-import com.echothree.control.user.training.remote.spec.TrainingClassPageSpec;
+import com.echothree.control.user.training.common.edit.TrainingClassPageEdit;
+import com.echothree.control.user.training.common.edit.TrainingEditFactory;
+import com.echothree.control.user.training.common.form.EditTrainingClassPageForm;
+import com.echothree.control.user.training.common.result.EditTrainingClassPageResult;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
+import com.echothree.control.user.training.common.spec.TrainingClassPageSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -29,7 +29,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClassPage;
 import com.echothree.model.data.training.server.entity.TrainingClassPageDetail;
@@ -37,11 +37,11 @@ import com.echothree.model.data.training.server.entity.TrainingClassPageTranslat
 import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.training.server.value.TrainingClassPageDetailValue;
 import com.echothree.model.data.training.server.value.TrainingClassPageTranslationValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

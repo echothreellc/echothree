@@ -16,14 +16,14 @@
 
 package com.echothree.model.control.campaign.server.transfer;
 
-import com.echothree.model.control.campaign.remote.transfer.CampaignContentTransfer;
-import com.echothree.model.control.campaign.remote.transfer.CampaignMediumTransfer;
-import com.echothree.model.control.campaign.remote.transfer.CampaignSourceTransfer;
-import com.echothree.model.control.campaign.remote.transfer.CampaignTermTransfer;
-import com.echothree.model.control.campaign.remote.transfer.CampaignTransfer;
-import com.echothree.model.control.campaign.remote.transfer.UserVisitCampaignTransfer;
+import com.echothree.model.control.campaign.common.transfer.CampaignContentTransfer;
+import com.echothree.model.control.campaign.common.transfer.CampaignMediumTransfer;
+import com.echothree.model.control.campaign.common.transfer.CampaignSourceTransfer;
+import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer;
+import com.echothree.model.control.campaign.common.transfer.CampaignTransfer;
+import com.echothree.model.control.campaign.common.transfer.UserVisitCampaignTransfer;
 import com.echothree.model.control.campaign.server.CampaignControl;
-import com.echothree.model.control.user.remote.transfer.UserVisitTransfer;
+import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.campaign.server.entity.Campaign;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;

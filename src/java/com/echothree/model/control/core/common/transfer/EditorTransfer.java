@@ -1,0 +1,206 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2018 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.core.common.transfer;
+
+import com.echothree.util.common.transfer.BaseTransfer;
+
+public class EditorTransfer
+        extends BaseTransfer {
+    
+    private String editorName;
+    private Boolean hasDimensions;
+    private Integer minimumHeight;
+    private Integer minimumWidth;
+    private Integer maximumHeight;
+    private Integer maximumWidth;
+    private Integer defaultHeight;
+    private Integer defaultWidth;
+    private Boolean isDefault;
+    private Integer sortOrder;
+    private String description;
+    
+    /** Creates a new instance of EditorTransfer */
+    public EditorTransfer(String editorName, Boolean hasDimensions, Integer minimumHeight, Integer minimumWidth, Integer maximumHeight, Integer maximumWidth,
+            Integer defaultHeight, Integer defaultWidth, Boolean isDefault, Integer sortOrder, String description) {
+        this.editorName = editorName;
+        this.hasDimensions = hasDimensions;
+        this.minimumHeight = minimumHeight;
+        this.minimumWidth = minimumWidth;
+        this.maximumHeight = maximumHeight;
+        this.maximumWidth = maximumWidth;
+        this.defaultHeight = defaultHeight;
+        this.defaultWidth = defaultWidth;
+        this.isDefault = isDefault;
+        this.sortOrder = sortOrder;
+        this.description = description;
+    }
+
+    /**
+     * @return the editorName
+     */
+    public String getEditorName() {
+        return editorName;
+    }
+
+    /**
+     * @param editorName the editorName to set
+     */
+    public void setEditorName(String editorName) {
+        this.editorName = editorName;
+    }
+
+    /**
+     * @return the hasDimensions
+     */
+    public Boolean getHasDimensions() {
+        return hasDimensions;
+    }
+
+    /**
+     * @param hasDimensions the hasDimensions to set
+     */
+    public void setHasDimensions(Boolean hasDimensions) {
+        this.hasDimensions = hasDimensions;
+    }
+
+    /**
+     * @return the minimumHeight
+     */
+    public Integer getMinimumHeight() {
+        return minimumHeight;
+    }
+
+    /**
+     * @param minimumHeight the minimumHeight to set
+     */
+    public void setMinimumHeight(Integer minimumHeight) {
+        this.minimumHeight = minimumHeight;
+    }
+
+    /**
+     * @return the minimumWidth
+     */
+    public Integer getMinimumWidth() {
+        return minimumWidth;
+    }
+
+    /**
+     * @param minimumWidth the minimumWidth to set
+     */
+    public void setMinimumWidth(Integer minimumWidth) {
+        this.minimumWidth = minimumWidth;
+    }
+
+    /**
+     * @return the maximumHeight
+     */
+    public Integer getMaximumHeight() {
+        return maximumHeight;
+    }
+
+    /**
+     * @param maximumHeight the maximumHeight to set
+     */
+    public void setMaximumHeight(Integer maximumHeight) {
+        this.maximumHeight = maximumHeight;
+    }
+
+    /**
+     * @return the maximumWidth
+     */
+    public Integer getMaximumWidth() {
+        return maximumWidth;
+    }
+
+    /**
+     * @param maximumWidth the maximumWidth to set
+     */
+    public void setMaximumWidth(Integer maximumWidth) {
+        this.maximumWidth = maximumWidth;
+    }
+
+    /**
+     * @return the defaultHeight
+     */
+    public Integer getDefaultHeight() {
+        return defaultHeight;
+    }
+
+    /**
+     * @param defaultHeight the defaultHeight to set
+     */
+    public void setDefaultHeight(Integer defaultHeight) {
+        this.defaultHeight = defaultHeight;
+    }
+
+    /**
+     * @return the defaultWidth
+     */
+    public Integer getDefaultWidth() {
+        return defaultWidth;
+    }
+
+    /**
+     * @param defaultWidth the defaultWidth to set
+     */
+    public void setDefaultWidth(Integer defaultWidth) {
+        this.defaultWidth = defaultWidth;
+    }
+
+    /**
+     * @return the isDefault
+     */
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+
+    /**
+     * @param isDefault the isDefault to set
+     */
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    /**
+     * @return the sortOrder
+     */
+    public Integer getSortOrder() {
+        return sortOrder;
+    }
+
+    /**
+     * @param sortOrder the sortOrder to set
+     */
+    public void setSortOrder(Integer sortOrder) {
+        this.sortOrder = sortOrder;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+}

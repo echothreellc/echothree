@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.contactlist.server.command;
 
-import com.echothree.control.user.contactlist.remote.edit.ContactListEditFactory;
-import com.echothree.control.user.contactlist.remote.edit.ContactListGroupEdit;
-import com.echothree.control.user.contactlist.remote.form.EditContactListGroupForm;
-import com.echothree.control.user.contactlist.remote.result.ContactListResultFactory;
-import com.echothree.control.user.contactlist.remote.result.EditContactListGroupResult;
-import com.echothree.control.user.contactlist.remote.spec.ContactListGroupSpec;
+import com.echothree.control.user.contactlist.common.edit.ContactListEditFactory;
+import com.echothree.control.user.contactlist.common.edit.ContactListGroupEdit;
+import com.echothree.control.user.contactlist.common.form.EditContactListGroupForm;
+import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
+import com.echothree.control.user.contactlist.common.result.EditContactListGroupResult;
+import com.echothree.control.user.contactlist.common.spec.ContactListGroupSpec;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,12 +31,12 @@ import com.echothree.model.data.contactlist.server.entity.ContactListGroupDescri
 import com.echothree.model.data.contactlist.server.entity.ContactListGroupDetail;
 import com.echothree.model.data.contactlist.server.value.ContactListGroupDescriptionValue;
 import com.echothree.model.data.contactlist.server.value.ContactListGroupDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

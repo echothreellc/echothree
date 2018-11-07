@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.GeoService;
+import com.echothree.control.user.geo.common.GeoService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

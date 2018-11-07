@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.campaign.server.command;
 
-import com.echothree.control.user.campaign.remote.form.DeleteCampaignTermDescriptionForm;
+import com.echothree.control.user.campaign.common.form.DeleteCampaignTermDescriptionForm;
 import com.echothree.model.control.campaign.server.CampaignControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -25,11 +25,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.campaign.server.entity.CampaignTermDescription;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

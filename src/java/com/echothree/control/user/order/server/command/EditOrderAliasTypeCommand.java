@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.order.server.command;
 
-import com.echothree.control.user.order.remote.edit.OrderAliasTypeEdit;
-import com.echothree.control.user.order.remote.edit.OrderEditFactory;
-import com.echothree.control.user.order.remote.form.EditOrderAliasTypeForm;
-import com.echothree.control.user.order.remote.result.EditOrderAliasTypeResult;
-import com.echothree.control.user.order.remote.result.OrderResultFactory;
-import com.echothree.control.user.order.remote.spec.OrderAliasTypeSpec;
+import com.echothree.control.user.order.common.edit.OrderAliasTypeEdit;
+import com.echothree.control.user.order.common.edit.OrderEditFactory;
+import com.echothree.control.user.order.common.form.EditOrderAliasTypeForm;
+import com.echothree.control.user.order.common.result.EditOrderAliasTypeResult;
+import com.echothree.control.user.order.common.result.OrderResultFactory;
+import com.echothree.control.user.order.common.spec.OrderAliasTypeSpec;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,12 +32,12 @@ import com.echothree.model.data.order.server.entity.OrderAliasTypeDetail;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderAliasTypeDescriptionValue;
 import com.echothree.model.data.order.server.value.OrderAliasTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

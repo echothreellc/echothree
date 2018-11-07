@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.financial.common.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.remote.transfer.GlAccountTransfer;
-import com.echothree.util.remote.transfer.BaseTransfer;
-import com.echothree.util.remote.transfer.ListWrapper;
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
+import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 
 public class FinancialAccountTransfer
         extends BaseTransfer {

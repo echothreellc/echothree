@@ -32,7 +32,7 @@ import com.echothree.model.data.accounting.server.entity.TransactionStatus;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class TransactionLogic {

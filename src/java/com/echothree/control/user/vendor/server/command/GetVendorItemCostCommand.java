@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.vendor.server.command;
 
-import com.echothree.control.user.vendor.remote.form.GetVendorItemCostForm;
-import com.echothree.control.user.vendor.remote.result.GetVendorItemCostResult;
-import com.echothree.control.user.vendor.remote.result.VendorResultFactory;
+import com.echothree.control.user.vendor.common.form.GetVendorItemCostForm;
+import com.echothree.control.user.vendor.common.result.GetVendorItemCostResult;
+import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.inventory.common.InventoryConstants;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -33,14 +33,14 @@ import com.echothree.model.data.inventory.server.entity.InventoryConditionUseTyp
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.item.remote.transfer.RelatedItemTypeDescriptionTransfer;
-import com.echothree.model.control.item.remote.transfer.RelatedItemTypeTransfer;
+import com.echothree.model.control.item.common.transfer.RelatedItemTypeDescriptionTransfer;
+import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.item.server.entity.RelatedItemTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

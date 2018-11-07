@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.picklist.server.command;
 
-import com.echothree.control.user.picklist.remote.edit.PicklistAliasTypeDescriptionEdit;
-import com.echothree.control.user.picklist.remote.edit.PicklistEditFactory;
-import com.echothree.control.user.picklist.remote.form.EditPicklistAliasTypeDescriptionForm;
-import com.echothree.control.user.picklist.remote.result.EditPicklistAliasTypeDescriptionResult;
-import com.echothree.control.user.picklist.remote.result.PicklistResultFactory;
-import com.echothree.control.user.picklist.remote.spec.PicklistAliasTypeDescriptionSpec;
+import com.echothree.control.user.picklist.common.edit.PicklistAliasTypeDescriptionEdit;
+import com.echothree.control.user.picklist.common.edit.PicklistEditFactory;
+import com.echothree.control.user.picklist.common.form.EditPicklistAliasTypeDescriptionForm;
+import com.echothree.control.user.picklist.common.result.EditPicklistAliasTypeDescriptionResult;
+import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
+import com.echothree.control.user.picklist.common.spec.PicklistAliasTypeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.picklist.server.PicklistControl;
@@ -32,11 +32,11 @@ import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDescription;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.picklist.server.value.PicklistAliasTypeDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.accounting.server.command;
 
-import com.echothree.control.user.accounting.remote.edit.AccountingEditFactory;
-import com.echothree.control.user.accounting.remote.edit.TransactionGlAccountCategoryEdit;
-import com.echothree.control.user.accounting.remote.form.EditTransactionGlAccountCategoryForm;
-import com.echothree.control.user.accounting.remote.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.remote.result.EditTransactionGlAccountCategoryResult;
-import com.echothree.control.user.accounting.remote.spec.TransactionGlAccountCategorySpec;
+import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
+import com.echothree.control.user.accounting.common.edit.TransactionGlAccountCategoryEdit;
+import com.echothree.control.user.accounting.common.form.EditTransactionGlAccountCategoryForm;
+import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditTransactionGlAccountCategoryResult;
+import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategorySpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -37,13 +37,13 @@ import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.accounting.server.value.TransactionGlAccountCategoryDescriptionValue;
 import com.echothree.model.data.accounting.server.value.TransactionGlAccountCategoryDetailValue;
 import com.echothree.model.data.accounting.server.value.TransactionGlAccountValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.form.GetContentCollectionChoicesForm;
-import com.echothree.control.user.content.remote.result.GetContentCollectionChoicesResult;
-import com.echothree.model.control.content.remote.choice.ContentCollectionChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.content.common.form.GetContentCollectionChoicesForm;
+import com.echothree.control.user.content.common.result.GetContentCollectionChoicesResult;
+import com.echothree.model.control.content.common.choice.ContentCollectionChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

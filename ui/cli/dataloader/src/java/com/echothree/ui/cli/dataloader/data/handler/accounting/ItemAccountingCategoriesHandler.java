@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.accounting;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.AccountingService;
-import com.echothree.control.user.accounting.remote.form.AccountingFormFactory;
-import com.echothree.control.user.accounting.remote.form.CreateItemAccountingCategoryForm;
+import com.echothree.control.user.accounting.common.AccountingService;
+import com.echothree.control.user.accounting.common.form.AccountingFormFactory;
+import com.echothree.control.user.accounting.common.form.CreateItemAccountingCategoryForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnpolicyreason;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.remote.form.SetDefaultReturnPolicyReasonForm;
+import com.echothree.control.user.returnpolicy.common.form.SetDefaultReturnPolicyReasonForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
-import com.echothree.model.control.chain.remote.transfer.ChainInstanceTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainInstanceTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.letter.remote.transfer.LetterTransfer;
-import com.echothree.model.control.letter.remote.transfer.QueuedLetterTransfer;
+import com.echothree.model.control.letter.common.transfer.LetterTransfer;
+import com.echothree.model.control.letter.common.transfer.QueuedLetterTransfer;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.data.letter.server.entity.QueuedLetter;
 import com.echothree.model.data.user.server.entity.UserVisit;

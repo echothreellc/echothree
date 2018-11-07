@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.comment.server;
 
-import com.echothree.control.user.comment.remote.CommentService;
+import com.echothree.control.user.comment.common.CommentService;
 import javax.ejb.Local;
 
 @Local

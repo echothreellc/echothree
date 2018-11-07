@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
-import com.echothree.model.control.invoice.remote.transfer.InvoiceAliasTypeTransfer;
-import com.echothree.model.control.invoice.remote.transfer.InvoiceTypeTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceAliasTypeTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasType;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasTypeDetail;

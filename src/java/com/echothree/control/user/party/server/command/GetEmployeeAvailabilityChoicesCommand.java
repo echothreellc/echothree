@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.party.remote.form.GetEmployeeAvailabilityChoicesForm;
-import com.echothree.control.user.party.remote.result.GetEmployeeAvailabilityChoicesResult;
-import com.echothree.control.user.party.remote.result.PartyResultFactory;
+import com.echothree.control.user.party.common.form.GetEmployeeAvailabilityChoicesForm;
+import com.echothree.control.user.party.common.result.GetEmployeeAvailabilityChoicesResult;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -26,11 +26,11 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

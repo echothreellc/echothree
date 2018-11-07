@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.workrequirement.common;
 
-import com.echothree.control.user.workrequirement.remote.WorkRequirementRemote;
+import com.echothree.control.user.workrequirement.common.WorkRequirementRemote;
 import com.echothree.control.user.workrequirement.server.WorkRequirementLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class WorkRequirementUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (WorkRequirementRemote)ctx.lookup("ejb:echothree/echothree-server/WorkRequirementBean!com.echothree.control.user.workrequirement.remote.WorkRequirementRemote");
+            cachedRemote = (WorkRequirementRemote)ctx.lookup("ejb:echothree/echothree-server/WorkRequirementBean!com.echothree.control.user.workrequirement.common.WorkRequirementRemote");
         }
         
         return cachedRemote;

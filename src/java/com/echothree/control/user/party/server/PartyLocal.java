@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.party.server;
 
-import com.echothree.control.user.party.remote.PartyService;
+import com.echothree.control.user.party.common.PartyService;
 import javax.ejb.Local;
 
 @Local

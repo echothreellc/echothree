@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.edit.CommandEdit;
-import com.echothree.control.user.core.remote.edit.CoreEditFactory;
-import com.echothree.control.user.core.remote.form.EditCommandForm;
-import com.echothree.control.user.core.remote.result.CoreResultFactory;
-import com.echothree.control.user.core.remote.result.EditCommandResult;
-import com.echothree.control.user.core.remote.spec.CommandSpec;
+import com.echothree.control.user.core.common.edit.CommandEdit;
+import com.echothree.control.user.core.common.edit.CoreEditFactory;
+import com.echothree.control.user.core.common.form.EditCommandForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditCommandResult;
+import com.echothree.control.user.core.common.spec.CommandSpec;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.core.server.entity.CommandDescription;
@@ -29,12 +29,12 @@ import com.echothree.model.data.core.server.entity.CommandDetail;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.value.CommandDescriptionValue;
 import com.echothree.model.data.core.server.value.CommandDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.Arrays;
 import java.util.Collections;

@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.CreateItemSearchResultActionForm;
+import com.echothree.control.user.search.common.form.CreateItemSearchResultActionForm;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

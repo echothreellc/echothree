@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.user.server.command;
 
-import com.echothree.control.user.user.remote.form.GetRecoveryQuestionsForm;
-import com.echothree.control.user.user.remote.result.GetRecoveryQuestionsResult;
-import com.echothree.control.user.user.remote.result.UserResultFactory;
+import com.echothree.control.user.user.common.form.GetRecoveryQuestionsForm;
+import com.echothree.control.user.user.common.result.GetRecoveryQuestionsResult;
+import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import java.util.Arrays;
 import java.util.Collection;

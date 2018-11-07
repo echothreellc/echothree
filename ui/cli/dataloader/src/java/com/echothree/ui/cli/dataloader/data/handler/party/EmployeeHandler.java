@@ -17,15 +17,15 @@
 package com.echothree.ui.cli.dataloader.data.handler.party;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.EmployeeService;
-import com.echothree.control.user.employee.remote.form.CreateEmploymentForm;
-import com.echothree.control.user.employee.remote.form.CreateLeaveForm;
-import com.echothree.control.user.employee.remote.form.EmployeeFormFactory;
+import com.echothree.control.user.employee.common.EmployeeService;
+import com.echothree.control.user.employee.common.form.CreateEmploymentForm;
+import com.echothree.control.user.employee.common.form.CreateLeaveForm;
+import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.PartyService;
-import com.echothree.control.user.party.remote.form.AddEmployeeToCompanyForm;
-import com.echothree.control.user.party.remote.form.CreateProfileForm;
-import com.echothree.control.user.party.remote.form.PartyFormFactory;
+import com.echothree.control.user.party.common.PartyService;
+import com.echothree.control.user.party.common.form.AddEmployeeToCompanyForm;
+import com.echothree.control.user.party.common.form.CreateProfileForm;
+import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.data.handler.comment.CommentsHandler;

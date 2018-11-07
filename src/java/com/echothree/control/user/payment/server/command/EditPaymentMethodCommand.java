@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.payment.server.command;
 
-import com.echothree.control.user.payment.remote.edit.PaymentEditFactory;
-import com.echothree.control.user.payment.remote.edit.PaymentMethodEdit;
-import com.echothree.control.user.payment.remote.form.EditPaymentMethodForm;
-import com.echothree.control.user.payment.remote.result.EditPaymentMethodResult;
-import com.echothree.control.user.payment.remote.result.PaymentResultFactory;
-import com.echothree.control.user.payment.remote.spec.PaymentMethodSpec;
+import com.echothree.control.user.payment.common.edit.PaymentEditFactory;
+import com.echothree.control.user.payment.common.edit.PaymentMethodEdit;
+import com.echothree.control.user.payment.common.form.EditPaymentMethodForm;
+import com.echothree.control.user.payment.common.result.EditPaymentMethodResult;
+import com.echothree.control.user.payment.common.result.PaymentResultFactory;
+import com.echothree.control.user.payment.common.spec.PaymentMethodSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.payment.common.PaymentConstants;
 import com.echothree.model.control.payment.server.PaymentControl;
@@ -29,7 +29,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.SelectorControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCheck;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
@@ -40,12 +40,12 @@ import com.echothree.model.data.payment.server.value.PaymentMethodCreditCardValu
 import com.echothree.model.data.payment.server.value.PaymentMethodDescriptionValue;
 import com.echothree.model.data.payment.server.value.PaymentMethodDetailValue;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.form.ValidationResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.CommentService;
+import com.echothree.control.user.comment.common.CommentService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

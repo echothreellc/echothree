@@ -17,15 +17,15 @@
 package com.echothree.ui.cli.dataloader.data.handler.chain;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.remote.ChainService;
-import com.echothree.control.user.chain.remote.form.ChainFormFactory;
-import com.echothree.control.user.chain.remote.form.CreateChainEntityRoleTypeForm;
-import com.echothree.control.user.chain.remote.form.CreateChainForm;
-import com.echothree.control.user.chain.remote.form.CreateChainTypeDescriptionForm;
+import com.echothree.control.user.chain.common.ChainService;
+import com.echothree.control.user.chain.common.form.ChainFormFactory;
+import com.echothree.control.user.chain.common.form.CreateChainEntityRoleTypeForm;
+import com.echothree.control.user.chain.common.form.CreateChainForm;
+import com.echothree.control.user.chain.common.form.CreateChainTypeDescriptionForm;
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.remote.LetterService;
-import com.echothree.control.user.letter.remote.form.CreateLetterForm;
-import com.echothree.control.user.letter.remote.form.LetterFormFactory;
+import com.echothree.control.user.letter.common.LetterService;
+import com.echothree.control.user.letter.common.form.CreateLetterForm;
+import com.echothree.control.user.letter.common.form.LetterFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.data.handler.letter.LetterHandler;

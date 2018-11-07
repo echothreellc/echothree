@@ -19,7 +19,7 @@ package com.echothree.service.job.server;
 import com.echothree.control.user.license.common.LicenseUtil;
 import com.echothree.model.control.job.common.Jobs;
 import com.echothree.util.common.service.job.BaseScheduledJob;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.naming.NamingException;

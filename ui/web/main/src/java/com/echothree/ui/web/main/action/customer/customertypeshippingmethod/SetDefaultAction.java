@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customertypeshippingmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.remote.form.SetDefaultCustomerTypeShippingMethodForm;
+import com.echothree.control.user.customer.common.form.SetDefaultCustomerTypeShippingMethodForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -17,12 +17,12 @@
 package com.echothree.ui.cli.dataloader.data.handler.cancellationpolicy;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.remote.CancellationPolicyService;
-import com.echothree.control.user.cancellationpolicy.remote.form.CancellationPolicyFormFactory;
-import com.echothree.control.user.cancellationpolicy.remote.form.CreateCancellationKindDescriptionForm;
-import com.echothree.control.user.cancellationpolicy.remote.form.CreateCancellationPolicyForm;
-import com.echothree.control.user.cancellationpolicy.remote.form.CreateCancellationReasonForm;
-import com.echothree.control.user.cancellationpolicy.remote.form.CreateCancellationTypeForm;
+import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyService;
+import com.echothree.control.user.cancellationpolicy.common.form.CancellationPolicyFormFactory;
+import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationKindDescriptionForm;
+import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationPolicyForm;
+import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationReasonForm;
+import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationTypeForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -17,14 +17,14 @@
 package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.model.control.workflow.common.WorkflowProperties;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowDestinationTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowStepTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDetail;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 import java.util.Set;
 
 public class WorkflowDestinationTransferCache

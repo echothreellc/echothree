@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.chain.chainkind;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.remote.form.DeleteChainKindForm;
-import com.echothree.control.user.chain.remote.form.GetChainKindForm;
-import com.echothree.control.user.chain.remote.result.GetChainKindResult;
+import com.echothree.control.user.chain.common.form.DeleteChainKindForm;
+import com.echothree.control.user.chain.common.form.GetChainKindForm;
+import com.echothree.control.user.chain.common.result.GetChainKindResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

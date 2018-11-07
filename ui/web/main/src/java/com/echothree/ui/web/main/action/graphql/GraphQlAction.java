@@ -18,12 +18,12 @@ package com.echothree.ui.web.main.action.graphql;
 
 import com.echothree.ui.web.main.framework.MainBaseGraphQlAction;
 import com.echothree.control.user.graphql.common.GraphQlUtil;
-import com.echothree.control.user.graphql.remote.form.ExecuteGraphQlForm;
-import com.echothree.control.user.graphql.remote.result.ExecuteGraphQlResult;
+import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
+import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

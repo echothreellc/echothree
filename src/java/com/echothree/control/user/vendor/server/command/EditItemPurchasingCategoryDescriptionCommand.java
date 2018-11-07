@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.vendor.server.command;
 
-import com.echothree.control.user.vendor.remote.edit.ItemPurchasingCategoryDescriptionEdit;
-import com.echothree.control.user.vendor.remote.edit.VendorEditFactory;
-import com.echothree.control.user.vendor.remote.form.EditItemPurchasingCategoryDescriptionForm;
-import com.echothree.control.user.vendor.remote.result.EditItemPurchasingCategoryDescriptionResult;
-import com.echothree.control.user.vendor.remote.result.VendorResultFactory;
-import com.echothree.control.user.vendor.remote.spec.ItemPurchasingCategoryDescriptionSpec;
+import com.echothree.control.user.vendor.common.edit.ItemPurchasingCategoryDescriptionEdit;
+import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
+import com.echothree.control.user.vendor.common.form.EditItemPurchasingCategoryDescriptionForm;
+import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryDescriptionResult;
+import com.echothree.control.user.vendor.common.result.VendorResultFactory;
+import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategoryDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategoryDescription;
 import com.echothree.model.data.vendor.server.value.ItemPurchasingCategoryDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

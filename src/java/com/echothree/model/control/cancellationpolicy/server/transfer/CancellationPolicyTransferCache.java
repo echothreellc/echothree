@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.remote.transfer.CancellationKindTransfer;
-import com.echothree.model.control.cancellationpolicy.remote.transfer.CancellationPolicyTransfer;
+import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
+import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyDetail;

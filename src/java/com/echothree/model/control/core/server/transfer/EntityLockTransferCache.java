@@ -16,16 +16,16 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityInstanceTransfer;
-import com.echothree.model.control.core.remote.transfer.EntityLockTransfer;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.CoreDebugFlags;
-import com.echothree.model.data.core.remote.pk.EntityInstancePK;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.EntityLockException;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.DslContextFactory;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.PersistenceUtils;

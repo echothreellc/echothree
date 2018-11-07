@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.remote.edit.InventoryEditFactory;
-import com.echothree.control.user.inventory.remote.edit.PartyInventoryLevelEdit;
-import com.echothree.control.user.inventory.remote.form.EditPartyInventoryLevelForm;
-import com.echothree.control.user.inventory.remote.result.EditPartyInventoryLevelResult;
-import com.echothree.control.user.inventory.remote.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.remote.spec.PartyInventoryLevelSpec;
+import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
+import com.echothree.control.user.inventory.common.edit.PartyInventoryLevelEdit;
+import com.echothree.control.user.inventory.common.form.EditPartyInventoryLevelForm;
+import com.echothree.control.user.inventory.common.result.EditPartyInventoryLevelResult;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.spec.PartyInventoryLevelSpec;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -37,12 +37,12 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.postage.common;
 
-import com.echothree.control.user.postage.remote.PostageRemote;
+import com.echothree.control.user.postage.common.PostageRemote;
 import com.echothree.control.user.postage.server.PostageLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class PostageUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (PostageRemote)ctx.lookup("ejb:echothree/echothree-server/PostageBean!com.echothree.control.user.postage.remote.PostageRemote");
+            cachedRemote = (PostageRemote)ctx.lookup("ejb:echothree/echothree-server/PostageBean!com.echothree.control.user.postage.common.PostageRemote");
         }
         
         return cachedRemote;

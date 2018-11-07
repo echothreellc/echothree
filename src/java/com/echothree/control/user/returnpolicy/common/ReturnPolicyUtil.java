@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.returnpolicy.common;
 
-import com.echothree.control.user.returnpolicy.remote.ReturnPolicyRemote;
+import com.echothree.control.user.returnpolicy.common.ReturnPolicyRemote;
 import com.echothree.control.user.returnpolicy.server.ReturnPolicyLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class ReturnPolicyUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (ReturnPolicyRemote)ctx.lookup("ejb:echothree/echothree-server/ReturnPolicyBean!com.echothree.control.user.returnpolicy.remote.ReturnPolicyRemote");
+            cachedRemote = (ReturnPolicyRemote)ctx.lookup("ejb:echothree/echothree-server/ReturnPolicyBean!com.echothree.control.user.returnpolicy.common.ReturnPolicyRemote");
         }
         
         return cachedRemote;

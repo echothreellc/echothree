@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.order;
 
 import com.echothree.control.user.order.common.OrderUtil;
-import com.echothree.control.user.order.remote.OrderService;
-import com.echothree.control.user.order.remote.form.CreateOrderRoleTypeForm;
-import com.echothree.control.user.order.remote.form.OrderFormFactory;
+import com.echothree.control.user.order.common.OrderService;
+import com.echothree.control.user.order.common.form.CreateOrderRoleTypeForm;
+import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

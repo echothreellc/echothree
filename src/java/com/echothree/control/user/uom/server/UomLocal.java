@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.uom.server;
 
-import com.echothree.control.user.uom.remote.UomService;
+import com.echothree.control.user.uom.common.UomService;
 import javax.ejb.Local;
 
 @Local

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.subscription.server;
 
-import com.echothree.control.user.subscription.remote.SubscriptionService;
+import com.echothree.control.user.subscription.common.SubscriptionService;
 import javax.ejb.Local;
 
 @Local

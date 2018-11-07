@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.item.remote.transfer.HarmonizedTariffScheduleCodeTransfer;
-import com.echothree.model.control.item.remote.transfer.HarmonizedTariffScheduleCodeUseTransfer;
-import com.echothree.model.control.item.remote.transfer.HarmonizedTariffScheduleCodeUseTypeTransfer;
+import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeTransfer;
+import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTransfer;
+import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUse;
 import com.echothree.model.data.user.server.entity.UserVisit;

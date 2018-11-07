@@ -16,7 +16,7 @@
 
 package com.echothree.view.client.web.taglib;
 
-import com.echothree.util.remote.message.Message;
+import com.echothree.util.common.message.Message;
 import org.apache.struts.Globals;
 
 public class BaseMessageTag

@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
-import com.echothree.model.control.contact.remote.transfer.PartyContactMechanismTransfer;
+import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.letter.remote.transfer.LetterSourceTransfer;
+import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.model.control.letter.server.LetterControl;
-import com.echothree.model.control.party.remote.transfer.CompanyTransfer;
+import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.model.data.letter.server.entity.LetterSourceDetail;

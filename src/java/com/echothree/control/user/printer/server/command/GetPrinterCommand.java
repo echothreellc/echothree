@@ -16,19 +16,19 @@
 
 package com.echothree.control.user.printer.server.command;
 
-import com.echothree.control.user.printer.remote.form.GetPrinterForm;
-import com.echothree.control.user.printer.remote.result.GetPrinterResult;
-import com.echothree.control.user.printer.remote.result.PrinterResultFactory;
+import com.echothree.control.user.printer.common.form.GetPrinterForm;
+import com.echothree.control.user.printer.common.result.GetPrinterResult;
+import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.printer.server.entity.Printer;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.forum.remote.transfer.ForumGroupDescriptionTransfer;
-import com.echothree.model.control.forum.remote.transfer.ForumGroupTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumGroupDescriptionTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumGroupTransfer;
 import com.echothree.model.control.forum.server.ForumControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.forum.server.entity.ForumGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

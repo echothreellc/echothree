@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.personaltitle;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.SetDefaultPersonalTitleForm;
+import com.echothree.control.user.party.common.form.SetDefaultPersonalTitleForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.campaign.common.CampaignUtil;
-import com.echothree.control.user.campaign.remote.CampaignService;
+import com.echothree.control.user.campaign.common.CampaignService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.document.server.transfer;
 
-import com.echothree.model.control.document.remote.transfer.DocumentTypeDescriptionTransfer;
-import com.echothree.model.control.document.remote.transfer.DocumentTypeTransfer;
+import com.echothree.model.control.document.common.transfer.DocumentTypeDescriptionTransfer;
+import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.model.control.document.server.DocumentControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.document.server.entity.DocumentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

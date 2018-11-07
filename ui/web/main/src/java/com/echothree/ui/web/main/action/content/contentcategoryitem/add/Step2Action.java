@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.content.contentcategoryitem.add;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.form.CreateContentCategoryItemForm;
-import com.echothree.control.user.content.remote.form.GetContentCategoryForm;
-import com.echothree.control.user.content.remote.result.GetContentCategoryResult;
+import com.echothree.control.user.content.common.form.CreateContentCategoryItemForm;
+import com.echothree.control.user.content.common.form.GetContentCategoryForm;
+import com.echothree.control.user.content.common.result.GetContentCategoryResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

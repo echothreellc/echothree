@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.tax.remote.transfer.TaxDescriptionTransfer;
-import com.echothree.model.control.tax.remote.transfer.TaxTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.tax.common.transfer.TaxDescriptionTransfer;
+import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

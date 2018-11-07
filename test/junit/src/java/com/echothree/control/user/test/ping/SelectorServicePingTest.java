@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.remote.SelectorService;
+import com.echothree.control.user.selector.common.SelectorService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

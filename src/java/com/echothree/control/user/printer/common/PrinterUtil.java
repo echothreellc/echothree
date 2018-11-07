@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.printer.common;
 
-import com.echothree.control.user.printer.remote.PrinterRemote;
+import com.echothree.control.user.printer.common.PrinterRemote;
 import com.echothree.control.user.printer.server.PrinterLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class PrinterUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (PrinterRemote)ctx.lookup("ejb:echothree/echothree-server/PrinterBean!com.echothree.control.user.printer.remote.PrinterRemote");
+            cachedRemote = (PrinterRemote)ctx.lookup("ejb:echothree/echothree-server/PrinterBean!com.echothree.control.user.printer.common.PrinterRemote");
         }
         
         return cachedRemote;

@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.queue;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.remote.QueueService;
-import com.echothree.control.user.queue.remote.form.CreateQueueTypeDescriptionForm;
-import com.echothree.control.user.queue.remote.form.QueueFormFactory;
+import com.echothree.control.user.queue.common.QueueService;
+import com.echothree.control.user.queue.common.form.CreateQueueTypeDescriptionForm;
+import com.echothree.control.user.queue.common.form.QueueFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

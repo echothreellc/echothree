@@ -17,14 +17,14 @@
 package com.echothree.ui.cli.dataloader.data.handler.carrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.remote.CarrierService;
-import com.echothree.control.user.carrier.remote.form.CarrierFormFactory;
-import com.echothree.control.user.carrier.remote.form.CreateCarrierForm;
-import com.echothree.control.user.carrier.remote.result.CreateCarrierResult;
+import com.echothree.control.user.carrier.common.CarrierService;
+import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
+import com.echothree.control.user.carrier.common.form.CreateCarrierForm;
+import com.echothree.control.user.carrier.common.result.CreateCarrierResult;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

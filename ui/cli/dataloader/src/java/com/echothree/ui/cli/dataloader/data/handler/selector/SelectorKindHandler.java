@@ -17,15 +17,15 @@
 package com.echothree.ui.cli.dataloader.data.handler.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.remote.SelectorService;
-import com.echothree.control.user.selector.remote.form.CreateSelectorKindDescriptionForm;
-import com.echothree.control.user.selector.remote.form.CreateSelectorNodeTypeUseForm;
-import com.echothree.control.user.selector.remote.form.CreateSelectorTypeForm;
-import com.echothree.control.user.selector.remote.form.SelectorFormFactory;
+import com.echothree.control.user.selector.common.SelectorService;
+import com.echothree.control.user.selector.common.form.CreateSelectorKindDescriptionForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorNodeTypeUseForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorTypeForm;
+import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.remote.WorkflowService;
-import com.echothree.control.user.workflow.remote.form.CreateWorkflowSelectorKindForm;
-import com.echothree.control.user.workflow.remote.form.WorkflowFormFactory;
+import com.echothree.control.user.workflow.common.WorkflowService;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowSelectorKindForm;
+import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

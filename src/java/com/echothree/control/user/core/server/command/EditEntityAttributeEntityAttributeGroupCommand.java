@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.edit.CoreEditFactory;
-import com.echothree.control.user.core.remote.edit.EntityAttributeEntityAttributeGroupEdit;
-import com.echothree.control.user.core.remote.form.EditEntityAttributeEntityAttributeGroupForm;
-import com.echothree.control.user.core.remote.result.CoreResultFactory;
-import com.echothree.control.user.core.remote.result.EditEntityAttributeEntityAttributeGroupResult;
-import com.echothree.control.user.core.remote.spec.EntityAttributeEntityAttributeGroupSpec;
+import com.echothree.control.user.core.common.edit.CoreEditFactory;
+import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
+import com.echothree.control.user.core.common.form.EditEntityAttributeEntityAttributeGroupForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
+import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -33,11 +33,11 @@ import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttribut
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.value.EntityAttributeEntityAttributeGroupValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

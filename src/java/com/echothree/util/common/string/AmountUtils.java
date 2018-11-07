@@ -16,7 +16,7 @@
 
 package com.echothree.util.common.string;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.google.common.math.IntMath;
 import java.util.Formatter;
 

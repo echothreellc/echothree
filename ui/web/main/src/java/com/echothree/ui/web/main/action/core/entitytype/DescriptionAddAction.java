@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.core.entitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.CreateEntityTypeDescriptionForm;
-import com.echothree.control.user.core.remote.form.GetEntityTypeForm;
-import com.echothree.control.user.core.remote.result.GetEntityTypeResult;
+import com.echothree.control.user.core.common.form.CreateEntityTypeDescriptionForm;
+import com.echothree.control.user.core.common.form.GetEntityTypeForm;
+import com.echothree.control.user.core.common.result.GetEntityTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

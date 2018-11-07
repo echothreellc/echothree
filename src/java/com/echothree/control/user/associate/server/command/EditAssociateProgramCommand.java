@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.associate.server.command;
 
-import com.echothree.control.user.associate.remote.edit.AssociateEditFactory;
-import com.echothree.control.user.associate.remote.edit.AssociateProgramEdit;
-import com.echothree.control.user.associate.remote.form.EditAssociateProgramForm;
-import com.echothree.control.user.associate.remote.result.AssociateResultFactory;
-import com.echothree.control.user.associate.remote.result.EditAssociateProgramResult;
-import com.echothree.control.user.associate.remote.spec.AssociateProgramSpec;
+import com.echothree.control.user.associate.common.edit.AssociateEditFactory;
+import com.echothree.control.user.associate.common.edit.AssociateProgramEdit;
+import com.echothree.control.user.associate.common.form.EditAssociateProgramForm;
+import com.echothree.control.user.associate.common.result.AssociateResultFactory;
+import com.echothree.control.user.associate.common.result.EditAssociateProgramResult;
+import com.echothree.control.user.associate.common.spec.AssociateProgramSpec;
 import com.echothree.model.control.associate.server.AssociateControl;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
@@ -30,15 +30,15 @@ import com.echothree.model.data.associate.server.entity.AssociateProgramDescript
 import com.echothree.model.data.associate.server.entity.AssociateProgramDetail;
 import com.echothree.model.data.associate.server.value.AssociateProgramDescriptionValue;
 import com.echothree.model.data.associate.server.value.AssociateProgramDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;

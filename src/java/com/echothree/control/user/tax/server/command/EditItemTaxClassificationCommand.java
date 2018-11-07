@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.tax.server.command;
 
-import com.echothree.control.user.tax.remote.edit.ItemTaxClassificationEdit;
-import com.echothree.control.user.tax.remote.edit.TaxEditFactory;
-import com.echothree.control.user.tax.remote.form.EditItemTaxClassificationForm;
-import com.echothree.control.user.tax.remote.result.EditItemTaxClassificationResult;
-import com.echothree.control.user.tax.remote.result.TaxResultFactory;
-import com.echothree.control.user.tax.remote.spec.ItemTaxClassificationSpec;
+import com.echothree.control.user.tax.common.edit.ItemTaxClassificationEdit;
+import com.echothree.control.user.tax.common.edit.TaxEditFactory;
+import com.echothree.control.user.tax.common.form.EditItemTaxClassificationForm;
+import com.echothree.control.user.tax.common.result.EditItemTaxClassificationResult;
+import com.echothree.control.user.tax.common.result.TaxResultFactory;
+import com.echothree.control.user.tax.common.spec.ItemTaxClassificationSpec;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -34,11 +34,11 @@ import com.echothree.model.data.tax.server.entity.ItemTaxClassification;
 import com.echothree.model.data.tax.server.entity.ItemTaxClassificationDetail;
 import com.echothree.model.data.tax.server.entity.TaxClassification;
 import com.echothree.model.data.tax.server.value.ItemTaxClassificationDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

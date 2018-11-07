@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.uom.server.transfer;
 
-import com.echothree.model.control.uom.remote.transfer.UnitOfMeasureEquivalentTransfer;
-import com.echothree.model.control.uom.remote.transfer.UnitOfMeasureTypeTransfer;
+import com.echothree.model.control.uom.common.transfer.UnitOfMeasureEquivalentTransfer;
+import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
 import com.echothree.model.data.user.server.entity.UserVisit;

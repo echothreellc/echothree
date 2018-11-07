@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.subscription.remote.transfer.SubscriptionKindTransfer;
+import com.echothree.model.control.subscription.common.transfer.SubscriptionKindTransfer;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKindDetail;

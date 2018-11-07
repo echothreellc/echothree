@@ -17,7 +17,7 @@
 package com.echothree.model.control.comment.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentOptions;
-import com.echothree.model.control.comment.remote.transfer.CommentTransfer;
+import com.echothree.model.control.comment.common.transfer.CommentTransfer;
 import com.echothree.model.control.comment.server.CommentControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.server.PartyControl;
@@ -33,7 +33,7 @@ import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

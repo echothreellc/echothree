@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.remote.edit.ContactListDescriptionEdit;
-import com.echothree.control.user.contactlist.remote.form.EditContactListDescriptionForm;
-import com.echothree.control.user.contactlist.remote.result.EditContactListDescriptionResult;
-import com.echothree.control.user.contactlist.remote.spec.ContactListDescriptionSpec;
+import com.echothree.control.user.contactlist.common.edit.ContactListDescriptionEdit;
+import com.echothree.control.user.contactlist.common.form.EditContactListDescriptionForm;
+import com.echothree.control.user.contactlist.common.result.EditContactListDescriptionResult;
+import com.echothree.control.user.contactlist.common.spec.ContactListDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

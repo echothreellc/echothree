@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.cancellationpolicy.common;
 
-import com.echothree.control.user.cancellationpolicy.remote.CancellationPolicyRemote;
+import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyRemote;
 import com.echothree.control.user.cancellationpolicy.server.CancellationPolicyLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class CancellationPolicyUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (CancellationPolicyRemote)ctx.lookup("ejb:echothree/echothree-server/CancellationPolicyBean!com.echothree.control.user.cancellationpolicy.remote.CancellationPolicyRemote");
+            cachedRemote = (CancellationPolicyRemote)ctx.lookup("ejb:echothree/echothree-server/CancellationPolicyBean!com.echothree.control.user.cancellationpolicy.common.CancellationPolicyRemote");
         }
         
         return cachedRemote;

@@ -17,12 +17,12 @@
 package com.echothree.ui.cli.dataloader.data.handler.returnpolicy;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.remote.ReturnPolicyService;
-import com.echothree.control.user.returnpolicy.remote.form.CreateReturnKindDescriptionForm;
-import com.echothree.control.user.returnpolicy.remote.form.CreateReturnPolicyForm;
-import com.echothree.control.user.returnpolicy.remote.form.CreateReturnReasonForm;
-import com.echothree.control.user.returnpolicy.remote.form.CreateReturnTypeForm;
-import com.echothree.control.user.returnpolicy.remote.form.ReturnPolicyFormFactory;
+import com.echothree.control.user.returnpolicy.common.ReturnPolicyService;
+import com.echothree.control.user.returnpolicy.common.form.CreateReturnKindDescriptionForm;
+import com.echothree.control.user.returnpolicy.common.form.CreateReturnPolicyForm;
+import com.echothree.control.user.returnpolicy.common.form.CreateReturnReasonForm;
+import com.echothree.control.user.returnpolicy.common.form.CreateReturnTypeForm;
+import com.echothree.control.user.returnpolicy.common.form.ReturnPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

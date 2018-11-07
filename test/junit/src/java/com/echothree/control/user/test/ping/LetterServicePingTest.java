@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.remote.LetterService;
+import com.echothree.control.user.letter.common.LetterService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -16,8 +16,8 @@
 
 package com.echothree.util.server.message;
 
-import com.echothree.util.remote.message.Message;
-import com.echothree.util.remote.message.Messages;
+import com.echothree.util.common.message.Message;
+import com.echothree.util.common.message.Messages;
 
 public interface ExecutionErrorAccumulator {
     

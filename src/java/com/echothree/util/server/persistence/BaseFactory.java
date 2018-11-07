@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.persistence;
 
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import java.util.Collection;
 
 public interface BaseFactory<PK extends BasePK, BE extends BaseEntity> {

@@ -17,8 +17,8 @@
 package com.echothree.util.server.transfer;
 
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.transfer.BaseTransfer;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.BaseTransfer;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
 import java.util.Collection;

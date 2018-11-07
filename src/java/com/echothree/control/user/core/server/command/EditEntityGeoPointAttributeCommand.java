@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.edit.CoreEditFactory;
-import com.echothree.control.user.core.remote.edit.EntityGeoPointAttributeEdit;
-import com.echothree.control.user.core.remote.form.EditEntityGeoPointAttributeForm;
-import com.echothree.control.user.core.remote.result.CoreResultFactory;
-import com.echothree.control.user.core.remote.result.EditEntityGeoPointAttributeResult;
-import com.echothree.control.user.core.remote.spec.EntityGeoPointAttributeSpec;
+import com.echothree.control.user.core.common.edit.CoreEditFactory;
+import com.echothree.control.user.core.common.edit.EntityGeoPointAttributeEdit;
+import com.echothree.control.user.core.common.form.EditEntityGeoPointAttributeForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityGeoPointAttributeResult;
+import com.echothree.control.user.core.common.spec.EntityGeoPointAttributeSpec;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
@@ -30,14 +30,14 @@ import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.value.EntityGeoPointAttributeValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.GeoPointUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.Arrays;

@@ -17,12 +17,12 @@
 package com.echothree.ui.cli.dataloader.data.handler.workflow;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.remote.WorkflowService;
-import com.echothree.control.user.workflow.remote.form.CreateWorkflowEntranceDescriptionForm;
-import com.echothree.control.user.workflow.remote.form.CreateWorkflowEntrancePartyTypeForm;
-import com.echothree.control.user.workflow.remote.form.CreateWorkflowEntranceSelectorForm;
-import com.echothree.control.user.workflow.remote.form.CreateWorkflowEntranceStepForm;
-import com.echothree.control.user.workflow.remote.form.WorkflowFormFactory;
+import com.echothree.control.user.workflow.common.WorkflowService;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceDescriptionForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntrancePartyTypeForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceSelectorForm;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceStepForm;
+import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

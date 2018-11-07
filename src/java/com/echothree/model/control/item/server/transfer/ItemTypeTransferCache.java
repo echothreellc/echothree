@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.item.remote.transfer.ItemTypeTransfer;
+import com.echothree.model.control.item.common.transfer.ItemTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.user.server.entity.UserVisit;

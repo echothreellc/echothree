@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.accounting.glresourcetype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.edit.GlResourceTypeEdit;
-import com.echothree.control.user.accounting.remote.form.EditGlResourceTypeForm;
-import com.echothree.control.user.accounting.remote.result.EditGlResourceTypeResult;
-import com.echothree.control.user.accounting.remote.spec.GlResourceTypeSpec;
+import com.echothree.control.user.accounting.common.edit.GlResourceTypeEdit;
+import com.echothree.control.user.accounting.common.form.EditGlResourceTypeForm;
+import com.echothree.control.user.accounting.common.result.EditGlResourceTypeResult;
+import com.echothree.control.user.accounting.common.spec.GlResourceTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

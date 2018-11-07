@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.tag.remote.transfer.TagScopeEntityTypeTransfer;
-import com.echothree.model.control.tag.remote.transfer.TagScopeTransfer;
+import com.echothree.model.control.tag.common.transfer.TagScopeEntityTypeTransfer;
+import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;

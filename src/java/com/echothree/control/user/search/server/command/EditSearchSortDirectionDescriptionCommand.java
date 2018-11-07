@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.edit.SearchEditFactory;
-import com.echothree.control.user.search.remote.edit.SearchSortDirectionDescriptionEdit;
-import com.echothree.control.user.search.remote.form.EditSearchSortDirectionDescriptionForm;
-import com.echothree.control.user.search.remote.result.EditSearchSortDirectionDescriptionResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
-import com.echothree.control.user.search.remote.spec.SearchSortDirectionDescriptionSpec;
+import com.echothree.control.user.search.common.edit.SearchEditFactory;
+import com.echothree.control.user.search.common.edit.SearchSortDirectionDescriptionEdit;
+import com.echothree.control.user.search.common.form.EditSearchSortDirectionDescriptionForm;
+import com.echothree.control.user.search.common.result.EditSearchSortDirectionDescriptionResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.control.user.search.common.spec.SearchSortDirectionDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.search.server.SearchControl;
@@ -31,11 +31,11 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortDirectionDescription;
 import com.echothree.model.data.search.server.value.SearchSortDirectionDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

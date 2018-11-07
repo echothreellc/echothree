@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.inventory.remote.transfer.LotAliasTypeDescriptionTransfer;
-import com.echothree.model.control.inventory.remote.transfer.LotAliasTypeTransfer;
+import com.echothree.model.control.inventory.common.transfer.LotAliasTypeDescriptionTransfer;
+import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

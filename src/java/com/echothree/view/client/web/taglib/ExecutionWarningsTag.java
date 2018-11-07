@@ -32,10 +32,10 @@
 
 package com.echothree.view.client.web.taglib;
 
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.message.Message;
-import com.echothree.util.remote.message.Messages;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.message.Message;
+import com.echothree.util.common.message.Messages;
 import java.util.Iterator;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;

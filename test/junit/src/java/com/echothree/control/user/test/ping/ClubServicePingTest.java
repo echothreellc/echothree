@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.remote.ClubService;
+import com.echothree.control.user.club.common.ClubService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

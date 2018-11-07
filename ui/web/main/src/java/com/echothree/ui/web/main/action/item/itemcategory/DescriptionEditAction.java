@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.item.itemcategory;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.edit.ItemCategoryDescriptionEdit;
-import com.echothree.control.user.item.remote.form.EditItemCategoryDescriptionForm;
-import com.echothree.control.user.item.remote.result.EditItemCategoryDescriptionResult;
-import com.echothree.control.user.item.remote.spec.ItemCategoryDescriptionSpec;
+import com.echothree.control.user.item.common.edit.ItemCategoryDescriptionEdit;
+import com.echothree.control.user.item.common.form.EditItemCategoryDescriptionForm;
+import com.echothree.control.user.item.common.result.EditItemCategoryDescriptionResult;
+import com.echothree.control.user.item.common.spec.ItemCategoryDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

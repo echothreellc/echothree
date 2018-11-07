@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.forum.server.command;
 
-import com.echothree.control.user.forum.remote.form.GetForumForm;
-import com.echothree.control.user.forum.remote.result.ForumResultFactory;
-import com.echothree.control.user.forum.remote.result.GetForumResult;
+import com.echothree.control.user.forum.common.form.GetForumForm;
+import com.echothree.control.user.forum.common.result.ForumResultFactory;
+import com.echothree.control.user.forum.common.result.GetForumResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
@@ -28,11 +28,11 @@ import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.forum.server.entity.Forum;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

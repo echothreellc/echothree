@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.GetSearchSortOrderDescriptionForm;
-import com.echothree.control.user.search.remote.result.GetSearchSortOrderDescriptionResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
+import com.echothree.control.user.search.common.form.GetSearchSortOrderDescriptionForm;
+import com.echothree.control.user.search.common.result.GetSearchSortOrderDescriptionResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.search.server.SearchControl;
@@ -28,11 +28,11 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.search.server.entity.SearchSortOrderDescription;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

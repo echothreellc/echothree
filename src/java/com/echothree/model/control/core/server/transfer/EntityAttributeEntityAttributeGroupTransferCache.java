@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityAttributeEntityAttributeGroupTransfer;
-import com.echothree.model.control.core.remote.transfer.EntityAttributeGroupTransfer;
-import com.echothree.model.control.core.remote.transfer.EntityAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityAttributeEntityAttributeGroupTransfer;
+import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
+import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;

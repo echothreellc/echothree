@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.geo;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.GeoService;
-import com.echothree.control.user.geo.remote.form.CreateGeoCodeScopeForm;
-import com.echothree.control.user.geo.remote.form.GeoFormFactory;
+import com.echothree.control.user.geo.common.GeoService;
+import com.echothree.control.user.geo.common.form.CreateGeoCodeScopeForm;
+import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

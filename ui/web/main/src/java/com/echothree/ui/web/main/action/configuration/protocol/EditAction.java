@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.protocol;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.edit.ProtocolEdit;
-import com.echothree.control.user.core.remote.form.EditProtocolForm;
-import com.echothree.control.user.core.remote.result.EditProtocolResult;
-import com.echothree.control.user.core.remote.spec.ProtocolSpec;
+import com.echothree.control.user.core.common.edit.ProtocolEdit;
+import com.echothree.control.user.core.common.form.EditProtocolForm;
+import com.echothree.control.user.core.common.result.EditProtocolResult;
+import com.echothree.control.user.core.common.spec.ProtocolSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

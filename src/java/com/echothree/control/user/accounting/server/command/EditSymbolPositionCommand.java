@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.accounting.server.command;
 
-import com.echothree.control.user.accounting.remote.edit.AccountingEditFactory;
-import com.echothree.control.user.accounting.remote.edit.SymbolPositionEdit;
-import com.echothree.control.user.accounting.remote.form.EditSymbolPositionForm;
-import com.echothree.control.user.accounting.remote.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.remote.result.EditSymbolPositionResult;
-import com.echothree.control.user.accounting.remote.spec.SymbolPositionSpec;
+import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
+import com.echothree.control.user.accounting.common.edit.SymbolPositionEdit;
+import com.echothree.control.user.accounting.common.form.EditSymbolPositionForm;
+import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditSymbolPositionResult;
+import com.echothree.control.user.accounting.common.spec.SymbolPositionSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -32,13 +32,13 @@ import com.echothree.model.data.accounting.server.entity.SymbolPositionDescripti
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDetail;
 import com.echothree.model.data.accounting.server.value.SymbolPositionDescriptionValue;
 import com.echothree.model.data.accounting.server.value.SymbolPositionDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

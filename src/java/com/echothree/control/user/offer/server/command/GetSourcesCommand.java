@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.offer.server.command;
 
-import com.echothree.control.user.offer.remote.form.GetSourcesForm;
-import com.echothree.control.user.offer.remote.result.GetSourcesResult;
-import com.echothree.control.user.offer.remote.result.OfferResultFactory;
+import com.echothree.control.user.offer.common.form.GetSourcesForm;
+import com.echothree.control.user.offer.common.result.GetSourcesResult;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

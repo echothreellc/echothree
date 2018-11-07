@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.core.server.logic;
 
-import com.echothree.control.user.core.remote.spec.EntityAttributeSpec;
-import com.echothree.control.user.core.remote.spec.EntityAttributeUlid;
-import com.echothree.control.user.core.remote.spec.EntityListItemSpec;
-import com.echothree.control.user.core.remote.spec.EntityListItemUlid;
+import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeUlid;
+import com.echothree.control.user.core.common.spec.EntityListItemSpec;
+import com.echothree.control.user.core.common.spec.EntityListItemUlid;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -88,14 +88,14 @@ import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
 import com.echothree.model.data.core.server.value.EntityListItemDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.queue.remote.pk.QueueTypePK;
+import com.echothree.model.data.queue.common.pk.QueueTypePK;
 import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;

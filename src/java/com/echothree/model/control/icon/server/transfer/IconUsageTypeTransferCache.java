@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.icon.server.transfer;
 
-import com.echothree.model.control.icon.remote.transfer.IconUsageTypeTransfer;
+import com.echothree.model.control.icon.common.transfer.IconUsageTypeTransfer;
 import com.echothree.model.control.icon.server.IconControl;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
 import com.echothree.model.data.icon.server.entity.IconUsageTypeDetail;

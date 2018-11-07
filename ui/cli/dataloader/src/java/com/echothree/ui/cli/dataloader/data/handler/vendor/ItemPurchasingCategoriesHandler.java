@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.vendor;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.remote.VendorService;
-import com.echothree.control.user.vendor.remote.form.CreateItemPurchasingCategoryForm;
-import com.echothree.control.user.vendor.remote.form.VendorFormFactory;
+import com.echothree.control.user.vendor.common.VendorService;
+import com.echothree.control.user.vendor.common.form.CreateItemPurchasingCategoryForm;
+import com.echothree.control.user.vendor.common.form.VendorFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

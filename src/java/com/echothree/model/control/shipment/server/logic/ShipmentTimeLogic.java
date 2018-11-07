@@ -24,7 +24,7 @@ import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.value.ShipmentTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 

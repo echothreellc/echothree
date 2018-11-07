@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.geo.server.command;
 
-import com.echothree.control.user.geo.remote.form.GetCityForm;
-import com.echothree.control.user.geo.remote.result.GeoResultFactory;
-import com.echothree.control.user.geo.remote.result.GetCityResult;
+import com.echothree.control.user.geo.common.form.GetCityForm;
+import com.echothree.control.user.geo.common.result.GeoResultFactory;
+import com.echothree.control.user.geo.common.result.GetCityResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -31,12 +31,12 @@ import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

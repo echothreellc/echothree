@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.form.GetTelephoneStatusChoicesForm;
-import com.echothree.control.user.contact.remote.result.GetTelephoneStatusChoicesResult;
-import com.echothree.model.control.contact.remote.choice.TelephoneStatusChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.contact.common.form.GetTelephoneStatusChoicesForm;
+import com.echothree.control.user.contact.common.result.GetTelephoneStatusChoicesResult;
+import com.echothree.model.control.contact.common.choice.TelephoneStatusChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

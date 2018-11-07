@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.shipment.server.command;
 
-import com.echothree.control.user.shipment.remote.edit.ShipmentEditFactory;
-import com.echothree.control.user.shipment.remote.edit.ShipmentTimeTypeDescriptionEdit;
-import com.echothree.control.user.shipment.remote.form.EditShipmentTimeTypeDescriptionForm;
-import com.echothree.control.user.shipment.remote.result.EditShipmentTimeTypeDescriptionResult;
-import com.echothree.control.user.shipment.remote.result.ShipmentResultFactory;
-import com.echothree.control.user.shipment.remote.spec.ShipmentTimeTypeDescriptionSpec;
+import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
+import com.echothree.control.user.shipment.common.edit.ShipmentTimeTypeDescriptionEdit;
+import com.echothree.control.user.shipment.common.form.EditShipmentTimeTypeDescriptionForm;
+import com.echothree.control.user.shipment.common.result.EditShipmentTimeTypeDescriptionResult;
+import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
+import com.echothree.control.user.shipment.common.spec.ShipmentTimeTypeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,11 +32,11 @@ import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDescription;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.value.ShipmentTimeTypeDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

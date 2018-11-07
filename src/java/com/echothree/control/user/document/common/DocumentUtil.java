@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.document.common;
 
-import com.echothree.control.user.document.remote.DocumentRemote;
+import com.echothree.control.user.document.common.DocumentRemote;
 import com.echothree.control.user.document.server.DocumentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class DocumentUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (DocumentRemote)ctx.lookup("ejb:echothree/echothree-server/DocumentBean!com.echothree.control.user.document.remote.DocumentRemote");
+            cachedRemote = (DocumentRemote)ctx.lookup("ejb:echothree/echothree-server/DocumentBean!com.echothree.control.user.document.common.DocumentRemote");
         }
         
         return cachedRemote;

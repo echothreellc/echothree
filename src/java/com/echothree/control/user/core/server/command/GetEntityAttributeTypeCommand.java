@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.form.GetEntityAttributeTypeForm;
-import com.echothree.control.user.core.remote.result.CoreResultFactory;
-import com.echothree.control.user.core.remote.result.GetEntityAttributeTypeResult;
+import com.echothree.control.user.core.common.form.GetEntityAttributeTypeForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.GetEntityAttributeTypeResult;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

@@ -16,7 +16,7 @@
 
 package com.echothree.util.common.persistence;
 
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 import java.io.Serializable;
 
 public class EntityNames

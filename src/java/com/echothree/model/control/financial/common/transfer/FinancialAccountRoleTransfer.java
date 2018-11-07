@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.financial.common.transfer;
 
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
-import com.echothree.util.remote.transfer.BaseTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
+import com.echothree.util.common.transfer.BaseTransfer;
 
 public class FinancialAccountRoleTransfer
         extends BaseTransfer {

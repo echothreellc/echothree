@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.BirthdayFormatDescriptionTransfer;
-import com.echothree.model.control.party.remote.transfer.BirthdayFormatTransfer;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.BirthdayFormatDescriptionTransfer;
+import com.echothree.model.control.party.common.transfer.BirthdayFormatTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

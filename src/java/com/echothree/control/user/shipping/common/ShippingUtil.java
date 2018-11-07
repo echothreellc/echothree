@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.shipping.common;
 
-import com.echothree.control.user.shipping.remote.ShippingRemote;
+import com.echothree.control.user.shipping.common.ShippingRemote;
 import com.echothree.control.user.shipping.server.ShippingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class ShippingUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (ShippingRemote)ctx.lookup("ejb:echothree/echothree-server/ShippingBean!com.echothree.control.user.shipping.remote.ShippingRemote");
+            cachedRemote = (ShippingRemote)ctx.lookup("ejb:echothree/echothree-server/ShippingBean!com.echothree.control.user.shipping.common.ShippingRemote");
         }
         
         return cachedRemote;

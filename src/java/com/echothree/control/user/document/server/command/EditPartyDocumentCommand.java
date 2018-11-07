@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.document.server.command;
 
-import com.echothree.control.user.document.remote.edit.DocumentEditFactory;
-import com.echothree.control.user.document.remote.edit.PartyDocumentEdit;
-import com.echothree.control.user.document.remote.form.EditPartyDocumentForm;
-import com.echothree.control.user.document.remote.result.DocumentResultFactory;
-import com.echothree.control.user.document.remote.result.EditPartyDocumentResult;
-import com.echothree.control.user.document.remote.spec.DocumentSpec;
+import com.echothree.control.user.document.common.edit.DocumentEditFactory;
+import com.echothree.control.user.document.common.edit.PartyDocumentEdit;
+import com.echothree.control.user.document.common.form.EditPartyDocumentForm;
+import com.echothree.control.user.document.common.result.DocumentResultFactory;
+import com.echothree.control.user.document.common.result.EditPartyDocumentResult;
+import com.echothree.control.user.document.common.spec.DocumentSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.document.server.DocumentControl;
@@ -42,13 +42,13 @@ import com.echothree.model.data.document.server.value.DocumentClobValue;
 import com.echothree.model.data.document.server.value.DocumentDescriptionValue;
 import com.echothree.model.data.document.server.value.DocumentDetailValue;
 import com.echothree.model.data.document.server.value.PartyDocumentValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -18,8 +18,8 @@ package com.echothree.ui.cli.dataloader.data.handler;
 
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.logging.Log;

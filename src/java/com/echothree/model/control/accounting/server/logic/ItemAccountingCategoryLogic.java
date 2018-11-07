@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;

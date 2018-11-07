@@ -31,14 +31,14 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.form.GetForumThreadForm;
-import com.echothree.control.user.forum.remote.result.GetForumThreadResult;
+import com.echothree.control.user.forum.common.form.GetForumThreadForm;
+import com.echothree.control.user.forum.common.result.GetForumThreadResult;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.data.forum.common.ForumMessageConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.transfer.Limit;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.Limit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;

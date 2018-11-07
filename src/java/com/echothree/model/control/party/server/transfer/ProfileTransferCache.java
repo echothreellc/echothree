@@ -16,14 +16,14 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.MimeTypeTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.icon.remote.transfer.IconTransfer;
+import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.IconControl;
-import com.echothree.model.control.party.remote.transfer.BirthdayFormatTransfer;
-import com.echothree.model.control.party.remote.transfer.GenderTransfer;
-import com.echothree.model.control.party.remote.transfer.MoodTransfer;
-import com.echothree.model.control.party.remote.transfer.ProfileTransfer;
+import com.echothree.model.control.party.common.transfer.BirthdayFormatTransfer;
+import com.echothree.model.control.party.common.transfer.GenderTransfer;
+import com.echothree.model.control.party.common.transfer.MoodTransfer;
+import com.echothree.model.control.party.common.transfer.ProfileTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.icon.server.entity.Icon;

@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.form.GetItemForm;
-import com.echothree.control.user.item.remote.result.GetItemResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
+import com.echothree.control.user.item.common.form.GetItemForm;
+import com.echothree.control.user.item.common.result.GetItemResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
@@ -27,11 +27,11 @@ import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

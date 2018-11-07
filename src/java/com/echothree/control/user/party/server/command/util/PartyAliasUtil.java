@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.party.server.command.util;
 
-import com.echothree.control.user.party.remote.spec.PartySpec;
+import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.survey.common.transfer;
 
-import com.echothree.util.remote.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.BaseTransfer;
 
 public class SurveyTransfer
         extends BaseTransfer {

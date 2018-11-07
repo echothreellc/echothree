@@ -26,7 +26,7 @@ import com.echothree.model.control.training.common.training.PartyTrainingClassSt
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateUse;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;

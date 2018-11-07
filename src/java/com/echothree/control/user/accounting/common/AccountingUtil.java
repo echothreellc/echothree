@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.accounting.common;
 
-import com.echothree.control.user.accounting.remote.AccountingRemote;
+import com.echothree.control.user.accounting.common.AccountingRemote;
 import com.echothree.control.user.accounting.server.AccountingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class AccountingUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (AccountingRemote)ctx.lookup("ejb:echothree/echothree-server/AccountingBean!com.echothree.control.user.accounting.remote.AccountingRemote");
+            cachedRemote = (AccountingRemote)ctx.lookup("ejb:echothree/echothree-server/AccountingBean!com.echothree.control.user.accounting.common.AccountingRemote");
         }
         
         return cachedRemote;

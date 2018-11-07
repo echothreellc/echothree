@@ -30,8 +30,8 @@
 
 package com.echothree.view.client.web.taglib;
 
-import com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer;
-import com.echothree.model.control.party.remote.transfer.TimeZoneTransfer;
+import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
+import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.util.common.string.DateTimeFormatType;
 import com.echothree.util.common.string.DateUtils;
 import javax.servlet.jsp.JspException;

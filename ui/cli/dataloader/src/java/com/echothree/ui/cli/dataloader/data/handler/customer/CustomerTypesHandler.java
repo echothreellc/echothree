@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.remote.CustomerService;
-import com.echothree.control.user.customer.remote.form.CreateCustomerTypeForm;
-import com.echothree.control.user.customer.remote.form.CustomerFormFactory;
+import com.echothree.control.user.customer.common.CustomerService;
+import com.echothree.control.user.customer.common.form.CreateCustomerTypeForm;
+import com.echothree.control.user.customer.common.form.CustomerFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

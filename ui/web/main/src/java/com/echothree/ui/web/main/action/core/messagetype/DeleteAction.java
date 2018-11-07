@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.core.messagetype;
 
 import com.echothree.control.user.message.common.MessageUtil;
-import com.echothree.control.user.message.remote.form.DeleteMessageTypeForm;
+import com.echothree.control.user.message.common.form.DeleteMessageTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

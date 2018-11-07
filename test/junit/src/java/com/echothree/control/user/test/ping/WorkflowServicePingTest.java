@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.remote.WorkflowService;
+import com.echothree.control.user.workflow.common.WorkflowService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

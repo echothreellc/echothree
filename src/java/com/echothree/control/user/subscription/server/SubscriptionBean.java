@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.subscription.server;
 
-import com.echothree.control.user.subscription.remote.SubscriptionRemote;
-import com.echothree.control.user.subscription.remote.form.*;
+import com.echothree.control.user.subscription.common.SubscriptionRemote;
+import com.echothree.control.user.subscription.common.form.*;
 import com.echothree.control.user.subscription.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

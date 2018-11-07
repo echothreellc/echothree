@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.track.common.TrackUtil;
-import com.echothree.control.user.track.remote.TrackService;
+import com.echothree.control.user.track.common.TrackService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

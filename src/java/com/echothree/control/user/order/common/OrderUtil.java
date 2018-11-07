@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.order.common;
 
-import com.echothree.control.user.order.remote.OrderRemote;
+import com.echothree.control.user.order.common.OrderRemote;
 import com.echothree.control.user.order.server.OrderLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class OrderUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (OrderRemote)ctx.lookup("ejb:echothree/echothree-server/OrderBean!com.echothree.control.user.order.remote.OrderRemote");
+            cachedRemote = (OrderRemote)ctx.lookup("ejb:echothree/echothree-server/OrderBean!com.echothree.control.user.order.common.OrderRemote");
         }
         
         return cachedRemote;

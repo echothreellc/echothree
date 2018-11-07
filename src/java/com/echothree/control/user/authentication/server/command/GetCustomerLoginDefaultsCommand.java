@@ -16,19 +16,19 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-import com.echothree.control.user.authentication.remote.form.AuthenticationFormFactory;
-import com.echothree.control.user.authentication.remote.form.CustomerLoginForm;
-import com.echothree.control.user.authentication.remote.form.GetCustomerLoginDefaultsForm;
-import com.echothree.control.user.authentication.remote.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.remote.result.GetCustomerLoginDefaultsResult;
+import com.echothree.control.user.authentication.common.form.AuthenticationFormFactory;
+import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
+import com.echothree.control.user.authentication.common.form.GetCustomerLoginDefaultsForm;
+import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
+import com.echothree.control.user.authentication.common.result.GetCustomerLoginDefaultsResult;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.Arrays;
 import java.util.Collections;

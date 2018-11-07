@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.chain.remote.transfer.ChainTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.subscription.remote.transfer.SubscriptionTypeChainTransfer;
-import com.echothree.model.control.subscription.remote.transfer.SubscriptionTypeTransfer;
+import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeChainTransfer;
+import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;

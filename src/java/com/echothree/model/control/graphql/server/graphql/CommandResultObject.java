@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.graphql.server.graphql;
 
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.command.SecurityResult;
-import com.echothree.util.remote.form.ValidationResult;
-import com.echothree.util.remote.message.Message;
-import com.echothree.util.remote.message.Messages;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.command.SecurityResult;
+import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.message.Message;
+import com.echothree.util.common.message.Messages;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;

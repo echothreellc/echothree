@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.geocodetype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.form.GetGeoCodeTypeChoicesForm;
-import com.echothree.control.user.geo.remote.result.GetGeoCodeTypeChoicesResult;
-import com.echothree.model.control.geo.remote.choice.GeoCodeTypeChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.geo.common.form.GetGeoCodeTypeChoicesForm;
+import com.echothree.control.user.geo.common.result.GetGeoCodeTypeChoicesResult;
+import com.echothree.model.control.geo.common.choice.GeoCodeTypeChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

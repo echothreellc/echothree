@@ -17,9 +17,9 @@
 package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.forum.common.ForumOptions;
-import com.echothree.model.control.forum.remote.transfer.ForumGroupTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumGroupTransfer;
 import com.echothree.model.control.forum.server.ForumControl;
-import com.echothree.model.control.icon.remote.transfer.IconTransfer;
+import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.IconControl;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
@@ -27,7 +27,7 @@ import com.echothree.model.data.forum.server.entity.ForumGroupDetail;
 import com.echothree.model.data.forum.server.entity.ForumGroupForum;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.forum.server.command;
 
-import com.echothree.control.user.forum.remote.edit.ForumEditFactory;
-import com.echothree.control.user.forum.remote.edit.ForumGroupEdit;
-import com.echothree.control.user.forum.remote.form.EditForumGroupForm;
-import com.echothree.control.user.forum.remote.result.EditForumGroupResult;
-import com.echothree.control.user.forum.remote.result.ForumResultFactory;
-import com.echothree.control.user.forum.remote.spec.ForumGroupSpec;
+import com.echothree.control.user.forum.common.edit.ForumEditFactory;
+import com.echothree.control.user.forum.common.edit.ForumGroupEdit;
+import com.echothree.control.user.forum.common.form.EditForumGroupForm;
+import com.echothree.control.user.forum.common.result.EditForumGroupResult;
+import com.echothree.control.user.forum.common.result.ForumResultFactory;
+import com.echothree.control.user.forum.common.spec.ForumGroupSpec;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.icon.server.IconControl;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
@@ -30,12 +30,12 @@ import com.echothree.model.data.forum.server.entity.ForumGroupDetail;
 import com.echothree.model.data.forum.server.value.ForumGroupDescriptionValue;
 import com.echothree.model.data.forum.server.value.ForumGroupDetailValue;
 import com.echothree.model.data.icon.server.entity.Icon;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

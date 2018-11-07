@@ -16,13 +16,13 @@
 
 package com.echothree.ui.web.main.framework;
 
-import com.echothree.util.remote.command.BaseEditResult;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.BaseEdit;
-import com.echothree.util.remote.form.BaseEditForm;
-import com.echothree.util.remote.form.BaseSpec;
+import com.echothree.util.common.command.BaseEditResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.BaseEdit;
+import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.util.common.form.BaseSpec;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;

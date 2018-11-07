@@ -30,7 +30,7 @@
 
 package com.echothree.view.client.web.taglib.util;
 
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 
 public class TransferPropertiesHolder {
 

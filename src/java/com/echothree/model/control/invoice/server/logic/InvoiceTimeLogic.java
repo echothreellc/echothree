@@ -24,7 +24,7 @@ import com.echothree.model.data.invoice.server.entity.InvoiceTimeType;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.invoice.server.value.InvoiceTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 

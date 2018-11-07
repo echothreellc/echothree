@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.inventory.server;
 
-import com.echothree.control.user.inventory.remote.InventoryService;
+import com.echothree.control.user.inventory.common.InventoryService;
 import javax.ejb.Local;
 
 @Local

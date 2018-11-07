@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.scale.server.command;
 
-import com.echothree.control.user.scale.remote.edit.PartyScaleUseEdit;
-import com.echothree.control.user.scale.remote.edit.ScaleEditFactory;
-import com.echothree.control.user.scale.remote.form.EditPartyScaleUseForm;
-import com.echothree.control.user.scale.remote.result.EditPartyScaleUseResult;
-import com.echothree.control.user.scale.remote.result.ScaleResultFactory;
-import com.echothree.control.user.scale.remote.spec.PartyScaleUseSpec;
+import com.echothree.control.user.scale.common.edit.PartyScaleUseEdit;
+import com.echothree.control.user.scale.common.edit.ScaleEditFactory;
+import com.echothree.control.user.scale.common.form.EditPartyScaleUseForm;
+import com.echothree.control.user.scale.common.result.EditPartyScaleUseResult;
+import com.echothree.control.user.scale.common.result.ScaleResultFactory;
+import com.echothree.control.user.scale.common.spec.PartyScaleUseSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
@@ -32,11 +32,11 @@ import com.echothree.model.data.scale.server.entity.PartyScaleUse;
 import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.model.data.scale.server.value.PartyScaleUseValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

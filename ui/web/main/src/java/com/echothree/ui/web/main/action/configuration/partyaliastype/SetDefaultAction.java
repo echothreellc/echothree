@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.partyaliastype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.SetDefaultPartyAliasTypeForm;
+import com.echothree.control.user.party.common.form.SetDefaultPartyAliasTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

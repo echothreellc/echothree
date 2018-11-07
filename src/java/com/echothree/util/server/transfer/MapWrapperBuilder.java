@@ -16,8 +16,8 @@
 
 package com.echothree.util.server.transfer;
 
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.MapWrapper;
 import java.util.Map;
 
 public class MapWrapperBuilder

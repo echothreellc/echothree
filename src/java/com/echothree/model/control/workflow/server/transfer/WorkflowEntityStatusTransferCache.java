@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.workeffort.remote.transfer.WorkEffortScopeTransfer;
+import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.control.workflow.common.WorkflowOptions;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowStepTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;

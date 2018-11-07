@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.MimeTypeTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.forum.remote.transfer.ForumMimeTypeTransfer;
-import com.echothree.model.control.forum.remote.transfer.ForumTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumMimeTypeTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;

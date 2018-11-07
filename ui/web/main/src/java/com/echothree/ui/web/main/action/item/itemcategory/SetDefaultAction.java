@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.item.itemcategory;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.form.SetDefaultItemCategoryForm;
+import com.echothree.control.user.item.common.form.SetDefaultItemCategoryForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.workeffort;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.remote.WorkEffortService;
-import com.echothree.control.user.workeffort.remote.form.CreateWorkEffortScopeDescriptionForm;
-import com.echothree.control.user.workeffort.remote.form.WorkEffortFormFactory;
+import com.echothree.control.user.workeffort.common.WorkEffortService;
+import com.echothree.control.user.workeffort.common.form.CreateWorkEffortScopeDescriptionForm;
+import com.echothree.control.user.workeffort.common.form.WorkEffortFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

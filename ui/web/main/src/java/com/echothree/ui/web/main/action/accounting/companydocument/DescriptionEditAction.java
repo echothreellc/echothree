@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.accounting.companydocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.remote.edit.DocumentDescriptionEdit;
-import com.echothree.control.user.document.remote.form.EditDocumentDescriptionForm;
-import com.echothree.control.user.document.remote.result.EditDocumentDescriptionResult;
-import com.echothree.control.user.document.remote.spec.DocumentDescriptionSpec;
+import com.echothree.control.user.document.common.edit.DocumentDescriptionEdit;
+import com.echothree.control.user.document.common.form.EditDocumentDescriptionForm;
+import com.echothree.control.user.document.common.result.EditDocumentDescriptionResult;
+import com.echothree.control.user.document.common.spec.DocumentDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

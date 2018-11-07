@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.carrier.server.command;
 
-import com.echothree.control.user.carrier.remote.edit.CarrierEditFactory;
-import com.echothree.control.user.carrier.remote.edit.CarrierOptionDescriptionEdit;
-import com.echothree.control.user.carrier.remote.form.EditCarrierOptionDescriptionForm;
-import com.echothree.control.user.carrier.remote.result.CarrierResultFactory;
-import com.echothree.control.user.carrier.remote.result.EditCarrierOptionDescriptionResult;
-import com.echothree.control.user.carrier.remote.spec.CarrierOptionDescriptionSpec;
+import com.echothree.control.user.carrier.common.edit.CarrierEditFactory;
+import com.echothree.control.user.carrier.common.edit.CarrierOptionDescriptionEdit;
+import com.echothree.control.user.carrier.common.form.EditCarrierOptionDescriptionForm;
+import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
+import com.echothree.control.user.carrier.common.result.EditCarrierOptionDescriptionResult;
+import com.echothree.control.user.carrier.common.spec.CarrierOptionDescriptionSpec;
 import com.echothree.model.control.carrier.server.CarrierControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -33,11 +33,11 @@ import com.echothree.model.data.carrier.server.entity.CarrierOptionDescription;
 import com.echothree.model.data.carrier.server.value.CarrierOptionDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

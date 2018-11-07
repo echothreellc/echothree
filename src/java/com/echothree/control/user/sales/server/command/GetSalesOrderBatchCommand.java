@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.sales.server.command;
 
-import com.echothree.control.user.sales.remote.form.GetSalesOrderBatchForm;
-import com.echothree.control.user.sales.remote.result.GetSalesOrderBatchResult;
-import com.echothree.control.user.sales.remote.result.SalesResultFactory;
+import com.echothree.control.user.sales.common.form.GetSalesOrderBatchForm;
+import com.echothree.control.user.sales.common.result.GetSalesOrderBatchResult;
+import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.sales.server.SalesControl;
@@ -26,10 +26,10 @@ import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.batch.server.entity.Batch;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

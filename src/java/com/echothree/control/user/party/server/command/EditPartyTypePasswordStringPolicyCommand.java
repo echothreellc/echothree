@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.party.remote.edit.PartyEditFactory;
-import com.echothree.control.user.party.remote.edit.PartyTypePasswordStringPolicyEdit;
-import com.echothree.control.user.party.remote.form.EditPartyTypePasswordStringPolicyForm;
-import com.echothree.control.user.party.remote.result.EditPartyTypePasswordStringPolicyResult;
-import com.echothree.control.user.party.remote.result.PartyResultFactory;
-import com.echothree.control.user.party.remote.spec.PartyTypeSpec;
+import com.echothree.control.user.party.common.edit.PartyEditFactory;
+import com.echothree.control.user.party.common.edit.PartyTypePasswordStringPolicyEdit;
+import com.echothree.control.user.party.common.form.EditPartyTypePasswordStringPolicyForm;
+import com.echothree.control.user.party.common.result.EditPartyTypePasswordStringPolicyResult;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
+import com.echothree.control.user.party.common.spec.PartyTypeSpec;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
@@ -32,12 +32,12 @@ import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolic
 import com.echothree.model.data.party.server.value.PartyTypePasswordStringPolicyDetailValue;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

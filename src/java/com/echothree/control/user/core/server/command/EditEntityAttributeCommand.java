@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.edit.CoreEditFactory;
-import com.echothree.control.user.core.remote.edit.EntityAttributeEdit;
-import com.echothree.control.user.core.remote.form.EditEntityAttributeForm;
-import com.echothree.control.user.core.remote.result.CoreResultFactory;
-import com.echothree.control.user.core.remote.result.EditEntityAttributeResult;
-import com.echothree.control.user.core.remote.spec.EntityAttributeSpec;
+import com.echothree.control.user.core.common.edit.CoreEditFactory;
+import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
+import com.echothree.control.user.core.common.form.EditEntityAttributeForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
+import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
@@ -50,16 +50,16 @@ import com.echothree.model.data.core.server.value.EntityAttributeListItemValue;
 import com.echothree.model.data.core.server.value.EntityAttributeLongValue;
 import com.echothree.model.data.core.server.value.EntityAttributeNumericValue;
 import com.echothree.model.data.core.server.value.EntityAttributeStringValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.form.ValidationResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-import com.echothree.control.user.authentication.remote.form.RecoverPasswordForm;
-import com.echothree.control.user.party.remote.result.GetPartyResult;
-import com.echothree.control.user.party.remote.result.PartyResultFactory;
+import com.echothree.control.user.authentication.common.form.RecoverPasswordForm;
+import com.echothree.control.user.party.common.result.GetPartyResult;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryAnswer;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserLoginPassword;
@@ -34,7 +34,7 @@ import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PasswordGeneratorUtils;

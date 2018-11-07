@@ -31,15 +31,15 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.form.GetForumMessageResultsForm;
-import com.echothree.control.user.search.remote.result.GetForumMessageResultsResult;
+import com.echothree.control.user.search.common.form.GetForumMessageResultsForm;
+import com.echothree.control.user.search.common.result.GetForumMessageResultsResult;
 import com.echothree.model.data.forum.common.ForumMessageConstants;
 import com.echothree.model.data.search.common.SearchResultConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.transfer.Limit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.Limit;
+import com.echothree.util.common.transfer.ListWrapper;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.customer.server.command;
 
-import com.echothree.control.user.customer.remote.edit.CustomerEditFactory;
-import com.echothree.control.user.customer.remote.edit.CustomerTypeDescriptionEdit;
-import com.echothree.control.user.customer.remote.form.EditCustomerTypeDescriptionForm;
-import com.echothree.control.user.customer.remote.result.CustomerResultFactory;
-import com.echothree.control.user.customer.remote.result.EditCustomerTypeDescriptionResult;
-import com.echothree.control.user.customer.remote.spec.CustomerTypeDescriptionSpec;
+import com.echothree.control.user.customer.common.edit.CustomerEditFactory;
+import com.echothree.control.user.customer.common.edit.CustomerTypeDescriptionEdit;
+import com.echothree.control.user.customer.common.form.EditCustomerTypeDescriptionForm;
+import com.echothree.control.user.customer.common.result.CustomerResultFactory;
+import com.echothree.control.user.customer.common.result.EditCustomerTypeDescriptionResult;
+import com.echothree.control.user.customer.common.spec.CustomerTypeDescriptionSpec;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -31,12 +31,12 @@ import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeDescription;
 import com.echothree.model.data.customer.server.value.CustomerTypeDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

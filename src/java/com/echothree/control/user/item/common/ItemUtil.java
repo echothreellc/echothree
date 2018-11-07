@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.item.common;
 
-import com.echothree.control.user.item.remote.ItemRemote;
+import com.echothree.control.user.item.common.ItemRemote;
 import com.echothree.control.user.item.server.ItemLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class ItemUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (ItemRemote)ctx.lookup("ejb:echothree/echothree-server/ItemBean!com.echothree.control.user.item.remote.ItemRemote");
+            cachedRemote = (ItemRemote)ctx.lookup("ejb:echothree/echothree-server/ItemBean!com.echothree.control.user.item.common.ItemRemote");
         }
         
         return cachedRemote;

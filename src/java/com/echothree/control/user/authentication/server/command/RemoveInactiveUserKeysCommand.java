@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-import com.echothree.control.user.authentication.remote.form.RemoveInactiveUserKeysForm;
+import com.echothree.control.user.authentication.common.form.RemoveInactiveUserKeysForm;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

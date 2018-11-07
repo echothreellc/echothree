@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.postage.server;
 
-import com.echothree.control.user.postage.remote.PostageService;
+import com.echothree.control.user.postage.common.PostageService;
 import javax.ejb.Local;
 
 @Local

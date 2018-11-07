@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.core.server;
 
-import com.echothree.control.user.core.remote.CoreService;
+import com.echothree.control.user.core.common.CoreService;
 import javax.ejb.Local;
 
 @Local

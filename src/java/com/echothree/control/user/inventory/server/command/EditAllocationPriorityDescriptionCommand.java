@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.remote.edit.AllocationPriorityDescriptionEdit;
-import com.echothree.control.user.inventory.remote.edit.InventoryEditFactory;
-import com.echothree.control.user.inventory.remote.form.EditAllocationPriorityDescriptionForm;
-import com.echothree.control.user.inventory.remote.result.EditAllocationPriorityDescriptionResult;
-import com.echothree.control.user.inventory.remote.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.remote.spec.AllocationPriorityDescriptionSpec;
+import com.echothree.control.user.inventory.common.edit.AllocationPriorityDescriptionEdit;
+import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
+import com.echothree.control.user.inventory.common.form.EditAllocationPriorityDescriptionForm;
+import com.echothree.control.user.inventory.common.result.EditAllocationPriorityDescriptionResult;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.spec.AllocationPriorityDescriptionSpec;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -31,11 +31,11 @@ import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.AllocationPriorityDescription;
 import com.echothree.model.data.inventory.server.value.AllocationPriorityDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

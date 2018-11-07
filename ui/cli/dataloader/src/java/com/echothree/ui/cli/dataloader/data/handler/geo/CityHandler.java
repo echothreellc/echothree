@@ -17,15 +17,15 @@
 package com.echothree.ui.cli.dataloader.data.handler.geo;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.GeoService;
-import com.echothree.control.user.geo.remote.form.AddCityToCountyForm;
-import com.echothree.control.user.geo.remote.form.AddZipCodeToCityForm;
-import com.echothree.control.user.geo.remote.form.CreateGeoCodeDescriptionForm;
-import com.echothree.control.user.geo.remote.form.GeoFormFactory;
+import com.echothree.control.user.geo.common.GeoService;
+import com.echothree.control.user.geo.common.form.AddCityToCountyForm;
+import com.echothree.control.user.geo.common.form.AddZipCodeToCityForm;
+import com.echothree.control.user.geo.common.form.CreateGeoCodeDescriptionForm;
+import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.remote.TaxService;
-import com.echothree.control.user.tax.remote.form.CreateGeoCodeTaxForm;
-import com.echothree.control.user.tax.remote.form.TaxFormFactory;
+import com.echothree.control.user.tax.common.TaxService;
+import com.echothree.control.user.tax.common.form.CreateGeoCodeTaxForm;
+import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.data.handler.core.EntityAttributesHandler;

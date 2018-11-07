@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.advertising.use;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.remote.form.GetUseTypeChoicesForm;
-import com.echothree.control.user.offer.remote.result.GetUseTypeChoicesResult;
-import com.echothree.model.control.offer.remote.choice.UseTypeChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.offer.common.form.GetUseTypeChoicesForm;
+import com.echothree.control.user.offer.common.result.GetUseTypeChoicesResult;
+import com.echothree.model.control.offer.common.choice.UseTypeChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

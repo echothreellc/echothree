@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.sequence.common;
 
-import com.echothree.control.user.sequence.remote.SequenceRemote;
+import com.echothree.control.user.sequence.common.SequenceRemote;
 import com.echothree.control.user.sequence.server.SequenceLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class SequenceUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (SequenceRemote)ctx.lookup("ejb:echothree/echothree-server/SequenceBean!com.echothree.control.user.sequence.remote.SequenceRemote");
+            cachedRemote = (SequenceRemote)ctx.lookup("ejb:echothree/echothree-server/SequenceBean!com.echothree.control.user.sequence.common.SequenceRemote");
         }
         
         return cachedRemote;

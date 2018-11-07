@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationtype;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.remote.form.GetCancellationKindForm;
-import com.echothree.control.user.cancellationpolicy.remote.result.GetCancellationKindResult;
+import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationKindForm;
+import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationKindResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.remote.form.GetSequenceChoicesForm;
-import com.echothree.control.user.sequence.remote.result.GetSequenceChoicesResult;
-import com.echothree.model.control.cancellationpolicy.remote.transfer.CancellationKindTransfer;
-import com.echothree.model.control.sequence.remote.choice.SequenceChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
+import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
+import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
+import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

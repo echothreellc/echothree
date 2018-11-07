@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.CommandTransfer;
-import com.echothree.model.control.core.remote.transfer.ComponentVendorTransfer;
+import com.echothree.model.control.core.common.transfer.CommandTransfer;
+import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.core.server.entity.CommandDetail;

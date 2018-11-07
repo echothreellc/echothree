@@ -18,13 +18,13 @@ package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
-import com.echothree.model.control.content.remote.transfer.ContentCollectionTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentSectionTransfer;
+import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
+import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentSectionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
 import java.util.Set;
 

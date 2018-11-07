@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.club.club;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.remote.form.GetClubDescriptionsForm;
-import com.echothree.control.user.club.remote.result.GetClubDescriptionsResult;
-import com.echothree.model.control.club.remote.transfer.ClubTransfer;
+import com.echothree.control.user.club.common.form.GetClubDescriptionsForm;
+import com.echothree.control.user.club.common.result.GetClubDescriptionsResult;
+import com.echothree.model.control.club.common.transfer.ClubTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

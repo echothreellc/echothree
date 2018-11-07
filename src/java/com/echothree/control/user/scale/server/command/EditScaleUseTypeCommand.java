@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.scale.server.command;
 
-import com.echothree.control.user.scale.remote.edit.ScaleEditFactory;
-import com.echothree.control.user.scale.remote.edit.ScaleUseTypeEdit;
-import com.echothree.control.user.scale.remote.form.EditScaleUseTypeForm;
-import com.echothree.control.user.scale.remote.result.EditScaleUseTypeResult;
-import com.echothree.control.user.scale.remote.result.ScaleResultFactory;
-import com.echothree.control.user.scale.remote.spec.ScaleUseTypeSpec;
+import com.echothree.control.user.scale.common.edit.ScaleEditFactory;
+import com.echothree.control.user.scale.common.edit.ScaleUseTypeEdit;
+import com.echothree.control.user.scale.common.form.EditScaleUseTypeForm;
+import com.echothree.control.user.scale.common.result.EditScaleUseTypeResult;
+import com.echothree.control.user.scale.common.result.ScaleResultFactory;
+import com.echothree.control.user.scale.common.spec.ScaleUseTypeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.model.data.scale.server.entity.ScaleUseTypeDescription;
 import com.echothree.model.data.scale.server.entity.ScaleUseTypeDetail;
 import com.echothree.model.data.scale.server.value.ScaleUseTypeDescriptionValue;
 import com.echothree.model.data.scale.server.value.ScaleUseTypeDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

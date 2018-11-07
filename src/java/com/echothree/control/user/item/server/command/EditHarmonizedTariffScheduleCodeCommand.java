@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.edit.HarmonizedTariffScheduleCodeEdit;
-import com.echothree.control.user.item.remote.edit.ItemEditFactory;
-import com.echothree.control.user.item.remote.form.EditHarmonizedTariffScheduleCodeForm;
-import com.echothree.control.user.item.remote.result.EditHarmonizedTariffScheduleCodeResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
-import com.echothree.control.user.item.remote.spec.HarmonizedTariffScheduleCodeSpec;
+import com.echothree.control.user.item.common.edit.HarmonizedTariffScheduleCodeEdit;
+import com.echothree.control.user.item.common.edit.ItemEditFactory;
+import com.echothree.control.user.item.common.form.EditHarmonizedTariffScheduleCodeForm;
+import com.echothree.control.user.item.common.result.EditHarmonizedTariffScheduleCodeResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.control.user.item.common.spec.HarmonizedTariffScheduleCodeSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -38,12 +38,12 @@ import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeT
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnit;
 import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeDetailValue;
 import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeTranslationValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

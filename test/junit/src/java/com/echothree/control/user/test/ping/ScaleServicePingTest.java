@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.remote.ScaleService;
+import com.echothree.control.user.scale.common.ScaleService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

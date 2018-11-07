@@ -17,12 +17,12 @@
 package com.echothree.cucumber;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.remote.AuthenticationService;
-import com.echothree.control.user.authentication.remote.form.CustomerLoginForm;
-import com.echothree.control.user.authentication.remote.form.GetUserVisitForm;
-import com.echothree.control.user.authentication.remote.result.GetUserVisitResult;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.control.user.authentication.common.AuthenticationService;
+import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
+import com.echothree.control.user.authentication.common.form.GetUserVisitForm;
+import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

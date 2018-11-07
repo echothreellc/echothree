@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.remote.RatingService;
+import com.echothree.control.user.rating.common.RatingService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -17,14 +17,14 @@
 package com.echothree.ui.cli.dataloader.data.handler.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.remote.WarehouseService;
-import com.echothree.control.user.warehouse.remote.form.CreateWarehouseForm;
-import com.echothree.control.user.warehouse.remote.form.WarehouseFormFactory;
-import com.echothree.control.user.warehouse.remote.result.CreateWarehouseResult;
+import com.echothree.control.user.warehouse.common.WarehouseService;
+import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
+import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

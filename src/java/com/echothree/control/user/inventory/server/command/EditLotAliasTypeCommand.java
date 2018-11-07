@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.remote.edit.InventoryEditFactory;
-import com.echothree.control.user.inventory.remote.edit.LotAliasTypeEdit;
-import com.echothree.control.user.inventory.remote.form.EditLotAliasTypeForm;
-import com.echothree.control.user.inventory.remote.result.EditLotAliasTypeResult;
-import com.echothree.control.user.inventory.remote.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.remote.spec.LotAliasTypeSpec;
+import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
+import com.echothree.control.user.inventory.common.edit.LotAliasTypeEdit;
+import com.echothree.control.user.inventory.common.form.EditLotAliasTypeForm;
+import com.echothree.control.user.inventory.common.result.EditLotAliasTypeResult;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.spec.LotAliasTypeSpec;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,12 +32,12 @@ import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
 import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.inventory.server.value.LotAliasTypeDescriptionValue;
 import com.echothree.model.data.inventory.server.value.LotAliasTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.forum.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.form.DeleteForumDescriptionForm;
+import com.echothree.control.user.forum.common.form.DeleteForumDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

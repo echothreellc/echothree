@@ -17,18 +17,18 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.form.DeleteCommentForm;
-import com.echothree.control.user.comment.remote.form.GetCommentForm;
-import com.echothree.control.user.comment.remote.result.GetCommentResult;
+import com.echothree.control.user.comment.common.form.DeleteCommentForm;
+import com.echothree.control.user.comment.common.form.GetCommentForm;
+import com.echothree.control.user.comment.common.result.GetCommentResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.remote.form.GetVendorForm;
-import com.echothree.control.user.vendor.remote.result.GetVendorResult;
+import com.echothree.control.user.vendor.common.form.GetVendorForm;
+import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

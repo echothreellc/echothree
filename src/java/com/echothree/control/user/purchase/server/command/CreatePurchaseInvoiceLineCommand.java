@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.purchase.server.command;
 
-import com.echothree.control.user.purchase.remote.form.CreatePurchaseInvoiceLineForm;
-import com.echothree.control.user.purchase.remote.result.CreatePurchaseInvoiceLineResult;
-import com.echothree.control.user.purchase.remote.result.PurchaseResultFactory;
+import com.echothree.control.user.purchase.common.form.CreatePurchaseInvoiceLineForm;
+import com.echothree.control.user.purchase.common.result.CreatePurchaseInvoiceLineResult;
+import com.echothree.control.user.purchase.common.result.PurchaseResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.invoice.common.InvoiceConstants;
 import com.echothree.model.control.invoice.server.InvoiceControl;
@@ -33,11 +33,11 @@ import com.echothree.model.data.invoice.server.entity.InvoiceLine;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

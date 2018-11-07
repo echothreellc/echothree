@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.core.server.database;
 
-import com.echothree.model.data.core.remote.pk.EntityInstancePK;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.util.server.persistence.BaseDatabaseResult;
 
 public class EntityInstanceResult

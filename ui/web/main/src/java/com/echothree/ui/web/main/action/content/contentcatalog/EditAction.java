@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.content.contentcatalog;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.edit.ContentCatalogEdit;
-import com.echothree.control.user.content.remote.form.EditContentCatalogForm;
-import com.echothree.control.user.content.remote.result.EditContentCatalogResult;
-import com.echothree.control.user.content.remote.spec.ContentCatalogSpec;
+import com.echothree.control.user.content.common.edit.ContentCatalogEdit;
+import com.echothree.control.user.content.common.form.EditContentCatalogForm;
+import com.echothree.control.user.content.common.result.EditContentCatalogResult;
+import com.echothree.control.user.content.common.spec.ContentCatalogSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

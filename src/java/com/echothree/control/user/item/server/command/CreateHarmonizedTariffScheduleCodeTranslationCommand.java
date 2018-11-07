@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.form.CreateHarmonizedTariffScheduleCodeTranslationForm;
+import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeTranslationForm;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -30,11 +30,11 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeTranslation;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

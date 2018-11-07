@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.filter.server.command;
 
-import com.echothree.control.user.filter.remote.form.DeleteFilterStepDescriptionForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterStepDescriptionForm;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -25,11 +25,11 @@ import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterStepDescription;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

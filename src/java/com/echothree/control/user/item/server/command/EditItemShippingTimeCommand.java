@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.edit.ItemEditFactory;
-import com.echothree.control.user.item.remote.edit.ItemShippingTimeEdit;
-import com.echothree.control.user.item.remote.form.EditItemShippingTimeForm;
-import com.echothree.control.user.item.remote.result.EditItemShippingTimeResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
-import com.echothree.control.user.item.remote.spec.ItemShippingTimeSpec;
+import com.echothree.control.user.item.common.edit.ItemEditFactory;
+import com.echothree.control.user.item.common.edit.ItemShippingTimeEdit;
+import com.echothree.control.user.item.common.form.EditItemShippingTimeForm;
+import com.echothree.control.user.item.common.result.EditItemShippingTimeResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.control.user.item.common.spec.ItemShippingTimeSpec;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
@@ -29,12 +29,12 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemShippingTime;
 import com.echothree.model.data.item.server.value.ItemShippingTimeValue;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;

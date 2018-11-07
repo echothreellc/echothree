@@ -20,7 +20,7 @@ import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;

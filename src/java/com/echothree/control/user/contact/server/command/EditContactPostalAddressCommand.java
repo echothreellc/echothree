@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.contact.server.command;
 
-import com.echothree.control.user.contact.remote.edit.ContactEditFactory;
-import com.echothree.control.user.contact.remote.edit.ContactPostalAddressEdit;
-import com.echothree.control.user.contact.remote.form.EditContactPostalAddressForm;
-import com.echothree.control.user.contact.remote.result.ContactResultFactory;
-import com.echothree.control.user.contact.remote.result.EditContactPostalAddressResult;
-import com.echothree.control.user.contact.remote.spec.PartyContactMechanismSpec;
+import com.echothree.control.user.contact.common.edit.ContactEditFactory;
+import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
+import com.echothree.control.user.contact.common.form.EditContactPostalAddressForm;
+import com.echothree.control.user.contact.common.result.ContactResultFactory;
+import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
+import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
 import com.echothree.model.control.contact.common.ContactConstants;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -38,14 +38,14 @@ import com.echothree.model.data.geo.server.entity.GeoCodeCountry;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;

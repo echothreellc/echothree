@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.geo.remote.transfer.GeoCodeCurrencyTransfer;
-import com.echothree.model.control.geo.remote.transfer.GeoCodeTransfer;
+import com.echothree.model.control.geo.common.transfer.GeoCodeCurrencyTransfer;
+import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
 import com.echothree.model.data.user.server.entity.UserVisit;

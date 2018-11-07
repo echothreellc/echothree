@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.GlAccountTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.cancellationpolicy.remote.transfer.CancellationPolicyTransfer;
+import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
-import com.echothree.model.control.returnpolicy.remote.transfer.ReturnPolicyTransfer;
+import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
-import com.echothree.model.control.vendor.remote.transfer.VendorTypeTransfer;
+import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;

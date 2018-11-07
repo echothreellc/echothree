@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.SearchService;
+import com.echothree.control.user.search.common.SearchService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -16,16 +16,16 @@
 
 package com.echothree.model.control.cancellationpolicy.server.logic;
 
-import com.echothree.model.control.cancellationpolicy.remote.choice.PartyCancellationPolicyStatusChoicesBean;
+import com.echothree.model.control.cancellationpolicy.common.choice.PartyCancellationPolicyStatusChoicesBean;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.cancellationpolicy.common.workflow.PartyCancellationPolicyStatusConstants;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.cancellationpolicy.server.entity.PartyCancellationPolicy;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -33,7 +33,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;

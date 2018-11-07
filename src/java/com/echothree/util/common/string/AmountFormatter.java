@@ -16,7 +16,7 @@
 
 package com.echothree.util.common.string;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 
 public class AmountFormatter {
     

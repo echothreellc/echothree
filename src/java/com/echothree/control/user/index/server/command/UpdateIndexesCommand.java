@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.index.server.command;
 
-import com.echothree.control.user.index.remote.result.IndexResultFactory;
-import com.echothree.control.user.index.remote.result.UpdateIndexesResult;
+import com.echothree.control.user.index.common.result.IndexResultFactory;
+import com.echothree.control.user.index.common.result.UpdateIndexesResult;
 import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
 import com.echothree.model.control.core.server.indexer.EntityListItemIndexer;
@@ -48,9 +48,9 @@ import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.queue.common.QueuedEntityConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.transfer.Limit;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

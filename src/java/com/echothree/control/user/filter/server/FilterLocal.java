@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.filter.server;
 
-import com.echothree.control.user.filter.remote.FilterService;
+import com.echothree.control.user.filter.common.FilterService;
 import javax.ejb.Local;
 
 @Local

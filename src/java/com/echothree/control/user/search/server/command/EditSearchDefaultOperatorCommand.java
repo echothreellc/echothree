@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.edit.SearchDefaultOperatorEdit;
-import com.echothree.control.user.search.remote.edit.SearchEditFactory;
-import com.echothree.control.user.search.remote.form.EditSearchDefaultOperatorForm;
-import com.echothree.control.user.search.remote.result.EditSearchDefaultOperatorResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
-import com.echothree.control.user.search.remote.spec.SearchDefaultOperatorSpec;
+import com.echothree.control.user.search.common.edit.SearchDefaultOperatorEdit;
+import com.echothree.control.user.search.common.edit.SearchEditFactory;
+import com.echothree.control.user.search.common.form.EditSearchDefaultOperatorForm;
+import com.echothree.control.user.search.common.result.EditSearchDefaultOperatorResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.control.user.search.common.spec.SearchDefaultOperatorSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDescription;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDetail;
 import com.echothree.model.data.search.server.value.SearchDefaultOperatorDescriptionValue;
 import com.echothree.model.data.search.server.value.SearchDefaultOperatorDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

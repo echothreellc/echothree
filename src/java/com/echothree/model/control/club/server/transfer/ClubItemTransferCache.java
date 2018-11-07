@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.club.server.transfer;
 
-import com.echothree.model.control.club.remote.transfer.ClubItemTransfer;
-import com.echothree.model.control.club.remote.transfer.ClubItemTypeTransfer;
-import com.echothree.model.control.club.remote.transfer.ClubTransfer;
+import com.echothree.model.control.club.common.transfer.ClubItemTransfer;
+import com.echothree.model.control.club.common.transfer.ClubItemTypeTransfer;
+import com.echothree.model.control.club.common.transfer.ClubTransfer;
 import com.echothree.model.control.club.server.ClubControl;
-import com.echothree.model.control.item.remote.transfer.ItemTransfer;
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;

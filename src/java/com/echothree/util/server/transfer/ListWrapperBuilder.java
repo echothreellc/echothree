@@ -16,8 +16,8 @@
 
 package com.echothree.util.server.transfer;
 
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.ListWrapper;
 import java.util.List;
 
 public class ListWrapperBuilder

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.returnpolicy.server;
 
-import com.echothree.control.user.returnpolicy.remote.ReturnPolicyService;
+import com.echothree.control.user.returnpolicy.common.ReturnPolicyService;
 import javax.ejb.Local;
 
 @Local

@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.user;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.remote.UserService;
-import com.echothree.control.user.user.remote.form.CreateUserLoginPasswordEncoderTypeForm;
-import com.echothree.control.user.user.remote.form.UserFormFactory;
+import com.echothree.control.user.user.common.UserService;
+import com.echothree.control.user.user.common.form.CreateUserLoginPasswordEncoderTypeForm;
+import com.echothree.control.user.user.common.form.UserFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

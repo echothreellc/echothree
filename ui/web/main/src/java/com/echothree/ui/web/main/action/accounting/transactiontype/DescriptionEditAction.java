@@ -17,18 +17,18 @@
 package com.echothree.ui.web.main.action.accounting.transactiontype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.edit.TransactionTypeDescriptionEdit;
-import com.echothree.control.user.accounting.remote.form.EditTransactionTypeDescriptionForm;
-import com.echothree.control.user.accounting.remote.form.GetTransactionTypeForm;
-import com.echothree.control.user.accounting.remote.result.EditTransactionTypeDescriptionResult;
-import com.echothree.control.user.accounting.remote.result.GetTransactionTypeResult;
-import com.echothree.control.user.accounting.remote.spec.TransactionTypeDescriptionSpec;
-import com.echothree.model.control.accounting.remote.transfer.TransactionTypeDescriptionTransfer;
+import com.echothree.control.user.accounting.common.edit.TransactionTypeDescriptionEdit;
+import com.echothree.control.user.accounting.common.form.EditTransactionTypeDescriptionForm;
+import com.echothree.control.user.accounting.common.form.GetTransactionTypeForm;
+import com.echothree.control.user.accounting.common.result.EditTransactionTypeDescriptionResult;
+import com.echothree.control.user.accounting.common.result.GetTransactionTypeResult;
+import com.echothree.control.user.accounting.common.spec.TransactionTypeDescriptionSpec;
+import com.echothree.model.control.accounting.common.transfer.TransactionTypeDescriptionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

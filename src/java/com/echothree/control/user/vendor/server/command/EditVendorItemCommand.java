@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.vendor.server.command;
 
-import com.echothree.control.user.vendor.remote.edit.VendorEditFactory;
-import com.echothree.control.user.vendor.remote.edit.VendorItemEdit;
-import com.echothree.control.user.vendor.remote.form.EditVendorItemForm;
-import com.echothree.control.user.vendor.remote.result.EditVendorItemResult;
-import com.echothree.control.user.vendor.remote.result.VendorResultFactory;
-import com.echothree.control.user.vendor.remote.spec.VendorItemSpec;
+import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
+import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
+import com.echothree.control.user.vendor.common.form.EditVendorItemForm;
+import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
+import com.echothree.control.user.vendor.common.result.VendorResultFactory;
+import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -35,7 +35,7 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPol
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemDetail;
@@ -43,8 +43,8 @@ import com.echothree.model.data.vendor.server.value.VendorItemDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

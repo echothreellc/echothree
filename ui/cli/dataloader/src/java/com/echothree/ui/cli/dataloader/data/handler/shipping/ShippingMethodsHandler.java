@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.shipping;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.remote.ShippingService;
-import com.echothree.control.user.shipping.remote.form.CreateShippingMethodForm;
-import com.echothree.control.user.shipping.remote.form.ShippingFormFactory;
+import com.echothree.control.user.shipping.common.ShippingService;
+import com.echothree.control.user.shipping.common.form.CreateShippingMethodForm;
+import com.echothree.control.user.shipping.common.form.ShippingFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

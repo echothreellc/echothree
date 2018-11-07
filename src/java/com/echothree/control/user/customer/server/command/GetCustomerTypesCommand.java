@@ -16,16 +16,16 @@
 
 package com.echothree.control.user.customer.server.command;
 
-import com.echothree.control.user.customer.remote.form.GetCustomerTypesForm;
-import com.echothree.control.user.customer.remote.result.CustomerResultFactory;
-import com.echothree.control.user.customer.remote.result.GetCustomerTypesResult;
+import com.echothree.control.user.customer.common.form.GetCustomerTypesForm;
+import com.echothree.control.user.customer.common.result.CustomerResultFactory;
+import com.echothree.control.user.customer.common.result.GetCustomerTypesResult;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

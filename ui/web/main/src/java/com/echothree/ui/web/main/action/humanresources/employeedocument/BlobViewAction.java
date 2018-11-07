@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.humanresources.employeedocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.remote.form.GetPartyDocumentForm;
-import com.echothree.control.user.document.remote.result.GetPartyDocumentResult;
+import com.echothree.control.user.document.common.form.GetPartyDocumentForm;
+import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.document.common.DocumentOptions;
-import com.echothree.model.control.document.remote.transfer.DocumentTransfer;
-import com.echothree.model.control.document.remote.transfer.PartyDocumentTransfer;
+import com.echothree.model.control.document.common.transfer.DocumentTransfer;
+import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.ByteArrayStreamInfo;
 import com.echothree.ui.web.main.framework.MainBaseDownloadAction;
 import com.echothree.ui.web.main.framework.MainBaseDownloadAction.StreamInfo;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;

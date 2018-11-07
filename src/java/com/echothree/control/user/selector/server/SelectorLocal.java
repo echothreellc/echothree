@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.selector.server;
 
-import com.echothree.control.user.selector.remote.SelectorService;
+import com.echothree.control.user.selector.common.SelectorService;
 import javax.ejb.Local;
 
 @Local

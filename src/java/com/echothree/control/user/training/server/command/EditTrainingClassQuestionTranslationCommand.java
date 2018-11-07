@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.training.server.command;
 
-import com.echothree.control.user.training.remote.edit.TrainingClassQuestionTranslationEdit;
-import com.echothree.control.user.training.remote.edit.TrainingEditFactory;
-import com.echothree.control.user.training.remote.form.EditTrainingClassQuestionTranslationForm;
-import com.echothree.control.user.training.remote.result.EditTrainingClassQuestionTranslationResult;
-import com.echothree.control.user.training.remote.result.TrainingResultFactory;
-import com.echothree.control.user.training.remote.spec.TrainingClassQuestionTranslationSpec;
+import com.echothree.control.user.training.common.edit.TrainingClassQuestionTranslationEdit;
+import com.echothree.control.user.training.common.edit.TrainingEditFactory;
+import com.echothree.control.user.training.common.form.EditTrainingClassQuestionTranslationForm;
+import com.echothree.control.user.training.common.result.EditTrainingClassQuestionTranslationResult;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
+import com.echothree.control.user.training.common.spec.TrainingClassQuestionTranslationSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -36,11 +36,11 @@ import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestionTranslation;
 import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.training.server.value.TrainingClassQuestionTranslationValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

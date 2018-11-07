@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.returnpolicy.server;
 
-import com.echothree.control.user.returnpolicy.remote.ReturnPolicyRemote;
-import com.echothree.control.user.returnpolicy.remote.form.*;
+import com.echothree.control.user.returnpolicy.common.ReturnPolicyRemote;
+import com.echothree.control.user.returnpolicy.common.form.*;
 import com.echothree.control.user.returnpolicy.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

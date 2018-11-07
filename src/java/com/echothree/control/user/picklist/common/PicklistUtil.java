@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.picklist.common;
 
-import com.echothree.control.user.picklist.remote.PicklistRemote;
+import com.echothree.control.user.picklist.common.PicklistRemote;
 import com.echothree.control.user.picklist.server.PicklistLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class PicklistUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (PicklistRemote)ctx.lookup("ejb:echothree/echothree-server/PicklistBean!com.echothree.control.user.picklist.remote.PicklistRemote");
+            cachedRemote = (PicklistRemote)ctx.lookup("ejb:echothree/echothree-server/PicklistBean!com.echothree.control.user.picklist.common.PicklistRemote");
         }
         
         return cachedRemote;

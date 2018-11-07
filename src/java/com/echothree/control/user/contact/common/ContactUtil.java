@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.contact.common;
 
-import com.echothree.control.user.contact.remote.ContactRemote;
+import com.echothree.control.user.contact.common.ContactRemote;
 import com.echothree.control.user.contact.server.ContactLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class ContactUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (ContactRemote)ctx.lookup("ejb:echothree/echothree-server/ContactBean!com.echothree.control.user.contact.remote.ContactRemote");
+            cachedRemote = (ContactRemote)ctx.lookup("ejb:echothree/echothree-server/ContactBean!com.echothree.control.user.contact.common.ContactRemote");
         }
         
         return cachedRemote;

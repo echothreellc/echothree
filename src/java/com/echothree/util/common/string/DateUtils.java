@@ -16,8 +16,8 @@
 
 package com.echothree.util.common.string;
 
-import com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer;
-import com.echothree.model.control.party.remote.transfer.TimeZoneTransfer;
+import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
+import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;

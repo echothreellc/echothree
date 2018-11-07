@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.remote.form.GetWishlistTypesForm;
-import com.echothree.control.user.wishlist.remote.result.GetWishlistTypesResult;
-import com.echothree.control.user.wishlist.remote.result.WishlistResultFactory;
+import com.echothree.control.user.wishlist.common.form.GetWishlistTypesForm;
+import com.echothree.control.user.wishlist.common.result.GetWishlistTypesResult;
+import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.wishlist.server.WishlistControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

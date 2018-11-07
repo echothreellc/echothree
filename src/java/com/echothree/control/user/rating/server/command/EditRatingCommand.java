@@ -16,24 +16,24 @@
 
 package com.echothree.control.user.rating.server.command;
 
-import com.echothree.control.user.rating.remote.edit.RatingEdit;
-import com.echothree.control.user.rating.remote.edit.RatingEditFactory;
-import com.echothree.control.user.rating.remote.form.EditRatingForm;
-import com.echothree.control.user.rating.remote.result.EditRatingResult;
-import com.echothree.control.user.rating.remote.result.RatingResultFactory;
-import com.echothree.control.user.rating.remote.spec.RatingSpec;
+import com.echothree.control.user.rating.common.edit.RatingEdit;
+import com.echothree.control.user.rating.common.edit.RatingEditFactory;
+import com.echothree.control.user.rating.common.form.EditRatingForm;
+import com.echothree.control.user.rating.common.result.EditRatingResult;
+import com.echothree.control.user.rating.common.result.RatingResultFactory;
+import com.echothree.control.user.rating.common.spec.RatingSpec;
 import com.echothree.model.control.rating.server.RatingControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.rating.server.entity.RatingDetail;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.model.data.rating.server.value.RatingDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

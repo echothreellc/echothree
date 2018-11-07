@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.batch.server;
 
-import com.echothree.control.user.batch.remote.BatchService;
+import com.echothree.control.user.batch.common.BatchService;
 import javax.ejb.Local;
 
 @Local

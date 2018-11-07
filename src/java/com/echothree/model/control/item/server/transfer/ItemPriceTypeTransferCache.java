@@ -17,11 +17,11 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.model.control.item.common.ItemProperties;
-import com.echothree.model.control.item.remote.transfer.ItemPriceTypeTransfer;
+import com.echothree.model.control.item.common.transfer.ItemPriceTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 import java.util.Set;
 
 public class ItemPriceTypeTransferCache

@@ -17,9 +17,9 @@
 package com.echothree.ui.web.cms.framework;
 
 import com.echothree.ui.web.cms.framework.CmsBaseDownloadAction.StreamInfo;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.transfer.BaseWrapper;
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.transfer.BaseWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 import com.google.common.base.Charsets;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;

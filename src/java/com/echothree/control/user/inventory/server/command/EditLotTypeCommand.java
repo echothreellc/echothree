@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.remote.edit.InventoryEditFactory;
-import com.echothree.control.user.inventory.remote.edit.LotTypeEdit;
-import com.echothree.control.user.inventory.remote.form.EditLotTypeForm;
-import com.echothree.control.user.inventory.remote.result.EditLotTypeResult;
-import com.echothree.control.user.inventory.remote.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.remote.spec.LotTypeSpec;
+import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
+import com.echothree.control.user.inventory.common.edit.LotTypeEdit;
+import com.echothree.control.user.inventory.common.form.EditLotTypeForm;
+import com.echothree.control.user.inventory.common.result.EditLotTypeResult;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.spec.LotTypeSpec;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,15 +33,15 @@ import com.echothree.model.data.inventory.server.entity.LotTypeDescription;
 import com.echothree.model.data.inventory.server.entity.LotTypeDetail;
 import com.echothree.model.data.inventory.server.value.LotTypeDescriptionValue;
 import com.echothree.model.data.inventory.server.value.LotTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

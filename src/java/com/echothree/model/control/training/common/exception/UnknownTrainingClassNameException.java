@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.training.common.exception;
 
-import com.echothree.util.remote.message.Message;
+import com.echothree.util.common.message.Message;
 
 public class UnknownTrainingClassNameException
         extends BaseTrainingException {

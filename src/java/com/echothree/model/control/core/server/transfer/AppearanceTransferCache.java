@@ -17,10 +17,10 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.core.remote.transfer.AppearanceTransfer;
-import com.echothree.model.control.core.remote.transfer.ColorTransfer;
-import com.echothree.model.control.core.remote.transfer.FontStyleTransfer;
-import com.echothree.model.control.core.remote.transfer.FontWeightTransfer;
+import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
+import com.echothree.model.control.core.common.transfer.ColorTransfer;
+import com.echothree.model.control.core.common.transfer.FontStyleTransfer;
+import com.echothree.model.control.core.common.transfer.FontWeightTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.AppearanceDetail;
@@ -28,7 +28,7 @@ import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import java.util.Set;
 
 public class AppearanceTransferCache

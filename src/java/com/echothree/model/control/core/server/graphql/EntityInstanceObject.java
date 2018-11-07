@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.core.remote.transfer.EntityLockTransfer;
+import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.EntityLockControl;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;

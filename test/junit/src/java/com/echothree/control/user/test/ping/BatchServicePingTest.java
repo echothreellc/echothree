@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.batch.common.BatchUtil;
-import com.echothree.control.user.batch.remote.BatchService;
+import com.echothree.control.user.batch.common.BatchService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

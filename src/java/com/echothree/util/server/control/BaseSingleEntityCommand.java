@@ -16,12 +16,12 @@
 
 package com.echothree.util.server.control;
 
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.SecurityResult;
-import com.echothree.util.remote.form.BaseForm;
-import com.echothree.util.remote.form.ValidationResult;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.SecurityResult;
+import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.persistence.BaseEntity;
 import java.util.List;
 

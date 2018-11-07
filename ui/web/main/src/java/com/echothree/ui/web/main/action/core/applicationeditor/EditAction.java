@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.core.applicationeditor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.edit.ApplicationEditorEdit;
-import com.echothree.control.user.core.remote.form.EditApplicationEditorForm;
-import com.echothree.control.user.core.remote.result.EditApplicationEditorResult;
-import com.echothree.control.user.core.remote.spec.ApplicationEditorSpec;
+import com.echothree.control.user.core.common.edit.ApplicationEditorEdit;
+import com.echothree.control.user.core.common.form.EditApplicationEditorForm;
+import com.echothree.control.user.core.common.result.EditApplicationEditorResult;
+import com.echothree.control.user.core.common.spec.ApplicationEditorSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

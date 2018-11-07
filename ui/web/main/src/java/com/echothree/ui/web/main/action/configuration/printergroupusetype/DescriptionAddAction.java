@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.printergroupusetype;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.remote.form.CreatePrinterGroupUseTypeDescriptionForm;
-import com.echothree.control.user.printer.remote.form.GetPrinterGroupUseTypeForm;
-import com.echothree.control.user.printer.remote.result.GetPrinterGroupUseTypeResult;
+import com.echothree.control.user.printer.common.form.CreatePrinterGroupUseTypeDescriptionForm;
+import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypeForm;
+import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

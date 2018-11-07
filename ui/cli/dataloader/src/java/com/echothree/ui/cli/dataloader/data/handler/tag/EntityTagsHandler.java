@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.tag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.remote.TagService;
-import com.echothree.control.user.tag.remote.form.CreateEntityTagForm;
-import com.echothree.control.user.tag.remote.form.TagFormFactory;
+import com.echothree.control.user.tag.common.TagService;
+import com.echothree.control.user.tag.common.form.CreateEntityTagForm;
+import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

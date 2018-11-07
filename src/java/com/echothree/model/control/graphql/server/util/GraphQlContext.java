@@ -15,7 +15,7 @@
 // --------------------------------------------------------------------------------
 package com.echothree.model.control.graphql.server.util;
 
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

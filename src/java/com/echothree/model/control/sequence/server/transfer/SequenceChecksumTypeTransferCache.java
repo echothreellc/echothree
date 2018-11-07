@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
-import com.echothree.model.control.sequence.remote.transfer.SequenceChecksumTypeTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceChecksumTypeTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.user.server.entity.UserVisit;

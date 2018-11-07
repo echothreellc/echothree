@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistfrequency;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.remote.form.SetDefaultContactListFrequencyForm;
+import com.echothree.control.user.contactlist.common.form.SetDefaultContactListFrequencyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

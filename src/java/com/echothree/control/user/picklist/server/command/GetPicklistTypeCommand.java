@@ -16,20 +16,20 @@
 
 package com.echothree.control.user.picklist.server.command;
 
-import com.echothree.control.user.picklist.remote.form.GetPicklistTypeForm;
-import com.echothree.control.user.picklist.remote.result.GetPicklistTypeResult;
-import com.echothree.control.user.picklist.remote.result.PicklistResultFactory;
+import com.echothree.control.user.picklist.common.form.GetPicklistTypeForm;
+import com.echothree.control.user.picklist.common.result.GetPicklistTypeResult;
+import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.picklist.server.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -16,25 +16,25 @@
 
 package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.party.remote.edit.GenderEdit;
-import com.echothree.control.user.party.remote.edit.PartyEditFactory;
-import com.echothree.control.user.party.remote.form.EditGenderForm;
-import com.echothree.control.user.party.remote.result.EditGenderResult;
-import com.echothree.control.user.party.remote.result.PartyResultFactory;
-import com.echothree.control.user.party.remote.spec.GenderSpec;
+import com.echothree.control.user.party.common.edit.GenderEdit;
+import com.echothree.control.user.party.common.edit.PartyEditFactory;
+import com.echothree.control.user.party.common.form.EditGenderForm;
+import com.echothree.control.user.party.common.result.EditGenderResult;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
+import com.echothree.control.user.party.common.spec.GenderSpec;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Gender;
 import com.echothree.model.data.party.server.entity.GenderDescription;
 import com.echothree.model.data.party.server.entity.GenderDetail;
 import com.echothree.model.data.party.server.value.GenderDescriptionValue;
 import com.echothree.model.data.party.server.value.GenderDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;

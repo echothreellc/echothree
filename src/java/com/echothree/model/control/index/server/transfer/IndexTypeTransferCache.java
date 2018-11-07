@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.index.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.index.common.IndexOptions;
-import com.echothree.model.control.index.remote.transfer.IndexTypeTransfer;
+import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
 import com.echothree.model.control.index.server.IndexControl;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.index.server.entity.IndexType;

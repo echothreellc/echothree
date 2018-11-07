@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.training.server;
 
-import com.echothree.control.user.training.remote.TrainingService;
+import com.echothree.control.user.training.common.TrainingService;
 import javax.ejb.Local;
 
 @Local

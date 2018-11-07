@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.MimeTypeTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.training.remote.transfer.TrainingClassPageTransfer;
-import com.echothree.model.control.training.remote.transfer.TrainingClassPageTranslationTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.training.common.transfer.TrainingClassPageTransfer;
+import com.echothree.model.control.training.common.transfer.TrainingClassPageTranslationTransfer;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassPageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;

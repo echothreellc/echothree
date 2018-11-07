@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.core.server;
 
-import com.echothree.model.control.core.remote.transfer.EntityLockTransfer;
+import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.EntityLockException;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.BaseValue;

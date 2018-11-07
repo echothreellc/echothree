@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancestep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.remote.form.GetWorkflowStepChoicesForm;
-import com.echothree.control.user.workflow.remote.result.GetWorkflowStepChoicesResult;
-import com.echothree.model.control.workflow.remote.choice.WorkflowStepChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.workflow.common.form.GetWorkflowStepChoicesForm;
+import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
+import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

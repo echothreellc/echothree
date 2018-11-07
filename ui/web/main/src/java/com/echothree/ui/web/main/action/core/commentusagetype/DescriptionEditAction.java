@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.core.commentusagetype;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.edit.CommentUsageTypeDescriptionEdit;
-import com.echothree.control.user.comment.remote.form.EditCommentUsageTypeDescriptionForm;
-import com.echothree.control.user.comment.remote.result.EditCommentUsageTypeDescriptionResult;
-import com.echothree.control.user.comment.remote.spec.CommentUsageTypeDescriptionSpec;
+import com.echothree.control.user.comment.common.edit.CommentUsageTypeDescriptionEdit;
+import com.echothree.control.user.comment.common.form.EditCommentUsageTypeDescriptionForm;
+import com.echothree.control.user.comment.common.result.EditCommentUsageTypeDescriptionResult;
+import com.echothree.control.user.comment.common.spec.CommentUsageTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

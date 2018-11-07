@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.sales.server.command;
 
-import com.echothree.control.user.sales.remote.form.GetSalesOrderLineTimesForm;
-import com.echothree.control.user.sales.remote.result.GetSalesOrderLineTimesResult;
-import com.echothree.control.user.sales.remote.result.SalesResultFactory;
+import com.echothree.control.user.sales.common.form.GetSalesOrderLineTimesForm;
+import com.echothree.control.user.sales.common.result.GetSalesOrderLineTimesResult;
+import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineTimeLogic;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.Arrays;
 import java.util.Collections;

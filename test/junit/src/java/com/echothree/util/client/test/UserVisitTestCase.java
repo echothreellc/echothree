@@ -17,7 +17,7 @@
 package com.echothree.util.client.test;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import junit.framework.TestCase;
 
 public abstract class UserVisitTestCase

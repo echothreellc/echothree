@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-import com.echothree.control.user.authentication.remote.form.SetPasswordForm;
+import com.echothree.control.user.authentication.common.form.SetPasswordForm;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -30,7 +30,7 @@ import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicy;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLoginPassword;
 import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
 import com.echothree.model.data.user.server.entity.UserLoginStatus;
@@ -39,7 +39,7 @@ import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;

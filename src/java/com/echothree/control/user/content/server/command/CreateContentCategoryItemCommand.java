@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.remote.form.CreateContentCategoryItemForm;
+import com.echothree.control.user.content.common.form.CreateContentCategoryItemForm;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentLogic;
@@ -35,11 +35,11 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

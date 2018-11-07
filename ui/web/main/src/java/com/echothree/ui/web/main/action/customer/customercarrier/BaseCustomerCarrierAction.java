@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.customer.customercarrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.remote.form.GetPartyCarrierForm;
-import com.echothree.control.user.carrier.remote.result.GetPartyCarrierResult;
+import com.echothree.control.user.carrier.common.form.GetPartyCarrierForm;
+import com.echothree.control.user.carrier.common.result.GetPartyCarrierResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.remote.form.GetCustomerForm;
-import com.echothree.control.user.customer.remote.result.GetCustomerResult;
-import com.echothree.model.control.carrier.remote.transfer.PartyCarrierTransfer;
+import com.echothree.control.user.customer.common.form.GetCustomerForm;
+import com.echothree.control.user.customer.common.result.GetCustomerResult;
+import com.echothree.model.control.carrier.common.transfer.PartyCarrierTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionForm;

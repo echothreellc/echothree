@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.security.common;
 
-import com.echothree.control.user.security.remote.SecurityRemote;
+import com.echothree.control.user.security.common.SecurityRemote;
 import com.echothree.control.user.security.server.SecurityLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class SecurityUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (SecurityRemote)ctx.lookup("ejb:echothree/echothree-server/SecurityBean!com.echothree.control.user.security.remote.SecurityRemote");
+            cachedRemote = (SecurityRemote)ctx.lookup("ejb:echothree/echothree-server/SecurityBean!com.echothree.control.user.security.common.SecurityRemote");
         }
         
         return cachedRemote;

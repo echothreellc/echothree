@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.user.remote.transfer.UserLoginPasswordEncoderTypeTransfer;
-import com.echothree.model.control.user.remote.transfer.UserLoginPasswordTypeTransfer;
+import com.echothree.model.control.user.common.transfer.UserLoginPasswordEncoderTypeTransfer;
+import com.echothree.model.control.user.common.transfer.UserLoginPasswordTypeTransfer;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
 import com.echothree.model.data.user.server.entity.UserVisit;

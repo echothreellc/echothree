@@ -16,14 +16,14 @@
 
 package com.echothree.model.control.search.server.search;
 
-import com.echothree.model.data.core.remote.pk.EntityInstancePK;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.index.server.entity.IndexType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.search.remote.pk.CachedExecutedSearchPK;
-import com.echothree.model.data.search.remote.pk.SearchPK;
+import com.echothree.model.data.search.common.pk.CachedExecutedSearchPK;
+import com.echothree.model.data.search.common.pk.SearchPK;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearchResult;
 import com.echothree.model.data.search.server.entity.CachedSearch;

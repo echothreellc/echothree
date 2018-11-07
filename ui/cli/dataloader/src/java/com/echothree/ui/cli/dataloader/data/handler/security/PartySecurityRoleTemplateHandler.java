@@ -17,11 +17,11 @@
 package com.echothree.ui.cli.dataloader.data.handler.security;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.remote.SecurityService;
-import com.echothree.control.user.security.remote.form.CreatePartySecurityRoleTemplateDescriptionForm;
-import com.echothree.control.user.security.remote.form.CreatePartySecurityRoleTemplateRoleForm;
-import com.echothree.control.user.security.remote.form.CreatePartySecurityRoleTemplateTrainingClassForm;
-import com.echothree.control.user.security.remote.form.SecurityFormFactory;
+import com.echothree.control.user.security.common.SecurityService;
+import com.echothree.control.user.security.common.form.CreatePartySecurityRoleTemplateDescriptionForm;
+import com.echothree.control.user.security.common.form.CreatePartySecurityRoleTemplateRoleForm;
+import com.echothree.control.user.security.common.form.CreatePartySecurityRoleTemplateTrainingClassForm;
+import com.echothree.control.user.security.common.form.SecurityFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

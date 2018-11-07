@@ -18,12 +18,12 @@ package com.echothree.model.control.period.server.transfer;
 
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.period.common.PeriodConstants;
-import com.echothree.model.control.period.remote.transfer.PeriodKindTransfer;
-import com.echothree.model.control.period.remote.transfer.PeriodTransfer;
-import com.echothree.model.control.period.remote.transfer.PeriodTypeTransfer;
+import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
+import com.echothree.model.control.period.common.transfer.PeriodTransfer;
+import com.echothree.model.control.period.common.transfer.PeriodTypeTransfer;
 import com.echothree.model.control.period.server.PeriodControl;
 import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.period.server.entity.Period;

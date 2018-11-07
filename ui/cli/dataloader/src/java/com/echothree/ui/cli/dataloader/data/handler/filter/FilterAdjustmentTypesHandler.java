@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.remote.FilterService;
-import com.echothree.control.user.filter.remote.form.CreateFilterAdjustmentTypeForm;
-import com.echothree.control.user.filter.remote.form.FilterFormFactory;
+import com.echothree.control.user.filter.common.FilterService;
+import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentTypeForm;
+import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

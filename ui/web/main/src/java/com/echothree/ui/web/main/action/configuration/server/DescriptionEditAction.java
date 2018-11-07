@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.server;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.edit.ServerDescriptionEdit;
-import com.echothree.control.user.core.remote.form.EditServerDescriptionForm;
-import com.echothree.control.user.core.remote.result.EditServerDescriptionResult;
-import com.echothree.control.user.core.remote.spec.ServerDescriptionSpec;
+import com.echothree.control.user.core.common.edit.ServerDescriptionEdit;
+import com.echothree.control.user.core.common.form.EditServerDescriptionForm;
+import com.echothree.control.user.core.common.result.EditServerDescriptionResult;
+import com.echothree.control.user.core.common.spec.ServerDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

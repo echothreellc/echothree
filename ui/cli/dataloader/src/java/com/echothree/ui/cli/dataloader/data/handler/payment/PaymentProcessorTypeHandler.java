@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.payment;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.remote.PaymentService;
-import com.echothree.control.user.payment.remote.form.CreatePaymentProcessorTypeDescriptionForm;
-import com.echothree.control.user.payment.remote.form.PaymentFormFactory;
+import com.echothree.control.user.payment.common.PaymentService;
+import com.echothree.control.user.payment.common.form.CreatePaymentProcessorTypeDescriptionForm;
+import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.shipping.server.command;
 
-import com.echothree.control.user.shipping.remote.form.GetShippingMethodCarrierServiceForm;
-import com.echothree.control.user.shipping.remote.result.GetShippingMethodCarrierServiceResult;
-import com.echothree.control.user.shipping.remote.result.ShippingResultFactory;
+import com.echothree.control.user.shipping.common.form.GetShippingMethodCarrierServiceForm;
+import com.echothree.control.user.shipping.common.result.GetShippingMethodCarrierServiceResult;
+import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
 import com.echothree.model.control.carrier.server.CarrierControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,11 +29,11 @@ import com.echothree.model.data.carrier.server.entity.CarrierService;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

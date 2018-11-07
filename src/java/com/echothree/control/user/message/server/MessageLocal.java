@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.message.server;
 
-import com.echothree.control.user.message.remote.MessageService;
+import com.echothree.control.user.message.common.MessageService;
 import javax.ejb.Local;
 
 @Local

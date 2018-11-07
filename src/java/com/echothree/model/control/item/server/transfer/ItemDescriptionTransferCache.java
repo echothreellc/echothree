@@ -16,17 +16,17 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.remote.transfer.MimeTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.ItemProperties;
-import com.echothree.model.control.item.remote.transfer.ItemDescriptionTransfer;
-import com.echothree.model.control.item.remote.transfer.ItemDescriptionTypeTransfer;
-import com.echothree.model.control.item.remote.transfer.ItemImageTypeTransfer;
-import com.echothree.model.control.item.remote.transfer.ItemTransfer;
+import com.echothree.model.control.item.common.transfer.ItemDescriptionTransfer;
+import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
+import com.echothree.model.control.item.common.transfer.ItemImageTypeTransfer;
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTime;
@@ -39,8 +39,8 @@ import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
 import com.echothree.model.data.item.server.entity.ItemImageDescription;
 import com.echothree.model.data.item.server.entity.ItemStringDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

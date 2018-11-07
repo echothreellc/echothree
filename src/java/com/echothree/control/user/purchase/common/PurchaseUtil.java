@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.purchase.common;
 
-import com.echothree.control.user.purchase.remote.PurchaseRemote;
+import com.echothree.control.user.purchase.common.PurchaseRemote;
 import com.echothree.control.user.purchase.server.PurchaseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class PurchaseUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (PurchaseRemote)ctx.lookup("ejb:echothree/echothree-server/PurchaseBean!com.echothree.control.user.purchase.remote.PurchaseRemote");
+            cachedRemote = (PurchaseRemote)ctx.lookup("ejb:echothree/echothree-server/PurchaseBean!com.echothree.control.user.purchase.common.PurchaseRemote");
         }
         
         return cachedRemote;

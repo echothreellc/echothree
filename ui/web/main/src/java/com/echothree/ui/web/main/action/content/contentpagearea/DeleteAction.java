@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.content.contentpagearea;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.form.DeleteContentPageAreaForm;
-import com.echothree.control.user.content.remote.form.GetContentPageAreaForm;
-import com.echothree.control.user.content.remote.result.GetContentPageAreaResult;
+import com.echothree.control.user.content.common.form.DeleteContentPageAreaForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreaForm;
+import com.echothree.control.user.content.common.result.GetContentPageAreaResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

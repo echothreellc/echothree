@@ -17,16 +17,16 @@
 package com.echothree.ui.cli.dataloader.zipcode;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.remote.AuthenticationService;
+import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.GeoService;
-import com.echothree.control.user.geo.remote.form.GeoFormFactory;
-import com.echothree.control.user.geo.remote.form.GetCountryForm;
-import com.echothree.control.user.geo.remote.result.GetCountryResult;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.control.user.geo.common.GeoService;
+import com.echothree.control.user.geo.common.form.GeoFormFactory;
+import com.echothree.control.user.geo.common.form.GetCountryForm;
+import com.echothree.control.user.geo.common.result.GetCountryResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.collection.SmartQueue;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

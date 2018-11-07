@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.form.CreateItemForm;
-import com.echothree.control.user.item.remote.result.CreateItemResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
+import com.echothree.control.user.item.common.form.CreateItemForm;
+import com.echothree.control.user.item.common.result.CreateItemResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
@@ -46,18 +46,18 @@ import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

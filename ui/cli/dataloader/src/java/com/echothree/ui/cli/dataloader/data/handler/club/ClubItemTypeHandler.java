@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.club;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.remote.ClubService;
-import com.echothree.control.user.club.remote.form.ClubFormFactory;
-import com.echothree.control.user.club.remote.form.CreateClubItemTypeDescriptionForm;
+import com.echothree.control.user.club.common.ClubService;
+import com.echothree.control.user.club.common.form.ClubFormFactory;
+import com.echothree.control.user.club.common.form.CreateClubItemTypeDescriptionForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

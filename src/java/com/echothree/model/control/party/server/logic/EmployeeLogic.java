@@ -32,7 +32,7 @@ import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;

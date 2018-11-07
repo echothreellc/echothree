@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritem;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.remote.form.DeleteVendorItemForm;
+import com.echothree.control.user.vendor.common.form.DeleteVendorItemForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

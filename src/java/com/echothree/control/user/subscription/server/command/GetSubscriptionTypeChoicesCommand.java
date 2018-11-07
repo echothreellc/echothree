@@ -16,16 +16,16 @@
 
 package com.echothree.control.user.subscription.server.command;
 
-import com.echothree.control.user.subscription.remote.form.GetSubscriptionTypeChoicesForm;
-import com.echothree.control.user.subscription.remote.result.GetSubscriptionTypeChoicesResult;
-import com.echothree.control.user.subscription.remote.result.SubscriptionResultFactory;
+import com.echothree.control.user.subscription.common.form.GetSubscriptionTypeChoicesForm;
+import com.echothree.control.user.subscription.common.result.GetSubscriptionTypeChoicesResult;
+import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

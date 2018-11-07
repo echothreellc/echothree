@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.job;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.remote.JobService;
-import com.echothree.control.user.job.remote.form.CreateJobDescriptionForm;
-import com.echothree.control.user.job.remote.form.JobFormFactory;
+import com.echothree.control.user.job.common.JobService;
+import com.echothree.control.user.job.common.form.CreateJobDescriptionForm;
+import com.echothree.control.user.job.common.form.JobFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

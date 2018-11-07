@@ -17,13 +17,13 @@
 package com.echothree.ui.web.main.action.accounting.transactiontype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.edit.TransactionTypeEdit;
-import com.echothree.control.user.accounting.remote.form.EditTransactionTypeForm;
-import com.echothree.control.user.accounting.remote.result.EditTransactionTypeResult;
-import com.echothree.control.user.accounting.remote.spec.TransactionTypeSpec;
+import com.echothree.control.user.accounting.common.edit.TransactionTypeEdit;
+import com.echothree.control.user.accounting.common.form.EditTransactionTypeForm;
+import com.echothree.control.user.accounting.common.result.EditTransactionTypeResult;
+import com.echothree.control.user.accounting.common.spec.TransactionTypeSpec;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

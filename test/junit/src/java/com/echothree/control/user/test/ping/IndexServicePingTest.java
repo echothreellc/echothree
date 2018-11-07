@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.index.common.IndexUtil;
-import com.echothree.control.user.index.remote.IndexService;
+import com.echothree.control.user.index.common.IndexService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

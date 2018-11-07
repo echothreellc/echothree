@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.communication.server.transfer;
 
-import com.echothree.model.control.communication.remote.transfer.CommunicationEmailSourceTransfer;
+import com.echothree.model.control.communication.common.transfer.CommunicationEmailSourceTransfer;
 import com.echothree.model.control.communication.server.CommunicationControl;
-import com.echothree.model.control.core.remote.transfer.ServerTransfer;
+import com.echothree.model.control.core.common.transfer.ServerTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.selector.remote.transfer.SelectorTransfer;
+import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
-import com.echothree.model.control.workeffort.remote.transfer.WorkEffortScopeTransfer;
+import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEmailSource;
 import com.echothree.model.data.selector.server.entity.Selector;

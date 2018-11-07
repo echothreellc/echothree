@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.workflow.server;
 
-import com.echothree.control.user.workflow.remote.WorkflowService;
+import com.echothree.control.user.workflow.common.WorkflowService;
 import javax.ejb.Local;
 
 @Local

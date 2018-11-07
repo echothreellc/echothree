@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.training.common;
 
-import com.echothree.control.user.training.remote.TrainingRemote;
+import com.echothree.control.user.training.common.TrainingRemote;
 import com.echothree.control.user.training.server.TrainingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class TrainingUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (TrainingRemote)ctx.lookup("ejb:echothree/echothree-server/TrainingBean!com.echothree.control.user.training.remote.TrainingRemote");
+            cachedRemote = (TrainingRemote)ctx.lookup("ejb:echothree/echothree-server/TrainingBean!com.echothree.control.user.training.common.TrainingRemote");
         }
         
         return cachedRemote;

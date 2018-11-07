@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.remote.SubscriptionService;
+import com.echothree.control.user.subscription.common.SubscriptionService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

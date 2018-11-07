@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.workrequirementtype;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.remote.form.DeleteWorkRequirementTypeForm;
+import com.echothree.control.user.workrequirement.common.form.DeleteWorkRequirementTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
-import com.echothree.model.control.chain.remote.transfer.ChainDescriptionTransfer;
-import com.echothree.model.control.chain.remote.transfer.ChainTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainDescriptionTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.chain.server.entity.ChainDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

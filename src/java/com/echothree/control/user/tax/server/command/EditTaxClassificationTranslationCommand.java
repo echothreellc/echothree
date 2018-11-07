@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.tax.server.command;
 
-import com.echothree.control.user.tax.remote.edit.TaxClassificationTranslationEdit;
-import com.echothree.control.user.tax.remote.edit.TaxEditFactory;
-import com.echothree.control.user.tax.remote.form.EditTaxClassificationTranslationForm;
-import com.echothree.control.user.tax.remote.result.EditTaxClassificationTranslationResult;
-import com.echothree.control.user.tax.remote.result.TaxResultFactory;
-import com.echothree.control.user.tax.remote.spec.TaxClassificationTranslationSpec;
+import com.echothree.control.user.tax.common.edit.TaxClassificationTranslationEdit;
+import com.echothree.control.user.tax.common.edit.TaxEditFactory;
+import com.echothree.control.user.tax.common.form.EditTaxClassificationTranslationForm;
+import com.echothree.control.user.tax.common.result.EditTaxClassificationTranslationResult;
+import com.echothree.control.user.tax.common.result.TaxResultFactory;
+import com.echothree.control.user.tax.common.spec.TaxClassificationTranslationSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -36,11 +36,11 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tax.server.entity.TaxClassification;
 import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
 import com.echothree.model.data.tax.server.value.TaxClassificationTranslationValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

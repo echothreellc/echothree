@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.associate.server.logic;
 
-import com.echothree.control.user.associate.remote.spec.AssociatePartyContactMechanismSpec;
+import com.echothree.control.user.associate.common.spec.AssociatePartyContactMechanismSpec;
 import com.echothree.model.control.associate.server.AssociateControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.associate.server.entity.Associate;
@@ -25,7 +25,7 @@ import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 

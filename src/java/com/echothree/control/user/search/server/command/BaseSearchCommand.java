@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.BaseSearchForm;
+import com.echothree.control.user.search.common.form.BaseSearchForm;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.party.server.entity.Party;
@@ -28,9 +28,9 @@ import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.value.PartySearchTypePreferenceDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import java.util.List;

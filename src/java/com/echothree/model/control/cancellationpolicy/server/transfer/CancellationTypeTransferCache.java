@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
-import com.echothree.model.control.cancellationpolicy.remote.transfer.CancellationKindTransfer;
-import com.echothree.model.control.cancellationpolicy.remote.transfer.CancellationTypeTransfer;
+import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationKindTransfer;
+import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationTypeTransfer;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationTypeDetail;

@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.license;
 
 import com.echothree.control.user.license.common.LicenseUtil;
-import com.echothree.control.user.license.remote.LicenseService;
-import com.echothree.control.user.license.remote.form.CreateLicenseTypeDescriptionForm;
-import com.echothree.control.user.license.remote.form.LicenseFormFactory;
+import com.echothree.control.user.license.common.LicenseService;
+import com.echothree.control.user.license.common.form.CreateLicenseTypeDescriptionForm;
+import com.echothree.control.user.license.common.form.LicenseFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

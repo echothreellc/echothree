@@ -17,7 +17,7 @@
 package com.echothree.model.control.printer.server.transfer;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.printer.remote.transfer.PrinterGroupUseTypeTransfer;
+import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeTransfer;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDetail;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.inventory.common;
 
-import com.echothree.control.user.inventory.remote.InventoryRemote;
+import com.echothree.control.user.inventory.common.InventoryRemote;
 import com.echothree.control.user.inventory.server.InventoryLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class InventoryUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (InventoryRemote)ctx.lookup("ejb:echothree/echothree-server/InventoryBean!com.echothree.control.user.inventory.remote.InventoryRemote");
+            cachedRemote = (InventoryRemote)ctx.lookup("ejb:echothree/echothree-server/InventoryBean!com.echothree.control.user.inventory.common.InventoryRemote");
         }
         
         return cachedRemote;

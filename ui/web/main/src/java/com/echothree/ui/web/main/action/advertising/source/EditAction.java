@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.advertising.source;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.remote.edit.SourceEdit;
-import com.echothree.control.user.offer.remote.form.EditSourceForm;
-import com.echothree.control.user.offer.remote.result.EditSourceResult;
-import com.echothree.control.user.offer.remote.spec.SourceSpec;
+import com.echothree.control.user.offer.common.edit.SourceEdit;
+import com.echothree.control.user.offer.common.form.EditSourceForm;
+import com.echothree.control.user.offer.common.result.EditSourceResult;
+import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

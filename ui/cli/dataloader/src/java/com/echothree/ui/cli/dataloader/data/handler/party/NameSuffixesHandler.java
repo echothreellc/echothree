@@ -17,14 +17,14 @@
 package com.echothree.ui.cli.dataloader.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.PartyService;
-import com.echothree.control.user.party.remote.form.CreateNameSuffixForm;
-import com.echothree.control.user.party.remote.form.PartyFormFactory;
-import com.echothree.control.user.party.remote.result.CreateNameSuffixResult;
+import com.echothree.control.user.party.common.PartyService;
+import com.echothree.control.user.party.common.form.CreateNameSuffixForm;
+import com.echothree.control.user.party.common.form.PartyFormFactory;
+import com.echothree.control.user.party.common.result.CreateNameSuffixResult;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.offer.common;
 
-import com.echothree.control.user.offer.remote.OfferRemote;
+import com.echothree.control.user.offer.common.OfferRemote;
 import com.echothree.control.user.offer.server.OfferLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class OfferUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (OfferRemote)ctx.lookup("ejb:echothree/echothree-server/OfferBean!com.echothree.control.user.offer.remote.OfferRemote");
+            cachedRemote = (OfferRemote)ctx.lookup("ejb:echothree/echothree-server/OfferBean!com.echothree.control.user.offer.common.OfferRemote");
         }
         
         return cachedRemote;

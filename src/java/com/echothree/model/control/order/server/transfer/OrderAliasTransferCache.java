@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.order.server.transfer;
 
-import com.echothree.model.control.order.remote.transfer.OrderAliasTransfer;
-import com.echothree.model.control.order.remote.transfer.OrderAliasTypeTransfer;
+import com.echothree.model.control.order.common.transfer.OrderAliasTransfer;
+import com.echothree.model.control.order.common.transfer.OrderAliasTypeTransfer;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;

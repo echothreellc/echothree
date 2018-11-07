@@ -17,13 +17,13 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.edit.ContentWebAddressEdit;
-import com.echothree.control.user.content.remote.form.EditContentWebAddressForm;
-import com.echothree.control.user.content.remote.result.EditContentWebAddressResult;
-import com.echothree.control.user.content.remote.spec.ContentWebAddressSpec;
+import com.echothree.control.user.content.common.edit.ContentWebAddressEdit;
+import com.echothree.control.user.content.common.form.EditContentWebAddressForm;
+import com.echothree.control.user.content.common.result.EditContentWebAddressResult;
+import com.echothree.control.user.content.common.spec.ContentWebAddressSpec;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

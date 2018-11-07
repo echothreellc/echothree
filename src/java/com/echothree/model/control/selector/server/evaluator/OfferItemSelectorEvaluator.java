@@ -44,7 +44,7 @@ import com.echothree.model.data.offer.server.value.OfferItemFixedPriceValue;
 import com.echothree.model.data.offer.server.value.OfferItemVariablePriceValue;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.List;

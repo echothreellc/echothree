@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.uom.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.uom.remote.transfer.UnitOfMeasureTypeDescriptionTransfer;
-import com.echothree.model.control.uom.remote.transfer.UnitOfMeasureTypeTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeDescriptionTransfer;
+import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

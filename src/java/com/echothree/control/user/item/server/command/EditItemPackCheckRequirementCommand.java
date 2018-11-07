@@ -16,23 +16,23 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.edit.ItemEditFactory;
-import com.echothree.control.user.item.remote.edit.ItemPackCheckRequirementEdit;
-import com.echothree.control.user.item.remote.form.EditItemPackCheckRequirementForm;
-import com.echothree.control.user.item.remote.result.EditItemPackCheckRequirementResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
-import com.echothree.control.user.item.remote.spec.ItemPackCheckRequirementSpec;
+import com.echothree.control.user.item.common.edit.ItemEditFactory;
+import com.echothree.control.user.item.common.edit.ItemPackCheckRequirementEdit;
+import com.echothree.control.user.item.common.form.EditItemPackCheckRequirementForm;
+import com.echothree.control.user.item.common.result.EditItemPackCheckRequirementResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.control.user.item.common.spec.ItemPackCheckRequirementSpec;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemPackCheckRequirement;
 import com.echothree.model.data.item.server.value.ItemPackCheckRequirementValue;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

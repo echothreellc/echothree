@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.form.GetMimeTypeChoicesForm;
-import com.echothree.control.user.core.remote.result.CoreResultFactory;
-import com.echothree.control.user.core.remote.result.GetMimeTypeChoicesResult;
+import com.echothree.control.user.core.common.form.GetMimeTypeChoicesForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.model.control.comment.server.CommentControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.document.server.DocumentControl;
@@ -36,11 +36,11 @@ import com.echothree.model.data.forum.server.entity.ForumForumThread;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumThread;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

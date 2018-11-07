@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.workflow.common;
 
-import com.echothree.control.user.workflow.remote.WorkflowRemote;
+import com.echothree.control.user.workflow.common.WorkflowRemote;
 import com.echothree.control.user.workflow.server.WorkflowLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class WorkflowUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (WorkflowRemote)ctx.lookup("ejb:echothree/echothree-server/WorkflowBean!com.echothree.control.user.workflow.remote.WorkflowRemote");
+            cachedRemote = (WorkflowRemote)ctx.lookup("ejb:echothree/echothree-server/WorkflowBean!com.echothree.control.user.workflow.common.WorkflowRemote");
         }
         
         return cachedRemote;

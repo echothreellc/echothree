@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.employee.remote.transfer.TerminationTypeDescriptionTransfer;
-import com.echothree.model.control.employee.remote.transfer.TerminationTypeTransfer;
+import com.echothree.model.control.employee.common.transfer.TerminationTypeDescriptionTransfer;
+import com.echothree.model.control.employee.common.transfer.TerminationTypeTransfer;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

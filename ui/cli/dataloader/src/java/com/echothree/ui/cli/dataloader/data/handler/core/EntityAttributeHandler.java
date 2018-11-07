@@ -17,14 +17,14 @@
 package com.echothree.ui.cli.dataloader.data.handler.core;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.CoreService;
-import com.echothree.control.user.core.remote.form.CoreFormFactory;
-import com.echothree.control.user.core.remote.form.CreateEntityAttributeDescriptionForm;
-import com.echothree.control.user.core.remote.form.CreateEntityAttributeEntityAttributeGroupForm;
-import com.echothree.control.user.core.remote.form.CreateEntityAttributeEntityTypeForm;
-import com.echothree.control.user.core.remote.form.CreateEntityIntegerRangeForm;
-import com.echothree.control.user.core.remote.form.CreateEntityListItemForm;
-import com.echothree.control.user.core.remote.form.CreateEntityLongRangeForm;
+import com.echothree.control.user.core.common.CoreService;
+import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.core.common.form.CreateEntityAttributeDescriptionForm;
+import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityAttributeGroupForm;
+import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityTypeForm;
+import com.echothree.control.user.core.common.form.CreateEntityIntegerRangeForm;
+import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
+import com.echothree.control.user.core.common.form.CreateEntityLongRangeForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.rating.server.command;
 
-import com.echothree.control.user.rating.remote.form.CreateRatingForm;
-import com.echothree.control.user.rating.remote.result.CreateRatingResult;
-import com.echothree.control.user.rating.remote.result.RatingResultFactory;
+import com.echothree.control.user.rating.common.form.CreateRatingForm;
+import com.echothree.control.user.rating.common.result.CreateRatingResult;
+import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.rating.server.RatingControl;
 import com.echothree.model.control.sequence.common.SequenceConstants;
@@ -29,13 +29,13 @@ import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

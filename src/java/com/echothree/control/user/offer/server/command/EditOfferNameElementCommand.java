@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.offer.server.command;
 
-import com.echothree.control.user.offer.remote.edit.OfferEditFactory;
-import com.echothree.control.user.offer.remote.edit.OfferNameElementEdit;
-import com.echothree.control.user.offer.remote.form.EditOfferNameElementForm;
-import com.echothree.control.user.offer.remote.result.EditOfferNameElementResult;
-import com.echothree.control.user.offer.remote.result.OfferResultFactory;
-import com.echothree.control.user.offer.remote.spec.OfferNameElementSpec;
+import com.echothree.control.user.offer.common.edit.OfferEditFactory;
+import com.echothree.control.user.offer.common.edit.OfferNameElementEdit;
+import com.echothree.control.user.offer.common.form.EditOfferNameElementForm;
+import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
+import com.echothree.control.user.offer.common.spec.OfferNameElementSpec;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,13 +31,13 @@ import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
 import com.echothree.model.data.offer.server.entity.OfferNameElementDetail;
 import com.echothree.model.data.offer.server.value.OfferNameElementDescriptionValue;
 import com.echothree.model.data.offer.server.value.OfferNameElementDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

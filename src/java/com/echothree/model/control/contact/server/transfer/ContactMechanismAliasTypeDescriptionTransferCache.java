@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
-import com.echothree.model.control.contact.remote.transfer.ContactMechanismAliasTypeDescriptionTransfer;
-import com.echothree.model.control.contact.remote.transfer.ContactMechanismAliasTypeTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTypeDescriptionTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTypeTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

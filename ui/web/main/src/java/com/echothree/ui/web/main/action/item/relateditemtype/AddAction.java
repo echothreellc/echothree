@@ -17,9 +17,9 @@
 package com.echothree.ui.web.main.action.item.relateditemtype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.form.CreateRelatedItemTypeForm;
+import com.echothree.control.user.item.common.form.CreateRelatedItemTypeForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

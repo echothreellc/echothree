@@ -18,7 +18,7 @@ package com.echothree.util.server.persistence;
 
 import com.echothree.util.common.exception.PersistenceException;
 import com.echothree.util.common.exception.PersistenceReadOnlyException;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 
 public abstract class BaseEntity {
     

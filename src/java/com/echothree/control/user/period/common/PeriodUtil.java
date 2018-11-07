@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.period.common;
 
-import com.echothree.control.user.period.remote.PeriodRemote;
+import com.echothree.control.user.period.common.PeriodRemote;
 import com.echothree.control.user.period.server.PeriodLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class PeriodUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (PeriodRemote)ctx.lookup("ejb:echothree/echothree-server/PeriodBean!com.echothree.control.user.period.remote.PeriodRemote");
+            cachedRemote = (PeriodRemote)ctx.lookup("ejb:echothree/echothree-server/PeriodBean!com.echothree.control.user.period.common.PeriodRemote");
         }
         
         return cachedRemote;

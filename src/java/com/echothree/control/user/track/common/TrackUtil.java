@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.track.common;
 
-import com.echothree.control.user.track.remote.TrackRemote;
+import com.echothree.control.user.track.common.TrackRemote;
 import com.echothree.control.user.track.server.TrackLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class TrackUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (TrackRemote)ctx.lookup("ejb:echothree/echothree-server/TrackBean!com.echothree.control.user.track.remote.TrackRemote");
+            cachedRemote = (TrackRemote)ctx.lookup("ejb:echothree/echothree-server/TrackBean!com.echothree.control.user.track.common.TrackRemote");
         }
         
         return cachedRemote;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.invoice.common;
 
-import com.echothree.control.user.invoice.remote.InvoiceRemote;
+import com.echothree.control.user.invoice.common.InvoiceRemote;
 import com.echothree.control.user.invoice.server.InvoiceLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class InvoiceUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (InvoiceRemote)ctx.lookup("ejb:echothree/echothree-server/InvoiceBean!com.echothree.control.user.invoice.remote.InvoiceRemote");
+            cachedRemote = (InvoiceRemote)ctx.lookup("ejb:echothree/echothree-server/InvoiceBean!com.echothree.control.user.invoice.common.InvoiceRemote");
         }
         
         return cachedRemote;

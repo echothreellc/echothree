@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationreasontype;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.remote.form.DeleteCancellationReasonTypeForm;
+import com.echothree.control.user.cancellationpolicy.common.form.DeleteCancellationReasonTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -36,7 +36,7 @@ import com.echothree.model.data.item.server.entity.ItemFixedPrice;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;

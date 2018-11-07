@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.carrier.server;
 
-import com.echothree.control.user.carrier.remote.CarrierService;
+import com.echothree.control.user.carrier.common.CarrierService;
 import javax.ejb.Local;
 
 @Local

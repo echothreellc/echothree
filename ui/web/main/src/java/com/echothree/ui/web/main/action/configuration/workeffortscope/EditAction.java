@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.remote.edit.WorkEffortScopeEdit;
-import com.echothree.control.user.workeffort.remote.form.EditWorkEffortScopeForm;
-import com.echothree.control.user.workeffort.remote.result.EditWorkEffortScopeResult;
-import com.echothree.control.user.workeffort.remote.spec.WorkEffortScopeSpec;
+import com.echothree.control.user.workeffort.common.edit.WorkEffortScopeEdit;
+import com.echothree.control.user.workeffort.common.form.EditWorkEffortScopeForm;
+import com.echothree.control.user.workeffort.common.result.EditWorkEffortScopeResult;
+import com.echothree.control.user.workeffort.common.spec.WorkEffortScopeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

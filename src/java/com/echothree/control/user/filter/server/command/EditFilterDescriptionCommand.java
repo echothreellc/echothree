@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.filter.server.command;
 
-import com.echothree.control.user.filter.remote.edit.FilterDescriptionEdit;
-import com.echothree.control.user.filter.remote.edit.FilterEditFactory;
-import com.echothree.control.user.filter.remote.form.EditFilterDescriptionForm;
-import com.echothree.control.user.filter.remote.result.EditFilterDescriptionResult;
-import com.echothree.control.user.filter.remote.result.FilterResultFactory;
-import com.echothree.control.user.filter.remote.spec.FilterDescriptionSpec;
+import com.echothree.control.user.filter.common.edit.FilterDescriptionEdit;
+import com.echothree.control.user.filter.common.edit.FilterEditFactory;
+import com.echothree.control.user.filter.common.form.EditFilterDescriptionForm;
+import com.echothree.control.user.filter.common.result.EditFilterDescriptionResult;
+import com.echothree.control.user.filter.common.result.FilterResultFactory;
+import com.echothree.control.user.filter.common.spec.FilterDescriptionSpec;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -30,12 +30,12 @@ import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.filter.server.value.FilterDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

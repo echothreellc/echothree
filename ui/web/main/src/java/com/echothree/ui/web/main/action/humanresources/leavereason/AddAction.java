@@ -17,9 +17,9 @@
 package com.echothree.ui.web.main.action.humanresources.leavereason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.form.CreateLeaveReasonForm;
+import com.echothree.control.user.employee.common.form.CreateLeaveReasonForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

@@ -27,7 +27,7 @@ import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpo
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 

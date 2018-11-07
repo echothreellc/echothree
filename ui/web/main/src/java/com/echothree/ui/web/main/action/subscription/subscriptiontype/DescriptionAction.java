@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.subscription.subscriptiontype;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.remote.form.GetSubscriptionTypeDescriptionsForm;
-import com.echothree.control.user.subscription.remote.result.GetSubscriptionTypeDescriptionsResult;
-import com.echothree.model.control.subscription.remote.transfer.SubscriptionTypeTransfer;
+import com.echothree.control.user.subscription.common.form.GetSubscriptionTypeDescriptionsForm;
+import com.echothree.control.user.subscription.common.result.GetSubscriptionTypeDescriptionsResult;
+import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

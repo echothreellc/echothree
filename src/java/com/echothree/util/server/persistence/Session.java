@@ -16,12 +16,12 @@
 
 package com.echothree.util.server.persistence;
 
-import com.echothree.model.data.core.remote.pk.EntityInstancePK;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.persistence.BasePK;
-import com.echothree.util.remote.transfer.Limit;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.valuecache.ValueCache;
 import com.echothree.util.server.persistence.valuecache.ValueCacheProviderImpl;

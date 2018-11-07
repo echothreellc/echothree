@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.GetContactMechanismResultsFacetForm;
-import com.echothree.control.user.search.remote.result.GetContactMechanismResultsFacetResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
+import com.echothree.control.user.search.common.form.GetContactMechanismResultsFacetForm;
+import com.echothree.control.user.search.common.result.GetContactMechanismResultsFacetResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 
 public class GetContactMechanismResultsFacetCommand
         extends BaseGetResultsFacetCommand<GetContactMechanismResultsFacetForm, GetContactMechanismResultsFacetResult> {

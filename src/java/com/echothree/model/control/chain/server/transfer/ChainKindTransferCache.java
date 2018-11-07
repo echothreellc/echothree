@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
-import com.echothree.model.control.chain.remote.transfer.ChainKindTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainKindTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainKindDetail;

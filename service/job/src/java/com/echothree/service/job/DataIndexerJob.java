@@ -17,12 +17,12 @@
 package com.echothree.service.job;
 
 import com.echothree.control.user.index.common.IndexUtil;
-import com.echothree.control.user.index.remote.result.UpdateIndexesResult;
+import com.echothree.control.user.index.common.result.UpdateIndexesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.model.control.job.common.Jobs;
 import com.echothree.util.common.service.job.BaseScheduledJob;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.naming.NamingException;

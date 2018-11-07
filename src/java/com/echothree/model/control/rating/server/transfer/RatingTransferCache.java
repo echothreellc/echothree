@@ -17,7 +17,7 @@
 package com.echothree.model.control.rating.server.transfer;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.rating.remote.transfer.RatingTransfer;
+import com.echothree.model.control.rating.common.transfer.RatingTransfer;
 import com.echothree.model.control.rating.server.RatingControl;
 import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.rating.server.entity.RatingDetail;

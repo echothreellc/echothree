@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.associate.common;
 
-import com.echothree.control.user.associate.remote.AssociateRemote;
+import com.echothree.control.user.associate.common.AssociateRemote;
 import com.echothree.control.user.associate.server.AssociateLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class AssociateUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (AssociateRemote)ctx.lookup("ejb:echothree/echothree-server/AssociateBean!com.echothree.control.user.associate.remote.AssociateRemote");
+            cachedRemote = (AssociateRemote)ctx.lookup("ejb:echothree/echothree-server/AssociateBean!com.echothree.control.user.associate.common.AssociateRemote");
         }
         
         return cachedRemote;

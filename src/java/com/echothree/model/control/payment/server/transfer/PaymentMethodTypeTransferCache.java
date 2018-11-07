@@ -17,11 +17,11 @@
 package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.payment.common.PaymentOptions;
-import com.echothree.model.control.payment.remote.transfer.PaymentMethodTypeTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import java.util.Set;
 
 public class PaymentMethodTypeTransferCache

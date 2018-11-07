@@ -16,12 +16,12 @@
 
 package com.echothree.ui.cli.dataloader.hts;
 
-import com.echothree.control.user.geo.remote.GeoService;
-import com.echothree.control.user.item.remote.ItemService;
+import com.echothree.control.user.geo.common.GeoService;
+import com.echothree.control.user.item.common.ItemService;
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.control.geo.remote.transfer.CountryTransfer;
+import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.item.common.ItemConstants;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.string.StringUtils;
 import static com.google.common.base.Charsets.UTF_8;
 import java.io.BufferedReader;

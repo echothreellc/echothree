@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.printergroupjob;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.remote.form.DeletePrinterGroupJobForm;
+import com.echothree.control.user.printer.common.form.DeletePrinterGroupJobForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

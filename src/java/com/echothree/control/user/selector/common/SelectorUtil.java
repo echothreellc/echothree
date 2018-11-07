@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.selector.common;
 
-import com.echothree.control.user.selector.remote.SelectorRemote;
+import com.echothree.control.user.selector.common.SelectorRemote;
 import com.echothree.control.user.selector.server.SelectorLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class SelectorUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (SelectorRemote)ctx.lookup("ejb:echothree/echothree-server/SelectorBean!com.echothree.control.user.selector.remote.SelectorRemote");
+            cachedRemote = (SelectorRemote)ctx.lookup("ejb:echothree/echothree-server/SelectorBean!com.echothree.control.user.selector.common.SelectorRemote");
         }
         
         return cachedRemote;

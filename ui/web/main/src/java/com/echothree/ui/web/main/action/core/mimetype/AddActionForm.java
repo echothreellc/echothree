@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.GetEntityAttributeTypeChoicesForm;
-import com.echothree.control.user.core.remote.result.GetEntityAttributeTypeChoicesResult;
-import com.echothree.model.control.core.remote.choice.EntityAttributeTypeChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.core.common.form.GetEntityAttributeTypeChoicesForm;
+import com.echothree.control.user.core.common.result.GetEntityAttributeTypeChoicesResult;
+import com.echothree.model.control.core.common.choice.EntityAttributeTypeChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

@@ -17,16 +17,16 @@
 package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.filter.common.FilterOptions;
-import com.echothree.model.control.filter.remote.transfer.FilterAdjustmentSourceTransfer;
-import com.echothree.model.control.filter.remote.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.remote.transfer.FilterAdjustmentTypeTransfer;
-import com.echothree.model.control.filter.remote.transfer.FilterKindTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterAdjustmentSourceTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTypeTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentDetail;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import java.util.Set;
 
 public class FilterAdjustmentTransferCache

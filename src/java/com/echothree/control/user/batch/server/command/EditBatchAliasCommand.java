@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.batch.server.command;
 
-import com.echothree.control.user.batch.remote.edit.BatchAliasEdit;
-import com.echothree.control.user.batch.remote.edit.BatchEditFactory;
-import com.echothree.control.user.batch.remote.form.EditBatchAliasForm;
-import com.echothree.control.user.batch.remote.result.BatchResultFactory;
-import com.echothree.control.user.batch.remote.result.EditBatchAliasResult;
-import com.echothree.control.user.batch.remote.spec.BatchAliasSpec;
+import com.echothree.control.user.batch.common.edit.BatchAliasEdit;
+import com.echothree.control.user.batch.common.edit.BatchEditFactory;
+import com.echothree.control.user.batch.common.form.EditBatchAliasForm;
+import com.echothree.control.user.batch.common.result.BatchResultFactory;
+import com.echothree.control.user.batch.common.result.EditBatchAliasResult;
+import com.echothree.control.user.batch.common.spec.BatchAliasSpec;
 import com.echothree.control.user.batch.server.command.util.BatchAliasUtil;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -33,11 +33,11 @@ import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.batch.server.entity.BatchAliasTypeDetail;
 import com.echothree.model.data.batch.server.entity.BatchType;
 import com.echothree.model.data.batch.server.value.BatchAliasValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

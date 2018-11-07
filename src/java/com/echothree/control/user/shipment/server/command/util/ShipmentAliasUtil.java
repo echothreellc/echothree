@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.shipment.server.command.util;
 
-import com.echothree.control.user.shipment.remote.spec.ShipmentTypeSpec;
+import com.echothree.control.user.shipment.common.spec.ShipmentTypeSpec;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.common.ShipmentConstants;

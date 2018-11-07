@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.warehouse.server;
 
-import com.echothree.control.user.warehouse.remote.WarehouseService;
+import com.echothree.control.user.warehouse.common.WarehouseService;
 import javax.ejb.Local;
 
 @Local

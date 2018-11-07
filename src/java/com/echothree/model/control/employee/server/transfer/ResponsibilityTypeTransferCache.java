@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.employee.remote.transfer.ResponsibilityTypeTransfer;
+import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeTransfer;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDetail;

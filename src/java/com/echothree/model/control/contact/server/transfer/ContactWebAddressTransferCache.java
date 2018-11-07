@@ -17,10 +17,10 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.workflow.WebAddressStatusConstants;
-import com.echothree.model.control.contact.remote.transfer.ContactWebAddressTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactWebAddressTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactWebAddress;
 import com.echothree.model.data.core.server.entity.EntityInstance;

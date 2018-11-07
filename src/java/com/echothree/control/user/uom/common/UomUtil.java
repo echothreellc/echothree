@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.uom.common;
 
-import com.echothree.control.user.uom.remote.UomRemote;
+import com.echothree.control.user.uom.common.UomRemote;
 import com.echothree.control.user.uom.server.UomLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class UomUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (UomRemote)ctx.lookup("ejb:echothree/echothree-server/UomBean!com.echothree.control.user.uom.remote.UomRemote");
+            cachedRemote = (UomRemote)ctx.lookup("ejb:echothree/echothree-server/UomBean!com.echothree.control.user.uom.common.UomRemote");
         }
         
         return cachedRemote;

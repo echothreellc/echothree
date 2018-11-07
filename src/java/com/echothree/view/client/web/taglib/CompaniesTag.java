@@ -31,12 +31,12 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.GetCompaniesForm;
-import com.echothree.control.user.party.remote.result.GetCompaniesResult;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.control.user.party.common.form.GetCompaniesForm;
+import com.echothree.control.user.party.common.result.GetCompaniesResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.ListWrapper;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;

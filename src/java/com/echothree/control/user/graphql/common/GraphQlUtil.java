@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.graphql.common;
 
-import com.echothree.control.user.graphql.remote.GraphQlRemote;
+import com.echothree.control.user.graphql.common.GraphQlRemote;
 import com.echothree.control.user.graphql.server.GraphQlLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class GraphQlUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (GraphQlRemote)ctx.lookup("ejb:echothree/echothree-server/GraphQlBean!com.echothree.control.user.graphql.remote.GraphQlRemote");
+            cachedRemote = (GraphQlRemote)ctx.lookup("ejb:echothree/echothree-server/GraphQlBean!com.echothree.control.user.graphql.common.GraphQlRemote");
         }
         
         return cachedRemote;

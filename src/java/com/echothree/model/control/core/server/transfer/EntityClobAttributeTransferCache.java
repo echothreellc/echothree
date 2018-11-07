@@ -17,13 +17,13 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.core.remote.transfer.EntityAttributeTransfer;
-import com.echothree.model.control.core.remote.transfer.EntityClobAttributeTransfer;
-import com.echothree.model.control.core.remote.transfer.EntityInstanceTransfer;
-import com.echothree.model.control.core.remote.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.remote.transfer.MimeTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityClobAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;

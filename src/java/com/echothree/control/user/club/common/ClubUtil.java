@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.club.common;
 
-import com.echothree.control.user.club.remote.ClubRemote;
+import com.echothree.control.user.club.common.ClubRemote;
 import com.echothree.control.user.club.server.ClubLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class ClubUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (ClubRemote)ctx.lookup("ejb:echothree/echothree-server/ClubBean!com.echothree.control.user.club.remote.ClubRemote");
+            cachedRemote = (ClubRemote)ctx.lookup("ejb:echothree/echothree-server/ClubBean!com.echothree.control.user.club.common.ClubRemote");
         }
         
         return cachedRemote;

@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.index;
 
 import com.echothree.control.user.index.common.IndexUtil;
-import com.echothree.control.user.index.remote.IndexService;
-import com.echothree.control.user.index.remote.form.CreateIndexDescriptionForm;
-import com.echothree.control.user.index.remote.form.IndexFormFactory;
+import com.echothree.control.user.index.common.IndexService;
+import com.echothree.control.user.index.common.form.CreateIndexDescriptionForm;
+import com.echothree.control.user.index.common.form.IndexFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
-import com.echothree.model.control.geo.remote.transfer.GeoCodeDateTimeFormatTransfer;
-import com.echothree.model.control.geo.remote.transfer.GeoCodeTransfer;
+import com.echothree.model.control.geo.common.transfer.GeoCodeDateTimeFormatTransfer;
+import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
-import com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer;
+import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -17,14 +17,14 @@
 package com.echothree.model.control.license.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.license.remote.choice.LicenseTypeChoicesBean;
-import com.echothree.model.control.license.remote.transfer.LicenseTypeDescriptionTransfer;
-import com.echothree.model.control.license.remote.transfer.LicenseTypeTransfer;
+import com.echothree.model.control.license.common.choice.LicenseTypeChoicesBean;
+import com.echothree.model.control.license.common.transfer.LicenseTypeDescriptionTransfer;
+import com.echothree.model.control.license.common.transfer.LicenseTypeTransfer;
 import com.echothree.model.control.license.server.transfer.LicenseTransferCaches;
 import com.echothree.model.control.license.server.transfer.LicenseTypeDescriptionTransferCache;
 import com.echothree.model.control.license.server.transfer.LicenseTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.license.remote.pk.LicenseTypePK;
+import com.echothree.model.data.license.common.pk.LicenseTypePK;
 import com.echothree.model.data.license.server.entity.LicenseType;
 import com.echothree.model.data.license.server.entity.LicenseTypeDescription;
 import com.echothree.model.data.license.server.entity.LicenseTypeDetail;
@@ -35,7 +35,7 @@ import com.echothree.model.data.license.server.value.LicenseTypeDescriptionValue
 import com.echothree.model.data.license.server.value.LicenseTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;

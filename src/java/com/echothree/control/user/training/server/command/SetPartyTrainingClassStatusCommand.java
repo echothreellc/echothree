@@ -16,15 +16,15 @@
 
 package com.echothree.control.user.training.server.command;
 
-import com.echothree.control.user.training.remote.form.SetPartyTrainingClassStatusForm;
-import com.echothree.control.user.training.remote.result.SetPartyTrainingClassStatusResult;
-import com.echothree.control.user.training.remote.result.TrainingResultFactory;
+import com.echothree.control.user.training.common.form.SetPartyTrainingClassStatusForm;
+import com.echothree.control.user.training.common.result.SetPartyTrainingClassStatusResult;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;

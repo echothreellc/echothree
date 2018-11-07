@@ -16,23 +16,23 @@
 
 package com.echothree.control.user.uom.server.command;
 
-import com.echothree.control.user.uom.remote.edit.UnitOfMeasureKindUseEdit;
-import com.echothree.control.user.uom.remote.edit.UomEditFactory;
-import com.echothree.control.user.uom.remote.form.EditUnitOfMeasureKindUseForm;
-import com.echothree.control.user.uom.remote.result.EditUnitOfMeasureKindUseResult;
-import com.echothree.control.user.uom.remote.result.UomResultFactory;
-import com.echothree.control.user.uom.remote.spec.UnitOfMeasureKindUseSpec;
+import com.echothree.control.user.uom.common.edit.UnitOfMeasureKindUseEdit;
+import com.echothree.control.user.uom.common.edit.UomEditFactory;
+import com.echothree.control.user.uom.common.form.EditUnitOfMeasureKindUseForm;
+import com.echothree.control.user.uom.common.result.EditUnitOfMeasureKindUseResult;
+import com.echothree.control.user.uom.common.result.UomResultFactory;
+import com.echothree.control.user.uom.common.spec.UnitOfMeasureKindUseSpec;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.value.UnitOfMeasureKindUseValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

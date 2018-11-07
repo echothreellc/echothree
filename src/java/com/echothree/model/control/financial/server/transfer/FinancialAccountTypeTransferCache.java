@@ -16,14 +16,14 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.GlAccountTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountTypeTransfer;
 import com.echothree.model.control.financial.server.FinancialControl;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTypeTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountType;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTypeDetail;

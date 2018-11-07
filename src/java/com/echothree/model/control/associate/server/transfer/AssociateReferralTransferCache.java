@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.associate.server.transfer;
 
-import com.echothree.model.control.associate.remote.transfer.AssociatePartyContactMechanismTransfer;
-import com.echothree.model.control.associate.remote.transfer.AssociateReferralTransfer;
-import com.echothree.model.control.associate.remote.transfer.AssociateTransfer;
+import com.echothree.model.control.associate.common.transfer.AssociatePartyContactMechanismTransfer;
+import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
+import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
 import com.echothree.model.control.associate.server.AssociateControl;
-import com.echothree.model.control.core.remote.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;

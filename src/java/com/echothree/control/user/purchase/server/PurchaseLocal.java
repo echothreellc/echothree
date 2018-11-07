@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.purchase.server;
 
-import com.echothree.control.user.purchase.remote.PurchaseService;
+import com.echothree.control.user.purchase.common.PurchaseService;
 import javax.ejb.Local;
 
 @Local

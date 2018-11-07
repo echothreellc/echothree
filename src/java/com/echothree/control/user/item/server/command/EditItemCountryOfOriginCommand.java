@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.edit.ItemCountryOfOriginEdit;
-import com.echothree.control.user.item.remote.edit.ItemEditFactory;
-import com.echothree.control.user.item.remote.form.EditItemCountryOfOriginForm;
-import com.echothree.control.user.item.remote.result.EditItemCountryOfOriginResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
-import com.echothree.control.user.item.remote.spec.ItemCountryOfOriginSpec;
+import com.echothree.control.user.item.common.edit.ItemCountryOfOriginEdit;
+import com.echothree.control.user.item.common.edit.ItemEditFactory;
+import com.echothree.control.user.item.common.form.EditItemCountryOfOriginForm;
+import com.echothree.control.user.item.common.result.EditItemCountryOfOriginResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.control.user.item.common.spec.ItemCountryOfOriginSpec;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;
@@ -29,11 +29,11 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
 import com.echothree.model.data.item.server.value.ItemCountryOfOriginValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;

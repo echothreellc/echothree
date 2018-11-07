@@ -16,18 +16,18 @@
 
 package com.echothree.control.user.authentication.server;
 
-import com.echothree.control.user.authentication.remote.AuthenticationRemote;
-import com.echothree.control.user.authentication.remote.form.*;
+import com.echothree.control.user.authentication.common.AuthenticationRemote;
+import com.echothree.control.user.authentication.common.form.*;
 import com.echothree.control.user.authentication.server.command.*;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadCaches;
 import com.echothree.util.server.persistence.ThreadSession;

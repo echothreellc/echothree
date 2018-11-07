@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.GlAccountTransfer;
-import com.echothree.model.control.accounting.remote.transfer.ItemAccountingCategoryTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
+import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionGlAccountTransfer;
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionGlAccountTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;

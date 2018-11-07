@@ -16,25 +16,25 @@
 
 package com.echothree.control.user.uom.server.command;
 
-import com.echothree.control.user.uom.remote.edit.UnitOfMeasureKindEdit;
-import com.echothree.control.user.uom.remote.edit.UomEditFactory;
-import com.echothree.control.user.uom.remote.form.EditUnitOfMeasureKindForm;
-import com.echothree.control.user.uom.remote.result.EditUnitOfMeasureKindResult;
-import com.echothree.control.user.uom.remote.result.UomResultFactory;
-import com.echothree.control.user.uom.remote.spec.UnitOfMeasureKindSpec;
+import com.echothree.control.user.uom.common.edit.UnitOfMeasureKindEdit;
+import com.echothree.control.user.uom.common.edit.UomEditFactory;
+import com.echothree.control.user.uom.common.form.EditUnitOfMeasureKindForm;
+import com.echothree.control.user.uom.common.result.EditUnitOfMeasureKindResult;
+import com.echothree.control.user.uom.common.result.UomResultFactory;
+import com.echothree.control.user.uom.common.spec.UnitOfMeasureKindSpec;
 import com.echothree.model.control.uom.server.UomControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDescription;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDetail;
 import com.echothree.model.data.uom.server.value.UnitOfMeasureKindDescriptionValue;
 import com.echothree.model.data.uom.server.value.UnitOfMeasureKindDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

@@ -16,15 +16,15 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.remote.edit.WishlistEditFactory;
-import com.echothree.control.user.wishlist.remote.edit.WishlistTypePriorityEdit;
-import com.echothree.control.user.wishlist.remote.form.EditWishlistTypePriorityForm;
-import com.echothree.control.user.wishlist.remote.result.EditWishlistTypePriorityResult;
-import com.echothree.control.user.wishlist.remote.result.WishlistResultFactory;
-import com.echothree.control.user.wishlist.remote.spec.WishlistTypePrioritySpec;
+import com.echothree.control.user.wishlist.common.edit.WishlistEditFactory;
+import com.echothree.control.user.wishlist.common.edit.WishlistTypePriorityEdit;
+import com.echothree.control.user.wishlist.common.form.EditWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.result.EditWishlistTypePriorityResult;
+import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
+import com.echothree.control.user.wishlist.common.spec.WishlistTypePrioritySpec;
 import com.echothree.model.control.wishlist.server.WishlistControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDescription;
@@ -34,8 +34,8 @@ import com.echothree.model.data.wishlist.server.value.WishlistTypePriorityDetail
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.accounting.transactionentityroletype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.DeleteTransactionEntityRoleTypeDescriptionForm;
-import com.echothree.control.user.accounting.remote.form.GetTransactionEntityRoleTypeDescriptionForm;
-import com.echothree.control.user.accounting.remote.result.GetTransactionEntityRoleTypeDescriptionResult;
-import com.echothree.control.user.accounting.remote.spec.TransactionEntityRoleTypeDescriptionSpec;
+import com.echothree.control.user.accounting.common.form.DeleteTransactionEntityRoleTypeDescriptionForm;
+import com.echothree.control.user.accounting.common.form.GetTransactionEntityRoleTypeDescriptionForm;
+import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeDescriptionResult;
+import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeDescriptionSpec;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontypeusetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.edit.ItemDescriptionTypeUseTypeEdit;
-import com.echothree.control.user.item.remote.form.EditItemDescriptionTypeUseTypeForm;
-import com.echothree.control.user.item.remote.result.EditItemDescriptionTypeUseTypeResult;
-import com.echothree.control.user.item.remote.spec.ItemDescriptionTypeUseTypeSpec;
+import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdit;
+import com.echothree.control.user.item.common.form.EditItemDescriptionTypeUseTypeForm;
+import com.echothree.control.user.item.common.result.EditItemDescriptionTypeUseTypeResult;
+import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

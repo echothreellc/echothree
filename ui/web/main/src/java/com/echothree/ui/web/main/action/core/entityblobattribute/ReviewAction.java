@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.core.entityblobattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.GetEntityBlobAttributeForm;
-import com.echothree.control.user.core.remote.result.GetEntityBlobAttributeResult;
+import com.echothree.control.user.core.common.form.GetEntityBlobAttributeForm;
+import com.echothree.control.user.core.common.result.GetEntityBlobAttributeResult;
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.core.remote.transfer.EntityBlobAttributeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityBlobAttributeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

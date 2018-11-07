@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.search.server;
 
-import com.echothree.control.user.search.remote.SearchService;
+import com.echothree.control.user.search.common.SearchService;
 import javax.ejb.Local;
 
 @Local

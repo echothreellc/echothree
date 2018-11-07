@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.term.server.command;
 
-import com.echothree.control.user.term.remote.form.GetTermTypesForm;
-import com.echothree.control.user.term.remote.result.GetTermTypesResult;
-import com.echothree.control.user.term.remote.result.TermResultFactory;
+import com.echothree.control.user.term.common.form.GetTermTypesForm;
+import com.echothree.control.user.term.common.result.GetTermTypesResult;
+import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.term.server.TermControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

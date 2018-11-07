@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.edit.ItemEditFactory;
-import com.echothree.control.user.item.remote.edit.ItemImageTypeEdit;
-import com.echothree.control.user.item.remote.form.EditItemImageTypeForm;
-import com.echothree.control.user.item.remote.result.EditItemImageTypeResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
-import com.echothree.control.user.item.remote.spec.ItemImageTypeSpec;
+import com.echothree.control.user.item.common.edit.ItemEditFactory;
+import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
+import com.echothree.control.user.item.common.form.EditItemImageTypeForm;
+import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.control.user.item.common.spec.ItemImageTypeSpec;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
@@ -34,12 +34,12 @@ import com.echothree.model.data.item.server.entity.ItemImageTypeDescription;
 import com.echothree.model.data.item.server.entity.ItemImageTypeDetail;
 import com.echothree.model.data.item.server.value.ItemImageTypeDescriptionValue;
 import com.echothree.model.data.item.server.value.ItemImageTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,10 +17,10 @@
 package com.echothree.ui.cli.dataloader.data.handler.content;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.ContentService;
-import com.echothree.control.user.content.remote.form.ContentFormFactory;
-import com.echothree.control.user.content.remote.form.CreateContentCategoryDescriptionForm;
-import com.echothree.control.user.content.remote.form.CreateContentCategoryItemForm;
+import com.echothree.control.user.content.common.ContentService;
+import com.echothree.control.user.content.common.form.ContentFormFactory;
+import com.echothree.control.user.content.common.form.CreateContentCategoryDescriptionForm;
+import com.echothree.control.user.content.common.form.CreateContentCategoryItemForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

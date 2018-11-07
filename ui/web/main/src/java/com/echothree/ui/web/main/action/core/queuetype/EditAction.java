@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.remote.edit.QueueTypeEdit;
-import com.echothree.control.user.queue.remote.form.EditQueueTypeForm;
-import com.echothree.control.user.queue.remote.result.EditQueueTypeResult;
-import com.echothree.control.user.queue.remote.spec.QueueTypeSpec;
+import com.echothree.control.user.queue.common.edit.QueueTypeEdit;
+import com.echothree.control.user.queue.common.form.EditQueueTypeForm;
+import com.echothree.control.user.queue.common.result.EditQueueTypeResult;
+import com.echothree.control.user.queue.common.spec.QueueTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

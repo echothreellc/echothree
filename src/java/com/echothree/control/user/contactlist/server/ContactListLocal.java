@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.contactlist.server;
 
-import com.echothree.control.user.contactlist.remote.ContactListService;
+import com.echothree.control.user.contactlist.common.ContactListService;
 import javax.ejb.Local;
 
 @Local

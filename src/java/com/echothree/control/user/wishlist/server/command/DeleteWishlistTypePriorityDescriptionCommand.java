@@ -16,18 +16,18 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.remote.form.DeleteWishlistTypePriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.form.DeleteWishlistTypePriorityDescriptionForm;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.message.common;
 
-import com.echothree.control.user.message.remote.MessageRemote;
+import com.echothree.control.user.message.common.MessageRemote;
 import com.echothree.control.user.message.server.MessageLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class MessageUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (MessageRemote)ctx.lookup("ejb:echothree/echothree-server/MessageBean!com.echothree.control.user.message.remote.MessageRemote");
+            cachedRemote = (MessageRemote)ctx.lookup("ejb:echothree/echothree-server/MessageBean!com.echothree.control.user.message.common.MessageRemote");
         }
         
         return cachedRemote;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.order.server.command;
 
-import com.echothree.control.user.order.remote.edit.OrderEditFactory;
-import com.echothree.control.user.order.remote.edit.OrderTimeTypeEdit;
-import com.echothree.control.user.order.remote.form.EditOrderTimeTypeForm;
-import com.echothree.control.user.order.remote.result.EditOrderTimeTypeResult;
-import com.echothree.control.user.order.remote.result.OrderResultFactory;
-import com.echothree.control.user.order.remote.spec.OrderTimeTypeSpec;
+import com.echothree.control.user.order.common.edit.OrderEditFactory;
+import com.echothree.control.user.order.common.edit.OrderTimeTypeEdit;
+import com.echothree.control.user.order.common.form.EditOrderTimeTypeForm;
+import com.echothree.control.user.order.common.result.EditOrderTimeTypeResult;
+import com.echothree.control.user.order.common.result.OrderResultFactory;
+import com.echothree.control.user.order.common.spec.OrderTimeTypeSpec;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,12 +32,12 @@ import com.echothree.model.data.order.server.entity.OrderTimeTypeDetail;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderTimeTypeDescriptionValue;
 import com.echothree.model.data.order.server.value.OrderTimeTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

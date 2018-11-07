@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.index.server.command;
 
-import com.echothree.control.user.index.remote.edit.IndexEdit;
-import com.echothree.control.user.index.remote.edit.IndexEditFactory;
-import com.echothree.control.user.index.remote.form.EditIndexForm;
-import com.echothree.control.user.index.remote.result.EditIndexResult;
-import com.echothree.control.user.index.remote.result.IndexResultFactory;
-import com.echothree.control.user.index.remote.spec.IndexSpec;
+import com.echothree.control.user.index.common.edit.IndexEdit;
+import com.echothree.control.user.index.common.edit.IndexEditFactory;
+import com.echothree.control.user.index.common.form.EditIndexForm;
+import com.echothree.control.user.index.common.result.EditIndexResult;
+import com.echothree.control.user.index.common.result.IndexResultFactory;
+import com.echothree.control.user.index.common.spec.IndexSpec;
 import com.echothree.model.control.index.server.IndexControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,12 +31,12 @@ import com.echothree.model.data.index.server.entity.IndexDescription;
 import com.echothree.model.data.index.server.entity.IndexDetail;
 import com.echothree.model.data.index.server.value.IndexDescriptionValue;
 import com.echothree.model.data.index.server.value.IndexDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
-import com.echothree.model.control.chain.remote.transfer.ChainEntityRoleTypeTransfer;
-import com.echothree.model.control.chain.remote.transfer.ChainInstanceEntityRoleTransfer;
-import com.echothree.model.control.chain.remote.transfer.ChainInstanceTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypeTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainInstanceEntityRoleTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainInstanceTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.core.remote.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.chain.server.entity.ChainInstanceEntityRole;
 import com.echothree.model.data.user.server.entity.UserVisit;

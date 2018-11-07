@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.rating.remote.transfer.RatingTypeTransfer;
+import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.model.control.rating.server.RatingControl;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.rating.server.entity.RatingTypeDetail;

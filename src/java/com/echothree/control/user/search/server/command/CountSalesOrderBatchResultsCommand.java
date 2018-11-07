@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.CountSalesOrderBatchResultsForm;
-import com.echothree.control.user.search.remote.result.CountSalesOrderBatchResultsResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
+import com.echothree.control.user.search.common.form.CountSalesOrderBatchResultsForm;
+import com.echothree.control.user.search.common.result.CountSalesOrderBatchResultsResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 
 public class CountSalesOrderBatchResultsCommand
         extends BaseCountResultsCommand<CountSalesOrderBatchResultsForm, CountSalesOrderBatchResultsResult> {

@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.chain.chainactionset;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.remote.form.DeleteChainActionSetDescriptionForm;
-import com.echothree.control.user.chain.remote.form.GetChainActionSetDescriptionForm;
-import com.echothree.control.user.chain.remote.result.GetChainActionSetDescriptionResult;
+import com.echothree.control.user.chain.common.form.DeleteChainActionSetDescriptionForm;
+import com.echothree.control.user.chain.common.form.GetChainActionSetDescriptionForm;
+import com.echothree.control.user.chain.common.result.GetChainActionSetDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

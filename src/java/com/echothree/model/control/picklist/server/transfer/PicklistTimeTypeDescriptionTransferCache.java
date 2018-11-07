@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.picklist.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.picklist.remote.transfer.PicklistTimeTypeDescriptionTransfer;
-import com.echothree.model.control.picklist.remote.transfer.PicklistTimeTypeTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeDescriptionTransfer;
+import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeTransfer;
 import com.echothree.model.control.picklist.server.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

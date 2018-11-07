@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.form.GetEmployeeTypeChoicesForm;
-import com.echothree.control.user.employee.remote.result.GetEmployeeTypeChoicesResult;
+import com.echothree.control.user.employee.common.form.GetEmployeeTypeChoicesForm;
+import com.echothree.control.user.employee.common.result.GetEmployeeTypeChoicesResult;
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.remote.form.GetPartySecurityRoleTemplateChoicesForm;
-import com.echothree.control.user.security.remote.result.GetPartySecurityRoleTemplateChoicesResult;
-import com.echothree.model.control.employee.remote.choice.EmployeeTypeChoicesBean;
-import com.echothree.model.control.security.remote.choice.PartySecurityRoleTemplateChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.security.common.form.GetPartySecurityRoleTemplateChoicesForm;
+import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateChoicesResult;
+import com.echothree.model.control.employee.common.choice.EmployeeTypeChoicesBean;
+import com.echothree.model.control.security.common.choice.PartySecurityRoleTemplateChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BasePersonWithLoginActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

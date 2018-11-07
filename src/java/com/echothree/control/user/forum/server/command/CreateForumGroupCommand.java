@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.forum.server.command;
 
-import com.echothree.control.user.forum.remote.form.CreateForumGroupForm;
+import com.echothree.control.user.forum.common.form.CreateForumGroupForm;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.IconControl;
@@ -24,12 +24,12 @@ import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.icon.server.entity.IconUsage;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

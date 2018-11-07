@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.remote.UomService;
+import com.echothree.control.user.uom.common.UomService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

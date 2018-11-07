@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.remote.ScaleService;
-import com.echothree.control.user.scale.remote.form.CreateScaleTypeForm;
-import com.echothree.control.user.scale.remote.form.ScaleFormFactory;
+import com.echothree.control.user.scale.common.ScaleService;
+import com.echothree.control.user.scale.common.form.CreateScaleTypeForm;
+import com.echothree.control.user.scale.common.form.ScaleFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

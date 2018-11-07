@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.order.server.command;
 
-import com.echothree.control.user.order.remote.form.GetOrderAdjustmentTypeDescriptionForm;
-import com.echothree.control.user.order.remote.result.GetOrderAdjustmentTypeDescriptionResult;
-import com.echothree.control.user.order.remote.result.OrderResultFactory;
+import com.echothree.control.user.order.common.form.GetOrderAdjustmentTypeDescriptionForm;
+import com.echothree.control.user.order.common.result.GetOrderAdjustmentTypeDescriptionResult;
+import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -28,11 +28,11 @@ import com.echothree.model.data.order.server.entity.OrderAdjustmentType;
 import com.echothree.model.data.order.server.entity.OrderAdjustmentTypeDescription;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

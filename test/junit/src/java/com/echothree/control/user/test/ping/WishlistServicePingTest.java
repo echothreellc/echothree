@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.remote.WishlistService;
+import com.echothree.control.user.wishlist.common.WishlistService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

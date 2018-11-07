@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.divisioncontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.form.GetContactMechanismChoicesForm;
-import com.echothree.control.user.contact.remote.result.GetContactMechanismChoicesResult;
-import com.echothree.model.control.contact.remote.choice.ContactMechanismChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.contact.common.form.GetContactMechanismChoicesForm;
+import com.echothree.control.user.contact.common.result.GetContactMechanismChoicesResult;
+import com.echothree.model.control.contact.common.choice.ContactMechanismChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

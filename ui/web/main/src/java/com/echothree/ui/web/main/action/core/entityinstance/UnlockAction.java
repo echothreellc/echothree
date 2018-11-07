@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.core.entityinstance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.UnlockEntityForm;
+import com.echothree.control.user.core.common.form.UnlockEntityForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

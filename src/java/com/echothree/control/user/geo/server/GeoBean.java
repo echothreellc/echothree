@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.geo.server;
 
-import com.echothree.control.user.geo.remote.GeoRemote;
-import com.echothree.control.user.geo.remote.form.*;
+import com.echothree.control.user.geo.common.GeoRemote;
+import com.echothree.control.user.geo.common.form.*;
 import com.echothree.control.user.geo.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

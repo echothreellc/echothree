@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.filter.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.remote.form.SetDefaultFilterForm;
+import com.echothree.control.user.filter.common.form.SetDefaultFilterForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.accounting.server.command;
 
-import com.echothree.control.user.accounting.remote.edit.AccountingEditFactory;
-import com.echothree.control.user.accounting.remote.edit.GlAccountClassDescriptionEdit;
-import com.echothree.control.user.accounting.remote.form.EditGlAccountClassDescriptionForm;
-import com.echothree.control.user.accounting.remote.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.remote.result.EditGlAccountClassDescriptionResult;
-import com.echothree.control.user.accounting.remote.spec.GlAccountClassDescriptionSpec;
+import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
+import com.echothree.control.user.accounting.common.edit.GlAccountClassDescriptionEdit;
+import com.echothree.control.user.accounting.common.form.EditGlAccountClassDescriptionForm;
+import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditGlAccountClassDescriptionResult;
+import com.echothree.control.user.accounting.common.spec.GlAccountClassDescriptionSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -31,12 +31,12 @@ import com.echothree.model.data.accounting.server.entity.GlAccountClass;
 import com.echothree.model.data.accounting.server.entity.GlAccountClassDescription;
 import com.echothree.model.data.accounting.server.value.GlAccountClassDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,12 +17,12 @@
 package com.echothree.model.control.job.server.transfer;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.job.remote.transfer.JobTransfer;
+import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.server.JobControl;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.job.server.entity.Job;

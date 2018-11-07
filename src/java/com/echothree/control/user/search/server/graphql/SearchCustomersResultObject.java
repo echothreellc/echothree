@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.search.server.graphql;
 
-import com.echothree.control.user.search.remote.result.SearchCustomersResult;
+import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;

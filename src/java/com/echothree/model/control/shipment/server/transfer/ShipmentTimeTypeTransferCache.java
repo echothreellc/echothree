@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.control.shipment.remote.transfer.ShipmentTimeTypeTransfer;
+import com.echothree.model.control.shipment.common.transfer.ShipmentTimeTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDetail;

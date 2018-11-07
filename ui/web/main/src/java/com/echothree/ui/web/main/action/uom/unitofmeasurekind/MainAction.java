@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekind;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.remote.result.GetUnitOfMeasureKindsResult;
+import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

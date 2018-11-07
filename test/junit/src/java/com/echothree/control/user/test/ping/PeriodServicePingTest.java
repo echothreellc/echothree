@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.period.common.PeriodUtil;
-import com.echothree.control.user.period.remote.PeriodService;
+import com.echothree.control.user.period.common.PeriodService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

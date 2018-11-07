@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.item.partyinventorylevel;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.remote.edit.PartyInventoryLevelEdit;
-import com.echothree.control.user.inventory.remote.form.EditPartyInventoryLevelForm;
-import com.echothree.control.user.inventory.remote.result.EditPartyInventoryLevelResult;
-import com.echothree.control.user.inventory.remote.spec.PartyInventoryLevelSpec;
+import com.echothree.control.user.inventory.common.edit.PartyInventoryLevelEdit;
+import com.echothree.control.user.inventory.common.form.EditPartyInventoryLevelForm;
+import com.echothree.control.user.inventory.common.result.EditPartyInventoryLevelResult;
+import com.echothree.control.user.inventory.common.spec.PartyInventoryLevelSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

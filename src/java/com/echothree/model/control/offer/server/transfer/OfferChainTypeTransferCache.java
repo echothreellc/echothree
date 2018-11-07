@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.chain.remote.transfer.ChainTransfer;
-import com.echothree.model.control.chain.remote.transfer.ChainTypeTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.offer.remote.transfer.OfferChainTypeTransfer;
-import com.echothree.model.control.offer.remote.transfer.OfferTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferChainTypeTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.offer.server.entity.OfferChainType;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.shipping.carrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.remote.form.DeleteCarrierForm;
+import com.echothree.control.user.carrier.common.form.DeleteCarrierForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

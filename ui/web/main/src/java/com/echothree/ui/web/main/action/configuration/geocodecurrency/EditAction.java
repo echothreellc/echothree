@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.configuration.geocodecurrency;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.edit.GeoCodeCurrencyEdit;
-import com.echothree.control.user.geo.remote.form.EditGeoCodeCurrencyForm;
-import com.echothree.control.user.geo.remote.result.EditGeoCodeCurrencyResult;
-import com.echothree.control.user.geo.remote.spec.GeoCodeCurrencySpec;
+import com.echothree.control.user.geo.common.edit.GeoCodeCurrencyEdit;
+import com.echothree.control.user.geo.common.form.EditGeoCodeCurrencyForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
+import com.echothree.control.user.geo.common.spec.GeoCodeCurrencySpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

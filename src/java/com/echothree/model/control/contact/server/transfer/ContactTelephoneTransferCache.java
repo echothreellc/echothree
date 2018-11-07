@@ -17,12 +17,12 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
-import com.echothree.model.control.contact.remote.transfer.ContactTelephoneTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactTelephoneTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.geo.remote.transfer.CountryTransfer;
+import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactTelephone;
 import com.echothree.model.data.core.server.entity.EntityInstance;

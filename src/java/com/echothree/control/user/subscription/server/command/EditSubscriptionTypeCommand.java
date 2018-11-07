@@ -16,16 +16,16 @@
 
 package com.echothree.control.user.subscription.server.command;
 
-import com.echothree.control.user.subscription.remote.edit.SubscriptionEditFactory;
-import com.echothree.control.user.subscription.remote.edit.SubscriptionTypeEdit;
-import com.echothree.control.user.subscription.remote.form.EditSubscriptionTypeForm;
-import com.echothree.control.user.subscription.remote.result.EditSubscriptionTypeResult;
-import com.echothree.control.user.subscription.remote.result.SubscriptionResultFactory;
-import com.echothree.control.user.subscription.remote.spec.SubscriptionTypeSpec;
+import com.echothree.control.user.subscription.common.edit.SubscriptionEditFactory;
+import com.echothree.control.user.subscription.common.edit.SubscriptionTypeEdit;
+import com.echothree.control.user.subscription.common.form.EditSubscriptionTypeForm;
+import com.echothree.control.user.subscription.common.result.EditSubscriptionTypeResult;
+import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
+import com.echothree.control.user.subscription.common.spec.SubscriptionTypeSpec;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
@@ -34,12 +34,12 @@ import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDescr
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDetail;
 import com.echothree.model.data.subscription.server.value.SubscriptionTypeDescriptionValue;
 import com.echothree.model.data.subscription.server.value.SubscriptionTypeDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

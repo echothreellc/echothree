@@ -17,12 +17,12 @@
 package com.echothree.model.control.queue.server.transfer;
 
 import com.echothree.model.control.queue.common.QueueOptions;
-import com.echothree.model.control.queue.remote.transfer.QueueTypeTransfer;
+import com.echothree.model.control.queue.common.transfer.QueueTypeTransfer;
 import com.echothree.model.control.queue.server.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueueTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import java.util.Set;
 
 public class QueueTypeTransferCache

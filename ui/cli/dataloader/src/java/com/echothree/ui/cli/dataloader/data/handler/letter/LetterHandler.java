@@ -17,11 +17,11 @@
 package com.echothree.ui.cli.dataloader.data.handler.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.remote.LetterService;
-import com.echothree.control.user.letter.remote.form.CreateLetterContactMechanismPurposeForm;
-import com.echothree.control.user.letter.remote.form.CreateLetterDescriptionForm;
-import com.echothree.control.user.letter.remote.form.LetterFormFactory;
-import com.echothree.control.user.letter.remote.spec.LetterSpec;
+import com.echothree.control.user.letter.common.LetterService;
+import com.echothree.control.user.letter.common.form.CreateLetterContactMechanismPurposeForm;
+import com.echothree.control.user.letter.common.form.CreateLetterDescriptionForm;
+import com.echothree.control.user.letter.common.form.LetterFormFactory;
+import com.echothree.control.user.letter.common.spec.LetterSpec;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

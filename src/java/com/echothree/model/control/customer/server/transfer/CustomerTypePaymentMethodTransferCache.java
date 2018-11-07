@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.customer.server.transfer;
 
-import com.echothree.model.control.customer.remote.transfer.CustomerTypePaymentMethodTransfer;
-import com.echothree.model.control.customer.remote.transfer.CustomerTypeTransfer;
+import com.echothree.model.control.customer.common.transfer.CustomerTypePaymentMethodTransfer;
+import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.payment.remote.transfer.PaymentMethodTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;

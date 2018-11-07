@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.remote.AuthenticationService;
+import com.echothree.control.user.authentication.common.AuthenticationService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

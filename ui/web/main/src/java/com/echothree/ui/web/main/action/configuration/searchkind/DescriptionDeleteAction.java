@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.configuration.searchkind;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.form.DeleteSearchKindDescriptionForm;
-import com.echothree.control.user.search.remote.form.GetSearchKindDescriptionForm;
-import com.echothree.control.user.search.remote.result.GetSearchKindDescriptionResult;
+import com.echothree.control.user.search.common.form.DeleteSearchKindDescriptionForm;
+import com.echothree.control.user.search.common.form.GetSearchKindDescriptionForm;
+import com.echothree.control.user.search.common.result.GetSearchKindDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

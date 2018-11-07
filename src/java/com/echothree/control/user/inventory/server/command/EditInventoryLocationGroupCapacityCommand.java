@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.remote.edit.InventoryEditFactory;
-import com.echothree.control.user.inventory.remote.edit.InventoryLocationGroupCapacityEdit;
-import com.echothree.control.user.inventory.remote.form.EditInventoryLocationGroupCapacityForm;
-import com.echothree.control.user.inventory.remote.result.EditInventoryLocationGroupCapacityResult;
-import com.echothree.control.user.inventory.remote.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.remote.spec.InventoryLocationGroupCapacitySpec;
+import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
+import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupCapacityEdit;
+import com.echothree.control.user.inventory.common.form.EditInventoryLocationGroupCapacityForm;
+import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupCapacityResult;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupCapacitySpec;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
@@ -30,13 +30,13 @@ import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupCa
 import com.echothree.model.data.inventory.server.value.InventoryLocationGroupCapacityValue;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

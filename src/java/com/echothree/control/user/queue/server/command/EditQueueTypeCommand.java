@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.queue.server.command;
 
-import com.echothree.control.user.queue.remote.edit.QueueEditFactory;
-import com.echothree.control.user.queue.remote.edit.QueueTypeEdit;
-import com.echothree.control.user.queue.remote.form.EditQueueTypeForm;
-import com.echothree.control.user.queue.remote.result.EditQueueTypeResult;
-import com.echothree.control.user.queue.remote.result.QueueResultFactory;
-import com.echothree.control.user.queue.remote.spec.QueueTypeSpec;
+import com.echothree.control.user.queue.common.edit.QueueEditFactory;
+import com.echothree.control.user.queue.common.edit.QueueTypeEdit;
+import com.echothree.control.user.queue.common.form.EditQueueTypeForm;
+import com.echothree.control.user.queue.common.result.EditQueueTypeResult;
+import com.echothree.control.user.queue.common.result.QueueResultFactory;
+import com.echothree.control.user.queue.common.spec.QueueTypeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.queue.server.QueueControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
 import com.echothree.model.data.queue.server.entity.QueueTypeDetail;
 import com.echothree.model.data.queue.server.value.QueueTypeDescriptionValue;
 import com.echothree.model.data.queue.server.value.QueueTypeDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

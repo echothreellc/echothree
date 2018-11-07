@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.authentication.common;
 
-import com.echothree.control.user.authentication.remote.AuthenticationRemote;
+import com.echothree.control.user.authentication.common.AuthenticationRemote;
 import com.echothree.control.user.authentication.server.AuthenticationLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class AuthenticationUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
 
-            cachedRemote = (AuthenticationRemote)ctx.lookup("ejb:echothree/echothree-server/AuthenticationBean!com.echothree.control.user.authentication.remote.AuthenticationRemote");
+            cachedRemote = (AuthenticationRemote)ctx.lookup("ejb:echothree/echothree-server/AuthenticationBean!com.echothree.control.user.authentication.common.AuthenticationRemote");
         }
         
         return cachedRemote;

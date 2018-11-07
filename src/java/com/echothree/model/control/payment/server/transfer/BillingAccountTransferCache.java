@@ -16,20 +16,20 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentOptions;
-import com.echothree.model.control.payment.remote.transfer.BillingAccountRoleTransfer;
-import com.echothree.model.control.payment.remote.transfer.BillingAccountTransfer;
+import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTransfer;
+import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.model.data.payment.server.entity.BillingAccountDetail;
 import com.echothree.model.data.payment.server.entity.BillingAccountStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.Set;

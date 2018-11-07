@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.remote.PaymentService;
+import com.echothree.control.user.payment.common.PaymentService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

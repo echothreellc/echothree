@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.employee.remote.transfer.TerminationReasonTransfer;
+import com.echothree.model.control.employee.common.transfer.TerminationReasonTransfer;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationReason;
 import com.echothree.model.data.employee.server.entity.TerminationReasonDetail;

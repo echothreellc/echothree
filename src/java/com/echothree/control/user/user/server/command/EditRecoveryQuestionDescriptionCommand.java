@@ -16,24 +16,24 @@
 
 package com.echothree.control.user.user.server.command;
 
-import com.echothree.control.user.user.remote.edit.RecoveryQuestionDescriptionEdit;
-import com.echothree.control.user.user.remote.edit.UserEditFactory;
-import com.echothree.control.user.user.remote.form.EditRecoveryQuestionDescriptionForm;
-import com.echothree.control.user.user.remote.result.EditRecoveryQuestionDescriptionResult;
-import com.echothree.control.user.user.remote.result.UserResultFactory;
-import com.echothree.control.user.user.remote.spec.RecoveryQuestionDescriptionSpec;
+import com.echothree.control.user.user.common.edit.RecoveryQuestionDescriptionEdit;
+import com.echothree.control.user.user.common.edit.UserEditFactory;
+import com.echothree.control.user.user.common.form.EditRecoveryQuestionDescriptionForm;
+import com.echothree.control.user.user.common.result.EditRecoveryQuestionDescriptionResult;
+import com.echothree.control.user.user.common.result.UserResultFactory;
+import com.echothree.control.user.user.common.spec.RecoveryQuestionDescriptionSpec;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.RecoveryQuestionDescription;
 import com.echothree.model.data.user.server.value.RecoveryQuestionDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

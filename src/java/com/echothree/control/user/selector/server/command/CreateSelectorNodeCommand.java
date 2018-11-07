@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.selector.server.command;
 
-import com.echothree.control.user.selector.remote.form.CreateSelectorNodeForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorNodeForm;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
@@ -38,7 +38,7 @@ import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.SkillType;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.ItemCategory;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
@@ -49,15 +49,15 @@ import com.echothree.model.data.selector.server.entity.SelectorNode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.form.ValidationResult;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;

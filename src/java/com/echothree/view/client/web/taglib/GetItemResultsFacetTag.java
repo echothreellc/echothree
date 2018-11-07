@@ -31,11 +31,11 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.form.GetItemResultsFacetForm;
-import com.echothree.control.user.search.remote.result.GetItemResultsFacetResult;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.control.user.search.common.form.GetItemResultsFacetForm;
+import com.echothree.control.user.search.common.result.GetItemResultsFacetResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;

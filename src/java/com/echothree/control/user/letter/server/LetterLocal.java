@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.letter.server;
 
-import com.echothree.control.user.letter.remote.LetterService;
+import com.echothree.control.user.letter.common.LetterService;
 import javax.ejb.Local;
 
 @Local

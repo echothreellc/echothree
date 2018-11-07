@@ -16,23 +16,23 @@
 
 package com.echothree.control.user.forum.server.command;
 
-import com.echothree.control.user.forum.remote.edit.ForumEditFactory;
-import com.echothree.control.user.forum.remote.edit.ForumGroupDescriptionEdit;
-import com.echothree.control.user.forum.remote.form.EditForumGroupDescriptionForm;
-import com.echothree.control.user.forum.remote.result.EditForumGroupDescriptionResult;
-import com.echothree.control.user.forum.remote.result.ForumResultFactory;
-import com.echothree.control.user.forum.remote.spec.ForumGroupDescriptionSpec;
+import com.echothree.control.user.forum.common.edit.ForumEditFactory;
+import com.echothree.control.user.forum.common.edit.ForumGroupDescriptionEdit;
+import com.echothree.control.user.forum.common.form.EditForumGroupDescriptionForm;
+import com.echothree.control.user.forum.common.result.EditForumGroupDescriptionResult;
+import com.echothree.control.user.forum.common.result.ForumResultFactory;
+import com.echothree.control.user.forum.common.spec.ForumGroupDescriptionSpec;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.entity.ForumGroupDescription;
 import com.echothree.model.data.forum.server.value.ForumGroupDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

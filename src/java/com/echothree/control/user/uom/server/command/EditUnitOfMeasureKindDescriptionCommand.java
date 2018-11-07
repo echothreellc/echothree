@@ -16,24 +16,24 @@
 
 package com.echothree.control.user.uom.server.command;
 
-import com.echothree.control.user.uom.remote.edit.UnitOfMeasureKindDescriptionEdit;
-import com.echothree.control.user.uom.remote.edit.UomEditFactory;
-import com.echothree.control.user.uom.remote.form.EditUnitOfMeasureKindDescriptionForm;
-import com.echothree.control.user.uom.remote.result.EditUnitOfMeasureKindDescriptionResult;
-import com.echothree.control.user.uom.remote.result.UomResultFactory;
-import com.echothree.control.user.uom.remote.spec.UnitOfMeasureKindDescriptionSpec;
+import com.echothree.control.user.uom.common.edit.UnitOfMeasureKindDescriptionEdit;
+import com.echothree.control.user.uom.common.edit.UomEditFactory;
+import com.echothree.control.user.uom.common.form.EditUnitOfMeasureKindDescriptionForm;
+import com.echothree.control.user.uom.common.result.EditUnitOfMeasureKindDescriptionResult;
+import com.echothree.control.user.uom.common.result.UomResultFactory;
+import com.echothree.control.user.uom.common.spec.UnitOfMeasureKindDescriptionSpec;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDescription;
 import com.echothree.model.data.uom.server.value.UnitOfMeasureKindDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

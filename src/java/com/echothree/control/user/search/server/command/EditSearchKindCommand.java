@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.edit.SearchEditFactory;
-import com.echothree.control.user.search.remote.edit.SearchKindEdit;
-import com.echothree.control.user.search.remote.form.EditSearchKindForm;
-import com.echothree.control.user.search.remote.result.EditSearchKindResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
-import com.echothree.control.user.search.remote.spec.SearchKindSpec;
+import com.echothree.control.user.search.common.edit.SearchEditFactory;
+import com.echothree.control.user.search.common.edit.SearchKindEdit;
+import com.echothree.control.user.search.common.form.EditSearchKindForm;
+import com.echothree.control.user.search.common.result.EditSearchKindResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.control.user.search.common.spec.SearchKindSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchKindDescription;
 import com.echothree.model.data.search.server.entity.SearchKindDetail;
 import com.echothree.model.data.search.server.value.SearchKindDescriptionValue;
 import com.echothree.model.data.search.server.value.SearchKindDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

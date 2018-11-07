@@ -25,7 +25,7 @@ import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 

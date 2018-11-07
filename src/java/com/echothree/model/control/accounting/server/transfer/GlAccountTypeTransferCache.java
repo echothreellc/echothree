@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.GlAccountTypeTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountTypeTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.user.server.entity.UserVisit;

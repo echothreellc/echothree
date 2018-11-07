@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.remote.edit.PartyTrainingClassEdit;
-import com.echothree.control.user.training.remote.form.EditPartyTrainingClassForm;
-import com.echothree.control.user.training.remote.result.EditPartyTrainingClassResult;
-import com.echothree.control.user.training.remote.spec.PartyTrainingClassSpec;
-import com.echothree.model.control.training.remote.transfer.PartyTrainingClassTransfer;
+import com.echothree.control.user.training.common.edit.PartyTrainingClassEdit;
+import com.echothree.control.user.training.common.form.EditPartyTrainingClassForm;
+import com.echothree.control.user.training.common.result.EditPartyTrainingClassResult;
+import com.echothree.control.user.training.common.spec.PartyTrainingClassSpec;
+import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

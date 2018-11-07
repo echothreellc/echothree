@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.item.itemcategory;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.form.GetItemCategoryChoicesForm;
-import com.echothree.control.user.item.remote.result.GetItemCategoryChoicesResult;
-import com.echothree.model.control.item.remote.choice.ItemCategoryChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.item.common.form.GetItemCategoryChoicesForm;
+import com.echothree.control.user.item.common.result.GetItemCategoryChoicesResult;
+import com.echothree.model.control.item.common.choice.ItemCategoryChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

@@ -16,19 +16,19 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
-import com.echothree.model.control.associate.remote.transfer.AssociateReferralTransfer;
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionTransfer;
+import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.remote.transfer.ItemTransfer;
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.offer.remote.transfer.OfferUseTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.uom.remote.transfer.UnitOfMeasureTypeTransfer;
+import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
-import com.echothree.model.control.wishlist.remote.transfer.WishlistLineTransfer;
-import com.echothree.model.control.wishlist.remote.transfer.WishlistTransfer;
-import com.echothree.model.control.wishlist.remote.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
