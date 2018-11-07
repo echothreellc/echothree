@@ -202,12 +202,6 @@
                 <include name="com/echothree/util/common/**/*.class" />
                 <include name="com/echothree/view/common/**/*.class" />
                 
-                <include name="com/echothree/control/user/*/remote/**/*.class" />
-                <include name="com/echothree/model/control/*/remote/**/*.class" />
-                <include name="com/echothree/model/data/*/remote/**/*.class" />
-                <include name="com/echothree/util/remote/**/*.class" />
-                <include name="com/echothree/view/remote/**/*.class" />
-                
                 <include name="com/echothree/control/user/*/server/**/*.class" />
                 <include name="com/echothree/model/control/*/server/**/*.class" />
                 <include name="com/echothree/service/*/server/**/*.class" />
@@ -230,12 +224,6 @@
                 <include name="com/echothree/model/data/*/common/**/*.class" />
                 <include name="com/echothree/util/common/**/*.class" />
                 <include name="com/echothree/view/common/**/*.class" />
-
-                <include name="com/echothree/control/user/*/remote/**/*.class" />
-                <include name="com/echothree/model/control/*/remote/**/*.class" />
-                <include name="com/echothree/model/data/*/remote/**/*.class" />
-                <include name="com/echothree/util/remote/**/*.class" />
-                <include name="com/echothree/view/remote/**/*.class" />
 
                 <include name="com/echothree/control/user/*/client/**/*.class" />
                 <include name="com/echothree/model/data/*/client/**/*.class" />
