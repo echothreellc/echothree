@@ -80,7 +80,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                                 nameComponents[++i] = baseClassName + "Factory";
                                 factoryName = Joiner.on(".").join(nameComponents);
 
-                                nameComponents[j++] = "remote";
+                                nameComponents[j++] = "common";
                                 nameComponents[j++] = "pk";
                                 nameComponents[j] = baseClassName + "PK";
                                 pkName = Joiner.on(".").join(nameComponents);
