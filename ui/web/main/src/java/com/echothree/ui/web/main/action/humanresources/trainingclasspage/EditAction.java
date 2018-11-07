@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclasspage;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.remote.edit.TrainingClassPageEdit;
-import com.echothree.control.user.training.remote.form.EditTrainingClassPageForm;
-import com.echothree.control.user.training.remote.result.EditTrainingClassPageResult;
-import com.echothree.control.user.training.remote.spec.TrainingClassPageSpec;
+import com.echothree.control.user.training.common.edit.TrainingClassPageEdit;
+import com.echothree.control.user.training.common.form.EditTrainingClassPageForm;
+import com.echothree.control.user.training.common.result.EditTrainingClassPageResult;
+import com.echothree.control.user.training.common.spec.TrainingClassPageSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

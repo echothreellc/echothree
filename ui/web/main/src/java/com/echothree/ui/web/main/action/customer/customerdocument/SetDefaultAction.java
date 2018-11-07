@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customerdocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.remote.form.SetDefaultPartyDocumentForm;
+import com.echothree.control.user.document.common.form.SetDefaultPartyDocumentForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

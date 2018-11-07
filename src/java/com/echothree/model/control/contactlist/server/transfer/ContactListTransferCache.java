@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.contactlist.remote.transfer.ContactListFrequencyTransfer;
-import com.echothree.model.control.contactlist.remote.transfer.ContactListGroupTransfer;
-import com.echothree.model.control.contactlist.remote.transfer.ContactListTransfer;
-import com.echothree.model.control.contactlist.remote.transfer.ContactListTypeTransfer;
+import com.echothree.model.control.contactlist.common.transfer.ContactListFrequencyTransfer;
+import com.echothree.model.control.contactlist.common.transfer.ContactListGroupTransfer;
+import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
+import com.echothree.model.control.contactlist.common.transfer.ContactListTypeTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntranceTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListDetail;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.selector.selectornode;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.remote.form.SetRootSelectorNodeForm;
+import com.echothree.control.user.selector.common.form.SetRootSelectorNodeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

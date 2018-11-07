@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.accounting.transactionglaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.DeleteTransactionGlAccountCategoryDescriptionForm;
-import com.echothree.control.user.accounting.remote.form.GetTransactionGlAccountCategoryDescriptionForm;
-import com.echothree.control.user.accounting.remote.result.GetTransactionGlAccountCategoryDescriptionResult;
-import com.echothree.control.user.accounting.remote.spec.TransactionGlAccountCategoryDescriptionSpec;
+import com.echothree.control.user.accounting.common.form.DeleteTransactionGlAccountCategoryDescriptionForm;
+import com.echothree.control.user.accounting.common.form.GetTransactionGlAccountCategoryDescriptionForm;
+import com.echothree.control.user.accounting.common.result.GetTransactionGlAccountCategoryDescriptionResult;
+import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategoryDescriptionSpec;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

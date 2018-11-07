@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.form.GetContactMechanismPurposeChoicesForm;
-import com.echothree.control.user.contact.remote.result.GetContactMechanismPurposeChoicesResult;
+import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
+import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.remote.form.GetContactListChoicesForm;
-import com.echothree.control.user.contactlist.remote.result.GetContactListChoicesResult;
-import com.echothree.model.control.contact.remote.choice.ContactMechanismPurposeChoicesBean;
-import com.echothree.model.control.contactlist.remote.choice.ContactListChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.contactlist.common.form.GetContactListChoicesForm;
+import com.echothree.control.user.contactlist.common.result.GetContactListChoicesResult;
+import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
+import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

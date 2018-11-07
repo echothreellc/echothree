@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
-import com.echothree.model.control.sequence.remote.transfer.SequenceTransfer;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTypeTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceDetail;

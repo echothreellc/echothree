@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.customer.customertype;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.remote.form.GetCustomerTypeDescriptionsForm;
-import com.echothree.control.user.customer.remote.result.GetCustomerTypeDescriptionsResult;
-import com.echothree.model.control.customer.remote.transfer.CustomerTypeTransfer;
+import com.echothree.control.user.customer.common.form.GetCustomerTypeDescriptionsForm;
+import com.echothree.control.user.customer.common.result.GetCustomerTypeDescriptionsResult;
+import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

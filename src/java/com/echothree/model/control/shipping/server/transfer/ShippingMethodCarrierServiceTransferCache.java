@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.shipping.server.transfer;
 
-import com.echothree.model.control.carrier.remote.transfer.CarrierServiceTransfer;
+import com.echothree.model.control.carrier.common.transfer.CarrierServiceTransfer;
 import com.echothree.model.control.carrier.server.CarrierControl;
-import com.echothree.model.control.shipping.remote.transfer.ShippingMethodCarrierServiceTransfer;
-import com.echothree.model.control.shipping.remote.transfer.ShippingMethodTransfer;
+import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;
+import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.user.server.entity.UserVisit;

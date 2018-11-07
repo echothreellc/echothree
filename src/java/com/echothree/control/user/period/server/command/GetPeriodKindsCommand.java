@@ -16,16 +16,16 @@
 
 package com.echothree.control.user.period.server.command;
 
-import com.echothree.control.user.period.remote.form.GetPeriodKindsForm;
-import com.echothree.control.user.period.remote.result.GetPeriodKindsResult;
-import com.echothree.control.user.period.remote.result.PeriodResultFactory;
+import com.echothree.control.user.period.common.form.GetPeriodKindsForm;
+import com.echothree.control.user.period.common.result.GetPeriodKindsResult;
+import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.period.server.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

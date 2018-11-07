@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.core.entitylistitem;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.SetDefaultEntityListItemForm;
+import com.echothree.control.user.core.common.form.SetDefaultEntityListItemForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

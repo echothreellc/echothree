@@ -16,9 +16,9 @@
 
 package com.echothree.ui.web.main.framework;
 
-import com.echothree.control.user.user.remote.result.GetUserSessionResult;
-import com.echothree.model.control.user.remote.transfer.UserSessionTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.control.user.user.common.result.GetUserSessionResult;
+import com.echothree.model.control.user.common.transfer.UserSessionTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.google.common.net.MediaType;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;

@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.chain.remote.transfer.ChainTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.contactlist.remote.transfer.ContactListTypeTransfer;
+import com.echothree.model.control.contactlist.common.transfer.ContactListTypeTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contactlist.server.entity.ContactListType;

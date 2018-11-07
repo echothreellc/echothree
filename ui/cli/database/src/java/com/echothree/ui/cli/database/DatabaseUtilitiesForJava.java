@@ -120,7 +120,7 @@ public class DatabaseUtilitiesForJava {
     public void writePKImports(PrintWriter pw, Table theTable) {
         pw.println("import " + theTable.getConstantsImport() + ";");
         pw.println("");
-        pw.println("import com.echothree.util.remote.persistence.BasePK;");
+        pw.println("import com.echothree.util.common.persistence.BasePK;");
         pw.println("");
     }
     
@@ -209,7 +209,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("import java.io.Serializable;");
         pw.println("");
         if(theTable.hasBlob()) {
-            pw.println("import com.echothree.util.remote.persistence.type.ByteArray;");
+            pw.println("import com.echothree.util.common.persistence.type.ByteArray;");
             pw.println("");
         }
     }
@@ -745,9 +745,9 @@ public class DatabaseUtilitiesForJava {
         pw.println("import com.echothree.util.common.exception.PersistenceNotNullException;");
         pw.println("import com.echothree.util.common.exception.PersistenceReadOnlyException;");
         pw.println("");
-        pw.println("import com.echothree.util.remote.persistence.BasePK;");
+        pw.println("import com.echothree.util.common.persistence.BasePK;");
         pw.println("");
-        pw.println("import com.echothree.util.remote.persistence.type.ByteArray;");
+        pw.println("import com.echothree.util.common.persistence.type.ByteArray;");
         pw.println("");
         pw.println("import com.echothree.util.server.persistence.BaseEntity;");
         pw.println("import com.echothree.util.server.persistence.EntityPermission;");
@@ -1013,7 +1013,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("import com.echothree.util.server.persistence.ThreadSession;");
         
         if(theTable.hasBlob()) {
-            pw.println("import com.echothree.util.remote.persistence.type.ByteArray;");
+            pw.println("import com.echothree.util.common.persistence.type.ByteArray;");
             pw.println("import java.sql.Blob;");
         }
         

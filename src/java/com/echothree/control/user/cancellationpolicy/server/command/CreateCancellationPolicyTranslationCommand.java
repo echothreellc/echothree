@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.cancellationpolicy.server.command;
 
-import com.echothree.control.user.cancellationpolicy.remote.form.CreateCancellationPolicyTranslationForm;
+import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationPolicyTranslationForm;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
@@ -29,11 +29,11 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPol
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyTranslation;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

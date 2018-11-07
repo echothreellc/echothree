@@ -27,7 +27,7 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeChain;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;

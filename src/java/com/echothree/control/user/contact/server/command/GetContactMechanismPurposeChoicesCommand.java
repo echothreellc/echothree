@@ -16,19 +16,19 @@
 
 package com.echothree.control.user.contact.server.command;
 
-import com.echothree.control.user.contact.remote.form.GetContactMechanismPurposeChoicesForm;
-import com.echothree.control.user.contact.remote.result.ContactResultFactory;
-import com.echothree.control.user.contact.remote.result.GetContactMechanismPurposeChoicesResult;
+import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
+import com.echothree.control.user.contact.common.result.ContactResultFactory;
+import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismType;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

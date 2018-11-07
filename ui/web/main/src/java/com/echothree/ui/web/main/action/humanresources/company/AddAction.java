@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.humanresources.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.AddEmployeeToCompanyForm;
-import com.echothree.control.user.party.remote.form.AddEmployeeToDepartmentForm;
-import com.echothree.control.user.party.remote.form.AddEmployeeToDivisionForm;
+import com.echothree.control.user.party.common.form.AddEmployeeToCompanyForm;
+import com.echothree.control.user.party.common.form.AddEmployeeToDepartmentForm;
+import com.echothree.control.user.party.common.form.AddEmployeeToDivisionForm;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

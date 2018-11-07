@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.remote.edit.AssociateProgramDescriptionEdit;
-import com.echothree.control.user.associate.remote.form.EditAssociateProgramDescriptionForm;
-import com.echothree.control.user.associate.remote.result.EditAssociateProgramDescriptionResult;
-import com.echothree.control.user.associate.remote.spec.AssociateProgramDescriptionSpec;
+import com.echothree.control.user.associate.common.edit.AssociateProgramDescriptionEdit;
+import com.echothree.control.user.associate.common.form.EditAssociateProgramDescriptionForm;
+import com.echothree.control.user.associate.common.result.EditAssociateProgramDescriptionResult;
+import com.echothree.control.user.associate.common.spec.AssociateProgramDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

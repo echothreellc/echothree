@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.accounting.transaction;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.GetTransactionsForm;
-import com.echothree.control.user.accounting.remote.result.GetTransactionsResult;
-import com.echothree.model.control.accounting.remote.transfer.TransactionGroupTransfer;
+import com.echothree.control.user.accounting.common.form.GetTransactionsForm;
+import com.echothree.control.user.accounting.common.result.GetTransactionsResult;
+import com.echothree.model.control.accounting.common.transfer.TransactionGroupTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

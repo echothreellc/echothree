@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.filter.common;
 
-import com.echothree.control.user.filter.remote.FilterRemote;
+import com.echothree.control.user.filter.common.FilterRemote;
 import com.echothree.control.user.filter.server.FilterLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class FilterUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (FilterRemote)ctx.lookup("ejb:echothree/echothree-server/FilterBean!com.echothree.control.user.filter.remote.FilterRemote");
+            cachedRemote = (FilterRemote)ctx.lookup("ejb:echothree/echothree-server/FilterBean!com.echothree.control.user.filter.common.FilterRemote");
         }
         
         return cachedRemote;

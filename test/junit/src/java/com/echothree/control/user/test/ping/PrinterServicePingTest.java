@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.remote.PrinterService;
+import com.echothree.control.user.printer.common.PrinterService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

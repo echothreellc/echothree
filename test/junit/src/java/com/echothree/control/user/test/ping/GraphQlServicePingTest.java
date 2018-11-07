@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.graphql.common.GraphQlUtil;
-import com.echothree.control.user.graphql.remote.GraphQlService;
+import com.echothree.control.user.graphql.common.GraphQlService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

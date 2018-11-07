@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
-import com.echothree.model.control.invoice.remote.transfer.InvoiceLineTypeDescriptionTransfer;
-import com.echothree.model.control.invoice.remote.transfer.InvoiceLineTypeTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeDescriptionTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeTransfer;
 import com.echothree.model.control.invoice.server.InvoiceControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

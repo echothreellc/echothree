@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.inventory.remote.transfer.LotAliasTypeTransfer;
-import com.echothree.model.control.inventory.remote.transfer.LotTypeTransfer;
+import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
+import com.echothree.model.control.inventory.common.transfer.LotTypeTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;

@@ -18,18 +18,18 @@ package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
-import com.echothree.model.control.content.remote.transfer.ContentCatalogTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentCategoryTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentCollectionTransfer;
+import com.echothree.model.control.content.common.transfer.ContentCatalogTransfer;
+import com.echothree.model.control.content.common.transfer.ContentCategoryTransfer;
+import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
 import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.offer.remote.transfer.OfferUseTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

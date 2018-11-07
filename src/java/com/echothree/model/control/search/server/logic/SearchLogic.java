@@ -32,7 +32,7 @@ import com.echothree.model.control.search.common.exception.UnknownSearchSortOrde
 import com.echothree.model.control.search.common.exception.UnknownSearchTypeNameException;
 import com.echothree.model.control.search.common.exception.UnknownSearchUseTypeNameException;
 import com.echothree.model.control.search.common.exception.UnknownUserVisitSearchException;
-import com.echothree.model.control.search.remote.transfer.SearchCheckSpellingActionTypeTransfer;
+import com.echothree.model.control.search.common.transfer.SearchCheckSpellingActionTypeTransfer;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.search.server.database.CachedSearchToInvalidateQuery;
 import com.echothree.model.control.search.server.database.CachedSearchToInvalidateResult;
@@ -53,7 +53,7 @@ import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;

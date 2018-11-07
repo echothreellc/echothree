@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.wishlist.server;
 
-import com.echothree.control.user.wishlist.remote.WishlistRemote;
-import com.echothree.control.user.wishlist.remote.form.*;
+import com.echothree.control.user.wishlist.common.WishlistRemote;
+import com.echothree.control.user.wishlist.common.form.*;
 import com.echothree.control.user.wishlist.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.selector.server.command;
 
-import com.echothree.control.user.selector.remote.result.EvaluateSelectorsResult;
-import com.echothree.control.user.selector.remote.result.SelectorResultFactory;
+import com.echothree.control.user.selector.common.result.EvaluateSelectorsResult;
+import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.evaluator.EmployeeSelectorEvaluator;
 import com.echothree.model.control.selector.server.evaluator.OfferItemSelectorEvaluator;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 
 public class EvaluateSelectorsCommand

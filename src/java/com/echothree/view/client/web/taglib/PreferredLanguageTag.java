@@ -31,11 +31,11 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.GetPreferredLanguageForm;
-import com.echothree.control.user.party.remote.result.GetPreferredLanguageResult;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.control.user.party.common.form.GetPreferredLanguageForm;
+import com.echothree.control.user.party.common.result.GetPreferredLanguageResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;

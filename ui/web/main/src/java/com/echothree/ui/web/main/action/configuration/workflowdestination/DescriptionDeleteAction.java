@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestination;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.remote.form.DeleteWorkflowDestinationDescriptionForm;
+import com.echothree.control.user.workflow.common.form.DeleteWorkflowDestinationDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

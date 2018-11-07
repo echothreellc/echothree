@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.content.contentpage;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.form.GetContentPageDescriptionsForm;
-import com.echothree.control.user.content.remote.result.GetContentPageDescriptionsResult;
-import com.echothree.model.control.content.remote.transfer.ContentCollectionTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentPageTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentSectionTransfer;
+import com.echothree.control.user.content.common.form.GetContentPageDescriptionsForm;
+import com.echothree.control.user.content.common.result.GetContentPageDescriptionsResult;
+import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
+import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
+import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

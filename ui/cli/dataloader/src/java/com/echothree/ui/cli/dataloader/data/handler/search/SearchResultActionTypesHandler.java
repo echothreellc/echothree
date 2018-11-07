@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.search;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.SearchService;
-import com.echothree.control.user.search.remote.form.CreateSearchResultActionTypeForm;
-import com.echothree.control.user.search.remote.form.SearchFormFactory;
+import com.echothree.control.user.search.common.SearchService;
+import com.echothree.control.user.search.common.form.CreateSearchResultActionTypeForm;
+import com.echothree.control.user.search.common.form.SearchFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

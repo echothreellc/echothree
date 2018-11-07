@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnkind;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.remote.form.GetSequenceTypeChoicesForm;
-import com.echothree.control.user.sequence.remote.result.GetSequenceTypeChoicesResult;
-import com.echothree.model.control.sequence.remote.choice.SequenceTypeChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.sequence.common.form.GetSequenceTypeChoicesForm;
+import com.echothree.control.user.sequence.common.result.GetSequenceTypeChoicesResult;
+import com.echothree.model.control.sequence.common.choice.SequenceTypeChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.track.server;
 
-import com.echothree.control.user.track.remote.TrackService;
+import com.echothree.control.user.track.common.TrackService;
 import javax.ejb.Local;
 
 @Local

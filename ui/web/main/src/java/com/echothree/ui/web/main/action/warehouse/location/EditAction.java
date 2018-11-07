@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.remote.edit.LocationEdit;
-import com.echothree.control.user.warehouse.remote.form.EditLocationForm;
-import com.echothree.control.user.warehouse.remote.result.EditLocationResult;
-import com.echothree.control.user.warehouse.remote.spec.LocationSpec;
+import com.echothree.control.user.warehouse.common.edit.LocationEdit;
+import com.echothree.control.user.warehouse.common.form.EditLocationForm;
+import com.echothree.control.user.warehouse.common.result.EditLocationResult;
+import com.echothree.control.user.warehouse.common.spec.LocationSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

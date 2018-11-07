@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.workrequirement.server.command;
 
-import com.echothree.control.user.workrequirement.remote.form.CreateWorkRequirementTypeForm;
+import com.echothree.control.user.workrequirement.common.form.CreateWorkRequirementTypeForm;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -25,12 +25,12 @@ import com.echothree.model.control.uom.server.util.Conversion;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
@@ -39,7 +39,7 @@ import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTyp
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

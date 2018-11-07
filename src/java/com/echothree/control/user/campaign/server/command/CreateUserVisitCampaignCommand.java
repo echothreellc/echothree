@@ -16,19 +16,19 @@
 
 package com.echothree.control.user.campaign.server.command;
 
-import com.echothree.control.user.campaign.remote.form.CreateUserVisitCampaignForm;
+import com.echothree.control.user.campaign.common.form.CreateUserVisitCampaignForm;
 import com.echothree.model.control.campaign.server.CampaignControl;
 import com.echothree.model.data.campaign.server.entity.Campaign;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
 import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;

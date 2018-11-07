@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.content.contentsection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.remote.form.SetDefaultContentSectionForm;
+import com.echothree.control.user.content.common.form.SetDefaultContentSectionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

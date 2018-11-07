@@ -17,9 +17,9 @@
 package com.echothree.ui.web.main.action.core.entityattributegroup;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.CreateEntityAttributeGroupForm;
+import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

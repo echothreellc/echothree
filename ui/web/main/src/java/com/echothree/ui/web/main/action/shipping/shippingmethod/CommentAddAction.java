@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.form.CreateCommentForm;
+import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.remote.form.GetShippingMethodForm;
-import com.echothree.control.user.shipping.remote.result.GetShippingMethodResult;
+import com.echothree.control.user.shipping.common.form.GetShippingMethodForm;
+import com.echothree.control.user.shipping.common.result.GetShippingMethodResult;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.shipping.remote.transfer.ShippingMethodTransfer;
+import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.forum.forumpartytyperole;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.form.GetForumRoleTypeChoicesForm;
-import com.echothree.control.user.forum.remote.result.GetForumRoleTypeChoicesResult;
+import com.echothree.control.user.forum.common.form.GetForumRoleTypeChoicesForm;
+import com.echothree.control.user.forum.common.result.GetForumRoleTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.GetPartyTypeChoicesForm;
-import com.echothree.control.user.party.remote.result.GetPartyTypeChoicesResult;
-import com.echothree.model.control.forum.remote.choice.ForumRoleTypeChoicesBean;
-import com.echothree.model.control.party.remote.choice.PartyTypeChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.party.common.form.GetPartyTypeChoicesForm;
+import com.echothree.control.user.party.common.result.GetPartyTypeChoicesResult;
+import com.echothree.model.control.forum.common.choice.ForumRoleTypeChoicesBean;
+import com.echothree.model.control.party.common.choice.PartyTypeChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

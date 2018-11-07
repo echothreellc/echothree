@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.communication.server.server;
 
-import com.echothree.control.user.communication.remote.form.GetCommunicationEventPurposesForm;
-import com.echothree.control.user.communication.remote.result.CommunicationResultFactory;
-import com.echothree.control.user.communication.remote.result.GetCommunicationEventPurposesResult;
+import com.echothree.control.user.communication.common.form.GetCommunicationEventPurposesForm;
+import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
+import com.echothree.control.user.communication.common.result.GetCommunicationEventPurposesResult;
 import com.echothree.model.control.communication.server.CommunicationControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

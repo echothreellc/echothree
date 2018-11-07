@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.edit.SearchCheckSpellingActionTypeEdit;
-import com.echothree.control.user.search.remote.edit.SearchEditFactory;
-import com.echothree.control.user.search.remote.form.EditSearchCheckSpellingActionTypeForm;
-import com.echothree.control.user.search.remote.result.EditSearchCheckSpellingActionTypeResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
-import com.echothree.control.user.search.remote.spec.SearchCheckSpellingActionTypeSpec;
+import com.echothree.control.user.search.common.edit.SearchCheckSpellingActionTypeEdit;
+import com.echothree.control.user.search.common.edit.SearchEditFactory;
+import com.echothree.control.user.search.common.form.EditSearchCheckSpellingActionTypeForm;
+import com.echothree.control.user.search.common.result.EditSearchCheckSpellingActionTypeResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.control.user.search.common.spec.SearchCheckSpellingActionTypeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDescription;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDetail;
 import com.echothree.model.data.search.server.value.SearchCheckSpellingActionTypeDescriptionValue;
 import com.echothree.model.data.search.server.value.SearchCheckSpellingActionTypeDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

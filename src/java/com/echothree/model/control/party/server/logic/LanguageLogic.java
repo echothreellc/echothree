@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.control.user.party.remote.spec.LanguageSpec;
-import com.echothree.control.user.party.remote.spec.LanguageUlid;
+import com.echothree.control.user.party.common.spec.LanguageSpec;
+import com.echothree.control.user.party.common.spec.LanguageUlid;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;

@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.workeffort.server.command;
 
-import com.echothree.control.user.workeffort.remote.form.GetWorkEffortTypesForm;
-import com.echothree.control.user.workeffort.remote.result.GetWorkEffortTypesResult;
-import com.echothree.control.user.workeffort.remote.result.WorkEffortResultFactory;
+import com.echothree.control.user.workeffort.common.form.GetWorkEffortTypesForm;
+import com.echothree.control.user.workeffort.common.result.GetWorkEffortTypesResult;
+import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

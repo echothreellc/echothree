@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.index.server.command;
 
-import com.echothree.control.user.index.remote.form.CreateIndexForm;
+import com.echothree.control.user.index.common.form.CreateIndexForm;
 import com.echothree.model.control.index.server.IndexControl;
 import com.echothree.model.control.index.server.logic.IndexLogic;
 import com.echothree.model.control.index.server.logic.IndexTypeLogic;
@@ -27,13 +27,13 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.remote.form.SetDefaultTrainingClassForm;
+import com.echothree.control.user.training.common.form.SetDefaultTrainingClassForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

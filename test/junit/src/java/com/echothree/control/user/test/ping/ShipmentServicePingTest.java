@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.remote.ShipmentService;
+import com.echothree.control.user.shipment.common.ShipmentService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

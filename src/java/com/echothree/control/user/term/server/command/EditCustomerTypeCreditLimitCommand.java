@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.term.server.command;
 
-import com.echothree.control.user.term.remote.edit.CustomerTypeCreditLimitEdit;
-import com.echothree.control.user.term.remote.edit.TermEditFactory;
-import com.echothree.control.user.term.remote.form.EditCustomerTypeCreditLimitForm;
-import com.echothree.control.user.term.remote.result.EditCustomerTypeCreditLimitResult;
-import com.echothree.control.user.term.remote.result.TermResultFactory;
-import com.echothree.control.user.term.remote.spec.CustomerTypeCreditLimitSpec;
+import com.echothree.control.user.term.common.edit.CustomerTypeCreditLimitEdit;
+import com.echothree.control.user.term.common.edit.TermEditFactory;
+import com.echothree.control.user.term.common.form.EditCustomerTypeCreditLimitForm;
+import com.echothree.control.user.term.common.result.EditCustomerTypeCreditLimitResult;
+import com.echothree.control.user.term.common.result.TermResultFactory;
+import com.echothree.control.user.term.common.spec.CustomerTypeCreditLimitSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.term.server.TermControl;
@@ -29,13 +29,13 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
 import com.echothree.model.data.term.server.value.CustomerTypeCreditLimitValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.form.BaseForm;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;

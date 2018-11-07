@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.returnpolicy.returntypeshippingmethod;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.remote.edit.ReturnTypeShippingMethodEdit;
-import com.echothree.control.user.returnpolicy.remote.form.EditReturnTypeShippingMethodForm;
-import com.echothree.control.user.returnpolicy.remote.result.EditReturnTypeShippingMethodResult;
-import com.echothree.control.user.returnpolicy.remote.spec.ReturnTypeShippingMethodSpec;
+import com.echothree.control.user.returnpolicy.common.edit.ReturnTypeShippingMethodEdit;
+import com.echothree.control.user.returnpolicy.common.form.EditReturnTypeShippingMethodForm;
+import com.echothree.control.user.returnpolicy.common.result.EditReturnTypeShippingMethodResult;
+import com.echothree.control.user.returnpolicy.common.spec.ReturnTypeShippingMethodSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

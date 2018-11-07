@@ -17,11 +17,11 @@
 package com.echothree.ui.cli.dataloader.data.handler.training;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.remote.TrainingService;
-import com.echothree.control.user.training.remote.form.CreateTrainingClassPageForm;
-import com.echothree.control.user.training.remote.form.CreateTrainingClassQuestionForm;
-import com.echothree.control.user.training.remote.form.CreateTrainingClassSectionTranslationForm;
-import com.echothree.control.user.training.remote.form.TrainingFormFactory;
+import com.echothree.control.user.training.common.TrainingService;
+import com.echothree.control.user.training.common.form.CreateTrainingClassPageForm;
+import com.echothree.control.user.training.common.form.CreateTrainingClassQuestionForm;
+import com.echothree.control.user.training.common.form.CreateTrainingClassSectionTranslationForm;
+import com.echothree.control.user.training.common.form.TrainingFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

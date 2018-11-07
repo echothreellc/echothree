@@ -29,9 +29,9 @@
 
 package com.echothree.view.client.web.taglib;
 
-import com.echothree.model.control.contact.remote.transfer.ContactPostalAddressTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 

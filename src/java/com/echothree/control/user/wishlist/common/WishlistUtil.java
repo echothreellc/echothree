@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.wishlist.common;
 
-import com.echothree.control.user.wishlist.remote.WishlistRemote;
+import com.echothree.control.user.wishlist.common.WishlistRemote;
 import com.echothree.control.user.wishlist.server.WishlistLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class WishlistUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (WishlistRemote)ctx.lookup("ejb:echothree/echothree-server/WishlistBean!com.echothree.control.user.wishlist.remote.WishlistRemote");
+            cachedRemote = (WishlistRemote)ctx.lookup("ejb:echothree/echothree-server/WishlistBean!com.echothree.control.user.wishlist.common.WishlistRemote");
         }
         
         return cachedRemote;

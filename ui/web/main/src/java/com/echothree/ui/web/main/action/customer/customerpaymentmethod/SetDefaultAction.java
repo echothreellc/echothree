@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.remote.form.SetDefaultPartyPaymentMethodForm;
+import com.echothree.control.user.payment.common.form.SetDefaultPartyPaymentMethodForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

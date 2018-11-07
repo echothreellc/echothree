@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.invoice.common.InvoiceUtil;
-import com.echothree.control.user.invoice.remote.InvoiceService;
+import com.echothree.control.user.invoice.common.InvoiceService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.form.CreateCommentForm;
+import com.echothree.control.user.comment.common.form.CreateCommentForm;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.remote.form.GetPartyContactListForm;
-import com.echothree.control.user.contactlist.remote.result.GetPartyContactListResult;
+import com.echothree.control.user.contactlist.common.form.GetPartyContactListForm;
+import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.contactlist.remote.transfer.PartyContactListTransfer;
+import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

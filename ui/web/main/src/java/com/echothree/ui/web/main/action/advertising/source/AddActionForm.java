@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.advertising.source;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.remote.form.GetOfferChoicesForm;
-import com.echothree.control.user.offer.remote.form.GetUseChoicesForm;
-import com.echothree.control.user.offer.remote.result.GetOfferChoicesResult;
-import com.echothree.control.user.offer.remote.result.GetUseChoicesResult;
-import com.echothree.model.control.offer.remote.choice.OfferChoicesBean;
-import com.echothree.model.control.offer.remote.choice.UseChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.offer.common.form.GetOfferChoicesForm;
+import com.echothree.control.user.offer.common.form.GetUseChoicesForm;
+import com.echothree.control.user.offer.common.result.GetOfferChoicesResult;
+import com.echothree.control.user.offer.common.result.GetUseChoicesResult;
+import com.echothree.model.control.offer.common.choice.OfferChoicesBean;
+import com.echothree.model.control.offer.common.choice.UseChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

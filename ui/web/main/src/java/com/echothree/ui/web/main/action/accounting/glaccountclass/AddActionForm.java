@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.accounting.glaccountclass;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.GetGlAccountClassChoicesForm;
-import com.echothree.control.user.accounting.remote.result.GetGlAccountClassChoicesResult;
-import com.echothree.model.control.accounting.remote.choice.GlAccountClassChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.accounting.common.form.GetGlAccountClassChoicesForm;
+import com.echothree.control.user.accounting.common.result.GetGlAccountClassChoicesResult;
+import com.echothree.model.control.accounting.common.choice.GlAccountClassChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

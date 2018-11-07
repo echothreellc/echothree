@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.user.server.command;
 
-import com.echothree.control.user.user.remote.form.DeleteRecoveryQuestionForm;
+import com.echothree.control.user.user.common.form.DeleteRecoveryQuestionForm;
 import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.Arrays;
 import java.util.Collections;

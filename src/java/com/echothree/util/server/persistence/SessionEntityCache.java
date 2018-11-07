@@ -19,7 +19,7 @@ package com.echothree.util.server.persistence;
 import static com.echothree.util.server.persistence.PersistenceDebugFlags.LogSessionEntityCacheActions;
 import static com.echothree.util.server.persistence.PersistenceDebugFlags.LogSessionEntityCacheStatistics;
 import com.echothree.util.common.exception.PersistenceSessionEntityCacheException;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

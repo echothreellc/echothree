@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.item.harmonizedtariffschedulecodeusetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.form.SetDefaultHarmonizedTariffScheduleCodeUseTypeForm;
+import com.echothree.control.user.item.common.form.SetDefaultHarmonizedTariffScheduleCodeUseTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.employee.remote.transfer.SkillTypeTransfer;
+import com.echothree.model.control.employee.common.transfer.SkillTypeTransfer;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.SkillType;
 import com.echothree.model.data.employee.server.entity.SkillTypeDetail;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.carrier.server.transfer;
 
-import com.echothree.model.control.carrier.remote.transfer.CarrierOptionTransfer;
-import com.echothree.model.control.carrier.remote.transfer.CarrierTransfer;
+import com.echothree.model.control.carrier.common.transfer.CarrierOptionTransfer;
+import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.model.control.carrier.server.CarrierControl;
-import com.echothree.model.control.selector.remote.transfer.SelectorTransfer;
+import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.model.data.carrier.server.entity.CarrierOptionDetail;

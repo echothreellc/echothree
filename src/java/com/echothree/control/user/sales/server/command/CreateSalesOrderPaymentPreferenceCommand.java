@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.sales.server.command;
 
-import com.echothree.control.user.sales.remote.form.CreateSalesOrderPaymentPreferenceForm;
-import com.echothree.control.user.sales.remote.result.CreateSalesOrderPaymentPreferenceResult;
-import com.echothree.control.user.sales.remote.result.SalesResultFactory;
+import com.echothree.control.user.sales.common.form.CreateSalesOrderPaymentPreferenceForm;
+import com.echothree.control.user.sales.common.result.CreateSalesOrderPaymentPreferenceResult;
+import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
@@ -31,10 +31,10 @@ import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreferenceDetail;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,19 +17,19 @@
 package com.echothree.ui.web.main.action.shipping.carriercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.form.GetContactMechanismForm;
-import com.echothree.control.user.contact.remote.result.GetContactMechanismResult;
+import com.echothree.control.user.contact.common.form.GetContactMechanismForm;
+import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
-import com.echothree.model.control.contact.remote.transfer.PartyContactMechanismTransfer;
+import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.string.ContactPostalAddressUtils;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

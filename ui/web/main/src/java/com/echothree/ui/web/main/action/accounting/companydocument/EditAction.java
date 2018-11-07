@@ -17,18 +17,18 @@
 package com.echothree.ui.web.main.action.accounting.companydocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.remote.edit.PartyDocumentEdit;
-import com.echothree.control.user.document.remote.form.EditPartyDocumentForm;
-import com.echothree.control.user.document.remote.result.EditPartyDocumentResult;
-import com.echothree.control.user.document.remote.spec.DocumentSpec;
+import com.echothree.control.user.document.common.edit.PartyDocumentEdit;
+import com.echothree.control.user.document.common.form.EditPartyDocumentForm;
+import com.echothree.control.user.document.common.result.EditPartyDocumentResult;
+import com.echothree.control.user.document.common.spec.DocumentSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.core.remote.transfer.MimeTypeUsageTypeTransfer;
-import com.echothree.model.control.document.remote.transfer.PartyDocumentTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
+import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

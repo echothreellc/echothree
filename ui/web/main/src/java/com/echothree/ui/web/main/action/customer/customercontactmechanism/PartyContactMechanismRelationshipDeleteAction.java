@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.form.DeletePartyContactMechanismRelationshipForm;
+import com.echothree.control.user.contact.common.form.DeletePartyContactMechanismRelationshipForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

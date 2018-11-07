@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionTransfer;
-import com.echothree.model.control.inventory.remote.transfer.PartyInventoryLevelTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
+import com.echothree.model.control.inventory.common.transfer.PartyInventoryLevelTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.remote.transfer.ItemTransfer;
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
 import com.echothree.model.data.item.server.entity.Item;

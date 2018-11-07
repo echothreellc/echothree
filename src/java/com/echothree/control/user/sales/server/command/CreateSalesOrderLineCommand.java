@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.sales.server.command;
 
-import com.echothree.control.user.sales.remote.form.CreateSalesOrderLineForm;
-import com.echothree.control.user.sales.remote.result.CreateSalesOrderLineResult;
-import com.echothree.control.user.sales.remote.result.SalesResultFactory;
+import com.echothree.control.user.sales.common.form.CreateSalesOrderLineForm;
+import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
+import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.inventory.server.InventoryControl;
@@ -44,11 +44,11 @@ import com.echothree.model.data.order.server.entity.OrderLineDetail;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

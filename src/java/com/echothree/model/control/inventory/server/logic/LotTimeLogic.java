@@ -24,7 +24,7 @@ import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.inventory.server.value.LotTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 

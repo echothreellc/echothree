@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.uom.remote.transfer.UnitOfMeasureTypeTransfer;
+import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
-import com.echothree.model.control.vendor.remote.transfer.VendorItemCostTransfer;
-import com.echothree.model.control.vendor.remote.transfer.VendorItemTransfer;
+import com.echothree.model.control.vendor.common.transfer.VendorItemCostTransfer;
+import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItem;

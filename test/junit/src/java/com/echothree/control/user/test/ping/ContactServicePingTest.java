@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.ContactService;
+import com.echothree.control.user.contact.common.ContactService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

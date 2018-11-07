@@ -31,8 +31,8 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.form.ClearOfferResultsForm;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.control.user.search.common.form.ClearOfferResultsForm;
+import com.echothree.util.common.command.CommandResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;

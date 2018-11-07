@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.configuration.geocodealiastype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.edit.GeoCodeAliasTypeDescriptionEdit;
-import com.echothree.control.user.geo.remote.form.EditGeoCodeAliasTypeDescriptionForm;
-import com.echothree.control.user.geo.remote.result.EditGeoCodeAliasTypeDescriptionResult;
-import com.echothree.control.user.geo.remote.spec.GeoCodeAliasTypeDescriptionSpec;
+import com.echothree.control.user.geo.common.edit.GeoCodeAliasTypeDescriptionEdit;
+import com.echothree.control.user.geo.common.form.EditGeoCodeAliasTypeDescriptionForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeAliasTypeDescriptionResult;
+import com.echothree.control.user.geo.common.spec.GeoCodeAliasTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

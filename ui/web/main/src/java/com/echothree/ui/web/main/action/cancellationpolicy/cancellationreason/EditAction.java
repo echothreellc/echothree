@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationreason;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.remote.edit.CancellationReasonEdit;
-import com.echothree.control.user.cancellationpolicy.remote.form.EditCancellationReasonForm;
-import com.echothree.control.user.cancellationpolicy.remote.result.EditCancellationReasonResult;
-import com.echothree.control.user.cancellationpolicy.remote.spec.CancellationReasonSpec;
+import com.echothree.control.user.cancellationpolicy.common.edit.CancellationReasonEdit;
+import com.echothree.control.user.cancellationpolicy.common.form.EditCancellationReasonForm;
+import com.echothree.control.user.cancellationpolicy.common.result.EditCancellationReasonResult;
+import com.echothree.control.user.cancellationpolicy.common.spec.CancellationReasonSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

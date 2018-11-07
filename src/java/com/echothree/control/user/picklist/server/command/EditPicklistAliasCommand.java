@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.picklist.server.command;
 
-import com.echothree.control.user.picklist.remote.edit.PicklistAliasEdit;
-import com.echothree.control.user.picklist.remote.edit.PicklistEditFactory;
-import com.echothree.control.user.picklist.remote.form.EditPicklistAliasForm;
-import com.echothree.control.user.picklist.remote.result.EditPicklistAliasResult;
-import com.echothree.control.user.picklist.remote.result.PicklistResultFactory;
-import com.echothree.control.user.picklist.remote.spec.PicklistAliasSpec;
+import com.echothree.control.user.picklist.common.edit.PicklistAliasEdit;
+import com.echothree.control.user.picklist.common.edit.PicklistEditFactory;
+import com.echothree.control.user.picklist.common.form.EditPicklistAliasForm;
+import com.echothree.control.user.picklist.common.result.EditPicklistAliasResult;
+import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
+import com.echothree.control.user.picklist.common.spec.PicklistAliasSpec;
 import com.echothree.control.user.picklist.server.command.util.PicklistAliasUtil;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.picklist.server.PicklistControl;
@@ -33,11 +33,11 @@ import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDetail;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.picklist.server.value.PicklistAliasValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

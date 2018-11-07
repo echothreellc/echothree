@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.offer.server;
 
-import com.echothree.control.user.offer.remote.OfferService;
+import com.echothree.control.user.offer.common.OfferService;
 import javax.ejb.Local;
 
 @Local

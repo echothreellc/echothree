@@ -17,18 +17,18 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.remote.form.GetPaymentMethodForm;
-import com.echothree.control.user.payment.remote.result.GetPaymentMethodResult;
+import com.echothree.control.user.payment.common.form.GetPaymentMethodForm;
+import com.echothree.control.user.payment.common.result.GetPaymentMethodResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.payment.common.PaymentOptions;
-import com.echothree.model.control.payment.remote.transfer.PaymentMethodTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

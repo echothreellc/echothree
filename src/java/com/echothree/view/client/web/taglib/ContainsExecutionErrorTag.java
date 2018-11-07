@@ -31,7 +31,7 @@
  */
 package com.echothree.view.client.web.taglib;
 
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import javax.servlet.jsp.JspException;
 import org.apache.struts.taglib.TagUtils;
 

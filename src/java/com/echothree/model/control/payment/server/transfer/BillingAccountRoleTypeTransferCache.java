@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.payment.remote.transfer.BillingAccountRoleTypeTransfer;
+import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTypeTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;

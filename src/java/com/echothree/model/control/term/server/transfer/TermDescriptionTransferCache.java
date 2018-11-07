@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.term.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.term.remote.transfer.TermDescriptionTransfer;
-import com.echothree.model.control.term.remote.transfer.TermTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.term.common.transfer.TermDescriptionTransfer;
+import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.term.server.entity.TermDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

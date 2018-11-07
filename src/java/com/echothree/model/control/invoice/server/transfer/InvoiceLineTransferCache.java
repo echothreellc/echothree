@@ -17,10 +17,10 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.model.control.invoice.common.InvoiceConstants;
-import com.echothree.model.control.invoice.remote.transfer.InvoiceLineTransfer;
-import com.echothree.model.control.invoice.remote.transfer.InvoiceLineTypeTransfer;
-import com.echothree.model.control.invoice.remote.transfer.InvoiceLineUseTypeTransfer;
-import com.echothree.model.control.invoice.remote.transfer.InvoiceTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceLineTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceLineUseTypeTransfer;
+import com.echothree.model.control.invoice.common.transfer.InvoiceTransfer;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.invoice.server.entity.Invoice;

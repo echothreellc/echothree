@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.chain.server.command;
 
-import com.echothree.control.user.chain.remote.edit.ChainEditFactory;
-import com.echothree.control.user.chain.remote.edit.ChainKindDescriptionEdit;
-import com.echothree.control.user.chain.remote.form.EditChainKindDescriptionForm;
-import com.echothree.control.user.chain.remote.result.ChainResultFactory;
-import com.echothree.control.user.chain.remote.result.EditChainKindDescriptionResult;
-import com.echothree.control.user.chain.remote.spec.ChainKindDescriptionSpec;
+import com.echothree.control.user.chain.common.edit.ChainEditFactory;
+import com.echothree.control.user.chain.common.edit.ChainKindDescriptionEdit;
+import com.echothree.control.user.chain.common.form.EditChainKindDescriptionForm;
+import com.echothree.control.user.chain.common.result.ChainResultFactory;
+import com.echothree.control.user.chain.common.result.EditChainKindDescriptionResult;
+import com.echothree.control.user.chain.common.spec.ChainKindDescriptionSpec;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -31,11 +31,11 @@ import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainKindDescription;
 import com.echothree.model.data.chain.server.value.ChainKindDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

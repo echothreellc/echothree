@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.DateTimeFormatDescriptionTransfer;
-import com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.DateTimeFormatDescriptionTransfer;
+import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

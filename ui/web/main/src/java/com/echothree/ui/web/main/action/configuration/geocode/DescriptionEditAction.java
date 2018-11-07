@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.geocode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.edit.GeoCodeDescriptionEdit;
-import com.echothree.control.user.geo.remote.form.EditGeoCodeDescriptionForm;
-import com.echothree.control.user.geo.remote.result.EditGeoCodeDescriptionResult;
-import com.echothree.control.user.geo.remote.spec.GeoCodeDescriptionSpec;
+import com.echothree.control.user.geo.common.edit.GeoCodeDescriptionEdit;
+import com.echothree.control.user.geo.common.form.EditGeoCodeDescriptionForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeDescriptionResult;
+import com.echothree.control.user.geo.common.spec.GeoCodeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

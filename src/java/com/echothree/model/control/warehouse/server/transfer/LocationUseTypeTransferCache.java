@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.warehouse.remote.transfer.LocationUseTypeTransfer;
+import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;

@@ -17,10 +17,10 @@
 package com.echothree.ui.cli.dataloader.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.ItemService;
-import com.echothree.control.user.item.remote.form.CreateItemDescriptionTypeDescriptionForm;
-import com.echothree.control.user.item.remote.form.CreateItemDescriptionTypeUseForm;
-import com.echothree.control.user.item.remote.form.ItemFormFactory;
+import com.echothree.control.user.item.common.ItemService;
+import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeDescriptionForm;
+import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeUseForm;
+import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

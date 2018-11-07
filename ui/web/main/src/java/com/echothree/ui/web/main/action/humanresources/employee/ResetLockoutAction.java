@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.remote.form.ResetLockoutForm;
+import com.echothree.control.user.user.common.form.ResetLockoutForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

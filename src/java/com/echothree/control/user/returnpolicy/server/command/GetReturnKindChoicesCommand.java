@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.returnpolicy.server.command;
 
-import com.echothree.control.user.returnpolicy.remote.form.GetReturnKindChoicesForm;
-import com.echothree.control.user.returnpolicy.remote.result.GetReturnKindChoicesResult;
-import com.echothree.control.user.returnpolicy.remote.result.ReturnPolicyResultFactory;
+import com.echothree.control.user.returnpolicy.common.form.GetReturnKindChoicesForm;
+import com.echothree.control.user.returnpolicy.common.result.GetReturnKindChoicesResult;
+import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

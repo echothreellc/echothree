@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.configuration.partytypepasswordstringpolicy;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.edit.PartyTypePasswordStringPolicyEdit;
-import com.echothree.control.user.party.remote.form.EditPartyTypePasswordStringPolicyForm;
-import com.echothree.control.user.party.remote.result.EditPartyTypePasswordStringPolicyResult;
-import com.echothree.control.user.party.remote.spec.PartyTypeSpec;
+import com.echothree.control.user.party.common.edit.PartyTypePasswordStringPolicyEdit;
+import com.echothree.control.user.party.common.form.EditPartyTypePasswordStringPolicyForm;
+import com.echothree.control.user.party.common.result.EditPartyTypePasswordStringPolicyResult;
+import com.echothree.control.user.party.common.spec.PartyTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

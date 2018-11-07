@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.license.server.command;
 
-import com.echothree.control.user.license.remote.form.GetLicenseTypeDescriptionForm;
-import com.echothree.control.user.license.remote.result.GetLicenseTypeDescriptionResult;
-import com.echothree.control.user.license.remote.result.LicenseResultFactory;
+import com.echothree.control.user.license.common.form.GetLicenseTypeDescriptionForm;
+import com.echothree.control.user.license.common.result.GetLicenseTypeDescriptionResult;
+import com.echothree.control.user.license.common.result.LicenseResultFactory;
 import com.echothree.model.control.license.server.LicenseControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -27,11 +27,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.license.server.entity.LicenseType;
 import com.echothree.model.data.license.server.entity.LicenseTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

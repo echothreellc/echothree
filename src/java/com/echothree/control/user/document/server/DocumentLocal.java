@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.document.server;
 
-import com.echothree.control.user.document.remote.DocumentService;
+import com.echothree.control.user.document.common.DocumentService;
 import javax.ejb.Local;
 
 @Local

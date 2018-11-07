@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.contact.server.command;
 
-import com.echothree.control.user.contact.remote.form.GetContactMechanismAliasTypeDescriptionForm;
-import com.echothree.control.user.contact.remote.result.ContactResultFactory;
-import com.echothree.control.user.contact.remote.result.GetContactMechanismAliasTypeDescriptionResult;
+import com.echothree.control.user.contact.common.form.GetContactMechanismAliasTypeDescriptionForm;
+import com.echothree.control.user.contact.common.result.ContactResultFactory;
+import com.echothree.control.user.contact.common.result.GetContactMechanismAliasTypeDescriptionResult;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -27,11 +27,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

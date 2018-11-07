@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.shipping.server;
 
-import com.echothree.control.user.shipping.remote.ShippingService;
+import com.echothree.control.user.shipping.common.ShippingService;
 import javax.ejb.Local;
 
 @Local

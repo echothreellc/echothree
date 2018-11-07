@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.term.server;
 
-import com.echothree.control.user.term.remote.TermService;
+import com.echothree.control.user.term.common.TermService;
 import javax.ejb.Local;
 
 @Local

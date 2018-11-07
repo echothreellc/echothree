@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.party;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.PartyService;
-import com.echothree.control.user.party.remote.form.CreatePartyTypeUseTypeForm;
-import com.echothree.control.user.party.remote.form.PartyFormFactory;
+import com.echothree.control.user.party.common.PartyService;
+import com.echothree.control.user.party.common.form.CreatePartyTypeUseTypeForm;
+import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

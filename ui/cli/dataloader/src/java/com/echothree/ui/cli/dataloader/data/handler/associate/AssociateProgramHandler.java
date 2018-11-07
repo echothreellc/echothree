@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.associate;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.remote.AssociateService;
-import com.echothree.control.user.associate.remote.form.AssociateFormFactory;
-import com.echothree.control.user.associate.remote.form.CreateAssociateProgramDescriptionForm;
+import com.echothree.control.user.associate.common.AssociateService;
+import com.echothree.control.user.associate.common.form.AssociateFormFactory;
+import com.echothree.control.user.associate.common.form.CreateAssociateProgramDescriptionForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

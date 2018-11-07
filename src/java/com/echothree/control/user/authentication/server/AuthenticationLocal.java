@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.authentication.server;
 
-import com.echothree.control.user.authentication.remote.AuthenticationService;
+import com.echothree.control.user.authentication.common.AuthenticationService;
 import javax.ejb.Local;
 
 @Local

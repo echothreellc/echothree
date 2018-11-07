@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.item.itemharmonizedtariffschedulecode;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.edit.ItemHarmonizedTariffScheduleCodeEdit;
-import com.echothree.control.user.item.remote.form.EditItemHarmonizedTariffScheduleCodeForm;
-import com.echothree.control.user.item.remote.result.EditItemHarmonizedTariffScheduleCodeResult;
-import com.echothree.control.user.item.remote.spec.ItemHarmonizedTariffScheduleCodeSpec;
+import com.echothree.control.user.item.common.edit.ItemHarmonizedTariffScheduleCodeEdit;
+import com.echothree.control.user.item.common.form.EditItemHarmonizedTariffScheduleCodeForm;
+import com.echothree.control.user.item.common.result.EditItemHarmonizedTariffScheduleCodeResult;
+import com.echothree.control.user.item.common.spec.ItemHarmonizedTariffScheduleCodeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

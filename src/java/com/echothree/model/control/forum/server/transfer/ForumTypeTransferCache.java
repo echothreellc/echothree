@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.forum.remote.transfer.ForumTypeTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumTypeTransfer;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumType;
 import com.echothree.model.data.user.server.entity.UserVisit;

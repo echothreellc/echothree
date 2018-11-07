@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.remote.TaxService;
+import com.echothree.control.user.tax.common.TaxService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.currency;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.SetDefaultCurrencyForm;
+import com.echothree.control.user.accounting.common.form.SetDefaultCurrencyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

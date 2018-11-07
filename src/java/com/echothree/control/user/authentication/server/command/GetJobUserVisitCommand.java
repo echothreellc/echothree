@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-import com.echothree.control.user.authentication.remote.form.GetJobUserVisitForm;
-import com.echothree.control.user.authentication.remote.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.remote.result.GetJobUserVisitResult;
+import com.echothree.control.user.authentication.common.form.GetJobUserVisitForm;
+import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
+import com.echothree.control.user.authentication.common.result.GetJobUserVisitResult;
 import com.echothree.model.control.job.server.JobControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.job.server.entity.Job;
@@ -27,7 +27,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.search;
 
-import com.echothree.model.data.core.remote.pk.EntityInstancePK;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import java.util.HashMap;
 import java.util.Map;
 

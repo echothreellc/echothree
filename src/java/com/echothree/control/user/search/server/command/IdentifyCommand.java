@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.IdentifyForm;
-import com.echothree.control.user.search.remote.result.IdentifyResult;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
+import com.echothree.control.user.search.common.form.IdentifyForm;
+import com.echothree.control.user.search.common.result.IdentifyResult;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.core.remote.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,12 +29,12 @@ import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;

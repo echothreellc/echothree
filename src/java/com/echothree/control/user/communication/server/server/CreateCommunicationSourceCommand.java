@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.communication.server.server;
 
-import com.echothree.control.user.communication.remote.form.CreateCommunicationSourceForm;
+import com.echothree.control.user.communication.common.form.CreateCommunicationSourceForm;
 import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.server.CommunicationControl;
 import com.echothree.model.control.core.server.CoreControl;
@@ -28,18 +28,18 @@ import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceType;
 import com.echothree.model.data.core.server.entity.Server;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.form.ValidationResult;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;

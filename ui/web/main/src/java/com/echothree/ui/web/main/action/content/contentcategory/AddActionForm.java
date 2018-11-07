@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.content.contentcategory;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.remote.form.GetSourceChoicesForm;
-import com.echothree.control.user.offer.remote.result.GetSourceChoicesResult;
+import com.echothree.control.user.offer.common.form.GetSourceChoicesForm;
+import com.echothree.control.user.offer.common.result.GetSourceChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.remote.form.GetSelectorChoicesForm;
-import com.echothree.control.user.selector.remote.result.GetSelectorChoicesResult;
-import com.echothree.model.control.offer.remote.choice.SourceChoicesBean;
+import com.echothree.control.user.selector.common.form.GetSelectorChoicesForm;
+import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
+import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.selector.remote.choice.SelectorChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

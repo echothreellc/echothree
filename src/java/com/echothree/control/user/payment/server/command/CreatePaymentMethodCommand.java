@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.payment.server.command;
 
-import com.echothree.control.user.payment.remote.form.CreatePaymentMethodForm;
-import com.echothree.control.user.payment.remote.result.CreatePaymentMethodResult;
-import com.echothree.control.user.payment.remote.result.PaymentResultFactory;
+import com.echothree.control.user.payment.common.form.CreatePaymentMethodForm;
+import com.echothree.control.user.payment.common.result.CreatePaymentMethodResult;
+import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.payment.common.PaymentConstants;
 import com.echothree.model.control.payment.server.PaymentControl;
@@ -26,18 +26,18 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.SelectorControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.form.ValidationResult;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

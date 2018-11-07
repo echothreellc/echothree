@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.financial.common.choice;
 
-import com.echothree.view.remote.BaseChoicesBean;
+import com.echothree.view.common.BaseChoicesBean;
 import java.util.List;
 
 public class FinancialAccountTransactionTypeChoicesBean

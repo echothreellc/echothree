@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.accounting.glaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.edit.GlAccountCategoryEdit;
-import com.echothree.control.user.accounting.remote.form.EditGlAccountCategoryForm;
-import com.echothree.control.user.accounting.remote.result.EditGlAccountCategoryResult;
-import com.echothree.control.user.accounting.remote.spec.GlAccountCategorySpec;
+import com.echothree.control.user.accounting.common.edit.GlAccountCategoryEdit;
+import com.echothree.control.user.accounting.common.form.EditGlAccountCategoryForm;
+import com.echothree.control.user.accounting.common.result.EditGlAccountCategoryResult;
+import com.echothree.control.user.accounting.common.spec.GlAccountCategorySpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

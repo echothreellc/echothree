@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.core.entityattributeentitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.DeleteEntityAttributeEntityTypeForm;
-import com.echothree.control.user.core.remote.form.GetEntityAttributeEntityTypeForm;
-import com.echothree.control.user.core.remote.result.GetEntityAttributeEntityTypeResult;
+import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityTypeForm;
+import com.echothree.control.user.core.common.form.GetEntityAttributeEntityTypeForm;
+import com.echothree.control.user.core.common.result.GetEntityAttributeEntityTypeResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

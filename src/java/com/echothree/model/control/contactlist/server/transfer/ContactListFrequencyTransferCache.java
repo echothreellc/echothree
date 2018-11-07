@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.contactlist.remote.transfer.ContactListFrequencyTransfer;
+import com.echothree.model.control.contactlist.common.transfer.ContactListFrequencyTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequencyDetail;

@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.contact.server.command;
 
-import com.echothree.control.user.contact.remote.form.CreateContactWebAddressForm;
-import com.echothree.control.user.contact.remote.result.ContactResultFactory;
-import com.echothree.control.user.contact.remote.result.CreateContactWebAddressResult;
+import com.echothree.control.user.contact.common.form.CreateContactWebAddressForm;
+import com.echothree.control.user.contact.common.result.ContactResultFactory;
+import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
 import com.echothree.model.control.contact.common.ContactConstants;
 import com.echothree.model.control.contact.common.workflow.WebAddressStatusConstants;
 import com.echothree.model.control.contact.server.ContactControl;
@@ -31,12 +31,12 @@ import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

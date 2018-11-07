@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.shipment.server.command;
 
-import com.echothree.control.user.shipment.remote.edit.ShipmentAliasEdit;
-import com.echothree.control.user.shipment.remote.edit.ShipmentEditFactory;
-import com.echothree.control.user.shipment.remote.form.EditShipmentAliasForm;
-import com.echothree.control.user.shipment.remote.result.EditShipmentAliasResult;
-import com.echothree.control.user.shipment.remote.result.ShipmentResultFactory;
-import com.echothree.control.user.shipment.remote.spec.ShipmentAliasSpec;
+import com.echothree.control.user.shipment.common.edit.ShipmentAliasEdit;
+import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
+import com.echothree.control.user.shipment.common.form.EditShipmentAliasForm;
+import com.echothree.control.user.shipment.common.result.EditShipmentAliasResult;
+import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
+import com.echothree.control.user.shipment.common.spec.ShipmentAliasSpec;
 import com.echothree.control.user.shipment.server.command.util.ShipmentAliasUtil;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -33,11 +33,11 @@ import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasTypeDetail;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.value.ShipmentAliasValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

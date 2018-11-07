@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.core.entityblobattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.DeleteEntityBlobAttributeForm;
+import com.echothree.control.user.core.common.form.DeleteEntityBlobAttributeForm;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;

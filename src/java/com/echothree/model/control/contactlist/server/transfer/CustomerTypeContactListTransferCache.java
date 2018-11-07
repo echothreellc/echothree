@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.contactlist.remote.transfer.ContactListTransfer;
-import com.echothree.model.control.contactlist.remote.transfer.CustomerTypeContactListTransfer;
+import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
+import com.echothree.model.control.contactlist.common.transfer.CustomerTypeContactListTransfer;
 import com.echothree.model.control.contactlist.server.ContactListControl;
-import com.echothree.model.control.customer.remote.transfer.CustomerTypeTransfer;
+import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactList;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.content.server.transfer;
 
-import com.echothree.model.control.content.remote.transfer.ContentWebAddressDescriptionTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentWebAddressTransfer;
+import com.echothree.model.control.content.common.transfer.ContentWebAddressDescriptionTransfer;
+import com.echothree.model.control.content.common.transfer.ContentWebAddressTransfer;
 import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.content.server.entity.ContentWebAddressDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.communication.server;
 
-import com.echothree.control.user.communication.remote.CommunicationService;
+import com.echothree.control.user.communication.common.CommunicationService;
 import javax.ejb.Local;
 
 @Local

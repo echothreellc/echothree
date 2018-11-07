@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.license.server.command;
 
-import com.echothree.control.user.license.remote.edit.LicenseEditFactory;
-import com.echothree.control.user.license.remote.edit.LicenseTypeEdit;
-import com.echothree.control.user.license.remote.form.EditLicenseTypeForm;
-import com.echothree.control.user.license.remote.result.EditLicenseTypeResult;
-import com.echothree.control.user.license.remote.result.LicenseResultFactory;
-import com.echothree.control.user.license.remote.spec.LicenseTypeSpec;
+import com.echothree.control.user.license.common.edit.LicenseEditFactory;
+import com.echothree.control.user.license.common.edit.LicenseTypeEdit;
+import com.echothree.control.user.license.common.form.EditLicenseTypeForm;
+import com.echothree.control.user.license.common.result.EditLicenseTypeResult;
+import com.echothree.control.user.license.common.result.LicenseResultFactory;
+import com.echothree.control.user.license.common.spec.LicenseTypeSpec;
 import com.echothree.model.control.license.server.LicenseControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,12 +31,12 @@ import com.echothree.model.data.license.server.entity.LicenseTypeDescription;
 import com.echothree.model.data.license.server.entity.LicenseTypeDetail;
 import com.echothree.model.data.license.server.value.LicenseTypeDescriptionValue;
 import com.echothree.model.data.license.server.value.LicenseTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.rating.server.command;
 
-import com.echothree.control.user.rating.remote.edit.RatingEditFactory;
-import com.echothree.control.user.rating.remote.edit.RatingTypeListItemDescriptionEdit;
-import com.echothree.control.user.rating.remote.form.EditRatingTypeListItemDescriptionForm;
-import com.echothree.control.user.rating.remote.result.EditRatingTypeListItemDescriptionResult;
-import com.echothree.control.user.rating.remote.result.RatingResultFactory;
-import com.echothree.control.user.rating.remote.spec.RatingTypeListItemDescriptionSpec;
+import com.echothree.control.user.rating.common.edit.RatingEditFactory;
+import com.echothree.control.user.rating.common.edit.RatingTypeListItemDescriptionEdit;
+import com.echothree.control.user.rating.common.form.EditRatingTypeListItemDescriptionForm;
+import com.echothree.control.user.rating.common.result.EditRatingTypeListItemDescriptionResult;
+import com.echothree.control.user.rating.common.result.RatingResultFactory;
+import com.echothree.control.user.rating.common.spec.RatingTypeListItemDescriptionSpec;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.rating.server.RatingControl;
@@ -32,12 +32,12 @@ import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItemDescription;
 import com.echothree.model.data.rating.server.value.RatingTypeListItemDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

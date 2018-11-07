@@ -16,7 +16,7 @@
 
 package com.echothree.ui.web.cms.action;
 
-import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.common.persistence.type.ByteArray;
 import java.io.Serializable;
 
 public class CompositeImage

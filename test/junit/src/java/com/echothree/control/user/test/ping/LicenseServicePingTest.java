@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.license.common.LicenseUtil;
-import com.echothree.control.user.license.remote.LicenseService;
+import com.echothree.control.user.license.common.LicenseService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

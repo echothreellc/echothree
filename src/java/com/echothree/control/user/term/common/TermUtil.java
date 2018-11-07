@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.term.common;
 
-import com.echothree.control.user.term.remote.TermRemote;
+import com.echothree.control.user.term.common.TermRemote;
 import com.echothree.control.user.term.server.TermLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class TermUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (TermRemote)ctx.lookup("ejb:echothree/echothree-server/TermBean!com.echothree.control.user.term.remote.TermRemote");
+            cachedRemote = (TermRemote)ctx.lookup("ejb:echothree/echothree-server/TermBean!com.echothree.control.user.term.common.TermRemote");
         }
         
         return cachedRemote;

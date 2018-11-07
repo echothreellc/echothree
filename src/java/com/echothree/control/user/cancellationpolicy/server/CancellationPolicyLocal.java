@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.cancellationpolicy.server;
 
-import com.echothree.control.user.cancellationpolicy.remote.CancellationPolicyService;
+import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyService;
 import javax.ejb.Local;
 
 @Local

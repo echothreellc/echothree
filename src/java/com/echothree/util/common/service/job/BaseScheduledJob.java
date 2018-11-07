@@ -17,15 +17,15 @@
 package com.echothree.util.common.service.job;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.remote.form.GetJobUserVisitForm;
-import com.echothree.control.user.authentication.remote.result.GetJobUserVisitResult;
+import com.echothree.control.user.authentication.common.form.GetJobUserVisitForm;
+import com.echothree.control.user.authentication.common.result.GetJobUserVisitResult;
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.remote.form.EndJobForm;
-import com.echothree.control.user.job.remote.form.StartJobForm;
+import com.echothree.control.user.job.common.form.EndJobForm;
+import com.echothree.control.user.job.common.form.StartJobForm;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

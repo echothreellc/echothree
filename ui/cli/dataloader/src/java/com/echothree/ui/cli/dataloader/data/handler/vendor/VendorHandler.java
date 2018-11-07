@@ -17,13 +17,13 @@
 package com.echothree.ui.cli.dataloader.data.handler.vendor;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.remote.TermService;
-import com.echothree.control.user.term.remote.form.CreatePartyCreditLimitForm;
-import com.echothree.control.user.term.remote.form.TermFormFactory;
+import com.echothree.control.user.term.common.TermService;
+import com.echothree.control.user.term.common.form.CreatePartyCreditLimitForm;
+import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.remote.VendorService;
-import com.echothree.control.user.vendor.remote.form.CreateVendorItemForm;
-import com.echothree.control.user.vendor.remote.form.VendorFormFactory;
+import com.echothree.control.user.vendor.common.VendorService;
+import com.echothree.control.user.vendor.common.form.CreateVendorItemForm;
+import com.echothree.control.user.vendor.common.form.VendorFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.data.handler.comment.CommentsHandler;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.service;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.SetDefaultServiceForm;
+import com.echothree.control.user.core.common.form.SetDefaultServiceForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
-import com.echothree.model.control.geo.remote.transfer.BaseGeoCodeTransfer;
-import com.echothree.model.control.geo.remote.transfer.GeoCodeAliasTransfer;
+import com.echothree.model.control.geo.common.transfer.BaseGeoCodeTransfer;
+import com.echothree.model.control.geo.common.transfer.GeoCodeAliasTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.BaseEntity;
 import java.util.List;
 

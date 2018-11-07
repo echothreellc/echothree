@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.accounting.server.command;
 
-import com.echothree.control.user.accounting.remote.form.CreateGlAccountTypeDescriptionForm;
+import com.echothree.control.user.accounting.common.form.CreateGlAccountTypeDescriptionForm;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.accounting.server.entity.GlAccountTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

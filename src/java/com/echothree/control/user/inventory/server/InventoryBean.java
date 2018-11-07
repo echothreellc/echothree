@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.inventory.server;
 
-import com.echothree.control.user.inventory.remote.InventoryRemote;
-import com.echothree.control.user.inventory.remote.form.*;
+import com.echothree.control.user.inventory.common.InventoryRemote;
+import com.echothree.control.user.inventory.common.form.*;
 import com.echothree.control.user.inventory.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

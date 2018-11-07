@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnreasontype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.remote.form.DeleteReturnReasonTypeForm;
+import com.echothree.control.user.returnpolicy.common.form.DeleteReturnReasonTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

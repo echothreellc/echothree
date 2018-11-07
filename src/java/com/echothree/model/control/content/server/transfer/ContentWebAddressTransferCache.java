@@ -17,8 +17,8 @@
 package com.echothree.model.control.content.server.transfer;
 
 import com.echothree.model.control.content.common.ContentOptions;
-import com.echothree.model.control.content.remote.transfer.ContentCollectionTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentWebAddressTransfer;
+import com.echothree.model.control.content.common.transfer.ContentCollectionTransfer;
+import com.echothree.model.control.content.common.transfer.ContentWebAddressTransfer;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.content.server.entity.ContentWebAddressDetail;

@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.shipping.carrierservice;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.remote.form.GetCarrierServiceDescriptionsForm;
-import com.echothree.control.user.carrier.remote.result.GetCarrierServiceDescriptionsResult;
+import com.echothree.control.user.carrier.common.form.GetCarrierServiceDescriptionsForm;
+import com.echothree.control.user.carrier.common.result.GetCarrierServiceDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

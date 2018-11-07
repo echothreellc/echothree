@@ -30,7 +30,7 @@ import com.echothree.model.data.selector.server.entity.SelectorNodeResponsibilit
 import com.echothree.model.data.selector.server.entity.SelectorNodeSkillType;
 import com.echothree.model.data.selector.server.entity.SelectorNodeTrainingClass;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class BasePartySelectorEvaluator

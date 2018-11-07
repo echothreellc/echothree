@@ -17,16 +17,16 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.ContactOptions;
-import com.echothree.model.control.contact.remote.transfer.ContactMechanismTransfer;
-import com.echothree.model.control.contact.remote.transfer.PartyContactMechanismRelationshipTransfer;
-import com.echothree.model.control.contact.remote.transfer.PartyContactMechanismTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
+import com.echothree.model.control.contact.common.transfer.PartyContactMechanismRelationshipTransfer;
+import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.HashSet;

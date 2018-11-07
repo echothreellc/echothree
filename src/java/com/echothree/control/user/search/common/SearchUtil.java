@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.search.common;
 
-import com.echothree.control.user.search.remote.SearchRemote;
+import com.echothree.control.user.search.common.SearchRemote;
 import com.echothree.control.user.search.server.SearchLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class SearchUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (SearchRemote)ctx.lookup("ejb:echothree/echothree-server/SearchBean!com.echothree.control.user.search.remote.SearchRemote");
+            cachedRemote = (SearchRemote)ctx.lookup("ejb:echothree/echothree-server/SearchBean!com.echothree.control.user.search.common.SearchRemote");
         }
         
         return cachedRemote;

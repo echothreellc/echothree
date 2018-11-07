@@ -17,14 +17,14 @@
 package com.echothree.control.user.employee.server.command;
 
 
-import com.echothree.control.user.employee.remote.form.GetSkillTypeChoicesForm;
-import com.echothree.control.user.employee.remote.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.remote.result.GetSkillTypeChoicesResult;
+import com.echothree.control.user.employee.common.form.GetSkillTypeChoicesForm;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.control.user.employee.common.result.GetSkillTypeChoicesResult;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

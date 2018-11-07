@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-import com.echothree.control.user.authentication.remote.form.GetUserVisitForm;
-import com.echothree.control.user.authentication.remote.result.AuthenticationResultFactory;
-import com.echothree.control.user.authentication.remote.result.GetUserVisitResult;
+import com.echothree.control.user.authentication.common.form.GetUserVisitForm;
+import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
+import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserKeyDetail;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 
 public class GetUserVisitCommand

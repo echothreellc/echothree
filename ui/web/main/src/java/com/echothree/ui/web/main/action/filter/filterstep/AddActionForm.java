@@ -17,13 +17,13 @@
 package com.echothree.ui.web.main.action.filter.filterstep;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.remote.form.GetSelectorChoicesForm;
-import com.echothree.control.user.selector.remote.result.GetSelectorChoicesResult;
-import com.echothree.model.control.filter.remote.choice.FilterAdjustmentChoicesBean;
+import com.echothree.control.user.selector.common.form.GetSelectorChoicesForm;
+import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
+import com.echothree.model.control.filter.common.choice.FilterAdjustmentChoicesBean;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.selector.remote.choice.SelectorChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

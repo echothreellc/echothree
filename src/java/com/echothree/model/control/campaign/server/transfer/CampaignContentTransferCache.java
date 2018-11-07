@@ -17,11 +17,11 @@
 package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.model.control.campaign.common.CampaignOptions;
-import com.echothree.model.control.campaign.remote.transfer.CampaignContentTransfer;
+import com.echothree.model.control.campaign.common.transfer.CampaignContentTransfer;
 import com.echothree.model.control.campaign.server.CampaignControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignContentStatusConstants;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.campaign.server.entity.CampaignContentDetail;

@@ -17,12 +17,12 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreProperties;
-import com.echothree.model.control.core.remote.transfer.ComponentVendorTransfer;
+import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 import java.util.Set;
 
 public class ComponentVendorTransferCache

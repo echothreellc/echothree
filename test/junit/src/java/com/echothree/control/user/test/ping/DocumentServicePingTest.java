@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.remote.DocumentService;
+import com.echothree.control.user.document.common.DocumentService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

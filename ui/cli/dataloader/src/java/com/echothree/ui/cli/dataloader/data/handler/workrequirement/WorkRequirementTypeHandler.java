@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.workrequirement;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.remote.WorkRequirementService;
-import com.echothree.control.user.workrequirement.remote.form.CreateWorkRequirementTypeDescriptionForm;
-import com.echothree.control.user.workrequirement.remote.form.WorkRequirementFormFactory;
+import com.echothree.control.user.workrequirement.common.WorkRequirementService;
+import com.echothree.control.user.workrequirement.common.form.CreateWorkRequirementTypeDescriptionForm;
+import com.echothree.control.user.workrequirement.common.form.WorkRequirementFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

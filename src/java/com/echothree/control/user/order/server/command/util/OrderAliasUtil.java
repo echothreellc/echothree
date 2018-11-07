@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.order.server.command.util;
 
-import com.echothree.control.user.order.remote.spec.OrderTypeSpec;
+import com.echothree.control.user.order.common.spec.OrderTypeSpec;
 import com.echothree.model.control.order.common.OrderConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

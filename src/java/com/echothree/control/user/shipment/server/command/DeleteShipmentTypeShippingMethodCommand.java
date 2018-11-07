@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.shipment.server.command;
 
-import com.echothree.control.user.shipment.remote.form.DeleteShipmentTypeShippingMethodForm;
+import com.echothree.control.user.shipment.common.form.DeleteShipmentTypeShippingMethodForm;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.shipping.server.ShippingControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

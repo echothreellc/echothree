@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.letter.server.command;
 
-import com.echothree.control.user.letter.remote.form.GetLettersForm;
-import com.echothree.control.user.letter.remote.result.GetLettersResult;
-import com.echothree.control.user.letter.remote.result.LetterResultFactory;
+import com.echothree.control.user.letter.common.form.GetLettersForm;
+import com.echothree.control.user.letter.common.result.GetLettersResult;
+import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -26,12 +26,12 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

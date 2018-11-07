@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.icon.common;
 
-import com.echothree.control.user.icon.remote.IconRemote;
+import com.echothree.control.user.icon.common.IconRemote;
 import com.echothree.control.user.icon.server.IconLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class IconUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (IconRemote)ctx.lookup("ejb:echothree/echothree-server/IconBean!com.echothree.control.user.icon.remote.IconRemote");
+            cachedRemote = (IconRemote)ctx.lookup("ejb:echothree/echothree-server/IconBean!com.echothree.control.user.icon.common.IconRemote");
         }
         
         return cachedRemote;

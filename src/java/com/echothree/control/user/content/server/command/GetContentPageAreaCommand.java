@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.remote.form.GetContentPageAreaForm;
-import com.echothree.control.user.content.remote.result.ContentResultFactory;
-import com.echothree.control.user.content.remote.result.GetContentPageAreaResult;
+import com.echothree.control.user.content.common.form.GetContentPageAreaForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.GetContentPageAreaResult;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.content.server.entity.ContentCollection;
@@ -28,11 +28,11 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

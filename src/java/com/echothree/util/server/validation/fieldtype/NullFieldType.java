@@ -17,9 +17,9 @@
 package com.echothree.util.server.validation.fieldtype;
 
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.form.BaseForm;
-import com.echothree.util.remote.message.Message;
-import com.echothree.util.remote.message.Messages;
+import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.message.Message;
+import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Validator;
 
 public class NullFieldType

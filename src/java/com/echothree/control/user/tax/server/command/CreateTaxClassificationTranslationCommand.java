@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.tax.server.command;
 
-import com.echothree.control.user.tax.remote.form.CreateTaxClassificationTranslationForm;
+import com.echothree.control.user.tax.common.form.CreateTaxClassificationTranslationForm;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -30,11 +30,11 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tax.server.entity.TaxClassification;
 import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

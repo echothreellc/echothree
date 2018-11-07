@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.letter.common;
 
-import com.echothree.control.user.letter.remote.LetterRemote;
+import com.echothree.control.user.letter.common.LetterRemote;
 import com.echothree.control.user.letter.server.LetterLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class LetterUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (LetterRemote)ctx.lookup("ejb:echothree/echothree-server/LetterBean!com.echothree.control.user.letter.remote.LetterRemote");
+            cachedRemote = (LetterRemote)ctx.lookup("ejb:echothree/echothree-server/LetterBean!com.echothree.control.user.letter.common.LetterRemote");
         }
         
         return cachedRemote;

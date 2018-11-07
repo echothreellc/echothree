@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.forum.server.command;
 
-import com.echothree.control.user.forum.remote.edit.ForumEditFactory;
-import com.echothree.control.user.forum.remote.edit.ForumMessageAttachmentEdit;
-import com.echothree.control.user.forum.remote.form.EditForumMessageAttachmentForm;
-import com.echothree.control.user.forum.remote.result.EditForumMessageAttachmentResult;
-import com.echothree.control.user.forum.remote.result.ForumResultFactory;
-import com.echothree.control.user.forum.remote.spec.ForumMessageAttachmentSpec;
+import com.echothree.control.user.forum.common.edit.ForumEditFactory;
+import com.echothree.control.user.forum.common.edit.ForumMessageAttachmentEdit;
+import com.echothree.control.user.forum.common.form.EditForumMessageAttachmentForm;
+import com.echothree.control.user.forum.common.result.EditForumMessageAttachmentResult;
+import com.echothree.control.user.forum.common.result.ForumResultFactory;
+import com.echothree.control.user.forum.common.spec.ForumMessageAttachmentSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.forum.server.ForumControl;
@@ -35,13 +35,13 @@ import com.echothree.model.data.forum.server.value.ForumMessageBlobAttachmentVal
 import com.echothree.model.data.forum.server.value.ForumMessageClobAttachmentValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

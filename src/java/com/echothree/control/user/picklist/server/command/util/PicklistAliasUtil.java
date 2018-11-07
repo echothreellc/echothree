@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.picklist.server.command.util;
 
-import com.echothree.control.user.picklist.remote.spec.PicklistTypeSpec;
+import com.echothree.control.user.picklist.common.spec.PicklistTypeSpec;
 import java.util.HashMap;
 import java.util.Map;
 

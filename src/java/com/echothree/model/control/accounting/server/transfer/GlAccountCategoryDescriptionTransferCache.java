@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.GlAccountCategoryDescriptionTransfer;
-import com.echothree.model.control.accounting.remote.transfer.GlAccountCategoryTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryDescriptionTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountCategoryTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

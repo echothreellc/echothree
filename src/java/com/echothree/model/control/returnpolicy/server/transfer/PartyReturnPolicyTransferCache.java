@@ -17,15 +17,15 @@
 package com.echothree.model.control.returnpolicy.server.transfer;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.returnpolicy.remote.transfer.PartyReturnPolicyTransfer;
-import com.echothree.model.control.returnpolicy.remote.transfer.ReturnPolicyTransfer;
+import com.echothree.model.control.returnpolicy.common.transfer.PartyReturnPolicyTransfer;
+import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.returnpolicy.server.logic.PartyReturnPolicyLogic;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.returnpolicy.server.entity.PartyReturnPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;

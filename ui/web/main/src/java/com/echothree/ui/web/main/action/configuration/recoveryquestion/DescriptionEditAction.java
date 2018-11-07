@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.configuration.recoveryquestion;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.remote.edit.RecoveryQuestionDescriptionEdit;
-import com.echothree.control.user.user.remote.form.EditRecoveryQuestionDescriptionForm;
-import com.echothree.control.user.user.remote.result.EditRecoveryQuestionDescriptionResult;
-import com.echothree.control.user.user.remote.spec.RecoveryQuestionDescriptionSpec;
+import com.echothree.control.user.user.common.edit.RecoveryQuestionDescriptionEdit;
+import com.echothree.control.user.user.common.form.EditRecoveryQuestionDescriptionForm;
+import com.echothree.control.user.user.common.result.EditRecoveryQuestionDescriptionResult;
+import com.echothree.control.user.user.common.spec.RecoveryQuestionDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

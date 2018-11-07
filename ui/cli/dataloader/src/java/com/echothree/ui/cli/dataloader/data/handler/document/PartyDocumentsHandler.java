@@ -17,12 +17,12 @@
 package com.echothree.ui.cli.dataloader.data.handler.document;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.remote.DocumentService;
-import com.echothree.control.user.document.remote.form.CreatePartyDocumentForm;
-import com.echothree.control.user.document.remote.form.DocumentFormFactory;
+import com.echothree.control.user.document.common.DocumentService;
+import com.echothree.control.user.document.common.form.CreatePartyDocumentForm;
+import com.echothree.control.user.document.common.form.DocumentFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.common.persistence.type.ByteArray;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

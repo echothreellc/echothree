@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationpolicyreason;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.remote.form.GetCancellationReasonChoicesForm;
-import com.echothree.control.user.cancellationpolicy.remote.result.GetCancellationReasonChoicesResult;
-import com.echothree.model.control.cancellationpolicy.remote.choice.CancellationReasonChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationReasonChoicesForm;
+import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationReasonChoicesResult;
+import com.echothree.model.control.cancellationpolicy.common.choice.CancellationReasonChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

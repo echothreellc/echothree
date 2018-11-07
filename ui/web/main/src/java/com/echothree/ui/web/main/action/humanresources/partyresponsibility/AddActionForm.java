@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.partyresponsibility;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.form.GetResponsibilityTypeChoicesForm;
-import com.echothree.control.user.employee.remote.result.GetResponsibilityTypeChoicesResult;
-import com.echothree.model.control.employee.remote.choice.ResponsibilityTypeChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.employee.common.form.GetResponsibilityTypeChoicesForm;
+import com.echothree.control.user.employee.common.result.GetResponsibilityTypeChoicesResult;
+import com.echothree.model.control.employee.common.choice.ResponsibilityTypeChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

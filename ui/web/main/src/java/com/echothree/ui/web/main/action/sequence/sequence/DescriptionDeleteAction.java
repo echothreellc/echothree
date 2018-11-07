@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.sequence.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.remote.form.DeleteSequenceDescriptionForm;
+import com.echothree.control.user.sequence.common.form.DeleteSequenceDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

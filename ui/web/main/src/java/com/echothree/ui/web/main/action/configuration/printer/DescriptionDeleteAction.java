@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.printer;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.remote.form.DeletePrinterDescriptionForm;
+import com.echothree.control.user.printer.common.form.DeletePrinterDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

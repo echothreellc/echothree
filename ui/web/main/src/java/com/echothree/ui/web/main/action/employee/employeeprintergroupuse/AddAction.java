@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.employee.employeeprintergroupuse;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.remote.form.CreatePartyPrinterGroupUseForm;
+import com.echothree.control.user.printer.common.form.CreatePartyPrinterGroupUseForm;
 import com.echothree.ui.web.main.action.humanresources.employeeprintergroupuse.AddActionForm;
 import com.echothree.ui.web.main.action.humanresources.employeeprintergroupuse.BaseEmployeePrinterGroupUseAction;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

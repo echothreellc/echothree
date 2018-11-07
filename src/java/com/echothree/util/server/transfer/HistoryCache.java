@@ -16,9 +16,9 @@
 
 package com.echothree.util.server.transfer;
 
-import com.echothree.util.remote.transfer.BaseTransfer;
-import com.echothree.util.remote.transfer.HistoryTransfer;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.HistoryTransfer;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.BaseEntity;
 
 public interface HistoryCache<K extends BaseEntity, V extends BaseTransfer> {

@@ -17,13 +17,13 @@
 package com.echothree.model.control.message.server.transfer;
 
 import com.echothree.model.control.message.common.MessageOptions;
-import com.echothree.model.control.message.remote.transfer.MessageTransfer;
-import com.echothree.model.control.message.remote.transfer.MessageTypeTransfer;
+import com.echothree.model.control.message.common.transfer.MessageTransfer;
+import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
 import com.echothree.model.control.message.server.MessageControl;
 import com.echothree.model.data.message.server.entity.Message;
 import com.echothree.model.data.message.server.entity.MessageDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import java.util.Set;
 
 public class MessageTransferCache

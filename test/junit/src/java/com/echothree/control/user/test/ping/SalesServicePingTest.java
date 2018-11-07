@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.remote.SalesService;
+import com.echothree.control.user.sales.common.SalesService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

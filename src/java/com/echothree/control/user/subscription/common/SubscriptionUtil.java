@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.subscription.common;
 
-import com.echothree.control.user.subscription.remote.SubscriptionRemote;
+import com.echothree.control.user.subscription.common.SubscriptionRemote;
 import com.echothree.control.user.subscription.server.SubscriptionLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class SubscriptionUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (SubscriptionRemote)ctx.lookup("ejb:echothree/echothree-server/SubscriptionBean!com.echothree.control.user.subscription.remote.SubscriptionRemote");
+            cachedRemote = (SubscriptionRemote)ctx.lookup("ejb:echothree/echothree-server/SubscriptionBean!com.echothree.control.user.subscription.common.SubscriptionRemote");
         }
         
         return cachedRemote;

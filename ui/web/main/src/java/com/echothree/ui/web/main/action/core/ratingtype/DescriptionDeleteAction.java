@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.core.ratingtype;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.remote.form.DeleteRatingTypeDescriptionForm;
+import com.echothree.control.user.rating.common.form.DeleteRatingTypeDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

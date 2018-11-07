@@ -30,8 +30,8 @@
 
 package com.echothree.view.client.web.taglib;
 
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.form.BaseForm;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.view.client.web.WebConstants;
 import com.google.common.base.Splitter;
 import java.util.HashSet;

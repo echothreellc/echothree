@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.warehouse.locationnameelement;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.remote.form.DeleteLocationNameElementDescriptionForm;
+import com.echothree.control.user.warehouse.common.form.DeleteLocationNameElementDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

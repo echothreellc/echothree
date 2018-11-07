@@ -16,15 +16,15 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.contact.remote.transfer.PartyContactMechanismPurposeTransfer;
+import com.echothree.model.control.contact.common.transfer.PartyContactMechanismPurposeTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
-import com.echothree.model.control.payment.remote.transfer.PartyPaymentMethodContactMechanismTransfer;
-import com.echothree.model.control.payment.remote.transfer.PartyPaymentMethodTransfer;
+import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
+import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardContactMechanismConstants.Workflow_CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;

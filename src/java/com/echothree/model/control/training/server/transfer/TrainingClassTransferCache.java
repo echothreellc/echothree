@@ -17,11 +17,11 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.TrainingOptions;
-import com.echothree.model.control.training.remote.transfer.TrainingClassTransfer;
+import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
-import com.echothree.model.control.workeffort.remote.transfer.WorkEffortScopeTransfer;
+import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClassDetail;
@@ -29,7 +29,7 @@ import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;

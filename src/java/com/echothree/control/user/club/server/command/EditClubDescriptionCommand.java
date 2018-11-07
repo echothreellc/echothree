@@ -16,24 +16,24 @@
 
 package com.echothree.control.user.club.server.command;
 
-import com.echothree.control.user.club.remote.edit.ClubDescriptionEdit;
-import com.echothree.control.user.club.remote.edit.ClubEditFactory;
-import com.echothree.control.user.club.remote.form.EditClubDescriptionForm;
-import com.echothree.control.user.club.remote.result.ClubResultFactory;
-import com.echothree.control.user.club.remote.result.EditClubDescriptionResult;
-import com.echothree.control.user.club.remote.spec.ClubDescriptionSpec;
+import com.echothree.control.user.club.common.edit.ClubDescriptionEdit;
+import com.echothree.control.user.club.common.edit.ClubEditFactory;
+import com.echothree.control.user.club.common.form.EditClubDescriptionForm;
+import com.echothree.control.user.club.common.result.ClubResultFactory;
+import com.echothree.control.user.club.common.result.EditClubDescriptionResult;
+import com.echothree.control.user.club.common.spec.ClubDescriptionSpec;
 import com.echothree.model.control.club.server.ClubControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.club.server.entity.ClubDescription;
 import com.echothree.model.data.club.server.value.ClubDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

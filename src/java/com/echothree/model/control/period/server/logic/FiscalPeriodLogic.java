@@ -19,7 +19,7 @@ package com.echothree.model.control.period.server.logic;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.period.common.PeriodConstants;
 import com.echothree.model.control.period.server.PeriodControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.period.server.entity.Period;

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.order.server.transfer;
 
-import com.echothree.model.control.order.remote.transfer.OrderPriorityDescriptionTransfer;
-import com.echothree.model.control.order.remote.transfer.OrderPriorityTransfer;
+import com.echothree.model.control.order.common.transfer.OrderPriorityDescriptionTransfer;
+import com.echothree.model.control.order.common.transfer.OrderPriorityTransfer;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.order.server.entity.OrderPriorityDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

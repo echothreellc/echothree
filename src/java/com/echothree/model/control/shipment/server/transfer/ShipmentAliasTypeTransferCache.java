@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.control.shipment.remote.transfer.ShipmentAliasTypeTransfer;
-import com.echothree.model.control.shipment.remote.transfer.ShipmentTypeTransfer;
+import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTypeTransfer;
+import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasTypeDetail;

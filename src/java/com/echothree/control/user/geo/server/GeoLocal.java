@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.geo.server;
 
-import com.echothree.control.user.geo.remote.GeoService;
+import com.echothree.control.user.geo.common.GeoService;
 import javax.ejb.Local;
 
 @Local

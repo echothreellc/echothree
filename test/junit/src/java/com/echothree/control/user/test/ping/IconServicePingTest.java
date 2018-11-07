@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.remote.IconService;
+import com.echothree.control.user.icon.common.IconService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

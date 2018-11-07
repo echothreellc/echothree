@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.document;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.remote.DocumentService;
-import com.echothree.control.user.document.remote.form.CreateDocumentTypeForm;
-import com.echothree.control.user.document.remote.form.DocumentFormFactory;
+import com.echothree.control.user.document.common.DocumentService;
+import com.echothree.control.user.document.common.form.CreateDocumentTypeForm;
+import com.echothree.control.user.document.common.form.DocumentFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

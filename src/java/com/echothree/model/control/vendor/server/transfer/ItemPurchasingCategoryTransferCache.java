@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
-import com.echothree.model.control.vendor.remote.transfer.ItemPurchasingCategoryTransfer;
+import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategoryTransfer;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;

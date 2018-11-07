@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.subscription.remote.transfer.SubscriptionTypeDescriptionTransfer;
-import com.echothree.model.control.subscription.remote.transfer.SubscriptionTypeTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeDescriptionTransfer;
+import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

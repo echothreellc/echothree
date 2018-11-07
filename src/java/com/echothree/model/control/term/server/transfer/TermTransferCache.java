@@ -18,8 +18,8 @@ package com.echothree.model.control.term.server.transfer;
 
 import static com.echothree.model.control.term.common.TermConstants.TermType_DATE_DRIVEN;
 import static com.echothree.model.control.term.common.TermConstants.TermType_STANDARD;
-import com.echothree.model.control.term.remote.transfer.TermTransfer;
-import com.echothree.model.control.term.remote.transfer.TermTypeTransfer;
+import com.echothree.model.control.term.common.transfer.TermTransfer;
+import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.term.server.entity.DateDrivenTerm;
 import com.echothree.model.data.term.server.entity.StandardTerm;

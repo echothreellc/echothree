@@ -18,8 +18,8 @@ package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.party.client.helper.NameSuffixesHelper;
 import com.echothree.control.user.party.client.helper.PersonalTitlesHelper;
-import com.echothree.model.control.party.remote.choice.NameSuffixChoicesBean;
-import com.echothree.model.control.party.remote.choice.PersonalTitleChoicesBean;
+import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
+import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
 import java.util.List;
 import javax.naming.NamingException;
 import org.apache.struts.util.LabelValueBean;

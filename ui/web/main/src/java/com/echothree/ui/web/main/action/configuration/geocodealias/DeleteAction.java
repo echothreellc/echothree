@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.configuration.geocodealias;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.form.DeleteGeoCodeAliasForm;
-import com.echothree.control.user.geo.remote.form.GetGeoCodeAliasForm;
-import com.echothree.control.user.geo.remote.result.GetGeoCodeAliasResult;
+import com.echothree.control.user.geo.common.form.DeleteGeoCodeAliasForm;
+import com.echothree.control.user.geo.common.form.GetGeoCodeAliasForm;
+import com.echothree.control.user.geo.common.result.GetGeoCodeAliasResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

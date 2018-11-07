@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.workflow.server;
 
-import com.echothree.control.user.workflow.remote.WorkflowRemote;
-import com.echothree.control.user.workflow.remote.form.*;
+import com.echothree.control.user.workflow.common.WorkflowRemote;
+import com.echothree.control.user.workflow.common.form.*;
 import com.echothree.control.user.workflow.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

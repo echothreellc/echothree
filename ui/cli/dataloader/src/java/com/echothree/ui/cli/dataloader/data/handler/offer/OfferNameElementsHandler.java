@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.remote.OfferService;
-import com.echothree.control.user.offer.remote.form.CreateOfferNameElementForm;
-import com.echothree.control.user.offer.remote.form.OfferFormFactory;
+import com.echothree.control.user.offer.common.OfferService;
+import com.echothree.control.user.offer.common.form.CreateOfferNameElementForm;
+import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

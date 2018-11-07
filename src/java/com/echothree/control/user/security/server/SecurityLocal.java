@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.security.server;
 
-import com.echothree.control.user.security.remote.SecurityService;
+import com.echothree.control.user.security.common.SecurityService;
 import javax.ejb.Local;
 
 @Local

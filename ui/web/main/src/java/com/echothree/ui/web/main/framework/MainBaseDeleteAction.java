@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.framework;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.edit.PartyEntityTypeEdit;
-import com.echothree.control.user.core.remote.form.EditPartyEntityTypeForm;
-import com.echothree.control.user.core.remote.form.GetPartyEntityTypeForm;
-import com.echothree.control.user.core.remote.result.EditPartyEntityTypeResult;
-import com.echothree.control.user.core.remote.result.GetPartyEntityTypeResult;
-import com.echothree.control.user.core.remote.spec.PartyEntityTypeSpec;
+import com.echothree.control.user.core.common.edit.PartyEntityTypeEdit;
+import com.echothree.control.user.core.common.form.EditPartyEntityTypeForm;
+import com.echothree.control.user.core.common.form.GetPartyEntityTypeForm;
+import com.echothree.control.user.core.common.result.EditPartyEntityTypeResult;
+import com.echothree.control.user.core.common.result.GetPartyEntityTypeResult;
+import com.echothree.control.user.core.common.spec.PartyEntityTypeSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.remote.transfer.PartyEntityTypeTransfer;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.model.control.core.common.transfer.PartyEntityTypeTransfer;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;

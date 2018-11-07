@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.content.server.transfer;
 
-import com.echothree.model.control.content.remote.transfer.ContentPageAreaTypeTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentPageLayoutAreaTransfer;
-import com.echothree.model.control.content.remote.transfer.ContentPageLayoutTransfer;
+import com.echothree.model.control.content.common.transfer.ContentPageAreaTypeTransfer;
+import com.echothree.model.control.content.common.transfer.ContentPageLayoutAreaTransfer;
+import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.user.server.entity.UserVisit;

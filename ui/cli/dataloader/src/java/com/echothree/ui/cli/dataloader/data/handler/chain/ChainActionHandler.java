@@ -17,10 +17,10 @@
 package com.echothree.ui.cli.dataloader.data.handler.chain;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.remote.ChainService;
-import com.echothree.control.user.chain.remote.form.ChainFormFactory;
-import com.echothree.control.user.chain.remote.form.CreateChainActionDescriptionForm;
-import com.echothree.control.user.chain.remote.spec.ChainActionSpec;
+import com.echothree.control.user.chain.common.ChainService;
+import com.echothree.control.user.chain.common.form.ChainFormFactory;
+import com.echothree.control.user.chain.common.form.CreateChainActionDescriptionForm;
+import com.echothree.control.user.chain.common.spec.ChainActionSpec;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

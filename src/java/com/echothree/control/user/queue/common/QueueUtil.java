@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.queue.common;
 
-import com.echothree.control.user.queue.remote.QueueRemote;
+import com.echothree.control.user.queue.common.QueueRemote;
 import com.echothree.control.user.queue.server.QueueLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class QueueUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (QueueRemote)ctx.lookup("ejb:echothree/echothree-server/QueueBean!com.echothree.control.user.queue.remote.QueueRemote");
+            cachedRemote = (QueueRemote)ctx.lookup("ejb:echothree/echothree-server/QueueBean!com.echothree.control.user.queue.common.QueueRemote");
         }
         
         return cachedRemote;

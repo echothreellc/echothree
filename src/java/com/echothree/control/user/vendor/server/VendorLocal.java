@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.vendor.server;
 
-import com.echothree.control.user.vendor.remote.VendorService;
+import com.echothree.control.user.vendor.common.VendorService;
 import javax.ejb.Local;
 
 @Local

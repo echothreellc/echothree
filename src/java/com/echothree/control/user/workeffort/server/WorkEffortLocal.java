@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.workeffort.server;
 
-import com.echothree.control.user.workeffort.remote.WorkEffortService;
+import com.echothree.control.user.workeffort.common.WorkEffortService;
 import javax.ejb.Local;
 
 @Local

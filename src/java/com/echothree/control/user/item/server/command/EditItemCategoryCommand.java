@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.edit.ItemCategoryEdit;
-import com.echothree.control.user.item.remote.edit.ItemEditFactory;
-import com.echothree.control.user.item.remote.form.EditItemCategoryForm;
-import com.echothree.control.user.item.remote.result.EditItemCategoryResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
+import com.echothree.control.user.item.common.edit.ItemCategoryEdit;
+import com.echothree.control.user.item.common.edit.ItemEditFactory;
+import com.echothree.control.user.item.common.form.EditItemCategoryForm;
+import com.echothree.control.user.item.common.result.EditItemCategoryResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.ItemControl;
@@ -34,8 +34,8 @@ import com.echothree.model.data.item.server.entity.ItemCategoryDescription;
 import com.echothree.model.data.item.server.entity.ItemCategoryDetail;
 import com.echothree.model.data.item.server.value.ItemCategoryDescriptionValue;
 import com.echothree.model.data.item.server.value.ItemCategoryDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -47,7 +47,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import com.echothree.control.user.item.remote.spec.ItemCategoryUniversalSpec;
+import com.echothree.control.user.item.common.spec.ItemCategoryUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 
 public class EditItemCategoryCommand

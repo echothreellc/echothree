@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.tag.common;
 
-import com.echothree.control.user.tag.remote.TagRemote;
+import com.echothree.control.user.tag.common.TagRemote;
 import com.echothree.control.user.tag.server.TagLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class TagUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (TagRemote)ctx.lookup("ejb:echothree/echothree-server/TagBean!com.echothree.control.user.tag.remote.TagRemote");
+            cachedRemote = (TagRemote)ctx.lookup("ejb:echothree/echothree-server/TagBean!com.echothree.control.user.tag.common.TagRemote");
         }
         
         return cachedRemote;

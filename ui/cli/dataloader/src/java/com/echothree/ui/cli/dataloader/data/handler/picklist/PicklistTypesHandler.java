@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.picklist;
 
 import com.echothree.control.user.picklist.common.PicklistUtil;
-import com.echothree.control.user.picklist.remote.PicklistService;
-import com.echothree.control.user.picklist.remote.form.CreatePicklistTypeForm;
-import com.echothree.control.user.picklist.remote.form.PicklistFormFactory;
+import com.echothree.control.user.picklist.common.PicklistService;
+import com.echothree.control.user.picklist.common.form.CreatePicklistTypeForm;
+import com.echothree.control.user.picklist.common.form.PicklistFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

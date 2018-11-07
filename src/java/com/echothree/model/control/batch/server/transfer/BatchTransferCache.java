@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.batch.server.transfer;
 
-import com.echothree.model.control.batch.remote.transfer.BatchTransfer;
-import com.echothree.model.control.batch.remote.transfer.BatchTypeTransfer;
+import com.echothree.model.control.batch.common.transfer.BatchTransfer;
+import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.batch.server.entity.Batch;

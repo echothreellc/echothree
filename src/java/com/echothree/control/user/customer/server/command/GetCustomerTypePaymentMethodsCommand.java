@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.customer.server.command;
 
-import com.echothree.control.user.customer.remote.form.GetCustomerTypePaymentMethodsForm;
-import com.echothree.control.user.customer.remote.result.CustomerResultFactory;
-import com.echothree.control.user.customer.remote.result.GetCustomerTypePaymentMethodsResult;
+import com.echothree.control.user.customer.common.form.GetCustomerTypePaymentMethodsForm;
+import com.echothree.control.user.customer.common.result.CustomerResultFactory;
+import com.echothree.control.user.customer.common.result.GetCustomerTypePaymentMethodsResult;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

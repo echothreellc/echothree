@@ -16,18 +16,18 @@
 
 package com.echothree.control.user.term.server.command;
 
-import com.echothree.control.user.term.remote.form.CreateCustomerTypeCreditLimitForm;
+import com.echothree.control.user.term.common.form.CreateCustomerTypeCreditLimitForm;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

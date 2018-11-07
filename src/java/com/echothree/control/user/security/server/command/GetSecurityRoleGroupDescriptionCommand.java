@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.security.server.command;
 
-import com.echothree.control.user.security.remote.form.GetSecurityRoleGroupDescriptionForm;
-import com.echothree.control.user.security.remote.result.GetSecurityRoleGroupDescriptionResult;
-import com.echothree.control.user.security.remote.result.SecurityResultFactory;
+import com.echothree.control.user.security.common.form.GetSecurityRoleGroupDescriptionForm;
+import com.echothree.control.user.security.common.result.GetSecurityRoleGroupDescriptionResult;
+import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -27,11 +27,11 @@ import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroupDescription;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

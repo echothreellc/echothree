@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.wishlist.server;
 
-import com.echothree.control.user.wishlist.remote.WishlistService;
+import com.echothree.control.user.wishlist.common.WishlistService;
 import javax.ejb.Local;
 
 @Local

@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.employee.employeeentitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.edit.PartyEntityTypeEdit;
-import com.echothree.control.user.core.remote.form.EditPartyEntityTypeForm;
-import com.echothree.control.user.core.remote.result.EditPartyEntityTypeResult;
-import com.echothree.control.user.core.remote.spec.PartyEntityTypeSpec;
+import com.echothree.control.user.core.common.edit.PartyEntityTypeEdit;
+import com.echothree.control.user.core.common.form.EditPartyEntityTypeForm;
+import com.echothree.control.user.core.common.result.EditPartyEntityTypeResult;
+import com.echothree.control.user.core.common.spec.PartyEntityTypeSpec;
 import com.echothree.ui.web.main.action.humanresources.employeeentitytype.BaseEmployeeEntityTypeAction;
 import com.echothree.ui.web.main.action.humanresources.employeeentitytype.EditActionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

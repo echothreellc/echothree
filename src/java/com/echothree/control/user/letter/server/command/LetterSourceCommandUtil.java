@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.letter.server.command;
 
-import com.echothree.control.user.letter.remote.edit.LetterSourceEdit;
+import com.echothree.control.user.letter.common.edit.LetterSourceEdit;
 import com.echothree.model.control.contact.common.ContactConstants;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;

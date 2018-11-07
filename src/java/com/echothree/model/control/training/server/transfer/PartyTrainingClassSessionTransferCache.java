@@ -17,11 +17,11 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.model.control.training.common.TrainingOptions;
-import com.echothree.model.control.training.remote.transfer.PartyTrainingClassSessionPageTransfer;
-import com.echothree.model.control.training.remote.transfer.PartyTrainingClassSessionQuestionTransfer;
-import com.echothree.model.control.training.remote.transfer.PartyTrainingClassSessionSectionTransfer;
-import com.echothree.model.control.training.remote.transfer.PartyTrainingClassSessionTransfer;
-import com.echothree.model.control.training.remote.transfer.PartyTrainingClassTransfer;
+import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionPageTransfer;
+import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionQuestionTransfer;
+import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionSectionTransfer;
+import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionTransfer;
+import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionDetail;
@@ -30,7 +30,7 @@ import com.echothree.model.data.training.server.entity.PartyTrainingClassSession
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import java.util.Set;
 
 public class PartyTrainingClassSessionTransferCache

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.chain.server;
 
-import com.echothree.control.user.chain.remote.ChainService;
+import com.echothree.control.user.chain.common.ChainService;
 import javax.ejb.Local;
 
 @Local

@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.forum.remote.transfer.ForumMessagePartTypeTransfer;
-import com.echothree.model.control.forum.remote.transfer.ForumMessageTypePartTypeTransfer;
-import com.echothree.model.control.forum.remote.transfer.ForumMessageTypeTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumMessageTypePartTypeTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumMessageTypeTransfer;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageTypePartType;
 import com.echothree.model.data.user.server.entity.UserVisit;

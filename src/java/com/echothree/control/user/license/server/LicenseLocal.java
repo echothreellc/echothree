@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.license.server;
 
-import com.echothree.control.user.license.remote.LicenseService;
+import com.echothree.control.user.license.common.LicenseService;
 import javax.ejb.Local;
 
 @Local

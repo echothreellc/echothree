@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.user.server.command;
 
-import com.echothree.control.user.user.remote.form.GetUserVisitGroupForm;
-import com.echothree.control.user.user.remote.result.GetUserVisitGroupResult;
-import com.echothree.control.user.user.remote.result.UserResultFactory;
+import com.echothree.control.user.user.common.form.GetUserVisitGroupForm;
+import com.echothree.control.user.user.common.result.GetUserVisitGroupResult;
+import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.Arrays;
 import java.util.Collections;

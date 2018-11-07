@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.remote.form.SearchSalesOrderBatchesForm;
-import com.echothree.control.user.search.remote.result.SearchResultFactory;
-import com.echothree.control.user.search.remote.result.SearchSalesOrderBatchesResult;
+import com.echothree.control.user.search.common.form.SearchSalesOrderBatchesForm;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.control.user.search.common.result.SearchSalesOrderBatchesResult;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
@@ -34,12 +34,12 @@ import com.echothree.model.data.batch.server.entity.BatchType;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;

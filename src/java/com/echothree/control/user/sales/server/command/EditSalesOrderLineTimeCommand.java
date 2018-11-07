@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.sales.server.command;
 
-import com.echothree.control.user.sales.remote.edit.SalesEditFactory;
-import com.echothree.control.user.sales.remote.edit.SalesOrderLineTimeEdit;
-import com.echothree.control.user.sales.remote.form.EditSalesOrderLineTimeForm;
-import com.echothree.control.user.sales.remote.result.EditSalesOrderLineTimeResult;
-import com.echothree.control.user.sales.remote.result.SalesResultFactory;
-import com.echothree.control.user.sales.remote.spec.SalesOrderLineTimeSpec;
+import com.echothree.control.user.sales.common.edit.SalesEditFactory;
+import com.echothree.control.user.sales.common.edit.SalesOrderLineTimeEdit;
+import com.echothree.control.user.sales.common.form.EditSalesOrderLineTimeForm;
+import com.echothree.control.user.sales.common.result.EditSalesOrderLineTimeResult;
+import com.echothree.control.user.sales.common.result.SalesResultFactory;
+import com.echothree.control.user.sales.common.spec.SalesOrderLineTimeSpec;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.data.order.server.entity.Order;
@@ -30,11 +30,11 @@ import com.echothree.model.data.order.server.entity.OrderLineTime;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderLineTimeValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;

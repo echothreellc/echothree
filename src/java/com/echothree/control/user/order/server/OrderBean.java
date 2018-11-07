@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.order.server;
 
-import com.echothree.control.user.order.remote.OrderRemote;
-import com.echothree.control.user.order.remote.form.*;
+import com.echothree.control.user.order.common.OrderRemote;
+import com.echothree.control.user.order.common.form.*;
 import com.echothree.control.user.order.server.command.*;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
 
 @Stateless

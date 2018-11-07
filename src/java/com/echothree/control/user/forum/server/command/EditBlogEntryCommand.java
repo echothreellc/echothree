@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.forum.server.command;
 
-import com.echothree.control.user.forum.remote.edit.BlogEntryEdit;
-import com.echothree.control.user.forum.remote.edit.ForumEditFactory;
-import com.echothree.control.user.forum.remote.form.EditBlogEntryForm;
-import com.echothree.control.user.forum.remote.result.EditBlogEntryResult;
-import com.echothree.control.user.forum.remote.result.ForumResultFactory;
-import com.echothree.control.user.forum.remote.spec.ForumMessageSpec;
+import com.echothree.control.user.forum.common.edit.BlogEntryEdit;
+import com.echothree.control.user.forum.common.edit.ForumEditFactory;
+import com.echothree.control.user.forum.common.form.EditBlogEntryForm;
+import com.echothree.control.user.forum.common.result.EditBlogEntryResult;
+import com.echothree.control.user.forum.common.result.ForumResultFactory;
+import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.forum.common.ForumConstants;
@@ -46,13 +46,13 @@ import com.echothree.model.data.forum.server.value.ForumThreadDetailValue;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.icon.server.entity.IconUsage;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;

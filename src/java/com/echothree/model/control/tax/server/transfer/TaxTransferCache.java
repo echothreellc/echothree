@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.GlAccountTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.contact.remote.transfer.ContactMechanismPurposeTransfer;
+import com.echothree.model.control.contact.common.transfer.ContactMechanismPurposeTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.tax.remote.transfer.TaxTransfer;
+import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.tax.server.entity.TaxDetail;

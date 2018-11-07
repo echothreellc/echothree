@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.inventory.inventorycondition;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.remote.form.DeleteInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

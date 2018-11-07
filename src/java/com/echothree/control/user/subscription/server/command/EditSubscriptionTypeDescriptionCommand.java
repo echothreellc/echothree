@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.subscription.server.command;
 
-import com.echothree.control.user.subscription.remote.edit.SubscriptionEditFactory;
-import com.echothree.control.user.subscription.remote.edit.SubscriptionTypeDescriptionEdit;
-import com.echothree.control.user.subscription.remote.form.EditSubscriptionTypeDescriptionForm;
-import com.echothree.control.user.subscription.remote.result.EditSubscriptionTypeDescriptionResult;
-import com.echothree.control.user.subscription.remote.result.SubscriptionResultFactory;
-import com.echothree.control.user.subscription.remote.spec.SubscriptionTypeDescriptionSpec;
+import com.echothree.control.user.subscription.common.edit.SubscriptionEditFactory;
+import com.echothree.control.user.subscription.common.edit.SubscriptionTypeDescriptionEdit;
+import com.echothree.control.user.subscription.common.form.EditSubscriptionTypeDescriptionForm;
+import com.echothree.control.user.subscription.common.result.EditSubscriptionTypeDescriptionResult;
+import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
+import com.echothree.control.user.subscription.common.spec.SubscriptionTypeDescriptionSpec;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.party.server.entity.Language;
@@ -29,12 +29,12 @@ import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDescription;
 import com.echothree.model.data.subscription.server.value.SubscriptionTypeDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

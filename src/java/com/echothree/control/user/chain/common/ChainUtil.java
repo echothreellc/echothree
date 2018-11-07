@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.chain.common;
 
-import com.echothree.control.user.chain.remote.ChainRemote;
+import com.echothree.control.user.chain.common.ChainRemote;
 import com.echothree.control.user.chain.server.ChainLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class ChainUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (ChainRemote)ctx.lookup("ejb:echothree/echothree-server/ChainBean!com.echothree.control.user.chain.remote.ChainRemote");
+            cachedRemote = (ChainRemote)ctx.lookup("ejb:echothree/echothree-server/ChainBean!com.echothree.control.user.chain.common.ChainRemote");
         }
         
         return cachedRemote;

@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.shipment.server.command;
 
-import com.echothree.control.user.shipment.remote.form.GetShipmentAliasesForm;
-import com.echothree.control.user.shipment.remote.result.GetShipmentAliasesResult;
-import com.echothree.control.user.shipment.remote.result.ShipmentResultFactory;
+import com.echothree.control.user.shipment.common.form.GetShipmentAliasesForm;
+import com.echothree.control.user.shipment.common.result.GetShipmentAliasesResult;
+import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.server.command.util.ShipmentAliasUtil;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -26,12 +26,12 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.Shipment;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.forum.forumgroup;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.form.GetForumGroupForm;
-import com.echothree.control.user.forum.remote.result.GetForumGroupResult;
+import com.echothree.control.user.forum.common.form.GetForumGroupForm;
+import com.echothree.control.user.forum.common.result.GetForumGroupResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.forum.common.ForumOptions;
-import com.echothree.model.control.forum.remote.transfer.ForumGroupTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumGroupTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

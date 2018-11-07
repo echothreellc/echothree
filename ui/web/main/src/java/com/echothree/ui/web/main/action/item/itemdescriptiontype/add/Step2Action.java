@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.GetMimeTypeUsageTypeForm;
-import com.echothree.control.user.core.remote.result.GetMimeTypeUsageTypeResult;
+import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypeForm;
+import com.echothree.control.user.core.common.result.GetMimeTypeUsageTypeResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.form.CreateItemDescriptionTypeForm;
+import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeForm;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

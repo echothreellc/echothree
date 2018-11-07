@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.training.remote.transfer.PartyTrainingClassSessionSectionTransfer;
-import com.echothree.model.control.training.remote.transfer.PartyTrainingClassSessionTransfer;
-import com.echothree.model.control.training.remote.transfer.TrainingClassSectionTransfer;
+import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionSectionTransfer;
+import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionTransfer;
+import com.echothree.model.control.training.common.transfer.TrainingClassSectionTransfer;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
 import com.echothree.model.data.user.server.entity.UserVisit;

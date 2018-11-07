@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
-import com.echothree.model.control.chain.remote.transfer.ChainActionChainActionSetTransfer;
-import com.echothree.model.control.chain.remote.transfer.ChainActionSetTransfer;
-import com.echothree.model.control.chain.remote.transfer.ChainActionTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainActionChainActionSetTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainActionSetTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainActionTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;

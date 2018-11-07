@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument;
 
 import com.echothree.model.control.document.common.DocumentOptions;
-import com.echothree.model.control.document.remote.transfer.PartyDocumentTransfer;
+import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.scale.server;
 
-import com.echothree.control.user.scale.remote.ScaleService;
+import com.echothree.control.user.scale.common.ScaleService;
 import javax.ejb.Local;
 
 @Local

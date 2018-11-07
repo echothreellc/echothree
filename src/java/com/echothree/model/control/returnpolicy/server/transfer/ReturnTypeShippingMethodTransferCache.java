@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.returnpolicy.remote.transfer.ReturnTypeShippingMethodTransfer;
-import com.echothree.model.control.returnpolicy.remote.transfer.ReturnTypeTransfer;
+import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeShippingMethodTransfer;
+import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
-import com.echothree.model.control.shipping.remote.transfer.ShippingMethodTransfer;
+import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.ShippingControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -17,14 +17,14 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.ChainOptions;
-import com.echothree.model.control.chain.remote.transfer.ChainInstanceEntityRoleTransfer;
-import com.echothree.model.control.chain.remote.transfer.ChainInstanceTransfer;
-import com.echothree.model.control.chain.remote.transfer.ChainTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainInstanceEntityRoleTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainInstanceTransfer;
+import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainInstanceDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 import java.util.List;
 import java.util.Set;
 

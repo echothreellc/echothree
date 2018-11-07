@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.remote.edit.InventoryEditFactory;
-import com.echothree.control.user.inventory.remote.edit.InventoryLocationGroupEdit;
-import com.echothree.control.user.inventory.remote.form.EditInventoryLocationGroupForm;
-import com.echothree.control.user.inventory.remote.result.EditInventoryLocationGroupResult;
-import com.echothree.control.user.inventory.remote.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.remote.spec.InventoryLocationGroupSpec;
+import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
+import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
+import com.echothree.control.user.inventory.common.form.EditInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -29,15 +29,15 @@ import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupDe
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupDetail;
 import com.echothree.model.data.inventory.server.value.InventoryLocationGroupDescriptionValue;
 import com.echothree.model.data.inventory.server.value.InventoryLocationGroupDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

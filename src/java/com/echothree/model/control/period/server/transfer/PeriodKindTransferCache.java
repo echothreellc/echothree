@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.period.server.transfer;
 
-import com.echothree.model.control.period.remote.transfer.PeriodKindTransfer;
+import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
 import com.echothree.model.control.period.server.PeriodControl;
 import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodKindDetail;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.remote.ChainService;
+import com.echothree.control.user.chain.common.ChainService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

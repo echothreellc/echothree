@@ -17,17 +17,17 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.employee.remote.transfer.LeaveReasonTransfer;
-import com.echothree.model.control.employee.remote.transfer.LeaveTransfer;
-import com.echothree.model.control.employee.remote.transfer.LeaveTypeTransfer;
+import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
+import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
+import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.remote.transfer.CompanyTransfer;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
+import com.echothree.model.control.party.common.transfer.CompanyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntityStatusTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.server.entity.Leave;

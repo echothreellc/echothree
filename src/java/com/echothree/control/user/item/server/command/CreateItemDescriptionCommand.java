@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.form.CreateItemDescriptionForm;
+import com.echothree.control.user.item.common.form.CreateItemDescriptionForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.CoreControl;
@@ -37,13 +37,13 @@ import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.persistence.BasePK;
-import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

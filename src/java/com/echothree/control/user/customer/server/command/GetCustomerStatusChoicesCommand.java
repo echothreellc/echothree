@@ -16,19 +16,19 @@
 
 package com.echothree.control.user.customer.server.command;
 
-import com.echothree.control.user.customer.remote.form.GetCustomerStatusChoicesForm;
-import com.echothree.control.user.customer.remote.result.CustomerResultFactory;
-import com.echothree.control.user.customer.remote.result.GetCustomerStatusChoicesResult;
+import com.echothree.control.user.customer.common.form.GetCustomerStatusChoicesForm;
+import com.echothree.control.user.customer.common.result.CustomerResultFactory;
+import com.echothree.control.user.customer.common.result.GetCustomerStatusChoicesResult;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.customer.server.entity.Customer;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

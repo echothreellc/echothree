@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.remote.CarrierService;
+import com.echothree.control.user.carrier.common.CarrierService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

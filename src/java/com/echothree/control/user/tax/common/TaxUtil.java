@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.tax.common;
 
-import com.echothree.control.user.tax.remote.TaxRemote;
+import com.echothree.control.user.tax.common.TaxRemote;
 import com.echothree.control.user.tax.server.TaxLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class TaxUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (TaxRemote)ctx.lookup("ejb:echothree/echothree-server/TaxBean!com.echothree.control.user.tax.remote.TaxRemote");
+            cachedRemote = (TaxRemote)ctx.lookup("ejb:echothree/echothree-server/TaxBean!com.echothree.control.user.tax.common.TaxRemote");
         }
         
         return cachedRemote;

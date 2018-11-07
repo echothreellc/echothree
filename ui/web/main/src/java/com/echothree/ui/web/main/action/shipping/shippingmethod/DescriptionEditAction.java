@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.remote.edit.ShippingMethodDescriptionEdit;
-import com.echothree.control.user.shipping.remote.form.EditShippingMethodDescriptionForm;
-import com.echothree.control.user.shipping.remote.result.EditShippingMethodDescriptionResult;
-import com.echothree.control.user.shipping.remote.spec.ShippingMethodDescriptionSpec;
+import com.echothree.control.user.shipping.common.edit.ShippingMethodDescriptionEdit;
+import com.echothree.control.user.shipping.common.form.EditShippingMethodDescriptionForm;
+import com.echothree.control.user.shipping.common.result.EditShippingMethodDescriptionResult;
+import com.echothree.control.user.shipping.common.spec.ShippingMethodDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

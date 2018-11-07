@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.geo.server.command;
 
-import com.echothree.control.user.geo.remote.edit.CountryEdit;
-import com.echothree.control.user.geo.remote.edit.GeoEditFactory;
-import com.echothree.control.user.geo.remote.form.EditCountryForm;
-import com.echothree.control.user.geo.remote.result.EditCountryResult;
-import com.echothree.control.user.geo.remote.result.GeoResultFactory;
-import com.echothree.control.user.geo.remote.spec.GeoCodeSpec;
+import com.echothree.control.user.geo.common.edit.CountryEdit;
+import com.echothree.control.user.geo.common.edit.GeoEditFactory;
+import com.echothree.control.user.geo.common.form.EditCountryForm;
+import com.echothree.control.user.geo.common.result.EditCountryResult;
+import com.echothree.control.user.geo.common.result.GeoResultFactory;
+import com.echothree.control.user.geo.common.spec.GeoCodeSpec;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -41,12 +41,12 @@ import com.echothree.model.data.geo.server.value.GeoCodeAliasValue;
 import com.echothree.model.data.geo.server.value.GeoCodeCountryValue;
 import com.echothree.model.data.geo.server.value.GeoCodeDescriptionValue;
 import com.echothree.model.data.geo.server.value.GeoCodeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

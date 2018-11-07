@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.carrier.common;
 
-import com.echothree.control.user.carrier.remote.CarrierRemote;
+import com.echothree.control.user.carrier.common.CarrierRemote;
 import com.echothree.control.user.carrier.server.CarrierLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class CarrierUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (CarrierRemote)ctx.lookup("ejb:echothree/echothree-server/CarrierBean!com.echothree.control.user.carrier.remote.CarrierRemote");
+            cachedRemote = (CarrierRemote)ctx.lookup("ejb:echothree/echothree-server/CarrierBean!com.echothree.control.user.carrier.common.CarrierRemote");
         }
         
         return cachedRemote;

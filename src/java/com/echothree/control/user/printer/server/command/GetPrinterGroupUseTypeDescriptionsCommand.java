@@ -16,16 +16,16 @@
 
 package com.echothree.control.user.printer.server.command;
 
-import com.echothree.control.user.printer.remote.form.GetPrinterGroupUseTypeDescriptionsForm;
-import com.echothree.control.user.printer.remote.result.GetPrinterGroupUseTypeDescriptionsResult;
-import com.echothree.control.user.printer.remote.result.PrinterResultFactory;
+import com.echothree.control.user.printer.common.form.GetPrinterGroupUseTypeDescriptionsForm;
+import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypeDescriptionsResult;
+import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

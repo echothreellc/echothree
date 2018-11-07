@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.framework;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.GetCompanyForm;
-import com.echothree.control.user.party.remote.result.GetCompanyResult;
+import com.echothree.control.user.party.common.form.GetCompanyForm;
+import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.remote.form.GetUserSessionForm;
-import com.echothree.control.user.user.remote.result.GetUserSessionResult;
+import com.echothree.control.user.user.common.form.GetUserSessionForm;
+import com.echothree.control.user.user.common.result.GetUserSessionResult;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.party.remote.transfer.CompanyTransfer;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
-import com.echothree.model.control.user.remote.transfer.UserSessionTransfer;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.model.control.party.common.transfer.CompanyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
+import com.echothree.model.control.user.common.transfer.UserSessionTransfer;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.struts.BaseAction;
 import com.echothree.view.client.web.struts.CustomActionForward;

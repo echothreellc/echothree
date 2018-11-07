@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.payment.server.command;
 
-import com.echothree.control.user.payment.remote.form.CreatePartyPaymentMethodForm;
-import com.echothree.control.user.payment.remote.result.CreatePartyPaymentMethodResult;
-import com.echothree.control.user.payment.remote.result.PaymentResultFactory;
+import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
+import com.echothree.control.user.payment.common.result.CreatePartyPaymentMethodResult;
+import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -34,7 +34,7 @@ import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
@@ -44,12 +44,12 @@ import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactM
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

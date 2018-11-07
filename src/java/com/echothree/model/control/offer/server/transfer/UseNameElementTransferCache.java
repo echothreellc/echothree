@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.offer.remote.transfer.UseNameElementTransfer;
+import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseNameElementDetail;

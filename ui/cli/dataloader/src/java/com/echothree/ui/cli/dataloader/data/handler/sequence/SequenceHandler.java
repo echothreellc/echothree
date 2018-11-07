@@ -17,10 +17,10 @@
 package com.echothree.ui.cli.dataloader.data.handler.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.remote.SequenceService;
-import com.echothree.control.user.sequence.remote.form.CreateSequenceDescriptionForm;
-import com.echothree.control.user.sequence.remote.form.SequenceFormFactory;
-import com.echothree.control.user.sequence.remote.form.SetSequenceValueForm;
+import com.echothree.control.user.sequence.common.SequenceService;
+import com.echothree.control.user.sequence.common.form.CreateSequenceDescriptionForm;
+import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
+import com.echothree.control.user.sequence.common.form.SetSequenceValueForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.order.common.OrderUtil;
-import com.echothree.control.user.order.remote.OrderService;
+import com.echothree.control.user.order.common.OrderService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.financial.common.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.GlAccountTransfer;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTypeTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntranceTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowTransfer;
-import com.echothree.util.remote.transfer.BaseTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
+import com.echothree.util.common.transfer.BaseTransfer;
 
 public class FinancialAccountTypeTransfer
         extends BaseTransfer {

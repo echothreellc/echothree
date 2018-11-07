@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.employee.server.command;
 
-import com.echothree.control.user.employee.remote.edit.EmployeeEditFactory;
-import com.echothree.control.user.employee.remote.edit.LeaveEdit;
-import com.echothree.control.user.employee.remote.form.EditLeaveForm;
-import com.echothree.control.user.employee.remote.result.EditLeaveResult;
-import com.echothree.control.user.employee.remote.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.remote.spec.LeaveSpec;
+import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
+import com.echothree.control.user.employee.common.edit.LeaveEdit;
+import com.echothree.control.user.employee.common.form.EditLeaveForm;
+import com.echothree.control.user.employee.common.result.EditLeaveResult;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.control.user.employee.common.spec.LeaveSpec;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.employee.server.logic.LeaveLogic;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -38,11 +38,11 @@ import com.echothree.model.data.employee.server.entity.LeaveReason;
 import com.echothree.model.data.employee.server.entity.LeaveType;
 import com.echothree.model.data.employee.server.value.LeaveDetailValue;
 import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

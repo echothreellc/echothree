@@ -17,20 +17,20 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.form.GetItemDescriptionForm;
-import com.echothree.control.user.item.remote.result.GetItemDescriptionResult;
+import com.echothree.control.user.item.common.form.GetItemDescriptionForm;
+import com.echothree.control.user.item.common.result.GetItemDescriptionResult;
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.core.remote.transfer.MimeTypeFileExtensionTransfer;
-import com.echothree.model.control.core.remote.transfer.MimeTypeTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeFileExtensionTransfer;
+import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.item.common.ItemOptions;
-import com.echothree.model.control.item.remote.transfer.ItemDescriptionTransfer;
+import com.echothree.model.control.item.common.transfer.ItemDescriptionTransfer;
 import com.echothree.ui.web.main.framework.ByteArrayStreamInfo;
 import com.echothree.ui.web.main.framework.DispositionConstants;
 import com.echothree.ui.web.main.framework.MainBaseDownloadAction;
 import com.echothree.ui.web.main.framework.MainBaseDownloadAction.StreamInfo;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;

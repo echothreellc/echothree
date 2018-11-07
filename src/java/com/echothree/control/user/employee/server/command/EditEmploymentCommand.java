@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.employee.server.command;
 
-import com.echothree.control.user.employee.remote.edit.EmployeeEditFactory;
-import com.echothree.control.user.employee.remote.edit.EmploymentEdit;
-import com.echothree.control.user.employee.remote.form.EditEmploymentForm;
-import com.echothree.control.user.employee.remote.result.EditEmploymentResult;
-import com.echothree.control.user.employee.remote.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.remote.spec.EmploymentSpec;
+import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
+import com.echothree.control.user.employee.common.edit.EmploymentEdit;
+import com.echothree.control.user.employee.common.form.EditEmploymentForm;
+import com.echothree.control.user.employee.common.result.EditEmploymentResult;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.control.user.employee.common.spec.EmploymentSpec;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.employee.server.entity.Employment;
@@ -32,11 +32,11 @@ import com.echothree.model.data.employee.server.value.EmploymentDetailValue;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;

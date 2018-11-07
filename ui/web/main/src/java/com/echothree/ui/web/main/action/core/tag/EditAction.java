@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.core.tag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.remote.edit.TagEdit;
-import com.echothree.control.user.tag.remote.form.EditTagForm;
-import com.echothree.control.user.tag.remote.result.EditTagResult;
-import com.echothree.control.user.tag.remote.spec.TagSpec;
-import com.echothree.model.control.tag.remote.transfer.TagTransfer;
+import com.echothree.control.user.tag.common.edit.TagEdit;
+import com.echothree.control.user.tag.common.form.EditTagForm;
+import com.echothree.control.user.tag.common.result.EditTagResult;
+import com.echothree.control.user.tag.common.spec.TagSpec;
+import com.echothree.model.control.tag.common.transfer.TagTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.rating;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.remote.RatingService;
-import com.echothree.control.user.rating.remote.form.CreateRatingTypeListItemDescriptionForm;
-import com.echothree.control.user.rating.remote.form.RatingFormFactory;
+import com.echothree.control.user.rating.common.RatingService;
+import com.echothree.control.user.rating.common.form.CreateRatingTypeListItemDescriptionForm;
+import com.echothree.control.user.rating.common.form.RatingFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

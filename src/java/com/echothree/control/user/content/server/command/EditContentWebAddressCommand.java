@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.remote.edit.ContentEditFactory;
-import com.echothree.control.user.content.remote.edit.ContentWebAddressEdit;
-import com.echothree.control.user.content.remote.form.EditContentWebAddressForm;
-import com.echothree.control.user.content.remote.result.ContentResultFactory;
-import com.echothree.control.user.content.remote.result.EditContentWebAddressResult;
-import com.echothree.control.user.content.remote.spec.ContentWebAddressSpec;
+import com.echothree.control.user.content.common.edit.ContentEditFactory;
+import com.echothree.control.user.content.common.edit.ContentWebAddressEdit;
+import com.echothree.control.user.content.common.form.EditContentWebAddressForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.EditContentWebAddressResult;
+import com.echothree.control.user.content.common.spec.ContentWebAddressSpec;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,12 +32,12 @@ import com.echothree.model.data.content.server.entity.ContentWebAddressDescripti
 import com.echothree.model.data.content.server.entity.ContentWebAddressDetail;
 import com.echothree.model.data.content.server.value.ContentWebAddressDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentWebAddressDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

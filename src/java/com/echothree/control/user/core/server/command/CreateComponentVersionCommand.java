@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.remote.form.CreateComponentVersionForm;
+import com.echothree.control.user.core.common.form.CreateComponentVersionForm;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.Component;
 import com.echothree.model.data.core.server.entity.ComponentStage;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.ComponentVersion;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.Arrays;
 import java.util.Collections;

@@ -17,12 +17,12 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasuretype;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.remote.form.CreateUnitOfMeasureTypeForm;
+import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureTypeForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

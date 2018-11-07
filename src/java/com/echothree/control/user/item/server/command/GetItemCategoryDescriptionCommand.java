@@ -16,9 +16,9 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.remote.form.GetItemCategoryDescriptionForm;
-import com.echothree.control.user.item.remote.result.GetItemCategoryDescriptionResult;
-import com.echothree.control.user.item.remote.result.ItemResultFactory;
+import com.echothree.control.user.item.common.form.GetItemCategoryDescriptionForm;
+import com.echothree.control.user.item.common.result.GetItemCategoryDescriptionResult;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -27,11 +27,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemCategoryDescription;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

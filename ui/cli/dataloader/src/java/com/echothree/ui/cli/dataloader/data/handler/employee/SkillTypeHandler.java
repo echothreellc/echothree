@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.EmployeeService;
-import com.echothree.control.user.employee.remote.form.CreateSkillTypeDescriptionForm;
-import com.echothree.control.user.employee.remote.form.EmployeeFormFactory;
+import com.echothree.control.user.employee.common.EmployeeService;
+import com.echothree.control.user.employee.common.form.CreateSkillTypeDescriptionForm;
+import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

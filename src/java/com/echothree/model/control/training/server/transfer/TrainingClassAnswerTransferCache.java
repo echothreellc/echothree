@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.training.remote.transfer.TrainingClassAnswerTransfer;
-import com.echothree.model.control.training.remote.transfer.TrainingClassQuestionTransfer;
+import com.echothree.model.control.training.common.transfer.TrainingClassAnswerTransfer;
+import com.echothree.model.control.training.common.transfer.TrainingClassQuestionTransfer;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswerDetail;

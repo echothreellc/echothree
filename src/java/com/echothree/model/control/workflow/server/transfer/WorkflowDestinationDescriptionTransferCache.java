@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowDestinationDescriptionTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowDestinationTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationDescriptionTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDescription;

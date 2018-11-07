@@ -17,12 +17,12 @@
 package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.remote.form.GetChainChoicesForm;
-import com.echothree.control.user.chain.remote.result.GetChainChoicesResult;
+import com.echothree.control.user.chain.common.form.GetChainChoicesForm;
+import com.echothree.control.user.chain.common.result.GetChainChoicesResult;
 import com.echothree.model.control.chain.common.ChainConstants;
-import com.echothree.model.control.chain.remote.choice.ChainChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.model.control.chain.common.choice.ChainChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.tag.server.command;
 
-import com.echothree.control.user.tag.remote.edit.TagEditFactory;
-import com.echothree.control.user.tag.remote.edit.TagScopeDescriptionEdit;
-import com.echothree.control.user.tag.remote.form.EditTagScopeDescriptionForm;
-import com.echothree.control.user.tag.remote.result.EditTagScopeDescriptionResult;
-import com.echothree.control.user.tag.remote.result.TagResultFactory;
-import com.echothree.control.user.tag.remote.spec.TagScopeDescriptionSpec;
+import com.echothree.control.user.tag.common.edit.TagEditFactory;
+import com.echothree.control.user.tag.common.edit.TagScopeDescriptionEdit;
+import com.echothree.control.user.tag.common.form.EditTagScopeDescriptionForm;
+import com.echothree.control.user.tag.common.result.EditTagScopeDescriptionResult;
+import com.echothree.control.user.tag.common.result.TagResultFactory;
+import com.echothree.control.user.tag.common.spec.TagScopeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,11 +31,11 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.tag.server.entity.TagScopeDescription;
 import com.echothree.model.data.tag.server.value.TagScopeDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

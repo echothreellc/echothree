@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.selector.common.exception;
 
-import com.echothree.util.remote.message.Message;
+import com.echothree.util.common.message.Message;
 
 public class UnknownSelectorNodeTypeNameException
         extends BaseSelectorException {

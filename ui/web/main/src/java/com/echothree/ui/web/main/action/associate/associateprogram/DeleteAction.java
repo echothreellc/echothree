@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.remote.form.DeleteAssociateProgramForm;
+import com.echothree.control.user.associate.common.form.DeleteAssociateProgramForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

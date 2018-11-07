@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.tax.server;
 
-import com.echothree.control.user.tax.remote.TaxService;
+import com.echothree.control.user.tax.common.TaxService;
 import javax.ejb.Local;
 
 @Local

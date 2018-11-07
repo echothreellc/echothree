@@ -16,25 +16,25 @@
 
 package com.echothree.control.user.employee.server.command;
 
-import com.echothree.control.user.employee.remote.edit.EmployeeEditFactory;
-import com.echothree.control.user.employee.remote.edit.TerminationTypeEdit;
-import com.echothree.control.user.employee.remote.form.EditTerminationTypeForm;
-import com.echothree.control.user.employee.remote.result.EditTerminationTypeResult;
-import com.echothree.control.user.employee.remote.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.remote.spec.TerminationTypeSpec;
+import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
+import com.echothree.control.user.employee.common.edit.TerminationTypeEdit;
+import com.echothree.control.user.employee.common.form.EditTerminationTypeForm;
+import com.echothree.control.user.employee.common.result.EditTerminationTypeResult;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.control.user.employee.common.spec.TerminationTypeSpec;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDetail;
 import com.echothree.model.data.employee.server.value.TerminationTypeDescriptionValue;
 import com.echothree.model.data.employee.server.value.TerminationTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;

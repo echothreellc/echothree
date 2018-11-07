@@ -16,18 +16,18 @@
 
 package com.echothree.control.user.selector.server.command;
 
-import com.echothree.control.user.selector.remote.form.GetSelectorNodesForm;
-import com.echothree.control.user.selector.remote.result.GetSelectorNodesResult;
-import com.echothree.control.user.selector.remote.result.SelectorResultFactory;
+import com.echothree.control.user.selector.common.form.GetSelectorNodesForm;
+import com.echothree.control.user.selector.common.result.GetSelectorNodesResult;
+import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

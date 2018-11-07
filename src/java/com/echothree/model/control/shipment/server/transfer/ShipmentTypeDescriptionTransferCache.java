@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.shipment.remote.transfer.ShipmentTypeDescriptionTransfer;
-import com.echothree.model.control.shipment.remote.transfer.ShipmentTypeTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.shipment.common.transfer.ShipmentTypeDescriptionTransfer;
+import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

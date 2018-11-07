@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.remote.ReturnPolicyService;
+import com.echothree.control.user.returnpolicy.common.ReturnPolicyService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

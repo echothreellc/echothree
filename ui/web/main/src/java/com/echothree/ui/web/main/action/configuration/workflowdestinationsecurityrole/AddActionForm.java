@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestinationsecurityrole;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.remote.form.GetSecurityRoleChoicesForm;
-import com.echothree.control.user.security.remote.result.GetSecurityRoleChoicesResult;
-import com.echothree.model.control.security.remote.choice.SecurityRoleChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.security.common.form.GetSecurityRoleChoicesForm;
+import com.echothree.control.user.security.common.result.GetSecurityRoleChoicesResult;
+import com.echothree.model.control.security.common.choice.SecurityRoleChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

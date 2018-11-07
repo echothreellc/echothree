@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.remote.form.DeleteScaleDescriptionForm;
+import com.echothree.control.user.scale.common.form.DeleteScaleDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

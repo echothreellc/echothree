@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.icon.server.transfer;
 
-import com.echothree.model.control.icon.remote.transfer.IconUsageTypeDescriptionTransfer;
-import com.echothree.model.control.icon.remote.transfer.IconUsageTypeTransfer;
+import com.echothree.model.control.icon.common.transfer.IconUsageTypeDescriptionTransfer;
+import com.echothree.model.control.icon.common.transfer.IconUsageTypeTransfer;
 import com.echothree.model.control.icon.server.IconControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.icon.server.entity.IconUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

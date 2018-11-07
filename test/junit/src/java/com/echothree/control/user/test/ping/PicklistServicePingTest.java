@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.picklist.common.PicklistUtil;
-import com.echothree.control.user.picklist.remote.PicklistService;
+import com.echothree.control.user.picklist.common.PicklistService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

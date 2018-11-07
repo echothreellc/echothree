@@ -24,7 +24,7 @@ import com.echothree.model.control.party.common.exception.UnknownPartyNameExcept
 import com.echothree.model.control.party.common.exception.UnknownPartyTypeNameException;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.factory.PartyFactory;

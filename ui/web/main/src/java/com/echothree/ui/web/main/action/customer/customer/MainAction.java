@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.form.GetCustomerResultsForm;
-import com.echothree.control.user.search.remote.form.SearchCustomersForm;
-import com.echothree.control.user.search.remote.result.GetCustomerResultsResult;
-import com.echothree.control.user.search.remote.result.SearchCustomersResult;
+import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
+import com.echothree.control.user.search.common.form.SearchCustomersForm;
+import com.echothree.control.user.search.common.result.GetCustomerResultsResult;
+import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.remote.transfer.CustomerResultTransfer;
+import com.echothree.model.control.search.common.transfer.CustomerResultTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

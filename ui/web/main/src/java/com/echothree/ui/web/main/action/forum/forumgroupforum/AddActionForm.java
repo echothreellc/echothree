@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.forum.forumgroupforum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.form.GetForumGroupChoicesForm;
-import com.echothree.control.user.forum.remote.result.GetForumGroupChoicesResult;
-import com.echothree.model.control.forum.remote.choice.ForumGroupChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.forum.common.form.GetForumGroupChoicesForm;
+import com.echothree.control.user.forum.common.result.GetForumGroupChoicesResult;
+import com.echothree.model.control.forum.common.choice.ForumGroupChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

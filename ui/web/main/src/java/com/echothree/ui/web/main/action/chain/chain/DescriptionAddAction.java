@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.chain.chain;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.remote.form.CreateChainDescriptionForm;
-import com.echothree.control.user.chain.remote.form.GetChainForm;
-import com.echothree.control.user.chain.remote.result.GetChainResult;
+import com.echothree.control.user.chain.common.form.CreateChainDescriptionForm;
+import com.echothree.control.user.chain.common.form.GetChainForm;
+import com.echothree.control.user.chain.common.result.GetChainResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

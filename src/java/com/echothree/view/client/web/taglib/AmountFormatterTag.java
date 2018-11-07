@@ -30,7 +30,7 @@
 
 package com.echothree.view.client.web.taglib;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.util.common.string.AmountFormatType;
 import com.echothree.util.common.string.AmountUtils;
 import javax.servlet.jsp.JspException;

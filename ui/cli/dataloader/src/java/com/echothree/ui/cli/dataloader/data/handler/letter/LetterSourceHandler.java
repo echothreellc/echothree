@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.remote.LetterService;
-import com.echothree.control.user.letter.remote.form.CreateLetterSourceDescriptionForm;
-import com.echothree.control.user.letter.remote.form.LetterFormFactory;
+import com.echothree.control.user.letter.common.LetterService;
+import com.echothree.control.user.letter.common.form.CreateLetterSourceDescriptionForm;
+import com.echothree.control.user.letter.common.form.LetterFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.tag.remote.transfer.TagScopeDescriptionTransfer;
-import com.echothree.model.control.tag.remote.transfer.TagScopeTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.tag.common.transfer.TagScopeDescriptionTransfer;
+import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScopeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;

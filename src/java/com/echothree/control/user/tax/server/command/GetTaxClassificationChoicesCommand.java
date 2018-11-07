@@ -16,20 +16,20 @@
 
 package com.echothree.control.user.tax.server.command;
 
-import com.echothree.control.user.tax.remote.form.GetTaxClassificationChoicesForm;
-import com.echothree.control.user.tax.remote.result.GetTaxClassificationChoicesResult;
-import com.echothree.control.user.tax.remote.result.TaxResultFactory;
+import com.echothree.control.user.tax.common.form.GetTaxClassificationChoicesForm;
+import com.echothree.control.user.tax.common.result.GetTaxClassificationChoicesResult;
+import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

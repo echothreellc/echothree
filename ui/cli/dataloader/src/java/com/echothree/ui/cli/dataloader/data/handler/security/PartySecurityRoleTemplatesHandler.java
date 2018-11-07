@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.security;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.remote.SecurityService;
-import com.echothree.control.user.security.remote.form.CreatePartySecurityRoleTemplateForm;
-import com.echothree.control.user.security.remote.form.SecurityFormFactory;
+import com.echothree.control.user.security.common.SecurityService;
+import com.echothree.control.user.security.common.form.CreatePartySecurityRoleTemplateForm;
+import com.echothree.control.user.security.common.form.SecurityFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

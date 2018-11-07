@@ -17,7 +17,7 @@
 package com.echothree.util.server.persistence;
 
 import com.echothree.util.common.exception.PersistenceNotNullException;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 
 public abstract class BaseValue<PK extends BasePK> {
     

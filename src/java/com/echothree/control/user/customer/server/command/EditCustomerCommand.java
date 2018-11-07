@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.customer.server.command;
 
-import com.echothree.control.user.customer.remote.edit.CustomerEdit;
-import com.echothree.control.user.customer.remote.edit.CustomerEditFactory;
-import com.echothree.control.user.customer.remote.form.EditCustomerForm;
-import com.echothree.control.user.customer.remote.result.CustomerResultFactory;
-import com.echothree.control.user.customer.remote.result.EditCustomerResult;
-import com.echothree.control.user.customer.remote.spec.CustomerSpec;
+import com.echothree.control.user.customer.common.edit.CustomerEdit;
+import com.echothree.control.user.customer.common.edit.CustomerEditFactory;
+import com.echothree.control.user.customer.common.form.EditCustomerForm;
+import com.echothree.control.user.customer.common.result.CustomerResultFactory;
+import com.echothree.control.user.customer.common.result.EditCustomerResult;
+import com.echothree.control.user.customer.common.spec.CustomerSpec;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
@@ -37,7 +37,7 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPol
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.value.CustomerValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
@@ -52,12 +52,12 @@ import com.echothree.model.data.party.server.value.PartyGroupValue;
 import com.echothree.model.data.party.server.value.PersonValue;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;

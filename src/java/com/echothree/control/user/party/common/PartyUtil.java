@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.party.common;
 
-import com.echothree.control.user.party.remote.PartyRemote;
+import com.echothree.control.user.party.common.PartyRemote;
 import com.echothree.control.user.party.server.PartyLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class PartyUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (PartyRemote)ctx.lookup("ejb:echothree/echothree-server/PartyBean!com.echothree.control.user.party.remote.PartyRemote");
+            cachedRemote = (PartyRemote)ctx.lookup("ejb:echothree/echothree-server/PartyBean!com.echothree.control.user.party.common.PartyRemote");
         }
         
         return cachedRemote;

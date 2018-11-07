@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.sequence.server;
 
-import com.echothree.control.user.sequence.remote.SequenceService;
+import com.echothree.control.user.sequence.common.SequenceService;
 import javax.ejb.Local;
 
 @Local

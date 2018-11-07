@@ -16,22 +16,22 @@
 
 package com.echothree.model.control.customer.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.GlAccountTransfer;
+import com.echothree.model.control.accounting.common.transfer.GlAccountTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.cancellationpolicy.remote.transfer.CancellationPolicyTransfer;
+import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.customer.common.CustomerProperties;
-import com.echothree.model.control.customer.remote.transfer.CustomerTypeTransfer;
+import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.inventory.remote.transfer.AllocationPriorityTransfer;
+import com.echothree.model.control.inventory.common.transfer.AllocationPriorityTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.offer.remote.transfer.OfferUseTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.returnpolicy.remote.transfer.ReturnPolicyTransfer;
+import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.term.remote.transfer.TermTransfer;
+import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -43,7 +43,7 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

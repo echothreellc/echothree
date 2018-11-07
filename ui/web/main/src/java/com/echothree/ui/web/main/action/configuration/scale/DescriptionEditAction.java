@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.remote.edit.ScaleDescriptionEdit;
-import com.echothree.control.user.scale.remote.form.EditScaleDescriptionForm;
-import com.echothree.control.user.scale.remote.result.EditScaleDescriptionResult;
-import com.echothree.control.user.scale.remote.spec.ScaleDescriptionSpec;
+import com.echothree.control.user.scale.common.edit.ScaleDescriptionEdit;
+import com.echothree.control.user.scale.common.form.EditScaleDescriptionForm;
+import com.echothree.control.user.scale.common.result.EditScaleDescriptionResult;
+import com.echothree.control.user.scale.common.spec.ScaleDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

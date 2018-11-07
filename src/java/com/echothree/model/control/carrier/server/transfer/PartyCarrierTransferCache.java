@@ -18,10 +18,10 @@ package com.echothree.model.control.carrier.server.transfer;
 
 
 
-import com.echothree.model.control.carrier.remote.transfer.CarrierTransfer;
-import com.echothree.model.control.carrier.remote.transfer.PartyCarrierTransfer;
+import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
+import com.echothree.model.control.carrier.common.transfer.PartyCarrierTransfer;
 import com.echothree.model.control.carrier.server.CarrierControl;
-import com.echothree.model.control.party.remote.transfer.PartyTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.carrier.server.entity.PartyCarrier;
 import com.echothree.model.data.user.server.entity.UserVisit;

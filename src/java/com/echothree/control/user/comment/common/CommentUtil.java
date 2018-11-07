@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.comment.common;
 
-import com.echothree.control.user.comment.remote.CommentRemote;
+import com.echothree.control.user.comment.common.CommentRemote;
 import com.echothree.control.user.comment.server.CommentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class CommentUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (CommentRemote)ctx.lookup("ejb:echothree/echothree-server/CommentBean!com.echothree.control.user.comment.remote.CommentRemote");
+            cachedRemote = (CommentRemote)ctx.lookup("ejb:echothree/echothree-server/CommentBean!com.echothree.control.user.comment.common.CommentRemote");
         }
         
         return cachedRemote;

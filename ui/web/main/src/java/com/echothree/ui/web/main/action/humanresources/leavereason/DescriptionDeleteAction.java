@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.humanresources.leavereason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.form.DeleteLeaveReasonDescriptionForm;
-import com.echothree.control.user.employee.remote.form.GetLeaveReasonDescriptionForm;
-import com.echothree.control.user.employee.remote.result.GetLeaveReasonDescriptionResult;
+import com.echothree.control.user.employee.common.form.DeleteLeaveReasonDescriptionForm;
+import com.echothree.control.user.employee.common.form.GetLeaveReasonDescriptionForm;
+import com.echothree.control.user.employee.common.result.GetLeaveReasonDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

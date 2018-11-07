@@ -17,13 +17,13 @@
 package com.echothree.control.user.party.client.helper;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.GetPersonalTitleChoicesForm;
-import com.echothree.control.user.party.remote.form.PartyFormFactory;
-import com.echothree.control.user.party.remote.result.GetPersonalTitleChoicesResult;
-import com.echothree.model.control.party.remote.choice.PersonalTitleChoicesBean;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.party.common.form.GetPersonalTitleChoicesForm;
+import com.echothree.control.user.party.common.form.PartyFormFactory;
+import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
+import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 
 public class PersonalTitlesHelper {

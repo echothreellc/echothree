@@ -17,10 +17,10 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.campaign.common.CampaignUtil;
-import com.echothree.control.user.campaign.remote.form.CreateUserVisitCampaignForm;
+import com.echothree.control.user.campaign.common.form.CreateUserVisitCampaignForm;
 import com.echothree.control.user.track.common.TrackUtil;
-import com.echothree.control.user.track.remote.form.CreateUserVisitTrackForm;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.control.user.track.common.form.CreateUserVisitTrackForm;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.util.HttpSessionUtils;
 import javax.naming.NamingException;

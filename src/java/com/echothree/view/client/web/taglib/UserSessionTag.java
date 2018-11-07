@@ -30,11 +30,11 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.remote.form.GetUserSessionForm;
-import com.echothree.control.user.user.remote.result.GetUserSessionResult;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.control.user.user.common.form.GetUserSessionForm;
+import com.echothree.control.user.user.common.result.GetUserSessionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;

@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.graphql.server.command;
 
-import com.echothree.control.user.graphql.remote.form.ExecuteGraphQlForm;
-import com.echothree.control.user.graphql.remote.result.ExecuteGraphQlResult;
-import com.echothree.control.user.graphql.remote.result.GraphQlResultFactory;
+import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
+import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
+import com.echothree.control.user.graphql.common.result.GraphQlResultFactory;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.graphql.server.util.GraphQlSchemaUtils;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.GraphQlUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.google.gson.JsonParseException;
 import graphql.ExecutionInput;

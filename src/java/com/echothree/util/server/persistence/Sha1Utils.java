@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.persistence;
 
-import com.echothree.util.remote.persistence.BaseKey;
+import com.echothree.util.common.persistence.BaseKey;
 import com.google.common.base.Charsets;
 import com.google.common.io.BaseEncoding;
 import java.security.MessageDigest;

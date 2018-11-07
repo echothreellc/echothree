@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.inventory.server.command.util;
 
-import com.echothree.control.user.inventory.remote.spec.LotTypeSpec;
+import com.echothree.control.user.inventory.common.spec.LotTypeSpec;
 import java.util.HashMap;
 import java.util.Map;
 

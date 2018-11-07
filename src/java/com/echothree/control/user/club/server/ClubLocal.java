@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.club.server;
 
-import com.echothree.control.user.club.remote.ClubService;
+import com.echothree.control.user.club.common.ClubService;
 import javax.ejb.Local;
 
 @Local

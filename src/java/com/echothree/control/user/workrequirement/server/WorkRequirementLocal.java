@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.workrequirement.server;
 
-import com.echothree.control.user.workrequirement.remote.WorkRequirementService;
+import com.echothree.control.user.workrequirement.common.WorkRequirementService;
 import javax.ejb.Local;
 
 @Local

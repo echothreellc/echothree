@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.item.itemvolume;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.edit.ItemVolumeEdit;
-import com.echothree.control.user.item.remote.form.EditItemVolumeForm;
-import com.echothree.control.user.item.remote.result.EditItemVolumeResult;
-import com.echothree.control.user.item.remote.spec.ItemVolumeSpec;
+import com.echothree.control.user.item.common.edit.ItemVolumeEdit;
+import com.echothree.control.user.item.common.form.EditItemVolumeForm;
+import com.echothree.control.user.item.common.result.EditItemVolumeResult;
+import com.echothree.control.user.item.common.spec.ItemVolumeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

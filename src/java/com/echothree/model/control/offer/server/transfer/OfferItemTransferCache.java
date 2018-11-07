@@ -16,16 +16,16 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.item.remote.transfer.ItemTransfer;
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
-import com.echothree.model.control.offer.remote.transfer.OfferItemTransfer;
-import com.echothree.model.control.offer.remote.transfer.OfferTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
 import java.util.Set;

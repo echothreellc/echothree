@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.forum.common;
 
-import com.echothree.control.user.forum.remote.ForumRemote;
+import com.echothree.control.user.forum.common.ForumRemote;
 import com.echothree.control.user.forum.server.ForumLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class ForumUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (ForumRemote)ctx.lookup("ejb:echothree/echothree-server/ForumBean!com.echothree.control.user.forum.remote.ForumRemote");
+            cachedRemote = (ForumRemote)ctx.lookup("ejb:echothree/echothree-server/ForumBean!com.echothree.control.user.forum.common.ForumRemote");
         }
         
         return cachedRemote;

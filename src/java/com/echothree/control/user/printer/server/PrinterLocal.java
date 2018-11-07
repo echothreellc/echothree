@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.printer.server;
 
-import com.echothree.control.user.printer.remote.PrinterService;
+import com.echothree.control.user.printer.common.PrinterService;
 import javax.ejb.Local;
 
 @Local

@@ -16,16 +16,16 @@
 
 package com.echothree.model.control.sales.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.batch.remote.transfer.BatchTypeTransfer;
+import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCache;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.payment.remote.transfer.PaymentMethodTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
-import com.echothree.model.control.sales.remote.transfer.SalesOrderBatchTransfer;
+import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;

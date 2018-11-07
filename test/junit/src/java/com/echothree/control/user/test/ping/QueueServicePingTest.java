@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.remote.QueueService;
+import com.echothree.control.user.queue.common.QueueService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

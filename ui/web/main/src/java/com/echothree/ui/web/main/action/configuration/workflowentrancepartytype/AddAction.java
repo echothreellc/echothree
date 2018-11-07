@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancepartytype;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.remote.form.CreateWorkflowEntrancePartyTypeForm;
-import com.echothree.control.user.workflow.remote.form.GetWorkflowEntranceForm;
-import com.echothree.control.user.workflow.remote.result.GetWorkflowEntranceResult;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntrancePartyTypeForm;
+import com.echothree.control.user.workflow.common.form.GetWorkflowEntranceForm;
+import com.echothree.control.user.workflow.common.result.GetWorkflowEntranceResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

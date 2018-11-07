@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.scale.server.command;
 
-import com.echothree.control.user.scale.remote.edit.ScaleEditFactory;
-import com.echothree.control.user.scale.remote.edit.ScaleTypeEdit;
-import com.echothree.control.user.scale.remote.form.EditScaleTypeForm;
-import com.echothree.control.user.scale.remote.result.EditScaleTypeResult;
-import com.echothree.control.user.scale.remote.result.ScaleResultFactory;
-import com.echothree.control.user.scale.remote.spec.ScaleTypeSpec;
+import com.echothree.control.user.scale.common.edit.ScaleEditFactory;
+import com.echothree.control.user.scale.common.edit.ScaleTypeEdit;
+import com.echothree.control.user.scale.common.form.EditScaleTypeForm;
+import com.echothree.control.user.scale.common.result.EditScaleTypeResult;
+import com.echothree.control.user.scale.common.result.ScaleResultFactory;
+import com.echothree.control.user.scale.common.spec.ScaleTypeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.scale.server.entity.ScaleType;
 import com.echothree.model.data.scale.server.entity.ScaleTypeDescription;
 import com.echothree.model.data.scale.server.entity.ScaleTypeDetail;
 import com.echothree.model.data.scale.server.value.ScaleTypeDescriptionValue;
 import com.echothree.model.data.scale.server.value.ScaleTypeDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

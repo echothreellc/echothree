@@ -16,16 +16,16 @@
 
 package com.echothree.control.user.associate.server.command;
 
-import com.echothree.control.user.associate.remote.form.SetDefaultAssociatePartyContactMechanismForm;
+import com.echothree.control.user.associate.common.form.SetDefaultAssociatePartyContactMechanismForm;
 import com.echothree.model.control.associate.server.AssociateControl;
 import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.associate.server.value.AssociatePartyContactMechanismDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

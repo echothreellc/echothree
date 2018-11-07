@@ -17,10 +17,10 @@
 package com.echothree.model.control.queue.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.queue.remote.choice.QueueTypeChoicesBean;
-import com.echothree.model.control.queue.remote.transfer.QueueTypeDescriptionTransfer;
-import com.echothree.model.control.queue.remote.transfer.QueueTypeTransfer;
-import com.echothree.model.control.queue.remote.transfer.QueuedEntityTransfer;
+import com.echothree.model.control.queue.common.choice.QueueTypeChoicesBean;
+import com.echothree.model.control.queue.common.transfer.QueueTypeDescriptionTransfer;
+import com.echothree.model.control.queue.common.transfer.QueueTypeTransfer;
+import com.echothree.model.control.queue.common.transfer.QueuedEntityTransfer;
 import com.echothree.model.control.queue.server.transfer.QueueTransferCaches;
 import com.echothree.model.control.queue.server.transfer.QueueTypeDescriptionTransferCache;
 import com.echothree.model.control.queue.server.transfer.QueueTypeTransferCache;
@@ -28,7 +28,7 @@ import com.echothree.model.control.queue.server.transfer.QueuedEntityTransferCac
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.queue.remote.pk.QueueTypePK;
+import com.echothree.model.data.queue.common.pk.QueueTypePK;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
 import com.echothree.model.data.queue.server.entity.QueueTypeDetail;
@@ -42,7 +42,7 @@ import com.echothree.model.data.queue.server.value.QueueTypeDetailValue;
 import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;

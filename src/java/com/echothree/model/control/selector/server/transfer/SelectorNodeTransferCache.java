@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.selector.server.transfer;
 
-import com.echothree.model.control.selector.remote.transfer.SelectorNodeTransfer;
-import com.echothree.model.control.selector.remote.transfer.SelectorNodeTypeTransfer;
-import com.echothree.model.control.selector.remote.transfer.SelectorTransfer;
+import com.echothree.model.control.selector.common.transfer.SelectorNodeTransfer;
+import com.echothree.model.control.selector.common.transfer.SelectorNodeTypeTransfer;
+import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorNode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;

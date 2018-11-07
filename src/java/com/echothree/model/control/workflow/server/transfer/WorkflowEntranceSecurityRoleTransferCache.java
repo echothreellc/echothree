@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
-import com.echothree.model.control.security.remote.transfer.SecurityRoleTransfer;
+import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.SecurityControl;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntrancePartyTypeTransfer;
-import com.echothree.model.control.workflow.remote.transfer.WorkflowEntranceSecurityRoleTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntrancePartyTypeTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceSecurityRoleTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSecurityRole;

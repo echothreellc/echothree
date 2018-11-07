@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.remote.form.SetDefaultWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.form.SetDefaultWishlistTypePriorityForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

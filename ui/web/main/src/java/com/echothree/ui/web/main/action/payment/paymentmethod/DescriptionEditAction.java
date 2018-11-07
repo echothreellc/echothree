@@ -17,18 +17,18 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.remote.edit.PaymentMethodDescriptionEdit;
-import com.echothree.control.user.payment.remote.form.EditPaymentMethodDescriptionForm;
-import com.echothree.control.user.payment.remote.form.GetPaymentMethodForm;
-import com.echothree.control.user.payment.remote.result.EditPaymentMethodDescriptionResult;
-import com.echothree.control.user.payment.remote.result.GetPaymentMethodResult;
-import com.echothree.control.user.payment.remote.spec.PaymentMethodDescriptionSpec;
-import com.echothree.model.control.payment.remote.transfer.PaymentMethodDescriptionTransfer;
+import com.echothree.control.user.payment.common.edit.PaymentMethodDescriptionEdit;
+import com.echothree.control.user.payment.common.form.EditPaymentMethodDescriptionForm;
+import com.echothree.control.user.payment.common.form.GetPaymentMethodForm;
+import com.echothree.control.user.payment.common.result.EditPaymentMethodDescriptionResult;
+import com.echothree.control.user.payment.common.result.GetPaymentMethodResult;
+import com.echothree.control.user.payment.common.spec.PaymentMethodDescriptionSpec;
+import com.echothree.model.control.payment.common.transfer.PaymentMethodDescriptionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

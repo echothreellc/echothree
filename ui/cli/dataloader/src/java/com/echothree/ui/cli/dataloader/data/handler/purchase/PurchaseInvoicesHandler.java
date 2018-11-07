@@ -17,14 +17,14 @@
 package com.echothree.ui.cli.dataloader.data.handler.purchase;
 
 import com.echothree.control.user.purchase.common.PurchaseUtil;
-import com.echothree.control.user.purchase.remote.PurchaseService;
-import com.echothree.control.user.purchase.remote.form.CreatePurchaseInvoiceForm;
-import com.echothree.control.user.purchase.remote.form.PurchaseFormFactory;
-import com.echothree.control.user.purchase.remote.result.CreatePurchaseInvoiceResult;
+import com.echothree.control.user.purchase.common.PurchaseService;
+import com.echothree.control.user.purchase.common.form.CreatePurchaseInvoiceForm;
+import com.echothree.control.user.purchase.common.form.PurchaseFormFactory;
+import com.echothree.control.user.purchase.common.result.CreatePurchaseInvoiceResult;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

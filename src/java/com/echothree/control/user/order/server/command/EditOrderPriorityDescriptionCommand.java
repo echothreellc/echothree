@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.order.server.command;
 
-import com.echothree.control.user.order.remote.edit.OrderEditFactory;
-import com.echothree.control.user.order.remote.edit.OrderPriorityDescriptionEdit;
-import com.echothree.control.user.order.remote.form.EditOrderPriorityDescriptionForm;
-import com.echothree.control.user.order.remote.result.EditOrderPriorityDescriptionResult;
-import com.echothree.control.user.order.remote.result.OrderResultFactory;
-import com.echothree.control.user.order.remote.spec.OrderPriorityDescriptionSpec;
+import com.echothree.control.user.order.common.edit.OrderEditFactory;
+import com.echothree.control.user.order.common.edit.OrderPriorityDescriptionEdit;
+import com.echothree.control.user.order.common.form.EditOrderPriorityDescriptionForm;
+import com.echothree.control.user.order.common.result.EditOrderPriorityDescriptionResult;
+import com.echothree.control.user.order.common.result.OrderResultFactory;
+import com.echothree.control.user.order.common.spec.OrderPriorityDescriptionSpec;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -32,11 +32,11 @@ import com.echothree.model.data.order.server.entity.OrderPriorityDescription;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.value.OrderPriorityDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

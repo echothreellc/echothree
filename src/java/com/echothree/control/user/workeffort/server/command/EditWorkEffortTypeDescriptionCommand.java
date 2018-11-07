@@ -16,24 +16,24 @@
 
 package com.echothree.control.user.workeffort.server.command;
 
-import com.echothree.control.user.workeffort.remote.edit.WorkEffortEditFactory;
-import com.echothree.control.user.workeffort.remote.edit.WorkEffortTypeDescriptionEdit;
-import com.echothree.control.user.workeffort.remote.form.EditWorkEffortTypeDescriptionForm;
-import com.echothree.control.user.workeffort.remote.result.EditWorkEffortTypeDescriptionResult;
-import com.echothree.control.user.workeffort.remote.result.WorkEffortResultFactory;
-import com.echothree.control.user.workeffort.remote.spec.WorkEffortTypeDescriptionSpec;
+import com.echothree.control.user.workeffort.common.edit.WorkEffortEditFactory;
+import com.echothree.control.user.workeffort.common.edit.WorkEffortTypeDescriptionEdit;
+import com.echothree.control.user.workeffort.common.form.EditWorkEffortTypeDescriptionForm;
+import com.echothree.control.user.workeffort.common.result.EditWorkEffortTypeDescriptionResult;
+import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
+import com.echothree.control.user.workeffort.common.spec.WorkEffortTypeDescriptionSpec;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDescription;
 import com.echothree.model.data.workeffort.server.value.WorkEffortTypeDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;

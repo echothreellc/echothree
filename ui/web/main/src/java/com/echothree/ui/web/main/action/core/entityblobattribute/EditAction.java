@@ -17,18 +17,18 @@
 package com.echothree.ui.web.main.action.core.entityblobattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.edit.EntityBlobAttributeEdit;
-import com.echothree.control.user.core.remote.form.EditEntityBlobAttributeForm;
-import com.echothree.control.user.core.remote.result.EditEntityBlobAttributeResult;
-import com.echothree.control.user.core.remote.spec.EntityBlobAttributeSpec;
+import com.echothree.control.user.core.common.edit.EntityBlobAttributeEdit;
+import com.echothree.control.user.core.common.form.EditEntityBlobAttributeForm;
+import com.echothree.control.user.core.common.result.EditEntityBlobAttributeResult;
+import com.echothree.control.user.core.common.spec.EntityBlobAttributeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.persistence.type.ByteArray;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

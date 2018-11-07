@@ -17,7 +17,7 @@
 package com.echothree.model.control.vendor.common.exception;
 
 import com.echothree.util.common.exception.BaseException;
-import com.echothree.util.remote.message.Message;
+import com.echothree.util.common.message.Message;
 
 public class BaseVendorException
         extends BaseException {

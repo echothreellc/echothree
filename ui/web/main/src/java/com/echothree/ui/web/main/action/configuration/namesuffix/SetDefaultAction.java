@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.namesuffix;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.SetDefaultNameSuffixForm;
+import com.echothree.control.user.party.common.form.SetDefaultNameSuffixForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

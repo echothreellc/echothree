@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.filter.filteradjustmentpercent;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.GetCurrencyChoicesForm;
-import com.echothree.control.user.accounting.remote.result.GetCurrencyChoicesResult;
+import com.echothree.control.user.accounting.common.form.GetCurrencyChoicesForm;
+import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.remote.form.GetUnitOfMeasureChoicesForm;
-import com.echothree.control.user.uom.remote.result.GetUnitOfMeasureChoicesResult;
-import com.echothree.model.control.accounting.remote.choice.CurrencyChoicesBean;
+import com.echothree.control.user.uom.common.form.GetUnitOfMeasureChoicesForm;
+import com.echothree.control.user.uom.common.result.GetUnitOfMeasureChoicesResult;
+import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.uom.common.UomConstants;
-import com.echothree.model.control.uom.remote.choice.UnitOfMeasureChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.model.control.uom.common.choice.UnitOfMeasureChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

@@ -16,16 +16,16 @@
 
 package com.echothree.control.user.scale.server.command;
 
-import com.echothree.control.user.scale.remote.form.GetScaleTypeDescriptionsForm;
-import com.echothree.control.user.scale.remote.result.GetScaleTypeDescriptionsResult;
-import com.echothree.control.user.scale.remote.result.ScaleResultFactory;
+import com.echothree.control.user.scale.common.form.GetScaleTypeDescriptionsForm;
+import com.echothree.control.user.scale.common.result.GetScaleTypeDescriptionsResult;
+import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

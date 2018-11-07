@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.remote.TagService;
+import com.echothree.control.user.tag.common.TagService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

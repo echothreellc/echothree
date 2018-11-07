@@ -16,19 +16,19 @@
 
 package com.echothree.control.user.message.server.command;
 
-import com.echothree.control.user.message.remote.form.GetMessageTypesForm;
-import com.echothree.control.user.message.remote.result.GetMessageTypesResult;
-import com.echothree.control.user.message.remote.result.MessageResultFactory;
+import com.echothree.control.user.message.common.form.GetMessageTypesForm;
+import com.echothree.control.user.message.common.result.GetMessageTypesResult;
+import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.message.server.MessageControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

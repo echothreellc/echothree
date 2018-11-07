@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.comment.server.transfer;
 
-import com.echothree.model.control.comment.remote.transfer.CommentUsageTypeDescriptionTransfer;
-import com.echothree.model.control.comment.remote.transfer.CommentUsageTypeTransfer;
+import com.echothree.model.control.comment.common.transfer.CommentUsageTypeDescriptionTransfer;
+import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTransfer;
 import com.echothree.model.control.comment.server.CommentControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.comment.server.entity.CommentUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

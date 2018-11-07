@@ -17,13 +17,13 @@
 package com.echothree.ui.web.main.action.forum.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.edit.ForumEdit;
-import com.echothree.control.user.forum.remote.form.EditForumForm;
-import com.echothree.control.user.forum.remote.result.EditForumResult;
-import com.echothree.control.user.forum.remote.spec.ForumSpec;
+import com.echothree.control.user.forum.common.edit.ForumEdit;
+import com.echothree.control.user.forum.common.form.EditForumForm;
+import com.echothree.control.user.forum.common.result.EditForumResult;
+import com.echothree.control.user.forum.common.spec.ForumSpec;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

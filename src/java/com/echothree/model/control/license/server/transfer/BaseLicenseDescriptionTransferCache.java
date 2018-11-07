@@ -19,7 +19,7 @@ package com.echothree.model.control.license.server.transfer;
 import com.echothree.model.control.license.server.LicenseControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
 

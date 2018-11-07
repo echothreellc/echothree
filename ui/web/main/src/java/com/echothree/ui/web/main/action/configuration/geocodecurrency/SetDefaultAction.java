@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.geocodecurrency;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.form.SetDefaultGeoCodeCurrencyForm;
+import com.echothree.control.user.geo.common.form.SetDefaultGeoCodeCurrencyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

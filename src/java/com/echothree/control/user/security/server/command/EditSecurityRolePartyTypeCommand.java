@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.security.server.command;
 
-import com.echothree.control.user.security.remote.edit.SecurityEditFactory;
-import com.echothree.control.user.security.remote.edit.SecurityRolePartyTypeEdit;
-import com.echothree.control.user.security.remote.form.EditSecurityRolePartyTypeForm;
-import com.echothree.control.user.security.remote.result.EditSecurityRolePartyTypeResult;
-import com.echothree.control.user.security.remote.result.SecurityResultFactory;
-import com.echothree.control.user.security.remote.spec.SecurityRolePartyTypeSpec;
+import com.echothree.control.user.security.common.edit.SecurityEditFactory;
+import com.echothree.control.user.security.common.edit.SecurityRolePartyTypeEdit;
+import com.echothree.control.user.security.common.form.EditSecurityRolePartyTypeForm;
+import com.echothree.control.user.security.common.result.EditSecurityRolePartyTypeResult;
+import com.echothree.control.user.security.common.result.SecurityResultFactory;
+import com.echothree.control.user.security.common.spec.SecurityRolePartyTypeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -37,11 +37,11 @@ import com.echothree.model.data.security.server.value.SecurityRolePartyTypeValue
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

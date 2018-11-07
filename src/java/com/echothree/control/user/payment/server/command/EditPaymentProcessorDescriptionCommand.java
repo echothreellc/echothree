@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.payment.server.command;
 
-import com.echothree.control.user.payment.remote.edit.PaymentEditFactory;
-import com.echothree.control.user.payment.remote.edit.PaymentProcessorDescriptionEdit;
-import com.echothree.control.user.payment.remote.form.EditPaymentProcessorDescriptionForm;
-import com.echothree.control.user.payment.remote.result.EditPaymentProcessorDescriptionResult;
-import com.echothree.control.user.payment.remote.result.PaymentResultFactory;
-import com.echothree.control.user.payment.remote.spec.PaymentProcessorDescriptionSpec;
+import com.echothree.control.user.payment.common.edit.PaymentEditFactory;
+import com.echothree.control.user.payment.common.edit.PaymentProcessorDescriptionEdit;
+import com.echothree.control.user.payment.common.form.EditPaymentProcessorDescriptionForm;
+import com.echothree.control.user.payment.common.result.EditPaymentProcessorDescriptionResult;
+import com.echothree.control.user.payment.common.result.PaymentResultFactory;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.server.PaymentControl;
@@ -31,11 +31,11 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
 import com.echothree.model.data.payment.server.value.PaymentProcessorDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

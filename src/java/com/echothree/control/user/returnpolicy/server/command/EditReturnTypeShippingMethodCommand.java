@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.returnpolicy.server.command;
 
-import com.echothree.control.user.returnpolicy.remote.edit.ReturnPolicyEditFactory;
-import com.echothree.control.user.returnpolicy.remote.edit.ReturnTypeShippingMethodEdit;
-import com.echothree.control.user.returnpolicy.remote.form.EditReturnTypeShippingMethodForm;
-import com.echothree.control.user.returnpolicy.remote.result.EditReturnTypeShippingMethodResult;
-import com.echothree.control.user.returnpolicy.remote.result.ReturnPolicyResultFactory;
-import com.echothree.control.user.returnpolicy.remote.spec.ReturnTypeShippingMethodSpec;
+import com.echothree.control.user.returnpolicy.common.edit.ReturnPolicyEditFactory;
+import com.echothree.control.user.returnpolicy.common.edit.ReturnTypeShippingMethodEdit;
+import com.echothree.control.user.returnpolicy.common.form.EditReturnTypeShippingMethodForm;
+import com.echothree.control.user.returnpolicy.common.result.EditReturnTypeShippingMethodResult;
+import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
+import com.echothree.control.user.returnpolicy.common.spec.ReturnTypeShippingMethodSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,12 +32,12 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeShippingMethod;
 import com.echothree.model.data.returnpolicy.server.value.ReturnTypeShippingMethodValue;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.wishlist;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.remote.WishlistService;
-import com.echothree.control.user.wishlist.remote.form.CreateWishlistTypePriorityDescriptionForm;
-import com.echothree.control.user.wishlist.remote.form.WishlistFormFactory;
+import com.echothree.control.user.wishlist.common.WishlistService;
+import com.echothree.control.user.wishlist.common.form.CreateWishlistTypePriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

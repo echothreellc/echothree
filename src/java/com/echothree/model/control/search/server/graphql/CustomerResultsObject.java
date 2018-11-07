@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.graphql;
 
-import com.echothree.control.user.search.remote.form.GetCustomerResultsForm;
+import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.exception.BaseSearchException;

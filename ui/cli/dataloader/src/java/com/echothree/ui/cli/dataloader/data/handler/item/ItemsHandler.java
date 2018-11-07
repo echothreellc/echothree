@@ -17,17 +17,17 @@
 package com.echothree.ui.cli.dataloader.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.remote.ItemService;
-import com.echothree.control.user.item.remote.form.CreateItemForm;
-import com.echothree.control.user.item.remote.form.GetItemForm;
-import com.echothree.control.user.item.remote.form.ItemFormFactory;
-import com.echothree.control.user.item.remote.result.CreateItemResult;
-import com.echothree.control.user.item.remote.result.GetItemResult;
-import com.echothree.model.control.item.remote.transfer.ItemTransfer;
+import com.echothree.control.user.item.common.ItemService;
+import com.echothree.control.user.item.common.form.CreateItemForm;
+import com.echothree.control.user.item.common.form.GetItemForm;
+import com.echothree.control.user.item.common.form.ItemFormFactory;
+import com.echothree.control.user.item.common.result.CreateItemResult;
+import com.echothree.control.user.item.common.result.GetItemResult;
+import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

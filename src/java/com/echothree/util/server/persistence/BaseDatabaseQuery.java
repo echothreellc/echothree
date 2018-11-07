@@ -17,7 +17,7 @@
 package com.echothree.util.server.persistence;
 
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.lang.reflect.Constructor;
@@ -80,7 +80,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                                 nameComponents[++i] = baseClassName + "Factory";
                                 factoryName = Joiner.on(".").join(nameComponents);
 
-                                nameComponents[j++] = "remote";
+                                nameComponents[j++] = "common";
                                 nameComponents[j++] = "pk";
                                 nameComponents[j] = baseClassName + "PK";
                                 pkName = Joiner.on(".").join(nameComponents);

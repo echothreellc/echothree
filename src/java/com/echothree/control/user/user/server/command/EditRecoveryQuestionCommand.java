@@ -16,15 +16,15 @@
 
 package com.echothree.control.user.user.server.command;
 
-import com.echothree.control.user.user.remote.edit.RecoveryQuestionEdit;
-import com.echothree.control.user.user.remote.edit.UserEditFactory;
-import com.echothree.control.user.user.remote.form.EditRecoveryQuestionForm;
-import com.echothree.control.user.user.remote.result.EditRecoveryQuestionResult;
-import com.echothree.control.user.user.remote.result.UserResultFactory;
-import com.echothree.control.user.user.remote.spec.RecoveryQuestionSpec;
+import com.echothree.control.user.user.common.edit.RecoveryQuestionEdit;
+import com.echothree.control.user.user.common.edit.UserEditFactory;
+import com.echothree.control.user.user.common.form.EditRecoveryQuestionForm;
+import com.echothree.control.user.user.common.result.EditRecoveryQuestionResult;
+import com.echothree.control.user.user.common.result.UserResultFactory;
+import com.echothree.control.user.user.common.spec.RecoveryQuestionSpec;
 import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.RecoveryQuestionDescription;
 import com.echothree.model.data.user.server.entity.RecoveryQuestionDetail;
@@ -33,8 +33,8 @@ import com.echothree.model.data.user.server.value.RecoveryQuestionDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import java.util.Arrays;
 import java.util.Collections;

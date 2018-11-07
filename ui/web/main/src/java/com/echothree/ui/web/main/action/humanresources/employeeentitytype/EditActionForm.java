@@ -16,7 +16,7 @@
 
 package com.echothree.ui.web.main.action.humanresources.employeeentitytype;
 
-import com.echothree.model.control.core.remote.choice.ApplicationEditorChoicesBean;
+import com.echothree.model.control.core.common.choice.ApplicationEditorChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import javax.servlet.http.HttpServletRequest;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.tag.server;
 
-import com.echothree.control.user.tag.remote.TagService;
+import com.echothree.control.user.tag.common.TagService;
 import javax.ejb.Local;
 
 @Local

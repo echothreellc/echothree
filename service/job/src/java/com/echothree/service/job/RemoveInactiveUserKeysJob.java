@@ -17,7 +17,7 @@
 package com.echothree.service.job;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.remote.form.RemoveInactiveUserKeysForm;
+import com.echothree.control.user.authentication.common.form.RemoveInactiveUserKeysForm;
 import com.echothree.model.control.job.common.Jobs;
 import com.echothree.util.common.service.job.BaseScheduledJob;
 import javax.ejb.Schedule;

@@ -16,7 +16,7 @@
 
 package com.echothree.util.server.persistence.valuecache;
 
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.BaseValue;
 
 public class NullValueCacheImpl

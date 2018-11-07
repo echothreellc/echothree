@@ -17,16 +17,16 @@
 package com.echothree.ui.cli.dataloader.data.handler.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.ForumService;
-import com.echothree.control.user.forum.remote.form.CreateBlogCommentForm;
-import com.echothree.control.user.forum.remote.form.ForumFormFactory;
-import com.echothree.control.user.forum.remote.result.CreateBlogCommentResult;
+import com.echothree.control.user.forum.common.ForumService;
+import com.echothree.control.user.forum.common.form.CreateBlogCommentForm;
+import com.echothree.control.user.forum.common.form.ForumFormFactory;
+import com.echothree.control.user.forum.common.result.CreateBlogCommentResult;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.tag.EntityTagsHandler;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import java.util.Map;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;

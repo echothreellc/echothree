@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.geocodetype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.remote.form.SetDefaultGeoCodeTypeForm;
+import com.echothree.control.user.geo.common.form.SetDefaultGeoCodeTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

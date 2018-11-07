@@ -17,9 +17,9 @@
 package com.echothree.ui.web.main.action.humanresources.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.RemoveEmployeeFromCompanyForm;
-import com.echothree.control.user.party.remote.form.RemoveEmployeeFromDepartmentForm;
-import com.echothree.control.user.party.remote.form.RemoveEmployeeFromDivisionForm;
+import com.echothree.control.user.party.common.form.RemoveEmployeeFromCompanyForm;
+import com.echothree.control.user.party.common.form.RemoveEmployeeFromDepartmentForm;
+import com.echothree.control.user.party.common.form.RemoveEmployeeFromDivisionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.scale.common;
 
-import com.echothree.control.user.scale.remote.ScaleRemote;
+import com.echothree.control.user.scale.common.ScaleRemote;
 import com.echothree.control.user.scale.server.ScaleLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class ScaleUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (ScaleRemote)ctx.lookup("ejb:echothree/echothree-server/ScaleBean!com.echothree.control.user.scale.remote.ScaleRemote");
+            cachedRemote = (ScaleRemote)ctx.lookup("ejb:echothree/echothree-server/ScaleBean!com.echothree.control.user.scale.common.ScaleRemote");
         }
         
         return cachedRemote;

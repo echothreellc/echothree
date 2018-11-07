@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.purchase.common.PurchaseUtil;
-import com.echothree.control.user.purchase.remote.PurchaseService;
+import com.echothree.control.user.purchase.common.PurchaseService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

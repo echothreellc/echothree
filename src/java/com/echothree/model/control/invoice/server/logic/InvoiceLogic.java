@@ -46,7 +46,7 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermDetail;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;

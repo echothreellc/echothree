@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancesecurityrole;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.remote.form.CreateWorkflowEntranceSecurityRoleForm;
-import com.echothree.control.user.workflow.remote.form.GetWorkflowEntrancePartyTypeForm;
-import com.echothree.control.user.workflow.remote.result.GetWorkflowEntrancePartyTypeResult;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceSecurityRoleForm;
+import com.echothree.control.user.workflow.common.form.GetWorkflowEntrancePartyTypeForm;
+import com.echothree.control.user.workflow.common.result.GetWorkflowEntrancePartyTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

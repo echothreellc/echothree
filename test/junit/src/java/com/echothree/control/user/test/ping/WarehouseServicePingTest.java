@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.remote.WarehouseService;
+import com.echothree.control.user.warehouse.common.WarehouseService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

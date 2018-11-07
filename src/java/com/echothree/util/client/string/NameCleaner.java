@@ -18,9 +18,9 @@ package com.echothree.util.client.string;
 
 import com.echothree.control.user.party.client.helper.NameSuffixesHelper;
 import com.echothree.control.user.party.client.helper.PersonalTitlesHelper;
-import com.echothree.model.control.party.remote.choice.NameSuffixChoicesBean;
-import com.echothree.model.control.party.remote.choice.PersonalTitleChoicesBean;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
+import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.string.StringUtils;
 import com.google.common.base.Splitter;
 import java.util.ArrayList;

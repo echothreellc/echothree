@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessor;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.remote.edit.PaymentProcessorEdit;
-import com.echothree.control.user.payment.remote.form.EditPaymentProcessorForm;
-import com.echothree.control.user.payment.remote.result.EditPaymentProcessorResult;
-import com.echothree.control.user.payment.remote.spec.PaymentProcessorSpec;
+import com.echothree.control.user.payment.common.edit.PaymentProcessorEdit;
+import com.echothree.control.user.payment.common.form.EditPaymentProcessorForm;
+import com.echothree.control.user.payment.common.result.EditPaymentProcessorResult;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

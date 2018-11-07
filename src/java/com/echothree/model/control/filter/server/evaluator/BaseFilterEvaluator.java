@@ -20,7 +20,7 @@ import com.echothree.model.control.filter.server.FilterControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

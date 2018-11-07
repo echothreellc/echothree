@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.geo;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.remote.TaxService;
-import com.echothree.control.user.tax.remote.form.CreateTaxClassificationTranslationForm;
-import com.echothree.control.user.tax.remote.form.TaxFormFactory;
+import com.echothree.control.user.tax.common.TaxService;
+import com.echothree.control.user.tax.common.form.CreateTaxClassificationTranslationForm;
+import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

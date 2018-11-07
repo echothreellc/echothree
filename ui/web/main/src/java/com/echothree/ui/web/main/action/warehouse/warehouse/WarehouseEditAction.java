@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.remote.edit.WarehouseEdit;
-import com.echothree.control.user.warehouse.remote.form.EditWarehouseForm;
-import com.echothree.control.user.warehouse.remote.result.EditWarehouseResult;
-import com.echothree.control.user.warehouse.remote.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.edit.WarehouseEdit;
+import com.echothree.control.user.warehouse.common.form.EditWarehouseForm;
+import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
+import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

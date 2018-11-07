@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sequence.common.exception;
 
-import com.echothree.util.remote.message.Message;
+import com.echothree.util.common.message.Message;
 
 public class DuplicateSequenceNameException
         extends BaseSequenceException {

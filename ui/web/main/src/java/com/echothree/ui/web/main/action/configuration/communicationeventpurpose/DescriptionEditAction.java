@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.configuration.communicationeventpurpose;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.remote.edit.CommunicationEventPurposeDescriptionEdit;
-import com.echothree.control.user.communication.remote.form.EditCommunicationEventPurposeDescriptionForm;
-import com.echothree.control.user.communication.remote.result.EditCommunicationEventPurposeDescriptionResult;
-import com.echothree.control.user.communication.remote.spec.CommunicationEventPurposeDescriptionSpec;
+import com.echothree.control.user.communication.common.edit.CommunicationEventPurposeDescriptionEdit;
+import com.echothree.control.user.communication.common.form.EditCommunicationEventPurposeDescriptionForm;
+import com.echothree.control.user.communication.common.result.EditCommunicationEventPurposeDescriptionResult;
+import com.echothree.control.user.communication.common.spec.CommunicationEventPurposeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.remote.AssociateService;
+import com.echothree.control.user.associate.common.AssociateService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

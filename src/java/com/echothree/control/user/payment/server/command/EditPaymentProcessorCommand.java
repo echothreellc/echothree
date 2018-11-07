@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.payment.server.command;
 
-import com.echothree.control.user.payment.remote.edit.PaymentEditFactory;
-import com.echothree.control.user.payment.remote.edit.PaymentProcessorEdit;
-import com.echothree.control.user.payment.remote.form.EditPaymentProcessorForm;
-import com.echothree.control.user.payment.remote.result.EditPaymentProcessorResult;
-import com.echothree.control.user.payment.remote.result.PaymentResultFactory;
-import com.echothree.control.user.payment.remote.spec.PaymentProcessorSpec;
+import com.echothree.control.user.payment.common.edit.PaymentEditFactory;
+import com.echothree.control.user.payment.common.edit.PaymentProcessorEdit;
+import com.echothree.control.user.payment.common.form.EditPaymentProcessorForm;
+import com.echothree.control.user.payment.common.result.EditPaymentProcessorResult;
+import com.echothree.control.user.payment.common.result.PaymentResultFactory;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDetail;
 import com.echothree.model.data.payment.server.value.PaymentProcessorDescriptionValue;
 import com.echothree.model.data.payment.server.value.PaymentProcessorDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

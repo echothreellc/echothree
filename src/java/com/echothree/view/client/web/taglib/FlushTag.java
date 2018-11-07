@@ -31,9 +31,9 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.RemoveCacheEntryForm;
+import com.echothree.control.user.core.common.form.RemoveCacheEntryForm;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 

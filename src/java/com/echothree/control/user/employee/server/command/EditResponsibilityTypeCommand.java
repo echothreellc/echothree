@@ -16,25 +16,25 @@
 
 package com.echothree.control.user.employee.server.command;
 
-import com.echothree.control.user.employee.remote.edit.EmployeeEditFactory;
-import com.echothree.control.user.employee.remote.edit.ResponsibilityTypeEdit;
-import com.echothree.control.user.employee.remote.form.EditResponsibilityTypeForm;
-import com.echothree.control.user.employee.remote.result.EditResponsibilityTypeResult;
-import com.echothree.control.user.employee.remote.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.remote.spec.ResponsibilityTypeSpec;
+import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
+import com.echothree.control.user.employee.common.edit.ResponsibilityTypeEdit;
+import com.echothree.control.user.employee.common.form.EditResponsibilityTypeForm;
+import com.echothree.control.user.employee.common.result.EditResponsibilityTypeResult;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.control.user.employee.common.spec.ResponsibilityTypeSpec;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDetail;
 import com.echothree.model.data.employee.server.value.ResponsibilityTypeDescriptionValue;
 import com.echothree.model.data.employee.server.value.ResponsibilityTypeDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;

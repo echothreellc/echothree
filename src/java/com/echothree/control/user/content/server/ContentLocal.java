@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.content.server;
 
-import com.echothree.control.user.content.remote.ContentService;
+import com.echothree.control.user.content.common.ContentService;
 import javax.ejb.Local;
 
 @Local

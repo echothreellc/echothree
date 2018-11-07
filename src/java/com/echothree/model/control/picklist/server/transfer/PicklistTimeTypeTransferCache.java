@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.picklist.server.transfer;
 
-import com.echothree.model.control.picklist.remote.transfer.PicklistTimeTypeTransfer;
+import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeTransfer;
 import com.echothree.model.control.picklist.server.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeType;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeTypeDetail;

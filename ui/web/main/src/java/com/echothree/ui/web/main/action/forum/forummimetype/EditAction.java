@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.forum.forummimetype;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.remote.edit.ForumMimeTypeEdit;
-import com.echothree.control.user.forum.remote.form.EditForumMimeTypeForm;
-import com.echothree.control.user.forum.remote.result.EditForumMimeTypeResult;
-import com.echothree.control.user.forum.remote.spec.ForumMimeTypeSpec;
+import com.echothree.control.user.forum.common.edit.ForumMimeTypeEdit;
+import com.echothree.control.user.forum.common.form.EditForumMimeTypeForm;
+import com.echothree.control.user.forum.common.result.EditForumMimeTypeResult;
+import com.echothree.control.user.forum.common.spec.ForumMimeTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

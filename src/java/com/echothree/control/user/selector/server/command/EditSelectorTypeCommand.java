@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.selector.server.command;
 
-import com.echothree.control.user.selector.remote.edit.SelectorEditFactory;
-import com.echothree.control.user.selector.remote.edit.SelectorTypeEdit;
-import com.echothree.control.user.selector.remote.form.EditSelectorTypeForm;
-import com.echothree.control.user.selector.remote.result.EditSelectorTypeResult;
-import com.echothree.control.user.selector.remote.result.SelectorResultFactory;
-import com.echothree.control.user.selector.remote.spec.SelectorTypeSpec;
+import com.echothree.control.user.selector.common.edit.SelectorEditFactory;
+import com.echothree.control.user.selector.common.edit.SelectorTypeEdit;
+import com.echothree.control.user.selector.common.form.EditSelectorTypeForm;
+import com.echothree.control.user.selector.common.result.EditSelectorTypeResult;
+import com.echothree.control.user.selector.common.result.SelectorResultFactory;
+import com.echothree.control.user.selector.common.spec.SelectorTypeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.SelectorControl;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorKindDetail;
 import com.echothree.model.data.selector.server.entity.SelectorType;
@@ -34,11 +34,11 @@ import com.echothree.model.data.selector.server.entity.SelectorTypeDescription;
 import com.echothree.model.data.selector.server.entity.SelectorTypeDetail;
 import com.echothree.model.data.selector.server.value.SelectorTypeDescriptionValue;
 import com.echothree.model.data.selector.server.value.SelectorTypeDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

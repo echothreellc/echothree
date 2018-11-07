@@ -17,16 +17,16 @@
 package com.echothree.ui.web.main.action.item.partyinventorylevel;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.remote.form.DeletePartyInventoryLevelForm;
-import com.echothree.control.user.inventory.remote.form.GetPartyInventoryLevelForm;
-import com.echothree.control.user.inventory.remote.result.GetPartyInventoryLevelResult;
+import com.echothree.control.user.inventory.common.form.DeletePartyInventoryLevelForm;
+import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelForm;
+import com.echothree.control.user.inventory.common.result.GetPartyInventoryLevelResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

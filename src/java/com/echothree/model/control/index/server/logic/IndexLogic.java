@@ -35,7 +35,7 @@ import com.echothree.model.data.index.server.entity.IndexStatus;
 import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.index.server.entity.IndexTypeDetail;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.queue.remote.pk.QueueTypePK;
+import com.echothree.model.data.queue.common.pk.QueueTypePK;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.util.common.message.ExecutionErrors;

@@ -16,10 +16,10 @@
 
 package com.echothree.util.common.transfer;
 
-import com.echothree.model.control.core.remote.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.remote.transfer.BaseTransfer;
-import com.echothree.util.remote.transfer.BaseWrapper;
+import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.BaseWrapper;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;

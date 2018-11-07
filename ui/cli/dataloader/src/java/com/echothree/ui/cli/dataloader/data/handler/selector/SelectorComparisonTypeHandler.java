@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.remote.SelectorService;
-import com.echothree.control.user.selector.remote.form.CreateSelectorComparisonTypeDescriptionForm;
-import com.echothree.control.user.selector.remote.form.SelectorFormFactory;
+import com.echothree.control.user.selector.common.SelectorService;
+import com.echothree.control.user.selector.common.form.CreateSelectorComparisonTypeDescriptionForm;
+import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

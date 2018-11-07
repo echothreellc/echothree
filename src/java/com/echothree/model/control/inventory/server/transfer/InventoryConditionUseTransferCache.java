@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionTransfer;
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionUseTransfer;
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionUseTypeTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionUseTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionUseTypeTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionUse;
 import com.echothree.model.data.user.server.entity.UserVisit;

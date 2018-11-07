@@ -16,23 +16,23 @@
 
 package com.echothree.control.user.workeffort.server.command;
 
-import com.echothree.control.user.workeffort.remote.form.GetWorkEffortScopeDescriptionForm;
-import com.echothree.control.user.workeffort.remote.result.GetWorkEffortScopeDescriptionResult;
-import com.echothree.control.user.workeffort.remote.result.WorkEffortResultFactory;
+import com.echothree.control.user.workeffort.common.form.GetWorkEffortScopeDescriptionForm;
+import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeDescriptionResult;
+import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

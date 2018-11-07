@@ -17,8 +17,8 @@
 package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 
 public class InvalidateUserSessionCommand

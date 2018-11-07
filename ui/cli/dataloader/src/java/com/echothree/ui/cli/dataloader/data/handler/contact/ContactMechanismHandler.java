@@ -17,11 +17,11 @@
 package com.echothree.ui.cli.dataloader.data.handler.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.remote.ContactService;
-import com.echothree.control.user.contact.remote.form.ContactFormFactory;
-import com.echothree.control.user.contact.remote.form.CreateContactMechanismAliasForm;
-import com.echothree.control.user.contact.remote.form.CreatePartyContactMechanismAliasForm;
-import com.echothree.control.user.contact.remote.form.CreatePartyContactMechanismPurposeForm;
+import com.echothree.control.user.contact.common.ContactService;
+import com.echothree.control.user.contact.common.form.ContactFormFactory;
+import com.echothree.control.user.contact.common.form.CreateContactMechanismAliasForm;
+import com.echothree.control.user.contact.common.form.CreatePartyContactMechanismAliasForm;
+import com.echothree.control.user.contact.common.form.CreatePartyContactMechanismPurposeForm;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.data.handler.comment.CommentsHandler;

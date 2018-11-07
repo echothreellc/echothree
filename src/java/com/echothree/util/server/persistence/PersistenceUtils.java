@@ -19,7 +19,7 @@ package com.echothree.util.server.persistence;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import java.sql.SQLException;
 
 public class PersistenceUtils {

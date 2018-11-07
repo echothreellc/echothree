@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestination;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.remote.edit.WorkflowDestinationEdit;
-import com.echothree.control.user.workflow.remote.form.EditWorkflowDestinationForm;
-import com.echothree.control.user.workflow.remote.result.EditWorkflowDestinationResult;
-import com.echothree.control.user.workflow.remote.spec.WorkflowDestinationSpec;
+import com.echothree.control.user.workflow.common.edit.WorkflowDestinationEdit;
+import com.echothree.control.user.workflow.common.form.EditWorkflowDestinationForm;
+import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationResult;
+import com.echothree.control.user.workflow.common.spec.WorkflowDestinationSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

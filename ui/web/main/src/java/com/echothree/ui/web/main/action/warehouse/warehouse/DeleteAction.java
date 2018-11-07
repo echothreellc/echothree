@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.remote.form.DeleteWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.DeleteWarehouseForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -16,20 +16,20 @@
 
 package com.echothree.control.user.document.server.command;
 
-import com.echothree.control.user.document.remote.form.GetDocumentTypeUsageTypeForm;
-import com.echothree.control.user.document.remote.result.DocumentResultFactory;
-import com.echothree.control.user.document.remote.result.GetDocumentTypeUsageTypeResult;
+import com.echothree.control.user.document.common.form.GetDocumentTypeUsageTypeForm;
+import com.echothree.control.user.document.common.result.DocumentResultFactory;
+import com.echothree.control.user.document.common.result.GetDocumentTypeUsageTypeResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

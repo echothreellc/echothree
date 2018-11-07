@@ -17,13 +17,13 @@
 package com.echothree.ui.web.main.action.core.entityintegerrange;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.edit.EntityIntegerRangeEdit;
-import com.echothree.control.user.core.remote.form.EditEntityIntegerRangeForm;
-import com.echothree.control.user.core.remote.result.EditEntityIntegerRangeResult;
-import com.echothree.control.user.core.remote.spec.EntityIntegerRangeSpec;
+import com.echothree.control.user.core.common.edit.EntityIntegerRangeEdit;
+import com.echothree.control.user.core.common.form.EditEntityIntegerRangeForm;
+import com.echothree.control.user.core.common.result.EditEntityIntegerRangeResult;
+import com.echothree.control.user.core.common.spec.EntityIntegerRangeSpec;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

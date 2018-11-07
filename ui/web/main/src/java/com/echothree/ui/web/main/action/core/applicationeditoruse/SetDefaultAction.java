@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.core.applicationeditoruse;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.SetDefaultApplicationEditorUseForm;
+import com.echothree.control.user.core.common.form.SetDefaultApplicationEditorUseForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

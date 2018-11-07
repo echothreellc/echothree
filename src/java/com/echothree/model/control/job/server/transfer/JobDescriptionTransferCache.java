@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.job.server.transfer;
 
-import com.echothree.model.control.job.remote.transfer.JobDescriptionTransfer;
-import com.echothree.model.control.job.remote.transfer.JobTransfer;
+import com.echothree.model.control.job.common.transfer.JobDescriptionTransfer;
+import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.server.JobControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.job.server.entity.JobDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

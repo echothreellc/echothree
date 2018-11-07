@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.payment.common;
 
-import com.echothree.control.user.payment.remote.PaymentRemote;
+import com.echothree.control.user.payment.common.PaymentRemote;
 import com.echothree.control.user.payment.server.PaymentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class PaymentUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (PaymentRemote)ctx.lookup("ejb:echothree/echothree-server/PaymentBean!com.echothree.control.user.payment.remote.PaymentRemote");
+            cachedRemote = (PaymentRemote)ctx.lookup("ejb:echothree/echothree-server/PaymentBean!com.echothree.control.user.payment.common.PaymentRemote");
         }
         
         return cachedRemote;

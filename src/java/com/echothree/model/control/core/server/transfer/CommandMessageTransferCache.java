@@ -17,15 +17,15 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.core.remote.transfer.CommandMessageTransfer;
-import com.echothree.model.control.core.remote.transfer.CommandMessageTranslationTransfer;
-import com.echothree.model.control.core.remote.transfer.CommandMessageTypeTransfer;
+import com.echothree.model.control.core.common.transfer.CommandMessageTransfer;
+import com.echothree.model.control.core.common.transfer.CommandMessageTranslationTransfer;
+import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.core.server.entity.CommandMessageDetail;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.MapWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
 import java.util.List;
 import java.util.Set;
 

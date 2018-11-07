@@ -17,9 +17,9 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.party.remote.transfer.PartyTypeTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTypeTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
@@ -27,7 +27,7 @@ import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
 import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicy;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

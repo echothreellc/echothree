@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.work.workrequirement;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.remote.form.GetWorkRequirementForm;
-import com.echothree.control.user.workrequirement.remote.result.GetWorkRequirementResult;
+import com.echothree.control.user.workrequirement.common.form.GetWorkRequirementForm;
+import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
-import com.echothree.model.control.workrequirement.remote.transfer.WorkRequirementTransfer;
+import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

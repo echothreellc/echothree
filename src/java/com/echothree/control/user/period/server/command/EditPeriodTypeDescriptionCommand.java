@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.period.server.command;
 
-import com.echothree.control.user.period.remote.edit.PeriodEditFactory;
-import com.echothree.control.user.period.remote.edit.PeriodTypeDescriptionEdit;
-import com.echothree.control.user.period.remote.form.EditPeriodTypeDescriptionForm;
-import com.echothree.control.user.period.remote.result.EditPeriodTypeDescriptionResult;
-import com.echothree.control.user.period.remote.result.PeriodResultFactory;
-import com.echothree.control.user.period.remote.spec.PeriodTypeDescriptionSpec;
+import com.echothree.control.user.period.common.edit.PeriodEditFactory;
+import com.echothree.control.user.period.common.edit.PeriodTypeDescriptionEdit;
+import com.echothree.control.user.period.common.form.EditPeriodTypeDescriptionForm;
+import com.echothree.control.user.period.common.result.EditPeriodTypeDescriptionResult;
+import com.echothree.control.user.period.common.result.PeriodResultFactory;
+import com.echothree.control.user.period.common.spec.PeriodTypeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.period.server.PeriodControl;
@@ -32,12 +32,12 @@ import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodType;
 import com.echothree.model.data.period.server.entity.PeriodTypeDescription;
 import com.echothree.model.data.period.server.value.PeriodTypeDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

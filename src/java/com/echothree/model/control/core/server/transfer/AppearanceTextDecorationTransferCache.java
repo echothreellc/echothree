@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.remote.transfer.AppearanceTextDecorationTransfer;
-import com.echothree.model.control.core.remote.transfer.AppearanceTransfer;
-import com.echothree.model.control.core.remote.transfer.TextDecorationTransfer;
+import com.echothree.model.control.core.common.transfer.AppearanceTextDecorationTransfer;
+import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
+import com.echothree.model.control.core.common.transfer.TextDecorationTransfer;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.AppearanceTextDecoration;
 import com.echothree.model.data.user.server.entity.UserVisit;

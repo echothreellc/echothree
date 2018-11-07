@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistgroup;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.remote.form.SetDefaultContactListGroupForm;
+import com.echothree.control.user.contactlist.common.form.SetDefaultContactListGroupForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

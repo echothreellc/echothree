@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.employee.remote.transfer.LeaveTypeDescriptionTransfer;
-import com.echothree.model.control.employee.remote.transfer.LeaveTypeTransfer;
+import com.echothree.model.control.employee.common.transfer.LeaveTypeDescriptionTransfer;
+import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.employee.server.entity.LeaveTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

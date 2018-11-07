@@ -21,11 +21,11 @@ import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDetail;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.form.BaseForm;
-import com.echothree.util.remote.form.ValidationResult;
+import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 

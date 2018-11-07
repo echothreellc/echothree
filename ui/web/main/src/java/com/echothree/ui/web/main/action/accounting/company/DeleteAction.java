@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.form.DeleteCompanyForm;
+import com.echothree.control.user.party.common.form.DeleteCompanyForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

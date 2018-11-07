@@ -17,15 +17,15 @@
 package com.echothree.ui.cli.dataloader.data.handler.comment;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.remote.CommentService;
-import com.echothree.control.user.comment.remote.form.CommentFormFactory;
-import com.echothree.control.user.comment.remote.form.CreateCommentForm;
-import com.echothree.control.user.comment.remote.form.CreateCommentUsageForm;
-import com.echothree.control.user.comment.remote.result.CreateCommentResult;
+import com.echothree.control.user.comment.common.CommentService;
+import com.echothree.control.user.comment.common.form.CommentFormFactory;
+import com.echothree.control.user.comment.common.form.CreateCommentForm;
+import com.echothree.control.user.comment.common.form.CreateCommentUsageForm;
+import com.echothree.control.user.comment.common.result.CreateCommentResult;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import java.util.HashSet;
 import java.util.Set;
 import javax.naming.NamingException;

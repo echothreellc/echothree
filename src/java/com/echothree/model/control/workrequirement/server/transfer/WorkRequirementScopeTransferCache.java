@@ -16,17 +16,17 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.selector.remote.transfer.SelectorTransfer;
+import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.SelectorControl;
-import com.echothree.model.control.sequence.remote.transfer.SequenceTransfer;
+import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
-import com.echothree.model.control.workeffort.remote.transfer.WorkEffortScopeTransfer;
+import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
-import com.echothree.model.control.workrequirement.remote.transfer.WorkRequirementScopeTransfer;
-import com.echothree.model.control.workrequirement.remote.transfer.WorkRequirementTypeTransfer;
+import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementScopeTransfer;
+import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTypeTransfer;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.sequence.server.entity.Sequence;
@@ -34,7 +34,7 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScopeDetail;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

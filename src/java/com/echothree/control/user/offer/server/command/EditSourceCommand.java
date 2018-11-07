@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.offer.server.command;
 
-import com.echothree.control.user.offer.remote.edit.OfferEditFactory;
-import com.echothree.control.user.offer.remote.edit.SourceEdit;
-import com.echothree.control.user.offer.remote.form.EditSourceForm;
-import com.echothree.control.user.offer.remote.result.EditSourceResult;
-import com.echothree.control.user.offer.remote.result.OfferResultFactory;
-import com.echothree.control.user.offer.remote.spec.SourceSpec;
+import com.echothree.control.user.offer.common.edit.OfferEditFactory;
+import com.echothree.control.user.offer.common.edit.SourceEdit;
+import com.echothree.control.user.offer.common.form.EditSourceForm;
+import com.echothree.control.user.offer.common.result.EditSourceResult;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
+import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,12 +29,12 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.offer.server.entity.SourceDetail;
 import com.echothree.model.data.offer.server.value.SourceDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -18,8 +18,8 @@ package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.workflow.server.logic.WorkflowTriggerLogic;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

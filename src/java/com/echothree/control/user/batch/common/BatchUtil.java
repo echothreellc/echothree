@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.batch.common;
 
-import com.echothree.control.user.batch.remote.BatchRemote;
+import com.echothree.control.user.batch.common.BatchRemote;
 import com.echothree.control.user.batch.server.BatchLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class BatchUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (BatchRemote)ctx.lookup("ejb:echothree/echothree-server/BatchBean!com.echothree.control.user.batch.remote.BatchRemote");
+            cachedRemote = (BatchRemote)ctx.lookup("ejb:echothree/echothree-server/BatchBean!com.echothree.control.user.batch.common.BatchRemote");
         }
         
         return cachedRemote;

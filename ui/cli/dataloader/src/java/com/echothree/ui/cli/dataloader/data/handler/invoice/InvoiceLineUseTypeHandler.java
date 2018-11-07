@@ -17,9 +17,9 @@
 package com.echothree.ui.cli.dataloader.data.handler.invoice;
 
 import com.echothree.control.user.invoice.common.InvoiceUtil;
-import com.echothree.control.user.invoice.remote.InvoiceService;
-import com.echothree.control.user.invoice.remote.form.CreateInvoiceLineUseTypeDescriptionForm;
-import com.echothree.control.user.invoice.remote.form.InvoiceFormFactory;
+import com.echothree.control.user.invoice.common.InvoiceService;
+import com.echothree.control.user.invoice.common.form.CreateInvoiceLineUseTypeDescriptionForm;
+import com.echothree.control.user.invoice.common.form.InvoiceFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
 import javax.naming.NamingException;

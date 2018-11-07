@@ -17,7 +17,7 @@
 package com.echothree.model.control.accounting.common.exception;
 
 import com.echothree.model.control.offer.common.exception.BaseOfferException;
-import com.echothree.util.remote.message.Message;
+import com.echothree.util.common.message.Message;
 
 public class MissingDefaultCurrencyException
         extends BaseOfferException {

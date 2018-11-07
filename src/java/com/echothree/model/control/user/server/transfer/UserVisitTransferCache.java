@@ -16,20 +16,20 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.associate.remote.transfer.AssociateReferralTransfer;
+import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.model.control.associate.server.AssociateControl;
 import com.echothree.model.control.campaign.server.CampaignControl;
-import com.echothree.model.control.offer.remote.transfer.OfferUseTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
-import com.echothree.model.control.party.remote.transfer.TimeZoneTransfer;
+import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.user.common.UserOptions;
-import com.echothree.model.control.user.remote.transfer.UserKeyTransfer;
-import com.echothree.model.control.user.remote.transfer.UserVisitTransfer;
+import com.echothree.model.control.user.common.transfer.UserKeyTransfer;
+import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
@@ -39,7 +39,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 

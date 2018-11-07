@@ -17,7 +17,7 @@
 package com.echothree.model.control.search.server.transfer;
 
 import com.echothree.model.control.search.common.SearchOptions;
-import com.echothree.model.control.search.remote.transfer.SearchUseTypeTransfer;
+import com.echothree.model.control.search.common.transfer.SearchUseTypeTransfer;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.search.server.entity.SearchUseTypeDetail;

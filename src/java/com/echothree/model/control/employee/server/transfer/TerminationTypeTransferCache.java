@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.employee.remote.transfer.TerminationTypeTransfer;
+import com.echothree.model.control.employee.common.transfer.TerminationTypeTransfer;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDetail;

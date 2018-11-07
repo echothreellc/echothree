@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.communication.server.transfer;
 
-import com.echothree.model.control.communication.remote.transfer.CommunicationEventRoleTypeTransfer;
+import com.echothree.model.control.communication.common.transfer.CommunicationEventRoleTypeTransfer;
 import com.echothree.model.control.communication.server.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;

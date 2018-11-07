@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.glaccount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.DeleteGlAccountForm;
+import com.echothree.control.user.accounting.common.form.DeleteGlAccountForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.remote.form.DeleteShippingMethodDescriptionForm;
+import com.echothree.control.user.shipping.common.form.DeleteShippingMethodDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

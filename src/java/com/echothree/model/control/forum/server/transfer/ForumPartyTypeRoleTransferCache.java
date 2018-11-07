@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.forum.remote.transfer.ForumPartyTypeRoleTransfer;
-import com.echothree.model.control.forum.remote.transfer.ForumRoleTypeTransfer;
-import com.echothree.model.control.forum.remote.transfer.ForumTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumPartyTypeRoleTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumRoleTypeTransfer;
+import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.server.ForumControl;
-import com.echothree.model.control.party.remote.transfer.PartyTypeTransfer;
+import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumPartyTypeRole;
 import com.echothree.model.data.user.server.entity.UserVisit;

@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.order.server.transfer;
 
-import com.echothree.model.control.contact.remote.transfer.PartyContactMechanismTransfer;
+import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.item.remote.transfer.ItemDeliveryTypeTransfer;
+import com.echothree.model.control.item.common.transfer.ItemDeliveryTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.order.remote.transfer.OrderShipmentGroupTransfer;
+import com.echothree.model.control.order.common.transfer.OrderShipmentGroupTransfer;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.shipping.remote.transfer.ShippingMethodTransfer;
+import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
 import com.echothree.model.control.shipping.server.ShippingControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;

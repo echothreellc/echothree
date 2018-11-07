@@ -17,12 +17,12 @@
 package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.AccountingProperties;
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
-import com.echothree.model.control.accounting.remote.transfer.SymbolPositionTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
+import com.echothree.util.common.form.TransferProperties;
 import java.util.Set;
 
 public class CurrencyTransferCache

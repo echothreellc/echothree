@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.index.server.command;
 
-import com.echothree.control.user.index.remote.edit.IndexEditFactory;
-import com.echothree.control.user.index.remote.edit.IndexFieldDescriptionEdit;
-import com.echothree.control.user.index.remote.form.EditIndexFieldDescriptionForm;
-import com.echothree.control.user.index.remote.result.EditIndexFieldDescriptionResult;
-import com.echothree.control.user.index.remote.result.IndexResultFactory;
-import com.echothree.control.user.index.remote.spec.IndexFieldDescriptionSpec;
+import com.echothree.control.user.index.common.edit.IndexEditFactory;
+import com.echothree.control.user.index.common.edit.IndexFieldDescriptionEdit;
+import com.echothree.control.user.index.common.form.EditIndexFieldDescriptionForm;
+import com.echothree.control.user.index.common.result.EditIndexFieldDescriptionResult;
+import com.echothree.control.user.index.common.result.IndexResultFactory;
+import com.echothree.control.user.index.common.spec.IndexFieldDescriptionSpec;
 import com.echothree.model.control.index.server.IndexControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -32,11 +32,11 @@ import com.echothree.model.data.index.server.entity.IndexFieldDescription;
 import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.index.server.value.IndexFieldDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

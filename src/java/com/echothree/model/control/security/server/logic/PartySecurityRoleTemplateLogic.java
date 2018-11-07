@@ -29,7 +29,7 @@ import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.training.server.entity.TrainingClass;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;

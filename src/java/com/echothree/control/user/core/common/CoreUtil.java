@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.core.common;
 
-import com.echothree.control.user.core.remote.CoreRemote;
+import com.echothree.control.user.core.common.CoreRemote;
 import com.echothree.control.user.core.server.CoreLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class CoreUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (CoreRemote)ctx.lookup("ejb:echothree/echothree-server/CoreBean!com.echothree.control.user.core.remote.CoreRemote");
+            cachedRemote = (CoreRemote)ctx.lookup("ejb:echothree/echothree-server/CoreBean!com.echothree.control.user.core.common.CoreRemote");
         }
         
         return cachedRemote;

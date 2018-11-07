@@ -17,18 +17,18 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessor;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.remote.edit.PaymentProcessorDescriptionEdit;
-import com.echothree.control.user.payment.remote.form.EditPaymentProcessorDescriptionForm;
-import com.echothree.control.user.payment.remote.form.GetPaymentProcessorForm;
-import com.echothree.control.user.payment.remote.result.EditPaymentProcessorDescriptionResult;
-import com.echothree.control.user.payment.remote.result.GetPaymentProcessorResult;
-import com.echothree.control.user.payment.remote.spec.PaymentProcessorDescriptionSpec;
-import com.echothree.model.control.payment.remote.transfer.PaymentProcessorDescriptionTransfer;
+import com.echothree.control.user.payment.common.edit.PaymentProcessorDescriptionEdit;
+import com.echothree.control.user.payment.common.form.EditPaymentProcessorDescriptionForm;
+import com.echothree.control.user.payment.common.form.GetPaymentProcessorForm;
+import com.echothree.control.user.payment.common.result.EditPaymentProcessorDescriptionResult;
+import com.echothree.control.user.payment.common.result.GetPaymentProcessorResult;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorDescriptionSpec;
+import com.echothree.model.control.payment.common.transfer.PaymentProcessorDescriptionTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

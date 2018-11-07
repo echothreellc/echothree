@@ -16,18 +16,18 @@
 
 package com.echothree.util.server.control;
 
-import com.echothree.model.control.core.remote.transfer.EntityLockTransfer;
+import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.EntityLockControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.EntityLockException;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.form.BaseEdit;
-import com.echothree.util.remote.form.BaseEditForm;
-import com.echothree.util.remote.form.BaseForm;
-import com.echothree.util.remote.form.BaseSpec;
-import com.echothree.util.remote.form.ValidationResult;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.form.BaseEdit;
+import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.form.BaseSpec;
+import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.BaseValue;
 import com.echothree.util.server.persistence.Session;

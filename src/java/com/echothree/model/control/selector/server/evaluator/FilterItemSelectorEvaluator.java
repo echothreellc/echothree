@@ -17,7 +17,7 @@
 package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class FilterItemSelectorEvaluator

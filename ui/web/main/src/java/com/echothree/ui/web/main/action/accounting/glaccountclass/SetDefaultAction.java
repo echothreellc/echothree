@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.glaccountclass;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.SetDefaultGlAccountClassForm;
+import com.echothree.control.user.accounting.common.form.SetDefaultGlAccountClassForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

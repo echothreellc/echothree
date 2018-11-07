@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.accounting.server;
 
-import com.echothree.control.user.accounting.remote.AccountingService;
+import com.echothree.control.user.accounting.common.AccountingService;
 import javax.ejb.Local;
 
 @Local

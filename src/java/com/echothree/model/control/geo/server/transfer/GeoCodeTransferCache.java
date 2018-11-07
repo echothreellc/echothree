@@ -17,9 +17,9 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.GeoOptions;
-import com.echothree.model.control.geo.remote.transfer.GeoCodeScopeTransfer;
-import com.echothree.model.control.geo.remote.transfer.GeoCodeTransfer;
-import com.echothree.model.control.geo.remote.transfer.GeoCodeTypeTransfer;
+import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
+import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
+import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDetail;

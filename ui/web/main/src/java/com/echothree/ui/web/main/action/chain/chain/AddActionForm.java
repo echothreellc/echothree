@@ -17,12 +17,12 @@
 package com.echothree.ui.web.main.action.chain.chain;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.remote.form.GetSequenceChoicesForm;
-import com.echothree.control.user.sequence.remote.result.GetSequenceChoicesResult;
+import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
+import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.sequence.common.SequenceConstants;
-import com.echothree.model.control.sequence.remote.choice.SequenceChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

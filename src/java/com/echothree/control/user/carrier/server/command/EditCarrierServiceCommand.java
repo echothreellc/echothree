@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.carrier.server.command;
 
-import com.echothree.control.user.carrier.remote.edit.CarrierEditFactory;
-import com.echothree.control.user.carrier.remote.edit.CarrierServiceEdit;
-import com.echothree.control.user.carrier.remote.form.EditCarrierServiceForm;
-import com.echothree.control.user.carrier.remote.result.CarrierResultFactory;
-import com.echothree.control.user.carrier.remote.result.EditCarrierServiceResult;
-import com.echothree.control.user.carrier.remote.spec.CarrierServiceSpec;
+import com.echothree.control.user.carrier.common.edit.CarrierEditFactory;
+import com.echothree.control.user.carrier.common.edit.CarrierServiceEdit;
+import com.echothree.control.user.carrier.common.form.EditCarrierServiceForm;
+import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
+import com.echothree.control.user.carrier.common.result.EditCarrierServiceResult;
+import com.echothree.control.user.carrier.common.spec.CarrierServiceSpec;
 import com.echothree.model.control.carrier.server.CarrierControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -34,16 +34,16 @@ import com.echothree.model.data.carrier.server.entity.CarrierServiceDescription;
 import com.echothree.model.data.carrier.server.entity.CarrierServiceDetail;
 import com.echothree.model.data.carrier.server.value.CarrierServiceDescriptionValue;
 import com.echothree.model.data.carrier.server.value.CarrierServiceDetailValue;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

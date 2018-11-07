@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.user.server.command;
 
-import com.echothree.control.user.party.remote.spec.PartySpec;
-import com.echothree.control.user.user.remote.edit.RecoveryAnswerEdit;
-import com.echothree.control.user.user.remote.edit.UserEditFactory;
-import com.echothree.control.user.user.remote.form.EditRecoveryAnswerForm;
-import com.echothree.control.user.user.remote.result.EditRecoveryAnswerResult;
-import com.echothree.control.user.user.remote.result.UserResultFactory;
+import com.echothree.control.user.party.common.spec.PartySpec;
+import com.echothree.control.user.user.common.edit.RecoveryAnswerEdit;
+import com.echothree.control.user.user.common.edit.UserEditFactory;
+import com.echothree.control.user.user.common.form.EditRecoveryAnswerForm;
+import com.echothree.control.user.user.common.result.EditRecoveryAnswerResult;
+import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.RecoveryAnswer;
 import com.echothree.model.data.user.server.entity.RecoveryAnswerDetail;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
@@ -34,7 +34,7 @@ import com.echothree.model.data.user.server.value.RecoveryAnswerDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.Arrays;
 import java.util.Collections;

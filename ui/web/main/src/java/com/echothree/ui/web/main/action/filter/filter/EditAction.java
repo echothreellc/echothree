@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.filter.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.remote.edit.FilterEdit;
-import com.echothree.control.user.filter.remote.form.EditFilterForm;
-import com.echothree.control.user.filter.remote.result.EditFilterResult;
-import com.echothree.control.user.filter.remote.spec.FilterSpec;
+import com.echothree.control.user.filter.common.edit.FilterEdit;
+import com.echothree.control.user.filter.common.form.EditFilterForm;
+import com.echothree.control.user.filter.common.result.EditFilterResult;
+import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

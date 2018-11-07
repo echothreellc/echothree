@@ -17,17 +17,17 @@
 package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.remote.form.ValidateForm;
-import com.echothree.control.user.core.remote.result.ValidateResult;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.control.user.core.common.form.ValidateForm;
+import com.echothree.control.user.core.common.result.ValidateResult;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
-import com.echothree.util.remote.form.BaseForm;
-import com.echothree.util.remote.form.BaseFormFactory;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.form.BaseFormFactory;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.taglib.TagConstants;
-import com.echothree.view.remote.BaseChoicesBean;
+import com.echothree.view.common.BaseChoicesBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

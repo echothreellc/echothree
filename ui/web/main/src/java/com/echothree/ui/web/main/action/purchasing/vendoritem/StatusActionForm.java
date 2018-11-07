@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritem;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.remote.form.GetVendorItemStatusChoicesForm;
-import com.echothree.control.user.vendor.remote.result.GetVendorItemStatusChoicesResult;
-import com.echothree.model.control.vendor.remote.choice.VendorItemStatusChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.vendor.common.form.GetVendorItemStatusChoicesForm;
+import com.echothree.control.user.vendor.common.result.GetVendorItemStatusChoicesResult;
+import com.echothree.model.control.vendor.common.choice.VendorItemStatusChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

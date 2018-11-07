@@ -16,20 +16,20 @@
 
 package com.echothree.control.user.campaign.server.command;
 
-import com.echothree.control.user.campaign.remote.form.CreateCampaignMediumForm;
-import com.echothree.control.user.campaign.remote.result.CampaignResultFactory;
-import com.echothree.control.user.campaign.remote.result.CreateCampaignMediumResult;
+import com.echothree.control.user.campaign.common.form.CreateCampaignMediumForm;
+import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
+import com.echothree.control.user.campaign.common.result.CreateCampaignMediumResult;
 import com.echothree.model.control.campaign.server.CampaignControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
-import com.echothree.model.data.party.remote.pk.PartyPK;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

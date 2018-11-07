@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.remote.SecurityService;
+import com.echothree.control.user.security.common.SecurityService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

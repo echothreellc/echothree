@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.remote.TermService;
+import com.echothree.control.user.term.common.TermService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

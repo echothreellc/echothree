@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.batch.server.command;
 
-import com.echothree.control.user.batch.remote.form.GetBatchTypeChoicesForm;
-import com.echothree.control.user.batch.remote.result.BatchResultFactory;
-import com.echothree.control.user.batch.remote.result.GetBatchTypeChoicesResult;
+import com.echothree.control.user.batch.common.form.GetBatchTypeChoicesForm;
+import com.echothree.control.user.batch.common.result.BatchResultFactory;
+import com.echothree.control.user.batch.common.result.GetBatchTypeChoicesResult;
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

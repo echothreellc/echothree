@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.picklist.server;
 
-import com.echothree.control.user.picklist.remote.PicklistService;
+import com.echothree.control.user.picklist.common.PicklistService;
 import javax.ejb.Local;
 
 @Local

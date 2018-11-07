@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.document.server.command;
 
-import com.echothree.control.user.document.remote.form.DeleteDocumentTypeDescriptionForm;
+import com.echothree.control.user.document.common.form.DeleteDocumentTypeDescriptionForm;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -25,11 +25,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.document.server.entity.DocumentType;
 import com.echothree.model.data.document.server.entity.DocumentTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

@@ -26,7 +26,7 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
 import com.echothree.model.data.selector.server.entity.SelectorNodeGeoCode;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class PostalAddressSelectorEvaluator

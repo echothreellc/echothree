@@ -17,13 +17,13 @@
 package com.echothree.ui.web.main.action.selector.selectornode;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.remote.form.GetSelectorNodesForm;
-import com.echothree.control.user.selector.remote.result.GetSelectorNodesResult;
+import com.echothree.control.user.selector.common.form.GetSelectorNodesForm;
+import com.echothree.control.user.selector.common.result.GetSelectorNodesResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

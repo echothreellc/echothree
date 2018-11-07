@@ -17,15 +17,15 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.remote.form.DeleteWorkEffortScopeDescriptionForm;
-import com.echothree.control.user.workeffort.remote.form.GetWorkEffortScopeDescriptionForm;
-import com.echothree.control.user.workeffort.remote.result.GetWorkEffortScopeDescriptionResult;
+import com.echothree.control.user.workeffort.common.form.DeleteWorkEffortScopeDescriptionForm;
+import com.echothree.control.user.workeffort.common.form.GetWorkEffortScopeDescriptionForm;
+import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

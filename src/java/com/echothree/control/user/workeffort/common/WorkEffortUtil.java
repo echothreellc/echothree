@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.workeffort.common;
 
-import com.echothree.control.user.workeffort.remote.WorkEffortRemote;
+import com.echothree.control.user.workeffort.common.WorkEffortRemote;
 import com.echothree.control.user.workeffort.server.WorkEffortLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -43,7 +43,7 @@ public class WorkEffortUtil {
         if(cachedRemote == null) {
             InitialContext ctx = InitialContextUtils.getInstance().getInitialContext();
             
-            cachedRemote = (WorkEffortRemote)ctx.lookup("ejb:echothree/echothree-server/WorkEffortBean!com.echothree.control.user.workeffort.remote.WorkEffortRemote");
+            cachedRemote = (WorkEffortRemote)ctx.lookup("ejb:echothree/echothree-server/WorkEffortBean!com.echothree.control.user.workeffort.common.WorkEffortRemote");
         }
         
         return cachedRemote;

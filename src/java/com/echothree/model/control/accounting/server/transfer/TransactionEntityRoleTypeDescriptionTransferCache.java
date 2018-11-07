@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.TransactionEntityRoleTypeDescriptionTransfer;
-import com.echothree.model.control.accounting.remote.transfer.TransactionEntityRoleTypeTransfer;
+import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeDescriptionTransfer;
+import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.party.remote.transfer.LanguageTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

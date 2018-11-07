@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.communicationsource;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.remote.form.DeleteCommunicationSourceForm;
+import com.echothree.control.user.communication.common.form.DeleteCommunicationSourceForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

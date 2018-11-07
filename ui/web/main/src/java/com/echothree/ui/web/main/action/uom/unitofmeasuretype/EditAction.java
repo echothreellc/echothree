@@ -17,17 +17,17 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasuretype;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.remote.edit.UnitOfMeasureTypeEdit;
-import com.echothree.control.user.uom.remote.form.EditUnitOfMeasureTypeForm;
-import com.echothree.control.user.uom.remote.result.EditUnitOfMeasureTypeResult;
-import com.echothree.control.user.uom.remote.spec.UnitOfMeasureTypeSpec;
+import com.echothree.control.user.uom.common.edit.UnitOfMeasureTypeEdit;
+import com.echothree.control.user.uom.common.form.EditUnitOfMeasureTypeForm;
+import com.echothree.control.user.uom.common.result.EditUnitOfMeasureTypeResult;
+import com.echothree.control.user.uom.common.spec.UnitOfMeasureTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.EditMode;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;

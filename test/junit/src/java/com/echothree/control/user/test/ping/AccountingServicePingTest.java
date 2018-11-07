@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.AccountingService;
+import com.echothree.control.user.accounting.common.AccountingService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

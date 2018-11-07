@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.glresourcetype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.remote.form.DeleteGlResourceTypeForm;
+import com.echothree.control.user.accounting.common.form.DeleteGlResourceTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

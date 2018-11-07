@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.ping;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.PartyService;
+import com.echothree.control.user.party.common.PartyService;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

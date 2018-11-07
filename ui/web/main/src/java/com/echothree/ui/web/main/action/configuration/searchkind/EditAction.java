@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.searchkind;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.edit.SearchKindEdit;
-import com.echothree.control.user.search.remote.form.EditSearchKindForm;
-import com.echothree.control.user.search.remote.result.EditSearchKindResult;
-import com.echothree.control.user.search.remote.spec.SearchKindSpec;
+import com.echothree.control.user.search.common.edit.SearchKindEdit;
+import com.echothree.control.user.search.common.form.EditSearchKindForm;
+import com.echothree.control.user.search.common.result.EditSearchKindResult;
+import com.echothree.control.user.search.common.spec.SearchKindSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

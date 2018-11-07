@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.partyaliastype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.remote.edit.PartyAliasTypeEdit;
-import com.echothree.control.user.party.remote.form.EditPartyAliasTypeForm;
-import com.echothree.control.user.party.remote.result.EditPartyAliasTypeResult;
-import com.echothree.control.user.party.remote.spec.PartyAliasTypeSpec;
+import com.echothree.control.user.party.common.edit.PartyAliasTypeEdit;
+import com.echothree.control.user.party.common.form.EditPartyAliasTypeForm;
+import com.echothree.control.user.party.common.result.EditPartyAliasTypeResult;
+import com.echothree.control.user.party.common.spec.PartyAliasTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

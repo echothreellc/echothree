@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.remote.form.SetDefaultTaxForm;
+import com.echothree.control.user.tax.common.form.SetDefaultTaxForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

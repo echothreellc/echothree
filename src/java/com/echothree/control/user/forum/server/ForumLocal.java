@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.forum.server;
 
-import com.echothree.control.user.forum.remote.ForumService;
+import com.echothree.control.user.forum.common.ForumService;
 import javax.ejb.Local;
 
 @Local

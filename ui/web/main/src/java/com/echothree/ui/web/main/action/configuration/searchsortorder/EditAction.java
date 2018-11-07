@@ -17,14 +17,14 @@
 package com.echothree.ui.web.main.action.configuration.searchsortorder;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.remote.edit.SearchSortOrderEdit;
-import com.echothree.control.user.search.remote.form.EditSearchSortOrderForm;
-import com.echothree.control.user.search.remote.result.EditSearchSortOrderResult;
-import com.echothree.control.user.search.remote.spec.SearchSortOrderSpec;
+import com.echothree.control.user.search.common.edit.SearchSortOrderEdit;
+import com.echothree.control.user.search.common.form.EditSearchSortOrderForm;
+import com.echothree.control.user.search.common.result.EditSearchSortOrderResult;
+import com.echothree.control.user.search.common.spec.SearchSortOrderSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.remote.command.CommandResult;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;

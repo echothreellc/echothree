@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacity;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.remote.form.DeleteInventoryLocationGroupCapacityForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupCapacityForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

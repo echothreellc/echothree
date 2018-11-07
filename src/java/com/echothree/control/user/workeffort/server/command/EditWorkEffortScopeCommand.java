@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.workeffort.server.command;
 
-import com.echothree.control.user.workeffort.remote.edit.WorkEffortEditFactory;
-import com.echothree.control.user.workeffort.remote.edit.WorkEffortScopeEdit;
-import com.echothree.control.user.workeffort.remote.form.EditWorkEffortScopeForm;
-import com.echothree.control.user.workeffort.remote.result.EditWorkEffortScopeResult;
-import com.echothree.control.user.workeffort.remote.result.WorkEffortResultFactory;
-import com.echothree.control.user.workeffort.remote.spec.WorkEffortScopeSpec;
+import com.echothree.control.user.workeffort.common.edit.WorkEffortEditFactory;
+import com.echothree.control.user.workeffort.common.edit.WorkEffortScopeEdit;
+import com.echothree.control.user.workeffort.common.form.EditWorkEffortScopeForm;
+import com.echothree.control.user.workeffort.common.result.EditWorkEffortScopeResult;
+import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
+import com.echothree.control.user.workeffort.common.spec.WorkEffortScopeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,10 +31,10 @@ import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDetail;
@@ -44,7 +44,7 @@ import com.echothree.model.data.workeffort.server.value.WorkEffortScopeDetailVal
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

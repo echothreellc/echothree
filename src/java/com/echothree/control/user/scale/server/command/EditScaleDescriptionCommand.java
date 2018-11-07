@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.scale.server.command;
 
-import com.echothree.control.user.scale.remote.edit.ScaleDescriptionEdit;
-import com.echothree.control.user.scale.remote.edit.ScaleEditFactory;
-import com.echothree.control.user.scale.remote.form.EditScaleDescriptionForm;
-import com.echothree.control.user.scale.remote.result.EditScaleDescriptionResult;
-import com.echothree.control.user.scale.remote.result.ScaleResultFactory;
-import com.echothree.control.user.scale.remote.spec.ScaleDescriptionSpec;
+import com.echothree.control.user.scale.common.edit.ScaleDescriptionEdit;
+import com.echothree.control.user.scale.common.edit.ScaleEditFactory;
+import com.echothree.control.user.scale.common.form.EditScaleDescriptionForm;
+import com.echothree.control.user.scale.common.result.EditScaleDescriptionResult;
+import com.echothree.control.user.scale.common.result.ScaleResultFactory;
+import com.echothree.control.user.scale.common.spec.ScaleDescriptionSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
@@ -31,11 +31,11 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.model.data.scale.server.entity.ScaleDescription;
 import com.echothree.model.data.scale.server.value.ScaleDescriptionValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

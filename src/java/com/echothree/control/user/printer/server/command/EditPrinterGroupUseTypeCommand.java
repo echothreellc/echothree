@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.printer.server.command;
 
-import com.echothree.control.user.printer.remote.edit.PrinterEditFactory;
-import com.echothree.control.user.printer.remote.edit.PrinterGroupUseTypeEdit;
-import com.echothree.control.user.printer.remote.form.EditPrinterGroupUseTypeForm;
-import com.echothree.control.user.printer.remote.result.EditPrinterGroupUseTypeResult;
-import com.echothree.control.user.printer.remote.result.PrinterResultFactory;
-import com.echothree.control.user.printer.remote.spec.PrinterGroupUseTypeSpec;
+import com.echothree.control.user.printer.common.edit.PrinterEditFactory;
+import com.echothree.control.user.printer.common.edit.PrinterGroupUseTypeEdit;
+import com.echothree.control.user.printer.common.form.EditPrinterGroupUseTypeForm;
+import com.echothree.control.user.printer.common.result.EditPrinterGroupUseTypeResult;
+import com.echothree.control.user.printer.common.result.PrinterResultFactory;
+import com.echothree.control.user.printer.common.spec.PrinterGroupUseTypeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.remote.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDescription;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDetail;
 import com.echothree.model.data.printer.server.value.PrinterGroupUseTypeDescriptionValue;
 import com.echothree.model.data.printer.server.value.PrinterGroupUseTypeDetailValue;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.remote.command.EditMode;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;

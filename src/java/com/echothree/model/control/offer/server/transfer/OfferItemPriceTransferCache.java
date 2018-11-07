@@ -16,16 +16,16 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
-import com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer;
+import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.inventory.remote.transfer.InventoryConditionTransfer;
+import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.offer.common.OfferProperties;
-import com.echothree.model.control.offer.remote.transfer.OfferItemPriceTransfer;
-import com.echothree.model.control.offer.remote.transfer.OfferItemTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
+import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.uom.remote.transfer.UnitOfMeasureTypeTransfer;
+import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -35,9 +35,9 @@ import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemVariablePrice;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.form.TransferProperties;
-import com.echothree.util.remote.transfer.HistoryTransfer;
-import com.echothree.util.remote.transfer.ListWrapper;
+import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.HistoryTransfer;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.transfer.HistoryCache;

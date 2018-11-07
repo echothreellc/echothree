@@ -17,11 +17,11 @@
 package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.remote.form.GetRecoveryQuestionChoicesForm;
-import com.echothree.control.user.user.remote.result.GetRecoveryQuestionChoicesResult;
-import com.echothree.model.control.user.remote.choice.RecoveryQuestionChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.user.common.form.GetRecoveryQuestionChoicesForm;
+import com.echothree.control.user.user.common.result.GetRecoveryQuestionChoicesResult;
+import com.echothree.model.control.user.common.choice.RecoveryQuestionChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;

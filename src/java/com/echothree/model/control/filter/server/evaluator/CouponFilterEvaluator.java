@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.evaluator;
 
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class CouponFilterEvaluator

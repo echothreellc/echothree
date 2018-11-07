@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.warehouse.server.command;
 
-import com.echothree.control.user.warehouse.remote.form.GetWarehousesForm;
-import com.echothree.control.user.warehouse.remote.result.GetWarehousesResult;
-import com.echothree.control.user.warehouse.remote.result.WarehouseResultFactory;
+import com.echothree.control.user.warehouse.common.form.GetWarehousesForm;
+import com.echothree.control.user.warehouse.common.result.GetWarehousesResult;
+import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
-import com.echothree.model.data.user.remote.pk.UserVisitPK;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.remote.command.BaseResult;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;

@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.sales.server.logic;
 
-import com.echothree.model.control.order.remote.transfer.OrderTimeTransfer;
+import com.echothree.model.control.order.common.transfer.OrderTimeTransfer;
 import com.echothree.model.control.order.server.logic.OrderTimeLogic;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.remote.persistence.BasePK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.util.List;

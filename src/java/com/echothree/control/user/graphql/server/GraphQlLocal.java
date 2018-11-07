@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.graphql.server;
 
-import com.echothree.control.user.graphql.remote.GraphQlService;
+import com.echothree.control.user.graphql.common.GraphQlService;
 import javax.ejb.Local;
 
 @Local

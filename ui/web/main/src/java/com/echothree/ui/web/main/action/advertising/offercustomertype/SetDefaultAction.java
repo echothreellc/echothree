@@ -17,7 +17,7 @@
 package com.echothree.ui.web.main.action.advertising.offercustomertype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.remote.form.SetDefaultOfferCustomerTypeForm;
+import com.echothree.control.user.offer.common.form.SetDefaultOfferCustomerTypeForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;

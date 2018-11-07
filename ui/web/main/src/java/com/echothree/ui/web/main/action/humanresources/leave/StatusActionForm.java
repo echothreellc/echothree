@@ -17,11 +17,11 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.remote.form.GetLeaveStatusChoicesForm;
-import com.echothree.control.user.employee.remote.result.GetLeaveStatusChoicesResult;
-import com.echothree.model.control.employee.remote.choice.LeaveStatusChoicesBean;
-import com.echothree.util.remote.command.CommandResult;
-import com.echothree.util.remote.command.ExecutionResult;
+import com.echothree.control.user.employee.common.form.GetLeaveStatusChoicesForm;
+import com.echothree.control.user.employee.common.result.GetLeaveStatusChoicesResult;
+import com.echothree.model.control.employee.common.choice.LeaveStatusChoicesBean;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;

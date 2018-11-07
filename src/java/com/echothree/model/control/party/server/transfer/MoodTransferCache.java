@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.party.server.transfer;
 
-import com.echothree.model.control.icon.remote.transfer.IconTransfer;
+import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.control.icon.server.IconControl;
-import com.echothree.model.control.party.remote.transfer.MoodTransfer;
+import com.echothree.model.control.party.common.transfer.MoodTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.party.server.entity.Mood;
