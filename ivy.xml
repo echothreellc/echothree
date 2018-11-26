@@ -35,6 +35,7 @@
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="6.0" conf="sources->sources" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="sources->sources" />
         <dependency org="javax.enterprise" name="cdi-api" rev="2.0.SP1" conf="sources->sources" />
+        <dependency org="javax.servlet" name="javax.servlet-api" rev="3.1.0" conf="sources->sources" />
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="sources->sources" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="sources->sources" />
         <dependency org="junit" name="junit" rev="4.12" conf="sources->sources" />
@@ -110,6 +111,7 @@
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="6.0" conf="javadoc->javadoc" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="javadoc->javadoc" />
         <dependency org="javax.enterprise" name="cdi-api" rev="2.0.SP1" conf="javadoc->javadoc" />
+        <dependency org="javax.servlet" name="javax.servlet-api" rev="3.1.0" conf="javadoc->javadoc" />
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="javadoc->javadoc" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="javadoc->javadoc" />
         <dependency org="junit" name="junit" rev="4.12" conf="javadoc->javadoc" />
@@ -185,6 +187,7 @@
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="6.0" conf="binaries->default" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="binaries->default" />
         <dependency org="javax.enterprise" name="cdi-api" rev="2.0.SP1" conf="binaries->default" />
+        <dependency org="javax.servlet" name="javax.servlet-api" rev="3.1.0" conf="binaries->default" />
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="binaries->default" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="binaries->default" />
         <dependency org="junit" name="junit" rev="4.12" conf="binaries->default" />
