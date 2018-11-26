@@ -121,6 +121,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/tag-expressions.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/typetools.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/javax.servlet-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/javax.websocket-api.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
