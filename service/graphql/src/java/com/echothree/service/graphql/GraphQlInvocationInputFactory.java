@@ -71,6 +71,10 @@ public class GraphQlInvocationInputFactory {
         return new GraphQlBatchedInvocationInput(graphQlRequest);
     }
 
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public static class Builder {
 
         public GraphQlInvocationInputFactory build() {
