@@ -1,5 +1,6 @@
 // --------------------------------------------------------------------------------
 // Copyright 2002-2018 Echo Three, LLC
+// Copyright 2016 Yurii Rashkovskii and Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,7 +29,7 @@ public class GraphQlSingleInvocationInput
         this.request = request;
     }
 
-    public ExecuteGraphQlForm getExecutionInput()
+    public ExecuteGraphQlForm getExecuteGraphQlForm()
             throws NamingException {
         return createExecuteGraphQlForm(request);
     }
