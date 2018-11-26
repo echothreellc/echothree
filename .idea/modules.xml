@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/ui/cli/database/database.iml" filepath="$PROJECT_DIR$/ui/cli/database/database.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui/cli/dataloader/dataloader.iml" filepath="$PROJECT_DIR$/ui/cli/dataloader/dataloader.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui/cli/form/form.iml" filepath="$PROJECT_DIR$/ui/cli/form/form.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service/graphql/graphql.iml" filepath="$PROJECT_DIR$/service/graphql/graphql.iml" />
       <module fileurl="file://$PROJECT_DIR$/service/job/job.iml" filepath="$PROJECT_DIR$/service/job/job.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/junit/junit.iml" filepath="$PROJECT_DIR$/test/junit/junit.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui/web/letter/letter.iml" filepath="$PROJECT_DIR$/ui/web/letter/letter.iml" />
