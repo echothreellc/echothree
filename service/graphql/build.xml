@@ -52,9 +52,13 @@
             <classes dir="${service.graphql.javasrc}">
                 <include name="**/*.properties" />
             </classes>
-            <!-- EchoThree -->
+            <!-- Echo Three -->
             <lib dir="${component.home}/build/jars">
                 <include name="echothree-client.jar" />
+            </lib>
+            <!-- Google Guava -->
+            <lib dir="${build.lib.dir}">
+                <include name="guava.jar"/>
             </lib>
         </war>
     </target>
