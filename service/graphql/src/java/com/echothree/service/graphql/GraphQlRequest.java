@@ -20,15 +20,17 @@ package com.echothree.service.graphql;
 public class GraphQlRequest {
 
     private String query;
+    private String variables;
     private String operationName;
     private String json;
 
-    public GraphQlRequest() {
+    public GraphQlRequest(String query, String variables, String operationName) {
+        this.setQuery(query);
+        this.setVariables(variables);
+        this.setOperationName(operationName);
     }
 
-    public GraphQlRequest(String query, String operationName, String json) {
-        this.setQuery(query);
-        this.setOperationName(operationName);
+    public GraphQlRequest(String json) {
         this.setJson(json);
     }
 
@@ -38,6 +40,14 @@ public class GraphQlRequest {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public String getVariables() {
+        return variables;
+    }
+
+    public void setVariables(String variables) {
+        this.variables = variables;
     }
 
     public String getOperationName() {
@@ -55,4 +65,5 @@ public class GraphQlRequest {
     public void setJson(String json) {
         this.json = json;
     }
+
 }
