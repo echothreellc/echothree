@@ -22,6 +22,7 @@ import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.util.HttpSessionUtils;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
+import com.google.common.net.MediaType;
 import graphql.introspection.IntrospectionQuery;
 import javax.naming.NamingException;
 import javax.servlet.AsyncContext;
@@ -50,16 +51,17 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet(urlPatterns = {"/"}, asyncSupported = true)
+import static com.google.common.net.MediaType.JSON_UTF_8;
+
+@WebServlet(name = "graphql", urlPatterns = {"/"}, asyncSupported = true)
 public class GraphQlServlet
         extends HttpServlet {
 
     public static final Logger log = LoggerFactory.getLogger(GraphQlServlet.class);
 
-    public static final String APPLICATION_JSON = "application/json";
-    public static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
-    public static final String APPLICATION_GRAPHQL = "application/graphql";
-    public static final String APPLICATION_GRAPHQL_UTF8 = "application/graphql;charset=UTF-8";
+    protected static final MediaType JSON = JSON_UTF_8.withoutParameters();
+    protected static final MediaType GRAPHQL_UTF_8 = MediaType.parse("application/graphql;charset=utf-8");
+    protected static final MediaType GRAPHQL = GRAPHQL_UTF_8.withoutParameters();
 
     public static final int STATUS_OK = 200;
     public static final int STATUS_BAD_REQUEST = 400;
@@ -115,12 +117,13 @@ public class GraphQlServlet
                 GraphQlInvocationInputFactory invocationInputFactory = configuration.getInvocationInputFactory();
                 GraphQlQueryInvoker queryInvoker = configuration.getQueryInvoker();
                 String contentType = request.getContentType();
+                MediaType mediaType = MediaType.parse(contentType);
 
-                if (APPLICATION_GRAPHQL.equals(contentType) || APPLICATION_GRAPHQL_UTF8.equals(contentType)) {
+                if (GRAPHQL.equals(mediaType) || GRAPHQL_UTF_8.equals(mediaType)) {
                     String query = CharStreams.toString(request.getReader());
 
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(query, null, null)), request, response);
-                } else if (APPLICATION_JSON.equals(contentType) || APPLICATION_JSON_UTF8.equals(contentType)) {
+                } else if (JSON.equals(mediaType) || JSON_UTF_8.equals(mediaType)) {
                     String json = CharStreams.toString(request.getReader());
 
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(json)), request, response);
@@ -297,7 +300,7 @@ public class GraphQlServlet
             throws IOException, NamingException {
         String result = queryInvoker.query(getUserVisitPK(request), invocationInput);
 
-        resp.setContentType(APPLICATION_JSON_UTF8);
+        resp.setContentType(JSON_UTF_8.toString());
         resp.setStatus(STATUS_OK);
         resp.getOutputStream().write(result.getBytes(Charsets.UTF_8));
     }
@@ -307,7 +310,7 @@ public class GraphQlServlet
           throws Exception {
         OutputStream stream = resp.getOutputStream();
 
-        resp.setContentType(APPLICATION_JSON_UTF8);
+        resp.setContentType(JSON_UTF_8.toString());
         resp.setStatus(STATUS_OK);
 
         stream.write('[');
