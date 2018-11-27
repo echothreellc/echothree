@@ -20,23 +20,34 @@ package com.echothree.service.graphql;
 public class GraphQlConfiguration {
 
     private GraphQlInvocationInputFactory invocationInputFactory;
+    private GraphQlQueryInvoker queryInvoker;
 
-    static GraphQlConfiguration.Builder with(GraphQlInvocationInputFactory invocationInputFactory) {
+    public static GraphQlConfiguration.Builder with(GraphQlInvocationInputFactory invocationInputFactory) {
         return new Builder(invocationInputFactory);
     }
 
-    private GraphQlConfiguration(GraphQlInvocationInputFactory invocationInputFactory) {
+    public static GraphQlConfiguration build(GraphQlConfiguration.Builder builder) {
+        return builder.build();
+    }
+
+    private GraphQlConfiguration(GraphQlInvocationInputFactory invocationInputFactory, GraphQlQueryInvoker queryInvoker) {
         this.invocationInputFactory = invocationInputFactory;
+        this.queryInvoker = queryInvoker;
     }
 
     public GraphQlInvocationInputFactory getInvocationInputFactory() {
         return invocationInputFactory;
     }
 
+    public GraphQlQueryInvoker getQueryInvoker() {
+        return queryInvoker;
+    }
+
     public static class Builder {
 
         private GraphQlInvocationInputFactory.Builder invocationInputFactoryBuilder;
         private GraphQlInvocationInputFactory invocationInputFactory;
+        private GraphQlQueryInvoker queryInvoker = GraphQlQueryInvoker.newBuilder().build();
 
         private Builder(GraphQlInvocationInputFactory.Builder invocationInputFactoryBuilder) {
             this.invocationInputFactoryBuilder = invocationInputFactoryBuilder;
@@ -46,12 +57,16 @@ public class GraphQlConfiguration {
             this.invocationInputFactory = invocationInputFactory;
         }
 
-        public GraphQlConfiguration build() {
-            return new GraphQlConfiguration(
-                    this.invocationInputFactory != null ? this.invocationInputFactory : invocationInputFactoryBuilder.build()
-            );
+        public Builder with(GraphQlQueryInvoker queryInvoker) {
+            this.queryInvoker = queryInvoker;
+            return this;
         }
 
+        public GraphQlConfiguration build() {
+            return new GraphQlConfiguration(
+                    this.invocationInputFactory != null ? this.invocationInputFactory : invocationInputFactoryBuilder.build(),
+                    queryInvoker
+            );
+        }
     }
-
 }
