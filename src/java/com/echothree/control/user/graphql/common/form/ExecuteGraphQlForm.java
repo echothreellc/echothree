@@ -24,6 +24,9 @@ public interface ExecuteGraphQlForm
     String getQuery();
     void setQuery(String query);
     
+    String getVariables();
+    void setVariables(String variables);
+
     String getOperationName();
     void setOperationName(String operationName);
 

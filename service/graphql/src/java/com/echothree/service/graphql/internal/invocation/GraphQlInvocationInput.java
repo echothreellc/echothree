@@ -29,6 +29,7 @@ public abstract class GraphQlInvocationInput {
         ExecuteGraphQlForm commandForm = GraphQlUtil.getHome().getExecuteGraphQlForm();
 
         commandForm.setQuery(graphQLRequest.getQuery());
+        commandForm.setVariables(graphQLRequest.getVariables());
         commandForm.setOperationName(graphQLRequest.getOperationName());
         commandForm.setJson(graphQLRequest.getJson());
 

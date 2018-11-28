@@ -82,7 +82,8 @@ public class GraphQlServlet
             }
 
             if(path.contentEquals("/schema.json")) {
-                query(queryInvoker, invocationInputFactory.create(INTROSPECTION_REQUEST, request, response), request, response);
+                query(queryInvoker, invocationInputFactory.create(
+                        INTROSPECTION_REQUEST, request, response), request, response);
             } else {
                 String query = request.getParameter("query");
 
@@ -90,7 +91,8 @@ public class GraphQlServlet
                     String variables = request.getParameter("variables");
                     String operationName = request.getParameter("operationName");
 
-                    query(queryInvoker, invocationInputFactory.createReadOnly(new GraphQlRequest(query, variables, operationName), request, response), request, response);
+                    query(queryInvoker, invocationInputFactory.createReadOnly(
+                            new GraphQlRequest(query, variables, operationName), request, response), request, response);
                 } else {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     log.info("Bad GET request: path was not \"/schema.json\" or no query variable named \"query\" given");
@@ -108,11 +110,13 @@ public class GraphQlServlet
                 if(GRAPHQL.equals(mediaType) || GRAPHQL_UTF_8.equals(mediaType)) {
                     String query = CharStreams.toString(request.getReader());
 
-                    query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(query, null, null)), request, response);
+                    query(queryInvoker, invocationInputFactory.create(
+                            new GraphQlRequest(query, null, null)), request, response);
                 } else if(JSON.equals(mediaType) || JSON_UTF_8.equals(mediaType)) {
                     String json = CharStreams.toString(request.getReader());
 
-                    query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(json)), request, response);
+                    query(queryInvoker, invocationInputFactory.create(
+                            new GraphQlRequest(json)), request, response);
                 }
             } catch (Exception e) {
                 log.info("Bad POST request: parsing failed", e);
