@@ -83,7 +83,7 @@ public class GraphQlServlet
 
             if(path.contentEquals("/schema.json")) {
                 query(queryInvoker, invocationInputFactory.create(
-                        INTROSPECTION_REQUEST, request, response), request, response);
+                        INTROSPECTION_REQUEST), request, response);
             } else {
                 String query = request.getParameter("query");
 
@@ -92,7 +92,7 @@ public class GraphQlServlet
                     String operationName = request.getParameter("operationName");
 
                     query(queryInvoker, invocationInputFactory.createReadOnly(
-                            new GraphQlRequest(query, variables, operationName), request, response), request, response);
+                            new GraphQlRequest(query, variables, operationName)), request, response);
                 } else {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     log.info("Bad GET request: path was not \"/schema.json\" or no query variable named \"query\" given");

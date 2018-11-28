@@ -21,9 +21,12 @@ import com.echothree.util.common.form.BaseForm;
 public interface ExecuteGraphQlForm
         extends BaseForm {
     
+    String getReadOnly();
+    void setReadOnly(String readOnly);
+    
     String getQuery();
     void setQuery(String query);
-    
+
     String getVariables();
     void setVariables(String variables);
 

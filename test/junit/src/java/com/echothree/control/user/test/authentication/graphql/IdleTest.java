@@ -25,15 +25,7 @@ public class IdleTest
         extends GraphQlTestCase {
 
     @Test
-    public void idleGetTest()
-            throws Exception {
-        Map<String, Object> body = executeUsingGet("mutation {idle(input: {clientMutationId: \"1\"}) { hasErrors } }");
-        
-        Assert.assertFalse(getBoolean(body, "data.idle.hasErrors"));
-    }
-    
-    @Test
-    public void idlePostTest()
+    public void idleTest()
             throws Exception {
         Map<String, Object> body = executeUsingPost("mutation {idle(input: {clientMutationId: \"1\"}) { hasErrors } }");
         

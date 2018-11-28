@@ -26,7 +26,9 @@ public class GraphQlSingleInvocationInput
 
     private final GraphQlRequest request;
 
-    public GraphQlSingleInvocationInput(GraphQlRequest request) {
+    public GraphQlSingleInvocationInput(boolean readOnly, GraphQlRequest request) {
+        super(readOnly);
+
         this.request = request;
     }
 

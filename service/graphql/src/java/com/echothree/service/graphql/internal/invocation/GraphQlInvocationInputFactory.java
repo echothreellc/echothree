@@ -18,37 +18,22 @@
 package com.echothree.service.graphql.internal.invocation;
 
 import com.echothree.service.graphql.internal.GraphQlRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.websocket.Session;
-import javax.websocket.server.HandshakeRequest;
 
 public class GraphQlInvocationInputFactory {
 
     protected GraphQlInvocationInputFactory() {
     }
 
-    public GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest, HttpServletRequest request,
-                                               HttpServletResponse response) {
-        return create(graphQlRequest, request, response, false);
-    }
-
-    public GraphQlSingleInvocationInput createReadOnly(GraphQlRequest graphQlRequest, HttpServletRequest request,
-           HttpServletResponse response) {
-        return create(graphQlRequest, request, response, true);
-    }
-
     public GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest) {
-        return new GraphQlSingleInvocationInput(graphQlRequest);
+        return create(graphQlRequest, false);
     }
 
-    private GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest, HttpServletRequest request,
-            HttpServletResponse response, boolean readOnly) {
-        return new GraphQlSingleInvocationInput(graphQlRequest);
+    public GraphQlSingleInvocationInput createReadOnly(GraphQlRequest graphQlRequest) {
+        return create(graphQlRequest, true);
     }
 
-    public GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest, Session session, HandshakeRequest request) {
-        return new GraphQlSingleInvocationInput(graphQlRequest);
+    private GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest, boolean readOnly) {
+        return new GraphQlSingleInvocationInput(readOnly, graphQlRequest);
     }
 
     public static Builder newBuilder() {

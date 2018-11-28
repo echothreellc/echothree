@@ -24,10 +24,17 @@ import javax.naming.NamingException;
 
 public abstract class GraphQlInvocationInput {
 
+    private boolean readOnly;
+
+    protected GraphQlInvocationInput(boolean readOnly) {
+        this.readOnly = readOnly;
+    }
+
     protected ExecuteGraphQlForm createExecuteGraphQlForm(GraphQlRequest graphQLRequest)
             throws NamingException {
         ExecuteGraphQlForm commandForm = GraphQlUtil.getHome().getExecuteGraphQlForm();
 
+        commandForm.setReadOnly(Boolean.toString(readOnly));
         commandForm.setQuery(graphQLRequest.getQuery());
         commandForm.setVariables(graphQLRequest.getVariables());
         commandForm.setOperationName(graphQLRequest.getOperationName());

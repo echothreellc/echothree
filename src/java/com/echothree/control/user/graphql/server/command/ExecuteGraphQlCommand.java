@@ -47,6 +47,7 @@ public class ExecuteGraphQlCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("ReadOnly", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Query", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("Variables", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("OperationName", FieldType.STRING, false, 1L, null),
@@ -83,14 +84,16 @@ public class ExecuteGraphQlCommand
     @Override
     protected BaseResult execute() {
         ExecuteGraphQlResult result = GraphQlResultFactory.getExecuteGraphQlResult();
-        String query = form.getQuery();
-        String variables = form.getVariables();
-        String operationName = form.getOperationName();
-        String json = form.getJson();
-        
+
         try {
+            boolean readOnly = Boolean.valueOf(form.getReadOnly());
+            String query = form.getQuery();
+            String variables = form.getVariables();
+            String operationName = form.getOperationName();
+            String json = form.getJson();
+
             GraphQL graphQL = GraphQL
-                    .newGraphQL(GraphQlSchemaUtils.getInstance().getSchema())
+                    .newGraphQL(readOnly? GraphQlSchemaUtils.getInstance().getReadOnlySchema() : GraphQlSchemaUtils.getInstance().getSchema())
                     .queryExecutionStrategy(new EnhancedExecutionStrategy())
                     .build();
 
