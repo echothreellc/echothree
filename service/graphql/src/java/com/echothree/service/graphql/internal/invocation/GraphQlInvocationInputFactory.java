@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.Session;
 import javax.websocket.server.HandshakeRequest;
-import java.util.List;
 
 public class GraphQlInvocationInputFactory {
 
@@ -34,19 +33,9 @@ public class GraphQlInvocationInputFactory {
         return create(graphQlRequest, request, response, false);
     }
 
-    public GraphQlBatchedInvocationInput create(List<GraphQlRequest> graphQlRequests, HttpServletRequest request,
-                                                HttpServletResponse response) {
-        return create(graphQlRequests, request, response, false);
-    }
-
     public GraphQlSingleInvocationInput createReadOnly(GraphQlRequest graphQlRequest, HttpServletRequest request,
            HttpServletResponse response) {
         return create(graphQlRequest, request, response, true);
-    }
-
-    public GraphQlBatchedInvocationInput createReadOnly(List<GraphQlRequest> graphQlRequests, HttpServletRequest request,
-            HttpServletResponse response) {
-        return create(graphQlRequests, request, response, true);
     }
 
     public GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest) {
@@ -58,18 +47,8 @@ public class GraphQlInvocationInputFactory {
         return new GraphQlSingleInvocationInput(graphQlRequest);
     }
 
-    private GraphQlBatchedInvocationInput create(List<GraphQlRequest> graphQlRequests, HttpServletRequest request,
-             HttpServletResponse response, boolean readOnly) {
-        return new GraphQlBatchedInvocationInput(graphQlRequests);
-    }
-
     public GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest, Session session, HandshakeRequest request) {
         return new GraphQlSingleInvocationInput(graphQlRequest);
-    }
-
-    public GraphQlBatchedInvocationInput create(List<GraphQlRequest> graphQlRequest, Session session,
-            HandshakeRequest request) {
-        return new GraphQlBatchedInvocationInput(graphQlRequest);
     }
 
     public static Builder newBuilder() {

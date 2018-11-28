@@ -21,7 +21,6 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.service.graphql.internal.invoker.GraphQlQueryInvoker;
 import com.echothree.service.graphql.internal.GraphQlRequest;
 import com.echothree.service.graphql.internal.HttpRequestHandler;
-import com.echothree.service.graphql.internal.invocation.GraphQlBatchedInvocationInput;
 import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInputFactory;
 import com.echothree.service.graphql.internal.invocation.GraphQlSingleInvocationInput;
 import com.echothree.view.client.web.WebConstants;
@@ -39,16 +38,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,7 +61,6 @@ public class GraphQlServlet
     public static final int STATUS_BAD_REQUEST = 400;
 
     private static final GraphQlRequest INTROSPECTION_REQUEST = new GraphQlRequest(IntrospectionQuery.INTROSPECTION_QUERY, null, null);
-    private static final String[] MULTIPART_KEYS = new String[]{"operations", "graphql", "query"};
 
     private GraphQlConfiguration configuration;
     private HttpRequestHandler getHandler;
@@ -98,16 +90,11 @@ public class GraphQlServlet
                 String query = request.getParameter("query");
 
                 if (query != null) {
+                    String variables = request.getParameter("variables");
+                    String operationName = request.getParameter("operationName");
+
                     AddCorsResponseHeaders(request, response);
-
-                    if (isBatchedQuery(query)) {
-                        //queryBatched(queryInvoker, invocationInputFactory.createReadOnly(graphQLObjectMapper.readBatchedGraphQLRequest(query), request, response), response);
-                    } else {
-                        String variables = request.getParameter("variables");
-                        String operationName = request.getParameter("operationName");
-
-                        query(queryInvoker, invocationInputFactory.createReadOnly(new GraphQlRequest(query, variables, operationName), request, response), request, response);
-                    }
+                    query(queryInvoker, invocationInputFactory.createReadOnly(new GraphQlRequest(query, variables, operationName), request, response), request, response);
                 } else {
                     response.setStatus(STATUS_BAD_REQUEST);
                     log.info("Bad GET request: path was not \"/schema.json\" or no query variable named \"query\" given");
@@ -155,52 +142,6 @@ public class GraphQlServlet
         return inputStream;
     }
 
-    private boolean isBatchedQuery(InputStream inputStream) throws IOException {
-        if (inputStream == null) {
-            return false;
-        }
-
-        ByteArrayOutputStream result = new ByteArrayOutputStream();
-        byte[] buffer = new byte[128];
-        int length;
-
-        inputStream.mark(0);
-        while ((length = inputStream.read(buffer)) != -1) {
-            result.write(buffer, 0, length);
-            String chunk = result.toString();
-            Boolean isArrayStart = isArrayStart(chunk);
-            if (isArrayStart != null) {
-                inputStream.reset();
-                return isArrayStart;
-            }
-        }
-
-        inputStream.reset();
-        return false;
-    }
-
-    private boolean isBatchedQuery(String query) {
-        if (query == null) {
-            return false;
-        }
-
-        Boolean isArrayStart = isArrayStart(query);
-        return isArrayStart != null && isArrayStart;
-    }
-
-
-    // return true if the first non whitespace character is the beginning of an array
-    private Boolean isArrayStart(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if (!Character.isWhitespace(ch)) {
-                return ch == '[';
-            }
-        }
-
-        return null;
-    }
-
     private void doRequestAsync(HttpServletRequest request, HttpServletResponse response, HttpRequestHandler handler) {
         AsyncContext asyncContext = request.startAsync();
         HttpServletRequest asyncRequest = (HttpServletRequest) asyncContext.getRequest();
@@ -246,10 +187,6 @@ public class GraphQlServlet
         response.addHeader("Access-Control-Max-Age", "86400");
     }
 
-    private Optional<Part> getFileItem(Map<String, List<Part>> fileItems, String name) {
-        return Optional.ofNullable(fileItems.get(name)).filter(list -> !list.isEmpty()).map(list -> list.get(0));
-    }
-
     public UserVisitPK getUserVisitPK(HttpServletRequest request) {
         HttpSession httpSession = request.getSession(true);
 
@@ -264,27 +201,5 @@ public class GraphQlServlet
         resp.setContentType(JSON_UTF_8.toString());
         resp.setStatus(STATUS_OK);
         resp.getOutputStream().write(result.getBytes(Charsets.UTF_8));
-    }
-
-    private void queryBatched(GraphQlQueryInvoker queryInvoker, GraphQlBatchedInvocationInput invocationInput,
-          HttpServletRequest request, HttpServletResponse resp)
-          throws Exception {
-        OutputStream stream = resp.getOutputStream();
-
-        resp.setContentType(JSON_UTF_8.toString());
-        resp.setStatus(STATUS_OK);
-
-        stream.write('[');
-
-        Iterator<String> graphQlExecutionResults = queryInvoker.query(getUserVisitPK(request), invocationInput).iterator();
-        while(graphQlExecutionResults.hasNext()) {
-            resp.getOutputStream().write(graphQlExecutionResults.next().getBytes(Charsets.UTF_8));
-
-            if(graphQlExecutionResults.hasNext()) {
-                stream.write(',');
-            }
-        }
-
-        stream.write(']');
     }
 }
