@@ -90,7 +90,6 @@ public class GraphQlServlet
                     String variables = request.getParameter("variables");
                     String operationName = request.getParameter("operationName");
 
-                    AddCorsResponseHeaders(request, response);
                     query(queryInvoker, invocationInputFactory.createReadOnly(new GraphQlRequest(query, variables, operationName), request, response), request, response);
                 } else {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -109,12 +108,10 @@ public class GraphQlServlet
                 if (GRAPHQL.equals(mediaType) || GRAPHQL_UTF_8.equals(mediaType)) {
                     String query = CharStreams.toString(request.getReader());
 
-                    AddCorsResponseHeaders(request, response);
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(query, null, null)), request, response);
                 } else if (JSON.equals(mediaType) || JSON_UTF_8.equals(mediaType)) {
                     String json = CharStreams.toString(request.getReader());
 
-                    AddCorsResponseHeaders(request, response);
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(json)), request, response);
                 }
             } catch (Exception e) {
@@ -122,13 +119,6 @@ public class GraphQlServlet
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         };
-    }
-
-    private void AddCorsResponseHeaders(HttpServletRequest request, HttpServletResponse response) {
-        String origin = request.getHeader("Origin");
-
-        response.addHeader("Access-Control-Allow-Origin", origin == null ? "*" : origin);
-        response.addHeader("Access-Control-Allow-Credentials", "true");
     }
 
     private static InputStream asMarkableInputStream(InputStream inputStream) {
@@ -191,12 +181,16 @@ public class GraphQlServlet
     }
 
     private void query(GraphQlQueryInvoker queryInvoker, GraphQlSingleInvocationInput invocationInput,
-            HttpServletRequest request, HttpServletResponse resp)
+            HttpServletRequest request, HttpServletResponse response)
             throws IOException, NamingException {
+        String origin = request.getHeader("Origin");
+
         String result = queryInvoker.query(getUserVisitPK(request), invocationInput);
 
-        resp.setContentType(JSON_UTF_8.toString());
-        resp.setStatus(HttpServletResponse.SC_OK);
-        resp.getOutputStream().write(result.getBytes(Charsets.UTF_8));
+        response.addHeader("Access-Control-Allow-Origin", origin == null ? "*" : origin);
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+        response.setContentType(JSON_UTF_8.toString());
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getOutputStream().write(result.getBytes(Charsets.UTF_8));
     }
 }
