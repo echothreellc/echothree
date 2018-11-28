@@ -77,16 +77,16 @@ public class GraphQlServlet
             GraphQlInvocationInputFactory invocationInputFactory = configuration.getInvocationInputFactory();
             GraphQlQueryInvoker queryInvoker = configuration.getQueryInvoker();
 
-            if (path == null) {
+            if(path == null) {
                 path = request.getServletPath();
             }
 
-            if (path.contentEquals("/schema.json")) {
+            if(path.contentEquals("/schema.json")) {
                 query(queryInvoker, invocationInputFactory.create(INTROSPECTION_REQUEST, request, response), request, response);
             } else {
                 String query = request.getParameter("query");
 
-                if (query != null) {
+                if(query != null) {
                     String variables = request.getParameter("variables");
                     String operationName = request.getParameter("operationName");
 
@@ -105,11 +105,11 @@ public class GraphQlServlet
                 String contentType = request.getContentType();
                 MediaType mediaType = MediaType.parse(contentType);
 
-                if (GRAPHQL.equals(mediaType) || GRAPHQL_UTF_8.equals(mediaType)) {
+                if(GRAPHQL.equals(mediaType) || GRAPHQL_UTF_8.equals(mediaType)) {
                     String query = CharStreams.toString(request.getReader());
 
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(query, null, null)), request, response);
-                } else if (JSON.equals(mediaType) || JSON_UTF_8.equals(mediaType)) {
+                } else if(JSON.equals(mediaType) || JSON_UTF_8.equals(mediaType)) {
                     String json = CharStreams.toString(request.getReader());
 
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(json)), request, response);
@@ -122,7 +122,7 @@ public class GraphQlServlet
     }
 
     private static InputStream asMarkableInputStream(InputStream inputStream) {
-        if (!inputStream.markSupported()) {
+        if(!inputStream.markSupported()) {
             inputStream = new BufferedInputStream(inputStream);
         }
 
