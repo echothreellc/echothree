@@ -27,6 +27,14 @@ import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.util.HttpSessionUtils;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_MAX_AGE;
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
+import static com.google.common.net.HttpHeaders.ORIGIN;
+import static com.google.common.net.MediaType.JSON_UTF_8;
 import com.google.common.net.MediaType;
 import graphql.introspection.IntrospectionQuery;
 import javax.naming.NamingException;
@@ -42,8 +50,6 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.google.common.net.MediaType.JSON_UTF_8;
-
 @WebServlet(name = "graphql", urlPatterns = {"/"}, asyncSupported = true)
 public class GraphQlServlet
         extends HttpServlet {
@@ -53,6 +59,10 @@ public class GraphQlServlet
     protected static final MediaType JSON = JSON_UTF_8.withoutParameters();
     protected static final MediaType GRAPHQL_UTF_8 = MediaType.parse("application/graphql;charset=utf-8");
     protected static final MediaType GRAPHQL = GRAPHQL_UTF_8.withoutParameters();
+
+    protected static final String METHOD_GET = "GET";
+    protected static final String METHOD_OPTIONS = "OPTIONS";
+    protected static final String METHOD_POST = "POST";
 
     protected static final String SCHEME_HTTPS = "https";
 
@@ -165,13 +175,13 @@ public class GraphQlServlet
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String origin = request.getHeader("Origin");
+        String origin = request.getHeader(ORIGIN);
 
-        response.addHeader("Access-Control-Allow-Origin", origin == null ? "*" : origin);
-        response.addHeader("Access-Control-Allow-Credentials", "true");
-        response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Origin");
-        response.addHeader("Access-Control-Max-Age", "86400");
+        response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
+        response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.TRUE.toString());
+        response.addHeader(ACCESS_CONTROL_ALLOW_METHODS, METHOD_POST + ", " + METHOD_GET + ", " + METHOD_OPTIONS);
+        response.addHeader(ACCESS_CONTROL_ALLOW_HEADERS, CONTENT_TYPE + ", " + ORIGIN);
+        response.addHeader(ACCESS_CONTROL_MAX_AGE, "86400");
     }
 
     public UserVisitPK getUserVisitPK(HttpServletRequest request) {
@@ -187,8 +197,8 @@ public class GraphQlServlet
         String remoteAddr = request.getRemoteAddr();
         String result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);
 
-        response.addHeader("Access-Control-Allow-Origin", origin == null ? "*" : origin);
-        response.addHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
+        response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.TRUE.toString());
         response.setContentType(JSON_UTF_8.toString());
         response.setStatus(HttpServletResponse.SC_OK);
         response.getOutputStream().write(result.getBytes(Charsets.UTF_8));
