@@ -98,6 +98,8 @@ public class GraphQlServlet
                 String query = request.getParameter("query");
 
                 if (query != null) {
+                    AddCorsResponseHeaders(request, response);
+
                     if (isBatchedQuery(query)) {
                         //queryBatched(queryInvoker, invocationInputFactory.createReadOnly(graphQLObjectMapper.readBatchedGraphQLRequest(query), request, response), response);
                     } else {
@@ -114,6 +116,8 @@ public class GraphQlServlet
         };
 
         this.postHandler = (request, response) -> {
+            String path = request.getPathInfo();
+
             try {
                 GraphQlInvocationInputFactory invocationInputFactory = configuration.getInvocationInputFactory();
                 GraphQlQueryInvoker queryInvoker = configuration.getQueryInvoker();
@@ -123,10 +127,12 @@ public class GraphQlServlet
                 if (GRAPHQL.equals(mediaType) || GRAPHQL_UTF_8.equals(mediaType)) {
                     String query = CharStreams.toString(request.getReader());
 
+                    AddCorsResponseHeaders(request, response);
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(query, null, null)), request, response);
                 } else if (JSON.equals(mediaType) || JSON_UTF_8.equals(mediaType)) {
                     String json = CharStreams.toString(request.getReader());
 
+                    AddCorsResponseHeaders(request, response);
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(json)), request, response);
                 }
 //                else if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data") && !request.getParts().isEmpty()) {
@@ -197,6 +203,13 @@ public class GraphQlServlet
                 response.setStatus(STATUS_BAD_REQUEST);
             }
         };
+    }
+
+    private void AddCorsResponseHeaders(HttpServletRequest request, HttpServletResponse response) {
+        String origin = request.getHeader("Origin");
+
+        response.addHeader("Access-Control-Allow-Origin", origin == null ? "*" : origin);
+        response.addHeader("Access-Control-Allow-Credentials", "true");
     }
 
     private static InputStream asMarkableInputStream(InputStream inputStream) {
@@ -284,6 +297,18 @@ public class GraphQlServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doRequestAsync(request, response, postHandler);
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String origin = request.getHeader("Origin");
+
+        response.addHeader("Access-Control-Allow-Origin", origin == null ? "*" : origin);
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+        response.addHeader("Access-Control-Allow-Headers", "Content-Type, Origin");
+        response.addHeader("Access-Control-Max-Age", "86400");
     }
 
     private Optional<Part> getFileItem(Map<String, List<Part>> fileItems, String name) {
