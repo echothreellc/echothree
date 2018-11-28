@@ -193,7 +193,7 @@ public class GraphQlServlet
     private void query(GraphQlQueryInvoker queryInvoker, GraphQlInvocationInput invocationInput,
             HttpServletRequest request, HttpServletResponse response)
             throws IOException, NamingException {
-        String origin = request.getHeader("Origin");
+        String origin = request.getHeader(ORIGIN);
         String remoteAddr = request.getRemoteAddr();
         String result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);
 
