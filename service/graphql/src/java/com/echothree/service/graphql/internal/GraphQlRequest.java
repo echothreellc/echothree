@@ -65,5 +65,4 @@ public class GraphQlRequest {
     public void setJson(String json) {
         this.json = json;
     }
-
 }

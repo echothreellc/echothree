@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.function.BiConsumer;
 
-public interface HttpRequestHandler extends BiConsumer<HttpServletRequest, HttpServletResponse> {
+public interface HttpRequestHandler
+        extends BiConsumer<HttpServletRequest, HttpServletResponse> {
 
     @Override
     default void accept(HttpServletRequest request, HttpServletResponse response) {

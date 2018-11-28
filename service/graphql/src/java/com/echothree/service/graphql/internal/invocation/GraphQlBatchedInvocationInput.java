@@ -19,7 +19,6 @@ package com.echothree.service.graphql.internal.invocation;
 
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.service.graphql.internal.GraphQlRequest;
-
 import javax.naming.NamingException;
 import java.util.ArrayList;
 import java.util.Collections;

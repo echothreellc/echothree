@@ -20,7 +20,6 @@ package com.echothree.service.graphql.internal.invocation;
 import com.echothree.control.user.graphql.common.GraphQlUtil;
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.service.graphql.internal.GraphQlRequest;
-
 import javax.naming.NamingException;
 
 public abstract class GraphQlInvocationInput {
@@ -35,5 +34,4 @@ public abstract class GraphQlInvocationInput {
 
         return commandForm;
     }
-
 }
