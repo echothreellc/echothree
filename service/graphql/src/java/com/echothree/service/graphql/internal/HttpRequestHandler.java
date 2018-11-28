@@ -1,5 +1,6 @@
 // --------------------------------------------------------------------------------
 // Copyright 2002-2018 Echo Three, LLC
+// Copyright 2016 Yurii Rashkovskii and Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,29 +15,24 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.graphql.common.form;
+package com.echothree.service.graphql.internal;
 
-import com.echothree.util.common.form.BaseForm;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.function.BiConsumer;
 
-public interface ExecuteGraphQlForm
-        extends BaseForm {
-    
-    String getReadOnly();
-    void setReadOnly(String readOnly);
-    
-    String getQuery();
-    void setQuery(String query);
+public interface HttpRequestHandler
+        extends BiConsumer<HttpServletRequest, HttpServletResponse> {
 
-    String getVariables();
-    void setVariables(String variables);
+    @Override
+    default void accept(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            handle(request, response);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    String getOperationName();
-    void setOperationName(String operationName);
-
-    String getJson();
-    void setJson(String json);
-    
-    String getRemoteInet4Address();
-    void setRemoteInet4Address(String remoteInet4Address);
-    
+    void handle(HttpServletRequest request, HttpServletResponse response)
+            throws Exception;
 }

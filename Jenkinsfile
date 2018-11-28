@@ -30,7 +30,7 @@ pipeline {
         stage('Artifacts') {
             steps {
                 script {
-                    archiveArtifacts artifacts: 'build/ears/*.ear,build/ui/web/**/*.war,build/lib/mysql-connector-java.jar'
+                    archiveArtifacts artifacts: 'build/ears/*.ear,build/ui/web/**/*.war,build/service/**/*.war,build/service/**/*.jar,build/lib/mysql-connector-java.jar'
                     currentBuild.result = 'SUCCESS'
                 }
             }

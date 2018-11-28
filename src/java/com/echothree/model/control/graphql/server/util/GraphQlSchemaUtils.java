@@ -22,8 +22,9 @@ import graphql.schema.GraphQLSchema;
 
 public class GraphQlSchemaUtils {
     
+    private GraphQLSchema readOnlySchema;
     private GraphQLSchema schema;
-    
+
     private GraphQlSchemaUtils() {
         buildSchema();
     }
@@ -48,15 +49,24 @@ public class GraphQlSchemaUtils {
         GraphQLObjectType query = GraphQLAnnotations.object(GraphQlQueries.class);
         GraphQLObjectType mutation = GraphQLAnnotations.object(GraphQlMutations.class);
 
+        readOnlySchema = GraphQLSchema
+                .newSchema()
+                .query(query)
+                .build();
+
         schema = GraphQLSchema
                 .newSchema()
                 .query(query)
                 .mutation(mutation)
                 .build();
     }
-    
+
+    public GraphQLSchema getReadOnlySchema() {
+        return readOnlySchema;
+    }
+
     public GraphQLSchema getSchema() {
         return schema;
     }
-    
+
 }

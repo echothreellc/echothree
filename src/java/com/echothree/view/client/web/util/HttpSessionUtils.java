@@ -41,14 +41,19 @@ public class HttpSessionUtils {
     public static HttpSessionUtils getInstance() {
         return instance;
     }
-    
+
+    public static final int DEFAULT_MAX_INACTIVE_INTERVAL = 15 * 3600; // 15 minutes
+
     public UserVisitPK setupUserVisit(final HttpServletRequest request, final HttpServletResponse response) {
-        // get session, create if it doesn't exist yet
+        // Get the HttpSession, create if it doesn't exist yet.
         HttpSession httpSession = request.getSession(true);
         
-        // get UserVisit, create if it doesn't exist yet
+        // Get the existing UserVisit, create if it doesn't exist yet.
         UserVisitPK userVisitPK = (UserVisitPK)httpSession.getAttribute(WebConstants.Session_USER_VISIT);
         if(userVisitPK == null) {
+            // Set the session timeout.
+            httpSession.setMaxInactiveInterval(DEFAULT_MAX_INACTIVE_INTERVAL);
+
             try {
                 AuthenticationService authenticationService = AuthenticationUtil.getHome();
                 GetUserVisitForm commandForm = AuthenticationUtil.getHome().getGetUserVisitForm();

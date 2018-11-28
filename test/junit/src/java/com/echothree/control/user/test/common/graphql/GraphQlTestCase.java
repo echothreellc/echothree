@@ -139,7 +139,7 @@ public abstract class GraphQlTestCase {
     private URIBuilder getURIBuilder() {
         return new URIBuilder().setScheme("https")
                 .setHost("127.0.0.1")
-                .setPath("/main/action/graphql");
+                .setPath("/graphql");
     }
 
     protected Map<String, Object> executeUsingGet(String query)

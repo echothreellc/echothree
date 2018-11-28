@@ -47,7 +47,9 @@ public class ExecuteGraphQlCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                new FieldDefinition("ReadOnly", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Query", FieldType.STRING, false, 1L, null),
+                new FieldDefinition("Variables", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("OperationName", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("Json", FieldType.STRING, false, 1L, null),
                 // RemoteInet4Address is purposefully validated only as a string, as it's passed
@@ -82,16 +84,29 @@ public class ExecuteGraphQlCommand
     @Override
     protected BaseResult execute() {
         ExecuteGraphQlResult result = GraphQlResultFactory.getExecuteGraphQlResult();
-        String query = form.getQuery();
-        String operationName = form.getOperationName();
-        String json = form.getJson();
-        
+
         try {
-            Map<String, Object> variables = null;
+            boolean readOnly = Boolean.valueOf(form.getReadOnly());
+            String query = form.getQuery();
+            String variables = form.getVariables();
+            String operationName = form.getOperationName();
+            String json = form.getJson();
+
             GraphQL graphQL = GraphQL
-                    .newGraphQL(GraphQlSchemaUtils.getInstance().getSchema())
+                    .newGraphQL(readOnly? GraphQlSchemaUtils.getInstance().getReadOnlySchema() : GraphQlSchemaUtils.getInstance().getSchema())
                     .queryExecutionStrategy(new EnhancedExecutionStrategy())
                     .build();
+
+            Map<String, Object> parsedVariables = null;
+            if(variables != null) {
+                Object possibleVariables = GraphQlUtils.getInstance().toMap(variables);
+
+                if(possibleVariables instanceof Map) {
+                    parsedVariables = (Map<String, Object>)possibleVariables;
+                } else {
+                    getLog().error("Discarding parsedVariables, not an instance of Map");
+                }
+            }
 
             if(json != null) {
                 Map<String, Object> body = GraphQlUtils.getInstance().toMap(json);
@@ -117,12 +132,12 @@ public class ExecuteGraphQlCommand
                     }
                 }
 
-                // variables are only present in Json.
-                if(possibleVariables != null) {
+                // Variables form field takes priority of Json's variables.
+                if(possibleVariables != null && variables == null) {
                     if(possibleVariables instanceof Map) {
-                        variables = (Map<String, Object>)possibleVariables;
+                        parsedVariables = (Map<String, Object>)possibleVariables;
                     } else {
-                        getLog().error("Discarding variables, not an instance of Map");
+                        getLog().error("Discarding parsedVariables, not an instance of Map");
                     }
                 }
             }
@@ -138,8 +153,8 @@ public class ExecuteGraphQlCommand
                         .context(context)
                         .root(context);
                 
-                if(variables != null) {
-                    builder.variables(variables);
+                if(parsedVariables != null) {
+                    builder.variables(parsedVariables);
                 }
                 
                 ExecutionResult executionResult = graphQL.execute(builder.build());

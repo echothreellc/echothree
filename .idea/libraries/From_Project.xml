@@ -4,7 +4,6 @@
       <root url="jar://$PROJECT_DIR$/lib/antlr.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jsp-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/logkit.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/servlet-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/xom.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/struts/bsf.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/struts/commons-chain.jar!/" />
