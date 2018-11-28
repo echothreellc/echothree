@@ -31,11 +31,13 @@ public class GraphQlQueryInvoker {
     protected GraphQlQueryInvoker() {
     }
 
-    private String execute(UserVisitPK userVisitPK, ExecuteGraphQlForm executeGraphQlForm)
+    private String execute(UserVisitPK userVisitPK, ExecuteGraphQlForm executeGraphQlForm, String remoteInet4Address)
             throws NamingException {
         String graphQlExecutionResult = null;
-        CommandResult commandResult = GraphQlUtil.getHome().executeGraphQl(userVisitPK,
-                executeGraphQlForm);
+
+        executeGraphQlForm.setRemoteInet4Address(remoteInet4Address);
+
+        CommandResult commandResult = GraphQlUtil.getHome().executeGraphQl(userVisitPK, executeGraphQlForm);
 
         if(!commandResult.hasErrors()) {
             ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -47,11 +49,11 @@ public class GraphQlQueryInvoker {
         return graphQlExecutionResult;
     }
 
-    public String query(UserVisitPK userVisitPK, GraphQlSingleInvocationInput singleInvocationInput)
+    public String query(UserVisitPK userVisitPK, GraphQlSingleInvocationInput singleInvocationInput, String remoteInet4Address)
             throws NamingException {
         ExecuteGraphQlForm executeGraphQlForm = singleInvocationInput.getExecuteGraphQlForm();
 
-        return execute(userVisitPK, executeGraphQlForm);
+        return execute(userVisitPK, executeGraphQlForm, remoteInet4Address);
     }
 
     public static Builder newBuilder() {

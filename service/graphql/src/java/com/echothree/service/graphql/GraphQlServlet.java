@@ -184,8 +184,8 @@ public class GraphQlServlet
             HttpServletRequest request, HttpServletResponse response)
             throws IOException, NamingException {
         String origin = request.getHeader("Origin");
-
-        String result = queryInvoker.query(getUserVisitPK(request), invocationInput);
+        String remoteAddr = request.getRemoteAddr();
+        String result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);
 
         response.addHeader("Access-Control-Allow-Origin", origin == null ? "*" : origin);
         response.addHeader("Access-Control-Allow-Credentials", "true");
