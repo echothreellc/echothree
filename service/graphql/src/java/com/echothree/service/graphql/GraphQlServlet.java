@@ -38,9 +38,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,14 +123,6 @@ public class GraphQlServlet
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         };
-    }
-
-    private static InputStream asMarkableInputStream(InputStream inputStream) {
-        if(!inputStream.markSupported()) {
-            inputStream = new BufferedInputStream(inputStream);
-        }
-
-        return inputStream;
     }
 
     private void doRequestAsync(HttpServletRequest request, HttpServletResponse response, HttpRequestHandler handler) {
