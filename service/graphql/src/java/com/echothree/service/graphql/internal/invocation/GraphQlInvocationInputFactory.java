@@ -24,16 +24,16 @@ public class GraphQlInvocationInputFactory {
     protected GraphQlInvocationInputFactory() {
     }
 
-    public GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest) {
+    public GraphQlInvocationInput create(GraphQlRequest graphQlRequest) {
         return create(graphQlRequest, false);
     }
 
-    public GraphQlSingleInvocationInput createReadOnly(GraphQlRequest graphQlRequest) {
+    public GraphQlInvocationInput createReadOnly(GraphQlRequest graphQlRequest) {
         return create(graphQlRequest, true);
     }
 
-    private GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest, boolean readOnly) {
-        return new GraphQlSingleInvocationInput(readOnly, graphQlRequest);
+    private GraphQlInvocationInput create(GraphQlRequest graphQlRequest, boolean readOnly) {
+        return new GraphQlInvocationInput(readOnly, graphQlRequest);
     }
 
     public static Builder newBuilder() {

@@ -22,15 +22,17 @@ import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.service.graphql.internal.GraphQlRequest;
 import javax.naming.NamingException;
 
-public abstract class GraphQlInvocationInput {
+public class GraphQlInvocationInput {
 
-    private boolean readOnly;
+    private final boolean readOnly;
+    private final GraphQlRequest graphQLRequest;
 
-    protected GraphQlInvocationInput(boolean readOnly) {
+    public GraphQlInvocationInput(boolean readOnly, GraphQlRequest graphQLRequest) {
         this.readOnly = readOnly;
+        this.graphQLRequest = graphQLRequest;
     }
 
-    protected ExecuteGraphQlForm createExecuteGraphQlForm(GraphQlRequest graphQLRequest)
+    public ExecuteGraphQlForm getExecuteGraphQlForm()
             throws NamingException {
         ExecuteGraphQlForm commandForm = GraphQlUtil.getHome().getExecuteGraphQlForm();
 

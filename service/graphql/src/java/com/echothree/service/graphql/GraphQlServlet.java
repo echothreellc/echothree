@@ -22,7 +22,7 @@ import com.echothree.service.graphql.internal.invoker.GraphQlQueryInvoker;
 import com.echothree.service.graphql.internal.GraphQlRequest;
 import com.echothree.service.graphql.internal.HttpRequestHandler;
 import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInputFactory;
-import com.echothree.service.graphql.internal.invocation.GraphQlSingleInvocationInput;
+import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInput;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.util.HttpSessionUtils;
 import com.google.common.base.Charsets;
@@ -190,7 +190,7 @@ public class GraphQlServlet
         return (UserVisitPK)httpSession.getAttribute(WebConstants.Session_USER_VISIT);
     }
 
-    private void query(GraphQlQueryInvoker queryInvoker, GraphQlSingleInvocationInput invocationInput,
+    private void query(GraphQlQueryInvoker queryInvoker, GraphQlInvocationInput invocationInput,
             HttpServletRequest request, HttpServletResponse response)
             throws IOException, NamingException {
         String origin = request.getHeader("Origin");
