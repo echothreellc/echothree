@@ -57,6 +57,8 @@ public class GraphQlServlet
     protected static final MediaType GRAPHQL_UTF_8 = MediaType.parse("application/graphql;charset=utf-8");
     protected static final MediaType GRAPHQL = GRAPHQL_UTF_8.withoutParameters();
 
+    protected static final String SCHEME_HTTPS = "https";
+
     protected static final GraphQlRequest INTROSPECTION_REQUEST = new GraphQlRequest(IntrospectionQuery.INTROSPECTION_QUERY, null, null);
 
     protected GraphQlConfiguration configuration;
@@ -145,9 +147,14 @@ public class GraphQlServlet
 
     private void doRequest(HttpServletRequest request, HttpServletResponse response, HttpRequestHandler handler, AsyncContext asyncContext) {
         try {
-            handler.handle(request, response);
+            if(request.getScheme().equals(SCHEME_HTTPS))
+            {
+                handler.handle(request, response);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
         } catch (Throwable t) {
-            response.setStatus(500);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             log.error("Error executing GraphQL request!", t);
         } finally {
             asyncContext.complete();
