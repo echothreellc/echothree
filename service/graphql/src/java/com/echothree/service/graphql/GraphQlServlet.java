@@ -51,20 +51,17 @@ import static com.google.common.net.MediaType.JSON_UTF_8;
 public class GraphQlServlet
         extends HttpServlet {
 
-    public static final Logger log = LoggerFactory.getLogger(GraphQlServlet.class);
+    private static final Logger log = LoggerFactory.getLogger(GraphQlServlet.class);
 
     protected static final MediaType JSON = JSON_UTF_8.withoutParameters();
     protected static final MediaType GRAPHQL_UTF_8 = MediaType.parse("application/graphql;charset=utf-8");
     protected static final MediaType GRAPHQL = GRAPHQL_UTF_8.withoutParameters();
 
-    public static final int STATUS_OK = 200;
-    public static final int STATUS_BAD_REQUEST = 400;
+    protected static final GraphQlRequest INTROSPECTION_REQUEST = new GraphQlRequest(IntrospectionQuery.INTROSPECTION_QUERY, null, null);
 
-    private static final GraphQlRequest INTROSPECTION_REQUEST = new GraphQlRequest(IntrospectionQuery.INTROSPECTION_QUERY, null, null);
-
-    private GraphQlConfiguration configuration;
-    private HttpRequestHandler getHandler;
-    private HttpRequestHandler postHandler;
+    protected GraphQlConfiguration configuration;
+    protected HttpRequestHandler getHandler;
+    protected HttpRequestHandler postHandler;
 
     protected GraphQlConfiguration getConfiguration() {
         return GraphQlConfiguration.with(GraphQlInvocationInputFactory.newBuilder().build())
@@ -96,7 +93,7 @@ public class GraphQlServlet
                     AddCorsResponseHeaders(request, response);
                     query(queryInvoker, invocationInputFactory.createReadOnly(new GraphQlRequest(query, variables, operationName), request, response), request, response);
                 } else {
-                    response.setStatus(STATUS_BAD_REQUEST);
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     log.info("Bad GET request: path was not \"/schema.json\" or no query variable named \"query\" given");
                 }
             }
@@ -122,7 +119,7 @@ public class GraphQlServlet
                 }
             } catch (Exception e) {
                 log.info("Bad POST request: parsing failed", e);
-                response.setStatus(STATUS_BAD_REQUEST);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         };
     }
@@ -199,7 +196,7 @@ public class GraphQlServlet
         String result = queryInvoker.query(getUserVisitPK(request), invocationInput);
 
         resp.setContentType(JSON_UTF_8.toString());
-        resp.setStatus(STATUS_OK);
+        resp.setStatus(HttpServletResponse.SC_OK);
         resp.getOutputStream().write(result.getBytes(Charsets.UTF_8));
     }
 }
