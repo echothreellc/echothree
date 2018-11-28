@@ -17,6 +17,9 @@
 
 package com.echothree.service.graphql;
 
+import com.echothree.service.graphql.internal.invoker.GraphQlQueryInvoker;
+import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInputFactory;
+
 public class GraphQlConfiguration {
 
     private GraphQlInvocationInputFactory invocationInputFactory;

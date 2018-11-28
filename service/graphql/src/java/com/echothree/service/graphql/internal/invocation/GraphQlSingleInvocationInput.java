@@ -15,23 +15,24 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.service.graphql;
+package com.echothree.service.graphql.internal.invocation;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.function.BiConsumer;
+import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
+import com.echothree.service.graphql.internal.GraphQlRequest;
 
-public interface HttpRequestHandler extends BiConsumer<HttpServletRequest, HttpServletResponse> {
+import javax.naming.NamingException;
 
-    @Override
-    default void accept(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            handle(request, response);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+public class GraphQlSingleInvocationInput
+        extends GraphQlInvocationInput {
+
+    private final GraphQlRequest request;
+
+    public GraphQlSingleInvocationInput(GraphQlRequest request) {
+        this.request = request;
     }
 
-    void handle(HttpServletRequest request, HttpServletResponse response)
-            throws Exception;
+    public ExecuteGraphQlForm getExecuteGraphQlForm()
+            throws NamingException {
+        return createExecuteGraphQlForm(request);
+    }
 }

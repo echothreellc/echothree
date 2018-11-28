@@ -15,12 +15,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.service.graphql;
+package com.echothree.service.graphql.internal.invoker;
 
 import com.echothree.control.user.graphql.common.GraphQlUtil;
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.service.graphql.internal.invocation.GraphQlBatchedInvocationInput;
+import com.echothree.service.graphql.internal.invocation.GraphQlSingleInvocationInput;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;

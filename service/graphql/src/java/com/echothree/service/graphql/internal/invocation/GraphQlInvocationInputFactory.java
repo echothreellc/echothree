@@ -15,7 +15,9 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.service.graphql;
+package com.echothree.service.graphql.internal.invocation;
+
+import com.echothree.service.graphql.internal.GraphQlRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,12 +31,12 @@ public class GraphQlInvocationInputFactory {
     }
 
     public GraphQlSingleInvocationInput create(GraphQlRequest graphQlRequest, HttpServletRequest request,
-            HttpServletResponse response) {
+                                               HttpServletResponse response) {
         return create(graphQlRequest, request, response, false);
     }
 
     public GraphQlBatchedInvocationInput create(List<GraphQlRequest> graphQlRequests, HttpServletRequest request,
-            HttpServletResponse response) {
+                                                HttpServletResponse response) {
         return create(graphQlRequests, request, response, false);
     }
 
