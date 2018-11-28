@@ -116,8 +116,6 @@ public class GraphQlServlet
         };
 
         this.postHandler = (request, response) -> {
-            String path = request.getPathInfo();
-
             try {
                 GraphQlInvocationInputFactory invocationInputFactory = configuration.getInvocationInputFactory();
                 GraphQlQueryInvoker queryInvoker = configuration.getQueryInvoker();
@@ -135,69 +133,6 @@ public class GraphQlServlet
                     AddCorsResponseHeaders(request, response);
                     query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(json)), request, response);
                 }
-//                else if (request.getContentType() != null && request.getContentType().startsWith("multipart/form-data") && !request.getParts().isEmpty()) {
-//                    final Map<String, List<Part>> fileItems = request.getParts()
-//                            .stream()
-//                            .collect(Collectors.groupingBy(Part::getName));
-//
-//                    for (String key : MULTIPART_KEYS) {
-//                        // Check to see if there is a part under the key we seek
-//                        if (!fileItems.containsKey(key)) {
-//                            continue;
-//                        }
-//
-//                        final Optional<Part> queryItem = getFileItem(fileItems, key);
-//                        if (!queryItem.isPresent()) {
-//                            // If there is a part, but we don't see an item, then break and return BAD_REQUEST
-//                            break;
-//                        }
-//
-//                        InputStream inputStream = asMarkableInputStream(queryItem.get().getInputStream());
-//
-//                        final Optional<Map<String, List<String>>> variablesMap =
-//                                getFileItem(fileItems, "map").map(graphQLObjectMapper::deserializeMultipartMap);
-//
-//                        if (isBatchedQuery(inputStream)) {
-//                            List<GraphQlRequest> graphQlRequests =
-//                                    graphQLObjectMapper.readBatchedGraphQLRequest(inputStream);
-//                            variablesMap.ifPresent(map -> graphQlRequests.forEach(r -> mapMultipartVariables(r, map, fileItems)));
-//                            GraphQlBatchedInvocationInput invocationInput =
-//                                    invocationInputFactory.create(graphQlRequests, request, response);
-//                            invocationInput.getContext().setParts(fileItems);
-//                            queryBatched(queryInvoker, graphQLObjectMapper, invocationInput, response);
-//                            return;
-//                        } else {
-//                            GraphQlRequest graphQLRequest;
-//                            if ("query".equals(key)) {
-//                                graphQLRequest = buildRequestFromQuery(inputStream, graphQLObjectMapper, fileItems);
-//                            } else {
-//                                graphQLRequest = graphQLObjectMapper.readGraphQLRequest(inputStream);
-//                            }
-//
-//                            variablesMap.ifPresent(m -> mapMultipartVariables(graphQLRequest, m, fileItems));
-//                            GraphQlSingleInvocationInput invocationInput =
-//                                    invocationInputFactory.create(graphQLRequest, request, response);
-//                            invocationInput.getContext().setParts(fileItems);
-//                            query(queryInvoker, graphQLObjectMapper, invocationInput, response);
-//                            return;
-//                        }
-//                    }
-//
-//                    response.setStatus(STATUS_BAD_REQUEST);
-//                    log.info("Bad POST multipart request: no part named " + Arrays.toString(MULTIPART_KEYS));
-//                } else {
-//                    // this is not a multipart request
-//                    String query = request.getParameter("query");
-//                    String variables = request.getParameter("variables");
-//                    String operationName = request.getParameter("operationName");
-//                    InputStream inputStream = asMarkableInputStream(request.getInputStream());
-//
-//                    if (isBatchedQuery(inputStream)) {
-//                        //queryBatched(queryInvoker, invocationInputFactory.create(graphQLObjectMapper.readBatchedGraphQLRequest(inputStream), request, response), response);
-//                    } else {
-//                        query(queryInvoker, invocationInputFactory.create(new GraphQlRequest(query, variables, operationName)), request, response);
-//                    }
-//                }
             } catch (Exception e) {
                 log.info("Bad POST request: parsing failed", e);
                 response.setStatus(STATUS_BAD_REQUEST);
