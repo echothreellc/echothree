@@ -1,5 +1,5 @@
                 <datasource jta="false" jndi-name="java:/EchoThreeNTDS" pool-name="EchoThreeNTDS">
-                    <connection-url>jdbc:mysql://127.0.0.1:3306/echothree?useSSL=false&amp;serverTimezone=US/Central</connection-url>
+                    <connection-url>jdbc:mysql://127.0.0.1:3306/echothree?serverTimezone=US/Central</connection-url>
                     <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
                     <driver>mysql-connector-java.jar</driver>
                     <pool>
@@ -21,9 +21,6 @@
                     </xa-datasource-property>
                     <xa-datasource-property name="DatabaseName">
                         echothree
-                    </xa-datasource-property>
-                    <xa-datasource-property name="useSSL">
-                        false
                     </xa-datasource-property>
                     <xa-datasource-property name="serverTimezone">
                         US/Central
