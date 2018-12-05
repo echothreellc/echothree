@@ -21,7 +21,6 @@ import com.echothree.control.user.graphql.common.form.*;
 import com.echothree.control.user.graphql.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
-
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import java.util.concurrent.Future;
