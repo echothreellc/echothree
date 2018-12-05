@@ -60,8 +60,11 @@ import com.echothree.util.server.persistence.ThreadCaches;
 import com.echothree.util.server.persistence.ThreadSession;
 import com.google.common.base.Charsets;
 import java.util.List;
+import java.util.concurrent.Future;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.ejb.AsyncResult;
 
 public abstract class BaseCommand
         implements ExecutionWarningAccumulator, ExecutionErrorAccumulator, SecurityMessageAccumulator {
@@ -455,7 +458,11 @@ public abstract class BaseCommand
     protected BaseResult getBaseResultAfterErrors() {
         return null;
     }
-    
+
+    public final Future<CommandResult> runAsync() {
+        return new AsyncResult<>(run());
+    }
+
     public final CommandResult run()
             throws BaseException {
         if(ControlDebugFlags.LogBaseCommands) {

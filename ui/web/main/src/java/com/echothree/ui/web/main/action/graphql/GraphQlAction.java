@@ -24,12 +24,12 @@ import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
-import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -88,8 +88,9 @@ public class GraphQlAction
                 commandForm.setJson(json);
                 commandForm.setRemoteInet4Address(request.getRemoteAddr());
 
-                CommandResult commandResult = GraphQlUtil.getHome().executeGraphQl(getUserVisitPK(request), commandForm);
+                Future<CommandResult> futureCommandResult = GraphQlUtil.getHome().executeGraphQl(getUserVisitPK(request), commandForm);
 
+                CommandResult commandResult = futureCommandResult.get();
                 if(!commandResult.hasErrors()) {
                     ExecutionResult executionResult = commandResult.getExecutionResult();
                     ExecuteGraphQlResult result = (ExecuteGraphQlResult)executionResult.getResult();

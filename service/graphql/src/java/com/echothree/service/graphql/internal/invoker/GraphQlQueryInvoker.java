@@ -25,6 +25,8 @@ import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInput;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
 import javax.naming.NamingException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class GraphQlQueryInvoker {
 
@@ -32,13 +34,14 @@ public class GraphQlQueryInvoker {
     }
 
     private String execute(UserVisitPK userVisitPK, ExecuteGraphQlForm executeGraphQlForm, String remoteInet4Address)
-            throws NamingException {
+            throws NamingException, ExecutionException, InterruptedException {
         String graphQlExecutionResult = null;
 
         executeGraphQlForm.setRemoteInet4Address(remoteInet4Address);
 
-        CommandResult commandResult = GraphQlUtil.getHome().executeGraphQl(userVisitPK, executeGraphQlForm);
+        Future<CommandResult> futureCommandResult = GraphQlUtil.getHome().executeGraphQl(userVisitPK, executeGraphQlForm);
 
+        CommandResult commandResult = futureCommandResult.get();
         if(!commandResult.hasErrors()) {
             ExecutionResult executionResult = commandResult.getExecutionResult();
             ExecuteGraphQlResult result = (ExecuteGraphQlResult)executionResult.getResult();
@@ -50,7 +53,7 @@ public class GraphQlQueryInvoker {
     }
 
     public String query(UserVisitPK userVisitPK, GraphQlInvocationInput singleInvocationInput, String remoteInet4Address)
-            throws NamingException {
+            throws NamingException, ExecutionException, InterruptedException {
         ExecuteGraphQlForm executeGraphQlForm = singleInvocationInput.getExecuteGraphQlForm();
 
         return execute(userVisitPK, executeGraphQlForm, remoteInet4Address);
