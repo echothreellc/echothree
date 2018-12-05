@@ -47,6 +47,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -192,7 +194,7 @@ public class GraphQlServlet
 
     private void query(GraphQlQueryInvoker queryInvoker, GraphQlInvocationInput invocationInput,
             HttpServletRequest request, HttpServletResponse response)
-            throws IOException, NamingException {
+            throws IOException, NamingException, ExecutionException, InterruptedException {
         String origin = request.getHeader(ORIGIN);
         String remoteAddr = request.getRemoteAddr();
         String result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);

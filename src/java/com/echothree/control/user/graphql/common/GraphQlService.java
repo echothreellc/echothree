@@ -20,6 +20,8 @@ import com.echothree.control.user.graphql.common.form.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
+import java.util.concurrent.Future;
+
 public interface GraphQlService
         extends GraphQlForms {
     
@@ -33,6 +35,6 @@ public interface GraphQlService
     //   GraphQl
     // --------------------------------------------------------------------------------
 
-    CommandResult executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form);
+    Future<CommandResult> executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form);
 
 }
