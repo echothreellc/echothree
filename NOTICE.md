@@ -67,6 +67,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## GraphQL Java Servlet
+
+Web Site: https://github.com/graphql-java-kickstart/graphql-java-servlet
+
+License: Apache License Version 2.0
+
 # Other Third-Party Libraries
 
 Other libraries and their licenses may be found in the `lib/` directory,
