@@ -1,5 +1,6 @@
 // --------------------------------------------------------------------------------
 // Copyright 2002-2018 Echo Three, LLC
+// Copyright 1999-2004 The Apache Software Foundation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

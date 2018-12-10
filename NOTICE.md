@@ -20,6 +20,17 @@ Copyright 2001-2018 The Apache Software Foundation
 This product includes software developed by
 The Apache Software Foundation (http://www.apache.org/).
 
+## Apache Struts 1
+
+Web Site: https://struts.apache.org
+
+License: Apache License Version 2.0
+
+Copyright 2000-2007 The Apache Software Foundation
+
+This product includes software developed by
+The Apache Software Foundation (http://www.apache.org/).
+
 ## sslext
 
 Web Site: https://sourceforge.net/projects/sslext/
