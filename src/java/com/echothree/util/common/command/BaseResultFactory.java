@@ -23,8 +23,9 @@ import java.lang.reflect.Proxy;
 public class BaseResultFactory {
     
     static public BaseResult createResult(Class result) {
-        InvocationHandler fih = new ResultInvocationHandler();
-        return (BaseResult)Proxy.newProxyInstance(result.getClassLoader(), new Class[]{result, Serializable.class}, fih);
+        InvocationHandler pih = new ProxyInvocationHandler();
+
+        return (BaseResult)Proxy.newProxyInstance(result.getClassLoader(), new Class[]{result, Serializable.class}, pih);
     }
     
 }
