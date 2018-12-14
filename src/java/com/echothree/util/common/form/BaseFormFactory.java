@@ -16,6 +16,7 @@
 
 package com.echothree.util.common.form;
 
+import com.echothree.util.common.command.ProxyInvocationHandler;
 import com.google.common.base.Charsets;
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
@@ -24,8 +25,8 @@ import java.lang.reflect.Proxy;
 public class BaseFormFactory {
     
     static public BaseForm createForm(Class form) {
-        InvocationHandler fih = new FormInvocationHandler();
-        BaseForm baseForm = (BaseForm)Proxy.newProxyInstance(form.getClassLoader(), new Class[]{form, Serializable.class}, fih);
+        InvocationHandler pih = new ProxyInvocationHandler();
+        BaseForm baseForm = (BaseForm)Proxy.newProxyInstance(form.getClassLoader(), new Class[]{form, Serializable.class}, pih);
         
         String className = form.getName();
         int nameOffset = className.lastIndexOf('.');

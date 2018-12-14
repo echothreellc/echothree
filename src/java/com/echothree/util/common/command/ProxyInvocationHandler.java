@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.util.common.form;
+package com.echothree.util.common.command;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
@@ -23,19 +23,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FormInvocationHandler
+public class ProxyInvocationHandler
         implements Serializable, InvocationHandler {
     
     private Map<String, Object> map;
     
-    /** Creates a new instance of FormInvocationHandler */
-    public FormInvocationHandler() {
+    /** Creates a new instance of ProxyInvocationHandler */
+    public ProxyInvocationHandler() {
         map = new HashMap<>();
     }
     
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args)
-            throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         String name = method.getName();
         int length = name.length();
         
@@ -58,7 +57,7 @@ public class FormInvocationHandler
         } else if(name.startsWith("set")) {
             if(length == 3) {
                 Object arg0 = args[0];
-                
+
                 if(arg0 instanceof String) {
                     return map.put((String)args[0], args[1]);
                 } else if(arg0 instanceof Map) {
