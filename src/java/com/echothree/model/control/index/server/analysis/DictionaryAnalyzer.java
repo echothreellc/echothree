@@ -17,11 +17,9 @@
 package com.echothree.model.control.index.server.analysis;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.Analyzer.TokenStreamComponents;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.LowerCaseFilter;
-import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 
 public class DictionaryAnalyzer
@@ -30,9 +28,7 @@ public class DictionaryAnalyzer
     @Override
     protected TokenStreamComponents createComponents(final String fieldName) {
         final Tokenizer source = new StandardTokenizer();
-        TokenStream result = new StandardFilter(source);
-
-        result = new LowerCaseFilter(result);
+        final TokenStream result = new LowerCaseFilter(source);
 
         return new TokenStreamComponents(source, result);
     }
