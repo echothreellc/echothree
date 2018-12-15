@@ -20,6 +20,7 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.user.common.UserConstants;
@@ -625,19 +626,24 @@ public class UserControl
         }
 
         if(preferredLanguage == null || preferredTimeZone == null || preferredDateTimeFormat == null) {
+            PartyControl partyControl = getPartyControl();
+            
             if(preferredLanguage == null) {
-                preferredLanguage = getPartyControl().getDefaultLanguage();
+                preferredLanguage = partyControl.getDefaultLanguage();
             }
+            
             if(preferredTimeZone == null) {
-                preferredTimeZone = getPartyControl().getDefaultTimeZone();
+                preferredTimeZone = partyControl.getDefaultTimeZone();
             }
+            
             if(preferredDateTimeFormat == null) {
-                preferredDateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
+                preferredDateTimeFormat = partyControl.getDefaultDateTimeFormat();
             }
         }
 
-        UserVisit userVisit = UserVisitFactory.getInstance().create(userVisitGroup, userKey, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat,
-                session.START_TIME_LONG, offerUse, associateReferral, retainUntilTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        UserVisit userVisit = UserVisitFactory.getInstance().create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
+                preferredTimeZone, preferredDateTimeFormat, session.START_TIME_LONG, offerUse, associateReferral, retainUntilTime,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         createUserVisitStatus(userVisit);
 
