@@ -18,22 +18,23 @@ package com.echothree.cucumber;
 
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredLanguageForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
 import cucumber.api.java.en.When;
+
 import javax.naming.NamingException;
 
-public class PreferredLanguageSteps {
+public class PreferredTimeZoneFormatSteps {
 
-    @When("^the customer ([^\"]*) sets their preferred language to \"([^\"]*)\"$")
-    public void theCustomerSetsTheirPreferredLanguageTo(String persona, String languageIsoName)
+    @When("^the customer ([^\"]*) sets their preferred time zone to \"([^\"]*)\"$")
+    public void theCustomerSetsTheirPreferredTimeZoneTo(String persona, String javaTimeZoneName)
             throws NamingException {
         UserService userService = UserUtil.getHome();
-        SetUserVisitPreferredLanguageForm userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
+        SetUserVisitPreferredTimeZoneForm userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
         CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        userVisitPreferredLanguageForm.setLanguageIsoName(languageIsoName);
+        userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
 
-        customerPersona.commandResult = userService.setUserVisitPreferredLanguage(customerPersona.userVisitPK,
-                userVisitPreferredLanguageForm);
+        customerPersona.commandResult = userService.setUserVisitPreferredTimeZone(customerPersona.userVisitPK,
+                userVisitPreferredTimeZoneForm);
     }
 }
