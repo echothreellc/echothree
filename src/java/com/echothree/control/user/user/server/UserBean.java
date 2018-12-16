@@ -208,6 +208,30 @@ public class UserBean
     }
     
     // -------------------------------------------------------------------------
+    //   User Visits
+    // -------------------------------------------------------------------------
+    
+    @Override
+    public CommandResult setUserVisitPreferredLanguage(UserVisitPK userVisitPK, SetUserVisitPreferredLanguageForm form) {
+        return new SetUserVisitPreferredLanguageCommand(userVisitPK, form).run();
+    }
+    
+    @Override
+    public CommandResult setUserVisitPreferredCurrency(UserVisitPK userVisitPK, SetUserVisitPreferredCurrencyForm form) {
+        return new SetUserVisitPreferredCurrencyCommand(userVisitPK, form).run();
+    }
+    
+    @Override
+    public CommandResult setUserVisitPreferredTimeZone(UserVisitPK userVisitPK, SetUserVisitPreferredTimeZoneForm form) {
+        return new SetUserVisitPreferredTimeZoneCommand(userVisitPK, form).run();
+    }
+    
+    @Override
+    public CommandResult setUserVisitPreferredDateTimeFormat(UserVisitPK userVisitPK, SetUserVisitPreferredDateTimeFormatForm form) {
+        return new SetUserVisitPreferredDateTimeFormatCommand(userVisitPK, form).run();
+    }
+    
+    // -------------------------------------------------------------------------
     //   User Sessions
     // -------------------------------------------------------------------------
     
