@@ -33,22 +33,22 @@ public class CustomerLoginSteps {
     @After
     public void ensureAllCustomersLoggedOut()
             throws NamingException {
-        for(CustomerLogin customerLogin : CustomerLogins.customerLogins.values()) {
-            customerIsNotCurrentlyLoggedIn(customerLogin.persona);
+        for(CustomerPersona customerPersona : CustomerPersonas.customerPersonas.values()) {
+            customerIsNotCurrentlyLoggedIn(customerPersona.persona);
         }
     }
-    
+
     @Given("^([^\"]*) is not currently logged in")
     public void customerIsNotCurrentlyLoggedIn(String persona)
             throws NamingException {
-        CustomerLogin customerLogin = CustomerLogins.customerLogins.get(persona);
-        
-        if(customerLogin != null) {
+        CustomerPersona customerPersona = CustomerPersonas.customerPersonas.get(persona);
+
+        if(customerPersona != null) {
             AuthenticationService authenticationService = AuthenticationUtil.getHome();
-            CommandResult commandResult = authenticationService.logout(customerLogin.userVisitPK);
-            
+            CommandResult commandResult = authenticationService.logout(customerPersona.userVisitPK);
+
             if(!commandResult.hasErrors()) {
-                CustomerLogins.customerLogins.remove(persona);
+                CustomerPersonas.customerPersonas.remove(persona);
             }
         }
     }
@@ -58,44 +58,44 @@ public class CustomerLoginSteps {
             throws NamingException {
         AuthenticationService authenticationService = AuthenticationUtil.getHome();
         CustomerLoginForm customerLoginForm = authenticationService.getCustomerLoginForm();
-        UserVisitPK userVisitPK = CustomerLogins.getUserVisitPK();
-        
+        UserVisitPK userVisitPK = CustomerPersonas.getUserVisitPK();
+
         customerLoginForm.setUsername(username);
         customerLoginForm.setPassword(password);
         customerLoginForm.setRemoteInet4Address("0.0.0.0");
-        
+
         CommandResult commandResult = authenticationService.customerLogin(userVisitPK, customerLoginForm);
-        
-        CustomerLogin customerLogin = new CustomerLogin();
-        customerLogin.persona = persona;
-        customerLogin.userVisitPK = userVisitPK;
-        customerLogin.commandResult = commandResult;
-        
-        CustomerLogins.customerLogins.put(persona, customerLogin);
-        CustomerLogins.lastCustomerLogin = customerLogin;
+
+        CustomerPersona customerPersona = new CustomerPersona();
+        customerPersona.persona = persona;
+        customerPersona.userVisitPK = userVisitPK;
+        customerPersona.commandResult = commandResult;
+
+        CustomerPersonas.customerPersonas.put(persona, customerPersona);
+        CustomerPersonas.lastCustomerPersona = customerPersona;
     }
 
     @Then("^no customer login errors should occur$")
     public void noCustomerLoginErrorsShouldOccur() {
-        CustomerLogins.customerLogins.values().forEach((customerLogin) -> {
+        CustomerPersonas.customerPersonas.values().forEach((customerLogin) -> {
             assertThat(customerLogin.commandResult.hasErrors()).isFalse();
         });
     }
 
     @Then("^customer login errors should occur$")
     public void customerLoginErrorsShouldOccur() {
-        CustomerLogins.customerLogins.values().forEach((customerLogin) -> {
+        CustomerPersonas.customerPersonas.values().forEach((customerLogin) -> {
             assertThat(customerLogin.commandResult.hasErrors()).isTrue();
         });
     }
 
     @Then("^no customer login error should occur$")
     public void noCustomerLoginErrorShouldOccur() {
-        assertThat(CustomerLogins.lastCustomerLogin.commandResult.hasErrors()).isFalse();
+        assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isFalse();
     }
 
     @Then("^a customer login error should occur$")
     public void aCustomerLoginErrorShouldOccur() {
-        assertThat(CustomerLogins.lastCustomerLogin.commandResult.hasErrors()).isTrue();
+        assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isTrue();
     }
 }

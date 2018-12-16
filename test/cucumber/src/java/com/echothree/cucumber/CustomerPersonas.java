@@ -27,13 +27,13 @@ import javax.naming.NamingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CustomerLogins {
+public class CustomerPersonas {
 
-    private CustomerLogins() {
+    private CustomerPersonas() {
     }
 
-    public static Map<String, CustomerLogin> customerLogins = new HashMap<>();
-    public static CustomerLogin lastCustomerLogin;
+    public static Map<String, CustomerPersona> customerPersonas = new HashMap<>();
+    public static CustomerPersona lastCustomerPersona;
     
     public static UserVisitPK getUserVisitPK()
             throws NamingException {

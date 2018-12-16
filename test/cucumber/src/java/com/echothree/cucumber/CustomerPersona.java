@@ -19,7 +19,7 @@ package com.echothree.cucumber;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
-public class CustomerLogin {
+public class CustomerPersona {
     String persona;
     UserVisitPK userVisitPK;
     CommandResult commandResult;
