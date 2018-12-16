@@ -75,27 +75,27 @@ public class CustomerLoginSteps {
         CustomerPersonas.lastCustomerPersona = customerPersona;
     }
 
-    @Then("^no customer login errors should occur$")
-    public void noCustomerLoginErrorsShouldOccur() {
+    @Then("^no errors should occur$")
+    public void noErrorsShouldOccur() {
         CustomerPersonas.customerPersonas.values().forEach((customerLogin) -> {
             assertThat(customerLogin.commandResult.hasErrors()).isFalse();
         });
     }
 
-    @Then("^customer login errors should occur$")
-    public void customerLoginErrorsShouldOccur() {
+    @Then("^errors should occur$")
+    public void errorsShouldOccur() {
         CustomerPersonas.customerPersonas.values().forEach((customerLogin) -> {
             assertThat(customerLogin.commandResult.hasErrors()).isTrue();
         });
     }
 
-    @Then("^no customer login error should occur$")
-    public void noCustomerLoginErrorShouldOccur() {
+    @Then("^no error should occur$")
+    public void noErrorShouldOccur() {
         assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isFalse();
     }
 
-    @Then("^a customer login error should occur$")
-    public void aCustomerLoginErrorShouldOccur() {
+    @Then("^an error should occur$")
+    public void anErrorShouldOccur() {
         assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isTrue();
     }
 }
