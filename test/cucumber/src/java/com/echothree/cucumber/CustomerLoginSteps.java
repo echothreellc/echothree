@@ -19,44 +19,21 @@ package com.echothree.cucumber;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
-import com.echothree.control.user.authentication.common.form.GetUserVisitForm;
-import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.util.HashMap;
-import java.util.Map;
 import javax.naming.NamingException;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class CustomerLoginSteps {
 
-    public class CustomerLogin {
-        String persona;
-        UserVisitPK userVisitPK;
-        CommandResult commandResult;
-    }
-    
-    public Map<String, CustomerLogin> customerLogins = new HashMap<>();
-    public CustomerLogin lastCustomerLogin;
-    
-    public UserVisitPK getUserVisitPK()
-            throws NamingException {
-        AuthenticationService authenticationService = AuthenticationUtil.getHome();
-        GetUserVisitForm getUserVisitForm = authenticationService.getGetUserVisitForm();
-        CommandResult commandResult = authenticationService.getUserVisit(getUserVisitForm);
-        GetUserVisitResult getUserVisitResult = (GetUserVisitResult)commandResult.getExecutionResult().getResult();
-        
-        return getUserVisitResult.getUserVisitPK();
-    }
-    
     @After
     public void ensureAllCustomersLoggedOut()
             throws NamingException {
-        for(CustomerLogin customerLogin : customerLogins.values()) {
+        for(CustomerLogin customerLogin : CustomerLogins.customerLogins.values()) {
             customerIsNotCurrentlyLoggedIn(customerLogin.persona);
         }
     }
@@ -64,14 +41,14 @@ public class CustomerLoginSteps {
     @Given("^([^\"]*) is not currently logged in")
     public void customerIsNotCurrentlyLoggedIn(String persona)
             throws NamingException {
-        CustomerLogin customerLogin = customerLogins.get(persona);
+        CustomerLogin customerLogin = CustomerLogins.customerLogins.get(persona);
         
         if(customerLogin != null) {
             AuthenticationService authenticationService = AuthenticationUtil.getHome();
             CommandResult commandResult = authenticationService.logout(customerLogin.userVisitPK);
             
             if(!commandResult.hasErrors()) {
-                customerLogins.remove(persona);
+                CustomerLogins.customerLogins.remove(persona);
             }
         }
     }
@@ -81,7 +58,7 @@ public class CustomerLoginSteps {
             throws NamingException {
         AuthenticationService authenticationService = AuthenticationUtil.getHome();
         CustomerLoginForm customerLoginForm = authenticationService.getCustomerLoginForm();
-        UserVisitPK userVisitPK = getUserVisitPK();
+        UserVisitPK userVisitPK = CustomerLogins.getUserVisitPK();
         
         customerLoginForm.setUsername(username);
         customerLoginForm.setPassword(password);
@@ -94,31 +71,31 @@ public class CustomerLoginSteps {
         customerLogin.userVisitPK = userVisitPK;
         customerLogin.commandResult = commandResult;
         
-        customerLogins.put(persona, customerLogin);
-        lastCustomerLogin = customerLogin;
+        CustomerLogins.customerLogins.put(persona, customerLogin);
+        CustomerLogins.lastCustomerLogin = customerLogin;
     }
 
     @Then("^no customer login errors should occur$")
     public void noCustomerLoginErrorsShouldOccur() {
-        customerLogins.values().forEach((customerLogin) -> {
+        CustomerLogins.customerLogins.values().forEach((customerLogin) -> {
             assertThat(customerLogin.commandResult.hasErrors()).isFalse();
         });
     }
 
     @Then("^customer login errors should occur$")
     public void customerLoginErrorsShouldOccur() {
-        customerLogins.values().forEach((customerLogin) -> {
+        CustomerLogins.customerLogins.values().forEach((customerLogin) -> {
             assertThat(customerLogin.commandResult.hasErrors()).isTrue();
         });
     }
 
     @Then("^no customer login error should occur$")
     public void noCustomerLoginErrorShouldOccur() {
-        assertThat(lastCustomerLogin.commandResult.hasErrors()).isFalse();
+        assertThat(CustomerLogins.lastCustomerLogin.commandResult.hasErrors()).isFalse();
     }
 
     @Then("^a customer login error should occur$")
     public void aCustomerLoginErrorShouldOccur() {
-        assertThat(lastCustomerLogin.commandResult.hasErrors()).isTrue();
+        assertThat(CustomerLogins.lastCustomerLogin.commandResult.hasErrors()).isTrue();
     }
 }
