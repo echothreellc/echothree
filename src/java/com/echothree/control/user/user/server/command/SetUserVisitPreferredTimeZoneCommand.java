@@ -52,7 +52,7 @@ public class SetUserVisitPreferredTimeZoneCommand
         if(!hasExecutionErrors()) {
             UserControl userControl = getUserControl();
 
-            userControl.setUserVisitPreferredTimeZone(getUserVisit(), currency, getPartyPK());
+            userControl.setUserVisitPreferredTimeZone(getUserVisitForUpdate(), currency, getPartyPK());
         }
 
         return null;

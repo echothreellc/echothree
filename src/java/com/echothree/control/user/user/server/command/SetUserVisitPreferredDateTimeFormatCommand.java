@@ -52,7 +52,7 @@ public class SetUserVisitPreferredDateTimeFormatCommand
         if(!hasExecutionErrors()) {
             UserControl userControl = getUserControl();
 
-            userControl.setUserVisitPreferredDateTimeFormat(getUserVisit(), currency, getPartyPK());
+            userControl.setUserVisitPreferredDateTimeFormat(getUserVisitForUpdate(), currency, getPartyPK());
         }
 
         return null;

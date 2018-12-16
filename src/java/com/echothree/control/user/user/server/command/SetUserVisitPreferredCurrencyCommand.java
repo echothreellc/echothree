@@ -52,7 +52,7 @@ public class SetUserVisitPreferredCurrencyCommand
         if(!hasExecutionErrors()) {
             UserControl userControl = getUserControl();
 
-            userControl.setUserVisitPreferredCurrency(getUserVisit(), currency, getPartyPK());
+            userControl.setUserVisitPreferredCurrency(getUserVisitForUpdate(), currency, getPartyPK());
         }
 
         return null;

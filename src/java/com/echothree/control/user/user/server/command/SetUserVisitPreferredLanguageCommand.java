@@ -52,7 +52,7 @@ public class SetUserVisitPreferredLanguageCommand
         if(!hasExecutionErrors()) {
             UserControl userControl = getUserControl();
 
-            userControl.setUserVisitPreferredLanguage(getUserVisit(), currency, getPartyPK());
+            userControl.setUserVisitPreferredLanguage(getUserVisitForUpdate(), currency, getPartyPK());
         }
 
         return null;
