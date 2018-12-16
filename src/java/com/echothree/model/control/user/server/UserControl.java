@@ -627,20 +627,16 @@ public class UserControl
             preferredCurrency = accountingControl.getDefaultCurrency();
         }
 
-        if(preferredLanguage == null || preferredTimeZone == null || preferredDateTimeFormat == null) {
-            PartyControl partyControl = getPartyControl();
-            
-            if(preferredLanguage == null) {
-                preferredLanguage = partyControl.getDefaultLanguage();
-            }
-            
-            if(preferredTimeZone == null) {
-                preferredTimeZone = partyControl.getDefaultTimeZone();
-            }
-            
-            if(preferredDateTimeFormat == null) {
-                preferredDateTimeFormat = partyControl.getDefaultDateTimeFormat();
-            }
+        if(preferredLanguage == null) {
+            preferredLanguage = getPartyControl().getDefaultLanguage();
+        }
+
+        if(preferredTimeZone == null) {
+            preferredTimeZone = getPartyControl().getDefaultTimeZone();
+        }
+
+        if(preferredDateTimeFormat == null) {
+            preferredDateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
         }
 
         UserVisit userVisit = UserVisitFactory.getInstance().create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
