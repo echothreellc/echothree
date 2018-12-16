@@ -53,6 +53,7 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.common.pk.PartyRelationshipPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
+import com.echothree.model.data.party.server.entity.DateTimeFormatDetail;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDetail;
@@ -60,6 +61,7 @@ import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
 import com.echothree.model.data.party.server.entity.TimeZone;
+import com.echothree.model.data.party.server.entity.TimeZoneDetail;
 import com.echothree.model.data.party.server.value.PartyDetailValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.RecoveryAnswerPK;
@@ -676,10 +678,10 @@ public class UserControl
     /** Updates the UserVisit to have the preferred Language specified. Also updates the Party connected
      * to the UserSession, if there is one.
      */
-    public void setUserVisitPreferredLanguage(UserVisit userVisit, Language language, BasePK updatedBy) {
+    public void setUserVisitPreferredLanguage(final UserVisit userVisit, final Language language, final BasePK updatedBy) {
         UserSession userSession = getUserSessionByUserVisit(userVisit);
         
-        userVisit.setPreferredLanguage(language);
+        userVisit.setPreferredLanguage(language.getIsDefault() ? null : language);
         
         if(userSession != null) {
             PartyPK partyPK = userSession.getPartyPK();
@@ -687,7 +689,7 @@ public class UserControl
             if(partyPK != null) {
                 PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
-                partyDetailValue.setPreferredLanguagePK(language.getPrimaryKey());
+                partyDetailValue.setPreferredLanguagePK(language.getIsDefault() ? null : language.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
@@ -724,10 +726,10 @@ public class UserControl
     /** Updates the UserVisit to have the preferred Currency specified. Also updates the Party connected
      * to the UserSession, if there is one.
      */
-    public void setUserVisitPreferredCurrency(UserVisit userVisit, Currency currency, BasePK updatedBy) {
+    public void setUserVisitPreferredCurrency(final UserVisit userVisit, final Currency currency, final BasePK updatedBy) {
         UserSession userSession = getUserSessionByUserVisit(userVisit);
         
-        userVisit.setPreferredCurrency(currency);
+        userVisit.setPreferredCurrency(currency.getIsDefault() ? null : currency);
         
         if(userSession != null) {
             PartyPK partyPK = userSession.getPartyPK();
@@ -735,7 +737,7 @@ public class UserControl
             if(partyPK != null) {
                 PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
-                partyDetailValue.setPreferredCurrencyPK(currency.getPrimaryKey());
+                partyDetailValue.setPreferredCurrencyPK(currency.getIsDefault() ? null : currency.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
@@ -776,10 +778,11 @@ public class UserControl
     /** Updates the UserVisit to have the preferred TimeZone specified. Also updates the Party connected
      * to the UserSession, if there is one.
      */
-    public void setUserVisitPreferredTimeZone(UserVisit userVisit, TimeZone timeZone, BasePK updatedBy) {
+    public void setUserVisitPreferredTimeZone(final UserVisit userVisit, final TimeZone timeZone, final BasePK updatedBy) {
         UserSession userSession = getUserSessionByUserVisit(userVisit);
-        
-        userVisit.setPreferredTimeZone(timeZone);
+        TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
+
+        userVisit.setPreferredTimeZone(timeZoneDetail.getIsDefault() ? null : timeZone);
         
         if(userSession != null) {
             PartyPK partyPK = userSession.getPartyPK();
@@ -787,7 +790,7 @@ public class UserControl
             if(partyPK != null) {
                 PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
-                partyDetailValue.setPreferredTimeZonePK(timeZone.getPrimaryKey());
+                partyDetailValue.setPreferredTimeZonePK(timeZoneDetail.getIsDefault() ? null : timeZone.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
@@ -824,10 +827,11 @@ public class UserControl
     /** Updates the UserVisit to have the preferred DateTimeFormat specified. Also updates the Party connected
      * to the UserSession, if there is one.
      */
-    public void setUserVisitPreferredDateTimeFormat(UserVisit userVisit, DateTimeFormat dateTimeFormat, BasePK updatedBy) {
+    public void setUserVisitPreferredDateTimeFormat(final UserVisit userVisit, final DateTimeFormat dateTimeFormat, final BasePK updatedBy) {
         UserSession userSession = getUserSessionByUserVisit(userVisit);
+        DateTimeFormatDetail dateTimeFormatDetail = dateTimeFormat.getLastDetail();
         
-        userVisit.setPreferredDateTimeFormat(dateTimeFormat);
+        userVisit.setPreferredDateTimeFormat(dateTimeFormatDetail.getIsDefault() ? null : dateTimeFormat);
         
         if(userSession != null) {
             PartyPK partyPK = userSession.getPartyPK();
@@ -835,7 +839,7 @@ public class UserControl
             if(partyPK != null) {
                 PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
-                partyDetailValue.setPreferredDateTimeFormatPK(dateTimeFormat.getPrimaryKey());
+                partyDetailValue.setPreferredDateTimeFormatPK(dateTimeFormatDetail.getIsDefault() ? null : dateTimeFormat.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
