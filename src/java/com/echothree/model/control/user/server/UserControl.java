@@ -677,7 +677,7 @@ public class UserControl
     public void setUserVisitPreferredLanguage(final UserVisit userVisit, final Language language, final BasePK updatedBy) {
         UserSession userSession = getUserSessionByUserVisit(userVisit);
         
-        userVisit.setPreferredLanguage(language.getIsDefault() ? null : language);
+        userVisit.setPreferredLanguage(language);
         
         if(userSession != null) {
             PartyPK partyPK = userSession.getPartyPK();
@@ -725,7 +725,7 @@ public class UserControl
     public void setUserVisitPreferredCurrency(final UserVisit userVisit, final Currency currency, final BasePK updatedBy) {
         UserSession userSession = getUserSessionByUserVisit(userVisit);
         
-        userVisit.setPreferredCurrency(currency.getIsDefault() ? null : currency);
+        userVisit.setPreferredCurrency(currency);
         
         if(userSession != null) {
             PartyPK partyPK = userSession.getPartyPK();
@@ -776,16 +776,16 @@ public class UserControl
      */
     public void setUserVisitPreferredTimeZone(final UserVisit userVisit, final TimeZone timeZone, final BasePK updatedBy) {
         UserSession userSession = getUserSessionByUserVisit(userVisit);
-        TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
 
-        userVisit.setPreferredTimeZone(timeZoneDetail.getIsDefault() ? null : timeZone);
+        userVisit.setPreferredTimeZone(timeZone);
         
         if(userSession != null) {
             PartyPK partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
                 PartyDetailValue partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
-                
+                TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
+
                 partyDetailValue.setPreferredTimeZonePK(timeZoneDetail.getIsDefault() ? null : timeZone.getPrimaryKey());
                 getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
             }
@@ -827,7 +827,7 @@ public class UserControl
         UserSession userSession = getUserSessionByUserVisit(userVisit);
         DateTimeFormatDetail dateTimeFormatDetail = dateTimeFormat.getLastDetail();
         
-        userVisit.setPreferredDateTimeFormat(dateTimeFormatDetail.getIsDefault() ? null : dateTimeFormat);
+        userVisit.setPreferredDateTimeFormat(dateTimeFormat);
         
         if(userSession != null) {
             PartyPK partyPK = userSession.getPartyPK();
