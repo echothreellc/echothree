@@ -26,16 +26,17 @@ import com.echothree.util.common.command.CommandResult;
 import javax.naming.NamingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class CustomerPersonas {
 
     private CustomerPersonas() {
     }
 
-    public static Map<String, CustomerPersona> customerPersonas = new HashMap<>();
+    private static Map<String, CustomerPersona> customerPersonas = new HashMap<>();
     public static CustomerPersona lastCustomerPersona;
     
-    public static UserVisitPK getUserVisitPK()
+    private static UserVisitPK getUserVisitPK()
             throws NamingException {
         AuthenticationService authenticationService = AuthenticationUtil.getHome();
         GetUserVisitForm getUserVisitForm = authenticationService.getGetUserVisitForm();
@@ -45,4 +46,23 @@ public class CustomerPersonas {
         return getUserVisitResult.getUserVisitPK();
     }
 
+    public static Set<Map.Entry<String, CustomerPersona>> getCustomerPersonas() {
+        return customerPersonas.entrySet();
+    }
+
+    public static CustomerPersona getCustomerPersona(String persona)
+            throws NamingException {
+        CustomerPersona customerPersona = customerPersonas.get(persona);
+
+        if(customerPersona == null) {
+            customerPersona = new CustomerPersona();
+            customerPersona.persona = persona;
+            customerPersona.userVisitPK = getUserVisitPK();
+
+            customerPersonas.put(persona, customerPersona);
+        }
+
+        lastCustomerPersona = customerPersona;
+        return customerPersona;
+    }
 }

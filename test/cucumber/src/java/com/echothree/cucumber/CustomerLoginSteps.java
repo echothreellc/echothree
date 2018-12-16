@@ -26,6 +26,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import javax.naming.NamingException;
+import java.util.Map;
+
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class CustomerLoginSteps {
@@ -33,23 +35,21 @@ public class CustomerLoginSteps {
     @After
     public void ensureAllCustomersLoggedOut()
             throws NamingException {
-        for(CustomerPersona customerPersona : CustomerPersonas.customerPersonas.values()) {
-            customerIsNotCurrentlyLoggedIn(customerPersona.persona);
+        for(Map.Entry<String, CustomerPersona> customerPersona : CustomerPersonas.getCustomerPersonas()) {
+            customerIsNotCurrentlyLoggedIn(customerPersona.getKey());
         }
     }
 
     @Given("^([^\"]*) is not currently logged in")
     public void customerIsNotCurrentlyLoggedIn(String persona)
             throws NamingException {
-        CustomerPersona customerPersona = CustomerPersonas.customerPersonas.get(persona);
+        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
         if(customerPersona != null) {
             AuthenticationService authenticationService = AuthenticationUtil.getHome();
             CommandResult commandResult = authenticationService.logout(customerPersona.userVisitPK);
 
-            if(!commandResult.hasErrors()) {
-                CustomerPersonas.customerPersonas.remove(persona);
-            }
+            assertThat(commandResult.hasErrors()).isFalse();
         }
     }
 
@@ -58,35 +58,13 @@ public class CustomerLoginSteps {
             throws NamingException {
         AuthenticationService authenticationService = AuthenticationUtil.getHome();
         CustomerLoginForm customerLoginForm = authenticationService.getCustomerLoginForm();
-        UserVisitPK userVisitPK = CustomerPersonas.getUserVisitPK();
+        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
         customerLoginForm.setUsername(username);
         customerLoginForm.setPassword(password);
         customerLoginForm.setRemoteInet4Address("0.0.0.0");
 
-        CommandResult commandResult = authenticationService.customerLogin(userVisitPK, customerLoginForm);
-
-        CustomerPersona customerPersona = new CustomerPersona();
-        customerPersona.persona = persona;
-        customerPersona.userVisitPK = userVisitPK;
-        customerPersona.commandResult = commandResult;
-
-        CustomerPersonas.customerPersonas.put(persona, customerPersona);
-        CustomerPersonas.lastCustomerPersona = customerPersona;
-    }
-
-    @Then("^no errors should occur$")
-    public void noErrorsShouldOccur() {
-        CustomerPersonas.customerPersonas.values().forEach((customerLogin) -> {
-            assertThat(customerLogin.commandResult.hasErrors()).isFalse();
-        });
-    }
-
-    @Then("^errors should occur$")
-    public void errorsShouldOccur() {
-        CustomerPersonas.customerPersonas.values().forEach((customerLogin) -> {
-            assertThat(customerLogin.commandResult.hasErrors()).isTrue();
-        });
+        customerPersona.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
     }
 
     @Then("^no error should occur$")
