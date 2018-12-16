@@ -20,7 +20,6 @@ import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
 import cucumber.api.java.en.When;
-
 import javax.naming.NamingException;
 
 public class PreferredTimeZoneFormatSteps {

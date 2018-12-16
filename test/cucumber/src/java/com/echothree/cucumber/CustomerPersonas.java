@@ -22,7 +22,6 @@ import com.echothree.control.user.authentication.common.form.GetUserVisitForm;
 import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
-
 import javax.naming.NamingException;
 import java.util.HashMap;
 import java.util.Map;

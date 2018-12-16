@@ -19,7 +19,6 @@ package com.echothree.cucumber;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
