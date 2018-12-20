@@ -31,7 +31,7 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="4.0.0" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="4.0.0" conf="sources->sources" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.4.12" conf="sources->sources" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.6.10" conf="sources->sources" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="6.0" conf="sources->sources" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="sources->sources" />
         <dependency org="javax.enterprise" name="cdi-api" rev="2.0.SP1" conf="sources->sources" />
@@ -108,7 +108,7 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="4.0.0" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="4.0.0" conf="javadoc->javadoc" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.4.12" conf="javadoc->javadoc" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.6.10" conf="javadoc->javadoc" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="6.0" conf="javadoc->javadoc" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="javadoc->javadoc" />
         <dependency org="javax.enterprise" name="cdi-api" rev="2.0.SP1" conf="javadoc->javadoc" />
@@ -185,7 +185,7 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="4.0.0" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="4.0.0" conf="binaries->default" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.4.12" conf="binaries->default" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.6.10" conf="binaries->default" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="6.0" conf="binaries->default" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="binaries->default" />
         <dependency org="javax.enterprise" name="cdi-api" rev="2.0.SP1" conf="binaries->default" />
