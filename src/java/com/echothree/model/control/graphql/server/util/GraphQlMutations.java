@@ -73,7 +73,7 @@ public class GraphQlMutations {
     
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setUserVisitPreferredLanguage(final DataFetchingEnvironment env,
+    public static CommandResultObject setSetUserVisitPreferredLanguage(final DataFetchingEnvironment env,
             @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
         CommandResultObject commandResultObject = new CommandResultObject();
 
@@ -94,7 +94,7 @@ public class GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setUserVisitPreferredCurrency(final DataFetchingEnvironment env,
+    public static CommandResultObject setSetUserVisitPreferredCurrency(final DataFetchingEnvironment env,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
         CommandResultObject commandResultObject = new CommandResultObject();
 
@@ -115,7 +115,7 @@ public class GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setUserVisitPreferredTimeZone(final DataFetchingEnvironment env,
+    public static CommandResultObject setSetUserVisitPreferredTimeZone(final DataFetchingEnvironment env,
             @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName) {
         CommandResultObject commandResultObject = new CommandResultObject();
 
@@ -136,7 +136,7 @@ public class GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject setUserVisitPreferredDateTimeFormat(final DataFetchingEnvironment env,
+    public static CommandResultObject setSetUserVisitPreferredDateTimeFormat(final DataFetchingEnvironment env,
             @GraphQLName("dateTimeFormatName") @GraphQLNonNull final String dateTimeFormatName) {
         CommandResultObject commandResultObject = new CommandResultObject();
 
