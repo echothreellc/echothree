@@ -17,6 +17,10 @@
 package com.echothree.control.user.user.common;
 
 import com.echothree.control.user.user.common.form.*;
+import com.echothree.control.user.user.server.command.SetUserVisitPreferredCurrencyCommand;
+import com.echothree.control.user.user.server.command.SetUserVisitPreferredDateTimeFormatCommand;
+import com.echothree.control.user.user.server.command.SetUserVisitPreferredLanguageCommand;
+import com.echothree.control.user.user.server.command.SetUserVisitPreferredTimeZoneCommand;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
@@ -110,7 +114,7 @@ public interface UserService
     CommandResult resetLockout(UserVisitPK userVisitPK, ResetLockoutForm form);
     
     // --------------------------------------------------------------------------------
-    //   User Visit Groups Groups
+    //   User Visit Groups
     // --------------------------------------------------------------------------------
     
     CommandResult getUserVisitGroup(UserVisitPK userVisitPK, GetUserVisitGroupForm form);
@@ -122,9 +126,21 @@ public interface UserService
     CommandResult setUserVisitGroupStatus(UserVisitPK userVisitPK, SetUserVisitGroupStatusForm form);
     
     // -------------------------------------------------------------------------
-    //   User Sessions
+    //   User Visits
     // -------------------------------------------------------------------------
     
+    CommandResult setUserVisitPreferredLanguage(UserVisitPK userVisitPK, SetUserVisitPreferredLanguageForm form);
+
+    CommandResult setUserVisitPreferredCurrency(UserVisitPK userVisitPK, SetUserVisitPreferredCurrencyForm form);
+
+    CommandResult setUserVisitPreferredTimeZone(UserVisitPK userVisitPK, SetUserVisitPreferredTimeZoneForm form);
+
+    CommandResult setUserVisitPreferredDateTimeFormat(UserVisitPK userVisitPK, SetUserVisitPreferredDateTimeFormatForm form);
+
+    // -------------------------------------------------------------------------
+    //   User Sessions
+    // -------------------------------------------------------------------------
+
     CommandResult getUserSession(UserVisitPK userVisitPK, GetUserSessionForm form);
     
 }

@@ -49,6 +49,10 @@ import com.echothree.control.user.user.common.edit.UserLoginEdit;
 import com.echothree.control.user.user.common.form.CreateUserLoginForm;
 import com.echothree.control.user.user.common.form.DeleteUserLoginForm;
 import com.echothree.control.user.user.common.form.EditUserLoginForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredCurrencyForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTimeFormatForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredLanguageForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
 import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
 import com.echothree.model.control.graphql.server.graphql.CommandResultWithIdObject;
@@ -67,6 +71,90 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations {
     
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetUserVisitPreferredLanguage(final DataFetchingEnvironment env,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            SetUserVisitPreferredLanguageForm commandForm = UserUtil.getHome().getSetUserVisitPreferredLanguageForm();
+
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            CommandResult commandResult = UserUtil.getHome().setUserVisitPreferredLanguage(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetUserVisitPreferredCurrency(final DataFetchingEnvironment env,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            SetUserVisitPreferredCurrencyForm commandForm = UserUtil.getHome().getSetUserVisitPreferredCurrencyForm();
+
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            CommandResult commandResult = UserUtil.getHome().setUserVisitPreferredCurrency(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetUserVisitPreferredTimeZone(final DataFetchingEnvironment env,
+            @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            SetUserVisitPreferredTimeZoneForm commandForm = UserUtil.getHome().getSetUserVisitPreferredTimeZoneForm();
+
+            commandForm.setJavaTimeZoneName(javaTimeZoneName);
+
+            CommandResult commandResult = UserUtil.getHome().setUserVisitPreferredTimeZone(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetUserVisitPreferredDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("dateTimeFormatName") @GraphQLNonNull final String dateTimeFormatName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            SetUserVisitPreferredDateTimeFormatForm commandForm = UserUtil.getHome().getSetUserVisitPreferredDateTimeFormatForm();
+
+            commandForm.setDateTimeFormatName(dateTimeFormatName);
+
+            CommandResult commandResult = UserUtil.getHome().setUserVisitPreferredDateTimeFormat(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject createEntityListItemAttribute(final DataFetchingEnvironment env,

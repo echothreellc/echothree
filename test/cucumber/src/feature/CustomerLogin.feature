@@ -4,9 +4,9 @@ Feature: Customer login
   Scenario: Existing customer login that's successful
     Given Test is not currently logged in
     When the customer Test logs in with the username "TestC@echothree.com" and password "password"
-    Then no customer login error should occur
+    Then no error should occur
 
   Scenario: Existing customer login that fails
     Given Test is not currently logged in
     When the customer Test logs in with the username "TestC@echothree.com" and password "not-my-password"
-    Then a customer login error should occur
+    Then an error should occur

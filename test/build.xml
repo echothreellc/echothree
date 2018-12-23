@@ -3,22 +3,20 @@
     
     <target name="compile">
         <parallel>
-            <ant dir="junit" target="compile"/>
             <ant dir="cucumber" target="compile"/>
+            <ant dir="junit" target="compile"/>
         </parallel>
     </target>
     
     <target name="test">
-        <parallel>
-            <ant dir="junit" target="test"/>
-            <ant dir="cucumber" target="test"/>
-        </parallel>
+        <ant dir="cucumber" target="test"/>
+        <ant dir="junit" target="test"/>
     </target>
     
     <target name="clean">
         <parallel>
-            <ant dir="junit" target="clean"/>
             <ant dir="cucumber" target="clean"/>
+            <ant dir="junit" target="clean"/>
         </parallel>
     </target>
         
