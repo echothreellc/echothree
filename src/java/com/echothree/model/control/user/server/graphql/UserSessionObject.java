@@ -36,12 +36,12 @@ public class UserSessionObject  {
         this.userSession = userSession;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("user visit")
-//    @GraphQLNonNull
-//    public UserVisitObject getUserVisit() {
-//        return new UserVisitObject(userSession.getUserVisit());
-//    }
+    @GraphQLField
+    @GraphQLDescription("user visit")
+    @GraphQLNonNull
+    public UserVisitObject getUserVisit() {
+        return new UserVisitObject(userSession.getUserVisit());
+    }
 
     @GraphQLField
     @GraphQLDescription("party")

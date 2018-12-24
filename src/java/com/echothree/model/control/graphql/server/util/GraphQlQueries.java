@@ -139,6 +139,7 @@ import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
+import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
@@ -164,6 +165,7 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserSession;
+import com.echothree.model.data.user.server.entity.UserVisit;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
@@ -1009,6 +1011,15 @@ public final class GraphQlQueries {
         UserSession userSession = context.getUserSession();
         
         return userSession == null ? null : new UserSessionObject(userSession);
+    }
+    
+    @GraphQLField
+    @GraphQLName("userVisit")
+    public static UserVisitObject userVisit(final DataFetchingEnvironment env) {
+        GraphQlContext context = env.getContext();
+        UserVisit userVisit = context.getUserVisit();
+        
+        return userVisit == null ? null : new UserVisitObject(userVisit);
     }
     
     @GraphQLField
