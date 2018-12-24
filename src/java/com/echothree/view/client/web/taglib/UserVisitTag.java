@@ -56,7 +56,7 @@ public class UserVisitTag
         String trackValue = getParameter(httpServletRequest, WebConstants.Parameter_Track, WebConstants.Parameter_trk);
         int trackParameterCount = trackValue == null ? 0 : 1;
         
-        UserVisitPK userVisitPK = HttpSessionUtils.getInstance().setupUserVisit(httpServletRequest, (HttpServletResponse)pageContext.getResponse());
+        UserVisitPK userVisitPK = HttpSessionUtils.getInstance().setupUserVisit(httpServletRequest, (HttpServletResponse)pageContext.getResponse(), false);
         
         if(campaignParameterCount > 0) {
             try {

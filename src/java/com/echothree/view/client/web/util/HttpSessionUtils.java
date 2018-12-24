@@ -44,7 +44,23 @@ public class HttpSessionUtils {
 
     public static final int DEFAULT_MAX_INACTIVE_INTERVAL = 15 * 3600; // 15 minutes
 
-    public UserVisitPK setupUserVisit(final HttpServletRequest request, final HttpServletResponse response) {
+    private Cookie GetUserKeyCookie(final HttpServletRequest request) {
+        Cookie cookie = null;
+        Cookie []cookies = request.getCookies();
+
+        if(cookies != null) {
+            for(int i = 0; i < cookies.length; i++) {
+                if(cookies[i].getName().equals(WebConstants.Cookie_USER_KEY)) {
+                    cookie = cookies[i];
+                }
+            }
+        }
+
+        return cookie;
+    }
+
+    public UserVisitPK setupUserVisit(final HttpServletRequest request, final HttpServletResponse response,
+              boolean secureUserKey) {
         // Get the HttpSession, create if it doesn't exist yet.
         HttpSession httpSession = request.getSession(true);
         
@@ -57,18 +73,8 @@ public class HttpSessionUtils {
             try {
                 AuthenticationService authenticationService = AuthenticationUtil.getHome();
                 GetUserVisitForm commandForm = AuthenticationUtil.getHome().getGetUserVisitForm();
-                
-                Cookie []cookies = request.getCookies();
-                Cookie cookie = null;
-                
-                if(cookies != null) {
-                    for(int i = 0; i < cookies.length; i++) {
-                        if(cookies[i].getName().equals(WebConstants.Cookie_USER_KEY)) {
-                            cookie = cookies[i];
-                        }
-                    }
-                }
-                
+                Cookie cookie = GetUserKeyCookie(request);
+
                 if(cookie != null) {
                     commandForm.setUserKeyName(cookie.getValue());
                 }
@@ -86,6 +92,9 @@ public class HttpSessionUtils {
                 
                 cookie.setPath("/");
                 cookie.setMaxAge(365 * 24 * 60 * 60); // 1 Year
+                if(secureUserKey) {
+                    cookie.setSecure(true);
+                }
                 response.addCookie(cookie);
                 
                 userVisitPK = getUserVisitResult.getUserVisitPK();

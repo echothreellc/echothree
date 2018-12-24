@@ -140,7 +140,7 @@ public class GraphQlServlet
         HttpServletRequest asyncRequest = (HttpServletRequest) asyncContext.getRequest();
         HttpServletResponse asyncResponse = (HttpServletResponse) asyncContext.getResponse();
 
-        HttpSessionUtils.getInstance().setupUserVisit(request, response);
+        HttpSessionUtils.getInstance().setupUserVisit(request, response, true);
 
         new Thread(() -> doRequest(asyncRequest, asyncResponse, handler, asyncContext)).start();
     }
