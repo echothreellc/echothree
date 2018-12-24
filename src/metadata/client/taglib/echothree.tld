@@ -30,6 +30,12 @@
         <tag-class>com.echothree.view.client.web.taglib.UserVisitTag</tag-class>
         <body-content>JSP</body-content>
         <display-name></display-name>
+        <attribute>
+            <name>secureUserKey</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <name>userSession</name>
