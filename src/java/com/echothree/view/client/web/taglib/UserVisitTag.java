@@ -32,6 +32,28 @@ import javax.servlet.jsp.JspException;
 public class UserVisitTag
         extends BaseTag {
 
+    protected boolean secureUserKey;
+
+    private void init() {
+        secureUserKey = false;
+    }
+
+    /** Creates a new instance of PreferredDateTimeFormatTag */
+    public UserVisitTag() {
+        super();
+        init();
+    }
+
+    @Override
+    public void release() {
+        super.release();
+        init();
+    }
+
+    public void setSecureUserKey(Boolean secureUserKey) {
+        this.secureUserKey = secureUserKey;
+    }
+
     public String getParameter(final HttpServletRequest httpServletRequest, final String name, final String analyticsName) {
         String result = httpServletRequest.getParameter(name);
         
@@ -56,7 +78,7 @@ public class UserVisitTag
         String trackValue = getParameter(httpServletRequest, WebConstants.Parameter_Track, WebConstants.Parameter_trk);
         int trackParameterCount = trackValue == null ? 0 : 1;
         
-        UserVisitPK userVisitPK = HttpSessionUtils.getInstance().setupUserVisit(httpServletRequest, (HttpServletResponse)pageContext.getResponse());
+        UserVisitPK userVisitPK = HttpSessionUtils.getInstance().setupUserVisit(httpServletRequest, (HttpServletResponse)pageContext.getResponse(), secureUserKey);
         
         if(campaignParameterCount > 0) {
             try {

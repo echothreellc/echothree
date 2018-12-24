@@ -45,7 +45,7 @@ public class CustomRequestProcessor
             return false;
         }
         
-        HttpSessionUtils.getInstance().setupUserVisit(request, response);
+        HttpSessionUtils.getInstance().setupUserVisit(request, response, false);
         
         return true;
     }

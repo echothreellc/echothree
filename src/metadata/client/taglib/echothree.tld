@@ -29,13 +29,17 @@
         <name>userVisit</name>
         <tag-class>com.echothree.view.client.web.taglib.UserVisitTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
+        <attribute>
+            <name>secureUserKey</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
     <tag>
         <name>userSession</name>
         <tag-class>com.echothree.view.client.web.taglib.UserSessionTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -46,7 +50,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -77,7 +81,6 @@
         <name>workAssignments</name>
         <tag-class>com.echothree.view.client.web.taglib.WorkAssignmentsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>employeeName</name>
             <required>false</required>
@@ -100,7 +103,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>workAssignmentCount</name>
@@ -155,7 +158,6 @@
         <name>entityListItem</name>
         <tag-class>com.echothree.view.client.web.taglib.EntityListItemTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>componentVendorName</name>
             <required>true</required>
@@ -190,7 +192,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -221,7 +223,6 @@
         <name>entityListItems</name>
         <tag-class>com.echothree.view.client.web.taglib.EntityListItemsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>componentVendorName</name>
             <required>true</required>
@@ -250,7 +251,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>entityListItemCount</name>
@@ -305,7 +306,6 @@
         <name>searchEntityListItems</name>
         <tag-class>com.echothree.view.client.web.taglib.SearchEntityListItemsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>languageIsoName</name>
             <required>false</required>
@@ -401,7 +401,6 @@
         <name>getEntityListItemResults</name>
         <tag-class>com.echothree.view.client.web.taglib.GetEntityListItemResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -418,7 +417,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>entityListItemResultCount</name>
@@ -467,7 +466,6 @@
         <name>countEntityListItemResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountEntityListItemResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -503,7 +501,6 @@
         <name>clearEntityListItemResults</name>
         <tag-class>com.echothree.view.client.web.taglib.ClearEntityListItemResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -533,7 +530,6 @@
         <name>offer</name>
         <tag-class>com.echothree.view.client.web.taglib.OfferTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>offerName</name>
             <required>true</required>
@@ -550,7 +546,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -581,7 +577,6 @@
         <name>offers</name>
         <tag-class>com.echothree.view.client.web.taglib.OffersTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -592,7 +587,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>offerCount</name>
@@ -641,7 +636,6 @@
         <name>searchOffers</name>
         <tag-class>com.echothree.view.client.web.taglib.SearchOffersTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>languageIsoName</name>
             <required>false</required>
@@ -737,7 +731,6 @@
         <name>getOfferResults</name>
         <tag-class>com.echothree.view.client.web.taglib.GetOfferResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -754,7 +747,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>offerResultCount</name>
@@ -803,7 +796,6 @@
         <name>countOfferResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountOfferResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -839,7 +831,6 @@
         <name>clearOfferResults</name>
         <tag-class>com.echothree.view.client.web.taglib.ClearOfferResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -869,7 +860,6 @@
         <name>use</name>
         <tag-class>com.echothree.view.client.web.taglib.UseTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>useName</name>
             <required>true</required>
@@ -886,7 +876,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -917,7 +907,6 @@
         <name>uses</name>
         <tag-class>com.echothree.view.client.web.taglib.UsesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -928,7 +917,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>useCount</name>
@@ -977,7 +966,6 @@
         <name>searchUses</name>
         <tag-class>com.echothree.view.client.web.taglib.SearchUsesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>languageIsoName</name>
             <required>false</required>
@@ -1073,7 +1061,6 @@
         <name>getUseResults</name>
         <tag-class>com.echothree.view.client.web.taglib.GetUseResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -1090,7 +1077,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>useResultCount</name>
@@ -1139,7 +1126,6 @@
         <name>countUseResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountUseResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -1175,7 +1161,6 @@
         <name>clearUseResults</name>
         <tag-class>com.echothree.view.client.web.taglib.ClearUseResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -1205,7 +1190,6 @@
         <name>useType</name>
         <tag-class>com.echothree.view.client.web.taglib.UseTypeTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>useTypeName</name>
             <required>true</required>
@@ -1222,7 +1206,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -1253,7 +1237,6 @@
         <name>useTypes</name>
         <tag-class>com.echothree.view.client.web.taglib.UseTypesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -1264,7 +1247,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>useTypeCount</name>
@@ -1313,7 +1296,6 @@
         <name>searchUseTypes</name>
         <tag-class>com.echothree.view.client.web.taglib.SearchUseTypesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>languageIsoName</name>
             <required>false</required>
@@ -1409,7 +1391,6 @@
         <name>getUseTypeResults</name>
         <tag-class>com.echothree.view.client.web.taglib.GetUseTypeResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -1426,7 +1407,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>useTypeResultCount</name>
@@ -1475,7 +1456,6 @@
         <name>countUseTypeResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountUseTypeResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -1511,7 +1491,6 @@
         <name>clearUseTypeResults</name>
         <tag-class>com.echothree.view.client.web.taglib.ClearUseTypeResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -1541,7 +1520,6 @@
         <name>relatedItems</name>
         <tag-class>com.echothree.view.client.web.taglib.RelatedItemsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>relatedItemTypeName</name>
             <required>false</required>
@@ -1570,7 +1548,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>relatedItemCount</name>
@@ -1637,7 +1615,6 @@
         <name>relatedItemTypes</name>
         <tag-class>com.echothree.view.client.web.taglib.RelatedItemTypesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -1648,7 +1625,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -1679,7 +1656,6 @@
         <name>itemDescriptions</name>
         <tag-class>com.echothree.view.client.web.taglib.ItemDescriptionsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>itemName</name>
             <required>true</required>
@@ -1708,7 +1684,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>itemDescriptionCount</name>
@@ -1763,7 +1739,6 @@
         <name>itemDescription</name>
         <tag-class>com.echothree.view.client.web.taglib.ItemDescriptionTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>itemDescriptionTypeName</name>
             <required>true</required>
@@ -1792,7 +1767,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -1823,7 +1798,6 @@
         <name>item</name>
         <tag-class>com.echothree.view.client.web.taglib.ItemTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>itemName</name>
             <required>false</required>
@@ -1846,7 +1820,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -1877,7 +1851,6 @@
         <name>searchItems</name>
         <tag-class>com.echothree.view.client.web.taglib.SearchItemsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>languageIsoName</name>
             <required>false</required>
@@ -2003,7 +1976,6 @@
         <name>getItemResults</name>
         <tag-class>com.echothree.view.client.web.taglib.GetItemResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2020,7 +1992,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>itemResultCount</name>
@@ -2069,7 +2041,6 @@
         <name>getItemResultsFacet</name>
         <tag-class>com.echothree.view.client.web.taglib.GetItemResultsFacetTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2092,7 +2063,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -2123,7 +2094,6 @@
         <name>getItemResultsFacets</name>
         <tag-class>com.echothree.view.client.web.taglib.GetItemResultsFacetsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2140,7 +2110,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -2171,7 +2141,6 @@
         <name>countItemResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountItemResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2207,7 +2176,6 @@
         <name>clearItemResults</name>
         <tag-class>com.echothree.view.client.web.taglib.ClearItemResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2237,7 +2205,6 @@
         <name>searchEmployees</name>
         <tag-class>com.echothree.view.client.web.taglib.SearchEmployeesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2351,7 +2318,6 @@
         <name>getEmployeeResults</name>
         <tag-class>com.echothree.view.client.web.taglib.GetEmployeeResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2368,7 +2334,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>employeeResultCount</name>
@@ -2417,7 +2383,6 @@
         <name>countEmployeeResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountEmployeeResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2453,7 +2418,6 @@
         <name>clearEmployeeResults</name>
         <tag-class>com.echothree.view.client.web.taglib.ClearEmployeeResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2483,7 +2447,6 @@
         <name>searchForumMessages</name>
         <tag-class>com.echothree.view.client.web.taglib.SearchForumMessagesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>languageIsoName</name>
             <required>false</required>
@@ -2597,7 +2560,6 @@
         <name>getForumMessageResults</name>
         <tag-class>com.echothree.view.client.web.taglib.GetForumMessageResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2614,7 +2576,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumMessageCount</name>
@@ -2675,7 +2637,6 @@
         <name>countForumMessageResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountForumMessageResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2711,7 +2672,6 @@
         <name>clearForumMessageResults</name>
         <tag-class>com.echothree.view.client.web.taglib.ClearForumMessageResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2741,7 +2701,6 @@
         <name>countContactMechanismResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountContactMechanismResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2777,7 +2736,6 @@
         <name>countCustomerResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountCustomerResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2813,7 +2771,6 @@
         <name>countEntityTypeResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountEntityTypeResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2849,7 +2806,6 @@
         <name>countHarmonizedTariffScheduleCodeResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountHarmonizedTariffScheduleCodeResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2885,7 +2841,6 @@
         <name>countLeaveResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountLeaveResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2921,7 +2876,6 @@
         <name>countSalesOrderBatchResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountSalesOrderBatchResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2957,7 +2911,6 @@
         <name>countSalesOrderResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountSalesOrderResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -2993,7 +2946,6 @@
         <name>countSecurityRoleGroupResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountSecurityRoleGroupResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -3029,7 +2981,6 @@
         <name>countSecurityRoleResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountSecurityRoleResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -3065,7 +3016,6 @@
         <name>countVendorResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountVendorResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -3101,12 +3051,11 @@
         <name>contactPostalAddress</name>
         <tag-class>com.echothree.view.client.web.taglib.ContactPostalAddressTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contactPostalAddress</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.contact.remote.transfer.ContactPostalAddressTransfer</type>
+            <type>com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3125,7 +3074,6 @@
         <name>forumThreads</name>
         <tag-class>com.echothree.view.client.web.taglib.ForumThreadsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>forumName</name>
             <required>true</required>
@@ -3148,7 +3096,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumThreadCount</name>
@@ -3209,7 +3157,6 @@
         <name>forumThread</name>
         <tag-class>com.echothree.view.client.web.taglib.ForumThreadTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>forumThreadName</name>
             <required>true</required>
@@ -3226,7 +3173,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumMessageCount</name>
@@ -3269,7 +3216,6 @@
         <name>forumGroups</name>
         <tag-class>com.echothree.view.client.web.taglib.ForumGroupsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -3280,7 +3226,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumGroupCount</name>
@@ -3329,7 +3275,6 @@
         <name>forumGroup</name>
         <tag-class>com.echothree.view.client.web.taglib.ForumGroupTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>forumGroupName</name>
             <required>true</required>
@@ -3346,7 +3291,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3377,7 +3322,6 @@
         <name>forums</name>
         <tag-class>com.echothree.view.client.web.taglib.ForumsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>forumGroupName</name>
             <required>false</required>
@@ -3394,7 +3338,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumCount</name>
@@ -3443,7 +3387,6 @@
         <name>forum</name>
         <tag-class>com.echothree.view.client.web.taglib.ForumTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>forumName</name>
             <required>true</required>
@@ -3460,7 +3403,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3491,7 +3434,6 @@
         <name>forumMessage</name>
         <tag-class>com.echothree.view.client.web.taglib.ForumMessageTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>forumMessageName</name>
             <required>true</required>
@@ -3508,7 +3450,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3539,7 +3481,6 @@
         <name>contentPages</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentPagesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -3586,7 +3527,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3617,7 +3558,6 @@
         <name>contentPage</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentPageTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -3670,7 +3610,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3701,7 +3641,6 @@
         <name>country</name>
         <tag-class>com.echothree.view.client.web.taglib.CountryTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>geoCodeName</name>
             <required>false</required>
@@ -3742,7 +3681,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3773,7 +3712,6 @@
         <name>contentCatalog</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentCatalogTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -3820,7 +3758,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -3863,7 +3801,6 @@
         <name>contentCatalogs</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentCatalogsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -3904,7 +3841,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -3953,7 +3890,6 @@
         <name>contentCategories</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentCategoriesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -4006,7 +3942,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -4061,7 +3997,6 @@
         <name>contentCatalogItem</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentCatalogItemTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -4132,7 +4067,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4163,7 +4098,6 @@
         <name>contentCatalogItems</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentCatalogItemsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -4210,7 +4144,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCatalogItemOffset</name>
@@ -4265,7 +4199,6 @@
         <name>contentCategoryItem</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentCategoryItemTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -4342,7 +4275,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4373,7 +4306,6 @@
         <name>contentCategoryItems</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentCategoryItemsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -4426,7 +4358,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -4481,7 +4413,6 @@
         <name>contentCategory</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentCategoryTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -4534,7 +4465,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -4577,7 +4508,6 @@
         <name>searchContentCategories</name>
         <tag-class>com.echothree.view.client.web.taglib.SearchContentCategoriesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>languageIsoName</name>
             <required>false</required>
@@ -4673,7 +4603,6 @@
         <name>getContentCategoryResults</name>
         <tag-class>com.echothree.view.client.web.taglib.GetContentCategoryResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -4690,7 +4619,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryResultCount</name>
@@ -4739,7 +4668,6 @@
         <name>getContentCategoryResultsFacet</name>
         <tag-class>com.echothree.view.client.web.taglib.GetContentCategoryResultsFacetTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -4762,7 +4690,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4793,7 +4721,6 @@
         <name>getContentCategoryResultsFacets</name>
         <tag-class>com.echothree.view.client.web.taglib.GetContentCategoryResultsFacetsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -4810,7 +4737,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4841,7 +4768,6 @@
         <name>countContentCategoryResults</name>
         <tag-class>com.echothree.view.client.web.taglib.CountContentCategoryResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -4877,7 +4803,6 @@
         <name>clearContentCategoryResults</name>
         <tag-class>com.echothree.view.client.web.taglib.ClearContentCategoryResultsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>searchTypeName</name>
             <required>true</required>
@@ -4907,7 +4832,6 @@
         <name>contentSection</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentSectionTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -4954,7 +4878,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4985,7 +4909,6 @@
         <name>contentSections</name>
         <tag-class>com.echothree.view.client.web.taglib.ContentSectionsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contentWebAddressName</name>
             <required>false</required>
@@ -5032,7 +4955,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5075,7 +4998,6 @@
         <name>employees</name>
         <tag-class>com.echothree.view.client.web.taglib.EmployeesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>includeInactive</name>
             <required>false</required>
@@ -5092,7 +5014,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5123,7 +5045,6 @@
         <name>employee</name>
         <tag-class>com.echothree.view.client.web.taglib.EmployeeTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>employeeName</name>
             <required>false</required>
@@ -5146,7 +5067,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5177,7 +5098,6 @@
         <name>companies</name>
         <tag-class>com.echothree.view.client.web.taglib.CompaniesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -5188,7 +5108,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5219,7 +5139,6 @@
         <name>company</name>
         <tag-class>com.echothree.view.client.web.taglib.CompanyTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>companyName</name>
             <required>false</required>
@@ -5242,7 +5161,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5273,7 +5192,6 @@
         <name>divisions</name>
         <tag-class>com.echothree.view.client.web.taglib.DivisionsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>companyName</name>
             <required>false</required>
@@ -5290,7 +5208,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5321,7 +5239,6 @@
         <name>division</name>
         <tag-class>com.echothree.view.client.web.taglib.DivisionTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>companyName</name>
             <required>false</required>
@@ -5350,7 +5267,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5381,7 +5298,6 @@
         <name>departments</name>
         <tag-class>com.echothree.view.client.web.taglib.DepartmentsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>companyName</name>
             <required>false</required>
@@ -5404,7 +5320,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5435,7 +5351,6 @@
         <name>department</name>
         <tag-class>com.echothree.view.client.web.taglib.DepartmentTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>companyName</name>
             <required>false</required>
@@ -5470,7 +5385,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5501,7 +5416,6 @@
         <name>party</name>
         <tag-class>com.echothree.view.client.web.taglib.PartyTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>partyName</name>
             <required>false</required>
@@ -5524,7 +5438,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5555,7 +5469,6 @@
         <name>chainInstance</name>
         <tag-class>com.echothree.view.client.web.taglib.ChainInstanceTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>chainInstanceName</name>
             <required>true</required>
@@ -5572,7 +5485,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5603,7 +5516,6 @@
         <name>partyContactList</name>
         <tag-class>com.echothree.view.client.web.taglib.PartyContactListTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>partyName</name>
             <required>true</required>
@@ -5626,7 +5538,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5657,7 +5569,6 @@
         <name>contactList</name>
         <tag-class>com.echothree.view.client.web.taglib.ContactListTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contactListName</name>
             <required>true</required>
@@ -5674,7 +5585,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5705,7 +5616,6 @@
         <name>contactListGroup</name>
         <tag-class>com.echothree.view.client.web.taglib.ContactListGroupTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>contactListGroupName</name>
             <required>true</required>
@@ -5722,7 +5632,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5753,7 +5663,6 @@
         <name>queuedLetter</name>
         <tag-class>com.echothree.view.client.web.taglib.QueuedLetterTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>chainInstanceName</name>
             <required>true</required>
@@ -5776,7 +5685,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5807,7 +5716,6 @@
         <name>subscription</name>
         <tag-class>com.echothree.view.client.web.taglib.SubscriptionTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>subscriptionName</name>
             <required>true</required>
@@ -5824,7 +5732,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5855,7 +5763,6 @@
         <name>partyApplicationEditorUse</name>
         <tag-class>com.echothree.view.client.web.taglib.PartyApplicationEditorUseTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>partyName</name>
             <required>false</required>
@@ -5884,7 +5791,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5915,19 +5822,17 @@
         <name>appearance</name>
         <tag-class>com.echothree.view.client.web.taglib.AppearanceTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>appearance</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.core.remote.transfer.AppearanceTransfer</type>
+            <type>com.echothree.model.control.core.common.transfer.AppearanceTransfer</type>
         </attribute>
     </tag>
     <tag>
         <name>preferredLanguage</name>
         <tag-class>com.echothree.view.client.web.taglib.PreferredLanguageTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -5938,7 +5843,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5969,7 +5874,6 @@
         <name>preferredCurrency</name>
         <tag-class>com.echothree.view.client.web.taglib.PreferredCurrencyTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -5980,7 +5884,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -6011,7 +5915,6 @@
         <name>preferredTimeZone</name>
         <tag-class>com.echothree.view.client.web.taglib.PreferredTimeZoneTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -6022,7 +5925,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -6053,7 +5956,6 @@
         <name>preferredDateTimeFormat</name>
         <tag-class>com.echothree.view.client.web.taglib.PreferredDateTimeFormatTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>options</name>
             <required>false</required>
@@ -6064,7 +5966,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -6095,7 +5997,6 @@
         <name>executionWarnings</name>
         <tag-class>com.echothree.view.client.web.taglib.ExecutionWarningsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>id</name>
             <required>true</required>
@@ -6137,7 +6038,6 @@
         <name>containsExecutionWarning</name>
         <tag-class>com.echothree.view.client.web.taglib.ContainsExecutionWarningTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>commandResultVar</name>
             <required>false</required>
@@ -6155,7 +6055,6 @@
         <name>executionErrors</name>
         <tag-class>com.echothree.view.client.web.taglib.ExecutionErrorsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>id</name>
             <required>true</required>
@@ -6197,7 +6096,6 @@
         <name>containsExecutionError</name>
         <tag-class>com.echothree.view.client.web.taglib.ContainsExecutionErrorTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>commandResultVar</name>
             <required>false</required>
@@ -6215,7 +6113,6 @@
         <name>validationErrors</name>
         <tag-class>com.echothree.view.client.web.taglib.ValidationErrorsTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>id</name>
             <required>true</required>
@@ -6263,7 +6160,6 @@
         <name>checkSecurityRoles</name>
         <tag-class>com.echothree.view.client.web.taglib.CheckSecurityRolesTag</tag-class>
         <body-content>empty</body-content>
-        <display-name></display-name>
         <attribute>
             <name>securityRoles</name>
             <required>true</required>
@@ -6281,7 +6177,6 @@
         <name>hasSecurityRole</name>
         <tag-class>com.echothree.view.client.web.taglib.HasSecurityRoleTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>securityRole</name>
             <required>false</required>
@@ -6311,7 +6206,6 @@
         <name>out</name>
         <tag-class>com.echothree.view.client.web.taglib.OutTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>value</name>
             <required>true</required>
@@ -6347,7 +6241,6 @@
         <name>date</name>
         <tag-class>com.echothree.view.client.web.taglib.DateTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>value</name>
             <required>false</required>
@@ -6371,7 +6264,6 @@
         <name>reverse</name>
         <tag-class>com.echothree.view.client.web.taglib.ReverseTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>list</name>
             <required>true</required>
@@ -6395,7 +6287,6 @@
         <name>cache</name>
         <tag-class>com.echothree.view.client.web.taglib.CacheTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>key</name>
             <required>true</required>
@@ -6419,7 +6310,6 @@
         <name>dependency</name>
         <tag-class>com.echothree.view.client.web.taglib.DependencyTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>dependsOn</name>
             <required>true</required>
@@ -6449,7 +6339,6 @@
         <name>flush</name>
         <tag-class>com.echothree.view.client.web.taglib.FlushTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>key</name>
             <required>true</required>
@@ -6461,12 +6350,11 @@
         <name>dateFormatter</name>
         <tag-class>com.echothree.view.client.web.taglib.DateFormatterTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>dateTimeFormat</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer</type>
+            <type>com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer</type>
         </attribute>
         <attribute>
             <name>dateTimeFormatType</name>
@@ -6491,18 +6379,17 @@
         <name>dateTimeFormatter</name>
         <tag-class>com.echothree.view.client.web.taglib.DateTimeFormatterTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>timeZone</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.party.remote.transfer.TimeZoneTransfer</type>
+            <type>com.echothree.model.control.party.common.transfer.TimeZoneTransfer</type>
         </attribute>
         <attribute>
             <name>dateTimeFormat</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer</type>
+            <type>com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer</type>
         </attribute>
         <attribute>
             <name>dateTimeFormatType</name>
@@ -6527,7 +6414,6 @@
         <name>formatDate</name>
         <tag-class>com.echothree.view.client.web.taglib.FormatDateTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>dateFormatter</name>
             <required>true</required>
@@ -6557,7 +6443,6 @@
         <name>formateDateTime</name>
         <tag-class>com.echothree.view.client.web.taglib.FormatDateTimeTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>dateTimeFormatter</name>
             <required>true</required>
@@ -6587,12 +6472,11 @@
         <name>amountFormatter</name>
         <tag-class>com.echothree.view.client.web.taglib.AmountFormatterTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>currency</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer</type>
+            <type>com.echothree.model.control.accounting.common.transfer.CurrencyTransfer</type>
         </attribute>
         <attribute>
             <name>amountFormatType</name>
@@ -6617,7 +6501,6 @@
         <name>formatAmount</name>
         <tag-class>com.echothree.view.client.web.taglib.FormatAmountTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>amountFormatter</name>
             <required>true</required>
@@ -6647,7 +6530,6 @@
         <name>transferProperties</name>
         <tag-class>com.echothree.view.client.web.taglib.TransferPropertiesTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>var</name>
             <required>true</required>
@@ -6665,7 +6547,6 @@
         <name>class</name>
         <tag-class>com.echothree.view.client.web.taglib.ClassTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>className</name>
             <required>true</required>
@@ -6677,7 +6558,6 @@
         <name>property</name>
         <tag-class>com.echothree.view.client.web.taglib.PropertyTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>property</name>
             <required>true</required>
@@ -6689,7 +6569,6 @@
         <name>expression</name>
         <tag-class>com.echothree.view.client.web.taglib.ExpressionTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>expression</name>
             <required>true</required>
@@ -6701,7 +6580,6 @@
         <name>htmlFilter</name>
         <tag-class>com.echothree.view.client.web.taglib.HtmlFilterTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>var</name>
             <required>true</required>
@@ -6719,7 +6597,6 @@
         <name>tag</name>
         <tag-class>com.echothree.view.client.web.taglib.TagTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>tag</name>
             <required>true</required>
@@ -6737,7 +6614,6 @@
         <name>attribute</name>
         <tag-class>com.echothree.view.client.web.taglib.AttributeTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>attribute</name>
             <required>true</required>
@@ -6749,7 +6625,6 @@
         <name>filterHtml</name>
         <tag-class>com.echothree.view.client.web.taglib.FilterHtmlTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>value</name>
             <required>true</required>
@@ -6779,7 +6654,6 @@
         <name>lf</name>
         <tag-class>com.echothree.view.client.web.taglib.LfTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>var</name>
             <required>false</required>
@@ -6797,7 +6671,6 @@
         <name>cr</name>
         <tag-class>com.echothree.view.client.web.taglib.CrTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>var</name>
             <required>false</required>
@@ -6815,7 +6688,6 @@
         <name>crlf</name>
         <tag-class>com.echothree.view.client.web.taglib.CrlfTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>var</name>
             <required>false</required>
@@ -6833,19 +6705,16 @@
         <name>repeat</name>
         <tag-class>com.echothree.view.client.web.taglib.RepeatTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
     </tag>
     <tag>
         <name>break</name>
         <tag-class>com.echothree.view.client.web.taglib.BreakTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
     </tag>
     <tag>
         <name>deque</name>
         <tag-class>com.echothree.view.client.web.taglib.DequeTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>var</name>
             <required>true</required>
@@ -6863,7 +6732,6 @@
         <name>addFirst</name>
         <tag-class>com.echothree.view.client.web.taglib.AddFirstTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>deque</name>
             <required>true</required>
@@ -6881,7 +6749,6 @@
         <name>addLast</name>
         <tag-class>com.echothree.view.client.web.taglib.AddLastTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>deque</name>
             <required>true</required>
@@ -6899,7 +6766,6 @@
         <name>getFirst</name>
         <tag-class>com.echothree.view.client.web.taglib.GetFirstTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>deque</name>
             <required>true</required>
@@ -6923,7 +6789,6 @@
         <name>getLast</name>
         <tag-class>com.echothree.view.client.web.taglib.GetLastTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>deque</name>
             <required>true</required>
@@ -6947,7 +6812,6 @@
         <name>peekFirst</name>
         <tag-class>com.echothree.view.client.web.taglib.PeekFirstTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>deque</name>
             <required>true</required>
@@ -6971,7 +6835,6 @@
         <name>peekLast</name>
         <tag-class>com.echothree.view.client.web.taglib.PeekLastTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>deque</name>
             <required>true</required>
@@ -6995,7 +6858,6 @@
         <name>removeFirst</name>
         <tag-class>com.echothree.view.client.web.taglib.RemoveFirstTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>deque</name>
             <required>true</required>
@@ -7019,7 +6881,6 @@
         <name>removeLast</name>
         <tag-class>com.echothree.view.client.web.taglib.RemoveLastTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>deque</name>
             <required>true</required>
@@ -7043,7 +6904,6 @@
         <name>size</name>
         <tag-class>com.echothree.view.client.web.taglib.SizeTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>collection</name>
             <required>true</required>
@@ -7067,7 +6927,6 @@
         <name>toList</name>
         <tag-class>com.echothree.view.client.web.taglib.ToListTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>collection</name>
             <required>true</required>
@@ -7091,7 +6950,6 @@
         <name>partyTrainingClass</name>
         <tag-class>com.echothree.view.client.web.taglib.PartyTrainingClassTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>partyTrainingClassName</name>
             <required>true</required>
@@ -7108,7 +6966,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -7139,7 +6997,6 @@
         <name>communicationEvent</name>
         <tag-class>com.echothree.view.client.web.taglib.CommunicationEventTag</tag-class>
         <body-content>JSP</body-content>
-        <display-name></display-name>
         <attribute>
             <name>communicationEventName</name>
             <required>true</required>
@@ -7156,7 +7013,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
