@@ -52,7 +52,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -106,7 +106,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>workAssignmentCount</name>
@@ -196,7 +196,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -256,7 +256,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>entityListItemCount</name>
@@ -424,7 +424,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>entityListItemResultCount</name>
@@ -556,7 +556,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -598,7 +598,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>offerCount</name>
@@ -760,7 +760,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>offerResultCount</name>
@@ -892,7 +892,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -934,7 +934,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>useCount</name>
@@ -1096,7 +1096,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>useResultCount</name>
@@ -1228,7 +1228,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -1270,7 +1270,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>useTypeCount</name>
@@ -1432,7 +1432,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>useTypeResultCount</name>
@@ -1576,7 +1576,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>relatedItemCount</name>
@@ -1654,7 +1654,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -1714,7 +1714,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>itemDescriptionCount</name>
@@ -1798,7 +1798,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -1852,7 +1852,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -2026,7 +2026,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>itemResultCount</name>
@@ -2098,7 +2098,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -2146,7 +2146,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -2374,7 +2374,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>employeeResultCount</name>
@@ -2620,7 +2620,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumMessageCount</name>
@@ -3112,7 +3112,7 @@
             <name>contactPostalAddress</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.contact.remote.transfer.ContactPostalAddressTransfer</type>
+            <type>com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3154,7 +3154,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumThreadCount</name>
@@ -3232,7 +3232,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumMessageCount</name>
@@ -3286,7 +3286,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumGroupCount</name>
@@ -3352,7 +3352,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3400,7 +3400,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>forumCount</name>
@@ -3466,7 +3466,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3514,7 +3514,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3592,7 +3592,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3676,7 +3676,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3748,7 +3748,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -3826,7 +3826,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -3910,7 +3910,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -4012,7 +4012,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -4138,7 +4138,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4216,7 +4216,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCatalogItemOffset</name>
@@ -4348,7 +4348,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4432,7 +4432,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -4540,7 +4540,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryItemOffset</name>
@@ -4696,7 +4696,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>contentCategoryResultCount</name>
@@ -4768,7 +4768,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4816,7 +4816,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -4960,7 +4960,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5038,7 +5038,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5098,7 +5098,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5152,7 +5152,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5194,7 +5194,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5248,7 +5248,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5296,7 +5296,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5356,7 +5356,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5410,7 +5410,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5476,7 +5476,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5530,7 +5530,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5578,7 +5578,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5632,7 +5632,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5680,7 +5680,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5728,7 +5728,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5782,7 +5782,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5830,7 +5830,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5890,7 +5890,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5926,7 +5926,7 @@
             <name>appearance</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.core.remote.transfer.AppearanceTransfer</type>
+            <type>com.echothree.model.control.core.common.transfer.AppearanceTransfer</type>
         </attribute>
     </tag>
     <tag>
@@ -5944,7 +5944,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -5986,7 +5986,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -6028,7 +6028,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -6070,7 +6070,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -6472,7 +6472,7 @@
             <name>dateTimeFormat</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer</type>
+            <type>com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer</type>
         </attribute>
         <attribute>
             <name>dateTimeFormatType</name>
@@ -6502,13 +6502,13 @@
             <name>timeZone</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.party.remote.transfer.TimeZoneTransfer</type>
+            <type>com.echothree.model.control.party.common.transfer.TimeZoneTransfer</type>
         </attribute>
         <attribute>
             <name>dateTimeFormat</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.party.remote.transfer.DateTimeFormatTransfer</type>
+            <type>com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer</type>
         </attribute>
         <attribute>
             <name>dateTimeFormatType</name>
@@ -6598,7 +6598,7 @@
             <name>currency</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.model.control.accounting.remote.transfer.CurrencyTransfer</type>
+            <type>com.echothree.model.control.accounting.common.transfer.CurrencyTransfer</type>
         </attribute>
         <attribute>
             <name>amountFormatType</name>
@@ -7114,7 +7114,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
@@ -7162,7 +7162,7 @@
             <name>transferProperties</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.remote.form.TransferProperties</type>
+            <type>com.echothree.util.common.form.TransferProperties</type>
         </attribute>
         <attribute>
             <name>var</name>
