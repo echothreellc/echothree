@@ -44,14 +44,20 @@
     </target>
 
     <target name="compile" depends="prepare">
+        <path id="processorpath.ref">
+          <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
+          <pathelement location="${build.lib.dir}/jFormatString.jar"/>
+        </path>
         <javac
             debug="on"
-            source="1.8"
-            target="1.8"
             srcdir="${ui.web.cms.javasrc}"
             destdir="${ui.web.cms.classbindir}"
             includeAntRuntime="false"
             classpathref="build.classpath" >
+            <compilerarg line="-XDcompilePolicy=simple"/>
+            <compilerarg value="-processorpath"/>
+            <compilerarg pathref="processorpath.ref"/>
+            <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR" />
             <compilerarg value="-Xlint:-options" />
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
