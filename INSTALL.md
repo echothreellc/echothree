@@ -13,7 +13,7 @@ deploying these applications.
 ## Prerequisites
 
 * CentOS 6
-* Java JDK 1.8.0_191
+* AdoptOpenJDK jdk-11.0.1+13
 * Apache Ant 1.10.5
 * MySQL 5.7.23
 * WildFly 15.0.0
