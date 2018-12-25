@@ -16,35 +16,43 @@
 <!--                                                                                  -->
 <project name="database" default="Help" basedir=".">
 
-    <property name="component.home" value="./"/>
-    <property name="metadata.dir" value="${component.home}/src/metadata"/>
-    
-    <target name="compile">
+    <target name="init">
+        <property name="component.home" value="./"/>
+        <property name="metadata.dir" value="${component.home}/src/metadata"/>
+
+        <property name="home.dir" value="../../.." />
+        <property name="lib.dir" value="${home.dir}/lib" />
+        <property name="build.lib.dir" value="${home.dir}/build/lib" />
+    </target>
+
+    <target name="compile" depends="init">
         <mkdir dir="build"/>
         <mkdir dir="build/classes"/>
+        <path id="processorpath.ref">
+          <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
+          <pathelement location="${build.lib.dir}/jFormatString.jar"/>
+        </path>
         <javac
-            compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
             debug="true"
-            source="1.8"
-            target="1.8"
             srcdir="./src/java"
             destdir="./build/classes"
             includeAntRuntime="false">
             <classpath>
                 <pathelement location="./"/>
-                <fileset dir="../../../lib">
+                <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
-                <fileset dir="../../../build/lib">
+                <fileset dir="${build.lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>
+            <compilerarg line="-XDcompilePolicy=simple"/>
+            <compilerarg value="-processorpath"/>
+            <compilerarg pathref="processorpath.ref"/>
+            <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR" />
             <compilerarg value="-Xlint:-options" />
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
-            <compilerclasspath>
-                <pathelement location="../../../build/lib/error_prone_ant.jar"/>
-            </compilerclasspath>
         </javac>
     </target>
     

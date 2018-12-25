@@ -23,6 +23,7 @@
         <property name="dir.src" value="." />
         <!-- The component root directory of the workspace -->
         <property name="dir.home" value="../../" />
+        <property name="dir.build.lib" value="${dir.home}/build/lib" />
 
         <property file="../../environment.properties" />
         <property file="../../build.properties" />
@@ -31,10 +32,12 @@
 
     <target name="compile" depends="init" description="Compile Unit Tests">
         <mkdir dir="${test.cucumber.classes.dir}" />
+        <path id="processorpath.ref">
+          <pathelement location="${dir.build.lib}/error_prone_core-with-dependencies.jar"/>
+          <pathelement location="${dir.build.lib}/jFormatString.jar"/>
+        </path>
         <javac
             debug="true"
-            source="1.8"
-            target="1.8"
             srcdir="${test.cucumber.src.dir}"
             destdir="${test.cucumber.classes.dir}"
             includeAntRuntime="false">
@@ -50,6 +53,10 @@
                     <include name="echothree-client.jar"/>
                 </fileset>
             </classpath>
+            <compilerarg line="-XDcompilePolicy=simple"/>
+            <compilerarg value="-processorpath"/>
+            <compilerarg pathref="processorpath.ref"/>
+            <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR" />
             <compilerarg value="-Xlint:-options" />
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->

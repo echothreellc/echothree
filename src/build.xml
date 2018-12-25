@@ -178,17 +178,22 @@
     </target>
 
     <target name="compile" depends="generated">
+        <path id="processorpath.ref">
+          <pathelement location="${dir.build.lib}/error_prone_core-with-dependencies.jar"/>
+          <pathelement location="${dir.build.lib}/jFormatString.jar"/>
+        </path>
         <javac
-            compiler="com.google.errorprone.ErrorProneAntCompilerAdapter"
             debug="on"
-            source="1.8"
-            target="1.8"
             srcdir="${dir.home}/generated/data/java:${dir.home}/generated/form/java:java"
             destdir="${dir.home}/build/classes"
             includeAntRuntime="false"
             classpath="${compile.task.classpath}"
             classpathref="shared.class.path"
             includes="${compile.task.include}" >
+            <compilerarg line="-XDcompilePolicy=simple"/>
+            <compilerarg value="-processorpath"/>
+            <compilerarg pathref="processorpath.ref"/>
+            <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR" />
             <compilerarg value="-Xlint:-options" />
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
