@@ -17,7 +17,7 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.DeleteContentSectionForm;
-import com.echothree.model.control.content.common.ContentConstants;
+import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -72,7 +72,7 @@ public class DeleteContentSectionCommand
         if(contentCollection != null) {
             String contentSectionName = form.getContentSectionName();
 
-            if(!contentSectionName.equalsIgnoreCase(ContentConstants.ContentSection_ROOT)) {
+            if(!contentSectionName.equalsIgnoreCase(ContentSections.ROOT.toString())) {
                 ContentSection contentSection = contentControl.getContentSectionByNameForUpdate(contentCollection, contentSectionName);
 
                 if(contentSection != null) {

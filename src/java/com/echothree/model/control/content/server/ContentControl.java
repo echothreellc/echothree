@@ -16,7 +16,8 @@
 
 package com.echothree.model.control.content.server;
 
-import com.echothree.model.control.content.common.ContentConstants;
+import com.echothree.model.control.content.common.ContentCategories;
+import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.common.choice.ContentCatalogChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentCategoryChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentCollectionChoicesBean;
@@ -858,7 +859,7 @@ public class ContentControl
         boolean defaultFound = defaultContentSection != null;
         
         if(defaultFound) {
-            if(defaultContentSection.getLastDetail().getContentSectionName().equals(ContentConstants.ContentSection_ROOT)) {
+            if(defaultContentSection.getLastDetail().getContentSectionName().equals(ContentSections.ROOT.toString())) {
                 isDefault = Boolean.TRUE;
             }
         }
@@ -1074,7 +1075,7 @@ public class ContentControl
             ContentSectionDetail contentSectionDetail = contentSection.getLastDetail();
             String value = contentSectionDetail.getContentSectionName();
             
-            if(!value.equals(ContentConstants.ContentSection_ROOT)) {
+            if(!value.equals(ContentSections.ROOT.toString())) {
                 String label = getBestContentSectionDescription(contentSection, language);
 
                 labels.add(label == null? value: label);
@@ -1214,7 +1215,7 @@ public class ContentControl
             if(!contentSections.isEmpty()) {
                 for(Iterator<ContentSection> iter = contentSections.iterator(); iter.hasNext();) {
                     defaultContentSection = iter.next();
-                    if(!defaultContentSection.getLastDetail().getContentSectionName().equals(ContentConstants.ContentSection_ROOT)) {
+                    if(!defaultContentSection.getLastDetail().getContentSectionName().equals(ContentSections.ROOT.toString())) {
                         break;
                     }
                 }
@@ -3165,7 +3166,7 @@ public class ContentControl
         boolean defaultFound = defaultContentCategory != null;
         
         if(defaultFound) {
-            if(defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentConstants.ContentCategory_ROOT))
+            if(defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
                 isDefault = Boolean.TRUE;
         }
         
@@ -3478,7 +3479,7 @@ public class ContentControl
             ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
             String value = contentCategoryDetail.getContentCategoryName();
             
-            if(!value.equals(ContentConstants.ContentCategory_ROOT)) {
+            if(!value.equals(ContentCategories.ROOT.toString())) {
                 String label = getBestContentCategoryDescription(contentCategory, language);
 
                 labels.add(label == null? value: label);
@@ -3623,7 +3624,7 @@ public class ContentControl
             if(!contentCategories.isEmpty()) {
                 for(Iterator<ContentCategory> iter = contentCategories.iterator(); iter.hasNext();) {
                     defaultContentCategory = iter.next();
-                    if(!defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentConstants.ContentCategory_ROOT))
+                    if(!defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
                         break;
                 }
                 ContentCategoryDetailValue contentCategoryDetailValue = defaultContentCategory.getLastDetailForUpdate().getContentCategoryDetailValue().clone();

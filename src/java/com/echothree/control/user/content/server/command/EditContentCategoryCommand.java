@@ -22,7 +22,7 @@ import com.echothree.control.user.content.common.form.EditContentCategoryForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentCategoryResult;
 import com.echothree.control.user.content.common.spec.ContentCategorySpec;
-import com.echothree.model.control.content.common.ContentConstants;
+import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -202,7 +202,8 @@ public class EditContentCategoryCommand
         if(duplicateContentCategory == null || contentCategory.equals(duplicateContentCategory)) {
             String parentContentCategoryName = edit.getParentContentCategoryName();
             
-            parentContentCategory = contentControl.getContentCategoryByName(contentCatalog, parentContentCategoryName == null ? ContentConstants.ContentCategory_ROOT : parentContentCategoryName);
+            parentContentCategory = contentControl.getContentCategoryByName(contentCatalog, parentContentCategoryName == null ?
+                    ContentCategories.ROOT.toString() : parentContentCategoryName);
 
             if(parentContentCategory != null) {
                 if(contentControl.isParentContentCategorySafe(contentCategory, parentContentCategory)) {

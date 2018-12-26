@@ -22,7 +22,7 @@ import com.echothree.control.user.content.common.form.EditContentSectionForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentSectionResult;
 import com.echothree.control.user.content.common.spec.ContentSectionSpec;
-import com.echothree.model.control.content.common.ContentConstants;
+import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -163,7 +163,8 @@ public class EditContentSectionCommand
         if(duplicateContentSection == null || contentSection.equals(duplicateContentSection)) {
             String parentContentSectionName = edit.getParentContentSectionName();
             
-            parentContentSection = contentControl.getContentSectionByName(contentCollection, parentContentSectionName == null? ContentConstants.ContentSection_ROOT: parentContentSectionName);
+            parentContentSection = contentControl.getContentSectionByName(contentCollection, parentContentSectionName == null ?
+                    ContentSections.ROOT.toString() : parentContentSectionName);
 
             if(parentContentSection != null) {
                 if(!contentControl.isParentContentSectionSafe(contentSection, parentContentSection)) {

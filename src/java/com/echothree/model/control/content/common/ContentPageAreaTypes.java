@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.content.common;
 
-public interface ContentConstants {
+public enum ContentPageAreaTypes {
     
-    String ContentSection_ROOT = "ROOT";
-    
-    String ContentCategory_ROOT = "ROOT";
-    
-    String ContentPageAreaType_CLOB  = "CLOB";
-    String ContentPageAreaType_LINK  = "LINK";
-    String ContentPageAreaType_IMAGE = "IMAGE";
+    CLOB,
+    LINK,
+    IMAGE,
     
 }

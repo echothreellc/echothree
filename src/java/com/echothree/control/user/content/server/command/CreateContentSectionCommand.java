@@ -17,7 +17,7 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentSectionForm;
-import com.echothree.model.control.content.common.ContentConstants;
+import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -80,8 +80,8 @@ public class CreateContentSectionCommand
             
             if(contentSection == null) {
                 String parentContentSectionName = form.getParentContentSectionName();
-                ContentSection parentContentSection = contentControl.getContentSectionByName(contentCollection, parentContentSectionName == null? ContentConstants.ContentSection_ROOT:
-                    parentContentSectionName);
+                ContentSection parentContentSection = contentControl.getContentSectionByName(contentCollection, parentContentSectionName == null ?
+                        ContentSections.ROOT.toString() : parentContentSectionName);
                 
                 if(parentContentSection != null) {
                     Boolean isDefault = Boolean.valueOf(form.getIsDefault());
