@@ -151,7 +151,7 @@ public class EditContentPageCommand
         ContentPageDetail contentPageDetail = contentPage.getLastDetail();
 
         edit.setContentPageName(contentPageDetail.getContentPageName());
-        edit.setContentPageLayoutName(contentPageDetail.getContentPageLayout().getContentPageLayoutName());
+        edit.setContentPageLayoutName(contentPageDetail.getContentPageLayout().getLastDetail().getContentPageLayoutName());
         edit.setIsDefault(contentPageDetail.getIsDefault().toString());
         edit.setSortOrder(contentPageDetail.getSortOrder().toString());
 
