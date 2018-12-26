@@ -14,13 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.content.common.form;
+package com.echothree.control.user.content.common.edit;
 
-import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
+import com.echothree.control.user.content.common.spec.ContentPageLayoutSpec;
 
-public interface CreateContentPageLayoutForm
-        extends ContentPageLayoutEdit {
+public interface ContentPageLayoutEdit
+        extends ContentPageLayoutSpec, ContentPageLayoutDescriptionEdit {
     
-    // Nothing additional beyond ContentPageLayoutEdit
+    String getIsDefault();
+    void setIsDefault(String isDefault);
+    
+    String getSortOrder();
+    void setSortOrder(String sortOrder);
     
 }

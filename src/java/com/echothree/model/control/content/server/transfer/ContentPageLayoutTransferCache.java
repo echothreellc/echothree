@@ -19,6 +19,7 @@ package com.echothree.model.control.content.server.transfer;
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
+import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 
 public class ContentPageLayoutTransferCache
@@ -27,20 +28,24 @@ public class ContentPageLayoutTransferCache
     /** Creates a new instance of ContentPageLayoutTransferCache */
     public ContentPageLayoutTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
+        
+        setIncludeEntityInstance(true);
     }
     
-    public ContentPageLayoutTransfer getContentPageLayoutTransfer(ContentPageLayout contentPageLayout) {
+    public ContentPageLayoutTransfer getTransfer(ContentPageLayout contentPageLayout) {
         ContentPageLayoutTransfer contentPageLayoutTransfer = get(contentPageLayout);
         
         if(contentPageLayoutTransfer == null) {
-            String contentPageLayoutName = contentPageLayout.getContentPageLayoutName();
-            Boolean isDefault = contentPageLayout.getIsDefault();
-            Integer sortOrder = contentPageLayout.getSortOrder();
+            ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
+            String contentPageLayoutName = contentPageLayoutDetail.getContentPageLayoutName();
+            Boolean isDefault = contentPageLayoutDetail.getIsDefault();
+            Integer sortOrder = contentPageLayoutDetail.getSortOrder();
             String description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage());
             
             contentPageLayoutTransfer = new ContentPageLayoutTransfer(contentPageLayoutName, isDefault, sortOrder, description);
             put(contentPageLayout, contentPageLayoutTransfer);
         }
+        
         return contentPageLayoutTransfer;
     }
     

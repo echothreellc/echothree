@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.content.common.form;
 
-import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
+import com.echothree.control.user.content.common.spec.ContentPageLayoutDescriptionSpec;
 
-public interface CreateContentPageLayoutForm
-        extends ContentPageLayoutEdit {
+public interface GetContentPageLayoutDescriptionForm
+        extends ContentPageLayoutDescriptionSpec {
     
-    // Nothing additional beyond ContentPageLayoutEdit
+    // Nothing additional beyond ContentPageLayoutDescriptionSpec
     
 }

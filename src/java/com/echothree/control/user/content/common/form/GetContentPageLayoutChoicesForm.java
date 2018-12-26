@@ -24,4 +24,7 @@ public interface GetContentPageLayoutChoicesForm
     String getDefaultContentPageLayoutChoice();
     void setDefaultContentPageLayoutChoice(String defaultContentPageLayoutChoice);
     
+    String getAllowNullChoice();
+    void setAllowNullChoice(String allowNullChoice);
+    
 }

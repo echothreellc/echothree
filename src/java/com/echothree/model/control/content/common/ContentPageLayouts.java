@@ -14,13 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.content.common.form;
+package com.echothree.model.control.content.common;
 
-import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
-
-public interface CreateContentPageLayoutForm
-        extends ContentPageLayoutEdit {
+public enum ContentPageLayouts {
     
-    // Nothing additional beyond ContentPageLayoutEdit
+    BEFORE_VALUE,
+    AFTER_VALUE
     
 }

@@ -14,13 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.content.common.form;
+package com.echothree.control.user.content.common.spec;
 
-import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface CreateContentPageLayoutForm
-        extends ContentPageLayoutEdit {
+public interface ContentPageLayoutUlid
+        extends BaseSpec {
     
-    // Nothing additional beyond ContentPageLayoutEdit
+    String getContentPageLayoutUlid();
+    void setContentPageLayoutUlid(String contentPageLayoutUlid);
     
 }

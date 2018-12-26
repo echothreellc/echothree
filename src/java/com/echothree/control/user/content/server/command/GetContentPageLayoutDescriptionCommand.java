@@ -16,13 +16,17 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.common.form.CreateContentPageLayoutForm;
+import com.echothree.control.user.content.common.form.GetContentPageLayoutDescriptionForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.GetContentPageLayoutDescriptionResult;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
-import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.content.server.entity.ContentPageLayoutDescription;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -37,8 +41,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CreateContentPageLayoutCommand
-        extends BaseSimpleCommand<CreateContentPageLayoutForm> {
+public class GetContentPageLayoutDescriptionCommand
+        extends BaseSimpleCommand<GetContentPageLayoutDescriptionForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,45 +51,49 @@ public class CreateContentPageLayoutCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Create.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Description.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of CreateContentPageLayoutCommand */
-    public CreateContentPageLayoutCommand(UserVisitPK userVisitPK, CreateContentPageLayoutForm form) {
+    /** Creates a new instance of GetContentPageLayoutDescriptionCommand */
+    public GetContentPageLayoutDescriptionCommand(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        GetContentPageLayoutDescriptionResult result = ContentResultFactory.getGetContentPageLayoutDescriptionResult();
         String contentPageLayoutName = form.getContentPageLayoutName();
         ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
         
-        if(contentPageLayout == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
+        if(contentPageLayout != null) {
+            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = form.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
-            contentPageLayout = contentControl.createContentPageLayout(contentPageLayoutName, isDefault, sortOrder, partyPK);
-            
-            if(description != null) {
-                contentControl.createContentPageLayoutDescription(contentPageLayout, getPreferredLanguage(), description, partyPK);
+            if(language != null) {
+                ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, language);
+                
+                if(contentPageLayoutDescription != null) {
+                    result.setContentPageLayoutDescription(contentControl.getContentPageLayoutDescriptionTransfer(getUserVisit(), contentPageLayoutDescription));
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownContentPageLayoutDescription.name(), contentPageLayoutName, languageIsoName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
             }
         } else {
-            addExecutionError(ExecutionErrors.DuplicateContentPageLayoutName.name(), contentPageLayoutName);
+            addExecutionError(ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);
         }
         
-        return null;
+        return result;
     }
     
 }

@@ -16,45 +16,37 @@
 
 package com.echothree.model.control.content.common.transfer;
 
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class ContentPageLayoutTransfer
+public class ContentPageLayoutDescriptionTransfer
         extends BaseTransfer {
     
-    private String contentPageLayoutName;
-    private Boolean isDefault;
-    private Integer sortOrder;
+    private LanguageTransfer language;
+    private ContentPageLayoutTransfer contentPageLayout;
     private String description;
     
-    /** Creates a new instance of ContentPageLayoutTransfer */
-    public ContentPageLayoutTransfer(String contentPageLayoutName, Boolean isDefault, Integer sortOrder, String description) {
-        this.contentPageLayoutName = contentPageLayoutName;
-        this.isDefault = isDefault;
-        this.sortOrder = sortOrder;
+    /** Creates a new instance of ContentPageLayoutDescriptionTransfer */
+    public ContentPageLayoutDescriptionTransfer(LanguageTransfer language, ContentPageLayoutTransfer contentPageLayout, String description) {
+        this.language = language;
+        this.contentPageLayout = contentPageLayout;
         this.description = description;
     }
     
-    public String getContentPageLayoutName() {
-        return contentPageLayoutName;
+    public LanguageTransfer getLanguage() {
+        return language;
     }
     
-    public void setContentPageLayoutName(String contentPageLayoutName) {
-        this.contentPageLayoutName = contentPageLayoutName;
-    }
-    public Boolean getIsDefault() {
-        return isDefault;
+    public void setLanguage(LanguageTransfer language) {
+        this.language = language;
     }
     
-    public void setIsDefault(Boolean isDefault) {
-        this.isDefault = isDefault;
+    public ContentPageLayoutTransfer getContentPageLayout() {
+        return contentPageLayout;
     }
     
-    public Integer getSortOrder() {
-        return sortOrder;
-    }
-    
-    public void setSortOrder(Integer sortOrder) {
-        this.sortOrder = sortOrder;
+    public void setContentPageLayout(ContentPageLayoutTransfer contentPageLayout) {
+        this.contentPageLayout = contentPageLayout;
     }
     
     public String getDescription() {

@@ -14,13 +14,20 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.content.common.form;
+package com.echothree.control.user.content.common.result;
 
-import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
+import com.echothree.model.control.content.common.transfer.ContentPageLayoutDescriptionTransfer;
+import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-public interface CreateContentPageLayoutForm
-        extends ContentPageLayoutEdit {
+public interface GetContentPageLayoutDescriptionsResult
+        extends BaseResult {
     
-    // Nothing additional beyond ContentPageLayoutEdit
+    ContentPageLayoutTransfer getContentPageLayout();
+    void setContentPageLayout(ContentPageLayoutTransfer contentPageLayout);
+    
+    List<ContentPageLayoutDescriptionTransfer> getContentPageLayoutDescriptions();
+    void setContentPageLayoutDescriptions(List<ContentPageLayoutDescriptionTransfer> contentPageLayoutDescriptions);
     
 }

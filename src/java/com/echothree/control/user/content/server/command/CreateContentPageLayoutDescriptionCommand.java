@@ -82,7 +82,7 @@ public class CreateContentPageLayoutDescriptionCommand
                 if(contentPageLayoutDescription == null) {
                     String description = form.getDescription();
                     
-                    contentControl.createContentPageLayoutDescription(contentPageLayout, language, description);
+                    contentControl.createContentPageLayoutDescription(contentPageLayout, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateContentPageLayoutDescription.name());
                 }

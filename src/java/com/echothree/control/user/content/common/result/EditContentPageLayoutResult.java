@@ -14,13 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.content.common.form;
+package com.echothree.control.user.content.common.result;
 
 import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
+import com.echothree.util.common.command.BaseEditResult;
 
-public interface CreateContentPageLayoutForm
-        extends ContentPageLayoutEdit {
+public interface EditContentPageLayoutResult
+        extends GetContentPageLayoutResult, BaseEditResult<ContentPageLayoutEdit> {
     
-    // Nothing additional beyond ContentPageLayoutEdit
+    // Nothing additional beyond GetContentPageLayoutResult, BaseEditResult<ContentPageLayoutEdit>
     
 }

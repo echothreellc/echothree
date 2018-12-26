@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.common.form.GetContentPageLayoutChoicesForm;
-import com.echothree.control.user.content.common.result.ContentResultFactory;
-import com.echothree.control.user.content.common.result.GetContentPageLayoutChoicesResult;
+import com.echothree.control.user.content.common.form.SetDefaultContentPageLayoutForm;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.content.server.value.ContentPageLayoutDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -36,8 +36,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GetContentPageLayoutChoicesCommand
-        extends BaseSimpleCommand<GetContentPageLayoutChoicesForm> {
+public class SetDefaultContentPageLayoutCommand
+        extends BaseSimpleCommand<SetDefaultContentPageLayoutForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,32 +45,34 @@ public class GetContentPageLayoutChoicesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Choices.name())
-                        )))
+                    new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Edit.name())
+                    )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("DefaultContentPageLayoutChoice", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of GetContentPageLayoutChoicesCommand */
-    public GetContentPageLayoutChoicesCommand(UserVisitPK userVisitPK, GetContentPageLayoutChoicesForm form) {
+    /** Creates a new instance of SetDefaultContentPageLayoutCommand */
+    public SetDefaultContentPageLayoutCommand(UserVisitPK userVisitPK, SetDefaultContentPageLayoutForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        GetContentPageLayoutChoicesResult result = ContentResultFactory.getGetContentPageLayoutChoicesResult();
-        String defaultContentPageLayoutChoice = form.getDefaultContentPageLayoutChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        String contentPageLayoutName = form.getContentPageLayoutName();
+        ContentPageLayoutDetailValue contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueByNameForUpdate(contentPageLayoutName);
         
-        result.setContentPageLayoutChoices(contentControl.getContentPageLayoutChoices(defaultContentPageLayoutChoice,
-                getPreferredLanguage(), allowNullChoice));
+        if(contentPageLayoutDetailValue != null) {
+            contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);
+            contentControl.updateContentPageLayoutFromValue(contentPageLayoutDetailValue, getPartyPK());
+        } else {
+            addExecutionError(ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);
+        }
         
-        return result;
+        return null;
     }
     
 }

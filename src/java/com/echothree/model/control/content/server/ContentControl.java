@@ -37,6 +37,7 @@ import com.echothree.model.control.content.common.transfer.ContentPageAreaTransf
 import com.echothree.model.control.content.common.transfer.ContentPageAreaTypeTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageDescriptionTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutAreaTransfer;
+import com.echothree.model.control.content.common.transfer.ContentPageLayoutDescriptionTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutTransfer;
 import com.echothree.model.control.content.common.transfer.ContentPageTransfer;
 import com.echothree.model.control.content.common.transfer.ContentSectionDescriptionTransfer;
@@ -56,6 +57,8 @@ import com.echothree.model.control.content.server.transfer.ContentForumTransferC
 import com.echothree.model.control.content.server.transfer.ContentPageAreaTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageDescriptionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageLayoutAreaTransferCache;
+import com.echothree.model.control.content.server.transfer.ContentPageLayoutDescriptionTransferCache;
+import com.echothree.model.control.content.server.transfer.ContentPageLayoutTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentSectionDescriptionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentSectionTransferCache;
@@ -108,6 +111,7 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutAreaDescription;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutDescription;
+import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentSectionDescription;
 import com.echothree.model.data.content.server.entity.ContentSectionDetail;
@@ -144,6 +148,7 @@ import com.echothree.model.data.content.server.factory.ContentPageFactory;
 import com.echothree.model.data.content.server.factory.ContentPageLayoutAreaDescriptionFactory;
 import com.echothree.model.data.content.server.factory.ContentPageLayoutAreaFactory;
 import com.echothree.model.data.content.server.factory.ContentPageLayoutDescriptionFactory;
+import com.echothree.model.data.content.server.factory.ContentPageLayoutDetailFactory;
 import com.echothree.model.data.content.server.factory.ContentPageLayoutFactory;
 import com.echothree.model.data.content.server.factory.ContentSectionDescriptionFactory;
 import com.echothree.model.data.content.server.factory.ContentSectionDetailFactory;
@@ -165,6 +170,8 @@ import com.echothree.model.data.content.server.value.ContentForumDetailValue;
 import com.echothree.model.data.content.server.value.ContentPageAreaDetailValue;
 import com.echothree.model.data.content.server.value.ContentPageDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentPageDetailValue;
+import com.echothree.model.data.content.server.value.ContentPageLayoutDescriptionValue;
+import com.echothree.model.data.content.server.value.ContentPageLayoutDetailValue;
 import com.echothree.model.data.content.server.value.ContentSectionDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentSectionDetailValue;
 import com.echothree.model.data.content.server.value.ContentWebAddressDescriptionValue;
@@ -305,31 +312,73 @@ public class ContentControl
     //   Content Page Layouts
     // --------------------------------------------------------------------------------
     
-    public ContentPageLayout createContentPageLayout(String contentPageLayoutName, Boolean isDefault, Integer sortOrder) {
-        return ContentPageLayoutFactory.getInstance().create(contentPageLayoutName, isDefault, sortOrder);
-    }
-    
-    public List<ContentPageLayout> getContentPageLayouts() {
-        PreparedStatement ps = ContentPageLayoutFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM contentpagelayouts " +
-                "ORDER BY cntpl_sortorder, cntpl_contentpagelayoutname");
+    public ContentPageLayout createContentPageLayout(String contentPageLayoutName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        ContentPageLayout defaultContentPageLayout = getDefaultContentPageLayout();
+        boolean defaultFound = defaultContentPageLayout != null;
         
-        return ContentPageLayoutFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        if(defaultFound && isDefault) {
+            ContentPageLayoutDetailValue defaultContentPageLayoutDetailValue = getDefaultContentPageLayoutDetailValueForUpdate();
+            
+            defaultContentPageLayoutDetailValue.setIsDefault(Boolean.FALSE);
+            updateContentPageLayoutFromValue(defaultContentPageLayoutDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+        
+        ContentPageLayout contentPageLayout = ContentPageLayoutFactory.getInstance().create();
+        ContentPageLayoutDetail contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(session,
+                contentPageLayout, contentPageLayoutName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        
+        // Convert to R/W
+        contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayout.getPrimaryKey());
+        contentPageLayout.setActiveDetail(contentPageLayoutDetail);
+        contentPageLayout.setLastDetail(contentPageLayoutDetail);
+        contentPageLayout.store();
+        
+        sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        
+        return contentPageLayout;
     }
     
-    public ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName) {
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentPageLayout */
+    public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        ContentPageLayoutPK pk = new ContentPageLayoutPK(entityInstance.getEntityUniqueId());
+        ContentPageLayout contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        
+        return contentPageLayout;
+    }
+
+    public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance) {
+        return getContentPageLayoutByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentPageLayout getContentPageLayoutByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentPageLayoutByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
+    private ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName, EntityPermission entityPermission) {
         ContentPageLayout contentPageLayout = null;
         
         try {
-            PreparedStatement ps = ContentPageLayoutFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpagelayouts " +
-                    "WHERE cntpl_contentpagelayoutname = ?");
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayouts, contentpagelayoutdetails " +
+                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayouts, contentpagelayoutdetails " +
+                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ContentPageLayoutFactory.getInstance().prepareStatement(query);
             
             ps.setString(1, contentPageLayoutName);
+            ps.setLong(2, Session.MAX_TIME);
             
-            contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -337,58 +386,325 @@ public class ContentControl
         return contentPageLayout;
     }
     
-    public ContentPageLayoutChoicesBean getContentPageLayoutChoices(String defaultContentPageLayoutChoice, Language language) {
+    public ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName) {
+        return getContentPageLayoutByName(contentPageLayoutName, EntityPermission.READ_ONLY);
+    }
+    
+    public ContentPageLayout getContentPageLayoutByNameForUpdate(String contentPageLayoutName) {
+        return getContentPageLayoutByName(contentPageLayoutName, EntityPermission.READ_WRITE);
+    }
+    
+    public ContentPageLayoutDetailValue getContentPageLayoutDetailValueForUpdate(ContentPageLayout contentPageLayout) {
+        return contentPageLayout == null? null: contentPageLayout.getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
+    }
+    
+    public ContentPageLayoutDetailValue getContentPageLayoutDetailValueByNameForUpdate(String contentPageLayoutName) {
+        return getContentPageLayoutDetailValueForUpdate(getContentPageLayoutByNameForUpdate(contentPageLayoutName));
+    }
+    
+    private ContentPageLayout getDefaultContentPageLayout(EntityPermission entityPermission) {
+        ContentPageLayout contentPageLayout = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayouts, contentpagelayoutdetails " +
+                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayouts, contentpagelayoutdetails " +
+                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ContentPageLayoutFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, Session.MAX_TIME);
+            
+            contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return contentPageLayout;
+    }
+    
+    public ContentPageLayout getDefaultContentPageLayout() {
+        return getDefaultContentPageLayout(EntityPermission.READ_ONLY);
+    }
+    
+    public ContentPageLayout getDefaultContentPageLayoutForUpdate() {
+        return getDefaultContentPageLayout(EntityPermission.READ_WRITE);
+    }
+    
+    public ContentPageLayoutDetailValue getDefaultContentPageLayoutDetailValueForUpdate() {
+        return getDefaultContentPageLayoutForUpdate().getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
+    }
+    
+    private List<ContentPageLayout> getContentPageLayouts(EntityPermission entityPermission) {
+        List<ContentPageLayout> contentPageLayouts = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayouts, contentpagelayoutdetails " +
+                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
+                        "ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayouts, contentpagelayoutdetails " +
+                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ContentPageLayoutFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, Session.MAX_TIME);
+            
+            contentPageLayouts = ContentPageLayoutFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return contentPageLayouts;
+    }
+    
+    public List<ContentPageLayout> getContentPageLayouts() {
+        return getContentPageLayouts(EntityPermission.READ_ONLY);
+    }
+    
+    public List<ContentPageLayout> getContentPageLayoutsForUpdate() {
+        return getContentPageLayouts(EntityPermission.READ_WRITE);
+    }
+    
+    public ContentPageLayoutTransfer getContentPageLayoutTransfer(UserVisit userVisit, ContentPageLayout contentPageLayout) {
+        return getContentTransferCaches(userVisit).getContentPageLayoutTransferCache().getTransfer(contentPageLayout);
+    }
+    
+    public List<ContentPageLayoutTransfer> getContentPageLayoutTransfers(UserVisit userVisit, Collection<ContentPageLayout> contentPageLayouts) {
+        List<ContentPageLayoutTransfer> contentPageLayoutTransfers = new ArrayList<>(contentPageLayouts.size());
+        ContentPageLayoutTransferCache contentPageLayoutTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
+        
+        contentPageLayouts.stream().forEach((contentPageLayout) -> {
+            contentPageLayoutTransfers.add(contentPageLayoutTransferCache.getTransfer(contentPageLayout));
+        });
+        
+        return contentPageLayoutTransfers;
+    }
+    
+    public List<ContentPageLayoutTransfer> getContentPageLayoutTransfers(UserVisit userVisit) {
+        return getContentPageLayoutTransfers(userVisit, getContentPageLayouts());
+    }
+    
+    public ContentPageLayoutChoicesBean getContentPageLayoutChoices(String defaultContentPageLayoutChoice, Language language,
+            boolean allowNullChoice) {
         List<ContentPageLayout> contentPageLayouts = getContentPageLayouts();
         int size = contentPageLayouts.size();
         List<String> labels = new ArrayList<>(size);
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
         
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultContentPageLayoutChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
         for(ContentPageLayout contentPageLayout: contentPageLayouts) {
+            ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
+            
             String label = getBestContentPageLayoutDescription(contentPageLayout, language);
-            String value = contentPageLayout.getContentPageLayoutName();
+            String value = contentPageLayoutDetail.getContentPageLayoutName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
             boolean usingDefaultChoice = defaultContentPageLayoutChoice == null? false: defaultContentPageLayoutChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && contentPageLayout.getIsDefault()))
+            if(usingDefaultChoice || (defaultValue == null && contentPageLayoutDetail.getIsDefault())) {
                 defaultValue = value;
+            }
         }
         
         return new ContentPageLayoutChoicesBean(labels, values, defaultValue);
     }
     
-    public ContentPageLayoutTransfer getContentPageLayoutTransfer(UserVisit userVisit, ContentPageLayout contentPageLayout) {
-        return getContentTransferCaches(userVisit).getContentPageLayoutTransferCache().getContentPageLayoutTransfer(contentPageLayout);
+    private void updateContentPageLayoutFromValue(ContentPageLayoutDetailValue contentPageLayoutDetailValue, boolean checkDefault,
+            BasePK updatedBy) {
+        if(contentPageLayoutDetailValue.hasBeenModified()) {
+            ContentPageLayout contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     contentPageLayoutDetailValue.getContentPageLayoutPK());
+            ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getActiveDetailForUpdate();
+            
+            contentPageLayoutDetail.setThruTime(session.START_TIME_LONG);
+            contentPageLayoutDetail.store();
+            
+            ContentPageLayoutPK contentPageLayoutPK = contentPageLayoutDetail.getContentPageLayoutPK();
+            String contentPageLayoutName = contentPageLayoutDetailValue.getContentPageLayoutName();
+            Boolean isDefault = contentPageLayoutDetailValue.getIsDefault();
+            Integer sortOrder = contentPageLayoutDetailValue.getSortOrder();
+            
+            if(checkDefault) {
+                ContentPageLayout defaultContentPageLayout = getDefaultContentPageLayout();
+                boolean defaultFound = defaultContentPageLayout != null && !defaultContentPageLayout.equals(contentPageLayout);
+                
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    ContentPageLayoutDetailValue defaultContentPageLayoutDetailValue = getDefaultContentPageLayoutDetailValueForUpdate();
+                    
+                    defaultContentPageLayoutDetailValue.setIsDefault(Boolean.FALSE);
+                    updateContentPageLayoutFromValue(defaultContentPageLayoutDetailValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+            
+            contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(contentPageLayoutPK,
+                    contentPageLayoutName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            contentPageLayout.setActiveDetail(contentPageLayoutDetail);
+            contentPageLayout.setLastDetail(contentPageLayoutDetail);
+            
+            sendEventUsingNames(contentPageLayoutPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        }
+    }
+    
+    public void updateContentPageLayoutFromValue(ContentPageLayoutDetailValue contentPageLayoutDetailValue, BasePK updatedBy) {
+        updateContentPageLayoutFromValue(contentPageLayoutDetailValue, true, updatedBy);
+    }
+    
+    public void deleteContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
+        deleteContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout, deletedBy);
+        
+        ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetailForUpdate();
+        contentPageLayoutDetail.setThruTime(session.START_TIME_LONG);
+        contentPageLayoutDetail.store();
+        contentPageLayout.setActiveDetail(null);
+        
+        // Check for default, and pick one if necessary
+        ContentPageLayout defaultContentPageLayout = getDefaultContentPageLayout();
+        if(defaultContentPageLayout == null) {
+            List<ContentPageLayout> contentPageLayouts = getContentPageLayoutsForUpdate();
+            
+            if(!contentPageLayouts.isEmpty()) {
+                Iterator<ContentPageLayout> iter = contentPageLayouts.iterator();
+                if(iter.hasNext()) {
+                    defaultContentPageLayout = iter.next();
+                }
+                ContentPageLayoutDetailValue contentPageLayoutDetailValue = defaultContentPageLayout.getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
+                
+                contentPageLayoutDetailValue.setIsDefault(Boolean.TRUE);
+                updateContentPageLayoutFromValue(contentPageLayoutDetailValue, false, deletedBy);
+            }
+        }
+        
+        sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
-    //   Content Page Layout Descriptions
+    //   Symbol Position Descriptions
     // --------------------------------------------------------------------------------
     
-    public ContentPageLayoutDescription createContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, String description) {
-        return ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description);
+    public ContentPageLayoutDescription createContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, String description, BasePK createdBy) {
+        ContentPageLayoutDescription contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description, session.START_TIME_LONG,
+                Session.MAX_TIME_LONG);
+        
+        sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageLayoutDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return contentPageLayoutDescription;
     }
     
-    public ContentPageLayoutDescription getContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language) {
+    private ContentPageLayoutDescription getContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, EntityPermission entityPermission) {
         ContentPageLayoutDescription contentPageLayoutDescription = null;
         
         try {
-            PreparedStatement ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpagelayoutdescriptions " +
-                    "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ?");
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayoutdescriptions " +
+                        "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayoutdescriptions " +
+                        "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
             
-            contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
         return contentPageLayoutDescription;
+    }
+    
+    public ContentPageLayoutDescription getContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language) {
+        return getContentPageLayoutDescription(contentPageLayout, language, EntityPermission.READ_ONLY);
+    }
+    
+    public ContentPageLayoutDescription getContentPageLayoutDescriptionForUpdate(ContentPageLayout contentPageLayout, Language language) {
+        return getContentPageLayoutDescription(contentPageLayout, language, EntityPermission.READ_WRITE);
+    }
+    
+    public ContentPageLayoutDescriptionValue getContentPageLayoutDescriptionValue(ContentPageLayoutDescription contentPageLayoutDescription) {
+        return contentPageLayoutDescription == null? null: contentPageLayoutDescription.getContentPageLayoutDescriptionValue().clone();
+    }
+    
+    public ContentPageLayoutDescriptionValue getContentPageLayoutDescriptionValueForUpdate(ContentPageLayout contentPageLayout, Language language) {
+        return getContentPageLayoutDescriptionValue(getContentPageLayoutDescriptionForUpdate(contentPageLayout, language));
+    }
+    
+    private List<ContentPageLayoutDescription> getContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout, EntityPermission entityPermission) {
+        List<ContentPageLayoutDescription> contentPageLayoutDescriptions = null;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayoutdescriptions, languages " +
+                        "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ? AND cntpld_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpagelayoutdescriptions " +
+                        "WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ContentPageLayoutDescriptionFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+            
+            contentPageLayoutDescriptions = ContentPageLayoutDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return contentPageLayoutDescriptions;
+    }
+    
+    public List<ContentPageLayoutDescription> getContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout) {
+        return getContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout, EntityPermission.READ_ONLY);
+    }
+    
+    public List<ContentPageLayoutDescription> getContentPageLayoutDescriptionsByContentPageLayoutForUpdate(ContentPageLayout contentPageLayout) {
+        return getContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout, EntityPermission.READ_WRITE);
     }
     
     public String getBestContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language) {
@@ -400,7 +716,7 @@ public class ContentControl
         }
         
         if(contentPageLayoutDescription == null) {
-            description = contentPageLayout.getContentPageLayoutName();
+            description = contentPageLayout.getLastDetail().getContentPageLayoutName();
         } else {
             description = contentPageLayoutDescription.getDescription();
         }
@@ -408,6 +724,55 @@ public class ContentControl
         return description;
     }
     
+    public ContentPageLayoutDescriptionTransfer getContentPageLayoutDescriptionTransfer(UserVisit userVisit, ContentPageLayoutDescription contentPageLayoutDescription) {
+        return getContentTransferCaches(userVisit).getContentPageLayoutDescriptionTransferCache().getTransfer(contentPageLayoutDescription);
+    }
+    
+    public List<ContentPageLayoutDescriptionTransfer> getContentPageLayoutDescriptionTransfersByContentPageLayout(UserVisit userVisit, ContentPageLayout contentPageLayout) {
+        List<ContentPageLayoutDescription> contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout);
+        List<ContentPageLayoutDescriptionTransfer> contentPageLayoutDescriptionTransfers = new ArrayList<>(contentPageLayoutDescriptions.size());
+        ContentPageLayoutDescriptionTransferCache contentPageLayoutDescriptionTransferCache = getContentTransferCaches(userVisit).getContentPageLayoutDescriptionTransferCache();
+        
+        contentPageLayoutDescriptions.stream().forEach((contentPageLayoutDescription) -> {
+            contentPageLayoutDescriptionTransfers.add(contentPageLayoutDescriptionTransferCache.getTransfer(contentPageLayoutDescription));
+        });
+        
+        return contentPageLayoutDescriptionTransfers;
+    }
+    
+    public void updateContentPageLayoutDescriptionFromValue(ContentPageLayoutDescriptionValue contentPageLayoutDescriptionValue, BasePK updatedBy) {
+        if(contentPageLayoutDescriptionValue.hasBeenModified()) {
+            ContentPageLayoutDescription contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayoutDescriptionValue.getPrimaryKey());
+            
+            contentPageLayoutDescription.setThruTime(session.START_TIME_LONG);
+            contentPageLayoutDescription.store();
+            
+            ContentPageLayout contentPageLayout = contentPageLayoutDescription.getContentPageLayout();
+            Language language = contentPageLayoutDescription.getLanguage();
+            String description = contentPageLayoutDescriptionValue.getDescription();
+            
+            contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageLayoutDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+        }
+    }
+    
+    public void deleteContentPageLayoutDescription(ContentPageLayoutDescription contentPageLayoutDescription, BasePK deletedBy) {
+        contentPageLayoutDescription.setThruTime(session.START_TIME_LONG);
+        
+        sendEventUsingNames(contentPageLayoutDescription.getContentPageLayoutPK(), EventTypes.MODIFY.name(), contentPageLayoutDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        
+    }
+    
+    public void deleteContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
+        List<ContentPageLayoutDescription> contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayoutForUpdate(contentPageLayout);
+        
+        contentPageLayoutDescriptions.stream().forEach((contentPageLayoutDescription) -> {
+            deleteContentPageLayoutDescription(contentPageLayoutDescription, deletedBy);
+        });
+    }
+
     // --------------------------------------------------------------------------------
     //   Content Page Layout Areas
     // --------------------------------------------------------------------------------
