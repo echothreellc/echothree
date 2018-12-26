@@ -17,7 +17,7 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentCollectionForm;
-import com.echothree.model.control.content.common.ContentConstants;
+import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -127,7 +127,7 @@ public class CreateContentCollectionCommand
                 PartyPK partyPK = getPartyPK();
 
                 contentCollection = contentControl.createContentCollection(contentCollectionName, defaultOfferUse, partyPK);
-                contentControl.createContentSection(contentCollection, ContentConstants.ContentSection_ROOT, null, Boolean.FALSE, 0, partyPK);
+                contentControl.createContentSection(contentCollection, ContentSections.ROOT.toString(), null, Boolean.FALSE, 0, partyPK);
 
                 if(description != null) {
                     Language language = getPreferredLanguage();

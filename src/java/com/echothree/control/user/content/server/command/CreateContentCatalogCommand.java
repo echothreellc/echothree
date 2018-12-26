@@ -17,7 +17,7 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentCatalogForm;
-import com.echothree.model.control.content.common.ContentConstants;
+import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -135,7 +135,7 @@ public class CreateContentCatalogCommand
                     
                     contentCatalog = contentControl.createContentCatalog(contentCollection, contentCatalogName, defaultOfferUse,
                             isDefault, sortOrder, partyPK);
-                    contentControl.createContentCategory(contentCatalog, ContentConstants.ContentCategory_ROOT, null,
+                    contentControl.createContentCategory(contentCatalog, ContentCategories.ROOT.toString(), null,
                             defaultOfferUse, null, Boolean.FALSE, 0, partyPK);
                     
                     if(description != null) {

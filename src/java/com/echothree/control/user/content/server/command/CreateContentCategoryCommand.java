@@ -17,7 +17,7 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentCategoryForm;
-import com.echothree.model.control.content.common.ContentConstants;
+import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -106,7 +106,7 @@ public class CreateContentCategoryCommand
                     String parentContentCategoryName = form.getParentContentCategoryName();
                     
                     if(parentContentCategoryName == null)
-                        parentContentCategoryName = ContentConstants.ContentCategory_ROOT;
+                        parentContentCategoryName = ContentCategories.ROOT.toString();
                     
                     ContentCategory parentContentCategory = parentContentCategoryName == null? null: contentControl.getContentCategoryByName(contentCatalog,
                             parentContentCategoryName);
