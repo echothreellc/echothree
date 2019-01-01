@@ -356,7 +356,7 @@ public class ContentControl
         return getContentPageLayoutByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName, EntityPermission entityPermission) {
+    public ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName, EntityPermission entityPermission) {
         ContentPageLayout contentPageLayout = null;
         
         try {
