@@ -21,9 +21,12 @@ import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
 import com.echothree.control.user.content.common.form.EditContentPageLayoutForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
-import com.echothree.control.user.content.common.spec.ContentPageLayoutSpec;
+import com.echothree.control.user.content.common.spec.ContentPageLayoutUniversalSpec;
 import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.content.server.logic.ContentPageLayoutLogic;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -32,14 +35,13 @@ import com.echothree.model.data.content.server.entity.ContentPageLayoutDescripti
 import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.model.data.content.server.value.ContentPageLayoutDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentPageLayoutDetailValue;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -49,7 +51,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditContentPageLayoutCommand
-        extends BaseEditCommand<ContentPageLayoutSpec, ContentPageLayoutEdit> {
+        extends BaseAbstractEditCommand<ContentPageLayoutUniversalSpec, ContentPageLayoutEdit, EditContentPageLayoutResult, ContentPageLayout, ContentPageLayout> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -59,16 +61,21 @@ public class EditContentPageLayoutCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Edit.name())
-                    )))
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Edit.name())
+                        )))
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ParentContentPageLayoutName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
@@ -81,95 +88,106 @@ public class EditContentPageLayoutCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    public EditContentPageLayoutResult getResult() {
+        return ContentResultFactory.getEditContentPageLayoutResult();
+    }
+    
+    @Override
+    public ContentPageLayoutEdit getEdit() {
+        return ContentEditFactory.getContentPageLayoutEdit();
+    }
+    
+    @Override
+    public ContentPageLayout getEntity(EditContentPageLayoutResult result) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        EditContentPageLayoutResult result = ContentResultFactory.getEditContentPageLayoutResult();
-        
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            String contentPageLayoutName = spec.getContentPageLayoutName();
-            ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
-            
-            if(contentPageLayout != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    if(lockEntity(contentPageLayout)) {
-                        ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, getPreferredLanguage());
-                        ContentPageLayoutEdit edit = ContentEditFactory.getContentPageLayoutEdit();
-                        ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
+        ContentPageLayout contentPageLayout = null;
+        String contentPageLayoutName = spec.getContentPageLayoutName();
+        int parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
-                        result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));
-                        sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        if(parameterCount == 1) {
+            if(contentPageLayoutName == null) {
+                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHOTHREE.name(),
+                        EntityTypes.ContentPageLayout.name());
 
-                        result.setEdit(edit);
-                        edit.setContentPageLayoutName(contentPageLayoutDetail.getContentPageLayoutName());
-                        edit.setIsDefault(contentPageLayoutDetail.getIsDefault().toString());
-                        edit.setSortOrder(contentPageLayoutDetail.getSortOrder().toString());
-
-                        if(contentPageLayoutDescription != null) {
-                            edit.setDescription(contentPageLayoutDescription.getDescription());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-
-                    result.setEntityLock(getEntityLockTransfer(contentPageLayout));
-                } else { // EditMode.ABANDON
-                    unlockEntity(contentPageLayout);
+                if(!hasExecutionErrors()) {
+                    contentPageLayout = contentControl.getContentPageLayoutByEntityInstance(entityInstance, editModeToEntityPermission(editMode));
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);
+                contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByName(this, contentPageLayoutName, editModeToEntityPermission(editMode));
             }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            String contentPageLayoutName = spec.getContentPageLayoutName();
-            ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByNameForUpdate(contentPageLayoutName);
-            
+
             if(contentPageLayout != null) {
-                contentPageLayoutName = edit.getContentPageLayoutName();
-                ContentPageLayout duplicateContentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
-                
-                if(duplicateContentPageLayout == null || contentPageLayout.equals(duplicateContentPageLayout)) {
-                    if(lockEntityForUpdate(contentPageLayout)) {
-                        try {
-                            PartyPK partyPK = getPartyPK();
-                            ContentPageLayoutDetailValue contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueForUpdate(contentPageLayout);
-                            ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescriptionForUpdate(contentPageLayout, getPreferredLanguage());
-                            String description = edit.getDescription();
-                            
-                            contentPageLayoutDetailValue.setContentPageLayoutName(edit.getContentPageLayoutName());
-                            contentPageLayoutDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                            contentPageLayoutDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                            
-                            contentControl.updateContentPageLayoutFromValue(contentPageLayoutDetailValue, partyPK);
-                            
-                            if(contentPageLayoutDescription == null && description != null) {
-                                contentControl.createContentPageLayoutDescription(contentPageLayout, getPreferredLanguage(), description, partyPK);
-                            } else if(contentPageLayoutDescription != null && description == null) {
-                                contentControl.deleteContentPageLayoutDescription(contentPageLayoutDescription, partyPK);
-                            } else if(contentPageLayoutDescription != null && description != null) {
-                                ContentPageLayoutDescriptionValue contentPageLayoutDescriptionValue = contentControl.getContentPageLayoutDescriptionValue(contentPageLayoutDescription);
-                                
-                                contentPageLayoutDescriptionValue.setDescription(description);
-                                contentControl.updateContentPageLayoutDescriptionFromValue(contentPageLayoutDescriptionValue, partyPK);
-                            }
-                        } finally {
-                            unlockEntity(contentPageLayout);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockStale.name());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateContentPageLayoutName.name(), contentPageLayoutName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);
-            }
-            
-            if(hasExecutionErrors()) {
                 result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));
-                result.setEntityLock(getEntityLockTransfer(contentPageLayout));
             }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
+
+        return contentPageLayout;
+    }
+    
+    @Override
+    public ContentPageLayout getLockEntity(ContentPageLayout contentPageLayout) {
+        return contentPageLayout;
+    }
+    
+    @Override
+    public void fillInResult(EditContentPageLayoutResult result, ContentPageLayout contentPageLayout) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
-        return result;
+        result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));
+    }
+    
+    @Override
+    public void doLock(ContentPageLayoutEdit edit, ContentPageLayout contentPageLayout) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescription(contentPageLayout, getPreferredLanguage());
+        ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
+        
+        edit.setContentPageLayoutName(contentPageLayoutDetail.getContentPageLayoutName());
+        edit.setIsDefault(contentPageLayoutDetail.getIsDefault().toString());
+        edit.setSortOrder(contentPageLayoutDetail.getSortOrder().toString());
+
+        if(contentPageLayoutDescription != null) {
+            edit.setDescription(contentPageLayoutDescription.getDescription());
+        }
+    }
+        
+    @Override
+    public void canUpdate(ContentPageLayout contentPageLayout) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        String contentPageLayoutName = edit.getContentPageLayoutName();
+        ContentPageLayout duplicateContentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+
+        if(duplicateContentPageLayout != null && !contentPageLayout.equals(duplicateContentPageLayout)) {
+            addExecutionError(ExecutionErrors.DuplicateContentPageLayoutName.name(), contentPageLayoutName);
+        }
+    }
+    
+    @Override
+    public void doUpdate(ContentPageLayout contentPageLayout) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        PartyPK partyPK = getPartyPK();
+        ContentPageLayoutDetailValue contentPageLayoutDetailValue = contentControl.getContentPageLayoutDetailValueForUpdate(contentPageLayout);
+        ContentPageLayoutDescription contentPageLayoutDescription = contentControl.getContentPageLayoutDescriptionForUpdate(contentPageLayout, getPreferredLanguage());
+        String description = edit.getDescription();
+
+        contentPageLayoutDetailValue.setContentPageLayoutName(edit.getContentPageLayoutName());
+        contentPageLayoutDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        contentPageLayoutDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        contentControl.updateContentPageLayoutFromValue(contentPageLayoutDetailValue, partyPK);
+
+        if(contentPageLayoutDescription == null && description != null) {
+            contentControl.createContentPageLayoutDescription(contentPageLayout, getPreferredLanguage(), description, partyPK);
+        } else if(contentPageLayoutDescription != null && description == null) {
+            contentControl.deleteContentPageLayoutDescription(contentPageLayoutDescription, partyPK);
+        } else if(contentPageLayoutDescription != null && description != null) {
+            ContentPageLayoutDescriptionValue contentPageLayoutDescriptionValue = contentControl.getContentPageLayoutDescriptionValue(contentPageLayoutDescription);
+
+            contentPageLayoutDescriptionValue.setDescription(description);
+            contentControl.updateContentPageLayoutDescriptionFromValue(contentPageLayoutDescriptionValue, partyPK);
+        }
     }
     
 }
