@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // --------------------------------------------------------------------------------
+
 package com.echothree.model.control.graphql.server.util;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
@@ -21,6 +22,14 @@ import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
 import com.echothree.control.user.authentication.common.form.RecoverPasswordForm;
 import com.echothree.control.user.authentication.common.form.SetPasswordForm;
 import com.echothree.control.user.authentication.common.form.VendorLoginForm;
+import com.echothree.control.user.content.common.ContentUtil;
+import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
+import com.echothree.control.user.content.common.form.CreateContentPageLayoutForm;
+import com.echothree.control.user.content.common.form.DeleteContentPageLayoutForm;
+import com.echothree.control.user.content.common.form.EditContentPageLayoutForm;
+import com.echothree.control.user.content.common.form.SetDefaultContentPageLayoutForm;
+import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
+import com.echothree.control.user.content.common.spec.ContentPageLayoutUniversalSpec;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CreateEntityListItemAttributeForm;
 import com.echothree.control.user.core.common.form.CreateEntityMultipleListItemAttributeForm;
@@ -71,6 +80,131 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations {
     
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createContentPageLayout(final DataFetchingEnvironment env,
+            @GraphQLName("contentPageLayoutName") @GraphQLNonNull final String contentPageLayoutName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            CreateContentPageLayoutForm commandForm = ContentUtil.getHome().getCreateContentPageLayoutForm();
+
+            commandForm.setContentPageLayoutName(contentPageLayoutName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            CommandResult commandResult = ContentUtil.getHome().createContentPageLayout(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteContentPageLayout(final DataFetchingEnvironment env,
+            @GraphQLName("contentPageLayoutName") @GraphQLNonNull final String contentPageLayoutName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            DeleteContentPageLayoutForm commandForm = ContentUtil.getHome().getDeleteContentPageLayoutForm();
+
+            commandForm.setContentPageLayoutName(contentPageLayoutName);
+
+            CommandResult commandResult = ContentUtil.getHome().deleteContentPageLayout(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editContentPageLayout(final DataFetchingEnvironment env,
+            @GraphQLName("originalContentPageLayoutName") final String originalContentPageLayoutName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("contentPageLayoutName") final String contentPageLayoutName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        CommandResultWithIdObject commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            ContentPageLayoutUniversalSpec spec = ContentUtil.getHome().getContentPageLayoutUniversalSpec();
+
+            spec.setContentPageLayoutName(originalContentPageLayoutName);
+            spec.setUlid(id);
+            
+            EditContentPageLayoutForm commandForm = ContentUtil.getHome().getEditContentPageLayoutForm();
+            
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            CommandResult commandResult = ContentUtil.getHome().editContentPageLayout(context.getUserVisitPK(), commandForm);
+            
+            if(!commandResult.hasErrors()) {
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                EditContentPageLayoutResult result = (EditContentPageLayoutResult)executionResult.getResult();                
+                Map<String, Object> arguments = env.getArgument("input");
+                ContentPageLayoutEdit edit = result.getEdit();
+                
+                commandResultObject.setEntityInstanceFromEntityRef(result.getContentPageLayout().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("contentPageLayoutName"))
+                    edit.setContentPageLayoutName(contentPageLayoutName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+                
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+                
+                commandResult = ContentUtil.getHome().editContentPageLayout(context.getUserVisitPK(), commandForm);
+            }
+            
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetDefaultContentPageLayout(final DataFetchingEnvironment env,
+            @GraphQLName("contentPageLayoutName") @GraphQLNonNull final String contentPageLayoutName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            SetDefaultContentPageLayoutForm commandForm = ContentUtil.getHome().getSetDefaultContentPageLayoutForm();
+
+            commandForm.setContentPageLayoutName(contentPageLayoutName);
+
+            CommandResult commandResult = ContentUtil.getHome().setDefaultContentPageLayout(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject setSetUserVisitPreferredLanguage(final DataFetchingEnvironment env,
