@@ -44,15 +44,24 @@ public class ContentPageLayoutLogic
         return ContentPageLayoutLogicHolder.instance;
     }
 
-    public ContentPageLayout getContentPageLayoutByName(final ExecutionErrorAccumulator eea, final String contentPageLayoutName) {
+    public ContentPageLayout getContentPageLayoutByName(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
+            final EntityPermission entityPermission) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName, entityPermission);
 
         if(contentPageLayout == null) {
             handleExecutionError(UnknownContentPageLayoutNameException.class, eea, ExecutionErrors.UnknownContentPageLayoutName.name(), contentPageLayoutName);
         }
 
         return contentPageLayout;
+    }
+
+    public ContentPageLayout getContentPageLayoutByName(final ExecutionErrorAccumulator eea, final String contentPageLayoutName) {
+        return getContentPageLayoutByName(eea, contentPageLayoutName, EntityPermission.READ_ONLY);
+    }
+
+    public ContentPageLayout getContentPageLayoutByNameForUpdate(final ExecutionErrorAccumulator eea, final String contentPageLayoutName) {
+        return getContentPageLayoutByName(eea, contentPageLayoutName, EntityPermission.READ_WRITE);
     }
 
     public ContentPageLayout getContentPageLayoutByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
