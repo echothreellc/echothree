@@ -17,6 +17,8 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentPageLayoutForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -66,6 +68,7 @@ public class CreateContentPageLayoutCommand
     
     @Override
     protected BaseResult execute() {
+        CreateContentPageLayoutResult result = ContentResultFactory.getCreateContentPageLayoutResult();
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentPageLayoutName = form.getContentPageLayoutName();
         ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
@@ -84,8 +87,13 @@ public class CreateContentPageLayoutCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateContentPageLayoutName.name(), contentPageLayoutName);
         }
-        
-        return null;
+
+        if(contentPageLayout != null && !hasExecutionErrors()) {
+            result.setContentPageLayoutName(contentPageLayout.getLastDetail().getContentPageLayoutName());
+            result.setEntityRef(contentPageLayout.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
