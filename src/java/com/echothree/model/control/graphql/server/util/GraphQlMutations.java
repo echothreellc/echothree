@@ -28,6 +28,7 @@ import com.echothree.control.user.content.common.form.CreateContentPageLayoutFor
 import com.echothree.control.user.content.common.form.DeleteContentPageLayoutForm;
 import com.echothree.control.user.content.common.form.EditContentPageLayoutForm;
 import com.echothree.control.user.content.common.form.SetDefaultContentPageLayoutForm;
+import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.content.common.spec.ContentPageLayoutUniversalSpec;
 import com.echothree.control.user.core.common.CoreUtil;
@@ -100,6 +101,12 @@ public class GraphQlMutations {
 
             CommandResult commandResult = ContentUtil.getHome().createContentPageLayout(context.getUserVisitPK(), commandForm);
             commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                CreateContentPageLayoutResult result = (CreateContentPageLayoutResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
