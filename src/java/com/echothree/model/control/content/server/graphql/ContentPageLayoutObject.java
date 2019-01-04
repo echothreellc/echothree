@@ -29,7 +29,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 
-@GraphQLDescription("symbol position object")
+@GraphQLDescription("content page layout object")
 @GraphQLName("ContentPageLayout")
 public class ContentPageLayoutObject
         extends BaseEntityInstanceObject {
@@ -53,7 +53,7 @@ public class ContentPageLayoutObject
     }
     
     @GraphQLField
-    @GraphQLDescription("symbol position name")
+    @GraphQLDescription("content page layout name")
     @GraphQLNonNull
     public String getContentPageLayoutName() {
         return getContentPageLayoutDetail().getContentPageLayoutName();
