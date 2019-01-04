@@ -87,7 +87,7 @@ public class GraphQlMutations {
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        CommandResultObject commandResultObject = new CommandResultObject();
+        CommandResultWithIdObject commandResultObject = new CommandResultWithIdObject();
 
         try {
             GraphQlContext context = env.getContext();
