@@ -82,7 +82,7 @@ public class GraphQlMutations {
     
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createContentPageLayout(final DataFetchingEnvironment env,
+    public static CommandResultWithIdObject createContentPageLayout(final DataFetchingEnvironment env,
             @GraphQLName("contentPageLayoutName") @GraphQLNonNull final String contentPageLayoutName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
