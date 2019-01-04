@@ -46,7 +46,7 @@ public class GetContentPageLayoutCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
