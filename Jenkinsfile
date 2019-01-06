@@ -28,7 +28,7 @@ pipeline {
             }
         }
         stage('Artifacts') {
-            stages {
+            parallel {
                 stage('Deployables') {
                     steps {
                         script {
