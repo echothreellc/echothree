@@ -28,10 +28,26 @@ pipeline {
             }
         }
         stage('Artifacts') {
-            steps {
-                script {
-                    archiveArtifacts artifacts: 'build/ears/*.ear,build/ui/web/**/*.war,build/service/**/*.war,build/service/**/*.jar,build/lib/mysql-connector-java.jar'
-                    currentBuild.result = 'SUCCESS'
+            stages {
+                stage('Deployables') {
+                    steps {
+                        script {
+                            archiveArtifacts artifacts: 'build/ears/*.ear,build/ui/web/**/*.war,build/service/**/*.war,build/service/**/*.jar,build/lib/mysql-connector-java.jar'
+                            currentBuild.result = 'SUCCESS'
+                        }
+                    }
+                }
+                stage('Javadoc') {
+                    when {
+                        branch 'master'
+                    }
+                    steps {
+                        ansiColor('xterm') {
+                            withAnt(installation: 'Apache Ant Latest', jdk: 'Java SE Development Kit Latest') {
+                                sh 'ant publish-javadoc'
+                            }
+                        }
+                    }
                 }
             }
         }
