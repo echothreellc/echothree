@@ -130,7 +130,7 @@
             <arg value="ssh"/>
             <arg value="--delete"/>
             <arg value="generated/javadoc/"/>
-            <arg value="${web.host}:/var/www/html/javadoc/master"/>
+            <arg value="${web.host}:${web.dir.base}/${web.dir.javadoc}"/>
         </exec>
     </target>
     
