@@ -26,6 +26,8 @@
     <property name="build.properties.file" value="${dir.build.metadata.common}/echothree-build.properties" />
     <property name="build.properties.comment" value="Build information for ${ant.project.name}" />
     
+    <property file="environment.properties" />
+
     <target name="prepare">
         <mkdir dir="${root.dir.home}/build" />
         <mkdir dir="${root.dir.home}/build/lib" />
@@ -118,6 +120,18 @@
     
     <target name="javadoc" depends="build-properties,setup-ivy,ivy-lib">
         <ant dir="src" target="javadoc"/>
+    </target>
+    
+    <!-- Assumes Javadoc has already been generated and is up-to-date. -->
+    <target name="publish-javadoc">
+        <exec executable="rsync" dir="." failonerror="true">
+            <arg value="-avx"/>
+            <arg value="-e"/>
+            <arg value="ssh"/>
+            <arg value="--delete"/>
+            <arg value="generated/javadoc/"/>
+            <arg value="${web.host}:/var/www/html/javadoc/master"/>
+        </exec>
     </target>
     
     <target name="pmd" depends="build-properties,setup-ivy,ivy-lib">
