@@ -17,6 +17,7 @@
 package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.common.CommandMessageTypes;
+import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.license.server.logic.LicenseCheckLogic;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
@@ -68,8 +69,6 @@ import javax.ejb.AsyncResult;
 public abstract class BaseCommand
         implements ExecutionWarningAccumulator, ExecutionErrorAccumulator, SecurityMessageAccumulator {
     
-    static final String ECHOTHREE = "ECHOTHREE";
-    
     private Log log = null;
     
     private UserVisitPK userVisitPK;
@@ -111,8 +110,7 @@ public abstract class BaseCommand
         String className = c.getName();
         int nameOffset = className.lastIndexOf('.');
         
-        componentVendorName = ECHOTHREE;
-        
+        componentVendorName = ComponentVendors.ECHOTHREE.name();
         commandName = new String(className.getBytes(Charsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 8, Charsets.UTF_8);
     }
     
