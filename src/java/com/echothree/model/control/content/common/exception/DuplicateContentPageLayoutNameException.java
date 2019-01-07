@@ -16,11 +16,10 @@
 
 package com.echothree.model.control.content.common.exception;
 
-import com.echothree.model.control.offer.common.exception.BaseOfferException;
 import com.echothree.util.common.message.Message;
 
 public class DuplicateContentPageLayoutNameException
-        extends BaseOfferException {
+        extends BaseContentException {
     
     /** Creates a new instance of DuplicateContentPageLayoutNameException */
     public DuplicateContentPageLayoutNameException() {
