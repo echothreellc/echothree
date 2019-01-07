@@ -402,7 +402,7 @@ public class ContentControl
         return getContentPageLayoutDetailValueForUpdate(getContentPageLayoutByNameForUpdate(contentPageLayoutName));
     }
     
-    private ContentPageLayout getDefaultContentPageLayout(EntityPermission entityPermission) {
+    public ContentPageLayout getDefaultContentPageLayout(EntityPermission entityPermission) {
         ContentPageLayout contentPageLayout = null;
         
         try {
@@ -609,7 +609,7 @@ public class ContentControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Symbol Position Descriptions
+    //   Content Page Layout Descriptions
     // --------------------------------------------------------------------------------
     
     public ContentPageLayoutDescription createContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, String description, BasePK createdBy) {
