@@ -2170,5 +2170,6 @@ public enum ExecutionErrors {
     UnknownContentPageLayoutDescription,
     DuplicateContentPageLayoutName,
     DuplicateContentPageLayoutDescription,
+    UnknownDefaultContentPageLayout,
     
 }

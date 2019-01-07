@@ -16,14 +16,20 @@
 
 package com.echothree.model.control.content.server.logic;
 
+import com.echothree.control.user.content.common.spec.ContentPageLayoutUniversalSpec;
+import com.echothree.model.control.content.common.exception.DuplicateContentPageLayoutNameException;
 import com.echothree.model.control.content.common.exception.UnknownContentPageLayoutNameException;
+import com.echothree.model.control.content.common.exception.UnknownDefaultContentPageLayoutException;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -42,6 +48,25 @@ public class ContentPageLayoutLogic
     
     public static ContentPageLayoutLogic getInstance() {
         return ContentPageLayoutLogicHolder.instance;
+    }
+
+    public ContentPageLayout createContentPageLayout(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
+            final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
+            final BasePK createdBy) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
+
+        if(contentPageLayout == null) {
+            contentPageLayout = contentControl.createContentPageLayout(contentPageLayoutName, isDefault, sortOrder, createdBy);
+
+            if(description != null) {
+                contentControl.createContentPageLayoutDescription(contentPageLayout, language, description, createdBy);
+            }
+        } else {
+            handleExecutionError(DuplicateContentPageLayoutNameException.class, eea, ExecutionErrors.DuplicateContentPageLayoutName.name(), contentPageLayoutName);
+        }
+
+        return contentPageLayout;
     }
 
     public ContentPageLayout getContentPageLayoutByName(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
@@ -64,27 +89,59 @@ public class ContentPageLayoutLogic
         return getContentPageLayoutByName(eea, contentPageLayoutName, EntityPermission.READ_WRITE);
     }
 
-    public ContentPageLayout getContentPageLayoutByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
+    public ContentPageLayout getContentPageLayoutByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ContentPageLayoutUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ContentPageLayout contentPageLayout = null;
-        
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentPageLayout.name());
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        String contentPageLayoutName = universalSpec.getContentPageLayoutName();
+        int parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-        if(eea == null || !eea.hasExecutionErrors()) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-            
-            contentPageLayout = contentControl.getContentPageLayoutByEntityInstance(entityInstance, entityPermission);
+        switch(parameterCount) {
+            case 0:
+                if(allowDefault) {
+                    contentPageLayout = contentControl.getDefaultContentPageLayout(entityPermission);
+
+                    if(contentPageLayout == null) {
+                        handleExecutionError(UnknownDefaultContentPageLayoutException.class, eea, ExecutionErrors.UnknownDefaultContentPageLayout.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+                break;
+            case 1:
+                if(contentPageLayoutName == null) {
+                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentPageLayout.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        contentPageLayout = contentControl.getContentPageLayoutByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    contentPageLayout = getContentPageLayoutByName(eea, contentPageLayoutName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
         }
 
         return contentPageLayout;
     }
-    
-    public ContentPageLayout getContentPageLayoutByUlid(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getContentPageLayoutByUlid(eea, ulid, EntityPermission.READ_ONLY);
-    }
-    
-    public ContentPageLayout getContentPageLayoutByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
-        return getContentPageLayoutByUlid(eea, ulid, EntityPermission.READ_WRITE);
+
+    public ContentPageLayout getContentPageLayoutByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ContentPageLayoutUniversalSpec universalSpec, boolean allowDefault) {
+        return getContentPageLayoutByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
     }
 
+    public ContentPageLayout getContentPageLayoutByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final ContentPageLayoutUniversalSpec universalSpec, boolean allowDefault) {
+        return getContentPageLayoutByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteContentPageLayout(final ExecutionErrorAccumulator eea, final ContentPageLayout contentPageLayout,
+            final BasePK deletedBy) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+
+        contentControl.deleteContentPageLayout(contentPageLayout, deletedBy);
+    }
 }

@@ -61,32 +61,8 @@ public class GetContentPageLayoutCommand
     
     @Override
     protected ContentPageLayout getEntity() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        ContentPageLayout contentPageLayout = null;
-        String contentPageLayoutName = form.getContentPageLayoutName();
-        int parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByUniversalSpec(this, form, true);
 
-        switch(parameterCount) {
-            case 0:
-                contentPageLayout = contentControl.getDefaultContentPageLayout();
-                break;
-            case 1:
-                if(contentPageLayoutName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentPageLayout.name());
-                    
-                    if(!hasExecutionErrors()) {
-                        contentPageLayout = contentControl.getContentPageLayoutByEntityInstance(entityInstance);
-                    }
-                } else {
-                    contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByName(this, contentPageLayoutName);
-                }
-                break;
-            default:
-                addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                break;
-        }
-        
         if(contentPageLayout != null) {
             sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }

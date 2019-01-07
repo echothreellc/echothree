@@ -20,6 +20,7 @@ import com.echothree.control.user.content.common.form.CreateContentPageLayoutFor
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.logic.ContentPageLayoutLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,24 +70,13 @@ public class CreateContentPageLayoutCommand
     @Override
     protected BaseResult execute() {
         CreateContentPageLayoutResult result = ContentResultFactory.getCreateContentPageLayoutResult();
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
-        
-        if(contentPageLayout == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
-            
-            contentPageLayout = contentControl.createContentPageLayout(contentPageLayoutName, isDefault, sortOrder, partyPK);
-            
-            if(description != null) {
-                contentControl.createContentPageLayoutDescription(contentPageLayout, getPreferredLanguage(), description, partyPK);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateContentPageLayoutName.name(), contentPageLayoutName);
-        }
+        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+        String description = form.getDescription();
+
+        ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
+                contentPageLayoutName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
         if(contentPageLayout != null && !hasExecutionErrors()) {
             result.setContentPageLayoutName(contentPageLayout.getLastDetail().getContentPageLayoutName());

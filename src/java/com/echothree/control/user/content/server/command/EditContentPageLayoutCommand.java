@@ -24,9 +24,6 @@ import com.echothree.control.user.content.common.result.EditContentPageLayoutRes
 import com.echothree.control.user.content.common.spec.ContentPageLayoutUniversalSpec;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.content.server.logic.ContentPageLayoutLogic;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -35,7 +32,6 @@ import com.echothree.model.data.content.server.entity.ContentPageLayoutDescripti
 import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.model.data.content.server.value.ContentPageLayoutDescriptionValue;
 import com.echothree.model.data.content.server.value.ContentPageLayoutDetailValue;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -75,7 +71,6 @@ public class EditContentPageLayoutCommand
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ParentContentPageLayoutName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
@@ -99,31 +94,7 @@ public class EditContentPageLayoutCommand
     
     @Override
     public ContentPageLayout getEntity(EditContentPageLayoutResult result) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        ContentPageLayout contentPageLayout = null;
-        String contentPageLayoutName = spec.getContentPageLayoutName();
-        int parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
-
-        if(parameterCount == 1) {
-            if(contentPageLayoutName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHOTHREE.name(),
-                        EntityTypes.ContentPageLayout.name());
-
-                if(!hasExecutionErrors()) {
-                    contentPageLayout = contentControl.getContentPageLayoutByEntityInstance(entityInstance, editModeToEntityPermission(editMode));
-                }
-            } else {
-                contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByName(this, contentPageLayoutName, editModeToEntityPermission(editMode));
-            }
-
-            if(contentPageLayout != null) {
-                result.setContentPageLayout(contentControl.getContentPageLayoutTransfer(getUserVisit(), contentPageLayout));
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-        }
-
-        return contentPageLayout;
+        return ContentPageLayoutLogic.getInstance().getContentPageLayoutByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
