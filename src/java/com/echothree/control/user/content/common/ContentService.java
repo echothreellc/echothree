@@ -46,14 +46,32 @@ public interface ContentService
     // --------------------------------------------------------------------------------
     
     CommandResult createContentPageLayout(UserVisitPK userVisitPK, CreateContentPageLayoutForm form);
-    
+
     CommandResult getContentPageLayoutChoices(UserVisitPK userVisitPK, GetContentPageLayoutChoicesForm form);
+
+    CommandResult getContentPageLayout(UserVisitPK userVisitPK, GetContentPageLayoutForm form);
+
+    CommandResult getContentPageLayouts(UserVisitPK userVisitPK, GetContentPageLayoutsForm form);
+
+    CommandResult setDefaultContentPageLayout(UserVisitPK userVisitPK, SetDefaultContentPageLayoutForm form);
+
+    CommandResult editContentPageLayout(UserVisitPK userVisitPK, EditContentPageLayoutForm form);
+
+    CommandResult deleteContentPageLayout(UserVisitPK userVisitPK, DeleteContentPageLayoutForm form);
     
     // --------------------------------------------------------------------------------
     //   Content Page Layout Descriptions
     // --------------------------------------------------------------------------------
     
     CommandResult createContentPageLayoutDescription(UserVisitPK userVisitPK, CreateContentPageLayoutDescriptionForm form);
+
+    CommandResult getContentPageLayoutDescription(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionForm form);
+
+    CommandResult getContentPageLayoutDescriptions(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionsForm form);
+
+    CommandResult editContentPageLayoutDescription(UserVisitPK userVisitPK, EditContentPageLayoutDescriptionForm form);
+
+    CommandResult deleteContentPageLayoutDescription(UserVisitPK userVisitPK, DeleteContentPageLayoutDescriptionForm form);
     
     // --------------------------------------------------------------------------------
     //   Content Page Layout Areas

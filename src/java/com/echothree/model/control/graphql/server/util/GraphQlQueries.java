@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // --------------------------------------------------------------------------------
+
 package com.echothree.model.control.graphql.server.util;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
@@ -20,6 +21,11 @@ import com.echothree.control.user.accounting.common.form.GetCurrenciesForm;
 import com.echothree.control.user.accounting.common.form.GetCurrencyForm;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
+import com.echothree.control.user.content.common.ContentUtil;
+import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
+import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
+import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
+import com.echothree.control.user.content.server.command.GetContentPageLayoutsCommand;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.GetColorForm;
 import com.echothree.control.user.core.common.form.GetColorsForm;
@@ -114,6 +120,7 @@ import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.content.server.graphql.ContentPageLayoutObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
@@ -141,6 +148,7 @@ import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.FontStyle;
@@ -177,6 +185,58 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("contentPageLayout")
+    public static ContentPageLayoutObject contentPageLayout(final DataFetchingEnvironment env,
+            @GraphQLName("contentPageLayoutName") final String contentPageLayoutName,
+            @GraphQLName("id") final String id) {
+        ContentPageLayout contentPageLayout;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageLayoutForm commandForm = ContentUtil.getHome().getGetContentPageLayoutForm();
+
+            commandForm.setContentPageLayoutName(contentPageLayoutName);
+            commandForm.setUlid(id);
+        
+            contentPageLayout = new GetContentPageLayoutCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentPageLayout == null ? null : new ContentPageLayoutObject(contentPageLayout);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageLayouts")
+    public static Collection<ContentPageLayoutObject> contentPageLayouts(final DataFetchingEnvironment env) {
+        Collection<ContentPageLayout> contentPageLayouts;
+        Collection<ContentPageLayoutObject> contentPageLayoutObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageLayoutsForm commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
+        
+            contentPageLayouts = new GetContentPageLayoutsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentPageLayouts == null) {
+            contentPageLayoutObjects = Collections.EMPTY_LIST;
+        } else {
+            contentPageLayoutObjects = new ArrayList<>(contentPageLayouts.size());
+
+            contentPageLayouts.stream().map((contentPageLayout) -> {
+                return new ContentPageLayoutObject(contentPageLayout);
+            }).forEachOrdered((contentPageLayoutObject) -> {
+                contentPageLayoutObjects.add(contentPageLayoutObject);
+            });
+        }
+        
+        return contentPageLayoutObjects;
+    }
 
     @GraphQLField
     @GraphQLName("mimeTypeFileExtension")

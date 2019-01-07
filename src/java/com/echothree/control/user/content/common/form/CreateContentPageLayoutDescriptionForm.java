@@ -16,18 +16,12 @@
 
 package com.echothree.control.user.content.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.content.common.edit.ContentPageLayoutDescriptionEdit;
+import com.echothree.control.user.content.common.spec.ContentPageLayoutDescriptionSpec;
 
 public interface CreateContentPageLayoutDescriptionForm
-        extends BaseForm {
+        extends ContentPageLayoutDescriptionSpec, ContentPageLayoutDescriptionEdit {
     
-    String getContentPageLayoutName();
-    void setContentPageLayoutName(String pageLayoutName);
-    
-    String getLanguageIsoName();
-    void setLanguageIsoName(String languageIsoName);
-    
-    String getDescription();
-    void setDescription(String description);
+    // Nothing additional beyond ContentPageLayoutDescriptionSpec, ContentPageLayoutDescriptionEdit
     
 }

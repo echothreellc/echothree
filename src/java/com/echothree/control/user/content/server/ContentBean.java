@@ -63,10 +63,35 @@ public class ContentBean
     public CommandResult createContentPageLayout(UserVisitPK userVisitPK, CreateContentPageLayoutForm form) {
         return new CreateContentPageLayoutCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getContentPageLayoutChoices(UserVisitPK userVisitPK, GetContentPageLayoutChoicesForm form) {
         return new GetContentPageLayoutChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentPageLayout(UserVisitPK userVisitPK, GetContentPageLayoutForm form) {
+        return new GetContentPageLayoutCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentPageLayouts(UserVisitPK userVisitPK, GetContentPageLayoutsForm form) {
+        return new GetContentPageLayoutsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setDefaultContentPageLayout(UserVisitPK userVisitPK, SetDefaultContentPageLayoutForm form) {
+        return new SetDefaultContentPageLayoutCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editContentPageLayout(UserVisitPK userVisitPK, EditContentPageLayoutForm form) {
+        return new EditContentPageLayoutCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteContentPageLayout(UserVisitPK userVisitPK, DeleteContentPageLayoutForm form) {
+        return new DeleteContentPageLayoutCommand(userVisitPK, form).run();
     }
     
     // --------------------------------------------------------------------------------
@@ -76,6 +101,26 @@ public class ContentBean
     @Override
     public CommandResult createContentPageLayoutDescription(UserVisitPK userVisitPK, CreateContentPageLayoutDescriptionForm form) {
         return new CreateContentPageLayoutDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentPageLayoutDescription(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionForm form) {
+        return new GetContentPageLayoutDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentPageLayoutDescriptions(UserVisitPK userVisitPK, GetContentPageLayoutDescriptionsForm form) {
+        return new GetContentPageLayoutDescriptionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editContentPageLayoutDescription(UserVisitPK userVisitPK, EditContentPageLayoutDescriptionForm form) {
+        return new EditContentPageLayoutDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteContentPageLayoutDescription(UserVisitPK userVisitPK, DeleteContentPageLayoutDescriptionForm form) {
+        return new DeleteContentPageLayoutDescriptionCommand(userVisitPK, form).run();
     }
     
     // --------------------------------------------------------------------------------

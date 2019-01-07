@@ -16,18 +16,11 @@
 
 package com.echothree.control.user.content.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.content.common.edit.ContentPageLayoutEdit;
 
 public interface CreateContentPageLayoutForm
-        extends BaseForm {
+        extends ContentPageLayoutEdit {
     
-    String getContentPageLayoutName();
-    void setContentPageLayoutName(String pageLayoutName);
-    
-    String getIsDefault();
-    void setIsDefault(String isDefault);
-    
-    String getSortOrder();
-    void setSortOrder(String sortOrder);
+    // Nothing additional beyond ContentPageLayoutEdit
     
 }

@@ -23,6 +23,6 @@ public interface GetContentPageLayoutChoicesResult
         extends BaseResult {
     
     ContentPageLayoutChoicesBean getContentPageLayoutChoices();
-    void setContentPageLayoutChoices(ContentPageLayoutChoicesBean entityAttributeTypeChoicesBean);
+    void setContentPageLayoutChoices(ContentPageLayoutChoicesBean contentPageLayoutChoices);
     
 }

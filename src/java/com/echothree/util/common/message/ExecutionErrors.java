@@ -35,8 +35,6 @@ public enum ExecutionErrors {
     DuplicateContentPageDescription,
     DuplicateContentPageLayoutArea,
     DuplicateContentPageLayoutAreaDescription,
-    DuplicateContentPageLayoutDescription,
-    DuplicateContentPageLayoutName,
     DuplicateContentSectionDescription,
     DuplicateContentSectionName,
     DuplicateContentWebAddressDescription,
@@ -241,7 +239,6 @@ public enum ExecutionErrors {
     UnknownContentPageAreaTypeName,
     UnknownContentPageDescription,
     UnknownContentPageLayoutArea,
-    UnknownContentPageLayoutName,
     UnknownContentPageName,
     DuplicateContentPageName,
     InvalidParentContentSection,
@@ -2168,6 +2165,11 @@ public enum ExecutionErrors {
     UnknownSymbolPositionName,
     UnknownSymbolPositionDescription,
     DuplicateSymbolPositionName,
-    DuplicateSymbolPositionDescription
+    DuplicateSymbolPositionDescription,
+    UnknownContentPageLayoutName,
+    UnknownContentPageLayoutDescription,
+    DuplicateContentPageLayoutName,
+    DuplicateContentPageLayoutDescription,
+    UnknownDefaultContentPageLayout,
     
 }

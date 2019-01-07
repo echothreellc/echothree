@@ -33,59 +33,34 @@ public class ContentPageLayoutTransfer
         this.sortOrder = sortOrder;
         this.description = description;
     }
-
-    /**
-     * @return the contentPageLayoutName
-     */
+    
     public String getContentPageLayoutName() {
         return contentPageLayoutName;
     }
-
-    /**
-     * @param contentPageLayoutName the contentPageLayoutName to set
-     */
+    
     public void setContentPageLayoutName(String contentPageLayoutName) {
         this.contentPageLayoutName = contentPageLayoutName;
     }
-
-    /**
-     * @return the isDefault
-     */
     public Boolean getIsDefault() {
         return isDefault;
     }
-
-    /**
-     * @param isDefault the isDefault to set
-     */
+    
     public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
     }
-
-    /**
-     * @return the sortOrder
-     */
+    
     public Integer getSortOrder() {
         return sortOrder;
     }
-
-    /**
-     * @param sortOrder the sortOrder to set
-     */
+    
     public void setSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
     }
-
-    /**
-     * @return the description
-     */
+    
     public String getDescription() {
         return description;
     }
-
-    /**
-     * @param description the description to set
-     */
+    
     public void setDescription(String description) {
         this.description = description;
     }

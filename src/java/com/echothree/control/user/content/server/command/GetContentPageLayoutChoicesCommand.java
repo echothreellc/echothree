@@ -44,14 +44,14 @@ public class GetContentPageLayoutChoicesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.Choices.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("DefaultContentPageLayoutChoice", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("DefaultContentPageLayoutChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 ));
     }
     
@@ -65,8 +65,10 @@ public class GetContentPageLayoutChoicesCommand
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         GetContentPageLayoutChoicesResult result = ContentResultFactory.getGetContentPageLayoutChoicesResult();
         String defaultContentPageLayoutChoice = form.getDefaultContentPageLayoutChoice();
+        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        result.setContentPageLayoutChoices(contentControl.getContentPageLayoutChoices(defaultContentPageLayoutChoice, getPreferredLanguage()));
+        result.setContentPageLayoutChoices(contentControl.getContentPageLayoutChoices(defaultContentPageLayoutChoice,
+                getPreferredLanguage(), allowNullChoice));
         
         return result;
     }

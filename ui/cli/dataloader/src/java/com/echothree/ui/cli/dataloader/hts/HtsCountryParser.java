@@ -168,7 +168,7 @@ public abstract class HtsCountryParser<H extends Object> {
             commandForm.setHarmonizedTariffScheduleCodeName(createHarmonizedTariffScheduleCodeForm.getHarmonizedTariffScheduleCodeName());
             commandForm.setHarmonizedTariffScheduleCodeUseTypeName(harmonizedTariffScheduleCodeUseName);
             return commandForm;
-        }).map((commandForm) -> itemService.createHarmonizedTariffScheduleCodeUse(userVisitPK, commandForm)).filter((commandResult) -> (commandResult.hasErrors())).forEach((commandResult) -> {
+        }).map((commandForm) -> itemService.createHarmonizedTariffScheduleCodeUse(userVisitPK, commandForm)).filter((commandResult) -> commandResult.hasErrors()).forEach((commandResult) -> {
             log.error(commandResult);
         });
     }
@@ -200,7 +200,7 @@ public abstract class HtsCountryParser<H extends Object> {
         codesToDelete.stream().map((harmonizedTariffScheduleCodeName) -> {
             commandForm.setHarmonizedTariffScheduleCodeName(harmonizedTariffScheduleCodeName);
             return harmonizedTariffScheduleCodeName;
-        }).map((_item) -> itemService.deleteHarmonizedTariffScheduleCode(userVisitPK, commandForm)).filter((commandResult) -> (commandResult.hasErrors())).forEach((commandResult) -> {
+        }).map((_item) -> itemService.deleteHarmonizedTariffScheduleCode(userVisitPK, commandForm)).filter((commandResult) -> commandResult.hasErrors()).forEach((commandResult) -> {
             log.error(commandResult);
         });
     }

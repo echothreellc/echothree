@@ -36,6 +36,7 @@ public class ContentTransferCaches
     protected ContentPageDescriptionTransferCache contentPageDescriptionTransferCache;
     protected ContentPageLayoutAreaTransferCache contentPageLayoutAreaTransferCache;
     protected ContentPageLayoutTransferCache contentPageLayoutTransferCache;
+    protected ContentPageLayoutDescriptionTransferCache contentPageLayoutDescriptionTransferCache;
     protected ContentPageTransferCache contentPageTransferCache;
     protected ContentSectionTransferCache contentSectionTransferCache;
     protected ContentSectionDescriptionTransferCache contentSectionDescriptionTransferCache;
@@ -99,6 +100,13 @@ public class ContentTransferCaches
             contentPageLayoutTransferCache = new ContentPageLayoutTransferCache(userVisit, contentControl);
         
         return contentPageLayoutTransferCache;
+    }
+    
+    public ContentPageLayoutDescriptionTransferCache getContentPageLayoutDescriptionTransferCache() {
+        if(contentPageLayoutDescriptionTransferCache == null)
+            contentPageLayoutDescriptionTransferCache = new ContentPageLayoutDescriptionTransferCache(userVisit, contentControl);
+        
+        return contentPageLayoutDescriptionTransferCache;
     }
     
     public ContentPageTransferCache getContentPageTransferCache() {

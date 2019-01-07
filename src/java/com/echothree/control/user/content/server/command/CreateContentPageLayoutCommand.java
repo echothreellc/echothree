@@ -17,11 +17,15 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentPageLayoutForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.logic.ContentPageLayoutLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -53,7 +57,8 @@ public class CreateContentPageLayoutCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ContentPageLayoutName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
                 ));
     }
     
@@ -64,20 +69,21 @@ public class CreateContentPageLayoutCommand
     
     @Override
     protected BaseResult execute() {
+        CreateContentPageLayoutResult result = ContentResultFactory.getCreateContentPageLayoutResult();
         String contentPageLayoutName = form.getContentPageLayoutName();
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        ContentPageLayout contentPageLayout = contentControl.getContentPageLayoutByName(contentPageLayoutName);
-        
-        if(contentPageLayout == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            
-            contentControl.createContentPageLayout(contentPageLayoutName, isDefault, sortOrder);
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateContentPageLayoutName.name(), contentPageLayoutName);
+        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+        String description = form.getDescription();
+
+        ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().createContentPageLayout(this,
+                contentPageLayoutName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
+
+        if(contentPageLayout != null && !hasExecutionErrors()) {
+            result.setContentPageLayoutName(contentPageLayout.getLastDetail().getContentPageLayoutName());
+            result.setEntityRef(contentPageLayout.getPrimaryKey().getEntityRef());
         }
-        
-        return null;
+
+        return result;
     }
     
 }
