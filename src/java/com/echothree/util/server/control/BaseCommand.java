@@ -63,7 +63,6 @@ import java.util.List;
 import java.util.concurrent.Future;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import javax.ejb.AsyncResult;
 
 public abstract class BaseCommand
