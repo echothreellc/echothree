@@ -134,6 +134,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib/xercesImpl.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/xml-apis.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/org.osgi.service.component.annotations.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/javax.ejb-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/javax.transaction-api.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
