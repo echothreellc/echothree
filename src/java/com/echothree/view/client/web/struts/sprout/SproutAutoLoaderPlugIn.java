@@ -251,24 +251,25 @@ public class SproutAutoLoaderPlugIn
     }
     
     private void loadAnnotatedActionsAndForms() {
-        final ScanResult scanResult= new ClassGraph()
+        try(ScanResult scanResult= new ClassGraph()
                 .enableAnnotationInfo()
-                .scan();
-        final ClassInfoList actionClasses = scanResult
-                .getClassesWithAnnotation(SproutAction.class.getName());
-        final ClassInfoList formClasses = scanResult
-                .getClassesWithAnnotation(SproutForm.class.getName());
+                .scan()) {
+            final ClassInfoList actionClasses = scanResult
+                    .getClassesWithAnnotation(SproutAction.class.getName());
+            final ClassInfoList formClasses = scanResult
+                    .getClassesWithAnnotation(SproutForm.class.getName());
 
-        for(ClassInfo actionClass : actionClasses) {
-            Class clazz = actionClass.loadClass();
+            for(ClassInfo actionClass : actionClasses) {
+                Class clazz = actionClass.loadClass();
 
-            loadAction(clazz);
-        }
+                loadAction(clazz);
+            }
 
-        for(ClassInfo formClass : formClasses) {
-            Class clazz = formClass.loadClass();
+            for(ClassInfo formClass : formClasses) {
+                Class clazz = formClass.loadClass();
 
-            loadForm(clazz);
+                loadForm(clazz);
+            }
         }
     }
 
