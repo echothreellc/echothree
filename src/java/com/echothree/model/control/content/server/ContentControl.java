@@ -559,6 +559,7 @@ public class ContentControl
     }
     
     public void deleteContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
+        deleteContentPagesByContentPageLayout(contentPageLayout, deletedBy);
         deleteContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout, deletedBy);
         
         ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetailForUpdate();
@@ -1780,8 +1781,8 @@ public class ContentControl
         return contentPage;
     }
     
-    private List<ContentPage> getContentPages(ContentSection contentSection, EntityPermission entityPermission) {
-        List<ContentPage> contentPages = null;
+    private List<ContentPage> getContentPagesByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
+        List<ContentPage> contentPages;
         
         try {
             String query = null;
@@ -1813,12 +1814,53 @@ public class ContentControl
         return contentPages;
     }
     
-    public List<ContentPage> getContentPages(ContentSection contentSection) {
-        return getContentPages(contentSection, EntityPermission.READ_ONLY);
+    public List<ContentPage> getContentPagesByContentSection(ContentSection contentSection) {
+        return getContentPagesByContentSection(contentSection, EntityPermission.READ_ONLY);
     }
     
-    public List<ContentPage> getContentPagesForUpdate(ContentSection contentSection) {
-        return getContentPages(contentSection, EntityPermission.READ_WRITE);
+    public List<ContentPage> getContentPagesByContentSectionForUpdate(ContentSection contentSection) {
+        return getContentPagesByContentSection(contentSection, EntityPermission.READ_WRITE);
+    }
+    
+    private List<ContentPage> getContentPagesByContentPageLayout(ContentPageLayout contentPageLayout, EntityPermission entityPermission) {
+        List<ContentPage> contentPages;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpages, contentpagedetails, contentsections, contentsectiondetails " +
+                        "WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ? " +
+                        "AND cntpdt_cnts_contentsectionid = cnts_contentsectionid AND cnts_lastdetailid = cntsdt_contentsectiondetailid " +
+                        "ORDER BY ccntsdt_sortorder, cntsdt_contentsectionname, ntpdt_sortorder, cntpdt_contentpagename " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpages, contentpagedetails " +
+                        "WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ? " +
+                        "ORDER BY cntpdt_sortorder, cntpdt_contentpagename " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ContentPageFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
+
+            contentPages = ContentPageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return contentPages;
+    }
+    
+    public List<ContentPage> getContentPagesByContentPageLayout(ContentPageLayout contentPageLayout) {
+        return getContentPagesByContentPageLayout(contentPageLayout, EntityPermission.READ_ONLY);
+    }
+    
+    public List<ContentPage> getContentPagesByContentPageLayoutForUpdate(ContentPageLayout contentPageLayout) {
+        return getContentPagesByContentPageLayout(contentPageLayout, EntityPermission.READ_WRITE);
     }
     
     private ContentPage getContentPageByName(ContentSection contentSection, String contentPageName, EntityPermission entityPermission) {
@@ -1922,7 +1964,7 @@ public class ContentControl
     }
     
     public List<ContentPageTransfer> getContentPageTransfers(UserVisit userVisit, ContentSection contentSection) {
-        return getContentPageTransfers(userVisit, getContentPages(contentSection));
+        return getContentPageTransfers(userVisit, getContentPagesByContentSection(contentSection));
     }
     
     private void updateContentPageFromValue(ContentPageDetailValue contentPageDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -1990,7 +2032,7 @@ public class ContentControl
         ContentSection contentSection = contentPageDetail.getContentSection();
         ContentPage defaultContentPage = getDefaultContentPage(contentSection);
         if(defaultContentPage == null) {
-            List<ContentPage> contentPages = getContentPagesForUpdate(contentSection);
+            List<ContentPage> contentPages = getContentPagesByContentSectionForUpdate(contentSection);
             
             if(!contentPages.isEmpty()) {
                 defaultContentPage = contentPages.iterator().next();
@@ -2005,7 +2047,13 @@ public class ContentControl
     }
     
     public void deleteContentPagesByContentSection(ContentSection contentSection, BasePK deletedBy) {
-        getContentPagesForUpdate(contentSection).stream().forEach((contentPage) -> {
+        getContentPagesByContentSectionForUpdate(contentSection).stream().forEach((contentPage) -> {
+            deleteContentPage(contentPage, deletedBy);
+        });
+    }
+    
+    public void deleteContentPagesByContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
+        getContentPagesByContentPageLayoutForUpdate(contentPageLayout).stream().forEach((contentPage) -> {
             deleteContentPage(contentPage, deletedBy);
         });
     }

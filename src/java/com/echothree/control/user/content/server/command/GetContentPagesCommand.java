@@ -101,7 +101,7 @@ public class GetContentPagesCommand
                     AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentSection.getPrimaryKey(), partyPK);
 
                     if(!hasExecutionErrors()) {
-                        contentPages = contentControl.getContentPages(contentSection);
+                        contentPages = contentControl.getContentPagesByContentSection(contentSection);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContentSectionName.name(),
