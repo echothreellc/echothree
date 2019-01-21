@@ -18,11 +18,13 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
@@ -75,20 +77,20 @@ public class ContentCatalogItemObject
         return hasItemAccess;
     }
     
-//    private Boolean hasInventoryConditionAccess;
-//    
-//    private boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
-//        if(hasInventoryConditionAccess == null) {
-//            GraphQlContext context = env.getContext();
-//            BaseSingleEntityCommand baseSingleEntityCommand = new GetInventoryConditionCommand(context.getUserVisitPK(), null);
-//            
-//            baseSingleEntityCommand.security();
-//            
-//            hasInventoryConditionAccess = !baseSingleEntityCommand.hasSecurityMessages();
-//        }
-//        
-//        return hasInventoryConditionAccess;
-//    }
+    private Boolean hasInventoryConditionAccess;
+    
+    private boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
+        if(hasInventoryConditionAccess == null) {
+            GraphQlContext context = env.getContext();
+            BaseSingleEntityCommand baseSingleEntityCommand = new GetInventoryConditionCommand(context.getUserVisitPK(), null);
+            
+            baseSingleEntityCommand.security();
+            
+            hasInventoryConditionAccess = !baseSingleEntityCommand.hasSecurityMessages();
+        }
+        
+        return hasInventoryConditionAccess;
+    }
     
     private Boolean hasUnitOfMeasureTypeAccess;
     
@@ -132,11 +134,11 @@ public class ContentCatalogItemObject
         return getHasItemAccess(env) ? new ItemObject(contentCatalogItem.getItem()) : null;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("inventory condition")
-//    public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
-//        return getHasInventoryConditionAccess(env) ? new InventoryConditionObject(contentCatalogItem.getInventoryCondition()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("inventory condition")
+    public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
+        return getHasInventoryConditionAccess(env) ? new InventoryConditionObject(contentCatalogItem.getInventoryCondition()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
