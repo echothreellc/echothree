@@ -35,13 +35,13 @@ public class InventoryLocationGroupCapacityTransferCache
         super(userVisit, inventoryControl);
     }
     
-    public InventoryLocationGroupCapacityTransfer getInventoryLocationGroupCapacityTransfer(InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
+    public InventoryLocationGroupCapacityTransfer getTransfer(InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
         InventoryLocationGroupCapacityTransfer inventoryLocationGroupCapacityTransfer = get(inventoryLocationGroupCapacity);
         
         if(inventoryLocationGroupCapacityTransfer == null) {
             UomControl partyControl = (UomControl)Session.getModelController(UomControl.class);
             InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache();
-            InventoryLocationGroupTransfer inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getInventoryLocationGroupTransfer(inventoryLocationGroupCapacity.getInventoryLocationGroup());
+            InventoryLocationGroupTransfer inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupCapacity.getInventoryLocationGroup());
             UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache = partyControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
             UnitOfMeasureType unitOfMeasureType = inventoryLocationGroupCapacity.getUnitOfMeasureType();
             UnitOfMeasureTypeTransfer unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureType);

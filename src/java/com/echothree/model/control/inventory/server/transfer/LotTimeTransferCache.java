@@ -30,7 +30,7 @@ public class LotTimeTransferCache
         super(userVisit, inventoryControl);
     }
     
-    public LotTimeTransfer getLotTimeTransfer(LotTime lotTime) {
+    public LotTimeTransfer getTransfer(LotTime lotTime) {
         LotTimeTransfer lotTimeTransfer = get(lotTime);
         
         if(lotTimeTransfer == null) {

@@ -384,7 +384,7 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupTransfer getInventoryLocationGroupTransfer(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
-        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache().getInventoryLocationGroupTransfer(inventoryLocationGroup);
+        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache().getTransfer(inventoryLocationGroup);
     }
     
     public List<InventoryLocationGroupTransfer> getInventoryLocationGroupTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
@@ -395,7 +395,7 @@ public class InventoryControl
             inventoryLocationGroupTransfers = new ArrayList<>(inventoryLocationGroups.size());
             
             for(InventoryLocationGroup inventoryLocationGroup : inventoryLocationGroups) {
-                inventoryLocationGroupTransfers.add(getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache().getInventoryLocationGroupTransfer(inventoryLocationGroup));
+                inventoryLocationGroupTransfers.add(getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache().getTransfer(inventoryLocationGroup));
             }
         }
         
@@ -682,7 +682,7 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupDescriptionTransfer getInventoryLocationGroupDescriptionTransfer(UserVisit userVisit, InventoryLocationGroupDescription inventoryLocationGroupDescription) {
-        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupDescriptionTransferCache().getInventoryLocationGroupDescriptionTransfer(inventoryLocationGroupDescription);
+        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupDescriptionTransferCache().getTransfer(inventoryLocationGroupDescription);
     }
     
     public List<InventoryLocationGroupDescriptionTransfer> getInventoryLocationGroupDescriptionTransfersByInventoryLocationGroup(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
@@ -693,7 +693,7 @@ public class InventoryControl
             inventoryLocationGroupDescriptionTransfers = new ArrayList<>(inventoryLocationGroupDescriptions.size());
             
             for(InventoryLocationGroupDescription inventoryLocationGroupDescription : inventoryLocationGroupDescriptions) {
-                inventoryLocationGroupDescriptionTransfers.add(getInventoryTransferCaches(userVisit).getInventoryLocationGroupDescriptionTransferCache().getInventoryLocationGroupDescriptionTransfer(inventoryLocationGroupDescription));
+                inventoryLocationGroupDescriptionTransfers.add(getInventoryTransferCaches(userVisit).getInventoryLocationGroupDescriptionTransferCache().getTransfer(inventoryLocationGroupDescription));
             }
         }
         
@@ -792,13 +792,13 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupVolumeTransfer getInventoryLocationGroupVolumeTransfer(UserVisit userVisit, InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume) {
-        return inventoryInventoryLocationGroupGroupVolume == null? null: getInventoryTransferCaches(userVisit).getInventoryLocationGroupVolumeTransferCache().getInventoryLocationGroupVolumeTransfer(inventoryInventoryLocationGroupGroupVolume);
+        return inventoryInventoryLocationGroupGroupVolume == null? null: getInventoryTransferCaches(userVisit).getInventoryLocationGroupVolumeTransferCache().getTransfer(inventoryInventoryLocationGroupGroupVolume);
     }
     
     public InventoryLocationGroupVolumeTransfer getInventoryLocationGroupVolumeTransfer(UserVisit userVisit, InventoryLocationGroup inventoryInventoryLocationGroupGroup) {
         InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolume(inventoryInventoryLocationGroupGroup);
         
-        return inventoryInventoryLocationGroupGroupVolume == null? null: getInventoryTransferCaches(userVisit).getInventoryLocationGroupVolumeTransferCache().getInventoryLocationGroupVolumeTransfer(inventoryInventoryLocationGroupGroupVolume);
+        return inventoryInventoryLocationGroupGroupVolume == null? null: getInventoryTransferCaches(userVisit).getInventoryLocationGroupVolumeTransferCache().getTransfer(inventoryInventoryLocationGroupGroupVolume);
     }
     
     public void updateInventoryLocationGroupVolumeFromValue(InventoryLocationGroupVolumeValue inventoryInventoryLocationGroupGroupVolumeValue, BasePK updatedBy) {
@@ -961,7 +961,7 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupCapacityTransfer getInventoryLocationGroupCapacityTransfer(UserVisit userVisit, InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
-        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupCapacityTransferCache().getInventoryLocationGroupCapacityTransfer(inventoryLocationGroupCapacity);
+        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupCapacityTransferCache().getTransfer(inventoryLocationGroupCapacity);
     }
     
     public List<InventoryLocationGroupCapacityTransfer> getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
@@ -970,7 +970,7 @@ public class InventoryControl
         InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache = getInventoryTransferCaches(userVisit).getInventoryLocationGroupCapacityTransferCache();
         
         inventoryLocationGroupCapacities.stream().forEach((inventoryLocationGroupCapacity) -> {
-            inventoryLocationGroupCapacityTransfers.add(inventoryLocationGroupCapacityTransferCache.getInventoryLocationGroupCapacityTransfer(inventoryLocationGroupCapacity));
+            inventoryLocationGroupCapacityTransfers.add(inventoryLocationGroupCapacityTransferCache.getTransfer(inventoryLocationGroupCapacity));
         });
         
         return inventoryLocationGroupCapacityTransfers;
@@ -1549,7 +1549,7 @@ public class InventoryControl
     
     public InventoryConditionUseTypeTransfer getInventoryConditionUseTypeTransfer(UserVisit userVisit,
             InventoryConditionUseType inventoryConditionUseType) {
-        return getInventoryTransferCaches(userVisit).getInventoryConditionUseTypeTransferCache().getInventoryConditionUseTypeTransfer(inventoryConditionUseType);
+        return getInventoryTransferCaches(userVisit).getInventoryConditionUseTypeTransferCache().getTransfer(inventoryConditionUseType);
     }
     
     private List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypeTransfers(final UserVisit userVisit,
@@ -1562,7 +1562,7 @@ public class InventoryControl
             inventoryConditionUseTypeTransfers = new ArrayList<>(inventoryConditionUseTypes.size());
             
             for(InventoryConditionUseType inventoryConditionUseType: inventoryConditionUseTypes) {
-                inventoryConditionUseTypeTransfers.add(inventoryConditionUseTypeTransferCache.getInventoryConditionUseTypeTransfer(inventoryConditionUseType));
+                inventoryConditionUseTypeTransfers.add(inventoryConditionUseTypeTransferCache.getTransfer(inventoryConditionUseType));
             }
         }
         return inventoryConditionUseTypeTransfers;
@@ -1829,7 +1829,7 @@ public class InventoryControl
             inventoryConditionUseTransfers = new ArrayList<>(inventoryConditionUses.size());
             
             for(InventoryConditionUse inventoryConditionUse: inventoryConditionUses) {
-                inventoryConditionUseTransfers.add(inventoryConditionUseTransferCache.getInventoryConditionUseTransfer(inventoryConditionUse));
+                inventoryConditionUseTransfers.add(inventoryConditionUseTransferCache.getTransfer(inventoryConditionUse));
             }
         }
         return inventoryConditionUseTransfers;
@@ -2103,7 +2103,7 @@ public class InventoryControl
     }
     
     public InventoryConditionGlAccountTransfer getInventoryConditionGlAccountTransfer(UserVisit userVisit, InventoryConditionGlAccount inventoryConditionGlAccount) {
-        return inventoryConditionGlAccount == null? null: getInventoryTransferCaches(userVisit).getInventoryConditionGlAccountTransferCache().getInventoryConditionGlAccountTransfer(inventoryConditionGlAccount);
+        return inventoryConditionGlAccount == null? null: getInventoryTransferCaches(userVisit).getInventoryConditionGlAccountTransferCache().getTransfer(inventoryConditionGlAccount);
     }
     
     public InventoryConditionGlAccountTransfer getInventoryConditionGlAccountTransfer(UserVisit userVisit, InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory) {
@@ -2116,7 +2116,7 @@ public class InventoryControl
         InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionGlAccountTransferCache();
         
         inventoryConditionGlAccounts.stream().forEach((inventoryConditionGlAccount) -> {
-            inventoryConditionGlAccountTransfers.add(inventoryConditionGlAccountTransferCache.getInventoryConditionGlAccountTransfer(inventoryConditionGlAccount));
+            inventoryConditionGlAccountTransfers.add(inventoryConditionGlAccountTransferCache.getTransfer(inventoryConditionGlAccount));
         });
         
         return inventoryConditionGlAccountTransfers;
@@ -2324,7 +2324,7 @@ public class InventoryControl
     }
 
     public LotTypeTransfer getLotTypeTransfer(UserVisit userVisit, LotType lotType) {
-        return getInventoryTransferCaches(userVisit).getLotTypeTransferCache().getLotTypeTransfer(lotType);
+        return getInventoryTransferCaches(userVisit).getLotTypeTransferCache().getTransfer(lotType);
     }
 
     public List<LotTypeTransfer> getLotTypeTransfers(UserVisit userVisit) {
@@ -2333,7 +2333,7 @@ public class InventoryControl
         LotTypeTransferCache lotTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTypeTransferCache();
 
         lotTypes.stream().forEach((lotType) -> {
-            lotTypeTransfers.add(lotTypeTransferCache.getLotTypeTransfer(lotType));
+            lotTypeTransfers.add(lotTypeTransferCache.getTransfer(lotType));
         });
 
         return lotTypeTransfers;
@@ -2598,7 +2598,7 @@ public class InventoryControl
     }
 
     public LotTypeDescriptionTransfer getLotTypeDescriptionTransfer(UserVisit userVisit, LotTypeDescription lotTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getLotTypeDescriptionTransferCache().getLotTypeDescriptionTransfer(lotTypeDescription);
+        return getInventoryTransferCaches(userVisit).getLotTypeDescriptionTransferCache().getTransfer(lotTypeDescription);
     }
 
     public List<LotTypeDescriptionTransfer> getLotTypeDescriptionTransfersByLotType(UserVisit userVisit, LotType lotType) {
@@ -2607,7 +2607,7 @@ public class InventoryControl
         LotTypeDescriptionTransferCache lotTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTypeDescriptionTransferCache();
 
         lotTypeDescriptions.stream().forEach((lotTypeDescription) -> {
-            lotTypeDescriptionTransfers.add(lotTypeDescriptionTransferCache.getLotTypeDescriptionTransfer(lotTypeDescription));
+            lotTypeDescriptionTransfers.add(lotTypeDescriptionTransferCache.getTransfer(lotTypeDescription));
         });
 
         return lotTypeDescriptionTransfers;
@@ -2790,7 +2790,7 @@ public class InventoryControl
     }
 
     public LotTimeTypeTransfer getLotTimeTypeTransfer(UserVisit userVisit, LotTimeType lotTimeType) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache().getLotTimeTypeTransfer(lotTimeType);
+        return getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache().getTransfer(lotTimeType);
     }
 
     public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit, LotType lotType) {
@@ -2799,7 +2799,7 @@ public class InventoryControl
         LotTimeTypeTransferCache lotTimeTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache();
 
         lotTimeTypes.stream().forEach((lotTimeType) -> {
-            lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getLotTimeTypeTransfer(lotTimeType));
+            lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(lotTimeType));
         });
 
         return lotTimeTypeTransfers;
@@ -3017,7 +3017,7 @@ public class InventoryControl
     }
 
     public LotTimeTypeDescriptionTransfer getLotTimeTypeDescriptionTransfer(UserVisit userVisit, LotTimeTypeDescription lotTimeTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache().getLotTimeTypeDescriptionTransfer(lotTimeTypeDescription);
+        return getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache().getTransfer(lotTimeTypeDescription);
     }
 
     public List<LotTimeTypeDescriptionTransfer> getLotTimeTypeDescriptionTransfersByLotTimeType(UserVisit userVisit, LotTimeType lotTimeType) {
@@ -3026,7 +3026,7 @@ public class InventoryControl
         LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache();
 
         lotTimeTypeDescriptions.stream().forEach((lotTimeTypeDescription) -> {
-            lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getLotTimeTypeDescriptionTransfer(lotTimeTypeDescription));
+            lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(lotTimeTypeDescription));
         });
 
         return lotTimeTypeDescriptionTransfers;
@@ -3194,7 +3194,7 @@ public class InventoryControl
     }
 
     public LotTimeTransfer getLotTimeTransfer(UserVisit userVisit, LotTime lotTime) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTransferCache().getLotTimeTransfer(lotTime);
+        return getInventoryTransferCaches(userVisit).getLotTimeTransferCache().getTransfer(lotTime);
     }
 
     public List<LotTimeTransfer> getLotTimeTransfers(UserVisit userVisit, List<LotTime> lotTimes) {
@@ -3202,7 +3202,7 @@ public class InventoryControl
         LotTimeTransferCache lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
 
         lotTimes.stream().forEach((lotTime) -> {
-            lotTimeTransfers.add(lotTimeTransferCache.getLotTimeTransfer(lotTime));
+            lotTimeTransfers.add(lotTimeTransferCache.getTransfer(lotTime));
         });
 
         return lotTimeTransfers;
@@ -3395,7 +3395,7 @@ public class InventoryControl
     }
 
     public LotAliasTypeTransfer getLotAliasTypeTransfer(UserVisit userVisit, LotAliasType lotAliasType) {
-        return getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache().getLotAliasTypeTransfer(lotAliasType);
+        return getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache().getTransfer(lotAliasType);
     }
 
     public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit, LotType lotType) {
@@ -3404,7 +3404,7 @@ public class InventoryControl
         LotAliasTypeTransferCache lotAliasTypeTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache();
 
         lotAliasTypes.stream().forEach((lotAliasType) -> {
-            lotAliasTypeTransfers.add(lotAliasTypeTransferCache.getLotAliasTypeTransfer(lotAliasType));
+            lotAliasTypeTransfers.add(lotAliasTypeTransferCache.getTransfer(lotAliasType));
         });
 
         return lotAliasTypeTransfers;
@@ -3633,7 +3633,7 @@ public class InventoryControl
     }
 
     public LotAliasTypeDescriptionTransfer getLotAliasTypeDescriptionTransfer(UserVisit userVisit, LotAliasTypeDescription lotAliasTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getLotAliasTypeDescriptionTransferCache().getLotAliasTypeDescriptionTransfer(lotAliasTypeDescription);
+        return getInventoryTransferCaches(userVisit).getLotAliasTypeDescriptionTransferCache().getTransfer(lotAliasTypeDescription);
     }
 
     public List<LotAliasTypeDescriptionTransfer> getLotAliasTypeDescriptionTransfersByLotAliasType(UserVisit userVisit, LotAliasType lotAliasType) {
@@ -3642,7 +3642,7 @@ public class InventoryControl
         LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeDescriptionTransferCache();
 
         lotAliasTypeDescriptions.stream().forEach((lotAliasTypeDescription) -> {
-            lotAliasTypeDescriptionTransfers.add(lotAliasTypeDescriptionTransferCache.getLotAliasTypeDescriptionTransfer(lotAliasTypeDescription));
+            lotAliasTypeDescriptionTransfers.add(lotAliasTypeDescriptionTransferCache.getTransfer(lotAliasTypeDescription));
         });
 
         return lotAliasTypeDescriptionTransfers;
@@ -3826,7 +3826,7 @@ public class InventoryControl
     }
 
     public LotAliasTransfer getLotAliasTransfer(UserVisit userVisit, LotAlias lotAlias) {
-        return getInventoryTransferCaches(userVisit).getLotAliasTransferCache().getLotAliasTransfer(lotAlias);
+        return getInventoryTransferCaches(userVisit).getLotAliasTransferCache().getTransfer(lotAlias);
     }
 
     public List<LotAliasTransfer> getLotAliasTransfersByLot(UserVisit userVisit, Lot lot) {
@@ -3835,7 +3835,7 @@ public class InventoryControl
         LotAliasTransferCache lotAliasTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTransferCache();
 
         lotaliases.stream().forEach((lotAlias) -> {
-            lotAliasTransfers.add(lotAliasTransferCache.getLotAliasTransfer(lotAlias));
+            lotAliasTransfers.add(lotAliasTransferCache.getTransfer(lotAlias));
         });
 
         return lotAliasTransfers;
@@ -4086,7 +4086,7 @@ public class InventoryControl
     }
     
     public PartyInventoryLevelTransfer getPartyInventoryLevelTransfer(UserVisit userVisit, PartyInventoryLevel partyInventoryLevel) {
-        return getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache().getPartyInventoryLevelTransfer(partyInventoryLevel);
+        return getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache().getTransfer(partyInventoryLevel);
     }
     
     public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfers(UserVisit userVisit, List<PartyInventoryLevel> partyInventoryLevels) {
@@ -4094,7 +4094,7 @@ public class InventoryControl
         PartyInventoryLevelTransferCache partyInventoryLevelTransferCache = getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache();
         
         partyInventoryLevels.stream().forEach((partyInventoryLevel) -> {
-            partyInventoryLevelTransfers.add(partyInventoryLevelTransferCache.getPartyInventoryLevelTransfer(partyInventoryLevel));
+            partyInventoryLevelTransfers.add(partyInventoryLevelTransferCache.getTransfer(partyInventoryLevel));
         });
         
         return partyInventoryLevelTransfers;
@@ -4299,7 +4299,7 @@ public class InventoryControl
     }
 
     public AllocationPriorityTransfer getAllocationPriorityTransfer(UserVisit userVisit, AllocationPriority allocationPriority) {
-        return getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache().getAllocationPriorityTransfer(allocationPriority);
+        return getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache().getTransfer(allocationPriority);
     }
 
     public List<AllocationPriorityTransfer> getAllocationPriorityTransfers(UserVisit userVisit) {
@@ -4308,7 +4308,7 @@ public class InventoryControl
         AllocationPriorityTransferCache allocationPriorityTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache();
 
         allocationPriorities.stream().forEach((allocationPriority) -> {
-            allocationPriorityTransfers.add(allocationPriorityTransferCache.getAllocationPriorityTransfer(allocationPriority));
+            allocationPriorityTransfers.add(allocationPriorityTransferCache.getTransfer(allocationPriority));
         });
 
         return allocationPriorityTransfers;
@@ -4522,7 +4522,7 @@ public class InventoryControl
     }
 
     public AllocationPriorityDescriptionTransfer getAllocationPriorityDescriptionTransfer(UserVisit userVisit, AllocationPriorityDescription allocationPriorityDescription) {
-        return getInventoryTransferCaches(userVisit).getAllocationPriorityDescriptionTransferCache().getAllocationPriorityDescriptionTransfer(allocationPriorityDescription);
+        return getInventoryTransferCaches(userVisit).getAllocationPriorityDescriptionTransferCache().getTransfer(allocationPriorityDescription);
     }
 
     public List<AllocationPriorityDescriptionTransfer> getAllocationPriorityDescriptionTransfersByAllocationPriority(UserVisit userVisit, AllocationPriority allocationPriority) {
@@ -4531,7 +4531,7 @@ public class InventoryControl
         AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityDescriptionTransferCache();
 
         allocationPriorityDescriptions.stream().forEach((allocationPriorityDescription) -> {
-            allocationPriorityDescriptionTransfers.add(allocationPriorityDescriptionTransferCache.getAllocationPriorityDescriptionTransfer(allocationPriorityDescription));
+            allocationPriorityDescriptionTransfers.add(allocationPriorityDescriptionTransferCache.getTransfer(allocationPriorityDescription));
         });
 
         return allocationPriorityDescriptionTransfers;

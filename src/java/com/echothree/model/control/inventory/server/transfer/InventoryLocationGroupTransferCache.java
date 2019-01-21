@@ -60,7 +60,7 @@ public class InventoryLocationGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public InventoryLocationGroupTransfer getInventoryLocationGroupTransfer(InventoryLocationGroup inventoryLocationGroup) {
+    public InventoryLocationGroupTransfer getTransfer(InventoryLocationGroup inventoryLocationGroup) {
         InventoryLocationGroupTransfer inventoryLocationGroupTransfer = get(inventoryLocationGroup);
         
         if(inventoryLocationGroupTransfer == null) {

@@ -38,7 +38,7 @@ public class InventoryLocationGroupVolumeTransferCache
         uomControl = (UomControl)Session.getModelController(UomControl.class);
     }
     
-    public InventoryLocationGroupVolumeTransfer getInventoryLocationGroupVolumeTransfer(InventoryLocationGroupVolume inventoryLocationGroupVolume) {
+    public InventoryLocationGroupVolumeTransfer getTransfer(InventoryLocationGroupVolume inventoryLocationGroupVolume) {
         InventoryLocationGroupVolumeTransfer inventoryLocationGroupVolumeTransfer = get(inventoryLocationGroupVolume);
         
         if(inventoryLocationGroupVolumeTransfer == null) {

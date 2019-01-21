@@ -31,7 +31,7 @@ public class LotTimeTypeDescriptionTransferCache
         super(userVisit, inventoryControl);
     }
     
-    public LotTimeTypeDescriptionTransfer getLotTimeTypeDescriptionTransfer(LotTimeTypeDescription lotTimeTypeDescription) {
+    public LotTimeTypeDescriptionTransfer getTransfer(LotTimeTypeDescription lotTimeTypeDescription) {
         LotTimeTypeDescriptionTransfer lotTimeTypeDescriptionTransfer = get(lotTimeTypeDescription);
         
         if(lotTimeTypeDescriptionTransfer == null) {

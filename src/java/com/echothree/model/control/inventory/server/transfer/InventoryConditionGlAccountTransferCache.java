@@ -42,7 +42,7 @@ public class InventoryConditionGlAccountTransferCache
         itemControl = (ItemControl)Session.getModelController(ItemControl.class);
     }
     
-    public InventoryConditionGlAccountTransfer getInventoryConditionGlAccountTransfer(InventoryConditionGlAccount inventoryConditionGlAccount) {
+    public InventoryConditionGlAccountTransfer getTransfer(InventoryConditionGlAccount inventoryConditionGlAccount) {
         InventoryConditionGlAccountTransfer inventoryConditionGlAccountTransfer = get(inventoryConditionGlAccount);
         
         if(inventoryConditionGlAccountTransfer == null) {

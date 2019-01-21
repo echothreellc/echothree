@@ -33,5 +33,7 @@ public abstract class BaseInventoryTransferCache<K extends BaseEntity, V extends
         
         this.inventoryControl = inventoryControl;
     }
-    
+
+    public abstract V getTransfer(K key);
+
 }

@@ -29,7 +29,7 @@ public class InventoryConditionUseTypeTransferCache
         super(userVisit, inventoryControl);
     }
     
-    public InventoryConditionUseTypeTransfer getInventoryConditionUseTypeTransfer(InventoryConditionUseType inventoryConditionUseType) {
+    public InventoryConditionUseTypeTransfer getTransfer(InventoryConditionUseType inventoryConditionUseType) {
         InventoryConditionUseTypeTransfer inventoryConditionUseTypeTransfer = get(inventoryConditionUseType);
         
         if(inventoryConditionUseTypeTransfer == null) {

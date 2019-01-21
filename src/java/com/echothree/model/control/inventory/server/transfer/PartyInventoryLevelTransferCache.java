@@ -43,7 +43,7 @@ public class PartyInventoryLevelTransferCache
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     }
     
-    public PartyInventoryLevelTransfer getPartyInventoryLevelTransfer(PartyInventoryLevel partyInventoryLevel) {
+    public PartyInventoryLevelTransfer getTransfer(PartyInventoryLevel partyInventoryLevel) {
         PartyInventoryLevelTransfer partyInventoryLevelTransfer = get(partyInventoryLevel);
         
         if(partyInventoryLevelTransfer == null) {
