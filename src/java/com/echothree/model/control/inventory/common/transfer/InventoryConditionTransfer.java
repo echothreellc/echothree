@@ -41,7 +41,6 @@ public class InventoryConditionTransfer
     public void setInventoryConditionName(String inventoryConditionName) {
         this.inventoryConditionName = inventoryConditionName;
     }
-    
     public Boolean getIsDefault() {
         return isDefault;
     }

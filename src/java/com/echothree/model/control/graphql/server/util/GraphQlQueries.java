@@ -63,6 +63,11 @@ import com.echothree.control.user.core.server.command.GetTextDecorationCommand;
 import com.echothree.control.user.core.server.command.GetTextDecorationsCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationsCommand;
+import com.echothree.control.user.inventory.common.InventoryUtil;
+import com.echothree.control.user.inventory.common.form.GetInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.GetInventoryConditionsForm;
+import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.form.GetItemCategoriesForm;
 import com.echothree.control.user.item.common.form.GetItemCategoryForm;
@@ -130,6 +135,7 @@ import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
@@ -158,6 +164,7 @@ import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -185,6 +192,58 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("inventoryCondition")
+    public static InventoryConditionObject inventoryCondition(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("id") final String id) {
+        InventoryCondition inventoryCondition;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetInventoryConditionForm commandForm = InventoryUtil.getHome().getGetInventoryConditionForm();
+
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUlid(id);
+        
+            inventoryCondition = new GetInventoryConditionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return inventoryCondition == null ? null : new InventoryConditionObject(inventoryCondition);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryConditions")
+    public static Collection<InventoryConditionObject> inventoryConditions(final DataFetchingEnvironment env) {
+        Collection<InventoryCondition> inventoryConditions;
+        Collection<InventoryConditionObject> inventoryConditionObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetInventoryConditionsForm commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
+        
+            inventoryConditions = new GetInventoryConditionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(inventoryConditions == null) {
+            inventoryConditionObjects = Collections.EMPTY_LIST;
+        } else {
+            inventoryConditionObjects = new ArrayList<>(inventoryConditions.size());
+
+            inventoryConditions.stream().map((inventoryCondition) -> {
+                return new InventoryConditionObject(inventoryCondition);
+            }).forEachOrdered((inventoryConditionObject) -> {
+                inventoryConditionObjects.add(inventoryConditionObject);
+            });
+        }
+        
+        return inventoryConditionObjects;
+    }
 
     @GraphQLField
     @GraphQLName("contentPageLayout")

@@ -16,18 +16,11 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
+import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
 
 public interface CreateInventoryConditionForm
-        extends InventoryConditionSpec {
+        extends InventoryConditionEdit {
     
-    String getIsDefault();
-    void setIsDefault(String isDefault);
-    
-    String getSortOrder();
-    void setSortOrder(String sortOrder);
-    
-    String getDescription();
-    void setDescription(String description);
+    // Nothing additional beyond InventoryConditionEdit
     
 }

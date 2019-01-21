@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.inventory.common.spec;
 
-import com.echothree.control.user.party.common.spec.LanguageSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface InventoryConditionDescriptionSpec
-        extends InventoryConditionSpec, LanguageSpec {
+public interface InventoryConditionUniversalSpec
+        extends InventoryConditionSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond InventoryConditionSpec, LanguageSpec
+    // Nothing additional beyond InventoryConditionSpec, UniversalEntitySpec
     
 }

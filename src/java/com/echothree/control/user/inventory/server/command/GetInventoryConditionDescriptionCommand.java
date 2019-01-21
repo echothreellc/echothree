@@ -16,12 +16,17 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-import com.echothree.control.user.inventory.common.form.SetDefaultInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.GetInventoryConditionDescriptionForm;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.result.GetInventoryConditionDescriptionResult;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.value.InventoryConditionDetailValue;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
+import com.echothree.model.data.inventory.server.entity.InventoryConditionDescription;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -36,43 +41,59 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SetDefaultInventoryConditionCommand
-        extends BaseSimpleCommand<SetDefaultInventoryConditionForm> {
+public class GetInventoryConditionDescriptionCommand
+        extends BaseSimpleCommand<GetInventoryConditionDescriptionForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Edit.name())
-                    )))
+                        new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Description.name())
+                        )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of SetDefaultInventoryConditionCommand */
-    public SetDefaultInventoryConditionCommand(UserVisitPK userVisitPK, SetDefaultInventoryConditionForm form) {
+    /** Creates a new instance of GetInventoryConditionDescriptionCommand */
+    public GetInventoryConditionDescriptionCommand(UserVisitPK userVisitPK, GetInventoryConditionDescriptionForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        GetInventoryConditionDescriptionResult result = InventoryResultFactory.getGetInventoryConditionDescriptionResult();
         String inventoryConditionName = form.getInventoryConditionName();
-        InventoryConditionDetailValue inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueByNameForUpdate(inventoryConditionName);
+        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
         
-        if(inventoryConditionDetailValue != null) {
-            inventoryConditionDetailValue.setIsDefault(Boolean.TRUE);
-            inventoryControl.updateInventoryConditionFromValue(inventoryConditionDetailValue, getPartyPK());
+        if(inventoryCondition != null) {
+            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = form.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            
+            if(language != null) {
+                InventoryConditionDescription inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, language);
+                
+                if(inventoryConditionDescription != null) {
+                    result.setInventoryConditionDescription(inventoryControl.getInventoryConditionDescriptionTransfer(getUserVisit(), inventoryConditionDescription));
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownInventoryConditionDescription.name(), inventoryConditionName, languageIsoName);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+            }
         } else {
             addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
         }
         
-        return null;
+        return result;
     }
     
 }

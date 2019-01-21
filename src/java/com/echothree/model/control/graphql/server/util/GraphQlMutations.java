@@ -36,6 +36,15 @@ import com.echothree.control.user.core.common.form.CreateEntityListItemAttribute
 import com.echothree.control.user.core.common.form.CreateEntityMultipleListItemAttributeForm;
 import com.echothree.control.user.core.common.form.LockEntityForm;
 import com.echothree.control.user.core.common.form.UnlockEntityForm;
+import com.echothree.control.user.inventory.common.InventoryUtil;
+import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
+import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.EditInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.SetDefaultInventoryConditionForm;
+import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
+import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.edit.ItemCategoryEdit;
 import com.echothree.control.user.item.common.form.CreateItemCategoryForm;
@@ -81,6 +90,137 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations {
     
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createInventoryCondition(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        CommandResultWithIdObject commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            CreateInventoryConditionForm commandForm = InventoryUtil.getHome().getCreateInventoryConditionForm();
+
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            CommandResult commandResult = InventoryUtil.getHome().createInventoryCondition(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                CreateInventoryConditionResult result = (CreateInventoryConditionResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteInventoryCondition(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            DeleteInventoryConditionForm commandForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
+
+            commandForm.setInventoryConditionName(inventoryConditionName);
+
+            CommandResult commandResult = InventoryUtil.getHome().deleteInventoryCondition(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editInventoryCondition(final DataFetchingEnvironment env,
+            @GraphQLName("originalInventoryConditionName") final String originalInventoryConditionName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        CommandResultWithIdObject commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            InventoryConditionUniversalSpec spec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
+
+            spec.setInventoryConditionName(originalInventoryConditionName);
+            spec.setUlid(id);
+            
+            EditInventoryConditionForm commandForm = InventoryUtil.getHome().getEditInventoryConditionForm();
+            
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            CommandResult commandResult = InventoryUtil.getHome().editInventoryCondition(context.getUserVisitPK(), commandForm);
+            
+            if(!commandResult.hasErrors()) {
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                EditInventoryConditionResult result = (EditInventoryConditionResult)executionResult.getResult();                
+                Map<String, Object> arguments = env.getArgument("input");
+                InventoryConditionEdit edit = result.getEdit();
+                
+                commandResultObject.setEntityInstanceFromEntityRef(result.getInventoryCondition().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("inventoryConditionName"))
+                    edit.setInventoryConditionName(inventoryConditionName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+                
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+                
+                commandResult = InventoryUtil.getHome().editInventoryCondition(context.getUserVisitPK(), commandForm);
+            }
+            
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetDefaultInventoryCondition(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            SetDefaultInventoryConditionForm commandForm = InventoryUtil.getHome().getSetDefaultInventoryConditionForm();
+
+            commandForm.setInventoryConditionName(inventoryConditionName);
+
+            CommandResult commandResult = InventoryUtil.getHome().setDefaultInventoryCondition(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultWithIdObject createContentPageLayout(final DataFetchingEnvironment env,

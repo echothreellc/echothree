@@ -17,16 +17,21 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -34,9 +39,17 @@ import java.util.List;
 public class CreateInventoryConditionCommand
         extends BaseSimpleCommand<CreateInventoryConditionForm> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Create.name())
+                        )))
+                )));
+        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -47,32 +60,26 @@ public class CreateInventoryConditionCommand
     
     /** Creates a new instance of CreateInventoryConditionCommand */
     public CreateInventoryConditionCommand(UserVisitPK userVisitPK, CreateInventoryConditionForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        CreateInventoryConditionResult result = InventoryResultFactory.getCreateInventoryConditionResult();
         String inventoryConditionName = form.getInventoryConditionName();
-        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
-        
-        if(inventoryCondition == null) {
-            PartyPK partyPK = getPartyPK();
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            String description = form.getDescription();
-            
-            inventoryCondition = inventoryControl.createInventoryCondition(inventoryConditionName, isDefault, sortOrder, partyPK);
-            
-            if(description != null) {
-                inventoryControl.createInventoryConditionDescription(inventoryCondition, getPreferredLanguage(), description,
-                        partyPK);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateInventoryConditionName.name(), inventoryConditionName);
+        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+        String description = form.getDescription();
+
+        InventoryCondition inventoryCondition = InventoryConditionLogic.getInstance().createInventoryCondition(this,
+                inventoryConditionName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
+
+        if(inventoryCondition != null && !hasExecutionErrors()) {
+            result.setInventoryConditionName(inventoryCondition.getLastDetail().getInventoryConditionName());
+            result.setEntityRef(inventoryCondition.getPrimaryKey().getEntityRef());
         }
-        
-        return null;
+
+        return result;
     }
     
 }

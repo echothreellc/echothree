@@ -67,6 +67,7 @@ import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionDescriptionTransferCache;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
@@ -181,6 +182,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1020,33 +1022,42 @@ public class InventoryControl
         return inventoryCondition;
     }
     
-    private InventoryCondition getInventoryConditionByName(String inventoryConditionName, EntityPermission entityPermission) {
-        InventoryCondition inventoryCondition = null;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid AND invcondt_inventoryconditionname = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid AND invcondt_inventoryconditionname = ? " +
-                        "FOR UPDATE";
-            }
-            
-            PreparedStatement ps = InventoryConditionFactory.getInstance().prepareStatement(query);
-            
-            ps.setString(1, inventoryConditionName);
-            
-            inventoryCondition = InventoryConditionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.InventoryCondition */
+    public InventoryCondition getInventoryConditionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        InventoryConditionPK pk = new InventoryConditionPK(entityInstance.getEntityUniqueId());
+        InventoryCondition inventoryCondition = InventoryConditionFactory.getInstance().getEntityFromPK(entityPermission, pk);
         
         return inventoryCondition;
+    }
+
+    public InventoryCondition getInventoryConditionByEntityInstance(EntityInstance entityInstance) {
+        return getInventoryConditionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryCondition getInventoryConditionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInventoryConditionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
+    private static final Map<EntityPermission, String> getInventoryConditionByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM inventoryconditions, inventoryconditiondetails " +
+                "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_inventoryconditionname = ? AND invcondt_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM inventoryconditions, inventoryconditiondetails " +
+                "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_inventoryconditionname = ? AND invcondt_thrutime = ? " +
+                "FOR UPDATE");
+        getInventoryConditionByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public InventoryCondition getInventoryConditionByName(String inventoryConditionName, EntityPermission entityPermission) {
+        return InventoryConditionFactory.getInstance().getEntityFromQuery(entityPermission, getInventoryConditionByNameQueries,
+                inventoryConditionName, Session.MAX_TIME);
     }
     
     public InventoryCondition getInventoryConditionByName(String inventoryConditionName) {
@@ -1065,23 +1076,26 @@ public class InventoryControl
         return getInventoryConditionDetailValueForUpdate(getInventoryConditionByNameForUpdate(inventoryConditionName));
     }
     
-    private InventoryCondition getDefaultInventoryCondition(EntityPermission entityPermission) {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid AND invcondt_isdefault = 1";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid AND invcondt_isdefault = 1 " +
-                        "FOR UPDATE";
-            }
-            
-            PreparedStatement ps = InventoryConditionFactory.getInstance().prepareStatement(query);
-            
-            return InventoryConditionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    private static final Map<EntityPermission, String> getDefaultInventoryConditionQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM inventoryconditions, inventoryconditiondetails " +
+                "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_isdefault = 1 AND invcondt_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM inventoryconditions, inventoryconditiondetails " +
+                "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_isdefault = 1 AND invcondt_thrutime = ? " +
+                "FOR UPDATE");
+        getDefaultInventoryConditionQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public InventoryCondition getDefaultInventoryCondition(EntityPermission entityPermission) {
+        return InventoryConditionFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultInventoryConditionQueries,
+                Session.MAX_TIME);
     }
     
     public InventoryCondition getDefaultInventoryCondition() {
@@ -1096,24 +1110,27 @@ public class InventoryControl
         return getDefaultInventoryConditionForUpdate().getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
     }
     
+    private static final Map<EntityPermission, String> getInventoryConditionsQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM inventoryconditions, inventoryconditiondetails " +
+                "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ? " +
+                "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM inventoryconditions, inventoryconditiondetails " +
+                "WHERE invcon_inventoryconditionid = invcondt_invcon_inventoryconditionid AND invcondt_thrutime = ? " +
+                "FOR UPDATE");
+        getInventoryConditionsQueries = Collections.unmodifiableMap(queryMap);
+    }
+
     private List<InventoryCondition> getInventoryConditions(EntityPermission entityPermission) {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM inventoryconditions, inventoryconditiondetails " +
-                        "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid " +
-                        "FOR UPDATE";
-            }
-            
-            PreparedStatement ps = InventoryConditionFactory.getInstance().prepareStatement(query);
-            
-            return InventoryConditionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return InventoryConditionFactory.getInstance().getEntitiesFromQuery(entityPermission, getInventoryConditionsQueries,
+                Session.MAX_TIME);
     }
     
     public List<InventoryCondition> getInventoryConditions() {
@@ -1125,19 +1142,22 @@ public class InventoryControl
     }
     
     public InventoryConditionTransfer getInventoryConditionTransfer(UserVisit userVisit, InventoryCondition inventoryCondition) {
-        return getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache().getInventoryConditionTransfer(inventoryCondition);
+        return getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache().getTransfer(inventoryCondition);
     }
     
-    public List<InventoryConditionTransfer> getInventoryConditionTransfers(UserVisit userVisit) {
-        List<InventoryCondition> inventoryConditions = getInventoryConditions();
+    public List<InventoryConditionTransfer> getInventoryConditionTransfers(UserVisit userVisit, Collection<InventoryCondition> inventoryConditions) {
         List<InventoryConditionTransfer> inventoryConditionTransfers = new ArrayList<>(inventoryConditions.size());
         InventoryConditionTransferCache inventoryConditionTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache();
         
         inventoryConditions.stream().forEach((inventoryCondition) -> {
-            inventoryConditionTransfers.add(inventoryConditionTransferCache.getInventoryConditionTransfer(inventoryCondition));
+            inventoryConditionTransfers.add(inventoryConditionTransferCache.getTransfer(inventoryCondition));
         });
         
         return inventoryConditionTransfers;
+    }
+    
+    public List<InventoryConditionTransfer> getInventoryConditionTransfers(UserVisit userVisit) {
+        return getInventoryConditionTransfers(userVisit, getInventoryConditions());
     }
     
     public InventoryConditionChoicesBean getInventoryConditionChoices(String defaultInventoryConditionChoice, Language language,
@@ -1147,7 +1167,6 @@ public class InventoryControl
         List<String> labels = new ArrayList<>(size);
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
-        Iterator iter = inventoryConditions.iterator();
         
         if(allowNullChoice) {
             labels.add("");
@@ -1158,19 +1177,19 @@ public class InventoryControl
             }
         }
         
-        while(iter.hasNext()) {
-            InventoryCondition inventoryCondition = (InventoryCondition)iter.next();
+        for(InventoryCondition inventoryCondition: inventoryConditions) {
             InventoryConditionDetail inventoryConditionDetail = inventoryCondition.getLastDetail();
             
             String label = getBestInventoryConditionDescription(inventoryCondition, language);
             String value = inventoryConditionDetail.getInventoryConditionName();
             
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInventoryConditionChoice == null? false: defaultInventoryConditionChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && inventoryConditionDetail.getIsDefault()))
+            boolean usingDefaultChoice = defaultInventoryConditionChoice == null ? false : defaultInventoryConditionChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && inventoryConditionDetail.getIsDefault())) {
                 defaultValue = value;
+            }
         }
         
         return new InventoryConditionChoicesBean(labels, values, defaultValue);
@@ -1200,56 +1219,57 @@ public class InventoryControl
             String label = getBestInventoryConditionDescription(inventoryCondition, language);
             String value = inventoryConditionDetail.getInventoryConditionName();
             
-            labels.add(label == null? value: label);
+            labels.add(label == null ? value : label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInventoryConditionChoice == null? false: defaultInventoryConditionChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && inventoryConditionUse.getIsDefault()))
+            boolean usingDefaultChoice = defaultInventoryConditionChoice == null ? false : defaultInventoryConditionChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && inventoryConditionUse.getIsDefault())) {
                 defaultValue = value;
+            }
         }
         
         return new InventoryConditionChoicesBean(labels, values, defaultValue);
     }
     
-    
     private void updateInventoryConditionFromValue(InventoryConditionDetailValue inventoryConditionDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        InventoryCondition inventoryCondition = InventoryConditionFactory.getInstance().getEntityFromPK(session,
-                EntityPermission.READ_WRITE, inventoryConditionDetailValue.getInventoryConditionPK());
-        InventoryConditionDetail inventoryConditionDetail = inventoryCondition.getActiveDetailForUpdate();
-        
-        inventoryConditionDetail.setThruTime(session.START_TIME_LONG);
-        inventoryConditionDetail.store();
-        
-        InventoryConditionPK inventoryConditionPK = inventoryConditionDetail.getInventoryConditionPK();
-        String inventoryConditionName = inventoryConditionDetailValue.getInventoryConditionName();
-        Boolean isDefault = inventoryConditionDetailValue.getIsDefault();
-        Integer sortOrder = inventoryConditionDetailValue.getSortOrder();
-        
-        if(checkDefault) {
-            InventoryCondition defaultInventoryCondition = getDefaultInventoryCondition();
-            boolean defaultFound = defaultInventoryCondition != null && !defaultInventoryCondition.equals(inventoryCondition);
+        if(inventoryConditionDetailValue.hasBeenModified()) {
+            InventoryCondition inventoryCondition = InventoryConditionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     inventoryConditionDetailValue.getInventoryConditionPK());
+            InventoryConditionDetail inventoryConditionDetail = inventoryCondition.getActiveDetailForUpdate();
             
-            if(isDefault && defaultFound) {
-                // If I'm the default, and a default already existed...
-                InventoryConditionDetailValue defaultInventoryConditionDetailValue = getDefaultInventoryConditionDetailValueForUpdate();
+            inventoryConditionDetail.setThruTime(session.START_TIME_LONG);
+            inventoryConditionDetail.store();
+            
+            InventoryConditionPK inventoryConditionPK = inventoryConditionDetail.getInventoryConditionPK();
+            String inventoryConditionName = inventoryConditionDetailValue.getInventoryConditionName();
+            Boolean isDefault = inventoryConditionDetailValue.getIsDefault();
+            Integer sortOrder = inventoryConditionDetailValue.getSortOrder();
+            
+            if(checkDefault) {
+                InventoryCondition defaultInventoryCondition = getDefaultInventoryCondition();
+                boolean defaultFound = defaultInventoryCondition != null && !defaultInventoryCondition.equals(inventoryCondition);
                 
-                defaultInventoryConditionDetailValue.setIsDefault(Boolean.FALSE);
-                updateInventoryConditionFromValue(defaultInventoryConditionDetailValue, false, updatedBy);
-            } else if(!isDefault && !defaultFound) {
-                // If I'm not the default, and no other default exists...
-                isDefault = Boolean.TRUE;
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    InventoryConditionDetailValue defaultInventoryConditionDetailValue = getDefaultInventoryConditionDetailValueForUpdate();
+                    
+                    defaultInventoryConditionDetailValue.setIsDefault(Boolean.FALSE);
+                    updateInventoryConditionFromValue(defaultInventoryConditionDetailValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
             }
+            
+            inventoryConditionDetail = InventoryConditionDetailFactory.getInstance().create(inventoryConditionPK,
+                    inventoryConditionName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            
+            inventoryCondition.setActiveDetail(inventoryConditionDetail);
+            inventoryCondition.setLastDetail(inventoryConditionDetail);
+            
+            sendEventUsingNames(inventoryConditionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
         }
-        
-        inventoryConditionDetail = InventoryConditionDetailFactory.getInstance().create(inventoryConditionPK,
-                inventoryConditionName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-        
-        inventoryCondition.setActiveDetail(inventoryConditionDetail);
-        inventoryCondition.setLastDetail(inventoryConditionDetail);
-        inventoryCondition.store();
-        
-        sendEventUsingNames(inventoryConditionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
     }
     
     public void updateInventoryConditionFromValue(InventoryConditionDetailValue inventoryConditionDetailValue, BasePK updatedBy) {
@@ -1273,8 +1293,8 @@ public class InventoryControl
         
         InventoryConditionDetail inventoryConditionDetail = inventoryCondition.getLastDetailForUpdate();
         inventoryConditionDetail.setThruTime(session.START_TIME_LONG);
+        inventoryConditionDetail.store();
         inventoryCondition.setActiveDetail(null);
-        inventoryCondition.store();
         
         // Check for default, and pick one if necessary
         InventoryCondition defaultInventoryCondition = getDefaultInventoryCondition();
@@ -1282,9 +1302,9 @@ public class InventoryControl
             List<InventoryCondition> inventoryConditions = getInventoryConditionsForUpdate();
             
             if(!inventoryConditions.isEmpty()) {
-                Iterator iter = inventoryConditions.iterator();
+                Iterator<InventoryCondition> iter = inventoryConditions.iterator();
                 if(iter.hasNext()) {
-                    defaultInventoryCondition = (InventoryCondition)iter.next();
+                    defaultInventoryCondition = iter.next();
                 }
                 InventoryConditionDetailValue inventoryConditionDetailValue = defaultInventoryCondition.getLastDetailForUpdate().getInventoryConditionDetailValue().clone();
                 
@@ -1413,20 +1433,17 @@ public class InventoryControl
     }
     
     public InventoryConditionDescriptionTransfer getInventoryConditionDescriptionTransfer(UserVisit userVisit, InventoryConditionDescription inventoryConditionDescription) {
-        return getInventoryTransferCaches(userVisit).getInventoryConditionDescriptionTransferCache().getInventoryConditionDescriptionTransfer(inventoryConditionDescription);
+        return getInventoryTransferCaches(userVisit).getInventoryConditionDescriptionTransferCache().getTransfer(inventoryConditionDescription);
     }
     
     public List<InventoryConditionDescriptionTransfer> getInventoryConditionDescriptionTransfersByInventoryCondition(UserVisit userVisit, InventoryCondition inventoryCondition) {
         List<InventoryConditionDescription> inventoryConditionDescriptions = getInventoryConditionDescriptionsByInventoryCondition(inventoryCondition);
-        List<InventoryConditionDescriptionTransfer> inventoryConditionDescriptionTransfers = null;
+        List<InventoryConditionDescriptionTransfer> inventoryConditionDescriptionTransfers = new ArrayList<>(inventoryConditionDescriptions.size());
+        InventoryConditionDescriptionTransferCache inventoryConditionDescriptionTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionDescriptionTransferCache();
         
-        if(inventoryConditionDescriptions != null) {
-            inventoryConditionDescriptionTransfers = new ArrayList<>(inventoryConditionDescriptions.size());
-            
-            for(InventoryConditionDescription inventoryConditionDescription : inventoryConditionDescriptions) {
-                inventoryConditionDescriptionTransfers.add(getInventoryTransferCaches(userVisit).getInventoryConditionDescriptionTransferCache().getInventoryConditionDescriptionTransfer(inventoryConditionDescription));
-            }
-        }
+        inventoryConditionDescriptions.stream().forEach((inventoryConditionDescription) -> {
+            inventoryConditionDescriptionTransfers.add(inventoryConditionDescriptionTransferCache.getTransfer(inventoryConditionDescription));
+        });
         
         return inventoryConditionDescriptionTransfers;
     }
@@ -1453,7 +1470,7 @@ public class InventoryControl
         inventoryConditionDescription.setThruTime(session.START_TIME_LONG);
         
         sendEventUsingNames(inventoryConditionDescription.getInventoryConditionPK(), EventTypes.MODIFY.name(), inventoryConditionDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-
+        
     }
     
     public void deleteInventoryConditionDescriptionsByInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {

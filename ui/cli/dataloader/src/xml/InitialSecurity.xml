@@ -696,11 +696,26 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="InventoryCondition" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Inventory Condition" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Inventory Condition List" />
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Inventory Condition Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="InventoryConditionUseType" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
@@ -6982,8 +6997,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Index" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Index" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Inventory" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryConditionUseType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Edit" />

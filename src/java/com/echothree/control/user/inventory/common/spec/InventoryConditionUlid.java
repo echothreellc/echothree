@@ -16,11 +16,12 @@
 
 package com.echothree.control.user.inventory.common.spec;
 
-import com.echothree.control.user.party.common.spec.LanguageSpec;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface InventoryConditionDescriptionSpec
-        extends InventoryConditionSpec, LanguageSpec {
+public interface InventoryConditionUlid
+        extends BaseSpec {
     
-    // Nothing additional beyond InventoryConditionSpec, LanguageSpec
+    String getInventoryConditionUlid();
+    void setInventoryConditionUlid(String inventoryConditionUlid);
     
 }

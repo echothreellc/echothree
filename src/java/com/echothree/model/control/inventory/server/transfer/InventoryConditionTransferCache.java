@@ -16,54 +16,31 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.inventory.common.InventoryProperties;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.form.TransferProperties;
-import java.util.Set;
 
 public class InventoryConditionTransferCache
         extends BaseInventoryTransferCache<InventoryCondition, InventoryConditionTransfer> {
     
-    TransferProperties transferProperties;
-    boolean filterInventoryConditionName;
-    boolean filterIsDefault;
-    boolean filterSortOrder;
-    boolean filterDescription;
-    boolean filterEntityInstance;
-    
     /** Creates a new instance of InventoryConditionTransferCache */
     public InventoryConditionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
-
-        transferProperties = session.getTransferProperties();
-        if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(InventoryConditionTransfer.class);
-            
-            if(properties != null) {
-                filterInventoryConditionName = !properties.contains(InventoryProperties.INVENTORY_CONDITION_NAME);
-                filterIsDefault = !properties.contains(InventoryProperties.IS_DEFAULT);
-                filterSortOrder = !properties.contains(InventoryProperties.SORT_ORDER);
-                filterDescription = !properties.contains(InventoryProperties.DESCRIPTION);
-                filterEntityInstance = !properties.contains(InventoryProperties.ENTITY_INSTANCE);
-            }
-        }
         
-        setIncludeEntityInstance(!filterEntityInstance);
+        setIncludeEntityInstance(true);
     }
     
-    public InventoryConditionTransfer getInventoryConditionTransfer(InventoryCondition inventoryCondition) {
+    public InventoryConditionTransfer getTransfer(InventoryCondition inventoryCondition) {
         InventoryConditionTransfer inventoryConditionTransfer = get(inventoryCondition);
         
         if(inventoryConditionTransfer == null) {
             InventoryConditionDetail inventoryConditionDetail = inventoryCondition.getLastDetail();
-            String inventoryConditionName = filterInventoryConditionName ? null : inventoryConditionDetail.getInventoryConditionName();
-            Boolean isDefault = filterIsDefault ? null : inventoryConditionDetail.getIsDefault();
-            Integer sortOrder = filterSortOrder ? null : inventoryConditionDetail.getSortOrder();
-            String description = filterDescription ? null : inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage());
+            String inventoryConditionName = inventoryConditionDetail.getInventoryConditionName();
+            Boolean isDefault = inventoryConditionDetail.getIsDefault();
+            Integer sortOrder = inventoryConditionDetail.getSortOrder();
+            String description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage());
             
             inventoryConditionTransfer = new InventoryConditionTransfer(inventoryConditionName, isDefault, sortOrder, description);
             put(inventoryCondition, inventoryConditionTransfer);

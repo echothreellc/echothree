@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 
 public interface GetInventoryConditionForm
-        extends InventoryConditionSpec {
+        extends InventoryConditionUniversalSpec {
     
-    // Nothing additional beyond InventoryConditionSpec
+    // Nothing additional beyond InventoryConditionUniversalSpec
     
 }

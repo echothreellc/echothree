@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.inventory.common.spec;
+package com.echothree.control.user.inventory.common.result;
 
-import com.echothree.control.user.party.common.spec.LanguageSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface InventoryConditionDescriptionSpec
-        extends InventoryConditionSpec, LanguageSpec {
+public interface CreateInventoryConditionResult
+        extends InventoryConditionSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond InventoryConditionSpec, LanguageSpec
+    // Nothing additional beyond InventoryConditionSpec, EntityRefSpec, BaseResult
     
 }
