@@ -20,7 +20,7 @@ import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
 import com.echothree.control.user.inventory.common.form.EditInventoryConditionForm;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
-import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -64,7 +64,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditInventoryConditionForm commandForm = InventoryUtil.getHome().getEditInventoryConditionForm();
-                InventoryConditionSpec spec = InventoryUtil.getHome().getInventoryConditionSpec();
+                InventoryConditionUniversalSpec spec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
                 
                 if(originalInventoryConditionName == null)
                     originalInventoryConditionName = actionForm.getOriginalInventoryConditionName();
