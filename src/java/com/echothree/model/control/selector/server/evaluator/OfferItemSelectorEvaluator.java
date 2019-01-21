@@ -20,7 +20,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.filter.server.evaluator.FilteredItemFixedPrice;
 import com.echothree.model.control.filter.server.evaluator.OfferItemPriceFilterEvaluator;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -64,8 +64,8 @@ public class OfferItemSelectorEvaluator
         
         offerItemPriceFilterEvaluator = new OfferItemPriceFilterEvaluator(session, evaluatedBy);
         
-        fixedItemPriceType = itemControl.getItemPriceTypeByName(ItemConstants.ItemPriceType_FIXED);
-        variableItemPriceType = itemControl.getItemPriceTypeByName(ItemConstants.ItemPriceType_VARIABLE);
+        fixedItemPriceType = itemControl.getItemPriceTypeByName(ItemPriceTypes.FIXED.name());
+        variableItemPriceType = itemControl.getItemPriceTypeByName(ItemPriceTypes.VARIABLE.name());
     }
     
     

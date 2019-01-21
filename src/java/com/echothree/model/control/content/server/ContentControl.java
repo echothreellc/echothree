@@ -66,7 +66,7 @@ import com.echothree.model.control.content.server.transfer.ContentTransferCaches
 import com.echothree.model.control.content.server.transfer.ContentWebAddressDescriptionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentWebAddressTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.common.pk.ContentCatalogItemFixedPricePK;
 import com.echothree.model.data.content.common.pk.ContentCatalogItemPK;
@@ -3322,13 +3322,13 @@ public class ContentControl
 
         deleteContentCategoryItemsByContentCatalogItem(contentCatalogItem, deletedBy);
 
-        if(ItemConstants.ItemPriceType_FIXED.equals(itemPriceTypeName)) {
+        if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
             ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = getContentCatalogItemFixedPriceForUpdate(contentCatalogItem);
             
             if(contentCatalogItemFixedPrice != null) {
                 deleteContentCatalogItemFixedPrice(contentCatalogItemFixedPrice, deletedBy);
             }
-        } else if(ItemConstants.ItemPriceType_VARIABLE.equals(itemPriceTypeName)) {
+        } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
             ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePriceForUpdate(contentCatalogItem);
 
             if(contentCatalogItemVariablePrice != null) {

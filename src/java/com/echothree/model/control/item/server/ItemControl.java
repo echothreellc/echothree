@@ -19,8 +19,7 @@ package com.echothree.model.control.item.server;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import static com.echothree.model.control.item.common.ItemConstants.ItemPriceType_FIXED;
-import static com.echothree.model.control.item.common.ItemConstants.ItemPriceType_VARIABLE;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeChoicesBean;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUnitChoicesBean;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUseTypeChoicesBean;
@@ -5514,13 +5513,13 @@ public class ItemControl
         Item item = itemPrice.getItem();
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
         
-        if(ItemPriceType_FIXED.equals(itemPriceTypeName)) {
+        if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
             ItemFixedPrice itemFixedPrice = getItemFixedPriceForUpdate(itemPrice);
             
             if(itemFixedPrice != null) {
                 deleteItemFixedPrice(itemFixedPrice, deletedBy);
             }
-        } else if(ItemPriceType_VARIABLE.equals(itemPriceTypeName)) {
+        } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
             ItemVariablePrice itemVariablePrice = getItemVariablePriceForUpdate(itemPrice);
             
             if(itemVariablePrice != null) {

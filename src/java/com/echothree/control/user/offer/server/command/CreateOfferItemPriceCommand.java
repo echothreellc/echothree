@@ -19,7 +19,7 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.CreateOfferItemPriceForm;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
@@ -125,7 +125,7 @@ public class CreateOfferItemPriceCommand
                                         String itemPriceType = itemDetail.getItemPriceType().getItemPriceTypeName();
                                         BasePK createdBy = getPartyPK();
                                         
-                                        if(itemPriceType.equals(ItemConstants.ItemPriceType_FIXED)) {
+                                        if(itemPriceType.equals(ItemPriceTypes.FIXED.name())) {
                                             String strUnitPrice = form.getUnitPrice();
                                             
                                             if(strUnitPrice != null) {
@@ -137,7 +137,7 @@ public class CreateOfferItemPriceCommand
                                             } else {
                                                 addExecutionError(ExecutionErrors.MissingUnitPrice.name());
                                             }
-                                        } else if(itemPriceType.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+                                        } else if(itemPriceType.equals(ItemPriceTypes.VARIABLE.name())) {
                                             String strMinimumUnitPrice = form.getMinimumUnitPrice();
                                             Long minimumUnitPrice = null;
                                             String strMaximumUnitPrice = form.getMaximumUnitPrice();

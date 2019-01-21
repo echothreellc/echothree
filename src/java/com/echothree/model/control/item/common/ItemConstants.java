@@ -52,9 +52,6 @@ public interface ItemConstants {
     String ItemDescriptionType_WEB_DETAILS = "WEB_DETAILS";
     String ItemDescriptionType_WEB_ITEM_DETAILS = "WEB_ITEM_DETAILS";
     
-    String ItemPriceType_FIXED = "FIXED";
-    String ItemPriceType_VARIABLE = "VARIABLE";
-
     String RelatedItemType_SALES_ORDER_CROSS_SELLS = "SALES_ORDER_CROSS_SELLS";
     String RelatedItemType_SALES_ORDER_UPSELLS = "SALES_ORDER_UPSELLS";
     String RelatedItemType_SALES_ORDER_INTERESTED_IN = "SALES_ORDER_INTERESTED_IN";

@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.OfferProperties;
 import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
@@ -143,7 +143,7 @@ public class OfferItemPriceTransferCache
         List<HistoryTransfer<OfferItemPriceTransfer>> historyTransfers = null;
         String itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
         
-        if(ItemConstants.ItemPriceType_FIXED.equals(itemPriceTypeName)) {
+        if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
             List<OfferItemFixedPrice> offerItemFixedPriceHistory = offerControl.getOfferItemFixedPriceHistory(offerItemPrice);
             
             historyTransfers = new ArrayList<>(offerItemFixedPriceHistory.size());
@@ -157,7 +157,7 @@ public class OfferItemPriceTransferCache
                 historyTransfers.add(new HistoryTransfer<>(getOfferItemPriceTransfer(offerItemPrice, offerItemFixedPrice, null),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
-        } else if(ItemConstants.ItemPriceType_VARIABLE.equals(itemPriceTypeName)) {
+        } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
             List<OfferItemVariablePrice> offerItemVariablePriceHistory = offerControl.getOfferItemVariablePriceHistory(offerItemPrice);
             
             historyTransfers = new ArrayList<>(offerItemVariablePriceHistory.size());
@@ -184,9 +184,9 @@ public class OfferItemPriceTransferCache
             OfferItemVariablePrice offerItemVariablePrice = null;
             String itemPriceTypeName = offerItemPrice.getOfferItem().getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
 
-            if(ItemConstants.ItemPriceType_FIXED.equals(itemPriceTypeName)) {
+            if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
                 offerItemFixedPrice = offerControl.getOfferItemFixedPrice(offerItemPrice);
-            } else if(ItemConstants.ItemPriceType_VARIABLE.equals(itemPriceTypeName)) {
+            } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
                 offerItemVariablePrice = offerControl.getOfferItemVariablePrice(offerItemPrice);
             }
             

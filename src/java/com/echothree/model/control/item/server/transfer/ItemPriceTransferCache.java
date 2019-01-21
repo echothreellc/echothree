@@ -20,7 +20,7 @@ import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemPriceTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
@@ -142,7 +142,7 @@ public class ItemPriceTransferCache
         List<HistoryTransfer<ItemPriceTransfer>> historyTransfers = null;
         String itemPriceTypeName = itemPrice.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
         
-        if(ItemConstants.ItemPriceType_FIXED.equals(itemPriceTypeName)) {
+        if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
             List<ItemFixedPrice> itemFixedPriceHistory = itemControl.getItemFixedPriceHistory(itemPrice);
             
             historyTransfers = new ArrayList<>(itemFixedPriceHistory.size());
@@ -156,7 +156,7 @@ public class ItemPriceTransferCache
                 historyTransfers.add(new HistoryTransfer<>(getItemPriceTransfer(itemPrice, itemFixedPrice, null),
                         unformattedFromTime, fromTime, unformattedThruTime, thruTime));
             }
-        } else if(ItemConstants.ItemPriceType_VARIABLE.equals(itemPriceTypeName)) {
+        } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
             List<ItemVariablePrice> itemVariablePriceHistory = itemControl.getItemVariablePriceHistory(itemPrice);
             
             historyTransfers = new ArrayList<>(itemVariablePriceHistory.size());
@@ -184,9 +184,9 @@ public class ItemPriceTransferCache
             ItemVariablePrice itemVariablePrice = null;
             String itemPriceTypeName = itemPrice.getItem().getLastDetail().getItemPriceType().getItemPriceTypeName();
 
-            if(ItemConstants.ItemPriceType_FIXED.equals(itemPriceTypeName)) {
+            if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
                 itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
-            } else if(ItemConstants.ItemPriceType_VARIABLE.equals(itemPriceTypeName)) {
+            } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
                 itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
             }
             

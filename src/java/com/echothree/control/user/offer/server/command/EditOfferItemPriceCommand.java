@@ -24,7 +24,7 @@ import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferItemPriceSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
@@ -153,11 +153,11 @@ public class EditOfferItemPriceCommand
                                             
                                             result.setEdit(edit);
                                             
-                                            if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+                                            if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
                                                 OfferItemFixedPrice offerItemFixedPrice = offerControl.getOfferItemFixedPrice(offerItemPrice);
                                                 
                                                 edit.setUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemFixedPrice.getUnitPrice()));
-                                            } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+                                            } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
                                                 OfferItemVariablePrice offerItemVariablePrice = offerControl.getOfferItemVariablePrice(offerItemPrice);
                                                 
                                                 edit.setMinimumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getMinimumUnitPrice()));
@@ -172,7 +172,7 @@ public class EditOfferItemPriceCommand
                                         
                                         result.setEntityLock(getEntityLockTransfer(offerItem));
                                     } else if(editMode.equals(EditMode.UPDATE)) {
-                                        if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+                                        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
                                             String strUnitPrice = edit.getUnitPrice();
                                             
                                             if(strUnitPrice != null) {
@@ -194,7 +194,7 @@ public class EditOfferItemPriceCommand
                                             } else {
                                                 addExecutionError(ExecutionErrors.MissingUnitPrice.name());
                                             }
-                                        } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+                                        } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
                                             String strMinimumUnitPrice = edit.getMinimumUnitPrice();
                                             Long minimumUnitPrice = null;
                                             String strMaximumUnitPrice = edit.getMaximumUnitPrice();
