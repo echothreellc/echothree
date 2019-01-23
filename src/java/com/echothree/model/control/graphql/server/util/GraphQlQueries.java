@@ -22,10 +22,18 @@ import com.echothree.control.user.accounting.common.form.GetCurrencyForm;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
 import com.echothree.control.user.content.common.ContentUtil;
+import com.echothree.control.user.content.common.form.GetContentCollectionForm;
+import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
+import com.echothree.control.user.content.common.form.GetContentWebAddressForm;
+import com.echothree.control.user.content.common.form.GetContentWebAddressesForm;
+import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
+import com.echothree.control.user.content.server.command.GetContentCollectionsCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutsCommand;
+import com.echothree.control.user.content.server.command.GetContentWebAddressCommand;
+import com.echothree.control.user.content.server.command.GetContentWebAddressesCommand;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.GetColorForm;
 import com.echothree.control.user.core.common.form.GetColorsForm;
@@ -125,7 +133,9 @@ import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.content.server.graphql.ContentCollectionObject;
 import com.echothree.model.control.content.server.graphql.ContentPageLayoutObject;
+import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
@@ -154,7 +164,9 @@ import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
+import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.FontStyle;
@@ -295,6 +307,106 @@ public final class GraphQlQueries {
         }
         
         return contentPageLayoutObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentWebAddress")
+    public static ContentWebAddressObject contentWebAddress(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") @GraphQLNonNull final String contentWebAddressName) {
+        ContentWebAddress contentWebAddress;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentWebAddressForm commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+        
+            contentWebAddress = new GetContentWebAddressCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentWebAddress == null ? null : new ContentWebAddressObject(contentWebAddress);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentWebAddresses")
+    public static Collection<ContentWebAddressObject> contentWebAddresses(final DataFetchingEnvironment env) {
+        Collection<ContentWebAddress> contentWebAddresses;
+        Collection<ContentWebAddressObject> contentWebAddressObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentWebAddressesForm commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
+        
+            contentWebAddresses = new GetContentWebAddressesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentWebAddresses == null) {
+            contentWebAddressObjects = Collections.EMPTY_LIST;
+        } else {
+            contentWebAddressObjects = new ArrayList<>(contentWebAddresses.size());
+
+            contentWebAddresses.stream().map((contentWebAddress) -> {
+                return new ContentWebAddressObject(contentWebAddress);
+            }).forEachOrdered((contentWebAddressObject) -> {
+                contentWebAddressObjects.add(contentWebAddressObject);
+            });
+        }
+        
+        return contentWebAddressObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCollection")
+    public static ContentCollectionObject contentCollection(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName) {
+        ContentCollection contentCollection;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCollectionForm commandForm = ContentUtil.getHome().getGetContentCollectionForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+
+            contentCollection = new GetContentCollectionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentCollection == null ? null : new ContentCollectionObject(contentCollection);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCollections")
+    public static Collection<ContentCollectionObject> contentCollections(final DataFetchingEnvironment env) {
+        Collection<ContentCollection> contentCollections;
+        Collection<ContentCollectionObject> contentCollectionObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCollectionsForm commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
+        
+            contentCollections = new GetContentCollectionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentCollections == null) {
+            contentCollectionObjects = Collections.EMPTY_LIST;
+        } else {
+            contentCollectionObjects = new ArrayList<>(contentCollections.size());
+
+            contentCollections.stream().map((contentCollection) -> {
+                return new ContentCollectionObject(contentCollection);
+            }).forEachOrdered((contentCollectionObject) -> {
+                contentCollectionObjects.add(contentCollectionObject);
+            });
+        }
+        
+        return contentCollectionObjects;
     }
 
     @GraphQLField
