@@ -1,7 +1,8 @@
 # Echo Three
 
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](LICENSE)
-[![Javadoc](http://javadoc-badge.appspot.com/echothree/echothree.svg?label=javadoc)](https://www.echothree.com/javadoc/master/)
+[![Javadoc](http://javadoc-badge.appspot.com/com.echothree/echothree.svg?label=javadoc)](https://www.echothree.com/javadoc/master/)
+[![Build Status](https://www.echothree.com/jenkins/buildStatus/icon?job=Echo%20Three/master)](https://www.echothree.com/jenkins/job/Echo%20Three/job/master/)
 
 A Java EE application toolkit providing an extensible platform for customer management
 (CRM), product information management (PIM), content management (CMS) and other
