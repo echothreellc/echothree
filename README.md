@@ -32,9 +32,9 @@ See [INSTALL.md](INSTALL.md).
 
 There are no official releases at this time other than tagged milestones available through git.
 
-## Javadoc
+## Documentation
 
-[Javadoc](https://www.echothree.com/javadoc/master/)
+- [Javadoc](https://www.echothree.com/javadoc/master/)
 
 ## Source Code Mirrors:
 
