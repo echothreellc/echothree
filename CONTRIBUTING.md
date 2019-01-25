@@ -150,23 +150,6 @@ Date:   Sat Oct 20 10:42:07 2018 -0500
 ------------------------------------------------------------------------
 ```
 
-## Official Releases
-
-There are no official releases at this time other than tagged milestones available through git.
-
-## Echo Three Community
-
-If you have any questions or if you would like to get involved in the Echo Three community you can check out:
-
-- [Twitter](https://twitter.com/echothree/)
-- [reddit](https://www.reddit.com/r/echothree/)
-- [Bugzilla](https://www.echothree.com/bugzilla/)
-
-Source Code Mirrors:
-
-- [GitLab Mirror (Preferred)](https://gitlab.com/echothree/echothree/)
-- [GitHub Mirror](https://github.com/echothreellc/echothree/)
-
 ## Acknowledgements
 
 Thank you to Chef Software, Inc. for putting together a well thought out contribution guide that this document
