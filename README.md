@@ -1,5 +1,5 @@
 # Echo Three
-[![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![License](http://img.shields.io/:license-apache-brightgreen.svg)](LICENSE)
 
 A Java EE application toolkit providing an extensible platform for customer management
 (CRM), product information management (PIM), content management (CMS) and other
