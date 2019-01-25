@@ -362,7 +362,7 @@ public final class GraphQlQueries {
     @GraphQLField
     @GraphQLName("contentCollection")
     public static ContentCollectionObject contentCollection(final DataFetchingEnvironment env,
-            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName) {
+            @GraphQLName("contentCollectionName") final String contentCollectionName) {
         ContentCollection contentCollection;
 
         try {
