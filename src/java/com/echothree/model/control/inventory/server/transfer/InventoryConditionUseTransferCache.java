@@ -31,6 +31,7 @@ public class InventoryConditionUseTransferCache
         super(userVisit, inventoryControl);
     }
     
+    @Override
     public InventoryConditionUseTransfer getTransfer(InventoryConditionUse inventoryConditionUse) {
         InventoryConditionUseTransfer inventoryConditionUseTransfer = get(inventoryConditionUse);
         

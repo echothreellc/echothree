@@ -33,6 +33,7 @@ public class LotAliasTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
+    @Override
     public LotAliasTypeTransfer getTransfer(LotAliasType lotAliasType) {
         LotAliasTypeTransfer lotAliasTypeTransfer = get(lotAliasType);
         

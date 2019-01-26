@@ -31,6 +31,7 @@ public class AllocationPriorityDescriptionTransferCache
         super(userVisit, inventoryControl);
     }
     
+    @Override
     public AllocationPriorityDescriptionTransfer getTransfer(AllocationPriorityDescription allocationPriorityDescription) {
         AllocationPriorityDescriptionTransfer allocationPriorityDescriptionTransfer = get(allocationPriorityDescription);
         

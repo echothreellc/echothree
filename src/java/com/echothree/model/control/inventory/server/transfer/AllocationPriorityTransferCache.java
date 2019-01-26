@@ -32,6 +32,7 @@ public class AllocationPriorityTransferCache
         setIncludeEntityInstance(true);
     }
     
+    @Override
     public AllocationPriorityTransfer getTransfer(AllocationPriority allocationPriority) {
         AllocationPriorityTransfer allocationPriorityTransfer = get(allocationPriority);
         

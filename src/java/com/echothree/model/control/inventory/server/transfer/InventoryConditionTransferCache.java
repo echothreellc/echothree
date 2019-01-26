@@ -32,6 +32,7 @@ public class InventoryConditionTransferCache
         setIncludeEntityInstance(true);
     }
     
+    @Override
     public InventoryConditionTransfer getTransfer(InventoryCondition inventoryCondition) {
         InventoryConditionTransfer inventoryConditionTransfer = get(inventoryCondition);
         

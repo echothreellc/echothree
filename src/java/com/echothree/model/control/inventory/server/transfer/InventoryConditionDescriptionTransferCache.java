@@ -31,6 +31,7 @@ public class InventoryConditionDescriptionTransferCache
         super(userVisit, inventoryControl);
     }
     
+    @Override
     public InventoryConditionDescriptionTransfer getTransfer(InventoryConditionDescription inventoryConditionDescription) {
         InventoryConditionDescriptionTransfer inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
         

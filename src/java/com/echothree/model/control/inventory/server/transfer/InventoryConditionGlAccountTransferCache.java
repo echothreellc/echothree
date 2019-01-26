@@ -31,17 +31,15 @@ import com.echothree.util.server.persistence.Session;
 public class InventoryConditionGlAccountTransferCache
         extends BaseInventoryTransferCache<InventoryConditionGlAccount, InventoryConditionGlAccountTransfer> {
     
-    AccountingControl accountingControl;
-    ItemControl itemControl;
+    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
     
     /** Creates a new instance of InventoryConditionGlAccountTransferCache */
     public InventoryConditionGlAccountTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
-        
-        accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        itemControl = (ItemControl)Session.getModelController(ItemControl.class);
     }
     
+    @Override
     public InventoryConditionGlAccountTransfer getTransfer(InventoryConditionGlAccount inventoryConditionGlAccount) {
         InventoryConditionGlAccountTransfer inventoryConditionGlAccountTransfer = get(inventoryConditionGlAccount);
         

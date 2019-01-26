@@ -35,6 +35,7 @@ public class InventoryLocationGroupCapacityTransferCache
         super(userVisit, inventoryControl);
     }
     
+    @Override
     public InventoryLocationGroupCapacityTransfer getTransfer(InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
         InventoryLocationGroupCapacityTransfer inventoryLocationGroupCapacityTransfer = get(inventoryLocationGroupCapacity);
         

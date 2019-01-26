@@ -26,13 +26,11 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BaseInventoryDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseInventoryTransferCache<K, V> {
     
-    PartyControl partyControl;
+    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseInventoryDescriptionTransferCache */
     public BaseInventoryDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
-        
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     }
     
 }

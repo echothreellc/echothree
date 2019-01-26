@@ -44,6 +44,7 @@ public class LotTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
+    @Override
     public LotTypeTransfer getTransfer(LotType lotType) {
         LotTypeTransfer lotTypeTransfer = get(lotType);
         

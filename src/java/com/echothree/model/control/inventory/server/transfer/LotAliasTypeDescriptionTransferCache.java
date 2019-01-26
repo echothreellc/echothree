@@ -31,6 +31,7 @@ public class LotAliasTypeDescriptionTransferCache
         super(userVisit, inventoryControl);
     }
     
+    @Override
     public LotAliasTypeDescriptionTransfer getTransfer(LotAliasTypeDescription lotAliasTypeDescription) {
         LotAliasTypeDescriptionTransfer lotAliasTypeDescriptionTransfer = get(lotAliasTypeDescription);
         

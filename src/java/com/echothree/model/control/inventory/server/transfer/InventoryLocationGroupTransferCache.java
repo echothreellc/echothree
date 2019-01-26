@@ -39,17 +39,14 @@ import java.util.Set;
 public class InventoryLocationGroupTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroup, InventoryLocationGroupTransfer> {
     
-    WorkflowControl workflowControl;
-    CoreControl coreControl;
+    CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     boolean includeCapacities;
     boolean includeVolume;
     
     /** Creates a new instance of InventoryLocationGroupTransferCache */
     public InventoryLocationGroupTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
-        
-        coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         
         Set<String> options = session.getOptions();
         if(options != null) {
@@ -60,6 +57,7 @@ public class InventoryLocationGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
+    @Override
     public InventoryLocationGroupTransfer getTransfer(InventoryLocationGroup inventoryLocationGroup) {
         InventoryLocationGroupTransfer inventoryLocationGroupTransfer = get(inventoryLocationGroup);
         

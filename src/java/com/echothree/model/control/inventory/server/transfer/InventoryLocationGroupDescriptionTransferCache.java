@@ -31,6 +31,7 @@ public class InventoryLocationGroupDescriptionTransferCache
         super(userVisit, inventoryControl);
     }
     
+    @Override
     public InventoryLocationGroupDescriptionTransfer getTransfer(InventoryLocationGroupDescription inventoryLocationGroupDescription) {
         InventoryLocationGroupDescriptionTransfer inventoryLocationGroupDescriptionTransfer = get(inventoryLocationGroupDescription);
         
