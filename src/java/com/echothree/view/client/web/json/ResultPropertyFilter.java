@@ -88,7 +88,7 @@ public class ResultPropertyFilter
                     simpleContext.setVariable(name, expressionFactory.createValueExpression(value, value.getClass()));
                     ValueExpression e = expressionFactory.createValueExpression(simpleContext, expression, Boolean.class);
 
-                    filteredOut = !(Boolean)(e.getValue(simpleContext));
+                    filteredOut = !(Boolean)e.getValue(simpleContext);
                 }
             }
         }

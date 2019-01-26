@@ -1898,10 +1898,10 @@ public class SelectorControl
                 if(iter.hasNext()) {
                     defaultSelector = iter.next();
                 }
-                SelectorDetailValue SelectorDetailValue = defaultSelector.getLastDetailForUpdate().getSelectorDetailValue().clone();
+                SelectorDetailValue selectorDetailValue = defaultSelector.getLastDetailForUpdate().getSelectorDetailValue().clone();
                 
-                SelectorDetailValue.setIsDefault(Boolean.TRUE);
-                updateSelectorFromValue(SelectorDetailValue, false, deletedBy);
+                selectorDetailValue.setIsDefault(Boolean.TRUE);
+                updateSelectorFromValue(selectorDetailValue, false, deletedBy);
             }
         }
         
@@ -2418,10 +2418,10 @@ public class SelectorControl
                 if(iter.hasNext()) {
                     rootSelectorNode = iter.next();
                 }
-                SelectorNodeDetailValue SelectorNodeDetailValue = rootSelectorNode.getLastDetailForUpdate().getSelectorNodeDetailValue().clone();
+                SelectorNodeDetailValue selectorNodeDetailValue = rootSelectorNode.getLastDetailForUpdate().getSelectorNodeDetailValue().clone();
                 
-                SelectorNodeDetailValue.setIsRootSelectorNode(Boolean.TRUE);
-                updateSelectorNodeFromValue(SelectorNodeDetailValue, false, deletedBy);
+                selectorNodeDetailValue.setIsRootSelectorNode(Boolean.TRUE);
+                updateSelectorNodeFromValue(selectorNodeDetailValue, false, deletedBy);
             }
         }
         

@@ -5514,10 +5514,10 @@ public class SearchControl
             
             try (ResultSet rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    SecurityRoleGroup SecurityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRoleGroupPK(Long.valueOf(rs.getLong(1))));
+                    SecurityRoleGroup securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, new SecurityRoleGroupPK(Long.valueOf(rs.getLong(1))));
 
-                    SecurityRoleGroupResultTransfers.add(new SecurityRoleGroupResultTransfer(SecurityRoleGroup.getLastDetail().getSecurityRoleGroupName(),
-                            includeSecurityRoleGroup ? securityControl.getSecurityRoleGroupTransfer(userVisit, SecurityRoleGroup) : null));
+                    SecurityRoleGroupResultTransfers.add(new SecurityRoleGroupResultTransfer(securityRoleGroup.getLastDetail().getSecurityRoleGroupName(),
+                            includeSecurityRoleGroup ? securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup) : null));
                 }
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);

@@ -223,10 +223,10 @@ public class MessageControl
     public List<MessageTypeTransfer> getMessageTypeTransfers(UserVisit userVisit, EntityType entityType) {
         List<MessageType> messageTypes = getMessageTypes(entityType);
         List<MessageTypeTransfer> messageTypeTransfers = new ArrayList<>(messageTypes.size());
-        MessageTypeTransferCache MessageTypeTransferCache = getMessageTransferCaches(userVisit).getMessageTypeTransferCache();
+        MessageTypeTransferCache messageTypeTransferCache = getMessageTransferCaches(userVisit).getMessageTypeTransferCache();
         
         messageTypes.stream().forEach((messageType) -> {
-            messageTypeTransfers.add(MessageTypeTransferCache.getMessageTypeTransfer(messageType));
+            messageTypeTransfers.add(messageTypeTransferCache.getMessageTypeTransfer(messageType));
         });
         
         return messageTypeTransfers;
@@ -649,10 +649,10 @@ public class MessageControl
     public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, MessageType messageType) {
         List<Message> messages = getMessagesByMessageType(messageType);
         List<MessageTransfer> messageTransfers = new ArrayList<>(messages.size());
-        MessageTransferCache MessageTransferCache = getMessageTransferCaches(userVisit).getMessageTransferCache();
+        MessageTransferCache messageTransferCache = getMessageTransferCaches(userVisit).getMessageTransferCache();
         
         messages.stream().forEach((message) -> {
-            messageTransfers.add(MessageTransferCache.getMessageTransfer(message));
+            messageTransfers.add(messageTransferCache.getMessageTransfer(message));
         });
         
         return messageTransfers;
@@ -1017,10 +1017,10 @@ public class MessageControl
     
     public List<MessageStringTransfer> getMessageStringTransfers(UserVisit userVisit, List<MessageString> messageStrings) {
         List<MessageStringTransfer> messageStringTransfers = new ArrayList<>(messageStrings.size());
-        MessageStringTransferCache MessageStringTransferCache = getMessageTransferCaches(userVisit).getMessageStringTransferCache();
+        MessageStringTransferCache messageStringTransferCache = getMessageTransferCaches(userVisit).getMessageStringTransferCache();
         
         messageStrings.stream().forEach((messageString) -> {
-            messageStringTransfers.add(MessageStringTransferCache.getMessageStringTransfer(messageString));
+            messageStringTransfers.add(messageStringTransferCache.getMessageStringTransfer(messageString));
         });
         
         return messageStringTransfers;
@@ -1169,10 +1169,10 @@ public class MessageControl
     
     public List<MessageBlobTransfer> getMessageBlobTransfers(UserVisit userVisit, List<MessageBlob> messageBlobs) {
         List<MessageBlobTransfer> messageBlobTransfers = new ArrayList<>(messageBlobs.size());
-        MessageBlobTransferCache MessageBlobTransferCache = getMessageTransferCaches(userVisit).getMessageBlobTransferCache();
+        MessageBlobTransferCache messageBlobTransferCache = getMessageTransferCaches(userVisit).getMessageBlobTransferCache();
         
         messageBlobs.stream().forEach((messageBlob) -> {
-            messageBlobTransfers.add(MessageBlobTransferCache.getMessageBlobTransfer(messageBlob));
+            messageBlobTransfers.add(messageBlobTransferCache.getMessageBlobTransfer(messageBlob));
         });
         
         return messageBlobTransfers;
@@ -1322,10 +1322,10 @@ public class MessageControl
     
     public List<MessageClobTransfer> getMessageClobTransfers(UserVisit userVisit, List<MessageClob> messageClobs) {
         List<MessageClobTransfer> messageClobTransfers = new ArrayList<>(messageClobs.size());
-        MessageClobTransferCache MessageClobTransferCache = getMessageTransferCaches(userVisit).getMessageClobTransferCache();
+        MessageClobTransferCache messageClobTransferCache = getMessageTransferCaches(userVisit).getMessageClobTransferCache();
         
         messageClobs.stream().forEach((messageClob) -> {
-            messageClobTransfers.add(MessageClobTransferCache.getMessageClobTransfer(messageClob));
+            messageClobTransfers.add(messageClobTransferCache.getMessageClobTransfer(messageClob));
         });
         
         return messageClobTransfers;

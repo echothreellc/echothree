@@ -237,10 +237,10 @@ public class CommentControl
     public List<CommentTypeTransfer> getCommentTypeTransfers(UserVisit userVisit, EntityType entityType) {
         List<CommentType> commentTypes = getCommentTypes(entityType);
         List<CommentTypeTransfer> commentTypeTransfers = new ArrayList<>(commentTypes.size());
-        CommentTypeTransferCache CommentTypeTransferCache = getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
+        CommentTypeTransferCache commentTypeTransferCache = getCommentTransferCaches(userVisit).getCommentTypeTransferCache();
         
         commentTypes.stream().forEach((commentType) -> {
-            commentTypeTransfers.add(CommentTypeTransferCache.getCommentTypeTransfer(commentType));
+            commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(commentType));
         });
         
         return commentTypeTransfers;

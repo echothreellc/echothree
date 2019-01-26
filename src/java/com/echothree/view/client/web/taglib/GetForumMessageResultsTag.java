@@ -130,7 +130,6 @@ public class GetForumMessageResultsTag
     public int doStartTag() throws JspException {
         try {
             GetForumMessageResultsForm commandForm = SearchUtil.getHome().getGetForumMessageResultsForm();
-            Set<String> commandOptions = new HashSet<>();
             Map<String, Limit> limits = new HashMap<>();
             
             commandForm.setSearchTypeName(searchTypeName);

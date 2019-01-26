@@ -2311,8 +2311,8 @@ public class CoreControl
         return getCommandMessageTranslationTransfers(userVisit, getCommandMessageTranslationsByCommandMessage(commandMessage));
     }
 
-    public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(UserVisit userVisit, CommandMessageTranslation CommandMessageTranslation) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache().getCommandMessageTranslationTransfer(CommandMessageTranslation);
+    public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(UserVisit userVisit, CommandMessageTranslation commandMessageTranslation) {
+        return getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache().getCommandMessageTranslationTransfer(commandMessageTranslation);
     }
 
     public void updateCommandMessageTranslationFromValue(CommandMessageTranslationValue commandMessageTranslationValue, BasePK updatedBy) {
