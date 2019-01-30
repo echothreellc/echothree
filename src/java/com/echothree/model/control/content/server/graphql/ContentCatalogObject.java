@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.content.server.graphql;
 
+import com.echothree.control.user.content.server.command.GetContentCategoriesCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.model.control.content.server.ContentControl;
@@ -24,6 +25,8 @@ import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
+import com.echothree.model.data.content.server.entity.ContentCategory;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -31,6 +34,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @GraphQLDescription("content catalog object")
 @GraphQLName("ContentCatalog")
@@ -84,6 +89,21 @@ public class ContentCatalogObject
         
         return hasOfferUseAccess;
     }
+    
+    private Boolean hasContentCategoriesAccess;
+    
+    private boolean getHasContentCategoriesAccess(final DataFetchingEnvironment env) {
+        if(hasContentCategoriesAccess == null) {
+            GraphQlContext context = env.getContext();
+            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetContentCategoriesCommand(context.getUserVisitPK(), null);
+            
+            baseMultipleEntitiesCommand.security();
+            
+            hasContentCategoriesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
+        }
+        
+        return hasContentCategoriesAccess;
+    }
         
     @GraphQLField
     @GraphQLDescription("content collection")
@@ -127,6 +147,20 @@ public class ContentCatalogObject
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentCatalogDescription(contentCatalog, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("content categories")
+    public List<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        List<ContentCategory> entities = getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
+        List<ContentCategoryObject> contentCategories = new ArrayList<>(entities.size());
+        
+        entities.forEach((entity) -> {
+            contentCategories.add(new ContentCategoryObject(entity));
+        });
+        
+        return contentCategories;
     }
     
 }
