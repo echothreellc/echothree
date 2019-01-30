@@ -118,10 +118,10 @@ public class GetContentSectionsCommand
     @Override
     protected BaseResult getTransfers(Collection<ContentSection> entities) {
         GetContentSectionsResult result = ContentResultFactory.getGetContentSectionsResult();
-        UserVisit userVisit = getUserVisitForUpdate();
         
         if(entities != null) {
             ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            UserVisit userVisit = getUserVisit();
 
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
             result.setContentSections(contentControl.getContentSectionTransfers(userVisit, entities));
