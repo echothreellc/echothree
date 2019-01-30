@@ -17,13 +17,16 @@
 package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
+import com.echothree.control.user.content.server.command.GetContentPagesCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;
+import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentSectionDetail;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -31,6 +34,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @GraphQLDescription("content section object")
 @GraphQLName("ContentSection")
@@ -84,6 +89,21 @@ public class ContentSectionObject
         
         return hasContentSectionAccess;
     }
+        
+    private Boolean hasContentPagesAccess;
+    
+    private boolean getHasContentPagesAccess(final DataFetchingEnvironment env) {
+        if(hasContentPagesAccess == null) {
+            GraphQlContext context = env.getContext();
+            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetContentPagesCommand(context.getUserVisitPK(), null);
+            
+            baseMultipleEntitiesCommand.security();
+            
+            hasContentPagesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
+        }
+        
+        return hasContentPagesAccess;
+    }
     
     @GraphQLField
     @GraphQLDescription("content collection")
@@ -128,5 +148,19 @@ public class ContentSectionObject
         
         return contentControl.getBestContentSectionDescription(contentSection, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
+    
+//    @GraphQLField
+//    @GraphQLDescription("content pages")
+//    public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
+//        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+//        List<ContentPage> entities = getHasContentPagesAccess(env) ? contentControl.getContentPages(contentSection) : null;
+//        List<ContentPageObject> contentPages = new ArrayList<>(entities.size());
+//        
+//        entities.forEach((entity) -> {
+//            contentPages.add(new ContentPageObject(entity));
+//        });
+//        
+//        return contentPages;
+//    }
     
 }
