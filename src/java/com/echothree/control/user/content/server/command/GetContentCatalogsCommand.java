@@ -22,6 +22,7 @@ import com.echothree.control.user.content.common.result.GetContentCatalogsResult
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -31,14 +32,15 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetContentCatalogsCommand
-        extends BaseSimpleCommand<GetContentCatalogsForm> {
+        extends BaseMultipleEntitiesCommand<ContentCatalog, GetContentCatalogsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -57,16 +59,17 @@ public class GetContentCatalogsCommand
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
     
+    ContentCollection contentCollection;
+
     @Override
-    protected BaseResult execute() {
-        GetContentCatalogsResult result = ContentResultFactory.getGetContentCatalogsResult();
+    protected Collection<ContentCatalog> getEntities() {
         String contentWebAddressName = form.getContentWebAddressName();
         String contentCollectionName = form.getContentCollectionName();
         int parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
+        Collection<ContentCatalog> contentCatalogs = null;
 
         if(parameterCount == 1) {
             ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-            ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
                 ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
@@ -86,22 +89,35 @@ public class GetContentCatalogsCommand
 
             if(!hasExecutionErrors()) {
                 PartyPK partyPK = getPartyPK();
-                UserVisit userVisit = getUserVisitForUpdate();
 
-                AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCollection.getPrimaryKey(), partyPK);
+                AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, getUserVisitForUpdate(), contentCollection.getPrimaryKey(), partyPK);
 
                 if(!hasExecutionErrors()) {
-                    result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
-                    result.setContentCatalogs(contentControl.getContentCatalogTransfers(userVisit, contentCollection));
-
+                    contentCatalogs = contentControl.getContentCatalogs(contentCollection);
+                    
                     sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-
-        return result;
+        
+        return contentCatalogs;
     }
     
+    @Override
+    protected BaseResult getTransfers(Collection<ContentCatalog> entities) {
+        GetContentCatalogsResult result = ContentResultFactory.getGetContentCatalogsResult();
+        
+        if(entities != null) {
+            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            UserVisit userVisit = getUserVisit();
+            
+            result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));
+            result.setContentCatalogs(contentControl.getContentCatalogTransfers(userVisit, entities));
+        }
+        
+        return result;
+    }
+
 }
