@@ -149,18 +149,18 @@ public class ContentSectionObject
         return contentControl.getBestContentSectionDescription(contentSection, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
     
-//    @GraphQLField
-//    @GraphQLDescription("content pages")
-//    public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
-//        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-//        List<ContentPage> entities = getHasContentPagesAccess(env) ? contentControl.getContentPages(contentSection) : null;
-//        List<ContentPageObject> contentPages = new ArrayList<>(entities.size());
-//        
-//        entities.forEach((entity) -> {
-//            contentPages.add(new ContentPageObject(entity));
-//        });
-//        
-//        return contentPages;
-//    }
+    @GraphQLField
+    @GraphQLDescription("content pages")
+    public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        List<ContentPage> entities = getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
+        List<ContentPageObject> contentPages = new ArrayList<>(entities.size());
+        
+        entities.forEach((entity) -> {
+            contentPages.add(new ContentPageObject(entity));
+        });
+        
+        return contentPages;
+    }
     
 }
