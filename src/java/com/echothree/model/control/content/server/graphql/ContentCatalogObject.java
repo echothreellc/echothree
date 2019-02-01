@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.content.server.graphql;
 
+import com.echothree.control.user.content.server.command.GetContentCatalogItemsCommand;
 import com.echothree.control.user.content.server.command.GetContentCategoriesCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
@@ -25,6 +26,7 @@ import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
+import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -105,6 +107,21 @@ public class ContentCatalogObject
         return hasContentCategoriesAccess;
     }
         
+    private Boolean hasContentCatalogItemAccess;
+    
+    private boolean getHasContentCatalogItemsAccess(final DataFetchingEnvironment env) {
+        if(hasContentCatalogItemAccess == null) {
+            GraphQlContext context = env.getContext();
+            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetContentCatalogItemsCommand(context.getUserVisitPK(), null);
+            
+            baseMultipleEntitiesCommand.security();
+            
+            hasContentCatalogItemAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
+        }
+        
+        return hasContentCatalogItemAccess;
+    }
+    
     @GraphQLField
     @GraphQLDescription("content collection")
     public ContentCollectionObject getContentCollection(final DataFetchingEnvironment env) {
@@ -161,6 +178,20 @@ public class ContentCatalogObject
         });
         
         return contentCategories;
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("content catalog items")
+    public List<ContentCatalogItemObject> getContentCatalogItems(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        List<ContentCatalogItem> entities = getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
+        List<ContentCatalogItemObject> contentCatalogItems = new ArrayList<>(entities.size());
+        
+        entities.forEach((entity) -> {
+            contentCatalogItems.add(new ContentCatalogItemObject(entity));
+        });
+        
+        return contentCatalogItems;
     }
     
 }
