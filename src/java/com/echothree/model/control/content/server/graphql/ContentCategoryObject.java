@@ -18,6 +18,7 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
 import com.echothree.control.user.content.server.command.GetContentCategoryCommand;
+import com.echothree.control.user.content.server.command.GetContentCategoryItemsCommand;
 import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
@@ -25,6 +26,8 @@ import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
+import com.echothree.model.data.content.server.entity.ContentCategoryItem;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -32,6 +35,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @GraphQLDescription("content category object")
 @GraphQLName("ContentCategory")
@@ -116,6 +121,21 @@ public class ContentCategoryObject
 //        return hasSelectorAccess;
 //    }
     
+    private Boolean hasContentCategoryItemAccess;
+    
+    private boolean getHasContentCategoryItemsAccess(final DataFetchingEnvironment env) {
+        if(hasContentCategoryItemAccess == null) {
+            GraphQlContext context = env.getContext();
+            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetContentCategoryItemsCommand(context.getUserVisitPK(), null);
+            
+            baseMultipleEntitiesCommand.security();
+            
+            hasContentCategoryItemAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
+        }
+        
+        return hasContentCategoryItemAccess;
+    }
+    
     @GraphQLField
     @GraphQLDescription("content catalog")
     public ContentCatalogObject getContentCatalog(final DataFetchingEnvironment env) {
@@ -170,6 +190,20 @@ public class ContentCategoryObject
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentCategoryDescription(contentCategory, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("content category items")
+    public List<ContentCategoryItemObject> getContentCategoryItems(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        List<ContentCategoryItem> entities = getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
+        List<ContentCategoryItemObject> contentCategoryItems = new ArrayList<>(entities.size());
+        
+        entities.forEach((entity) -> {
+            contentCategoryItems.add(new ContentCategoryItemObject(entity));
+        });
+        
+        return contentCategoryItems;
     }
     
 }
