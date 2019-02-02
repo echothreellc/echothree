@@ -28,8 +28,10 @@ import com.echothree.control.user.content.common.form.GetContentCategoriesForm;
 import com.echothree.control.user.content.common.form.GetContentCategoryForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
+import com.echothree.control.user.content.common.form.GetContentPageForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
+import com.echothree.control.user.content.common.form.GetContentPagesForm;
 import com.echothree.control.user.content.common.form.GetContentSectionForm;
 import com.echothree.control.user.content.common.form.GetContentSectionsForm;
 import com.echothree.control.user.content.common.form.GetContentWebAddressForm;
@@ -40,8 +42,10 @@ import com.echothree.control.user.content.server.command.GetContentCategoriesCom
 import com.echothree.control.user.content.server.command.GetContentCategoryCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionsCommand;
+import com.echothree.control.user.content.server.command.GetContentPageCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutsCommand;
+import com.echothree.control.user.content.server.command.GetContentPagesCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionsCommand;
 import com.echothree.control.user.content.server.command.GetContentWebAddressCommand;
@@ -149,6 +153,7 @@ import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryObject;
 import com.echothree.model.control.content.server.graphql.ContentCollectionObject;
 import com.echothree.model.control.content.server.graphql.ContentPageLayoutObject;
+import com.echothree.model.control.content.server.graphql.ContentPageObject;
 import com.echothree.model.control.content.server.graphql.ContentSectionObject;
 import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
@@ -182,6 +187,7 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCollection;
+import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
@@ -498,6 +504,81 @@ public final class GraphQlQueries {
         }
         
         return contentSectionObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPage")
+    public static ContentPageObject contentPage(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentSectionName") final String contentSectionName,
+            @GraphQLName("contentPageName") final String contentPageName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentPage contentPage;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageForm commandForm = ContentUtil.getHome().getGetContentPageForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setContentPageName(contentPageName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentPage = new GetContentPageCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentPage == null ? null : new ContentPageObject(contentPage);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPages")
+    public static Collection<ContentPageObject> contentPages(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentSectionName") final String contentSectionName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentPage> contentPages;
+        Collection<ContentPageObject> contentPageObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPagesForm commandForm = ContentUtil.getHome().getGetContentPagesForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentPages = new GetContentPagesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentPages == null) {
+            contentPageObjects = Collections.EMPTY_LIST;
+        } else {
+            contentPageObjects = new ArrayList<>(contentPages.size());
+
+            contentPages.stream().map((contentPage) -> {
+                return new ContentPageObject(contentPage);
+            }).forEachOrdered((contentPageObject) -> {
+                contentPageObjects.add(contentPageObject);
+            });
+        }
+        
+        return contentPageObjects;
     }
 
     @GraphQLField
