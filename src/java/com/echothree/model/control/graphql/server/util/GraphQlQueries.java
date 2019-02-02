@@ -26,12 +26,16 @@ import com.echothree.control.user.content.common.form.GetContentCollectionForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
+import com.echothree.control.user.content.common.form.GetContentSectionForm;
+import com.echothree.control.user.content.common.form.GetContentSectionsForm;
 import com.echothree.control.user.content.common.form.GetContentWebAddressForm;
 import com.echothree.control.user.content.common.form.GetContentWebAddressesForm;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionsCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutsCommand;
+import com.echothree.control.user.content.server.command.GetContentSectionCommand;
+import com.echothree.control.user.content.server.command.GetContentSectionsCommand;
 import com.echothree.control.user.content.server.command.GetContentWebAddressCommand;
 import com.echothree.control.user.content.server.command.GetContentWebAddressesCommand;
 import com.echothree.control.user.core.common.CoreUtil;
@@ -135,6 +139,7 @@ import com.echothree.control.user.user.server.command.GetUserLoginCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.content.server.graphql.ContentCollectionObject;
 import com.echothree.model.control.content.server.graphql.ContentPageLayoutObject;
+import com.echothree.model.control.content.server.graphql.ContentSectionObject;
 import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
@@ -166,6 +171,7 @@ import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
+import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
@@ -407,6 +413,79 @@ public final class GraphQlQueries {
         }
         
         return contentCollectionObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentSection")
+    public static ContentSectionObject contentSection(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentSectionName") final String contentSectionName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentSection contentSection;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentSectionForm commandForm = ContentUtil.getHome().getGetContentSectionForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentSection = new GetContentSectionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentSection == null ? null : new ContentSectionObject(contentSection);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentSections")
+    public static Collection<ContentSectionObject> contentSections(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("parentContentSectionName") final String parentContentSectionName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentSection> contentSections;
+        Collection<ContentSectionObject> contentSectionObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentSectionsForm commandForm = ContentUtil.getHome().getGetContentSectionsForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setParentContentSectionName(parentContentSectionName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentSections = new GetContentSectionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentSections == null) {
+            contentSectionObjects = Collections.EMPTY_LIST;
+        } else {
+            contentSectionObjects = new ArrayList<>(contentSections.size());
+
+            contentSections.stream().map((contentSection) -> {
+                return new ContentSectionObject(contentSection);
+            }).forEachOrdered((contentSectionObject) -> {
+                contentSectionObjects.add(contentSectionObject);
+            });
+        }
+        
+        return contentSectionObjects;
     }
 
     @GraphQLField
