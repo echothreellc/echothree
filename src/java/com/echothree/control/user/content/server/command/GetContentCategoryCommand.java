@@ -28,7 +28,6 @@ import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
