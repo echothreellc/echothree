@@ -22,6 +22,8 @@ import com.echothree.control.user.accounting.common.form.GetCurrencyForm;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
 import com.echothree.control.user.content.common.ContentUtil;
+import com.echothree.control.user.content.common.form.GetContentCatalogForm;
+import com.echothree.control.user.content.common.form.GetContentCatalogsForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
@@ -30,6 +32,8 @@ import com.echothree.control.user.content.common.form.GetContentSectionForm;
 import com.echothree.control.user.content.common.form.GetContentSectionsForm;
 import com.echothree.control.user.content.common.form.GetContentWebAddressForm;
 import com.echothree.control.user.content.common.form.GetContentWebAddressesForm;
+import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
+import com.echothree.control.user.content.server.command.GetContentCatalogsCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionsCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
@@ -137,6 +141,7 @@ import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
 import com.echothree.model.control.content.server.graphql.ContentCollectionObject;
 import com.echothree.model.control.content.server.graphql.ContentPageLayoutObject;
 import com.echothree.model.control.content.server.graphql.ContentSectionObject;
@@ -169,6 +174,7 @@ import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentSection;
@@ -486,6 +492,77 @@ public final class GraphQlQueries {
         }
         
         return contentSectionObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalog")
+    public static ContentCatalogObject contentCatalog(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentCatalogName") final String contentCatalogName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentCatalog contentCatalog;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCatalogForm commandForm = ContentUtil.getHome().getGetContentCatalogForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCatalog = new GetContentCatalogCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentCatalog == null ? null : new ContentCatalogObject(contentCatalog);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalogs")
+    public static Collection<ContentCatalogObject> contentCatalogs(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentCatalog> contentCatalogs;
+        Collection<ContentCatalogObject> contentCatalogObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCatalogsForm commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCatalogs = new GetContentCatalogsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentCatalogs == null) {
+            contentCatalogObjects = Collections.EMPTY_LIST;
+        } else {
+            contentCatalogObjects = new ArrayList<>(contentCatalogs.size());
+
+            contentCatalogs.stream().map((contentCatalog) -> {
+                return new ContentCatalogObject(contentCatalog);
+            }).forEachOrdered((contentCatalogObject) -> {
+                contentCatalogObjects.add(contentCatalogObject);
+            });
+        }
+        
+        return contentCatalogObjects;
     }
 
     @GraphQLField
