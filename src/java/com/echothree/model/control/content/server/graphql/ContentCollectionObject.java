@@ -22,7 +22,6 @@ import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCollection;
@@ -60,36 +59,18 @@ public class ContentCollectionObject
         return contentCollectionDetail;
     }
     
-    private Boolean hasOfferUseAccess;
-    
     private boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
-        if(hasOfferUseAccess == null) {
-            hasOfferUseAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetOfferUseCommand.class);
-        }
-        
-        return hasOfferUseAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetOfferUseCommand.class);
     }
-        
-    private Boolean hasContentCatalogsAccess;
-    
+
     private boolean getHasContentCatalogsAccess(final DataFetchingEnvironment env) {
-        if(hasContentCatalogsAccess == null) {
-            hasContentCatalogsAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCatalogsCommand.class);
-        }
-        
-        return hasContentCatalogsAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogsCommand.class);
     }
-        
-    private Boolean hasContentSectionsAccess;
     
     private boolean getHasContentSectionsAccess(final DataFetchingEnvironment env) {
-        if(hasContentSectionsAccess == null) {
-            hasContentSectionsAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentSectionsCommand.class);
-        }
-        
-        return hasContentSectionsAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentSectionsCommand.class);
     }
-        
+
     @GraphQLField
     @GraphQLDescription("content collection name")
     @GraphQLNonNull

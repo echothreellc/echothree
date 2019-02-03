@@ -24,7 +24,7 @@ import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
+import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.graphql.ItemObject;
@@ -90,54 +90,24 @@ public class ContentCatalogItemObject
         return contentCatalogItemVariablePrice;
     }
 
-    private Boolean hasContentCatalogAccess;
-    
     private boolean getHasContentCatalogAccess(final DataFetchingEnvironment env) {
-        if(hasContentCatalogAccess == null) {
-            hasContentCatalogAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCatalogCommand.class);
-        }
-        
-        return hasContentCatalogAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogCommand.class);
     }
-    
-    private Boolean hasItemAccess;
     
     private boolean getHasItemAccess(final DataFetchingEnvironment env) {
-        if(hasItemAccess == null) {
-            hasItemAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetItemCommand.class);
-        }
-        
-        return hasItemAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetItemCommand.class);
     }
-    
-    private Boolean hasInventoryConditionAccess;
     
     private boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
-        if(hasInventoryConditionAccess == null) {
-            hasInventoryConditionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetInventoryConditionCommand.class);
-        }
-        
-        return hasInventoryConditionAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetInventoryConditionCommand.class);
     }
-    
-    private Boolean hasUnitOfMeasureTypeAccess;
     
     private boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        if(hasUnitOfMeasureTypeAccess == null) {
-            hasUnitOfMeasureTypeAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetUnitOfMeasureTypeCommand.class);
-        }
-        
-        return hasUnitOfMeasureTypeAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetUnitOfMeasureTypeCommand.class);
     }
     
-    private Boolean hasCurrencyAccess;
-    
     private boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
-        if(hasCurrencyAccess == null) {
-            hasCurrencyAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetCurrencyCommand.class);
-        }
-        
-        return hasCurrencyAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetCurrencyCommand.class);
     }
     
     @GraphQLField

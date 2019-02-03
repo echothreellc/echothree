@@ -55,24 +55,12 @@ public class ContentPageObject
         return contentPageDetail;
     }
 
-    private Boolean hasContentSectionAccess;
-    
     private boolean getHasContentSectionAccess(final DataFetchingEnvironment env) {
-        if(hasContentSectionAccess == null) {
-            hasContentSectionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentSectionCommand.class);
-        }
-        
-        return hasContentSectionAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentSectionCommand.class);
     }
     
-    private Boolean hasContentPageLayoutAccess;
-    
     private boolean getHasContentPageLayoutAccess(final DataFetchingEnvironment env) {
-        if(hasContentPageLayoutAccess == null) {
-            hasContentPageLayoutAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentPageLayoutCommand.class);
-        }
-        
-        return hasContentPageLayoutAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentPageLayoutCommand.class);
     }
     
     @GraphQLField

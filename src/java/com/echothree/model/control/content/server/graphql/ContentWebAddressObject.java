@@ -54,14 +54,8 @@ public class ContentWebAddressObject
         return contentWebAddressDetail;
     }
     
-    private Boolean hasContentCollectionAccess;
-    
     private boolean getHasContentCollectionAccess(final DataFetchingEnvironment env) {
-        if(hasContentCollectionAccess == null) {
-            hasContentCollectionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCollectionCommand.class);
-        }
-        
-        return hasContentCollectionAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentCollectionCommand.class);
     }
         
     @GraphQLField

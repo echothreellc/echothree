@@ -19,7 +19,7 @@ package com.echothree.model.control.content.server.graphql;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
 import com.echothree.control.user.content.server.command.GetContentCategoryCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
+import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -40,24 +40,12 @@ public class ContentCategoryItemObject
         this.contentCategoryItem = contentCategoryItem;
     }
 
-    private Boolean hasContentCategoryAccess;
-    
     private boolean getHasContentCategoryAccess(final DataFetchingEnvironment env) {
-        if(hasContentCategoryAccess == null) {
-            hasContentCategoryAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCategoryCommand.class);
-        }
-        
-        return hasContentCategoryAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoryCommand.class);
     }
     
-    private Boolean hasContentCatalogItemAccess;
-    
     private boolean getHasContentCatalogItemAccess(final DataFetchingEnvironment env) {
-        if(hasContentCatalogItemAccess == null) {
-            hasContentCatalogItemAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCatalogItemCommand.class);
-        }
-        
-        return hasContentCatalogItemAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogItemCommand.class);
     }
     
     @GraphQLField

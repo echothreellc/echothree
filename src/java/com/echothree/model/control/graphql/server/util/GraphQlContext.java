@@ -18,6 +18,8 @@ package com.echothree.model.control.graphql.server.util;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GraphQlContext {
 
@@ -25,6 +27,8 @@ public class GraphQlContext {
     private final UserVisit userVisit;
     private final UserSession userSession;
     private final String remoteInet4Address;
+    
+    private final Map<Class, Boolean> securityCache = new HashMap<>();
 
     public GraphQlContext(UserVisitPK userVisitPK, UserVisit userVisit, UserSession userSession, String remoteInet4Address) {
         this.userVisitPK = userVisitPK;
@@ -45,8 +49,19 @@ public class GraphQlContext {
         return userSession;
     }
     
-    String getRemoteInet4Address() {
+    public String getRemoteInet4Address() {
         return remoteInet4Address;
     }
 
+    public boolean hasAccess(final Class<?> command) {
+        Boolean hasAccess = securityCache.get(command);
+        
+        if(hasAccess == null) {
+            hasAccess = GraphQlSecurityUtils.getInstance().hasAccess(this, command);
+            securityCache.put(command, hasAccess);
+        }
+        
+        return hasAccess;
+    }
+    
 }

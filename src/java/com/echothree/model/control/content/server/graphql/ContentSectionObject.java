@@ -59,34 +59,16 @@ public class ContentSectionObject
         return contentSectionDetail;
     }
 
-    private Boolean hasContentCollectionAccess;
-    
     private boolean getHasContentCollectionAccess(final DataFetchingEnvironment env) {
-        if(hasContentCollectionAccess == null) {
-            hasContentCollectionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCollectionCommand.class);
-        }
-        
-        return hasContentCollectionAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentCollectionCommand.class);
     }
-    
-    private Boolean hasContentSectionAccess;
     
     private boolean getHasContentSectionAccess(final DataFetchingEnvironment env) {
-        if(hasContentSectionAccess == null) {
-            hasContentSectionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentSectionCommand.class);
-        }
-        
-        return hasContentSectionAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentSectionCommand.class);
     }
         
-    private Boolean hasContentPagesAccess;
-    
     private boolean getHasContentPagesAccess(final DataFetchingEnvironment env) {
-        if(hasContentPagesAccess == null) {
-            hasContentPagesAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentPagesCommand.class);
-        }
-        
-        return hasContentPagesAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentPagesCommand.class);
     }
     
     @GraphQLField

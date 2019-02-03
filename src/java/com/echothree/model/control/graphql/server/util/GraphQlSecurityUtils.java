@@ -57,13 +57,12 @@ public final class GraphQlSecurityUtils {
         return foundCtor;
     }
 
-    public boolean hasAccess(final DataFetchingEnvironment env, final Class<?> command) {
+    public boolean hasAccess(final GraphQlContext context, final Class<?> command) {
         boolean hasAccess = false;
 
         try {
             // Does command implement the interface GraphQlSecurityCommand?
             if(GraphQlSecurityCommand.class.isAssignableFrom(command)) {
-                GraphQlContext context = env.getContext();
                 Constructor<?> ctor = findConstructor(command); // Search for the Constructor that's required here
                 Object commandInstance = ctor.newInstance(new Object[]{context.getUserVisitPK(), null});
                 GraphQlSecurityCommand graphQlSecurityCommand = (GraphQlSecurityCommand) commandInstance;

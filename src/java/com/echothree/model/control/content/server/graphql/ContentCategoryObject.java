@@ -61,44 +61,20 @@ public class ContentCategoryObject
         return contentCategoryDetail;
     }
 
-    private Boolean hasContentCatalogAccess;
-    
     private boolean getHasContentCatalogAccess(final DataFetchingEnvironment env) {
-        if(hasContentCatalogAccess == null) {
-            hasContentCatalogAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCatalogCommand.class);
-        }
-        
-        return hasContentCatalogAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogCommand.class);
     }
-    
-    private Boolean hasContentCategoryAccess;
     
     private boolean getHasContentCategoryAccess(final DataFetchingEnvironment env) {
-        if(hasContentCategoryAccess == null) {
-            hasContentCategoryAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCategoryCommand.class);
-        }
-        
-        return hasContentCategoryAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoryCommand.class);
     }
-    
-    private Boolean hasOfferUseAccess;
     
     private boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
-        if(hasOfferUseAccess == null) {
-            hasOfferUseAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetOfferUseCommand.class);
-        }
-        
-        return hasOfferUseAccess;
+        return env.<GraphQlContext>getContext().hasAccess(GetOfferUseCommand.class);
     }
     
-//    private Boolean hasSelectorAccess;
-//    
 //    private boolean getHasSelectorAccess(final DataFetchingEnvironment env) {
-//        if(hasSelectorAccess == null) {
-//            hasSelectorAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetSelectorCommand.class);
-//        }
-//        
-//        return hasSelectorAccess;
+//        return env.<GraphQlContext>getContext().hasAccess(GetSelectorCommand.class);
 //    }
     
     private Boolean hasContentCategoryItemAccess;
