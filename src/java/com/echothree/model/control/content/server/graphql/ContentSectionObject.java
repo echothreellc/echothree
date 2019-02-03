@@ -16,13 +16,9 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
-import com.echothree.control.user.content.server.command.GetContentPagesCommand;
-import com.echothree.control.user.content.server.command.GetContentSectionCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentSection;
@@ -59,22 +55,10 @@ public class ContentSectionObject
         return contentSectionDetail;
     }
 
-    private boolean getHasContentCollectionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCollectionCommand.class);
-    }
-    
-    private boolean getHasContentSectionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentSectionCommand.class);
-    }
-        
-    private boolean getHasContentPagesAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentPagesCommand.class);
-    }
-    
     @GraphQLField
     @GraphQLDescription("content collection")
     public ContentCollectionObject getContentCollection(final DataFetchingEnvironment env) {
-        return getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentSectionDetail().getContentCollection()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentSectionDetail().getContentCollection()) : null;
     }
 
     @GraphQLField
@@ -87,7 +71,7 @@ public class ContentSectionObject
     @GraphQLField
     @GraphQLDescription("parent content section")
     public ContentSectionObject getParentContentSection(final DataFetchingEnvironment env) {
-        return getHasContentSectionAccess(env) ? new ContentSectionObject(getContentSectionDetail().getParentContentSection()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentSectionAccess(env) ? new ContentSectionObject(getContentSectionDetail().getParentContentSection()) : null;
     }
 
     @GraphQLField
@@ -119,7 +103,7 @@ public class ContentSectionObject
     @GraphQLDescription("content pages")
     public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        List<ContentPage> entities = getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
+        List<ContentPage> entities = ContentSecurityUtils.getInstance().getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
         List<ContentPageObject> contentPages = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {

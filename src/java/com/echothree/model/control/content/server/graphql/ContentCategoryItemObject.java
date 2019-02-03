@@ -16,10 +16,7 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
-import com.echothree.control.user.content.server.command.GetContentCategoryCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -40,24 +37,16 @@ public class ContentCategoryItemObject
         this.contentCategoryItem = contentCategoryItem;
     }
 
-    private boolean getHasContentCategoryAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoryCommand.class);
-    }
-    
-    private boolean getHasContentCatalogItemAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogItemCommand.class);
-    }
-    
     @GraphQLField
     @GraphQLDescription("content category")
     public ContentCategoryObject getContentCategory(final DataFetchingEnvironment env) {
-        return getHasContentCategoryAccess(env) ? new ContentCategoryObject(contentCategoryItem.getContentCategory()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentCategoryAccess(env) ? new ContentCategoryObject(contentCategoryItem.getContentCategory()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("content catalog item")
     public ContentCatalogItemObject getContentCatalogItem(final DataFetchingEnvironment env) {
-        return getHasContentCatalogItemAccess(env) ? new ContentCatalogItemObject(contentCategoryItem.getContentCatalogItem()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentCatalogItemAccess(env) ? new ContentCatalogItemObject(contentCategoryItem.getContentCatalogItem()) : null;
     }
 
     @GraphQLField

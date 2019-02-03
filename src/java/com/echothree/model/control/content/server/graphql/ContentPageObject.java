@@ -16,12 +16,9 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
-import com.echothree.control.user.content.server.command.GetContentSectionCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageDetail;
@@ -55,18 +52,10 @@ public class ContentPageObject
         return contentPageDetail;
     }
 
-    private boolean getHasContentSectionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentSectionCommand.class);
-    }
-    
-    private boolean getHasContentPageLayoutAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentPageLayoutCommand.class);
-    }
-    
     @GraphQLField
     @GraphQLDescription("content section")
     public ContentSectionObject getContentSection(final DataFetchingEnvironment env) {
-        return getHasContentSectionAccess(env) ? new ContentSectionObject(getContentPageDetail().getContentSection()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentSectionAccess(env) ? new ContentSectionObject(getContentPageDetail().getContentSection()) : null;
     }
 
     @GraphQLField
@@ -79,7 +68,7 @@ public class ContentPageObject
     @GraphQLField
     @GraphQLDescription("content page layout")
     public ContentPageLayoutObject getContentPageLayout(final DataFetchingEnvironment env) {
-        return getHasContentPageLayoutAccess(env) ? new ContentPageLayoutObject(getContentPageDetail().getContentPageLayout()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentPageLayoutAccess(env) ? new ContentPageLayoutObject(getContentPageDetail().getContentPageLayout()) : null;
     }
 
     @GraphQLField

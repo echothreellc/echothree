@@ -16,11 +16,9 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.content.server.entity.ContentWebAddressDetail;
@@ -54,10 +52,6 @@ public class ContentWebAddressObject
         return contentWebAddressDetail;
     }
     
-    private boolean getHasContentCollectionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCollectionCommand.class);
-    }
-        
     @GraphQLField
     @GraphQLDescription("content collection name")
     @GraphQLNonNull
@@ -68,7 +62,7 @@ public class ContentWebAddressObject
     @GraphQLField
     @GraphQLDescription("content collection")
     public ContentCollectionObject getContentCollection(final DataFetchingEnvironment env) {
-        return getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentWebAddressDetail().getContentCollection()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentWebAddressDetail().getContentCollection()) : null;
     }
 
     @GraphQLField

@@ -16,14 +16,9 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.control.user.content.server.command.GetContentCatalogItemsCommand;
-import com.echothree.control.user.content.server.command.GetContentCategoriesCommand;
-import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
-import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
@@ -61,26 +56,10 @@ public class ContentCatalogObject
         return contentCatalogDetail;
     }
 
-    private boolean getHasContentCollectionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCollectionCommand.class);
-    }
-    
-    private boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferUseCommand.class);
-    }
-    
-    private boolean getHasContentCategoriesAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoriesCommand.class);
-    }
-        
-    private boolean getHasContentCatalogItemsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogItemsCommand.class);
-    }
-    
     @GraphQLField
     @GraphQLDescription("content collection")
     public ContentCollectionObject getContentCollection(final DataFetchingEnvironment env) {
-        return getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentCatalogDetail().getContentCollection()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentCatalogDetail().getContentCollection()) : null;
     }
 
     @GraphQLField
@@ -93,7 +72,7 @@ public class ContentCatalogObject
 //    @GraphQLField
 //    @GraphQLDescription("default offer use")
 //    public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
-//        return getHasOfferUseAccess(env) ? new OfferUseObject(getContentCollectionDetail().getDefaultOfferUse()) : null;
+//        return ContentSecurityUtils.getInstance().getHasOfferUseAccess(env) ? new OfferUseObject(getContentCollectionDetail().getDefaultOfferUse()) : null;
 //    }
 
     @GraphQLField
@@ -125,7 +104,7 @@ public class ContentCatalogObject
     @GraphQLDescription("content categories")
     public List<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        List<ContentCategory> entities = getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
+        List<ContentCategory> entities = ContentSecurityUtils.getInstance().getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
         List<ContentCategoryObject> contentCategories = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {
@@ -139,7 +118,7 @@ public class ContentCatalogObject
     @GraphQLDescription("content catalog items")
     public List<ContentCatalogItemObject> getContentCatalogItems(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        List<ContentCatalogItem> entities = getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
+        List<ContentCatalogItem> entities = ContentSecurityUtils.getInstance().getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
         List<ContentCatalogItemObject> contentCatalogItems = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {

@@ -16,9 +16,6 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.control.user.content.server.command.GetContentCatalogsCommand;
-import com.echothree.control.user.content.server.command.GetContentSectionsCommand;
-import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
@@ -59,18 +56,6 @@ public class ContentCollectionObject
         return contentCollectionDetail;
     }
     
-    private boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferUseCommand.class);
-    }
-
-    private boolean getHasContentCatalogsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogsCommand.class);
-    }
-    
-    private boolean getHasContentSectionsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentSectionsCommand.class);
-    }
-
     @GraphQLField
     @GraphQLDescription("content collection name")
     @GraphQLNonNull
@@ -99,7 +84,7 @@ public class ContentCollectionObject
     @GraphQLDescription("content catalogs")
     public List<ContentCatalogObject> getContentCatalogs(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        List<ContentCatalog> entities = getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
+        List<ContentCatalog> entities = ContentSecurityUtils.getInstance().getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
         List<ContentCatalogObject> contentCatalogs = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {
@@ -113,7 +98,7 @@ public class ContentCollectionObject
     @GraphQLDescription("content sections")
     public List<ContentSectionObject> getContentSections(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        List<ContentSection> entities = getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
+        List<ContentSection> entities = ContentSecurityUtils.getInstance().getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
         List<ContentSectionObject> contentSections = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {

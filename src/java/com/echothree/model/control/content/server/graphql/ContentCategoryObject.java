@@ -16,19 +16,13 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
-import com.echothree.control.user.content.server.command.GetContentCategoryCommand;
-import com.echothree.control.user.content.server.command.GetContentCategoryItemsCommand;
-import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -61,41 +55,10 @@ public class ContentCategoryObject
         return contentCategoryDetail;
     }
 
-    private boolean getHasContentCatalogAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogCommand.class);
-    }
-    
-    private boolean getHasContentCategoryAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoryCommand.class);
-    }
-    
-    private boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferUseCommand.class);
-    }
-    
-//    private boolean getHasSelectorAccess(final DataFetchingEnvironment env) {
-//        return env.<GraphQlContext>getContext().hasAccess(GetSelectorCommand.class);
-//    }
-    
-    private Boolean hasContentCategoryItemAccess;
-    
-    private boolean getHasContentCategoryItemsAccess(final DataFetchingEnvironment env) {
-        if(hasContentCategoryItemAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetContentCategoryItemsCommand(context.getUserVisitPK(), null);
-            
-            baseMultipleEntitiesCommand.security();
-            
-            hasContentCategoryItemAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
-        }
-        
-        return hasContentCategoryItemAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("content catalog")
     public ContentCatalogObject getContentCatalog(final DataFetchingEnvironment env) {
-        return getHasContentCatalogAccess(env) ? new ContentCatalogObject(getContentCategoryDetail().getContentCatalog()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentCatalogAccess(env) ? new ContentCatalogObject(getContentCategoryDetail().getContentCatalog()) : null;
     }
 
     @GraphQLField
@@ -108,19 +71,19 @@ public class ContentCategoryObject
     @GraphQLField
     @GraphQLDescription("parent content category")
     public ContentCategoryObject getParentContentCategory(final DataFetchingEnvironment env) {
-        return getHasContentCategoryAccess(env) ? new ContentCategoryObject(getContentCategoryDetail().getParentContentCategory()) : null;
+        return ContentSecurityUtils.getInstance().getHasContentCategoryAccess(env) ? new ContentCategoryObject(getContentCategoryDetail().getParentContentCategory()) : null;
     }
 
 //    @GraphQLField
 //    @GraphQLDescription("default offer use")
 //    public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
-//        return getHasOfferUseAccess(env) ? new OfferUseObject(getContentCategoryDetail().getDefaultOfferUse()) : null;
+//        return ContentSecurityUtils.getInstance().getHasOfferUseAccess(env) ? new OfferUseObject(getContentCategoryDetail().getDefaultOfferUse()) : null;
 //    }
 
 //    @GraphQLField
 //    @GraphQLDescription("content category item selector")
 //    public SelectorObject getContentCategoryItemSelector(final DataFetchingEnvironment env) {
-//        return getHasSelectorAccess(env) ? new SelectorObject(getContentCategoryDetail().getContentCategoryItemSelector()) : null;
+//        return SelectorSecurityUtils.getInstance().getHasSelectorAccess(env) ? new SelectorObject(getContentCategoryDetail().getContentCategoryItemSelector()) : null;
 //    }
 
     @GraphQLField
@@ -152,7 +115,7 @@ public class ContentCategoryObject
     @GraphQLDescription("content category items")
     public List<ContentCategoryItemObject> getContentCategoryItems(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        List<ContentCategoryItem> entities = getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
+        List<ContentCategoryItem> entities = ContentSecurityUtils.getInstance().getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
         List<ContentCategoryItemObject> contentCategoryItems = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {
