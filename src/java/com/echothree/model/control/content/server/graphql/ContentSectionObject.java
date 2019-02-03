@@ -22,12 +22,11 @@ import com.echothree.control.user.content.server.command.GetContentSectionComman
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentSectionDetail;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -64,12 +63,7 @@ public class ContentSectionObject
     
     private boolean getHasContentCollectionAccess(final DataFetchingEnvironment env) {
         if(hasContentCollectionAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentCollectionCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentCollectionAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentCollectionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCollectionCommand.class);
         }
         
         return hasContentCollectionAccess;
@@ -79,12 +73,7 @@ public class ContentSectionObject
     
     private boolean getHasContentSectionAccess(final DataFetchingEnvironment env) {
         if(hasContentSectionAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentSectionCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentSectionAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentSectionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentSectionCommand.class);
         }
         
         return hasContentSectionAccess;
@@ -94,12 +83,7 @@ public class ContentSectionObject
     
     private boolean getHasContentPagesAccess(final DataFetchingEnvironment env) {
         if(hasContentPagesAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetContentPagesCommand(context.getUserVisitPK(), null);
-            
-            baseMultipleEntitiesCommand.security();
-            
-            hasContentPagesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
+            hasContentPagesAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentPagesCommand.class);
         }
         
         return hasContentPagesAccess;

@@ -24,7 +24,7 @@ import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.graphql.ItemObject;
@@ -33,7 +33,6 @@ import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCatalogItemFixedPrice;
 import com.echothree.model.data.content.server.entity.ContentCatalogItemVariablePrice;
 import com.echothree.util.server.string.AmountUtils;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -95,12 +94,7 @@ public class ContentCatalogItemObject
     
     private boolean getHasContentCatalogAccess(final DataFetchingEnvironment env) {
         if(hasContentCatalogAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentCatalogCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentCatalogAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentCatalogAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCatalogCommand.class);
         }
         
         return hasContentCatalogAccess;
@@ -110,12 +104,7 @@ public class ContentCatalogItemObject
     
     private boolean getHasItemAccess(final DataFetchingEnvironment env) {
         if(hasItemAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetItemCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasItemAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasItemAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetItemCommand.class);
         }
         
         return hasItemAccess;
@@ -125,12 +114,7 @@ public class ContentCatalogItemObject
     
     private boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
         if(hasInventoryConditionAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetInventoryConditionCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasInventoryConditionAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasInventoryConditionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetInventoryConditionCommand.class);
         }
         
         return hasInventoryConditionAccess;
@@ -140,12 +124,7 @@ public class ContentCatalogItemObject
     
     private boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
         if(hasUnitOfMeasureTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetUnitOfMeasureTypeCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasUnitOfMeasureTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasUnitOfMeasureTypeAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetUnitOfMeasureTypeCommand.class);
         }
         
         return hasUnitOfMeasureTypeAccess;
@@ -155,12 +134,7 @@ public class ContentCatalogItemObject
     
     private boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
         if(hasCurrencyAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetCurrencyCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasCurrencyAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasCurrencyAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetCurrencyCommand.class);
         }
         
         return hasCurrencyAccess;

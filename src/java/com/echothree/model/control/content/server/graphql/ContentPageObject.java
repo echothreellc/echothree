@@ -21,10 +21,10 @@ import com.echothree.control.user.content.server.command.GetContentSectionComman
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageDetail;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -59,12 +59,7 @@ public class ContentPageObject
     
     private boolean getHasContentSectionAccess(final DataFetchingEnvironment env) {
         if(hasContentSectionAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentSectionCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentSectionAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentSectionAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentSectionCommand.class);
         }
         
         return hasContentSectionAccess;
@@ -74,12 +69,7 @@ public class ContentPageObject
     
     private boolean getHasContentPageLayoutAccess(final DataFetchingEnvironment env) {
         if(hasContentPageLayoutAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentPageLayoutCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentPageLayoutAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentPageLayoutAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentPageLayoutCommand.class);
         }
         
         return hasContentPageLayoutAccess;

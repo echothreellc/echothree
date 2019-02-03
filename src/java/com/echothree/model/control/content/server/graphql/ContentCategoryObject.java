@@ -23,12 +23,12 @@ import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -65,12 +65,7 @@ public class ContentCategoryObject
     
     private boolean getHasContentCatalogAccess(final DataFetchingEnvironment env) {
         if(hasContentCatalogAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentCatalogCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentCatalogAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentCatalogAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCatalogCommand.class);
         }
         
         return hasContentCatalogAccess;
@@ -80,12 +75,7 @@ public class ContentCategoryObject
     
     private boolean getHasContentCategoryAccess(final DataFetchingEnvironment env) {
         if(hasContentCategoryAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentCategoryCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentCategoryAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentCategoryAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCategoryCommand.class);
         }
         
         return hasContentCategoryAccess;
@@ -95,12 +85,7 @@ public class ContentCategoryObject
     
     private boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
         if(hasOfferUseAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetOfferUseCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasOfferUseAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasOfferUseAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetOfferUseCommand.class);
         }
         
         return hasOfferUseAccess;
@@ -110,12 +95,7 @@ public class ContentCategoryObject
 //    
 //    private boolean getHasSelectorAccess(final DataFetchingEnvironment env) {
 //        if(hasSelectorAccess == null) {
-//            GraphQlContext context = env.getContext();
-//            BaseSingleEntityCommand baseSingleEntityCommand = new GetSelectorCommand(context.getUserVisitPK(), null);
-//            
-//            baseSingleEntityCommand.security();
-//            
-//            hasSelectorAccess = !baseSingleEntityCommand.hasSecurityMessages();
+//            hasSelectorAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetSelectorCommand.class);
 //        }
 //        
 //        return hasSelectorAccess;

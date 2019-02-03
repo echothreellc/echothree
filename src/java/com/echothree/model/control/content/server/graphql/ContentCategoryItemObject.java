@@ -19,9 +19,8 @@ package com.echothree.model.control.content.server.graphql;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
 import com.echothree.control.user.content.server.command.GetContentCategoryCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.GraphQlSecurityUtils;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -45,12 +44,7 @@ public class ContentCategoryItemObject
     
     private boolean getHasContentCategoryAccess(final DataFetchingEnvironment env) {
         if(hasContentCategoryAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentCategoryCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentCategoryAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentCategoryAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCategoryCommand.class);
         }
         
         return hasContentCategoryAccess;
@@ -60,12 +54,7 @@ public class ContentCategoryItemObject
     
     private boolean getHasContentCatalogItemAccess(final DataFetchingEnvironment env) {
         if(hasContentCatalogItemAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetContentCatalogItemCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasContentCatalogItemAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasContentCatalogItemAccess = GraphQlSecurityUtils.getInstance().hasAccess(env, GetContentCatalogItemCommand.class);
         }
         
         return hasContentCatalogItemAccess;
