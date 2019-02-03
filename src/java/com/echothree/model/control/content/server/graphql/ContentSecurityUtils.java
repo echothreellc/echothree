@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.content.server.graphql;
 
-import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemsCommand;
@@ -30,10 +29,6 @@ import com.echothree.control.user.content.server.command.GetContentPageLayoutCom
 import com.echothree.control.user.content.server.command.GetContentPagesCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionsCommand;
-import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
-import com.echothree.control.user.item.server.command.GetItemCommand;
-import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -97,26 +92,6 @@ public final class ContentSecurityUtils {
     
     public boolean getHasContentPagesAccess(final DataFetchingEnvironment env) {
         return env.<GraphQlContext>getContext().hasAccess(GetContentPagesCommand.class);
-    }
-    
-    public boolean getHasItemAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetItemCommand.class);
-    }
-    
-    public boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetInventoryConditionCommand.class);
-    }
-    
-    public boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetUnitOfMeasureTypeCommand.class);
-    }
-    
-    public boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetCurrencyCommand.class);
-    }
-    
-    public boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferUseCommand.class);
     }
     
 }
