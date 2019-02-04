@@ -41,6 +41,7 @@ import java.util.List;
 public class GetContentSectionCommand
         extends BaseSingleEntityCommand<ContentSection, GetContentSectionForm> {
     
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
