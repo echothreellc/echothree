@@ -22,12 +22,16 @@ import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageDetail;
+import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @GraphQLDescription("content page object")
 @GraphQLName("ContentPage")
@@ -94,6 +98,24 @@ public class ContentPageObject
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentPageDescription(contentPage, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("content page areas")
+    @GraphQLNonNull
+    public List<ContentPageAreaObject> getContentPageAreas(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        GraphQlContext context = env.getContext();
+        Language preferredLanguage = userControl.getPreferredLanguageFromUserVisit(context.getUserVisit());
+        List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(getContentPageDetail().getContentPageLayout());
+        List<ContentPageAreaObject> contentPageAreas = new ArrayList<>(entities.size());
+        
+        entities.forEach((entity) -> {
+            contentPageAreas.add(new ContentPageAreaObject(contentControl.getBestContentPageArea(contentPage, entity, preferredLanguage)));
+        });
+        
+        return contentPageAreas;
     }
     
 }
