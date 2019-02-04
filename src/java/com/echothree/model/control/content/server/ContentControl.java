@@ -1232,6 +1232,14 @@ public class ContentControl
         return contentSection;
     }
     
+    public long countContentSectionsByContentCollection(ContentCollection contentCollection) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contentsectiondetails " +
+                "WHERE cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ?",
+                contentCollection, Session.MAX_TIME);
+    }
+
     private List<ContentSection> getContentSections(ContentCollection contentCollection, EntityPermission entityPermission) {
         List<ContentSection> contentSections = null;
         
@@ -1781,6 +1789,14 @@ public class ContentControl
         return contentPage;
     }
     
+    public long countContentPagesByContentSection(ContentSection contentSection) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contentpagedetails " +
+                "WHERE cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?",
+                contentSection, Session.MAX_TIME);
+    }
+
     private List<ContentPage> getContentPagesByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
         List<ContentPage> contentPages;
         
@@ -2578,6 +2594,14 @@ public class ContentControl
         return contentCatalog;
     }
     
+    public long countContentCatalogsByContentCollection(ContentCollection contentCollection) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contentcatalogdetails " +
+                "WHERE cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?",
+                contentCollection, Session.MAX_TIME);
+    }
+
     private List<ContentCatalog> getContentCatalogs(ContentCollection contentCollection, EntityPermission entityPermission) {
         List<ContentCatalog> contentCatalogs = null;
         
