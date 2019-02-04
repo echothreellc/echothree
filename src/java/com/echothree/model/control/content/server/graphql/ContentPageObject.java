@@ -21,6 +21,7 @@ import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObje
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
+import com.echothree.model.data.content.server.entity.ContentPageArea;
 import com.echothree.model.data.content.server.entity.ContentPageDetail;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.party.server.entity.Language;
@@ -112,7 +113,11 @@ public class ContentPageObject
         List<ContentPageAreaObject> contentPageAreas = new ArrayList<>(entities.size());
         
         entities.forEach((entity) -> {
-            contentPageAreas.add(new ContentPageAreaObject(contentControl.getBestContentPageArea(contentPage, entity, preferredLanguage)));
+            ContentPageArea contentPageArea = contentControl.getBestContentPageArea(contentPage, entity, preferredLanguage);
+
+            if(contentPageArea != null) {
+                contentPageAreas.add(new ContentPageAreaObject(contentPageArea));
+            }
         });
         
         return contentPageAreas;
