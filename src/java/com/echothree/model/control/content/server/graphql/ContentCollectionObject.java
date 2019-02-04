@@ -81,17 +81,35 @@ public class ContentCollectionObject
     }
     
     @GraphQLField
+    @GraphQLDescription("content catalogs count")
+    public Long getContentCatalogsCount(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        
+        return ContentSecurityUtils.getInstance().getHasContentCatalogsAccess(env) ? contentControl.countContentCatalogsByContentCollection(contentCollection) : null;
+    }
+    
+    @GraphQLField
     @GraphQLDescription("content catalogs")
     public List<ContentCatalogObject> getContentCatalogs(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentCatalog> entities = ContentSecurityUtils.getInstance().getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
-        List<ContentCatalogObject> contentCatalogs = new ArrayList<>(entities.size());
+        List<ContentCatalogObject> contentCatalogs = entities == null ? null : new ArrayList<>(entities.size());
         
-        entities.forEach((entity) -> {
-            contentCatalogs.add(new ContentCatalogObject(entity));
-        });
+        if(entities != null) {
+            entities.forEach((entity) -> {
+                contentCatalogs.add(new ContentCatalogObject(entity));
+            });
+        }
         
         return contentCatalogs;
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("content sections count")
+    public Long getContentSectionsCount(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        
+        return ContentSecurityUtils.getInstance().getHasContentSectionsAccess(env) ? contentControl.countContentSectionsByContentCollection(contentCollection) : null;
     }
     
     @GraphQLField
@@ -99,11 +117,13 @@ public class ContentCollectionObject
     public List<ContentSectionObject> getContentSections(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentSection> entities = ContentSecurityUtils.getInstance().getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
-        List<ContentSectionObject> contentSections = new ArrayList<>(entities.size());
+        List<ContentSectionObject> contentSections = entities == null ? null : new ArrayList<>(entities.size());
         
-        entities.forEach((entity) -> {
-            contentSections.add(new ContentSectionObject(entity));
-        });
+        if(entities != null) {
+            entities.forEach((entity) -> {
+                contentSections.add(new ContentSectionObject(entity));
+            });
+        }
         
         return contentSections;
     }

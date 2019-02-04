@@ -101,17 +101,35 @@ public class ContentCatalogObject
     }
     
     @GraphQLField
+    @GraphQLDescription("content categories count")
+    public Long getContentCategoriesCount(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        
+        return ContentSecurityUtils.getInstance().getHasContentCategoriesAccess(env) ? contentControl.countContentCategoriesByContentCatalog(contentCatalog) : null;
+    }
+    
+    @GraphQLField
     @GraphQLDescription("content categories")
     public List<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentCategory> entities = ContentSecurityUtils.getInstance().getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
-        List<ContentCategoryObject> contentCategories = new ArrayList<>(entities.size());
+        List<ContentCategoryObject> contentCategories = entities == null ? null : new ArrayList<>(entities.size());
         
-        entities.forEach((entity) -> {
-            contentCategories.add(new ContentCategoryObject(entity));
-        });
+        if(entities != null) {
+            entities.forEach((entity) -> {
+                contentCategories.add(new ContentCategoryObject(entity));
+            });
+        }
         
         return contentCategories;
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("content catalog items count")
+    public Long getContentCatalogItemsCount(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        
+        return ContentSecurityUtils.getInstance().getHasContentCatalogItemsAccess(env) ? contentControl.countContentCatalogItemsByContentCatalog(contentCatalog) : null;
     }
     
     @GraphQLField
@@ -119,11 +137,13 @@ public class ContentCatalogObject
     public List<ContentCatalogItemObject> getContentCatalogItems(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentCatalogItem> entities = ContentSecurityUtils.getInstance().getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
-        List<ContentCatalogItemObject> contentCatalogItems = new ArrayList<>(entities.size());
+        List<ContentCatalogItemObject> contentCatalogItems = entities == null ? null : new ArrayList<>(entities.size());
         
-        entities.forEach((entity) -> {
-            contentCatalogItems.add(new ContentCatalogItemObject(entity));
-        });
+        if(entities != null) {
+            entities.forEach((entity) -> {
+                contentCatalogItems.add(new ContentCatalogItemObject(entity));
+            });
+        }
         
         return contentCatalogItems;
     }

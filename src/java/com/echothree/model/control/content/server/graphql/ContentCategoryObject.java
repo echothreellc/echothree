@@ -112,15 +112,25 @@ public class ContentCategoryObject
     }
     
     @GraphQLField
+    @GraphQLDescription("content category items count")
+    public Long getContentCategoryItemsCount(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        
+        return ContentSecurityUtils.getInstance().getHasContentCategoryItemsAccess(env) ? contentControl.countContentCategoryItemsByContentCategory(contentCategory) : null;
+    }
+    
+    @GraphQLField
     @GraphQLDescription("content category items")
     public List<ContentCategoryItemObject> getContentCategoryItems(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentCategoryItem> entities = ContentSecurityUtils.getInstance().getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
-        List<ContentCategoryItemObject> contentCategoryItems = new ArrayList<>(entities.size());
-        
-        entities.forEach((entity) -> {
-            contentCategoryItems.add(new ContentCategoryItemObject(entity));
-        });
+        List<ContentCategoryItemObject> contentCategoryItems = entities == null ? null : new ArrayList<>(entities.size());
+                
+        if(entities != null) {
+            entities.forEach((entity) -> {
+                contentCategoryItems.add(new ContentCategoryItemObject(entity));
+            });
+        }
         
         return contentCategoryItems;
     }

@@ -100,15 +100,25 @@ public class ContentSectionObject
     }
     
     @GraphQLField
+    @GraphQLDescription("content pages count")
+    public Long getContentPagesCount(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        
+        return ContentSecurityUtils.getInstance().getHasContentPagesAccess(env) ? contentControl.countContentPagesByContentSection(contentSection) : null;
+    }
+    
+    @GraphQLField
     @GraphQLDescription("content pages")
     public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
         ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentPage> entities = ContentSecurityUtils.getInstance().getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
-        List<ContentPageObject> contentPages = new ArrayList<>(entities.size());
+        List<ContentPageObject> contentPages = entities == null ? null : new ArrayList<>(entities.size());
         
-        entities.forEach((entity) -> {
-            contentPages.add(new ContentPageObject(entity));
-        });
+        if(entities != null) {
+            entities.forEach((entity) -> {
+                contentPages.add(new ContentPageObject(entity));
+            });
+        }
         
         return contentPages;
     }
