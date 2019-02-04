@@ -16,13 +16,19 @@
 
 package com.echothree.model.control.content.server.graphql;
 
+import com.echothree.model.control.content.common.ContentPageAreaTypes;
+import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.data.content.server.entity.ContentPageArea;
+import com.echothree.model.data.content.server.entity.ContentPageAreaClob;
 import com.echothree.model.data.content.server.entity.ContentPageAreaDetail;
+import com.echothree.model.data.content.server.entity.ContentPageAreaString;
+import com.echothree.model.data.content.server.entity.ContentPageAreaUrl;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -52,6 +58,56 @@ public class ContentPageAreaObject
         return contentPageAreaDetail;
     }
     
+    String contentPageAreaTypeName;
+
+    private String getContentPageAreaTypeName() {
+        if(contentPageAreaTypeName == null) {
+            contentPageAreaTypeName = getContentPageAreaDetail().getContentPageLayoutArea().getContentPageAreaType().getContentPageAreaTypeName();
+        }
+
+        return contentPageAreaTypeName;
+    }
+    
+    ContentPageAreaClob contentPageAreaClob;
+
+    private ContentPageAreaClob getContentPageAreaClob() {
+        if(contentPageAreaClob == null) {
+            if(getContentPageAreaTypeName().equals(ContentPageAreaTypes.CLOB.name())) {
+                ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+
+                contentPageAreaClob = contentControl.getContentPageAreaClob(getContentPageAreaDetail());
+            }
+        }
+
+        return contentPageAreaClob;
+    }
+
+    ContentPageAreaString contentPageAreaString;
+
+    private ContentPageAreaString getContentPageAreaString() {
+        if(contentPageAreaString == null) {
+            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+
+            contentPageAreaString = contentControl.getContentPageAreaString(getContentPageAreaDetail());
+        }
+
+        return contentPageAreaString;
+    }
+
+    ContentPageAreaUrl contentPageAreaUrl;
+
+    private ContentPageAreaUrl getContentPageAreaUrl() {
+        if(contentPageAreaUrl == null) {
+            if(getContentPageAreaTypeName().equals(ContentPageAreaTypes.LINK.name())) {
+                ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+
+                contentPageAreaUrl = contentControl.getContentPageAreaUrl(getContentPageAreaDetail());
+            }
+        }
+
+        return contentPageAreaUrl;
+    }
+
     @GraphQLField
     @GraphQLDescription("content page")
     @GraphQLNonNull
@@ -78,6 +134,30 @@ public class ContentPageAreaObject
     @GraphQLNonNull
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(getContentPageAreaDetail().getMimeType()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("clob")
+    public String getClob(final DataFetchingEnvironment env) {
+        ContentPageAreaClob contentPageAreaClob = getContentPageAreaClob();
+        
+        return contentPageAreaClob == null ? null : contentPageAreaClob.getClob();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("string")
+    public String getString(final DataFetchingEnvironment env) {
+        ContentPageAreaString contentPageAreaString = getContentPageAreaString();
+        
+        return contentPageAreaString == null ? null : contentPageAreaString.getString();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("url")
+    public String getUrl(final DataFetchingEnvironment env) {
+        ContentPageAreaUrl contentPageAreaUrl = getContentPageAreaUrl();
+        
+        return contentPageAreaUrl == null ? null : contentPageAreaUrl.getUrl();
     }
 
 }
