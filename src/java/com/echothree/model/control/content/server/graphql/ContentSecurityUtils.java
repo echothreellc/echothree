@@ -25,6 +25,7 @@ import com.echothree.control.user.content.server.command.GetContentCategoryComma
 import com.echothree.control.user.content.server.command.GetContentCategoryItemCommand;
 import com.echothree.control.user.content.server.command.GetContentCategoryItemsCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
+import com.echothree.control.user.content.server.command.GetContentPageCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
 import com.echothree.control.user.content.server.command.GetContentPagesCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionCommand;
@@ -92,6 +93,10 @@ public final class ContentSecurityUtils {
     
     public boolean getHasContentPagesAccess(final DataFetchingEnvironment env) {
         return env.<GraphQlContext>getContext().hasAccess(GetContentPagesCommand.class);
+    }
+    
+    public boolean getHasContentPageAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetContentPageCommand.class);
     }
     
 }
