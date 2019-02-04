@@ -40,17 +40,10 @@ import java.util.List;
 public class GetMimeTypeCommand
         extends BaseSingleEntityCommand<MimeType, GetMimeTypeForm> {
     
-    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.MimeType.name(), SecurityRoles.Review.name())
-                        )))
-                )));
-        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
                 ));
@@ -58,7 +51,7 @@ public class GetMimeTypeCommand
     
     /** Creates a new instance of GetMimeTypeCommand */
     public GetMimeTypeCommand(UserVisitPK userVisitPK, GetMimeTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override
