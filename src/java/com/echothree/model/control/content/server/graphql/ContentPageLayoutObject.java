@@ -21,6 +21,7 @@ import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObje
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
+import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -28,6 +29,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @GraphQLDescription("content page layout object")
 @GraphQLName("ContentPageLayout")
@@ -82,6 +85,30 @@ public class ContentPageLayoutObject
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentPageLayoutDescription(contentPageLayout, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("content page layout areas count")
+    @GraphQLNonNull
+    public Long getContentPageLayoutAreasCount(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        
+        return contentControl.countContentPageLayoutAreasByContentPageLayout(contentPageLayout);
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("content page layout areas")
+    @GraphQLNonNull
+    public List<ContentPageLayoutAreaObject> getContentPageLayoutAreas(final DataFetchingEnvironment env) {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(contentPageLayout);
+        List<ContentPageLayoutAreaObject> contentPageLayoutAreas = new ArrayList<>(entities.size());
+        
+        entities.forEach((entity) -> {
+            contentPageLayoutAreas.add(new ContentPageLayoutAreaObject(entity));
+        });
+        
+        return contentPageLayoutAreas;
     }
     
 }
