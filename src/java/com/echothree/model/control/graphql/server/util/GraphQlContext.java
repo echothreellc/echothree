@@ -18,6 +18,7 @@ package com.echothree.model.control.graphql.server.util;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.control.GraphQlSecurityCommand;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +54,7 @@ public class GraphQlContext {
         return remoteInet4Address;
     }
 
-    public boolean hasAccess(final Class<?> command) {
+    public boolean hasAccess(final Class<? extends GraphQlSecurityCommand> command) {
         Boolean hasAccess = securityCache.get(command);
         
         if(hasAccess == null) {
