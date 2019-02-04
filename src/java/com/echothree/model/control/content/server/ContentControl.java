@@ -760,6 +760,14 @@ public class ContentControl
         return ContentPageLayoutAreaFactory.getInstance().create(contentPageLayout, contentPageAreaType, showDescriptionField, sortOrder);
     }
     
+    public long countContentPageLayoutAreasByContentPageLayout(ContentPageLayout contentPageLayout) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contentpagelayoutareas " +
+                "WHERE cntpla_cntpl_contentpagelayoutid = ?",
+                contentPageLayout);
+    }
+
     public ContentPageLayoutArea getContentPageLayoutArea(ContentPageLayout contentPageLayout, Integer sortOrder) {
         ContentPageLayoutArea contentPageLayoutArea = null;
         
