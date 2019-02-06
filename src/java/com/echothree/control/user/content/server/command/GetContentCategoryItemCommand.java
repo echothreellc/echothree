@@ -140,17 +140,25 @@ public class GetContentCategoryItemCommand
 
                                 if(contentCatalog != null) {
                                     String contentCategoryName = form.getContentCategoryName();
-                                    ContentCategory contentCategory = contentCategoryName == null ? null : contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+                                    ContentCategory contentCategory = contentCategoryName == null ? null
+                                            : contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
 
                                     if(contentCategoryName == null || contentCategory != null) {
                                         ContentCatalogItem contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, item,
                                                 inventoryCondition, unitOfMeasureType, currency);
 
                                         if(contentCatalogItem != null) {
+                                            // If contentCategory is null, we'll attempt to find the item in a default ContentCategory
+                                            // that it had been placed in. Always direct the user to the item if possible in a category
+                                            // if we can.
                                             contentCategoryItem = contentCategory == null ? contentControl.getDefaultContentCategoryItem(contentCatalogItem)
                                                     : contentControl.getContentCategoryItem(contentCategory, contentCatalogItem);
 
                                             if(contentCategoryItem != null) {
+                                                if(contentCategory == null) {
+                                                    contentCategory = contentCategoryItem.getContentCategory();
+                                                }
+                                                
                                                 AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCategory.getPrimaryKey(), partyPK);
 
                                                 if(!hasExecutionErrors()) {
