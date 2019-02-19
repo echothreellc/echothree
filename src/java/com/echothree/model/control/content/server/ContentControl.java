@@ -21,6 +21,7 @@ import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.common.choice.ContentCatalogChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentCategoryChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentCollectionChoicesBean;
+import com.echothree.model.control.content.common.choice.ContentPageAreaTypeChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentPageLayoutChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentSectionChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentWebAddressChoicesBean;
@@ -55,6 +56,7 @@ import com.echothree.model.control.content.server.transfer.ContentCollectionDesc
 import com.echothree.model.control.content.server.transfer.ContentCollectionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentForumTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageAreaTransferCache;
+import com.echothree.model.control.content.server.transfer.ContentPageAreaTypeTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageDescriptionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageLayoutAreaTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageLayoutDescriptionTransferCache;
@@ -76,6 +78,7 @@ import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.content.common.pk.ContentCollectionPK;
 import com.echothree.model.data.content.common.pk.ContentForumPK;
 import com.echothree.model.data.content.common.pk.ContentPageAreaPK;
+import com.echothree.model.data.content.common.pk.ContentPageAreaTypePK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutAreaPK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutPK;
 import com.echothree.model.data.content.common.pk.ContentPagePK;
@@ -236,39 +239,152 @@ public class ContentControl
     //   Content Page Area Types
     // --------------------------------------------------------------------------------
     
-    public ContentPageAreaType createContentPageAreaType(String contentPageAreaTypeName) {
-        return ContentPageAreaTypeFactory.getInstance().create(contentPageAreaTypeName);
+    public ContentPageAreaType createContentPageAreaType(String contentPageAreaTypeName, BasePK createdBy) {
+        ContentPageAreaType contentPageAreaType = ContentPageAreaTypeFactory.getInstance().create(contentPageAreaTypeName);
+        
+        sendEventUsingNames(contentPageAreaType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return contentPageAreaType;
     }
     
-    public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName) {
-        ContentPageAreaType contentPageAreaType = null;
-        
-        try {
-            PreparedStatement ps = ContentPageAreaTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpageareatypes " +
-                    "WHERE cntpat_contentpageareatypename = ?");
-            
-            ps.setString(1, contentPageAreaTypeName);
-            
-            contentPageAreaType = ContentPageAreaTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentPageAreaType */
+    public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        ContentPageAreaTypePK pk = new ContentPageAreaTypePK(entityInstance.getEntityUniqueId());
+        ContentPageAreaType contentPageAreaType = ContentPageAreaTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
         
         return contentPageAreaType;
     }
     
+    public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance) {
+        return getContentPageAreaTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentPageAreaType getContentPageAreaTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentPageAreaTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
+    private static final Map<EntityPermission, String> getContentPageAreaTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM contentpageareatypes " +
+                "WHERE cntpat_contentpageareatypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM contentpageareatypes " +
+                "WHERE cntpat_contentpageareatypename = ? " +
+                "FOR UPDATE");
+        getContentPageAreaTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName, EntityPermission entityPermission) {
+        return ContentPageAreaTypeFactory.getInstance().getEntityFromQuery(entityPermission, getContentPageAreaTypeByNameQueries,
+                contentPageAreaTypeName);
+    }
+    
+    public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName) {
+        return getContentPageAreaTypeByName(contentPageAreaTypeName, EntityPermission.READ_ONLY);
+    }
+    
+    public ContentPageAreaType getContentPageAreaTypeByNameForUpdate(String contentPageAreaTypeName) {
+        return getContentPageAreaTypeByName(contentPageAreaTypeName, EntityPermission.READ_WRITE);
+    }
+    
+    private static final Map<EntityPermission, String> getContentPageAreaTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM contentpageareatypes " +
+                "ORDER BY cntpat_contentpageareatypename");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM contentpageareatypes " +
+                "FOR UPDATE");
+        getContentPageAreaTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<ContentPageAreaType> getContentPageAreaTypes(EntityPermission entityPermission) {
+        return ContentPageAreaTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContentPageAreaTypesQueries);
+    }
+    
+    public List<ContentPageAreaType> getContentPageAreaTypes() {
+        return getContentPageAreaTypes(EntityPermission.READ_ONLY);
+    }
+    
+    public List<ContentPageAreaType> getContentPageAreaTypesForUpdate() {
+        return getContentPageAreaTypes(EntityPermission.READ_WRITE);
+    }
+    
     public ContentPageAreaTypeTransfer getContentPageAreaTypeTransfer(UserVisit userVisit, ContentPageAreaType contentPageAreaType) {
-        return getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache().getContentPageAreaTypeTransfer(contentPageAreaType);
+        return getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache().getTransfer(contentPageAreaType);
+    }
+    
+    public List<ContentPageAreaTypeTransfer> getContentPageAreaTypeTransfers(UserVisit userVisit, Collection<ContentPageAreaType> contentPageAreaTypes) {
+        List<ContentPageAreaTypeTransfer> contentPageAreaTypeTransfers = new ArrayList<>(contentPageAreaTypes.size());
+        ContentPageAreaTypeTransferCache contentPageAreaTypeTransferCache = getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache();
+        
+        contentPageAreaTypes.stream().forEach((contentPageAreaType) -> {
+            contentPageAreaTypeTransfers.add(contentPageAreaTypeTransferCache.getTransfer(contentPageAreaType));
+        });
+        
+        return contentPageAreaTypeTransfers;
+    }
+    
+    public List<ContentPageAreaTypeTransfer> getContentPageAreaTypeTransfers(UserVisit userVisit) {
+        return getContentPageAreaTypeTransfers(userVisit, getContentPageAreaTypes());
+    }
+    
+    public ContentPageAreaTypeChoicesBean getContentPageAreaTypeChoices(String defaultContentPageAreaTypeChoice, Language language,
+            boolean allowNullChoice) {
+        List<ContentPageAreaType> contentPageAreaTypes = getContentPageAreaTypes();
+        int size = contentPageAreaTypes.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultContentPageAreaTypeChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(ContentPageAreaType contentPageAreaType: contentPageAreaTypes) {
+            String label = getBestContentPageAreaTypeDescription(contentPageAreaType, language);
+            String value = contentPageAreaType.getContentPageAreaTypeName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultContentPageAreaTypeChoice == null ? false : defaultContentPageAreaTypeChoice.equals(value);
+            if(usingDefaultChoice || defaultValue == null) {
+                defaultValue = value;
+            }
+        }
+        
+        return new ContentPageAreaTypeChoicesBean(labels, values, defaultValue);
     }
     
     // --------------------------------------------------------------------------------
     //   Content Page Area Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public ContentPageAreaTypeDescription createContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language, String description) {
-        return ContentPageAreaTypeDescriptionFactory.getInstance().create(contentPageAreaType, language, description);
+    public ContentPageAreaTypeDescription createContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language,
+            String description, BasePK createdBy) {
+        ContentPageAreaTypeDescription contentPageAreaTypeDescription = ContentPageAreaTypeDescriptionFactory.getInstance().create(contentPageAreaType,
+                language, description);
+        
+        sendEventUsingNames(contentPageAreaType.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageAreaTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return contentPageAreaTypeDescription;
     }
     
     public ContentPageAreaTypeDescription getContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language) {

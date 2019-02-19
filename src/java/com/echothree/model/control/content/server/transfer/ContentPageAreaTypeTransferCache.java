@@ -29,7 +29,7 @@ public class ContentPageAreaTypeTransferCache
         super(userVisit, contentControl);
     }
     
-    public ContentPageAreaTypeTransfer getContentPageAreaTypeTransfer(ContentPageAreaType contentPageAreaType) {
+    public ContentPageAreaTypeTransfer getTransfer(ContentPageAreaType contentPageAreaType) {
         ContentPageAreaTypeTransfer contentPageAreaTypeTransfer = get(contentPageAreaType);
         
         if(contentPageAreaTypeTransfer == null) {
