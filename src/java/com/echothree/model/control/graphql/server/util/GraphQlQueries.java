@@ -32,6 +32,8 @@ import com.echothree.control.user.content.common.form.GetContentCategoryItemForm
 import com.echothree.control.user.content.common.form.GetContentCategoryItemsForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreaTypeForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreaTypesForm;
 import com.echothree.control.user.content.common.form.GetContentPageForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
@@ -50,6 +52,8 @@ import com.echothree.control.user.content.server.command.GetContentCategoryItemC
 import com.echothree.control.user.content.server.command.GetContentCategoryItemsCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionsCommand;
+import com.echothree.control.user.content.server.command.GetContentPageAreaTypeCommand;
+import com.echothree.control.user.content.server.command.GetContentPageAreaTypesCommand;
 import com.echothree.control.user.content.server.command.GetContentPageCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutsCommand;
@@ -162,6 +166,7 @@ import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryObject;
 import com.echothree.model.control.content.server.graphql.ContentCollectionObject;
+import com.echothree.model.control.content.server.graphql.ContentPageAreaTypeObject;
 import com.echothree.model.control.content.server.graphql.ContentPageLayoutObject;
 import com.echothree.model.control.content.server.graphql.ContentPageObject;
 import com.echothree.model.control.content.server.graphql.ContentSectionObject;
@@ -200,6 +205,7 @@ import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentPage;
+import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
@@ -343,6 +349,58 @@ public final class GraphQlQueries {
         }
         
         return contentPageLayoutObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageAreaType")
+    public static ContentPageAreaTypeObject contentPageAreaType(final DataFetchingEnvironment env,
+            @GraphQLName("contentPageAreaTypeName") final String contentPageAreaTypeName,
+            @GraphQLName("id") final String id) {
+        ContentPageAreaType contentPageAreaType;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageAreaTypeForm commandForm = ContentUtil.getHome().getGetContentPageAreaTypeForm();
+
+            commandForm.setContentPageAreaTypeName(contentPageAreaTypeName);
+            commandForm.setUlid(id);
+        
+            contentPageAreaType = new GetContentPageAreaTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentPageAreaType == null ? null : new ContentPageAreaTypeObject(contentPageAreaType);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageAreaTypes")
+    public static Collection<ContentPageAreaTypeObject> contentPageAreaTypes(final DataFetchingEnvironment env) {
+        Collection<ContentPageAreaType> contentPageAreaTypes;
+        Collection<ContentPageAreaTypeObject> contentPageAreaTypeObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageAreaTypesForm commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
+        
+            contentPageAreaTypes = new GetContentPageAreaTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentPageAreaTypes == null) {
+            contentPageAreaTypeObjects = Collections.EMPTY_LIST;
+        } else {
+            contentPageAreaTypeObjects = new ArrayList<>(contentPageAreaTypes.size());
+
+            contentPageAreaTypes.stream().map((contentPageAreaType) -> {
+                return new ContentPageAreaTypeObject(contentPageAreaType);
+            }).forEachOrdered((contentPageAreaTypeObject) -> {
+                contentPageAreaTypeObjects.add(contentPageAreaTypeObject);
+            });
+        }
+        
+        return contentPageAreaTypeObjects;
     }
 
     @GraphQLField
