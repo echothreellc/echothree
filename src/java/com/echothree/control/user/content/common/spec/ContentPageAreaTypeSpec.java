@@ -14,15 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.content.common.form;
+package com.echothree.control.user.content.common.spec;
 
-import com.echothree.control.user.content.common.edit.ContentPageAreaTypeDescriptionEdit;
-import com.echothree.control.user.content.common.spec.ContentPageAreaTypeSpec;
-import com.echothree.control.user.party.common.spec.LanguageSpec;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface CreateContentPageAreaTypeDescriptionForm
-        extends ContentPageAreaTypeSpec, LanguageSpec, ContentPageAreaTypeDescriptionEdit {
+public interface ContentPageAreaTypeSpec
+        extends BaseSpec {
     
-    // Nothing additional beyond ContentPageAreaTypeSpec, LanguageSpec, ContentPageAreaTypeDescriptionEdit
+    String getContentPageAreaTypeName();
+    void setContentPageAreaTypeName(String contentPageAreaTypeName);
     
 }

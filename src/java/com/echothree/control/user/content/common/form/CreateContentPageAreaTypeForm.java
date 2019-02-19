@@ -16,10 +16,11 @@
 
 package com.echothree.control.user.content.common.form;
 
+import com.echothree.control.user.content.common.edit.ContentPageAreaTypeDescriptionEdit;
 import com.echothree.util.common.form.BaseForm;
 
 public interface CreateContentPageAreaTypeForm
-        extends BaseForm {
+        extends BaseForm, ContentPageAreaTypeDescriptionEdit {
     
     String getContentPageAreaTypeName();
     void setContentPageAreaTypeName(String contentPageAreaTypeName);

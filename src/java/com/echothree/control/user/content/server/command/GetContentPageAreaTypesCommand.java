@@ -16,57 +16,65 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.common.form.CreateContentPageAreaTypeForm;
-import com.echothree.model.control.content.server.logic.ContentPageAreaTypeLogic;
+import com.echothree.control.user.content.common.form.GetContentPageAreaTypesForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.GetContentPageAreaTypesResult;
+import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class CreateContentPageAreaTypeCommand
-        extends BaseSimpleCommand<CreateContentPageAreaTypeForm> {
+public class GetContentPageAreaTypesCommand
+        extends BaseMultipleEntitiesCommand<ContentPageAreaType, GetContentPageAreaTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageAreaType.name(), SecurityRoles.Create.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageAreaType.name(), SecurityRoles.List.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ContentPageAreaTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
                 ));
     }
     
-    /** Creates a new instance of CreateContentPageAreaTypeCommand */
-    public CreateContentPageAreaTypeCommand(UserVisitPK userVisitPK, CreateContentPageAreaTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    /** Creates a new instance of GetContentPageAreaTypesCommand */
+    public GetContentPageAreaTypesCommand(UserVisitPK userVisitPK, GetContentPageAreaTypesForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        String contentPageAreaTypeName = form.getContentPageAreaTypeName();
-        String description = form.getDescription();
+    protected Collection<ContentPageAreaType> getEntities() {
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
-        ContentPageAreaTypeLogic.getInstance().createContentPageAreaType(this, contentPageAreaTypeName, getPreferredLanguage(),
-                description, getPartyPK());
+        return contentControl.getContentPageAreaTypes();
+    }
+    
+    @Override
+    protected BaseResult getTransfers(Collection<ContentPageAreaType> entities) {
+        GetContentPageAreaTypesResult result = ContentResultFactory.getGetContentPageAreaTypesResult();
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
-        return null;
+        result.setContentPageAreaTypes(contentControl.getContentPageAreaTypeTransfers(getUserVisit(), entities));
+        
+        return result;
     }
     
 }

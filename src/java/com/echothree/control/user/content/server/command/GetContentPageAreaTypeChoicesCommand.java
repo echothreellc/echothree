@@ -16,8 +16,10 @@
 
 package com.echothree.control.user.content.server.command;
 
-import com.echothree.control.user.content.common.form.CreateContentPageAreaTypeForm;
-import com.echothree.model.control.content.server.logic.ContentPageAreaTypeLogic;
+import com.echothree.control.user.content.common.form.GetContentPageAreaTypeChoicesForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
+import com.echothree.control.user.content.common.result.GetContentPageAreaTypeChoicesResult;
+import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,44 +31,46 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CreateContentPageAreaTypeCommand
-        extends BaseSimpleCommand<CreateContentPageAreaTypeForm> {
+public class GetContentPageAreaTypeChoicesCommand
+        extends BaseSimpleCommand<GetContentPageAreaTypeChoicesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageAreaType.name(), SecurityRoles.Create.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageAreaType.name(), SecurityRoles.Choices.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ContentPageAreaTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("DefaultContentPageAreaTypeChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of CreateContentPageAreaTypeCommand */
-    public CreateContentPageAreaTypeCommand(UserVisitPK userVisitPK, CreateContentPageAreaTypeForm form) {
+    /** Creates a new instance of GetContentPageAreaTypeChoicesCommand */
+    public GetContentPageAreaTypeChoicesCommand(UserVisitPK userVisitPK, GetContentPageAreaTypeChoicesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        String contentPageAreaTypeName = form.getContentPageAreaTypeName();
-        String description = form.getDescription();
+        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        GetContentPageAreaTypeChoicesResult result = ContentResultFactory.getGetContentPageAreaTypeChoicesResult();
+        String defaultContentPageAreaTypeChoice = form.getDefaultContentPageAreaTypeChoice();
+        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        ContentPageAreaTypeLogic.getInstance().createContentPageAreaType(this, contentPageAreaTypeName, getPreferredLanguage(),
-                description, getPartyPK());
+        result.setContentPageAreaTypeChoices(contentControl.getContentPageAreaTypeChoices(defaultContentPageAreaTypeChoice,
+                getPreferredLanguage(), allowNullChoice));
         
-        return null;
+        return result;
     }
     
 }
