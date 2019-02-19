@@ -3939,12 +3939,6 @@
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Content Page Area Type Create" />
             </securityRole>
-            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Content Page Area Type Edit" />
-            </securityRole>
-            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Content Page Area Type Delete" />
-            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Content Page Area Type List" />
             </securityRole>
@@ -7862,8 +7856,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ForumPartyRole" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ForumPartyTypeRole" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Edit" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Description" />
