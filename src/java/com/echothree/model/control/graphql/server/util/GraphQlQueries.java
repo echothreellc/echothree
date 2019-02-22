@@ -32,8 +32,10 @@ import com.echothree.control.user.content.common.form.GetContentCategoryItemForm
 import com.echothree.control.user.content.common.form.GetContentCategoryItemsForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionForm;
 import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreaForm;
 import com.echothree.control.user.content.common.form.GetContentPageAreaTypeForm;
 import com.echothree.control.user.content.common.form.GetContentPageAreaTypesForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreasForm;
 import com.echothree.control.user.content.common.form.GetContentPageForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
@@ -52,8 +54,10 @@ import com.echothree.control.user.content.server.command.GetContentCategoryItemC
 import com.echothree.control.user.content.server.command.GetContentCategoryItemsCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
 import com.echothree.control.user.content.server.command.GetContentCollectionsCommand;
+import com.echothree.control.user.content.server.command.GetContentPageAreaCommand;
 import com.echothree.control.user.content.server.command.GetContentPageAreaTypeCommand;
 import com.echothree.control.user.content.server.command.GetContentPageAreaTypesCommand;
+import com.echothree.control.user.content.server.command.GetContentPageAreasCommand;
 import com.echothree.control.user.content.server.command.GetContentPageCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutsCommand;
@@ -166,6 +170,7 @@ import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryObject;
 import com.echothree.model.control.content.server.graphql.ContentCollectionObject;
+import com.echothree.model.control.content.server.graphql.ContentPageAreaObject;
 import com.echothree.model.control.content.server.graphql.ContentPageAreaTypeObject;
 import com.echothree.model.control.content.server.graphql.ContentPageLayoutObject;
 import com.echothree.model.control.content.server.graphql.ContentPageObject;
@@ -205,6 +210,7 @@ import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.entity.ContentPage;
+import com.echothree.model.data.content.server.entity.ContentPageArea;
 import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentSection;
@@ -649,6 +655,71 @@ public final class GraphQlQueries {
         }
         
         return contentPageObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageArea")
+    public static ContentPageAreaObject contentPageArea(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
+            @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
+        ContentPageArea contentPageArea;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageAreaForm commandForm = ContentUtil.getHome().getGetContentPageAreaForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setContentPageName(contentPageName);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            contentPageArea = new GetContentPageAreaCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentPageArea == null ? null : new ContentPageAreaObject(contentPageArea);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageAreas")
+    public static Collection<ContentPageAreaObject> contentPageAreas(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
+            @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
+        Collection<ContentPageArea> contentPageAreas;
+        Collection<ContentPageAreaObject> contentPageAreaObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageAreasForm commandForm = ContentUtil.getHome().getGetContentPageAreasForm();
+        
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setContentPageName(contentPageName);
+
+            contentPageAreas = new GetContentPageAreasCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentPageAreas == null) {
+            contentPageAreaObjects = Collections.EMPTY_LIST;
+        } else {
+            contentPageAreaObjects = new ArrayList<>(contentPageAreas.size());
+
+            contentPageAreas.stream().map((contentPageArea) -> {
+                return new ContentPageAreaObject(contentPageArea);
+            }).forEachOrdered((contentPageAreaObject) -> {
+                contentPageAreaObjects.add(contentPageAreaObject);
+            });
+        }
+        
+        return contentPageAreaObjects;
     }
 
     @GraphQLField
