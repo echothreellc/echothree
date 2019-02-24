@@ -673,6 +673,12 @@
             <entityType entityTypeName="ContentPageAreaTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Content Page Area Type Description" />
             </entityType>
+            <entityType entityTypeName="ContentPageLayoutArea" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Page Layout Area" />
+            </entityType>
+            <entityType entityTypeName="ContentPageLayoutAreaDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Content Page Layout Area Description" />
+            </entityType>
             <entityType entityTypeName="ContentPage" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Content Page" />
             </entityType>
