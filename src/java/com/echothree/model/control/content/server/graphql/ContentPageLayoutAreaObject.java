@@ -28,7 +28,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 
-@GraphQLDescription("content page area type")
+@GraphQLDescription("content page layout area")
 @GraphQLName("ContentPageLayoutArea")
 public class ContentPageLayoutAreaObject
         extends BaseEntityInstanceObject {
