@@ -17,11 +17,11 @@
 package com.echothree.control.user.inventory.common.form;
 
 import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
-import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditInventoryConditionForm
-        extends BaseEditForm<InventoryConditionSpec, InventoryConditionEdit> {
+        extends BaseEditForm<InventoryConditionUniversalSpec, InventoryConditionEdit> {
     
     // Nothing additional beyond BaseEditForm
     

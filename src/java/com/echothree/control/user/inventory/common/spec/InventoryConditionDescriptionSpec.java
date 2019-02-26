@@ -16,10 +16,11 @@
 
 package com.echothree.control.user.inventory.common.spec;
 
+import com.echothree.control.user.party.common.spec.LanguageSpec;
+
 public interface InventoryConditionDescriptionSpec
-        extends InventoryConditionSpec {
+        extends InventoryConditionSpec, LanguageSpec {
     
-    String getLanguageIsoName();
-    void setLanguageIsoName(String languageIsoName);
+    // Nothing additional beyond InventoryConditionSpec, LanguageSpec
     
 }

@@ -17,21 +17,24 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionsForm;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionsResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.result.GetInventoryConditionsResult;
 import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetInventoryConditionsCommand
-        extends BaseSimpleCommand<GetInventoryConditionsForm> {
+        extends BaseMultipleEntitiesCommand<InventoryCondition, GetInventoryConditionsForm> {
     
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
@@ -45,11 +48,18 @@ public class GetInventoryConditionsCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected Collection<InventoryCondition> getEntities() {
         InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        GetInventoryConditionsResult result = InventoryResultFactory.getGetInventoryConditionsResult();
         
-        result.setInventoryConditions(inventoryControl.getInventoryConditionTransfers(getUserVisit()));
+        return inventoryControl.getInventoryConditions();
+    }
+    
+    @Override
+    protected BaseResult getTransfers(Collection<InventoryCondition> entities) {
+        GetInventoryConditionsResult result = InventoryResultFactory.getGetInventoryConditionsResult();
+        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        
+        result.setInventoryConditions(inventoryControl.getInventoryConditionTransfers(getUserVisit(), entities));
         
         return result;
     }

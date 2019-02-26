@@ -696,11 +696,26 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="InventoryCondition" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Inventory Condition" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Inventory Condition List" />
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Inventory Condition Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Condition Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="InventoryConditionUseType" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
@@ -3924,12 +3939,6 @@
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Content Page Area Type Create" />
             </securityRole>
-            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Content Page Area Type Edit" />
-            </securityRole>
-            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Content Page Area Type Delete" />
-            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Content Page Area Type List" />
             </securityRole>
@@ -4124,6 +4133,12 @@
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Content Catalog Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ContentCatalogItem" parentSecurityRoleGroupName="ContentComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Content Catalog Item" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Content Catalog Item List" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ContentCategory" parentSecurityRoleGroupName="ContentComponent" isDefault="false" sortOrder="1">
@@ -6982,8 +6997,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Index" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Index" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Inventory" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryConditionUseType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Edit" />
@@ -7836,8 +7856,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ForumPartyRole" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ForumPartyTypeRole" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Edit" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentPageAreaType" securityRoleName="Description" />
@@ -7894,6 +7912,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCatalog" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCatalog" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCatalog" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContentCatalogItem" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCategory" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCategory" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCategory" securityRoleName="Delete" />

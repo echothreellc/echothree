@@ -24,7 +24,7 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -162,11 +162,11 @@ public class EditItemPriceCommand
     public void doLock(ItemPriceEdit edit, ItemPrice itemPrice) {
         ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
-        if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             ItemFixedPrice itemFixedPrice = itemControl.getItemFixedPrice(itemPrice);
 
             edit.setUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, itemFixedPrice.getUnitPrice()));
-        } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+        } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
             ItemVariablePrice itemVariablePrice = itemControl.getItemVariablePrice(itemPrice);
 
             edit.setMinimumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, itemVariablePrice.getMinimumUnitPrice()));
@@ -184,7 +184,7 @@ public class EditItemPriceCommand
 
     @Override
     public void canUpdate(ItemPrice itemPrice) {
-        if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             String strUnitPrice = edit.getUnitPrice();
 
             if(strUnitPrice != null) {
@@ -192,7 +192,7 @@ public class EditItemPriceCommand
             } else {
                 addExecutionError(ExecutionErrors.MissingUnitPrice.name());
             }
-        } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+        } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
             String strMinimumUnitPrice = edit.getMinimumUnitPrice();
             String strMaximumUnitPrice = edit.getMaximumUnitPrice();
             String strUnitPriceIncrement = edit.getUnitPriceIncrement();
@@ -222,13 +222,13 @@ public class EditItemPriceCommand
     @Override
     public void doUpdate(ItemPrice itemPrice) {
         ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             ItemFixedPriceValue itemFixedPriceValue = itemControl.getItemFixedPriceValueForUpdate(itemPrice);
 
             itemFixedPriceValue.setUnitPrice(unitPrice);
 
             itemControl.updateItemFixedPriceFromValue(itemFixedPriceValue, getPartyPK());
-        } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+        } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
             ItemVariablePriceValue itemVariablePriceValue = itemControl.getItemVariablePriceValueForUpdate(itemPrice);
 
             itemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);

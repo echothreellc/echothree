@@ -28,7 +28,7 @@ import com.echothree.model.control.customer.common.exception.UnknownCustomerType
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemUnitOfMeasureTypeException;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
@@ -855,7 +855,7 @@ public class SalesOrderLogic
                     } else {
                         String itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
 
-                        if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+                        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
                             // We'll accept the supplied unitAmount as long as it passes the limit checks later on. Any enforcement of
                             // security should come in the UC.
                             if(unitAmount == null) {
@@ -863,7 +863,7 @@ public class SalesOrderLogic
 
                                 unitAmount = offerItemFixedPrice.getUnitPrice();
                             }
-                        } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+                        } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
                             if(unitAmount == null) {
                                 handleExecutionError(UnitAmountRequiredException.class, eea, ExecutionErrors.UnitAmountRequired.name());
                             } else {

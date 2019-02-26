@@ -37,7 +37,7 @@ public class ContentPageLayoutAreaTransferCache
         if(contentPageLayoutAreaTransfer == null) {
             ContentTransferCaches contentTransferCaches = contentControl.getContentTransferCaches(userVisit);
             ContentPageLayoutTransfer contentPageLayoutTransfer = contentTransferCaches.getContentPageLayoutTransferCache().getTransfer(contentPageLayoutArea.getContentPageLayout());
-            ContentPageAreaTypeTransfer contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getContentPageAreaTypeTransfer(contentPageLayoutArea.getContentPageAreaType());
+            ContentPageAreaTypeTransfer contentPageAreaTypeTransfer = contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(contentPageLayoutArea.getContentPageAreaType());
             Boolean showDescriptionField = contentPageLayoutArea.getShowDescriptionField();
             Integer sortOrder = contentPageLayoutArea.getSortOrder();
             String description = contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, getLanguage());

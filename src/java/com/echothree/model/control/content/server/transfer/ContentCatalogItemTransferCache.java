@@ -24,7 +24,7 @@ import com.echothree.model.control.content.common.transfer.ContentCatalogTransfe
 import com.echothree.model.control.content.server.ContentControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
@@ -115,7 +115,7 @@ public class ContentCatalogItemTransferCache
             String unitPriceIncrement = null;
 
             String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
-            if(ItemConstants.ItemPriceType_FIXED.equals(itemPriceTypeName)) {
+            if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
                 if(!filterUnformattedUnitPrice || !filterUnitPrice) {
                     ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = contentControl.getContentCatalogItemFixedPrice(contentCatalogItem);
 
@@ -126,7 +126,7 @@ public class ContentCatalogItemTransferCache
                         unitPrice = filterUnitPrice ? null : amountUtils.formatPriceUnit(currency, rawUnitPrice);
                     }
                 }
-            } else if(ItemConstants.ItemPriceType_VARIABLE.equals(itemPriceTypeName)) {
+            } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
                 if(!filterUnformattedMinimumUnitPrice || !filterMinimumUnitPrice || !filterUnformattedMaximumUnitPrice || !filterMaximumUnitPrice
                         || !filterUnformattedUnitPriceIncrement || !filterUnitPriceIncrement) {
                     ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = contentControl.getContentCatalogItemVariablePrice(contentCatalogItem);

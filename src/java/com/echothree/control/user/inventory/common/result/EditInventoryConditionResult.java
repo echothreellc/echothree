@@ -20,11 +20,8 @@ import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
 import com.echothree.util.common.command.BaseEditResult;
 
 public interface EditInventoryConditionResult
-        extends BaseEditResult<InventoryConditionEdit> {
+        extends GetInventoryConditionResult, BaseEditResult<InventoryConditionEdit> {
     
-    @Override
-    InventoryConditionEdit getEdit();
-    @Override
-    void setEdit(InventoryConditionEdit edit);
+    // Nothing additional beyond GetInventoryConditionResult, BaseEditResult<InventoryConditionEdit>
     
 }

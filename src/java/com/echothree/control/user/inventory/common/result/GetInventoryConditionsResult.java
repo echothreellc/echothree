@@ -24,6 +24,6 @@ public interface GetInventoryConditionsResult
         extends BaseResult {
     
     List<InventoryConditionTransfer> getInventoryConditions();
-    void setInventoryConditions(List<InventoryConditionTransfer> inventoryInventoryConditionGroups);
+    void setInventoryConditions(List<InventoryConditionTransfer> inventoryConditions);
     
 }

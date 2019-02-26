@@ -20,7 +20,7 @@ import com.echothree.control.user.inventory.common.edit.InventoryConditionDescri
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionDescriptionTransfer;
 import com.echothree.util.common.command.BaseEditResult;
 
-public interface EditInventoryConditionDescriptionResult
+public interface EditInventoryConditionDescriptionResult 
         extends BaseEditResult<InventoryConditionDescriptionEdit> {
     
     InventoryConditionDescriptionTransfer getInventoryConditionDescription();

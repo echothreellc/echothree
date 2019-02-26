@@ -2498,8 +2498,8 @@ public class FilterControl
         }
     }
     
-    public void updateFilterFromValue(FilterDetailValue FilterDetailValue, BasePK updatedBy) {
-        updateFilterFromValue(FilterDetailValue, true, updatedBy);
+    public void updateFilterFromValue(FilterDetailValue filterDetailValue, BasePK updatedBy) {
+        updateFilterFromValue(filterDetailValue, true, updatedBy);
     }
     
     public void deleteFilter(Filter filter, BasePK deletedBy) {
@@ -2522,10 +2522,10 @@ public class FilterControl
                 if(iter.hasNext()) {
                     defaultFilter = iter.next();
                 }
-                FilterDetailValue FilterDetailValue = defaultFilter.getLastDetailForUpdate().getFilterDetailValue().clone();
+                FilterDetailValue filterDetailValue = defaultFilter.getLastDetailForUpdate().getFilterDetailValue().clone();
                 
-                FilterDetailValue.setIsDefault(Boolean.TRUE);
-                updateFilterFromValue(FilterDetailValue, false, deletedBy);
+                filterDetailValue.setIsDefault(Boolean.TRUE);
+                updateFilterFromValue(filterDetailValue, false, deletedBy);
             }
         }
         

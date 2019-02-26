@@ -18,6 +18,7 @@ package com.echothree.model.control.content.common;
 
 public enum ContentPageAreaTypes {
     
+    BLOB,
     CLOB,
     LINK,
     IMAGE,

@@ -34,6 +34,12 @@ public interface ContentService
     // --------------------------------------------------------------------------------
     
     CommandResult createContentPageAreaType(UserVisitPK userVisitPK, CreateContentPageAreaTypeForm form);
+
+    CommandResult getContentPageAreaTypeChoices(UserVisitPK userVisitPK, GetContentPageAreaTypeChoicesForm form);
+
+    CommandResult getContentPageAreaType(UserVisitPK userVisitPK, GetContentPageAreaTypeForm form);
+
+    CommandResult getContentPageAreaTypes(UserVisitPK userVisitPK, GetContentPageAreaTypesForm form);
     
     // --------------------------------------------------------------------------------
     //   Content Page Area Type Descriptions

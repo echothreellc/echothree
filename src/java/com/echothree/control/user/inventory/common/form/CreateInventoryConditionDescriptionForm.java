@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.inventory.common.form;
 
+import com.echothree.control.user.inventory.common.edit.InventoryConditionDescriptionEdit;
 import com.echothree.control.user.inventory.common.spec.InventoryConditionDescriptionSpec;
 
 public interface CreateInventoryConditionDescriptionForm
-        extends InventoryConditionDescriptionSpec {
+        extends InventoryConditionDescriptionSpec, InventoryConditionDescriptionEdit {
     
-    String getDescription();
-    void setDescription(String description);
+    // Nothing additional beyond InventoryConditionDescriptionSpec, InventoryConditionDescriptionEdit
     
 }

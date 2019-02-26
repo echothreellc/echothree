@@ -20,11 +20,17 @@ import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
 import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.control.user.content.common.result.GetContentPageLayoutsResult;
 import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,17 +40,24 @@ import java.util.List;
 public class GetContentPageLayoutsCommand
         extends BaseMultipleEntitiesCommand<ContentPageLayout, GetContentPageLayoutsForm> {
     
-    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContentPageLayout.name(), SecurityRoles.List.name())
+                        )))
+                )));
+        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 ));
     }
     
     /** Creates a new instance of GetContentPageLayoutsCommand */
     public GetContentPageLayoutsCommand(UserVisitPK userVisitPK, GetContentPageLayoutsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override

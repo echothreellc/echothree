@@ -17,13 +17,11 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentPageAreaTypeForm;
-import com.echothree.model.control.content.server.ContentControl;
+import com.echothree.model.control.content.server.logic.ContentPageAreaTypeLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -31,7 +29,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +48,8 @@ public class CreateContentPageAreaTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ContentPageAreaTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ContentPageAreaTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
                 ));
     }
     
@@ -63,14 +61,10 @@ public class CreateContentPageAreaTypeCommand
     @Override
     protected BaseResult execute() {
         String contentPageAreaTypeName = form.getContentPageAreaTypeName();
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        ContentPageAreaType contentPageAreaType = contentControl.getContentPageAreaTypeByName(contentPageAreaTypeName);
+        String description = form.getDescription();
         
-        if(contentPageAreaType == null) {
-            contentControl.createContentPageAreaType(contentPageAreaTypeName);
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateContentPageAreaTypeName.name(), contentPageAreaTypeName);
-        }
+        ContentPageAreaTypeLogic.getInstance().createContentPageAreaType(this, contentPageAreaTypeName, getPreferredLanguage(),
+                description, getPartyPK());
         
         return null;
     }

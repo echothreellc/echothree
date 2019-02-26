@@ -17,16 +17,22 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionChoicesForm;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionChoicesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.common.result.GetInventoryConditionChoicesResult;
 import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,9 +41,16 @@ import java.util.List;
 public class GetInventoryConditionChoicesCommand
         extends BaseSimpleCommand<GetInventoryConditionChoicesForm> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Choices.name())
+                        )))
+                )));
+        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("DefaultInventoryConditionChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null),
@@ -47,7 +60,7 @@ public class GetInventoryConditionChoicesCommand
     
     /** Creates a new instance of GetInventoryConditionChoicesCommand */
     public GetInventoryConditionChoicesCommand(UserVisitPK userVisitPK, GetInventoryConditionChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -58,9 +71,9 @@ public class GetInventoryConditionChoicesCommand
         InventoryConditionUseType inventoryConditionUseType = inventoryConditionUseTypeName == null? null: inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
         
         if(inventoryConditionUseTypeName == null || inventoryConditionUseType != null) {
-            String defaultInventoryConditionChoice = form.getDefaultInventoryConditionChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
-            
+        String defaultInventoryConditionChoice = form.getDefaultInventoryConditionChoice();
+        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        
             if(inventoryConditionUseType == null) {
                 result.setInventoryConditionChoices(inventoryControl.getInventoryConditionChoices(defaultInventoryConditionChoice,
                         getPreferredLanguage(), allowNullChoice));

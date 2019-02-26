@@ -36,6 +36,7 @@ import java.util.List;
 public class GetContentCollectionCommand
         extends BaseSingleEntityCommand<ContentCollection, GetContentCollectionForm> {
     
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {

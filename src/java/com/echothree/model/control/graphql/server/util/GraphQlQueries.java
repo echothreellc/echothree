@@ -22,10 +22,54 @@ import com.echothree.control.user.accounting.common.form.GetCurrencyForm;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
 import com.echothree.control.user.content.common.ContentUtil;
+import com.echothree.control.user.content.common.form.GetContentCatalogForm;
+import com.echothree.control.user.content.common.form.GetContentCatalogItemForm;
+import com.echothree.control.user.content.common.form.GetContentCatalogItemsForm;
+import com.echothree.control.user.content.common.form.GetContentCatalogsForm;
+import com.echothree.control.user.content.common.form.GetContentCategoriesForm;
+import com.echothree.control.user.content.common.form.GetContentCategoryForm;
+import com.echothree.control.user.content.common.form.GetContentCategoryItemForm;
+import com.echothree.control.user.content.common.form.GetContentCategoryItemsForm;
+import com.echothree.control.user.content.common.form.GetContentCollectionForm;
+import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreaForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreaTypeForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreaTypesForm;
+import com.echothree.control.user.content.common.form.GetContentPageAreasForm;
+import com.echothree.control.user.content.common.form.GetContentPageForm;
+import com.echothree.control.user.content.common.form.GetContentPageLayoutAreaForm;
+import com.echothree.control.user.content.common.form.GetContentPageLayoutAreasForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
 import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
+import com.echothree.control.user.content.common.form.GetContentPagesForm;
+import com.echothree.control.user.content.common.form.GetContentSectionForm;
+import com.echothree.control.user.content.common.form.GetContentSectionsForm;
+import com.echothree.control.user.content.common.form.GetContentWebAddressForm;
+import com.echothree.control.user.content.common.form.GetContentWebAddressesForm;
+import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
+import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
+import com.echothree.control.user.content.server.command.GetContentCatalogItemsCommand;
+import com.echothree.control.user.content.server.command.GetContentCatalogsCommand;
+import com.echothree.control.user.content.server.command.GetContentCategoriesCommand;
+import com.echothree.control.user.content.server.command.GetContentCategoryCommand;
+import com.echothree.control.user.content.server.command.GetContentCategoryItemCommand;
+import com.echothree.control.user.content.server.command.GetContentCategoryItemsCommand;
+import com.echothree.control.user.content.server.command.GetContentCollectionCommand;
+import com.echothree.control.user.content.server.command.GetContentCollectionsCommand;
+import com.echothree.control.user.content.server.command.GetContentPageAreaCommand;
+import com.echothree.control.user.content.server.command.GetContentPageAreaTypeCommand;
+import com.echothree.control.user.content.server.command.GetContentPageAreaTypesCommand;
+import com.echothree.control.user.content.server.command.GetContentPageAreasCommand;
+import com.echothree.control.user.content.server.command.GetContentPageCommand;
+import com.echothree.control.user.content.server.command.GetContentPageLayoutAreaCommand;
+import com.echothree.control.user.content.server.command.GetContentPageLayoutAreasCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutCommand;
 import com.echothree.control.user.content.server.command.GetContentPageLayoutsCommand;
+import com.echothree.control.user.content.server.command.GetContentPagesCommand;
+import com.echothree.control.user.content.server.command.GetContentSectionCommand;
+import com.echothree.control.user.content.server.command.GetContentSectionsCommand;
+import com.echothree.control.user.content.server.command.GetContentWebAddressCommand;
+import com.echothree.control.user.content.server.command.GetContentWebAddressesCommand;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.GetColorForm;
 import com.echothree.control.user.core.common.form.GetColorsForm;
@@ -63,6 +107,11 @@ import com.echothree.control.user.core.server.command.GetTextDecorationCommand;
 import com.echothree.control.user.core.server.command.GetTextDecorationsCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationsCommand;
+import com.echothree.control.user.inventory.common.InventoryUtil;
+import com.echothree.control.user.inventory.common.form.GetInventoryConditionForm;
+import com.echothree.control.user.inventory.common.form.GetInventoryConditionsForm;
+import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.form.GetItemCategoriesForm;
 import com.echothree.control.user.item.common.form.GetItemCategoryForm;
@@ -120,7 +169,18 @@ import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
+import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
+import com.echothree.model.control.content.server.graphql.ContentCategoryItemObject;
+import com.echothree.model.control.content.server.graphql.ContentCategoryObject;
+import com.echothree.model.control.content.server.graphql.ContentCollectionObject;
+import com.echothree.model.control.content.server.graphql.ContentPageAreaObject;
+import com.echothree.model.control.content.server.graphql.ContentPageAreaTypeObject;
+import com.echothree.model.control.content.server.graphql.ContentPageLayoutAreaObject;
 import com.echothree.model.control.content.server.graphql.ContentPageLayoutObject;
+import com.echothree.model.control.content.server.graphql.ContentPageObject;
+import com.echothree.model.control.content.server.graphql.ContentSectionObject;
+import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
@@ -130,6 +190,7 @@ import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
@@ -148,7 +209,18 @@ import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.content.server.entity.ContentCatalog;
+import com.echothree.model.data.content.server.entity.ContentCatalogItem;
+import com.echothree.model.data.content.server.entity.ContentCategory;
+import com.echothree.model.data.content.server.entity.ContentCategoryItem;
+import com.echothree.model.data.content.server.entity.ContentCollection;
+import com.echothree.model.data.content.server.entity.ContentPage;
+import com.echothree.model.data.content.server.entity.ContentPageArea;
+import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
+import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
+import com.echothree.model.data.content.server.entity.ContentSection;
+import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.FontStyle;
@@ -158,6 +230,7 @@ import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -185,6 +258,58 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("inventoryCondition")
+    public static InventoryConditionObject inventoryCondition(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("id") final String id) {
+        InventoryCondition inventoryCondition;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetInventoryConditionForm commandForm = InventoryUtil.getHome().getGetInventoryConditionForm();
+
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUlid(id);
+        
+            inventoryCondition = new GetInventoryConditionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return inventoryCondition == null ? null : new InventoryConditionObject(inventoryCondition);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryConditions")
+    public static Collection<InventoryConditionObject> inventoryConditions(final DataFetchingEnvironment env) {
+        Collection<InventoryCondition> inventoryConditions;
+        Collection<InventoryConditionObject> inventoryConditionObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetInventoryConditionsForm commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
+        
+            inventoryConditions = new GetInventoryConditionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(inventoryConditions == null) {
+            inventoryConditionObjects = Collections.EMPTY_LIST;
+        } else {
+            inventoryConditionObjects = new ArrayList<>(inventoryConditions.size());
+
+            inventoryConditions.stream().map((inventoryCondition) -> {
+                return new InventoryConditionObject(inventoryCondition);
+            }).forEachOrdered((inventoryConditionObject) -> {
+                inventoryConditionObjects.add(inventoryConditionObject);
+            });
+        }
+        
+        return inventoryConditionObjects;
+    }
 
     @GraphQLField
     @GraphQLName("contentPageLayout")
@@ -236,6 +361,748 @@ public final class GraphQlQueries {
         }
         
         return contentPageLayoutObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageLayoutArea")
+    public static ContentPageLayoutAreaObject contentPageLayoutArea(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
+            @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        ContentPageLayoutArea contentPageLayoutArea;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageLayoutAreaForm commandForm = ContentUtil.getHome().getGetContentPageLayoutAreaForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setContentPageName(contentPageName);
+            commandForm.setSortOrder(sortOrder);
+        
+            contentPageLayoutArea = new GetContentPageLayoutAreaCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentPageLayoutArea == null ? null : new ContentPageLayoutAreaObject(contentPageLayoutArea);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageLayoutAreas")
+    public static Collection<ContentPageLayoutAreaObject> contentPageLayoutAreas(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
+            @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
+        Collection<ContentPageLayoutArea> contentPageLayoutAreas;
+        Collection<ContentPageLayoutAreaObject> contentPageLayoutAreaObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageLayoutAreasForm commandForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setContentPageName(contentPageName);
+            
+            contentPageLayoutAreas = new GetContentPageLayoutAreasCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentPageLayoutAreas == null) {
+            contentPageLayoutAreaObjects = Collections.EMPTY_LIST;
+        } else {
+            contentPageLayoutAreaObjects = new ArrayList<>(contentPageLayoutAreas.size());
+
+            contentPageLayoutAreas.stream().map((contentPageLayoutArea) -> {
+                return new ContentPageLayoutAreaObject(contentPageLayoutArea);
+            }).forEachOrdered((contentPageLayoutAreaObject) -> {
+                contentPageLayoutAreaObjects.add(contentPageLayoutAreaObject);
+            });
+        }
+        
+        return contentPageLayoutAreaObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageAreaType")
+    public static ContentPageAreaTypeObject contentPageAreaType(final DataFetchingEnvironment env,
+            @GraphQLName("contentPageAreaTypeName") final String contentPageAreaTypeName,
+            @GraphQLName("id") final String id) {
+        ContentPageAreaType contentPageAreaType;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageAreaTypeForm commandForm = ContentUtil.getHome().getGetContentPageAreaTypeForm();
+
+            commandForm.setContentPageAreaTypeName(contentPageAreaTypeName);
+            commandForm.setUlid(id);
+        
+            contentPageAreaType = new GetContentPageAreaTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentPageAreaType == null ? null : new ContentPageAreaTypeObject(contentPageAreaType);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageAreaTypes")
+    public static Collection<ContentPageAreaTypeObject> contentPageAreaTypes(final DataFetchingEnvironment env) {
+        Collection<ContentPageAreaType> contentPageAreaTypes;
+        Collection<ContentPageAreaTypeObject> contentPageAreaTypeObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageAreaTypesForm commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
+        
+            contentPageAreaTypes = new GetContentPageAreaTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentPageAreaTypes == null) {
+            contentPageAreaTypeObjects = Collections.EMPTY_LIST;
+        } else {
+            contentPageAreaTypeObjects = new ArrayList<>(contentPageAreaTypes.size());
+
+            contentPageAreaTypes.stream().map((contentPageAreaType) -> {
+                return new ContentPageAreaTypeObject(contentPageAreaType);
+            }).forEachOrdered((contentPageAreaTypeObject) -> {
+                contentPageAreaTypeObjects.add(contentPageAreaTypeObject);
+            });
+        }
+        
+        return contentPageAreaTypeObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentWebAddress")
+    public static ContentWebAddressObject contentWebAddress(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") @GraphQLNonNull final String contentWebAddressName) {
+        ContentWebAddress contentWebAddress;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentWebAddressForm commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+        
+            contentWebAddress = new GetContentWebAddressCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentWebAddress == null ? null : new ContentWebAddressObject(contentWebAddress);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentWebAddresses")
+    public static Collection<ContentWebAddressObject> contentWebAddresses(final DataFetchingEnvironment env) {
+        Collection<ContentWebAddress> contentWebAddresses;
+        Collection<ContentWebAddressObject> contentWebAddressObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentWebAddressesForm commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
+        
+            contentWebAddresses = new GetContentWebAddressesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentWebAddresses == null) {
+            contentWebAddressObjects = Collections.EMPTY_LIST;
+        } else {
+            contentWebAddressObjects = new ArrayList<>(contentWebAddresses.size());
+
+            contentWebAddresses.stream().map((contentWebAddress) -> {
+                return new ContentWebAddressObject(contentWebAddress);
+            }).forEachOrdered((contentWebAddressObject) -> {
+                contentWebAddressObjects.add(contentWebAddressObject);
+            });
+        }
+        
+        return contentWebAddressObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCollection")
+    public static ContentCollectionObject contentCollection(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") final String contentCollectionName) {
+        ContentCollection contentCollection;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCollectionForm commandForm = ContentUtil.getHome().getGetContentCollectionForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+
+            contentCollection = new GetContentCollectionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentCollection == null ? null : new ContentCollectionObject(contentCollection);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCollections")
+    public static Collection<ContentCollectionObject> contentCollections(final DataFetchingEnvironment env) {
+        Collection<ContentCollection> contentCollections;
+        Collection<ContentCollectionObject> contentCollectionObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCollectionsForm commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
+        
+            contentCollections = new GetContentCollectionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentCollections == null) {
+            contentCollectionObjects = Collections.EMPTY_LIST;
+        } else {
+            contentCollectionObjects = new ArrayList<>(contentCollections.size());
+
+            contentCollections.stream().map((contentCollection) -> {
+                return new ContentCollectionObject(contentCollection);
+            }).forEachOrdered((contentCollectionObject) -> {
+                contentCollectionObjects.add(contentCollectionObject);
+            });
+        }
+        
+        return contentCollectionObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentSection")
+    public static ContentSectionObject contentSection(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentSectionName") final String contentSectionName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentSection contentSection;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentSectionForm commandForm = ContentUtil.getHome().getGetContentSectionForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentSection = new GetContentSectionCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentSection == null ? null : new ContentSectionObject(contentSection);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentSections")
+    public static Collection<ContentSectionObject> contentSections(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("parentContentSectionName") final String parentContentSectionName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentSection> contentSections;
+        Collection<ContentSectionObject> contentSectionObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentSectionsForm commandForm = ContentUtil.getHome().getGetContentSectionsForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setParentContentSectionName(parentContentSectionName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentSections = new GetContentSectionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentSections == null) {
+            contentSectionObjects = Collections.EMPTY_LIST;
+        } else {
+            contentSectionObjects = new ArrayList<>(contentSections.size());
+
+            contentSections.stream().map((contentSection) -> {
+                return new ContentSectionObject(contentSection);
+            }).forEachOrdered((contentSectionObject) -> {
+                contentSectionObjects.add(contentSectionObject);
+            });
+        }
+        
+        return contentSectionObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPage")
+    public static ContentPageObject contentPage(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentSectionName") final String contentSectionName,
+            @GraphQLName("contentPageName") final String contentPageName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentPage contentPage;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageForm commandForm = ContentUtil.getHome().getGetContentPageForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setContentPageName(contentPageName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentPage = new GetContentPageCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentPage == null ? null : new ContentPageObject(contentPage);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPages")
+    public static Collection<ContentPageObject> contentPages(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentSectionName") final String contentSectionName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentPage> contentPages;
+        Collection<ContentPageObject> contentPageObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPagesForm commandForm = ContentUtil.getHome().getGetContentPagesForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentPages = new GetContentPagesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentPages == null) {
+            contentPageObjects = Collections.EMPTY_LIST;
+        } else {
+            contentPageObjects = new ArrayList<>(contentPages.size());
+
+            contentPages.stream().map((contentPage) -> {
+                return new ContentPageObject(contentPage);
+            }).forEachOrdered((contentPageObject) -> {
+                contentPageObjects.add(contentPageObject);
+            });
+        }
+        
+        return contentPageObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageArea")
+    public static ContentPageAreaObject contentPageArea(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
+            @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
+        ContentPageArea contentPageArea;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageAreaForm commandForm = ContentUtil.getHome().getGetContentPageAreaForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setContentPageName(contentPageName);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            contentPageArea = new GetContentPageAreaCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentPageArea == null ? null : new ContentPageAreaObject(contentPageArea);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentPageAreas")
+    public static Collection<ContentPageAreaObject> contentPageAreas(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
+            @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
+        Collection<ContentPageArea> contentPageAreas;
+        Collection<ContentPageAreaObject> contentPageAreaObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentPageAreasForm commandForm = ContentUtil.getHome().getGetContentPageAreasForm();
+        
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentSectionName(contentSectionName);
+            commandForm.setContentPageName(contentPageName);
+
+            contentPageAreas = new GetContentPageAreasCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentPageAreas == null) {
+            contentPageAreaObjects = Collections.EMPTY_LIST;
+        } else {
+            contentPageAreaObjects = new ArrayList<>(contentPageAreas.size());
+
+            contentPageAreas.stream().map((contentPageArea) -> {
+                return new ContentPageAreaObject(contentPageArea);
+            }).forEachOrdered((contentPageAreaObject) -> {
+                contentPageAreaObjects.add(contentPageAreaObject);
+            });
+        }
+        
+        return contentPageAreaObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalog")
+    public static ContentCatalogObject contentCatalog(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentCatalogName") final String contentCatalogName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentCatalog contentCatalog;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCatalogForm commandForm = ContentUtil.getHome().getGetContentCatalogForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCatalog = new GetContentCatalogCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentCatalog == null ? null : new ContentCatalogObject(contentCatalog);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalogs")
+    public static Collection<ContentCatalogObject> contentCatalogs(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentCatalog> contentCatalogs;
+        Collection<ContentCatalogObject> contentCatalogObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCatalogsForm commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCatalogs = new GetContentCatalogsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentCatalogs == null) {
+            contentCatalogObjects = Collections.EMPTY_LIST;
+        } else {
+            contentCatalogObjects = new ArrayList<>(contentCatalogs.size());
+
+            contentCatalogs.stream().map((contentCatalog) -> {
+                return new ContentCatalogObject(contentCatalog);
+            }).forEachOrdered((contentCatalogObject) -> {
+                contentCatalogObjects.add(contentCatalogObject);
+            });
+        }
+        
+        return contentCatalogObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalogItem")
+    public static ContentCatalogItemObject contentCatalogItem(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentCatalogName") final String contentCatalogName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") final String currencyIsoName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentCatalogItem contentCatalogItem;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCatalogItemForm commandForm = ContentUtil.getHome().getGetContentCatalogItemForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCatalogItem = new GetContentCatalogItemCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentCatalogItem == null ? null : new ContentCatalogItemObject(contentCatalogItem);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCatalogItems")
+    public static Collection<ContentCatalogItemObject> contentCatalogItems(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentCatalogName") final String contentCatalogName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentCatalogItem> contentCatalogItems;
+        Collection<ContentCatalogItemObject> contentCatalogItemObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCatalogItemsForm commandForm = ContentUtil.getHome().getGetContentCatalogItemsForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCatalogItems = new GetContentCatalogItemsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentCatalogItems == null) {
+            contentCatalogItemObjects = Collections.EMPTY_LIST;
+        } else {
+            contentCatalogItemObjects = new ArrayList<>(contentCatalogItems.size());
+
+            contentCatalogItems.stream().map((contentCatalogItem) -> {
+                return new ContentCatalogItemObject(contentCatalogItem);
+            }).forEachOrdered((contentCatalogItemObject) -> {
+                contentCatalogItemObjects.add(contentCatalogItemObject);
+            });
+        }
+        
+        return contentCatalogItemObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCategory")
+    public static ContentCategoryObject contentCategory(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentCatalogName") final String contentCatalogName,
+            @GraphQLName("contentCategoryName") final String contentCategoryName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentCategory contentCategory;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCategoryForm commandForm = ContentUtil.getHome().getGetContentCategoryForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setContentCategoryName(contentCategoryName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCategory = new GetContentCategoryCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentCategory == null ? null : new ContentCategoryObject(contentCategory);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCategories")
+    public static Collection<ContentCategoryObject> contentCategories(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentCatalogName") final String contentCatalogName,
+            @GraphQLName("parentContentCategoryName") final String parentContentCategoryName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentCategory> contentCategories;
+        Collection<ContentCategoryObject> contentCategoryObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCategoriesForm commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setParentContentCategoryName(parentContentCategoryName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCategories = new GetContentCategoriesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentCategories == null) {
+            contentCategoryObjects = Collections.EMPTY_LIST;
+        } else {
+            contentCategoryObjects = new ArrayList<>(contentCategories.size());
+
+            contentCategories.stream().map((contentCategory) -> {
+                return new ContentCategoryObject(contentCategory);
+            }).forEachOrdered((contentCategoryObject) -> {
+                contentCategoryObjects.add(contentCategoryObject);
+            });
+        }
+        
+        return contentCategoryObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCategoryItem")
+    public static ContentCategoryItemObject contentCategoryItem(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentCatalogName") final String contentCatalogName,
+            @GraphQLName("contentCategoryName") final String contentCategoryName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") final String currencyIsoName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        ContentCategoryItem contentCategoryItem;
+
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCategoryItemForm commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
+
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setContentCategoryName(contentCategoryName);
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCategoryItem = new GetContentCategoryItemCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        return contentCategoryItem == null ? null : new ContentCategoryItemObject(contentCategoryItem);
+    }
+
+    @GraphQLField
+    @GraphQLName("contentCategoryItems")
+    public static Collection<ContentCategoryItemObject> contentCategoryItems(final DataFetchingEnvironment env,
+            @GraphQLName("contentWebAddressName") final String contentWebAddressName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("contentCatalogName") final String contentCatalogName,
+            @GraphQLName("contentCategoryName") final String contentCategoryName,
+            @GraphQLName("associateProgramName") final String associateProgramName,
+            @GraphQLName("associateName") final String associateName,
+            @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
+        Collection<ContentCategoryItem> contentCategoryItems;
+        Collection<ContentCategoryItemObject> contentCategoryItemObjects;
+        
+        try {
+            GraphQlContext context = env.getContext();
+            GetContentCategoryItemsForm commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
+        
+            commandForm.setContentWebAddressName(contentWebAddressName);
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setContentCategoryName(contentCategoryName);
+            commandForm.setAssociateProgramName(associateProgramName);
+            commandForm.setAssociateName(associateName);
+            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
+
+            contentCategoryItems = new GetContentCategoryItemsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        if(contentCategoryItems == null) {
+            contentCategoryItemObjects = Collections.EMPTY_LIST;
+        } else {
+            contentCategoryItemObjects = new ArrayList<>(contentCategoryItems.size());
+
+            contentCategoryItems.stream().map((contentCategoryItem) -> {
+                return new ContentCategoryItemObject(contentCategoryItem);
+            }).forEachOrdered((contentCategoryItemObject) -> {
+                contentCategoryItemObjects.add(contentCategoryItemObject);
+            });
+        }
+        
+        return contentCategoryItemObjects;
     }
 
     @GraphQLField
@@ -394,7 +1261,7 @@ public final class GraphQlQueries {
     @GraphQLField
     @GraphQLName("queueType")
     public static QueueTypeObject queueType(final DataFetchingEnvironment env,
-                                            @GraphQLName("queueTypeName") @GraphQLNonNull final String queueTypeName) {
+            @GraphQLName("queueTypeName") @GraphQLNonNull final String queueTypeName) {
         QueueType queueType;
 
         try {

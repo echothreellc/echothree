@@ -16,18 +16,13 @@
 
 package com.echothree.control.user.content.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.content.common.edit.ContentPageAreaTypeDescriptionEdit;
+import com.echothree.control.user.content.common.spec.ContentPageAreaTypeSpec;
+import com.echothree.control.user.party.common.spec.LanguageSpec;
 
 public interface CreateContentPageAreaTypeDescriptionForm
-        extends BaseForm {
+        extends ContentPageAreaTypeSpec, LanguageSpec, ContentPageAreaTypeDescriptionEdit {
     
-    String getContentPageAreaTypeName();
-    void setContentPageAreaTypeName(String contentPageAreaTypeName);
-    
-    String getLanguageIsoName();
-    void setLanguageIsoName(String languageIsoName);
-    
-    String getDescription();
-    void setDescription(String description);
+    // Nothing additional beyond ContentPageAreaTypeSpec, LanguageSpec, ContentPageAreaTypeDescriptionEdit
     
 }

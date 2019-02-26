@@ -31,12 +31,13 @@ public class InventoryConditionDescriptionTransferCache
         super(userVisit, inventoryControl);
     }
     
-    public InventoryConditionDescriptionTransfer getInventoryConditionDescriptionTransfer(InventoryConditionDescription inventoryConditionDescription) {
+    @Override
+    public InventoryConditionDescriptionTransfer getTransfer(InventoryConditionDescription inventoryConditionDescription) {
         InventoryConditionDescriptionTransfer inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
         
         if(inventoryConditionDescriptionTransfer == null) {
             InventoryConditionTransferCache inventoryConditionTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache();
-            InventoryConditionTransfer inventoryConditionTransfer = inventoryConditionTransferCache.getInventoryConditionTransfer(inventoryConditionDescription.getInventoryCondition());
+            InventoryConditionTransfer inventoryConditionTransfer = inventoryConditionTransferCache.getTransfer(inventoryConditionDescription.getInventoryCondition());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryConditionDescription.getLanguage());
             
             inventoryConditionDescriptionTransfer = new InventoryConditionDescriptionTransfer(languageTransfer, inventoryConditionTransfer, inventoryConditionDescription.getDescription());

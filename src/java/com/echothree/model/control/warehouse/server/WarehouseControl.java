@@ -1167,10 +1167,10 @@ public class WarehouseControl
     public List<LocationNameElementTransfer> getLocationNameElementTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
         List<LocationNameElement> locationNameElements = getLocationNameElementsByLocationType(locationType);
         List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
-        LocationNameElementTransferCache LocationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
+        LocationNameElementTransferCache locationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
         
         locationNameElements.stream().forEach((locationNameElement) -> {
-            locationNameElementTransfers.add(LocationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement));
+            locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement));
         });
         
         return locationNameElementTransfers;

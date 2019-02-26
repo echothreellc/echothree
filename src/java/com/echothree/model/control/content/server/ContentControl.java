@@ -21,6 +21,7 @@ import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.common.choice.ContentCatalogChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentCategoryChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentCollectionChoicesBean;
+import com.echothree.model.control.content.common.choice.ContentPageAreaTypeChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentPageLayoutChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentSectionChoicesBean;
 import com.echothree.model.control.content.common.choice.ContentWebAddressChoicesBean;
@@ -55,6 +56,7 @@ import com.echothree.model.control.content.server.transfer.ContentCollectionDesc
 import com.echothree.model.control.content.server.transfer.ContentCollectionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentForumTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageAreaTransferCache;
+import com.echothree.model.control.content.server.transfer.ContentPageAreaTypeTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageDescriptionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageLayoutAreaTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentPageLayoutDescriptionTransferCache;
@@ -66,7 +68,7 @@ import com.echothree.model.control.content.server.transfer.ContentTransferCaches
 import com.echothree.model.control.content.server.transfer.ContentWebAddressDescriptionTransferCache;
 import com.echothree.model.control.content.server.transfer.ContentWebAddressTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.common.pk.ContentCatalogItemFixedPricePK;
 import com.echothree.model.data.content.common.pk.ContentCatalogItemPK;
@@ -76,6 +78,7 @@ import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.content.common.pk.ContentCollectionPK;
 import com.echothree.model.data.content.common.pk.ContentForumPK;
 import com.echothree.model.data.content.common.pk.ContentPageAreaPK;
+import com.echothree.model.data.content.common.pk.ContentPageAreaTypePK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutAreaPK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutPK;
 import com.echothree.model.data.content.common.pk.ContentPagePK;
@@ -236,39 +239,152 @@ public class ContentControl
     //   Content Page Area Types
     // --------------------------------------------------------------------------------
     
-    public ContentPageAreaType createContentPageAreaType(String contentPageAreaTypeName) {
-        return ContentPageAreaTypeFactory.getInstance().create(contentPageAreaTypeName);
+    public ContentPageAreaType createContentPageAreaType(String contentPageAreaTypeName, BasePK createdBy) {
+        ContentPageAreaType contentPageAreaType = ContentPageAreaTypeFactory.getInstance().create(contentPageAreaTypeName);
+        
+        sendEventUsingNames(contentPageAreaType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return contentPageAreaType;
     }
     
-    public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName) {
-        ContentPageAreaType contentPageAreaType = null;
-        
-        try {
-            PreparedStatement ps = ContentPageAreaTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM contentpageareatypes " +
-                    "WHERE cntpat_contentpageareatypename = ?");
-            
-            ps.setString(1, contentPageAreaTypeName);
-            
-            contentPageAreaType = ContentPageAreaTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentPageAreaType */
+    public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        ContentPageAreaTypePK pk = new ContentPageAreaTypePK(entityInstance.getEntityUniqueId());
+        ContentPageAreaType contentPageAreaType = ContentPageAreaTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
         
         return contentPageAreaType;
     }
     
+    public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance) {
+        return getContentPageAreaTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentPageAreaType getContentPageAreaTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentPageAreaTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
+    private static final Map<EntityPermission, String> getContentPageAreaTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM contentpageareatypes " +
+                "WHERE cntpat_contentpageareatypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM contentpageareatypes " +
+                "WHERE cntpat_contentpageareatypename = ? " +
+                "FOR UPDATE");
+        getContentPageAreaTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName, EntityPermission entityPermission) {
+        return ContentPageAreaTypeFactory.getInstance().getEntityFromQuery(entityPermission, getContentPageAreaTypeByNameQueries,
+                contentPageAreaTypeName);
+    }
+    
+    public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName) {
+        return getContentPageAreaTypeByName(contentPageAreaTypeName, EntityPermission.READ_ONLY);
+    }
+    
+    public ContentPageAreaType getContentPageAreaTypeByNameForUpdate(String contentPageAreaTypeName) {
+        return getContentPageAreaTypeByName(contentPageAreaTypeName, EntityPermission.READ_WRITE);
+    }
+    
+    private static final Map<EntityPermission, String> getContentPageAreaTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM contentpageareatypes " +
+                "ORDER BY cntpat_contentpageareatypename");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM contentpageareatypes " +
+                "FOR UPDATE");
+        getContentPageAreaTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<ContentPageAreaType> getContentPageAreaTypes(EntityPermission entityPermission) {
+        return ContentPageAreaTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getContentPageAreaTypesQueries);
+    }
+    
+    public List<ContentPageAreaType> getContentPageAreaTypes() {
+        return getContentPageAreaTypes(EntityPermission.READ_ONLY);
+    }
+    
+    public List<ContentPageAreaType> getContentPageAreaTypesForUpdate() {
+        return getContentPageAreaTypes(EntityPermission.READ_WRITE);
+    }
+    
     public ContentPageAreaTypeTransfer getContentPageAreaTypeTransfer(UserVisit userVisit, ContentPageAreaType contentPageAreaType) {
-        return getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache().getContentPageAreaTypeTransfer(contentPageAreaType);
+        return getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache().getTransfer(contentPageAreaType);
+    }
+    
+    public List<ContentPageAreaTypeTransfer> getContentPageAreaTypeTransfers(UserVisit userVisit, Collection<ContentPageAreaType> contentPageAreaTypes) {
+        List<ContentPageAreaTypeTransfer> contentPageAreaTypeTransfers = new ArrayList<>(contentPageAreaTypes.size());
+        ContentPageAreaTypeTransferCache contentPageAreaTypeTransferCache = getContentTransferCaches(userVisit).getContentPageAreaTypeTransferCache();
+        
+        contentPageAreaTypes.stream().forEach((contentPageAreaType) -> {
+            contentPageAreaTypeTransfers.add(contentPageAreaTypeTransferCache.getTransfer(contentPageAreaType));
+        });
+        
+        return contentPageAreaTypeTransfers;
+    }
+    
+    public List<ContentPageAreaTypeTransfer> getContentPageAreaTypeTransfers(UserVisit userVisit) {
+        return getContentPageAreaTypeTransfers(userVisit, getContentPageAreaTypes());
+    }
+    
+    public ContentPageAreaTypeChoicesBean getContentPageAreaTypeChoices(String defaultContentPageAreaTypeChoice, Language language,
+            boolean allowNullChoice) {
+        List<ContentPageAreaType> contentPageAreaTypes = getContentPageAreaTypes();
+        int size = contentPageAreaTypes.size();
+        List<String> labels = new ArrayList<>(size);
+        List<String> values = new ArrayList<>(size);
+        String defaultValue = null;
+        
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+            
+            if(defaultContentPageAreaTypeChoice == null) {
+                defaultValue = "";
+            }
+        }
+        
+        for(ContentPageAreaType contentPageAreaType: contentPageAreaTypes) {
+            String label = getBestContentPageAreaTypeDescription(contentPageAreaType, language);
+            String value = contentPageAreaType.getContentPageAreaTypeName();
+            
+            labels.add(label == null? value: label);
+            values.add(value);
+            
+            boolean usingDefaultChoice = defaultContentPageAreaTypeChoice == null ? false : defaultContentPageAreaTypeChoice.equals(value);
+            if(usingDefaultChoice || defaultValue == null) {
+                defaultValue = value;
+            }
+        }
+        
+        return new ContentPageAreaTypeChoicesBean(labels, values, defaultValue);
     }
     
     // --------------------------------------------------------------------------------
     //   Content Page Area Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public ContentPageAreaTypeDescription createContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language, String description) {
-        return ContentPageAreaTypeDescriptionFactory.getInstance().create(contentPageAreaType, language, description);
+    public ContentPageAreaTypeDescription createContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language,
+            String description, BasePK createdBy) {
+        ContentPageAreaTypeDescription contentPageAreaTypeDescription = ContentPageAreaTypeDescriptionFactory.getInstance().create(contentPageAreaType,
+                language, description);
+        
+        sendEventUsingNames(contentPageAreaType.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageAreaTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        
+        return contentPageAreaTypeDescription;
     }
     
     public ContentPageAreaTypeDescription getContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language) {
@@ -356,34 +472,26 @@ public class ContentControl
         return getContentPageLayoutByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
+    private static final Map<EntityPermission, String> getContentPageLayoutByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM contentpagelayouts, contentpagelayoutdetails " +
+                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM contentpagelayouts, contentpagelayoutdetails " +
+                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ? " +
+                "FOR UPDATE");
+        getContentPageLayoutByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
     public ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName, EntityPermission entityPermission) {
-        ContentPageLayout contentPageLayout = null;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayouts, contentpagelayoutdetails " +
-                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayouts, contentpagelayoutdetails " +
-                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ? " +
-                        "FOR UPDATE";
-            }
-            
-            PreparedStatement ps = ContentPageLayoutFactory.getInstance().prepareStatement(query);
-            
-            ps.setString(1, contentPageLayoutName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageLayout;
+        return ContentPageLayoutFactory.getInstance().getEntityFromQuery(entityPermission, getContentPageLayoutByNameQueries,
+                contentPageLayoutName, Session.MAX_TIME);
     }
     
     public ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName) {
@@ -402,33 +510,26 @@ public class ContentControl
         return getContentPageLayoutDetailValueForUpdate(getContentPageLayoutByNameForUpdate(contentPageLayoutName));
     }
     
+    private static final Map<EntityPermission, String> getDefaultContentPageLayoutQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM contentpagelayouts, contentpagelayoutdetails " +
+                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM contentpagelayouts, contentpagelayoutdetails " +
+                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ? " +
+                "FOR UPDATE");
+        getDefaultContentPageLayoutQueries = Collections.unmodifiableMap(queryMap);
+    }
+
     public ContentPageLayout getDefaultContentPageLayout(EntityPermission entityPermission) {
-        ContentPageLayout contentPageLayout = null;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayouts, contentpagelayoutdetails " +
-                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ?";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayouts, contentpagelayoutdetails " +
-                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ? " +
-                        "FOR UPDATE";
-            }
-            
-            PreparedStatement ps = ContentPageLayoutFactory.getInstance().prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageLayout;
+        return ContentPageLayoutFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContentPageLayoutQueries,
+                Session.MAX_TIME);
     }
     
     public ContentPageLayout getDefaultContentPageLayout() {
@@ -443,34 +544,27 @@ public class ContentControl
         return getDefaultContentPageLayoutForUpdate().getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
     }
     
+    private static final Map<EntityPermission, String> getContentPageLayoutsQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM contentpagelayouts, contentpagelayoutdetails " +
+                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
+                "ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM contentpagelayouts, contentpagelayoutdetails " +
+                "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
+                "FOR UPDATE");
+        getContentPageLayoutsQueries = Collections.unmodifiableMap(queryMap);
+    }
+
     private List<ContentPageLayout> getContentPageLayouts(EntityPermission entityPermission) {
-        List<ContentPageLayout> contentPageLayouts = null;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayouts, contentpagelayoutdetails " +
-                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
-                        "ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM contentpagelayouts, contentpagelayoutdetails " +
-                        "WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ? " +
-                        "FOR UPDATE";
-            }
-            
-            PreparedStatement ps = ContentPageLayoutFactory.getInstance().prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            contentPageLayouts = ContentPageLayoutFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageLayouts;
+        return ContentPageLayoutFactory.getInstance().getEntitiesFromQuery(entityPermission, getContentPageLayoutsQueries,
+                Session.MAX_TIME);
     }
     
     public List<ContentPageLayout> getContentPageLayouts() {
@@ -526,7 +620,7 @@ public class ContentControl
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentPageLayoutChoice == null? false: defaultContentPageLayoutChoice.equals(value);
+            boolean usingDefaultChoice = defaultContentPageLayoutChoice == null ? false : defaultContentPageLayoutChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contentPageLayoutDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -581,6 +675,7 @@ public class ContentControl
     }
     
     public void deleteContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
+        deleteContentPagesByContentPageLayout(contentPageLayout, deletedBy);
         deleteContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout, deletedBy);
         
         ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetailForUpdate();
@@ -781,6 +876,14 @@ public class ContentControl
         return ContentPageLayoutAreaFactory.getInstance().create(contentPageLayout, contentPageAreaType, showDescriptionField, sortOrder);
     }
     
+    public long countContentPageLayoutAreasByContentPageLayout(ContentPageLayout contentPageLayout) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contentpagelayoutareas " +
+                "WHERE cntpla_cntpl_contentpagelayoutid = ?",
+                contentPageLayout);
+    }
+
     public ContentPageLayoutArea getContentPageLayoutArea(ContentPageLayout contentPageLayout, Integer sortOrder) {
         ContentPageLayoutArea contentPageLayoutArea = null;
         
@@ -1253,6 +1356,14 @@ public class ContentControl
         return contentSection;
     }
     
+    public long countContentSectionsByContentCollection(ContentCollection contentCollection) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contentsectiondetails " +
+                "WHERE cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ?",
+                contentCollection, Session.MAX_TIME);
+    }
+
     private List<ContentSection> getContentSections(ContentCollection contentCollection, EntityPermission entityPermission) {
         List<ContentSection> contentSections = null;
         
@@ -1802,8 +1913,16 @@ public class ContentControl
         return contentPage;
     }
     
-    private List<ContentPage> getContentPages(ContentSection contentSection, EntityPermission entityPermission) {
-        List<ContentPage> contentPages = null;
+    public long countContentPagesByContentSection(ContentSection contentSection) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contentpagedetails " +
+                "WHERE cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?",
+                contentSection, Session.MAX_TIME);
+    }
+
+    private List<ContentPage> getContentPagesByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
+        List<ContentPage> contentPages;
         
         try {
             String query = null;
@@ -1835,12 +1954,53 @@ public class ContentControl
         return contentPages;
     }
     
-    public List<ContentPage> getContentPages(ContentSection contentSection) {
-        return getContentPages(contentSection, EntityPermission.READ_ONLY);
+    public List<ContentPage> getContentPagesByContentSection(ContentSection contentSection) {
+        return getContentPagesByContentSection(contentSection, EntityPermission.READ_ONLY);
     }
     
-    public List<ContentPage> getContentPagesForUpdate(ContentSection contentSection) {
-        return getContentPages(contentSection, EntityPermission.READ_WRITE);
+    public List<ContentPage> getContentPagesByContentSectionForUpdate(ContentSection contentSection) {
+        return getContentPagesByContentSection(contentSection, EntityPermission.READ_WRITE);
+    }
+    
+    private List<ContentPage> getContentPagesByContentPageLayout(ContentPageLayout contentPageLayout, EntityPermission entityPermission) {
+        List<ContentPage> contentPages;
+        
+        try {
+            String query = null;
+            
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpages, contentpagedetails, contentsections, contentsectiondetails " +
+                        "WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ? " +
+                        "AND cntpdt_cnts_contentsectionid = cnts_contentsectionid AND cnts_lastdetailid = cntsdt_contentsectiondetailid " +
+                        "ORDER BY ccntsdt_sortorder, cntsdt_contentsectionname, ntpdt_sortorder, cntpdt_contentpagename " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM contentpages, contentpagedetails " +
+                        "WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ? " +
+                        "ORDER BY cntpdt_sortorder, cntpdt_contentpagename " +
+                        "FOR UPDATE";
+            }
+            
+            PreparedStatement ps = ContentPageFactory.getInstance().prepareStatement(query);
+            
+            ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
+
+            contentPages = ContentPageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+        
+        return contentPages;
+    }
+    
+    public List<ContentPage> getContentPagesByContentPageLayout(ContentPageLayout contentPageLayout) {
+        return getContentPagesByContentPageLayout(contentPageLayout, EntityPermission.READ_ONLY);
+    }
+    
+    public List<ContentPage> getContentPagesByContentPageLayoutForUpdate(ContentPageLayout contentPageLayout) {
+        return getContentPagesByContentPageLayout(contentPageLayout, EntityPermission.READ_WRITE);
     }
     
     private ContentPage getContentPageByName(ContentSection contentSection, String contentPageName, EntityPermission entityPermission) {
@@ -1944,7 +2104,7 @@ public class ContentControl
     }
     
     public List<ContentPageTransfer> getContentPageTransfers(UserVisit userVisit, ContentSection contentSection) {
-        return getContentPageTransfers(userVisit, getContentPages(contentSection));
+        return getContentPageTransfers(userVisit, getContentPagesByContentSection(contentSection));
     }
     
     private void updateContentPageFromValue(ContentPageDetailValue contentPageDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -2012,7 +2172,7 @@ public class ContentControl
         ContentSection contentSection = contentPageDetail.getContentSection();
         ContentPage defaultContentPage = getDefaultContentPage(contentSection);
         if(defaultContentPage == null) {
-            List<ContentPage> contentPages = getContentPagesForUpdate(contentSection);
+            List<ContentPage> contentPages = getContentPagesByContentSectionForUpdate(contentSection);
             
             if(!contentPages.isEmpty()) {
                 defaultContentPage = contentPages.iterator().next();
@@ -2027,7 +2187,13 @@ public class ContentControl
     }
     
     public void deleteContentPagesByContentSection(ContentSection contentSection, BasePK deletedBy) {
-        getContentPagesForUpdate(contentSection).stream().forEach((contentPage) -> {
+        getContentPagesByContentSectionForUpdate(contentSection).stream().forEach((contentPage) -> {
+            deleteContentPage(contentPage, deletedBy);
+        });
+    }
+    
+    public void deleteContentPagesByContentPageLayout(ContentPageLayout contentPageLayout, BasePK deletedBy) {
+        getContentPagesByContentPageLayoutForUpdate(contentPageLayout).stream().forEach((contentPage) -> {
             deleteContentPage(contentPage, deletedBy);
         });
     }
@@ -2552,6 +2718,14 @@ public class ContentControl
         return contentCatalog;
     }
     
+    public long countContentCatalogsByContentCollection(ContentCollection contentCollection) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contentcatalogdetails " +
+                "WHERE cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?",
+                contentCollection, Session.MAX_TIME);
+    }
+
     private List<ContentCatalog> getContentCatalogs(ContentCollection contentCollection, EntityPermission entityPermission) {
         List<ContentCatalog> contentCatalogs = null;
         
@@ -3296,13 +3470,13 @@ public class ContentControl
 
         deleteContentCategoryItemsByContentCatalogItem(contentCatalogItem, deletedBy);
 
-        if(ItemConstants.ItemPriceType_FIXED.equals(itemPriceTypeName)) {
+        if(ItemPriceTypes.FIXED.name().equals(itemPriceTypeName)) {
             ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = getContentCatalogItemFixedPriceForUpdate(contentCatalogItem);
             
             if(contentCatalogItemFixedPrice != null) {
                 deleteContentCatalogItemFixedPrice(contentCatalogItemFixedPrice, deletedBy);
             }
-        } else if(ItemConstants.ItemPriceType_VARIABLE.equals(itemPriceTypeName)) {
+        } else if(ItemPriceTypes.VARIABLE.name().equals(itemPriceTypeName)) {
             ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = getContentCatalogItemVariablePriceForUpdate(contentCatalogItem);
 
             if(contentCatalogItemVariablePrice != null) {

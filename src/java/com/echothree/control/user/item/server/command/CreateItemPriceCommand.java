@@ -20,7 +20,7 @@ import com.echothree.control.user.item.common.form.CreateItemPriceForm;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.common.InventoryConstants;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -106,7 +106,7 @@ public class CreateItemPriceCommand
                                     String itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
                                     BasePK createdBy = getPartyPK();
                                     
-                                    if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+                                    if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
                                         String strUnitPrice = form.getUnitPrice();
                                         
                                         if(strUnitPrice != null) {
@@ -118,7 +118,7 @@ public class CreateItemPriceCommand
                                         } else {
                                             addExecutionError(ExecutionErrors.MissingUnitPrice.name());
                                         }
-                                    } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+                                    } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
                                         String strMinimumUnitPrice = form.getMinimumUnitPrice();
                                         Long minimumUnitPrice = null;
                                         String strMaximumUnitPrice = form.getMaximumUnitPrice();

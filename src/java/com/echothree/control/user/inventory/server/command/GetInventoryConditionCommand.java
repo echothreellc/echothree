@@ -17,31 +17,36 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionForm;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.control.user.inventory.common.result.GetInventoryConditionResult;
 import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetInventoryConditionCommand
-        extends BaseSimpleCommand<GetInventoryConditionForm> {
+        extends BaseSingleEntityCommand<InventoryCondition, GetInventoryConditionForm> {
     
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+                ));
     }
     
     /** Creates a new instance of GetInventoryConditionCommand */
@@ -50,20 +55,25 @@ public class GetInventoryConditionCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected InventoryCondition getEntity() {
+        InventoryCondition inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByUniversalSpec(this, form, true);
+
+        if(inventoryCondition != null) {
+            sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        }
+
+        return inventoryCondition;
+    }
+    
+    @Override
+    protected BaseResult getTransfer(InventoryCondition inventoryCondition) {
         InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetInventoryConditionResult result = InventoryResultFactory.getGetInventoryConditionResult();
-        String inventoryConditionName = form.getInventoryConditionName();
-        InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
-        
+
         if(inventoryCondition != null) {
             result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));
-            
-            sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
         }
-        
+
         return result;
     }
     

@@ -58,15 +58,15 @@ public class SetBaseEncryptionKeyStatusCommand
     @Override
     protected BaseResult execute() {
         CoreControl coreControl = getCoreControl();
-        String BaseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        BaseEncryptionKey BaseEncryptionKey = coreControl.getBaseEncryptionKeyByName(BaseEncryptionKeyName);
+        String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
+        BaseEncryptionKey baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
-        if(BaseEncryptionKey != null) {
+        if(baseEncryptionKey != null) {
             String BaseEncryptionKeyStatusChoice = form.getBaseEncryptionKeyStatusChoice();
             
-            coreControl.setBaseEncryptionKeyStatus(this, BaseEncryptionKey, BaseEncryptionKeyStatusChoice, getPartyPK());
+            coreControl.setBaseEncryptionKeyStatus(this, baseEncryptionKey, BaseEncryptionKeyStatusChoice, getPartyPK());
         } else {
-            addExecutionError(ExecutionErrors.UnknownBaseEncryptionKeyName.name(), BaseEncryptionKeyName);
+            addExecutionError(ExecutionErrors.UnknownBaseEncryptionKeyName.name(), baseEncryptionKeyName);
         }
         
         return null;

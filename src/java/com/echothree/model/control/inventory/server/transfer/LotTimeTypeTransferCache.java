@@ -32,7 +32,8 @@ public class LotTimeTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public LotTimeTypeTransfer getLotTimeTypeTransfer(LotTimeType lotTimeType) {
+    @Override
+    public LotTimeTypeTransfer getTransfer(LotTimeType lotTimeType) {
         LotTimeTypeTransfer lotTimeTypeTransfer = get(lotTimeType);
         
         if(lotTimeTypeTransfer == null) {

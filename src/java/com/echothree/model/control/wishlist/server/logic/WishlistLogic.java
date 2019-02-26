@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.wishlist.server.logic;
 
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.order.common.OrderConstants;
 import com.echothree.model.control.order.server.OrderControl;
@@ -89,7 +89,7 @@ public class WishlistLogic
         Item item = offerItemPrice.getOfferItem().getItem();
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
-        if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);

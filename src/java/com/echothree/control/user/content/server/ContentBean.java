@@ -54,6 +54,21 @@ public class ContentBean
     public CommandResult createContentPageAreaTypeDescription(UserVisitPK userVisitPK, CreateContentPageAreaTypeDescriptionForm form) {
         return new CreateContentPageAreaTypeDescriptionCommand(userVisitPK, form).run();
     }
+
+    @Override
+    public CommandResult getContentPageAreaTypeChoices(UserVisitPK userVisitPK, GetContentPageAreaTypeChoicesForm form) {
+        return new GetContentPageAreaTypeChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentPageAreaType(UserVisitPK userVisitPK, GetContentPageAreaTypeForm form) {
+        return new GetContentPageAreaTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getContentPageAreaTypes(UserVisitPK userVisitPK, GetContentPageAreaTypesForm form) {
+        return new GetContentPageAreaTypesCommand(userVisitPK, form).run();
+    }
     
     // --------------------------------------------------------------------------------
     //   Content Page Layouts

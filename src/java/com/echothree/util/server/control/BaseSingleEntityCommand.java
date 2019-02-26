@@ -26,7 +26,8 @@ import com.echothree.util.server.persistence.BaseEntity;
 import java.util.List;
 
 public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends BaseForm>
-        extends BaseSimpleCommand<F> {
+        extends BaseSimpleCommand<F>
+        implements GraphQlSecurityCommand {
     
     protected BaseSingleEntityCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {

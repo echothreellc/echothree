@@ -42,6 +42,7 @@ import java.util.List;
 public class GetContentPagesCommand
         extends BaseMultipleEntitiesCommand<ContentPage, GetContentPagesForm> {
     
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -101,7 +102,7 @@ public class GetContentPagesCommand
                     AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentSection.getPrimaryKey(), partyPK);
 
                     if(!hasExecutionErrors()) {
-                        contentPages = contentControl.getContentPages(contentSection);
+                        contentPages = contentControl.getContentPagesByContentSection(contentSection);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContentSectionName.name(),

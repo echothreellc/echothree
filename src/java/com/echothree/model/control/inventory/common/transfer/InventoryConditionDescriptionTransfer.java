@@ -27,8 +27,7 @@ public class InventoryConditionDescriptionTransfer
     private String description;
     
     /** Creates a new instance of InventoryConditionDescriptionTransfer */
-    public InventoryConditionDescriptionTransfer(LanguageTransfer language, InventoryConditionTransfer inventoryCondition,
-            String description) {
+    public InventoryConditionDescriptionTransfer(LanguageTransfer language, InventoryConditionTransfer inventoryCondition, String description) {
         this.language = language;
         this.inventoryCondition = inventoryCondition;
         this.description = description;

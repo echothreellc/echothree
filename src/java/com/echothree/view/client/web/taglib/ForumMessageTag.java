@@ -108,8 +108,7 @@ public class ForumMessageTag
     public int doStartTag() throws JspException {
         try {
             GetForumMessageForm commandForm = ForumUtil.getHome().getGetForumMessageForm();
-            Set<String> commandOptions = new HashSet<>();
-            
+
             commandForm.setForumMessageName(forumMessageName);
             
             setOptions(options, defaultOptions, commandForm);

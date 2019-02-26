@@ -16,12 +16,9 @@
 
 package com.echothree.model.control.item.server.graphql;
 
-import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -51,21 +48,6 @@ public class ItemObject
         return itemDetail;
     }
     
-    private Boolean hasItemCategoryAccess;
-    
-    private boolean getHasItemCategoryAccess(final DataFetchingEnvironment env) {
-        if(hasItemCategoryAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetItemCategoryCommand(context.getUserVisitPK(), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasItemCategoryAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasItemCategoryAccess;
-    }
-        
     @GraphQLField
     @GraphQLDescription("item name")
     @GraphQLNonNull
@@ -76,7 +58,14 @@ public class ItemObject
     @GraphQLField
     @GraphQLDescription("item category")
     public ItemCategoryObject getItemCategory(final DataFetchingEnvironment env) {
-        return getHasItemCategoryAccess(env) ? new ItemCategoryObject(getItemDetail().getItemCategory()) : null;
+        return ItemSecurityUtils.getInstance().getHasItemCategoryAccess(env) ? new ItemCategoryObject(getItemDetail().getItemCategory()) : null;
     }
 
+    @GraphQLField
+    @GraphQLDescription("item price type")
+    @GraphQLNonNull
+    public ItemPriceTypeObject getItemPriceType(final DataFetchingEnvironment env) {
+        return new ItemPriceTypeObject(getItemDetail().getItemPriceType());
+    }
+    
 }

@@ -44,14 +44,15 @@ public class LotTypeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public LotTypeTransfer getLotTypeTransfer(LotType lotType) {
+    @Override
+    public LotTypeTransfer getTransfer(LotType lotType) {
         LotTypeTransfer lotTypeTransfer = get(lotType);
         
         if(lotTypeTransfer == null) {
             LotTypeDetail lotTypeDetail = lotType.getLastDetail();
             String lotTypeName = lotTypeDetail.getLotTypeName();
             LotType parentLotType = lotTypeDetail.getParentLotType();
-            LotTypeTransfer parentLotTypeTransfer = parentLotType == null? null: getLotTypeTransfer(parentLotType);
+            LotTypeTransfer parentLotTypeTransfer = parentLotType == null? null: getTransfer(parentLotType);
             SequenceType lotSequenceType = lotTypeDetail.getLotSequenceType();
             SequenceTypeTransfer lotSequenceTypeTransfer = lotSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, lotSequenceType);
             Workflow lotWorkflow = lotTypeDetail.getLotWorkflow();

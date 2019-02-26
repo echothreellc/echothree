@@ -17,7 +17,7 @@
 package com.echothree.model.control.offer.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.choice.OfferChoicesBean;
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
 import com.echothree.model.control.offer.common.choice.UseChoicesBean;
@@ -3800,11 +3800,11 @@ public class OfferControl
         ItemPriceType itemPriceType = item.getLastDetail().getItemPriceType();
         String itemPriceTypeName = itemPriceType.getItemPriceTypeName();
         
-        if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
             OfferItemFixedPrice offerItemFixedPrice = getOfferItemFixedPriceForUpdate(offerItemPrice);
             
             OfferLogic.getInstance().deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
-        } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+        } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
             OfferItemVariablePrice offerItemVariablePrice = getOfferItemVariablePriceForUpdate(offerItemPrice);
             
             OfferLogic.getInstance().deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);

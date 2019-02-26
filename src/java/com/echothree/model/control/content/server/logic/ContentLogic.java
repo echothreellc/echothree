@@ -20,7 +20,7 @@ import com.echothree.model.control.content.common.exception.DuplicateContentCate
 import com.echothree.model.control.content.common.exception.MalformedUrlException;
 import com.echothree.model.control.content.common.exception.UnknownContentWebAddressNameException;
 import com.echothree.model.control.content.server.ContentControl;
-import com.echothree.model.control.item.common.ItemConstants;
+import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -164,7 +164,7 @@ public class ContentLogic
             Item item = contentCatalogItem.getItem();
             String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
-            if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_FIXED)) {
+            if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
                 Long unitPrice = getLowestUnitPrice(contentCatalogItem);
                 ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = contentControl.getContentCatalogItemFixedPriceForUpdate(contentCatalogItem);
 
@@ -177,7 +177,7 @@ public class ContentLogic
 
                     contentControl.updateContentCatalogItemFixedPriceFromValue(contentCatalogItemFixedPriceValue, updatedBy);
                 }
-            } else if(itemPriceTypeName.equals(ItemConstants.ItemPriceType_VARIABLE)) {
+            } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
                 ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = contentControl.getContentCatalogItemVariablePriceForUpdate(contentCatalogItem);
                 OfferItemVariablePrice offerItemVariablePrice = getOfferItemVariablePrice(contentCatalogItem);
                 Long minimumUnitPrice = offerItemVariablePrice.getMinimumUnitPrice();

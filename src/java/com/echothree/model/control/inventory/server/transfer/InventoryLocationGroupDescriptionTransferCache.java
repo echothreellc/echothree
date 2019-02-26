@@ -31,12 +31,13 @@ public class InventoryLocationGroupDescriptionTransferCache
         super(userVisit, inventoryControl);
     }
     
-    public InventoryLocationGroupDescriptionTransfer getInventoryLocationGroupDescriptionTransfer(InventoryLocationGroupDescription inventoryLocationGroupDescription) {
+    @Override
+    public InventoryLocationGroupDescriptionTransfer getTransfer(InventoryLocationGroupDescription inventoryLocationGroupDescription) {
         InventoryLocationGroupDescriptionTransfer inventoryLocationGroupDescriptionTransfer = get(inventoryLocationGroupDescription);
         
         if(inventoryLocationGroupDescriptionTransfer == null) {
             InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache();
-            InventoryLocationGroupTransfer inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getInventoryLocationGroupTransfer(inventoryLocationGroupDescription.getInventoryLocationGroup());
+            InventoryLocationGroupTransfer inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupDescription.getInventoryLocationGroup());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryLocationGroupDescription.getLanguage());
             
             inventoryLocationGroupDescriptionTransfer = new InventoryLocationGroupDescriptionTransfer(languageTransfer, inventoryLocationGroupTransfer, inventoryLocationGroupDescription.getDescription());
