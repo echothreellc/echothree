@@ -75,7 +75,7 @@ public class IndexQuery
                 hits = NO_HITS;
             } else {
                 if(sort == null) {
-                    final TopDocsCollector topDocsCollector = TopScoreDocCollector.create(numHits);
+                    final TopDocsCollector topDocsCollector = TopScoreDocCollector.create(numHits, Integer.MAX_VALUE );
                     final Collector collector = new PositiveScoresOnlyCollector(topDocsCollector);
 
                     is.search(query, collector);
