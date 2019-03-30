@@ -9,7 +9,7 @@
     <dependencies>
         <dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="sources->sources" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.2" conf="sources->sources" />
-        <dependency org="com.google.guava" name="guava" rev="26.0-jre" conf="sources->sources" />
+        <dependency org="com.google.guava" name="guava" rev="27.1-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="9.4" conf="sources->sources" />
         <dependency org="com.ibm.icu" name="icu4j" rev="62.1" conf="sources->sources" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="sources->sources" />
@@ -88,7 +88,7 @@
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="javadoc->javadoc" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.2" conf="javadoc->javadoc" />
-        <dependency org="com.google.guava" name="guava" rev="26.0-jre" conf="javadoc->javadoc" />
+        <dependency org="com.google.guava" name="guava" rev="27.1-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="9.4" conf="javadoc->javadoc" />
         <dependency org="com.ibm.icu" name="icu4j" rev="62.1" conf="javadoc->javadoc" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="javadoc->javadoc" />
@@ -169,7 +169,7 @@
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.2" conf="binaries->default">
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
-        <dependency org="com.google.guava" name="guava" rev="26.0-jre" conf="binaries->default" />
+        <dependency org="com.google.guava" name="guava" rev="27.1-jre" conf="binaries->default" />
         <dependency org="com.graphql-java" name="graphql-java" rev="9.4" conf="binaries->default" />
         <dependency org="com.ibm.icu" name="icu4j" rev="62.1" conf="binaries->default" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="binaries->default" />
