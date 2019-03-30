@@ -16,7 +16,6 @@
 
 package com.echothree.ui.web.main.action.configuration.recoveryquestion;
 
-import com.echothree.model.control.user.common.choice.RecoveryQuestionChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +24,6 @@ import org.apache.struts.action.ActionMapping;
 @SproutForm(name="RecoveryQuestionEdit")
 public class EditActionForm
         extends BaseActionForm {
-    
-    private RecoveryQuestionChoicesBean parentRecoveryQuestionChoices;
     
     private String originalRecoveryQuestionName;
     private String recoveryQuestionName;

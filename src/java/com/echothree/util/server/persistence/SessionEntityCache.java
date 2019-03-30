@@ -204,7 +204,7 @@ public class SessionEntityCache {
     private void flushEntities() {
         Map<Class, List<BaseEntity>> values = new HashMap<>();
         
-        entitiesReadWrite.values().stream().filter((baseEntity) -> (baseEntity.hasBeenModified())).forEach((baseEntity) -> {
+        entitiesReadWrite.values().stream().filter((baseEntity) -> baseEntity.hasBeenModified()).forEach((baseEntity) -> {
             Class baseEntityClass = baseEntity.getClass();
             List<BaseEntity> baseEntities = values.get(baseEntity.getClass());
             

@@ -68,7 +68,7 @@ public class ForumMessageAttachmentAction
         super(false, false);
     }
 
-    protected class ForumMessageAttachmentNames {
+    protected static class ForumMessageAttachmentNames {
 
         public String forumMessageName;
         public String forumMessageAttachmentSequence;

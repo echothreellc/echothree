@@ -26,7 +26,8 @@ public class BaseMessageTag
     /**
      * The name of the scripting variable to be exposed.
      */
-    protected String id = null;
+    // id, along with its getId()/setId() functions are provided by TagSupport
+    //protected String id = null;
     
     /**
      * The request attribute key for our error messages (if any).
@@ -42,16 +43,6 @@ public class BaseMessageTag
      * The session attribute key for our locale.
      */
     protected String locale = Globals.LOCALE_KEY;
-    
-    @Override
-    public String getId() {
-        return (this.id);
-    }
-    
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
     
     public String getCommandResultVar() {
         return commandResultVar;
