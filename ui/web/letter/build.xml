@@ -88,6 +88,7 @@
                 <include name="textile4j.jar"/>
                 <include name="nekohtml.jar"/>
                 <include name="guava.jar"/>
+                <include name="failureaccess.jar" />
             </lib>
             <!-- iText -->
             <lib dir="${build.lib.dir}">
