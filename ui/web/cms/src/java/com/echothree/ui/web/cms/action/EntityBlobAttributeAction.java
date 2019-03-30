@@ -66,7 +66,7 @@ public class EntityBlobAttributeAction
         super(false, false);
     }
 
-    protected class EntityBlobAttributeNames {
+    protected static class EntityBlobAttributeNames {
 
         public String entityRef;
         public String entityAttributeName;

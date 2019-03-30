@@ -94,7 +94,7 @@ public class UpdateIndexesCommand
         Map<EntityInstance, List<QueuedEntity>> queuedEntityMap = new HashMap<>(QUEUED_ENTITY_COUNT);
         List<QueuedEntity> queuedEntities = queueControl.getQueuedEntitiesByQueueType(queueType);
         
-        queuedEntities.stream().map((queuedEntity) -> queuedEntity.getEntityInstance()).filter((entityInstance) -> (!queuedEntityMap.containsKey(entityInstance))).forEach((entityInstance) -> {
+        queuedEntities.stream().map((queuedEntity) -> queuedEntity.getEntityInstance()).filter((entityInstance) -> !queuedEntityMap.containsKey(entityInstance)).forEach((entityInstance) -> {
             List<QueuedEntity> duplicateQueuedEntities = queueControl.getQueuedEntities(queueType, entityInstance);
             
             queuedEntityMap.put(entityInstance, duplicateQueuedEntities);

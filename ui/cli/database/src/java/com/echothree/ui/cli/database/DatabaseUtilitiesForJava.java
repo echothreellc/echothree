@@ -1071,7 +1071,7 @@ public class DatabaseUtilitiesForJava {
         }
         allColumns = allColumnsExceptPk.length() > 0? pkColumn + ", " + allColumnsExceptPk: pkColumn;
         
-        pw.println("    final private static Log log = LogFactory.getLog(" + factoryClass + ".class);");
+        pw.println("    //final private static Log log = LogFactory.getLog(" + factoryClass + ".class);");
         pw.println("    ");
         pw.println("    final private static String SQL_SELECT_READ_ONLY = \"SELECT " + allColumns + " FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
         pw.println("    final private static String SQL_SELECT_READ_WRITE = \"SELECT " + allColumns + " FROM " + dbTableName + " WHERE " + pkColumn + " = ? FOR UPDATE\";");

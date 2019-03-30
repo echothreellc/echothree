@@ -49,7 +49,7 @@ public class BaseTransferUtils {
         Collection<?> collection = baseWrapper.getCollection();
 
         if(!collection.isEmpty()) {
-            collection.stream().filter((nextDependsOn) -> (!visitedObjects.contains(nextDependsOn))).forEach((nextDependsOn) -> {
+            collection.stream().filter((nextDependsOn) -> !visitedObjects.contains(nextDependsOn)).forEach((nextDependsOn) -> {
                 getEntityRefs(entityRefExclusions, entityRefs, visitedObjects, nextDependsOn, indentCount + 1);
             });
         }

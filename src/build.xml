@@ -179,8 +179,9 @@
 
     <target name="compile" depends="generated">
         <path id="processorpath.ref">
-          <pathelement location="${dir.build.lib}/error_prone_core-with-dependencies.jar"/>
-          <pathelement location="${dir.build.lib}/jFormatString.jar"/>
+            <pathelement location="${dir.build.lib}/error_prone_core-with-dependencies.jar"/>
+            <pathelement location="${dir.build.lib}/failureaccess.jar"/>
+            <pathelement location="${dir.build.lib}/jFormatString.jar"/>
         </path>
         <javac
             debug="on"
@@ -197,9 +198,6 @@
             <compilerarg value="-Xlint:-options" />
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
-            <compilerclasspath>
-                <pathelement location="${dir.home}/build/lib/error_prone_ant.jar"/>
-            </compilerclasspath>
         </javac>
         
         <copy todir="${dir.home}/build/classes">

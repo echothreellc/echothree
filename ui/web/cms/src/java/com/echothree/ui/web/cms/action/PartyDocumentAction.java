@@ -69,7 +69,7 @@ public class PartyDocumentAction
         super(false, false);
     }
 
-    protected class PartyDocumentNames {
+    protected static class PartyDocumentNames {
 
         public String documentName;
 
