@@ -270,6 +270,7 @@
                 <include name="graphql-java-annotations.jar" />
                 <include name="gson.jar" />
                 <include name="guava.jar" />
+                <include name="failureaccess.jar" />
                 <include name="httpclient.jar" />
                 <include name="httpcore.jar" />
                 <include name="itext.jar" />

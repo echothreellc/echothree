@@ -21,6 +21,10 @@
     </module>
     
     <module>
+        <ejb>failureaccess.jar</ejb>
+    </module>
+
+    <module>
         <ejb>httpclient.jar</ejb>
     </module>
     

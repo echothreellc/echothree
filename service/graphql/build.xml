@@ -79,6 +79,7 @@
             <!-- Google Guava -->
             <lib dir="${build.lib.dir}">
                 <include name="guava.jar"/>
+                <include name="failureaccess.jar" />
             </lib>
         </war>
     </target>
