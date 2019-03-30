@@ -128,10 +128,10 @@ public class ContactListLogic
         PartyType partyType = party.getLastDetail().getPartyType();
         Set<ContactList> contactLists = new HashSet<>();
 
-        contactListControl.getPartyTypeContactListsByPartyType(partyType).stream().filter((partyTypeContactList) -> (partyTypeContactList.getAddWhenCreated())).map((partyTypeContactList) -> partyTypeContactList.getContactList()).forEach((contactList) -> {
+        contactListControl.getPartyTypeContactListsByPartyType(partyType).stream().filter((partyTypeContactList) -> partyTypeContactList.getAddWhenCreated()).map((partyTypeContactList) -> partyTypeContactList.getContactList()).forEach((contactList) -> {
             contactLists.add(contactList);
         });
-        contactListControl.getPartyTypeContactListGroupsByPartyType(partyType).stream().filter((partyTypeContactListGroup) -> (partyTypeContactListGroup.getAddWhenCreated())).forEach((partyTypeContactListGroup) -> {
+        contactListControl.getPartyTypeContactListGroupsByPartyType(partyType).stream().filter((partyTypeContactListGroup) -> partyTypeContactListGroup.getAddWhenCreated()).forEach((partyTypeContactListGroup) -> {
             contactLists.addAll(contactListControl.getContactListsByContactListGroup(partyTypeContactListGroup.getContactListGroup()));
         });
 
@@ -139,10 +139,10 @@ public class ContactListLogic
             CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
             CustomerType customerType = customerControl.getCustomer(party).getCustomerType();
 
-            contactListControl.getCustomerTypeContactListsByCustomerType(customerType).stream().filter((customerTypeContactList) -> (customerTypeContactList.getAddWhenCreated())).map((customerTypeContactList) -> customerTypeContactList.getContactList()).forEach((contactList) -> {
+            contactListControl.getCustomerTypeContactListsByCustomerType(customerType).stream().filter((customerTypeContactList) -> customerTypeContactList.getAddWhenCreated()).map((customerTypeContactList) -> customerTypeContactList.getContactList()).forEach((contactList) -> {
                 contactLists.add(contactList);
             });
-            contactListControl.getCustomerTypeContactListGroupsByCustomerType(customerType).stream().filter((customerTypeContactListGroup) -> (customerTypeContactListGroup.getAddWhenCreated())).forEach((customerTypeContactListGroup) -> {
+            contactListControl.getCustomerTypeContactListGroupsByCustomerType(customerType).stream().filter((customerTypeContactListGroup) -> customerTypeContactListGroup.getAddWhenCreated()).forEach((customerTypeContactListGroup) -> {
                 contactLists.addAll(contactListControl.getContactListsByContactListGroup(customerTypeContactListGroup.getContactListGroup()));
             });
         }

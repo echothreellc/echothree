@@ -74,7 +74,7 @@ public class BaseChoicesBean implements Serializable {
         labels.stream().map((label) -> {
             result.append('"').append(label).append(",\" \"").append(valueIter.next()).append('"');
             return label;
-        }).filter((_item) -> (valueIter.hasNext())).forEach((_item) -> {
+        }).filter((_item) -> valueIter.hasNext()).forEach((_item) -> {
             result.append("; ");
         });
 

@@ -17,9 +17,12 @@
 package com.echothree.ui.web.letter.servlet;
 
 import com.echothree.view.client.web.WebConstants;
+
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +33,8 @@ public class ErrorServlet
         extends HttpServlet {
     
     @Override
-    public void service(HttpServletRequest request, HttpServletResponse response) {
+    public void service(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException {
         try {
             String stackTrace = null;
 
@@ -61,8 +65,7 @@ public class ErrorServlet
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(errorUrl);
             dispatcher.forward(request,response);
         } catch(Exception e) {
-            // If another Exception is thrown, just dump a stacktrace.
-            e.printStackTrace();
+            throw new ServletException(e);
         }
     }
     

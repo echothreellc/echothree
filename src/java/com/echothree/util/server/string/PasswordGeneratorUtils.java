@@ -125,7 +125,7 @@ public class PasswordGeneratorUtils {
             
             password.append(selectSpelling(random, current));
             
-            graphs.stream().filter((graph) -> (nextGraphTypes.contains(graph.graphType))).forEach((graph) -> {
+            graphs.stream().filter((graph) -> nextGraphTypes.contains(graph.graphType)).forEach((graph) -> {
                 nextGraphs.add(graph);
             });
             

@@ -64,10 +64,10 @@ public class DescriptionAction
             CommandResult commandResult = TermUtil.getHome().getTermDescriptions(getUserVisitPK(request), commandForm);
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetTermDescriptionsResult result = (GetTermDescriptionsResult)executionResult.getResult();
-            TermTransfer TermTransfer = result.getTerm();
+            TermTransfer termTransfer = result.getTerm();
             
-            request.setAttribute(AttributeConstants.TERM, TermTransfer);
-            request.setAttribute(AttributeConstants.TERM_NAME, TermTransfer.getTermName());
+            request.setAttribute(AttributeConstants.TERM, termTransfer);
+            request.setAttribute(AttributeConstants.TERM_NAME, termTransfer.getTermName());
             request.setAttribute(AttributeConstants.TERM_DESCRIPTIONS, result.getTermDescriptions());
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {

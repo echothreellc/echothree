@@ -76,7 +76,7 @@ public class ParamFilter
             List<String> requestParameterNames = Collections.list(super.getParameterNames()); // unchecked
             List<String> finalParameterNames = new ArrayList<>(requestParameterNames.size());
 
-            requestParameterNames.stream().filter((parameterName) -> (!pattern.matcher(parameterName).matches())).forEach((parameterName) -> {
+            requestParameterNames.stream().filter((parameterName) -> !pattern.matcher(parameterName).matches()).forEach((parameterName) -> {
                 finalParameterNames.add(parameterName);
             });
 

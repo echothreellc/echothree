@@ -73,81 +73,81 @@ import org.springframework.web.struts.ContextLoaderPlugIn;
  */
 public class SproutAutoLoaderPlugIn
         extends ContextLoaderPlugIn {
-    private final static Logger log = Logger.getLogger( SproutAutoLoaderPlugIn.class );
+    private final static Logger log = Logger.getLogger(SproutAutoLoaderPlugIn.class);
 
     private void loadSprouts(final WebApplicationContext wac)
         throws BeansException {
-        final String[] beanNames = wac.getBeanNamesForType( Sprout.class );
+        final String[] beanNames = wac.getBeanNamesForType(Sprout.class);
         
         // create a default actionform
         final FormBeanConfig fbc = new FormBeanConfig();
-        fbc.setName( Sprout.SPROUT_DEFAULT_ACTION_FORM_NAME );
-        fbc.setType( LazyValidatorForm.class.getName() );
-        getModuleConfig().addFormBeanConfig( fbc );
-        
-        for ( int i = 0; i < beanNames.length; i++ ) {
-            final Sprout bean = (Sprout) wac.getBean( beanNames[i] );
-            final String[] aliases = wac.getAliases( beanNames[i] );
 
-            for ( int j = 0; j < aliases.length; j++ ) {
-                final String name = aliases[j].substring( aliases[j].lastIndexOf('/') + 1 );
+        fbc.setName(Sprout.SPROUT_DEFAULT_ACTION_FORM_NAME);
+        fbc.setType(LazyValidatorForm.class.getName());
+        getModuleConfig().addFormBeanConfig(fbc);
+        
+        for(int i = 0; i < beanNames.length; i++) {
+            final Sprout bean = (Sprout) wac.getBean(beanNames[i]);
+            final String[] aliases = wac.getAliases(beanNames[i]);
+
+            for(int j = 0; j < aliases.length; j++) {
+                final String name = aliases[j].substring(aliases[j].lastIndexOf('/') + 1);
 
                 try {
-                    final Method method = findMethod( name, bean.getClass() );
-                    log.debug( aliases[j] + " -> " + beanNames[i] + "." + name );
+                    final Method method = findMethod(name, bean.getClass());
+                    log.debug(aliases[j] + " -> " + beanNames[i] + "." + name);
 
                     final ActionMapping ac = new ActionMapping();
-                    ac.setParameter( method.getName() );
-                    ac.setPath( aliases[j] );
+                    ac.setParameter(method.getName());
+                    ac.setPath(aliases[j]);
 
                     // establish defaults
                     String actionForm = bean.getClass().getSimpleName() + Sprout.DEFAULT_FORM_SUFFIX;
                     String input = aliases[j] + Sprout.DEFAULT_VIEW_EXTENSION;
                     String scope = Sprout.DEFAULT_SCOPE;
                     boolean validate = false;
-                    ac.addForwardConfig( makeForward( Sprout.FWD_SUCCESS, aliases[j] + ".jsp" ) );
+                    ac.addForwardConfig(makeForward(Sprout.FWD_SUCCESS, aliases[j] + ".jsp"));
 
                     // process annotations and override defaults where appropriate
                     final Annotation[] annotations = method.getAnnotations();
-                    for (int k = 0; k < annotations.length; k++ ) {
+                    for (int k = 0; k < annotations.length; k++) {
                         final Annotation a = annotations[k];
                         final Class type = a.annotationType();
-                        if ( type.equals( Sprout.FormName.class) )
+                        if (type.equals(Sprout.FormName.class))
                             actionForm = ((Sprout.FormName) a).value();
-                        else if ( type.equals( Sprout.Forward.class ) ) {
+                        else if (type.equals(Sprout.Forward.class)) {
                             final Forward fwd = (Sprout.Forward) a;
-                            for (int m=0; m < fwd.path().length; m++ ) {
+                            for (int m=0; m < fwd.path().length; m++) {
                                 String fwdPath = fwd.path()[m];
                                 String fwdName = Sprout.FWD_SUCCESS;
                                 boolean fwdRedirect = false;
-                                if ( fwd.name().length - 1  >= m )
+                                if (fwd.name().length - 1  >= m)
                                     fwdName = fwd.name()[m];
-                                if ( fwd.redirect().length - 1  >= m )
+                                if (fwd.redirect().length - 1  >= m)
                                     fwdRedirect = fwd.redirect()[m];
-                                ac.addForwardConfig( makeForward( fwdName, fwdPath, fwdRedirect, null ) );
+                                ac.addForwardConfig(makeForward(fwdName, fwdPath, fwdRedirect, null));
                             }
-                        } else if ( type.equals( Sprout.Input.class) )
+                        } else if (type.equals(Sprout.Input.class))
                             input = ((Sprout.Input) a).value();
-                        if ( type.equals( Sprout.Scope.class) )
+                        if (type.equals(Sprout.Scope.class))
                             scope = ((Sprout.Scope) a).value();
-                        else if ( type.equals( Sprout.Validate.class ) )
+                        else if (type.equals(Sprout.Validate.class))
                             validate = ((Sprout.Validate) a).value();
                     }
 
                     // use values
-                    if ( null != getModuleConfig().findFormBeanConfig( actionForm ) )
-                        ac.setName( actionForm );
+                    if (null != getModuleConfig().findFormBeanConfig(actionForm))
+                        ac.setName(actionForm);
                     else {
                         log.info("No ActionForm defined: " + actionForm + ". Using default.");
-                        ac.setName( Sprout.SPROUT_DEFAULT_ACTION_FORM_NAME );
+                        ac.setName(Sprout.SPROUT_DEFAULT_ACTION_FORM_NAME);
                     }
-                    ac.setValidate( validate );
-                    ac.setInput( input );
-                    ac.setScope( scope );
+                    ac.setValidate(validate);
+                    ac.setInput(input);
+                    ac.setScope(scope);
 
-                    getModuleConfig().addActionConfig( ac );
-                }
-                catch (final NoSuchMethodException e) {
+                    getModuleConfig().addActionConfig(ac);
+                } catch(final NoSuchMethodException e) {
                     log.warn("Could not register action; no such method: " + name, e);
                 }
             }
@@ -157,18 +157,19 @@ public class SproutAutoLoaderPlugIn
     private void loadForm(final Class bean) {
         final Annotation[] annotations = bean.getAnnotations();
 
-        for (int j = 0; j < annotations.length; j++ ) {
+        for(int j = 0; j < annotations.length; j++) {
             final Annotation a = annotations[j];
             final Class type = a.annotationType();
 
-            if(type.equals( SproutForm.class ) ) {
+            if(type.equals(SproutForm.class)) {
                 final SproutForm form = (SproutForm) a;
                 final String actionFormName = form.name();
                 final String actionFormType = bean.getName();
 
                 if(log.isDebugEnabled()) {
-                    log.debug( "ActionForm " + actionFormName + " -> " + actionFormType );
+                    log.debug("ActionForm " + actionFormName + " -> " + actionFormType);
                 }
+
                 getModuleConfig().addFormBeanConfig(new ActionFormBean(actionFormName, actionFormType));
             }
         }
@@ -177,11 +178,11 @@ public class SproutAutoLoaderPlugIn
     private void loadAction(final Class bean) {
         final Annotation[] annotations = bean.getAnnotations();
 
-        for (int i = 0; i < annotations.length; i++ ) {
+        for(int i = 0; i < annotations.length; i++) {
             final Annotation a = annotations[i];
             final Class type = a.annotationType();
 
-            if(type.equals( SproutAction.class ) ) {
+            if(type.equals(SproutAction.class)) {
                 final SproutAction form = (SproutAction) a;
                 final String path = form.path();
                 final Class<ActionConfig> mappingClass = form.mappingClass();
@@ -190,7 +191,6 @@ public class SproutAutoLoaderPlugIn
                 final String parameter = form.parameter();
                 final boolean validate = form.validate();
                 final String input = form.input();
-                final SproutProperty[] properties = form.properties();
                 final SproutForward[] forwards = form.forwards();
                 ActionConfig actionConfig = null;
                 
@@ -217,35 +217,30 @@ public class SproutAutoLoaderPlugIn
                     if(name.length() > 0) {
                         actionConfig.setName(name);
                     }
+
                     if(parameter.length() > 0) {
                         actionConfig.setParameter(parameter);
                     }
+
                     if(input.length() > 0) {
                         actionConfig.setInput(input);
-                    }
-                    
-                    if(properties != null && properties.length > 0) {
-                        Map actionConfigBeanMap = new BeanMap(actionConfig);
-                        
-                        for(int j = 0; j < properties.length; j++) {
-                            actionConfigBeanMap.put(properties[j].property(), properties[j].value());
-                        }
                     }
                     
                     if(forwards != null && forwards.length > 0) {
                         for(int j = 0; j < forwards.length; j++) {
                             String fcModule = forwards[j].module();
                             
-                            actionConfig.addForwardConfig(makeForward(forwards[j].name(), forwards[j].path(), forwards[j].redirect(), fcModule.length() == 0? null: fcModule));
+                            actionConfig.addForwardConfig(makeForward(forwards[j].name(), forwards[j].path(), forwards[j].redirect(),
+                                    fcModule.length() == 0? null: fcModule));
                         }
                     }
                 }
                 
                 if(log.isDebugEnabled()) {
-                    log.debug( "Action " + path + " -> " + bean.getName() );
+                    log.debug("Action " + path + " -> " + bean.getName());
                 }
 
-                getModuleConfig().addActionConfig( actionConfig );
+                getModuleConfig().addActionConfig(actionConfig);
             }
         }
     }
@@ -281,14 +276,14 @@ public class SproutAutoLoaderPlugIn
     public void onInit() throws ServletException {
         super.onInit();
 
-        final WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext( getServletContext() );
+        final WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 
         try {
             loadSprouts(wac);
             loadAnnotatedActionsAndForms();
         } catch (final BeansException e) {
             log.warn("Error while auto loading Sprouts: " + e.getMessage(), e);
-            throw new ServletException( e );
+            throw new ServletException(e);
         }
     }
     
@@ -300,7 +295,7 @@ public class SproutAutoLoaderPlugIn
      * @return ForwardConfig.
      */
     private ForwardConfig makeForward(final String name, final String path) {
-        return makeForward( name, path, false, null );
+        return makeForward(name, path, false, null);
     }
 
     /**
@@ -312,12 +307,14 @@ public class SproutAutoLoaderPlugIn
      * @return ActionForward.
      */
     private ActionForward makeForward(final String name, final String path, final boolean redirect, final String module) {
-        final ActionForward fc = new ActionForward();
-        fc.setName( name );
-        fc.setPath( path );
-        fc.setRedirect( redirect );
-        fc.setModule( module );
-        return fc;
+        final ActionForward actionForward = new ActionForward();
+
+        actionForward.setName(name);
+        actionForward.setPath(path);
+        actionForward.setRedirect(redirect);
+        actionForward.setModule(module);
+
+        return actionForward;
     }
     
     /**
@@ -331,15 +328,17 @@ public class SproutAutoLoaderPlugIn
      */
     private Method findMethod(final String name, final Class clazz) throws NoSuchMethodException {
         final Method[] methods = clazz.getMethods();
-        for ( int i = 0; i < methods.length; i++ ) {
+
+        for(int i = 0; i < methods.length; i++) {
             String methodName = methods[i].getName();
 
-            if ( methodName.equals("publick") )
+            if(methodName.equals("publick"))
                 methodName = "public";
 
-            if ( methodName.equalsIgnoreCase( name.replaceAll("_([a-z])", "$1") ) )
+            if(methodName.equalsIgnoreCase(name.replaceAll("_([a-z])", "$1")))
                 return methods[i];
         }
-        throw new NoSuchMethodException( name );
+
+        throw new NoSuchMethodException(name);
     }
 }

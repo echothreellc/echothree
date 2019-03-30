@@ -107,12 +107,9 @@ public class CreateContactPostalAddressCommand
         otherFormFieldDefinitions = Collections.unmodifiableList(temp);
     }
     
-    CreateContactPostalAddressForm form;
-    
     /** Creates a new instance of CreateContactPostalAddressCommand */
     public CreateContactPostalAddressCommand(UserVisitPK userVisitPK, CreateContactPostalAddressForm form) {
-        super(userVisitPK, null, false);
-        this.form = form;
+        super(userVisitPK, form, null, null, false);
     }
     
     @Override

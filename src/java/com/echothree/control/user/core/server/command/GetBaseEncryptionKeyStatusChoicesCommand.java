@@ -66,17 +66,17 @@ public class GetBaseEncryptionKeyStatusChoicesCommand
     protected BaseResult execute() {
         CoreControl coreControl = getCoreControl();
         GetBaseEncryptionKeyStatusChoicesResult result = CoreResultFactory.getGetBaseEncryptionKeyStatusChoicesResult();
-        String BaseEncryptionKeyName = form.getBaseEncryptionKeyName();
-        BaseEncryptionKey BaseEncryptionKey = coreControl.getBaseEncryptionKeyByName(BaseEncryptionKeyName);
+        String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
+        BaseEncryptionKey baseEncryptionKey = coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);
         
-        if(BaseEncryptionKeyName == null || BaseEncryptionKey != null) {
+        if(baseEncryptionKeyName == null || baseEncryptionKey != null) {
             String defaultBaseEncryptionKeyStatusChoice = form.getDefaultBaseEncryptionKeyStatusChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
             result.setBaseEncryptionKeyStatusChoices(coreControl.getBaseEncryptionKeyStatusChoices(defaultBaseEncryptionKeyStatusChoice,
-                    getPreferredLanguage(), allowNullChoice, BaseEncryptionKey, getPartyPK()));
+                    getPreferredLanguage(), allowNullChoice, baseEncryptionKey, getPartyPK()));
         } else {
-            addExecutionError(ExecutionErrors.UnknownBaseEncryptionKeyName.name(), BaseEncryptionKeyName);
+            addExecutionError(ExecutionErrors.UnknownBaseEncryptionKeyName.name(), baseEncryptionKeyName);
         }
         
         return result;

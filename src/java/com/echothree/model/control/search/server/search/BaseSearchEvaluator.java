@@ -65,9 +65,9 @@ public abstract class BaseSearchEvaluator
     protected SearchSortDirection searchSortDirection;
     protected SearchUseType searchUseType;
     
-    protected Party party;
-    protected PartyPK partyPK;
-    protected Boolean partyVerified;
+    private Party party;
+    private PartyPK partyPK;
+    private Boolean partyVerified;
     
     private void init(SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
         UserSession userSession = getUserControl().getUserSessionByUserVisit(userVisit);

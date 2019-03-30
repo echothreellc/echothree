@@ -202,7 +202,7 @@ public class PartyRelationshipLogic
         PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         List<PartyDivision> partyDivisions = partyControl.getDivisionsByCompany(companyParty);
 
-        partyDivisions.stream().map((partyDivision) -> partyDivision.getParty()).filter((divisionParty) -> (isEmployeeOfDivision(eea, divisionParty, employeeParty))).forEach((divisionParty) -> {
+        partyDivisions.stream().map((partyDivision) -> partyDivision.getParty()).filter((divisionParty) -> isEmployeeOfDivision(eea, divisionParty, employeeParty)).forEach((divisionParty) -> {
             removeEmployeeFromDivisionsDepartments(eea, employeeParty, employeeParty, deletedBy);
             removeEmployeeFromDivision(eea, divisionParty, employeeParty, deletedBy);
         });
@@ -268,7 +268,7 @@ public class PartyRelationshipLogic
         PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         List<PartyDepartment> partyDepartments = partyControl.getDepartmentsByDivision(divisionParty);
 
-        partyDepartments.stream().map((partyDepartment) -> partyDepartment.getParty()).filter((departmentParty) -> (isEmployeeOfDepartment(eea, departmentParty, employeeParty))).forEach((departmentParty) -> {
+        partyDepartments.stream().map((partyDepartment) -> partyDepartment.getParty()).filter((departmentParty) -> isEmployeeOfDepartment(eea, departmentParty, employeeParty)).forEach((departmentParty) -> {
             removeEmployeeFromDepartment(eea, departmentParty, employeeParty, deletedBy);
         });
     }

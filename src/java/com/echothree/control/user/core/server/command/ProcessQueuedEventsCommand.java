@@ -75,19 +75,21 @@ public class ProcessQueuedEventsCommand
                 List<EventSubscriberEntityType> eventSubscriberEntityTypes = coreControl.getEventSubscriberEntityTypes(entityType, eventType);
                 List<EventSubscriberEntityInstance> eventSubscriberEntityInstances = coreControl.getEventSubscriberEntityInstances(entityInstance, eventType);
 
-                eventSubscriberEventTypes.stream().map((eventSubscriberEventType) -> eventSubscriberEventType.getEventSubscriber()).filter((eventSubscriber) -> (!eventSubscribers.contains(eventSubscriber))).map((eventSubscriber) -> {
+                eventSubscriberEventTypes.stream().map((eventSubscriberEventType) -> eventSubscriberEventType.getEventSubscriber()).filter((eventSubscriber) -> !eventSubscribers.contains(eventSubscriber)).map((eventSubscriber) -> {
                     coreControl.createQueuedSubscriberEvent(eventSubscriber, event);
                     return eventSubscriber;
                 }).forEach((eventSubscriber) -> {
                     eventSubscribers.add(eventSubscriber);
                 });
-                eventSubscriberEntityTypes.stream().map((eventSubscriberEntityType) -> eventSubscriberEntityType.getEventSubscriber()).filter((eventSubscriber) -> (!eventSubscribers.contains(eventSubscriber))).map((eventSubscriber) -> {
+
+                eventSubscriberEntityTypes.stream().map((eventSubscriberEntityType) -> eventSubscriberEntityType.getEventSubscriber()).filter((eventSubscriber) -> !eventSubscribers.contains(eventSubscriber)).map((eventSubscriber) -> {
                     coreControl.createQueuedSubscriberEvent(eventSubscriber, event);
                     return eventSubscriber;
                 }).forEach((eventSubscriber) -> {
                     eventSubscribers.add(eventSubscriber);
                 });
-                eventSubscriberEntityInstances.stream().map((eventSubscriberEntityInstance) -> eventSubscriberEntityInstance.getEventSubscriber()).filter((eventSubscriber) -> (!eventSubscribers.contains(eventSubscriber))).map((eventSubscriber) -> {
+                
+                eventSubscriberEntityInstances.stream().map((eventSubscriberEntityInstance) -> eventSubscriberEntityInstance.getEventSubscriber()).filter((eventSubscriber) -> !eventSubscribers.contains(eventSubscriber)).map((eventSubscriber) -> {
                     coreControl.createQueuedSubscriberEvent(eventSubscriber, event);
                     return eventSubscriber;
                 }).forEach((eventSubscriber) -> {

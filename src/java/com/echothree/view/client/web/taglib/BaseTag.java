@@ -41,7 +41,7 @@ public class BaseTag
     
     protected UserVisitPK getUserVisitPK() throws JspException {
         HttpSession httpSession = pageContext.getSession();
-        UserVisitPK userVisitPK = null;
+        UserVisitPK userVisitPK;
         
         if(httpSession != null) {
             userVisitPK = (UserVisitPK)httpSession.getAttribute(WebConstants.Session_USER_VISIT);
