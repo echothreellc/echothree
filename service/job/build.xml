@@ -37,8 +37,9 @@
  
     <target name="compile" depends="prepare">
         <path id="processorpath.ref">
-          <pathelement location="${build.dir.lib}/error_prone_core-with-dependencies.jar"/>
-          <pathelement location="${build.dir.lib}/jFormatString.jar"/>
+            <pathelement location="${build.dir.lib}/error_prone_core-with-dependencies.jar"/>
+            <pathelement location="${build.dir.lib}/failureaccess.jar"/>
+            <pathelement location="${build.dir.lib}/jFormatString.jar"/>
         </path>
         <javac
             debug="on"

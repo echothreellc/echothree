@@ -8,7 +8,7 @@
     </configurations>
     <dependencies>
         <dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="sources->sources" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.2" conf="sources->sources" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="sources->sources" />
         <dependency org="com.google.guava" name="guava" rev="26.0-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="9.4" conf="sources->sources" />
         <dependency org="com.ibm.icu" name="icu4j" rev="62.1" conf="sources->sources" />
@@ -87,7 +87,7 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="javadoc->javadoc" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.2" conf="javadoc->javadoc" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="guava" rev="26.0-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="9.4" conf="javadoc->javadoc" />
         <dependency org="com.ibm.icu" name="icu4j" rev="62.1" conf="javadoc->javadoc" />
@@ -166,7 +166,7 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="binaries->default" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.2" conf="binaries->default">
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="binaries->default">
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
         <dependency org="com.google.guava" name="guava" rev="26.0-jre" conf="binaries->default" />

@@ -33,8 +33,9 @@
     <target name="compile" depends="init" description="Compile Unit Tests">
         <mkdir dir="${test.junit.classes.dir}" />
         <path id="processorpath.ref">
-          <pathelement location="${dir.build.lib}/error_prone_core-with-dependencies.jar"/>
-          <pathelement location="${dir.build.lib}/jFormatString.jar"/>
+            <pathelement location="${dir.build.lib}/error_prone_core-with-dependencies.jar"/>
+            <pathelement location="${dir.build.lib}/failureaccess.jar"/>
+            <pathelement location="${dir.build.lib}/jFormatString.jar"/>
         </path>
         <javac
             debug="true"
