@@ -105,8 +105,8 @@
             <arg value="--plugin"/>
             <arg value="html:${test.cucumber.results.html.dir}"/>
             <arg value="--glue"/>
-            <arg value=""/>
-            <arg value="."/>
+            <arg value="com.echothree.cucumber"/>
+            <arg value="src/feature"/>
         </java>
         <junitreport todir="${test.cucumber.results.junit.dir}">
             <fileset dir="${test.cucumber.results.junit.dir}">
