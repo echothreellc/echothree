@@ -118,10 +118,6 @@
                 <include name="jdom.jar"/>
                 <include name="rome.jar"/>
             </lib>
-            <!-- GraphQL -->
-            <lib dir="${build.lib.dir}">
-                <include name="graphql-java.jar"/>
-            </lib>
             <!-- FastClasspathScanner -->
             <lib dir="${build.lib.dir}">
                 <include name="classgraph.jar"/>
