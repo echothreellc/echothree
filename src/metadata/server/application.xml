@@ -109,6 +109,10 @@
     </module>
 
     <module>
+        <ejb>java-dataloader.jar</ejb>
+    </module>
+
+    <module>
         <ejb>echothree-server.jar</ejb>
     </module>
     
