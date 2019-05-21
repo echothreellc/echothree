@@ -2266,6 +2266,66 @@
                 <securityRoleDescription languageIsoName="en" description="Postal Address Format List" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ContactEmailAddress" parentSecurityRoleGroupName="ContactComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Contact Email Address" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Email Address Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Email Address Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Email Address Delete" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Email Address Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ContactPostalAddress" parentSecurityRoleGroupName="ContactComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Contact Postal Address" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Postal Address Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Postal Address Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Postal Address Delete" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Postal Address Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ContactTelephone" parentSecurityRoleGroupName="ContactComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Contact Telephone" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Telephone Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Telephone Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Telephone Delete" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Telephone Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ContactWebAddress" parentSecurityRoleGroupName="ContactComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Contact Web Address" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Web Address Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Web Address Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Web Address Delete" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Web Address Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkflowComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Workflow Component" />
         </securityRoleGroup>
@@ -7283,7 +7343,22 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyTypeAuditPolicy" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PersonalTitle" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PostalAddressFormat" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="RecoveryQuestion" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactEmailAddress" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactEmailAddress" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactEmailAddress" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactEmailAddress" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactPostalAddress" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactPostalAddress" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactPostalAddress" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactPostalAddress" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactTelephone" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactTelephone" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactTelephone" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactTelephone" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactWebAddress" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactWebAddress" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactWebAddress" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactWebAddress" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ResponsibilityType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CancellationKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CancellationKind" securityRoleName="Edit" />
