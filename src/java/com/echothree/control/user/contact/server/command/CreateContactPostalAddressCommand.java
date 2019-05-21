@@ -25,6 +25,8 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
@@ -38,6 +40,7 @@ import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -46,10 +49,14 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
@@ -57,10 +64,20 @@ import org.apache.commons.codec.language.Soundex;
 public class CreateContactPostalAddressCommand
         extends BaseSimpleCommand<CreateContactPostalAddressForm> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> customerFormFieldDefinitions;
     private final static List<FieldDefinition> otherFormFieldDefinitions;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContactPostalAddress.name(), SecurityRoles.Create.name())
+                        )))
+                )));
+
         // customerFormFieldDefinitions differs from otherFormFieldDefinitions in that when the PartyType
         // executing this command = CUSTOMER, FirstName and LastName are required fields. For all other
         // PartyTypes, that requirement is relaxed.
@@ -109,9 +126,16 @@ public class CreateContactPostalAddressCommand
     
     /** Creates a new instance of CreateContactPostalAddressCommand */
     public CreateContactPostalAddressCommand(UserVisitPK userVisitPK, CreateContactPostalAddressForm form) {
-        super(userVisitPK, form, null, null, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
     }
-    
+
+    @Override
+    protected SecurityResult security() {
+        var securityResult = super.security();
+
+        return securityResult != null ? securityResult : selfOnly();
+    }
+
     @Override
     protected ValidationResult validate() {
         String partyTypeName = getPartyTypeName();
