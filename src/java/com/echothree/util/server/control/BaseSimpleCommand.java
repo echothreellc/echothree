@@ -16,13 +16,20 @@
 
 package com.echothree.util.server.control;
 
+import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDetail;
+import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.message.Message;
+import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.ValidationResult;
@@ -116,4 +123,28 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         return validationResult;
     }
     
+    protected SecurityResult selfOnly() {
+        var hasInsufficientSecurity = false;
+        var partyTypeName = getPartyType().getPartyTypeName();
+
+        switch(partyTypeName) {
+            case PartyConstants.PartyType_CUSTOMER:
+            case PartyConstants.PartyType_VENDOR:
+                if(form instanceof PartySpec) {
+                    if(((PartySpec)form).getPartyName() != null) {
+                        hasInsufficientSecurity = true;;
+                    }
+                } else {
+                    throw new RuntimeException("form doesn't implement PartySpec");
+                }
+            break;
+        }
+
+        return hasInsufficientSecurity ? getInsufficientSecurityResult() : null;
+    }
+
+    protected SecurityResult getInsufficientSecurityResult() {
+        return new SecurityResult(new Messages().add(Messages.SECURITY_MESSAGE, new Message(SecurityMessages.InsufficientSecurity.name())));
+    }
+
 }
