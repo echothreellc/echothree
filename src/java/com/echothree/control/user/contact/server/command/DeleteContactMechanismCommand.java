@@ -19,6 +19,7 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.DeleteContactMechanismForm;
 import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contact.server.logic.ContactMechanismLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -96,14 +97,11 @@ public class DeleteContactMechanismCommand
 
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        String contactMechanismName = form.getContactMechanismName();
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByNameForUpdate(contactMechanismName);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactMechanism = ContactMechanismLogic.getInstance().getContactMechanismByName(this, form.getContactMechanismName());
         
-        if(contactMechanism != null) {
+        if(!hasExecutionErrors()) {
             contactControl.deleteContactMechanism(contactMechanism, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownContactMechanismName.name(), contactMechanismName);
         }
         
         return null;
