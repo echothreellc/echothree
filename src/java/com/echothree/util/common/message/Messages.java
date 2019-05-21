@@ -157,7 +157,7 @@ public class Messages
      * @param property  Property name (or Messages.GLOBAL_MESSAGE)
      * @param message   The message to be added
      */
-    public void add(String property, Message message) {
+    public Messages add(String property, Message message) {
         MessageItem item = messages.get(property);
         Map<String, Message> hashMap = null;
         
@@ -171,6 +171,8 @@ public class Messages
         }
         
         hashMap.put(message.getKey(), message);
+
+        return this;
     }
     
     /**
@@ -185,9 +187,9 @@ public class Messages
      * This parameter can be <code>null</code>.
      * @since Struts 1.1
      */
-    public void add(Messages messages) {
+    public Messages add(Messages messages) {
         if(messages == null) {
-            return;
+            return this;
         }
         // loop over properties
         Iterator props = messages.properties();
@@ -201,6 +203,8 @@ public class Messages
                 this.add(property, msg);
             }
         }
+
+        return this;
     }
     
     /**
