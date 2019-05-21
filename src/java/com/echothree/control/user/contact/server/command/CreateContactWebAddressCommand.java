@@ -62,7 +62,7 @@ public class CreateContactWebAddressCommand
                 new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ContactWebAddress.name(), SecurityRoles.Create.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Create.name())
                         )))
                 )));
 
