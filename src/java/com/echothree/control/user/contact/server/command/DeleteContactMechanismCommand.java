@@ -17,17 +17,13 @@
 package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.DeleteContactMechanismForm;
-import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.contact.server.logic.ContactMechanismLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.SecurityResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
