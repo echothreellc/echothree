@@ -1074,7 +1074,7 @@ public class ContactControl
                 "WHERE cmch_activedetailid = cmchdt_contactmechanismdetailid");
     }
 
-    private ContactMechanism getContactMechanismByName(String contactMechanismName, EntityPermission entityPermission) {
+    public ContactMechanism getContactMechanismByName(String contactMechanismName, EntityPermission entityPermission) {
         ContactMechanism contactMechanism = null;
         
         try {
@@ -2312,7 +2312,7 @@ public class ContactControl
         return getDefaultPartyContactMechanismForUpdate(party).getLastDetailForUpdate().getPartyContactMechanismDetailValue().clone();
     }
     
-    private PartyContactMechanism getPartyContactMechanism(Party party, ContactMechanism contactMechanism,
+    public PartyContactMechanism getPartyContactMechanism(Party party, ContactMechanism contactMechanism,
             EntityPermission entityPermission) {
         PartyContactMechanism partyContactMechanism = null;
         
