@@ -24,6 +24,7 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class PartyContactMechanismLogic
@@ -42,9 +43,9 @@ public class PartyContactMechanismLogic
     }
     
     public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,
-            final ContactMechanism contactMechanism) {
+            final ContactMechanism contactMechanism, final EntityPermission entityPermission) {
         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
+        var partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism, entityPermission);
 
         if(partyContactMechanism == null) {
             handleExecutionError(UnknownPartyContactMechanismException.class, eea, ExecutionErrors.UnknownPartyContactMechanism.name(),
@@ -54,4 +55,14 @@ public class PartyContactMechanismLogic
         return partyContactMechanism;
     }
     
+    public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,
+            final ContactMechanism contactMechanism) {
+        return getPartyContactMechanism(eea, party, contactMechanism, EntityPermission.READ_ONLY);
+    }
+
+    public PartyContactMechanism getPartyContactMechanismForUpdate(final ExecutionErrorAccumulator eea, final Party party,
+            final ContactMechanism contactMechanism) {
+        return getPartyContactMechanism(eea, party, contactMechanism, EntityPermission.READ_WRITE);
+    }
+
 }

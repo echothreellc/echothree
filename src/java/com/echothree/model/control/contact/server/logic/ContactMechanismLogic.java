@@ -22,6 +22,7 @@ import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class ContactMechanismLogic
@@ -39,9 +40,10 @@ public class ContactMechanismLogic
         return ContactMechanismLogicHolder.instance;
     }
     
-    public ContactMechanism getContactMechanismByName(final ExecutionErrorAccumulator eea, final String contactMechanismName) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+    public ContactMechanism getContactMechanismByName(final ExecutionErrorAccumulator eea, final String contactMechanismName,
+            final EntityPermission entityPermission) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName, entityPermission);
 
         if(contactMechanism == null) {
             handleExecutionError(UnknownContactMechanismNameException.class, eea, ExecutionErrors.UnknownContactMechanismName.name(), contactMechanismName);
@@ -49,5 +51,13 @@ public class ContactMechanismLogic
 
         return contactMechanism;
     }
-    
+
+    public ContactMechanism getContactMechanismByName(final ExecutionErrorAccumulator eea, final String contactMechanismName) {
+        return getContactMechanismByName(eea, contactMechanismName, EntityPermission.READ_ONLY);
+    }
+
+    public ContactMechanism getContactMechanismByNameForUpdate(final ExecutionErrorAccumulator eea, final String contactMechanismName) {
+        return getContactMechanismByName(eea, contactMechanismName, EntityPermission.READ_WRITE);
+    }
+
 }
