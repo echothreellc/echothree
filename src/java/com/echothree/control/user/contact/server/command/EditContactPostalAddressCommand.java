@@ -27,6 +27,8 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismDetail;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
@@ -39,6 +41,7 @@ import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -47,6 +50,9 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -57,13 +63,23 @@ import org.apache.commons.codec.language.Soundex;
 public class EditContactPostalAddressCommand
         extends BaseEditCommand<PartyContactMechanismSpec, ContactPostalAddressEdit> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> editCustomerFieldDefinitions;
     private final static List<FieldDefinition> editOtherFieldDefinitions;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
                 ));
         
@@ -111,9 +127,16 @@ public class EditContactPostalAddressCommand
                 ));
     }
     
+    @Override
+    protected SecurityResult security() {
+        var securityResult = super.security();
+
+        return securityResult != null ? securityResult : selfOnly(spec);
+    }
+
     /** Creates a new instance of EditContactPostalAddressCommand */
     public EditContactPostalAddressCommand(UserVisitPK userVisitPK, EditContactPostalAddressForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, null);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, null);
         
         String partyTypeName = getPartyTypeName();
         List<FieldDefinition> EDIT_FIELD_DEFINITIONS = partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)? editCustomerFieldDefinitions: editOtherFieldDefinitions;
@@ -126,7 +149,7 @@ public class EditContactPostalAddressCommand
         PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditContactPostalAddressResult result = ContactResultFactory.getEditContactPostalAddressResult();
         String partyName = spec.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
