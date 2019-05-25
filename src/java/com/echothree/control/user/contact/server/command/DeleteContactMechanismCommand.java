@@ -94,7 +94,7 @@ public class DeleteContactMechanismCommand
     @Override
     protected BaseResult execute() {
         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var contactMechanism = ContactMechanismLogic.getInstance().getContactMechanismByName(this, form.getContactMechanismName());
+        var contactMechanism = ContactMechanismLogic.getInstance().getContactMechanismByNameForUpdate(this, form.getContactMechanismName());
         
         if(!hasExecutionErrors()) {
             contactControl.deleteContactMechanism(contactMechanism, getPartyPK());
