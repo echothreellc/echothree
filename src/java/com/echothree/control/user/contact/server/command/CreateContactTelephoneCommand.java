@@ -91,7 +91,7 @@ public class CreateContactTelephoneCommand
     protected SecurityResult security() {
         var securityResult = super.security();
 
-        return securityResult != null ? securityResult : selfOnly();
+        return securityResult != null ? securityResult : selfOnly(form);
     }
 
     @Override
