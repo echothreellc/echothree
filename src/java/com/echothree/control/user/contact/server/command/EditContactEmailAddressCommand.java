@@ -22,8 +22,12 @@ import com.echothree.control.user.contact.common.form.EditContactEmailAddressFor
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
+import com.echothree.control.user.contactlist.common.edit.ContactListEdit;
+import com.echothree.control.user.contactlist.common.result.EditContactListResult;
+import com.echothree.control.user.contactlist.common.spec.ContactListSpec;
 import com.echothree.model.control.contact.common.ContactConstants;
 import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,9 +36,11 @@ import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismDetail;
+import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.contact.server.value.ContactEmailAddressValue;
 import com.echothree.model.data.contact.server.value.ContactMechanismDetailValue;
 import com.echothree.model.data.contact.server.value.PartyContactMechanismDetailValue;
+import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
@@ -46,6 +52,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -56,8 +63,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditContactEmailAddressCommand
-        extends BaseEditCommand<PartyContactMechanismSpec, ContactEmailAddressEdit> {
-    
+        extends BaseAbstractEditCommand<PartyContactMechanismSpec, ContactEmailAddressEdit, EditContactEmailAddressResult, PartyContactMechanism, ContactMechanism> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
@@ -97,98 +104,45 @@ public class EditContactEmailAddressCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        EditContactEmailAddressResult result = ContactResultFactory.getEditContactEmailAddressResult();
-        String partyName = spec.getPartyName();
-        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
-        
+    public EditContactEmailAddressResult getResult() {
+        return ContactResultFactory.getEditContactEmailAddressResult();
+    }
+
+    @Override
+    public ContactEmailAddressEdit getEdit() {
+        return ContactEditFactory.getContactEmailAddressEdit();
+    }
+
+    @Override
+    public PartyContactMechanism getEntity(EditContactEmailAddressResult result) {
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        PartyContactMechanism partyContactMechanism = null;
+        var partyName = spec.getPartyName();
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
+
         if(party != null) {
-            ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-            String contactMechanismName = spec.getContactMechanismName();
-            ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
-            
+            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactMechanismName = spec.getContactMechanismName();
+            var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+
             if(contactMechanism != null) {
-                PartyContactMechanismDetailValue partyContactMechanismDetailValue = contactControl.getPartyContactMechanismDetailValueForUpdate(party, contactMechanism);
-                
-                if(partyContactMechanismDetailValue != null) {
-                    ContactMechanismDetail lastContactMechanismDetail = contactMechanism.getLastDetailForUpdate();
-                    String contactMechanismTypeName = lastContactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
-                    
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                    partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
+                } else { // EditMode.UPDATE
+                    partyContactMechanism = contactControl.getPartyContactMechanismForUpdate(party, contactMechanism);
+                }
+
+                if(partyContactMechanism != null) {
+                    var lastContactMechanismDetail = contactMechanism.getLastDetail();
+                    var contactMechanismTypeName = lastContactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
+
                     result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
-                    
-                    if(ContactConstants.ContactMechanismType_EMAIL_ADDRESS.equals(contactMechanismTypeName)) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            ContactEmailAddress contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
-                            
-                            if(lockEntity(contactMechanism)) {
-                                ContactEmailAddressEdit edit = ContactEditFactory.getContactEmailAddressEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setAllowSolicitation(lastContactMechanismDetail.getAllowSolicitation().toString());
-                                edit.setEmailAddress(contactEmailAddress.getEmailAddress());
-                                edit.setDescription(partyContactMechanismDetailValue.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(contactMechanism));
-                        } else if(editMode.equals(EditMode.ABANDON)) {
-                            unlockEntity(contactMechanism);
-                        } else if(editMode.equals(EditMode.UPDATE)) {
-                            UserControl userControl = getUserControl();
-                            ContactMechanismDetailValue lastContactMechanismDetailValue = contactControl.getContactMechanismDetailValue(lastContactMechanismDetail);
-                            ContactEmailAddressValue contactEmailAddressValue = contactControl.getContactEmailAddressValueForUpdate(contactMechanism);
-                            UserLoginValue userLoginValue = userControl.getUserLoginValueForUpdate(party);
-                            String emailAddress = edit.getEmailAddress();
-                            boolean updateUserLoginValue = false;
-                            
-                            if(userLoginValue != null && userLoginValue.getUsername().equals(contactEmailAddressValue.getEmailAddress())) {
-                                UserLogin duplicateUserLogin = userControl.getUserLoginByUsername(emailAddress);
-                                
-                                if(duplicateUserLogin != null && !duplicateUserLogin.getParty().equals(party)) {
-                                    addExecutionError(ExecutionErrors.DuplicateUsername.name());
-                                } else {
-                                    updateUserLoginValue = true;
-                                }
-                            }
-                            
-                            if(!hasExecutionErrors()) {
-                                if(lockEntityForUpdate(contactMechanism)) {
-                                    try {
-                                        BasePK updatedBy = getPartyPK();
-                                        
-                                        if(updateUserLoginValue) {
-                                            // TODO: Lock Party?
-                                            userLoginValue.setUsername(emailAddress);
-                                            userControl.updateUserLoginFromValue(userLoginValue, updatedBy);
-                                        }
-                                        
-                                        lastContactMechanismDetailValue.setAllowSolicitation(Boolean.valueOf(edit.getAllowSolicitation()));
-                                        contactEmailAddressValue.setEmailAddress(emailAddress);
-                                        partyContactMechanismDetailValue.setDescription(edit.getDescription());
-                                        
-                                        contactControl.updateContactMechanismFromValue(lastContactMechanismDetailValue, updatedBy);
-                                        contactControl.updateContactEmailAddressFromValue(contactEmailAddressValue, updatedBy);
-                                        contactControl.updatePartyContactMechanismFromValue(partyContactMechanismDetailValue, updatedBy);
-                                    } finally {
-                                        unlockEntity(contactMechanism);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                }
-                                
-                                if(hasExecutionErrors()) {
-                                    result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
-                                    result.setEntityLock(getEntityLockTransfer(contactMechanism));
-                                }
-                            }
-                        }
-                    } else {
+
+                    if(!ContactConstants.ContactMechanismType_EMAIL_ADDRESS.equals(contactMechanismTypeName)) {
                         addExecutionError(ExecutionErrors.InvalidContactMechanismType.name(), contactMechanismTypeName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name());
+                    addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name(), partyName, contactMechanismName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownContactMechanismName.name(), contactMechanismName);
@@ -196,9 +150,72 @@ public class EditContactEmailAddressCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
         }
-        
-        return result;
+
+        return partyContactMechanism;
     }
-    
+
+    @Override
+    public ContactMechanism getLockEntity(PartyContactMechanism partyContactMechanism) {
+        return partyContactMechanism.getLastDetail().getContactMechanism();
+    }
+
+    @Override
+    public void fillInResult(EditContactEmailAddressResult result, PartyContactMechanism partyContactMechanism) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+
+        result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
+                partyContactMechanism.getLastDetail().getContactMechanism()));
+    }
+
+    @Override
+    public void doLock(ContactEmailAddressEdit edit, PartyContactMechanism partyContactMechanism) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
+        var contactMechanismDetail = contactMechanism.getLastDetail();
+        var contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
+        var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
+
+        edit.setAllowSolicitation(contactMechanismDetail.getAllowSolicitation().toString());
+        edit.setEmailAddress(contactEmailAddress.getEmailAddress());
+        edit.setDescription(partyContactMechanismDetail.getDescription());
+    }
+
+    @Override
+    public void canUpdate(PartyContactMechanism partyContactMechanism) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var userControl = getUserControl();
+        var party = partyContactMechanism.getLastDetail().getParty();
+        var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
+        var contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
+        var userLogin = userControl.getUserLoginForUpdate(party);
+
+        if(userLogin != null && userLogin.getUsername().equals(contactEmailAddress.getEmailAddress())) {
+            var emailAddress = edit.getEmailAddress();
+            var duplicateUserLogin = userControl.getUserLoginByUsername(emailAddress);
+
+            if(duplicateUserLogin != null && !duplicateUserLogin.getParty().equals(party)) {
+                addExecutionError(ExecutionErrors.DuplicateUsername.name(), emailAddress);
+            }
+        }
+    }
+
+    @Override
+    public void doUpdate(PartyContactMechanism partyContactMechanism) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var updatedBy = getPartyPK();
+        var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
+        var contactMechanismDetailValue = contactControl.getContactMechanismDetailValue(contactMechanism.getLastDetail());
+        var contactEmailAddressValue = contactControl.getContactEmailAddressValueForUpdate(contactMechanism);
+        var partyContactMechanismDetailValue = contactControl.getPartyContactMechanismDetailValueForUpdate(partyContactMechanism);
+
+        contactMechanismDetailValue.setAllowSolicitation(Boolean.valueOf(edit.getAllowSolicitation()));
+        contactEmailAddressValue.setEmailAddress(edit.getEmailAddress());
+        partyContactMechanismDetailValue.setDescription(edit.getDescription());
+
+        contactControl.updateContactMechanismFromValue(contactMechanismDetailValue, updatedBy);
+        contactControl.updateContactEmailAddressFromValue(contactEmailAddressValue, updatedBy);
+        contactControl.updatePartyContactMechanismFromValue(partyContactMechanismDetailValue, updatedBy);
+    }
+
 }
 
