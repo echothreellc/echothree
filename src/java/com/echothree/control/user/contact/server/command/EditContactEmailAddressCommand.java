@@ -22,7 +22,7 @@ import com.echothree.control.user.contact.common.form.EditContactEmailAddressFor
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -121,7 +121,7 @@ public class EditContactEmailAddressCommand
 
                     result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
 
-                    if(!ContactConstants.ContactMechanismType_EMAIL_ADDRESS.equals(contactMechanismTypeName)) {
+                    if(!ContactMechanismTypes.EMAIL_ADDRESS.name().equals(contactMechanismTypeName)) {
                         addExecutionError(ExecutionErrors.InvalidContactMechanismType.name(), contactMechanismTypeName);
                     }
                 } else {

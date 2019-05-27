@@ -22,7 +22,7 @@ import com.echothree.control.user.contact.common.form.EditContactWebAddressForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
@@ -120,7 +120,7 @@ public class EditContactWebAddressCommand
 
                     result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
 
-                    if(!ContactConstants.ContactMechanismType_WEB_ADDRESS.equals(contactMechanismTypeName)) {
+                    if(!ContactMechanismTypes.WEB_ADDRESS.name().equals(contactMechanismTypeName)) {
                         addExecutionError(ExecutionErrors.InvalidContactMechanismType.name(), contactMechanismTypeName);
                     }
                 } else {

@@ -22,7 +22,7 @@ import com.echothree.control.user.contact.common.form.EditContactPostalAddressFo
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
 import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -170,7 +170,7 @@ public class EditContactPostalAddressCommand
 
                     result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
 
-                    if(!ContactConstants.ContactMechanismType_POSTAL_ADDRESS.equals(contactMechanismTypeName)) {
+                    if(!ContactMechanismTypes.POSTAL_ADDRESS.name().equals(contactMechanismTypeName)) {
                         addExecutionError(ExecutionErrors.InvalidContactMechanismType.name(), contactMechanismTypeName);
                     }
                 } else {

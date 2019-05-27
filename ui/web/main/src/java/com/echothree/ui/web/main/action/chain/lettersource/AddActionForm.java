@@ -19,7 +19,7 @@ package com.echothree.ui.web.main.action.chain.lettersource;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.form.GetContactMechanismChoicesForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismChoicesResult;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -54,7 +54,7 @@ public class AddActionForm
                 GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactConstants.ContactMechanismType_EMAIL_ADDRESS);
+                commandForm.setContactMechanismTypeName(ContactMechanismTypes.EMAIL_ADDRESS.name());
                 commandForm.setDefaultContactMechanismChoice(emailAddressContactMechanismChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 
@@ -79,7 +79,7 @@ public class AddActionForm
                 GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactConstants.ContactMechanismType_POSTAL_ADDRESS);
+                commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                 commandForm.setDefaultContactMechanismChoice(postalAddressContactMechanismChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 
@@ -104,7 +104,7 @@ public class AddActionForm
                 GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactConstants.ContactMechanismType_WEB_ADDRESS);
+                commandForm.setContactMechanismTypeName(ContactMechanismTypes.WEB_ADDRESS.name());
                 commandForm.setDefaultContactMechanismChoice(letterSourceContactMechanismChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 

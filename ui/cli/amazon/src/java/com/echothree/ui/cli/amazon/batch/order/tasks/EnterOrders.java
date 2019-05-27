@@ -42,7 +42,7 @@ import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
 import com.echothree.control.user.search.common.form.SearchCustomersForm;
 import com.echothree.control.user.search.common.result.GetCustomerResultsResult;
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
 import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
@@ -341,7 +341,7 @@ public class EnterOrders {
     public int getPostalAddressCount(List<PartyContactMechanismTransfer> partyContactMechanisms) {
         int count = 0;
 
-        count = partyContactMechanisms.stream().map((partyContactMechanism) -> partyContactMechanism.getContactMechanism().getContactMechanismType().getContactMechanismTypeName().equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS) ? 1 : 0).reduce(count, Integer::sum);
+        count = partyContactMechanisms.stream().map((partyContactMechanism) -> partyContactMechanism.getContactMechanism().getContactMechanismType().getContactMechanismTypeName().equals(ContactMechanismTypes.POSTAL_ADDRESS.name()) ? 1 : 0).reduce(count, Integer::sum);
 
         return count;
     }
@@ -375,7 +375,7 @@ public class EnterOrders {
                             // Compare, and if all fields match, decrement matchesRemaining and break out of further comparisons.
                             ContactMechanismTransfer contactMechanism = partyContactMechanism.getContactMechanism();
 
-                            if(contactMechanism.getContactMechanismType().getContactMechanismTypeName().equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS)) {
+                            if(contactMechanism.getContactMechanismType().getContactMechanismTypeName().equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
                                 ContactPostalAddressTransfer contactPostalAddress = contactMechanism.getContactPostalAddress();
                                 PersonalTitleTransfer personalTitle = contactPostalAddress.getPersonalTitle();
                                 String firstName = contactPostalAddress.getFirstName();

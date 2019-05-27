@@ -17,7 +17,7 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.edit.LetterSourceEdit;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
@@ -78,7 +78,7 @@ public class LetterSourceCommandUtil {
             if(emailAddressContactMechanism != null) {
                 String contactMechanismTypeName = emailAddressContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
                 
-                if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_EMAIL_ADDRESS)) {
+                if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
                     partyContactMechanism = contactControl.getPartyContactMechanism(companyParty, emailAddressContactMechanism);
                     
                     if(partyContactMechanism == null) {
@@ -132,7 +132,7 @@ public class LetterSourceCommandUtil {
             if(postalAddressContactMechanism != null) {
                 String contactMechanismTypeName = postalAddressContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
                 
-                if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS)) {
+                if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
                     partyContactMechanism = contactControl.getPartyContactMechanism(companyParty, postalAddressContactMechanism);
                     
                     if(partyContactMechanism == null) {
@@ -186,7 +186,7 @@ public class LetterSourceCommandUtil {
             if(letterSourceContactMechanism != null) {
                 String contactMechanismTypeName = letterSourceContactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
                 
-                if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_WEB_ADDRESS)) {
+                if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
                     partyContactMechanism = contactControl.getPartyContactMechanism(companyParty, letterSourceContactMechanism);
                     
                     if(partyContactMechanism == null) {

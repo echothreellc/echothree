@@ -17,7 +17,7 @@
 package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.SetWebAddressStatusForm;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -56,7 +56,7 @@ public class SetWebAddressStatusCommand
         if(contactMechanism != null) {
             String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
-            if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_WEB_ADDRESS)) {
+            if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
                 String contactMechanismStatusChoice = form.getWebAddressStatusChoice();
 
                 contactControl.setWebAddressStatus(this, contactMechanism, contactMechanismStatusChoice, getPartyPK());

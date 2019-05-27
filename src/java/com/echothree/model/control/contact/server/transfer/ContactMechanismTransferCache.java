@@ -17,7 +17,7 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contact.common.transfer.ContactMechanismTransfer;
 import com.echothree.model.control.contact.common.transfer.ContactMechanismTypeTransfer;
@@ -63,15 +63,15 @@ public class ContactMechanismTransferCache
 
             String contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
             
-            if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS)) {
+            if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
                 contactMechanismTransfer.setContactPostalAddress(contactControl.getContactPostalAddressTransfer(userVisit, contactControl.getContactPostalAddress(contactMechanism)) );
-            } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_EMAIL_ADDRESS)) {
+            } else if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
                 contactMechanismTransfer.setContactEmailAddress(contactControl.getContactEmailAddressTransfer(userVisit, contactControl.getContactEmailAddress(contactMechanism)));
-            } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_TELECOM_ADDRESS)) {
+            } else if(contactMechanismTypeName.equals(ContactMechanismTypes.TELECOM_ADDRESS.name())) {
                 contactMechanismTransfer.setContactTelephone(contactControl.getContactTelephoneTransfer(userVisit, contactControl.getContactTelephone(contactMechanism)));
-            } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_WEB_ADDRESS)) {
+            } else if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
                 contactMechanismTransfer.setContactWebAddress(contactControl.getContactWebAddressTransfer(userVisit, contactControl.getContactWebAddress(contactMechanism)));
-            } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_INET_4)) {
+            } else if(contactMechanismTypeName.equals(ContactMechanismTypes.INET_4.name())) {
                 contactMechanismTransfer.setContactInet4Address(contactControl.getContactInet4AddressTransfer(userVisit, contactControl.getContactInet4Address(contactMechanism)));
             }
             

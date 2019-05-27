@@ -19,7 +19,7 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.CreateContactWebAddressForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.workflow.WebAddressStatusConstants;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
@@ -101,7 +101,7 @@ public class CreateContactWebAddressCommand
             String description = form.getDescription();
             String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_CONTACT_MECHANISM);
 
-            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactConstants.ContactMechanismType_WEB_ADDRESS);
+            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.WEB_ADDRESS.name());
             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
                     Boolean.FALSE, createdBy);
             

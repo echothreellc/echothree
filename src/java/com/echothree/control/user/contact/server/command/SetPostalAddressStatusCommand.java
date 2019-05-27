@@ -17,7 +17,7 @@
 package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.SetPostalAddressStatusForm;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -56,7 +56,7 @@ public class SetPostalAddressStatusCommand
         if(contactMechanism != null) {
             String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
-            if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS)) {
+            if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
                 String contactMechanismStatusChoice = form.getPostalAddressStatusChoice();
 
                 contactControl.setPostalAddressStatus(this, contactMechanism, contactMechanismStatusChoice, getPartyPK());

@@ -18,7 +18,7 @@ package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.CreateTaxForm;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.tax.server.TaxControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -74,7 +74,7 @@ public class CreateTaxCommand
             ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
             
             if(contactMechanismPurpose != null) {
-                ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactConstants.ContactMechanismType_POSTAL_ADDRESS);
+                ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                 
                 if(contactMechanismPurpose.getContactMechanismType().equals(contactMechanismType)) {
                     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);

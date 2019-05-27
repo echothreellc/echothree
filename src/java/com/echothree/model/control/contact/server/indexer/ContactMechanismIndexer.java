@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.contact.server.indexer;
 
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.index.common.IndexConstants;
@@ -254,17 +254,17 @@ public class ContactMechanismIndexer
         document.add(new Field(IndexConstants.IndexField_ContactMechanismTypeName, contactMechanismTypeName, FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(IndexConstants.IndexField_AllowSolicitation, contactMechanismDetail.getAllowSolicitation().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         
-        if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_EMAIL_ADDRESS)) {
+        if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
             addContactEmailAddressToDocument(document, contactMechanism);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_INET_4)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.INET_4.name())) {
             addContactInet4AddressToDocument(document, contactMechanism);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_INET_6)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.INET_6.name())) {
             // TODO
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
             addContactPostalAddressToDocument(document, contactMechanism, language);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_TELECOM_ADDRESS)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.TELECOM_ADDRESS.name())) {
             addContactTelephoneToDocument(document, contactMechanism);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_WEB_ADDRESS)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
             addContactWebAddressToDocument(document, contactMechanism);
         }
     }

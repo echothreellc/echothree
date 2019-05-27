@@ -16,21 +16,14 @@
 
 package com.echothree.model.control.contact.common;
 
-public enum ContactMechanismPurposes {
+public enum ContactMechanismTypes {
     
-    OTHER_EMAIL,
-    PRIMARY_EMAIL,
-    PHYSICAL_BILLING,
-    PHYSICAL_DELIVERY,
-    FAX_NUMBER,
-    FAX_NUMBER_SEC,
-    INET_4_LOGIN,
-    INET_4_ORDER,
-    INET_6_LOGIN,
-    INET_6_ORDER,
-    PHONE_HOME,
-    PHONE_MOBILE,
-    PHONE_WORK,
-    PHONE_WORK_SEC,
+    ELECTRONIC_ADDRESS,
+    EMAIL_ADDRESS,
+    INET_4,
+    INET_6,
+    POSTAL_ADDRESS,
+    TELECOM_ADDRESS,
+    WEB_ADDRESS,
     
 }

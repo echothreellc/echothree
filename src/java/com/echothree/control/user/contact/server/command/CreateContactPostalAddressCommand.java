@@ -19,7 +19,7 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.CreateContactPostalAddressForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -260,7 +260,7 @@ public class CreateContactPostalAddressCommand
                                                 lastNameSdx = null;
                                             }
                                             
-                                            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactConstants.ContactMechanismType_POSTAL_ADDRESS);
+                                            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                                             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,
                                                     allowSolicitation, createdBy);
                                             

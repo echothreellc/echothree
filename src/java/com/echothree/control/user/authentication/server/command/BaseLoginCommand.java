@@ -17,7 +17,7 @@
 package com.echothree.control.user.authentication.server.command;
 
 
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.server.PartyControl;
@@ -188,7 +188,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         
         if(partyContactMechanism == null) {
             String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_CONTACT_MECHANISM);
-            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactConstants.ContactMechanismType_INET_4);
+            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName,
                     contactMechanismType, Boolean.FALSE, partyPK);
             

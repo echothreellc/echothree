@@ -16,21 +16,26 @@
 
 package com.echothree.model.control.contact.common;
 
-public enum ContactMechanismPurposes {
+public enum PostalAddressElementTypes {
     
-    OTHER_EMAIL,
-    PRIMARY_EMAIL,
-    PHYSICAL_BILLING,
-    PHYSICAL_DELIVERY,
-    FAX_NUMBER,
-    FAX_NUMBER_SEC,
-    INET_4_LOGIN,
-    INET_4_ORDER,
-    INET_6_LOGIN,
-    INET_6_ORDER,
-    PHONE_HOME,
-    PHONE_MOBILE,
-    PHONE_WORK,
-    PHONE_WORK_SEC,
+    PERSONAL_TITLE,
+    FIRST_NAME,
+    MIDDLE_NAME,
+    LAST_NAME,
+    NAME_SUFFIX,
+    COMPANY_NAME,
+    ATTENTION,
+    ADDRESS_1,
+    ADDRESS_2,
+    ADDRESS_3,
+    CITY,
+    COUNTY,
+    STATE,
+    STATE_POSTAL_2_LETTER,
+    POSTAL_CODE,
+    COUNTRY,
+    COUNTRY_ISO_3_NUMBER,
+    COUNTRY_ISO_3_LETTER,
+    COUNTRY_ISO_2_LETTER,
     
 }

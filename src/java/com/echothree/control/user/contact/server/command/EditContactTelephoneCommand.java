@@ -22,7 +22,7 @@ import com.echothree.control.user.contact.common.form.EditContactTelephoneForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.EditContactTelephoneResult;
 import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -128,7 +128,7 @@ public class EditContactTelephoneCommand
 
                     result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
 
-                    if(!ContactConstants.ContactMechanismType_TELECOM_ADDRESS.equals(contactMechanismTypeName)) {
+                    if(!ContactMechanismTypes.TELECOM_ADDRESS.name().equals(contactMechanismTypeName)) {
                         addExecutionError(ExecutionErrors.InvalidContactMechanismType.name(), contactMechanismTypeName);
                     }
                 } else {

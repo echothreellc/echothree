@@ -18,7 +18,7 @@ package com.echothree.model.control.contact.server;
 
 import com.echothree.model.control.associate.server.AssociateControl;
 import com.echothree.model.control.communication.server.CommunicationControl;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.workflow.EmailAddressStatusConstants;
 import com.echothree.model.control.contact.common.workflow.EmailAddressVerificationConstants;
 import com.echothree.model.control.contact.common.choice.ContactMechanismAliasTypeChoicesBean;
@@ -1313,18 +1313,18 @@ public class ContactControl
         contactMechanism.store();
 
         String contactMechanismTypeName = contactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
-        if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_EMAIL_ADDRESS)) {
+        if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())) {
             deleteContactEmailAddressByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_INET_4)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.INET_4.name())) {
             deleteContactInet4AddressByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_INET_6)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.INET_6.name())) {
             deleteContactInet6AddressByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
             deleteContactPostalAddressByContactMechanism(contactMechanism, deletedBy);
             deleteContactPostalAddressCorrectionByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_TELECOM_ADDRESS)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.TELECOM_ADDRESS.name())) {
             deleteContactTelephoneByContactMechanism(contactMechanism, deletedBy);
-        } else if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_WEB_ADDRESS)) {
+        } else if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
             deleteContactWebAddressByContactMechanism(contactMechanism, deletedBy);
         }
         
