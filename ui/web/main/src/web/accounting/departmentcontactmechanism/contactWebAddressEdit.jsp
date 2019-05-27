@@ -71,7 +71,7 @@
                                 <td align=right><fmt:message key="label.url" />:</td>
                                 <td>
                                     <html:text property="url" size="60" maxlength="200" /> (*)
-                                    <et:validationErrors id="errorMessage" property="WebAddress">
+                                    <et:validationErrors id="errorMessage" property="Url">
                                         <p><c:out value="${errorMessage}" /></p>
                                     </et:validationErrors>
                                 </td>
