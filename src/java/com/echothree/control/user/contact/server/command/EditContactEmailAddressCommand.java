@@ -189,6 +189,8 @@ public class EditContactEmailAddressCommand
         var contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
         var userLogin = userControl.getUserLoginForUpdate(party);
 
+        // The only time we care about a duplicate email address is if the current email address is in use
+        // for the Party's UserLogin, and the new email address is in use by someone else as their login.
         if(userLogin != null && userLogin.getUsername().equals(contactEmailAddress.getEmailAddress())) {
             var emailAddress = edit.getEmailAddress();
             var duplicateUserLogin = userControl.getUserLoginByUsername(emailAddress);
