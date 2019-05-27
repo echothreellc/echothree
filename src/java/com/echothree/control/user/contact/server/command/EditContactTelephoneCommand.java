@@ -30,24 +30,16 @@ import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismDetail;
-import com.echothree.model.data.contact.server.entity.ContactTelephone;
-import com.echothree.model.data.contact.server.value.ContactMechanismDetailValue;
-import com.echothree.model.data.contact.server.value.ContactTelephoneValue;
-import com.echothree.model.data.contact.server.value.PartyContactMechanismDetailValue;
+import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.geo.server.entity.GeoCodeCountry;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -58,7 +50,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class EditContactTelephoneCommand
-        extends BaseEditCommand<PartyContactMechanismSpec, ContactTelephoneEdit> {
+        extends BaseAbstractEditCommand<PartyContactMechanismSpec, ContactTelephoneEdit, EditContactTelephoneResult, PartyContactMechanism, ContactMechanism> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -102,117 +94,45 @@ public class EditContactTelephoneCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        EditContactTelephoneResult result = ContactResultFactory.getEditContactTelephoneResult();
-        String partyName = spec.getPartyName();
-        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
-        
+    public EditContactTelephoneResult getResult() {
+        return ContactResultFactory.getEditContactTelephoneResult();
+    }
+
+    @Override
+    public ContactTelephoneEdit getEdit() {
+        return ContactEditFactory.getContactTelephoneEdit();
+    }
+
+    @Override
+    public PartyContactMechanism getEntity(EditContactTelephoneResult result) {
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        PartyContactMechanism partyContactMechanism = null;
+        var partyName = spec.getPartyName();
+        var party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
+
         if(party != null) {
-            ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-            String contactMechanismName = spec.getContactMechanismName();
-            ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
-            
+            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactMechanismName = spec.getContactMechanismName();
+            var contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);
+
             if(contactMechanism != null) {
-                PartyContactMechanismDetailValue partyContactMechanismDetailValue = contactControl.getPartyContactMechanismDetailValueForUpdate(party, contactMechanism);
-                
-                if(partyContactMechanismDetailValue != null) {
-                    ContactMechanismDetail lastContactMechanismDetail = contactMechanism.getLastDetailForUpdate();
-                    String contactMechanismTypeName = lastContactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
-                    
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                    partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism);
+                } else { // EditMode.UPDATE
+                    partyContactMechanism = contactControl.getPartyContactMechanismForUpdate(party, contactMechanism);
+                }
+
+                if(partyContactMechanism != null) {
+                    var lastContactMechanismDetail = contactMechanism.getLastDetail();
+                    var contactMechanismTypeName = lastContactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
+
                     result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
-                    
-                    if(ContactConstants.ContactMechanismType_TELECOM_ADDRESS.equals(contactMechanismTypeName)) {
-                        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-                        
-                        if(editMode.equals(EditMode.LOCK)) {
-                            ContactTelephone contactTelephone = contactControl.getContactTelephone(contactMechanism);
-                            
-                            if(lockEntity(contactMechanism)) {
-                                ContactTelephoneEdit edit = ContactEditFactory.getContactTelephoneEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setCountryName(geoControl.getAliasForCountry(contactTelephone.getCountryGeoCode()));
-                                edit.setAllowSolicitation(lastContactMechanismDetail.getAllowSolicitation().toString());
-                                edit.setAreaCode(contactTelephone.getAreaCode());
-                                edit.setTelephoneNumber(contactTelephone.getTelephoneNumber());
-                                edit.setTelephoneExtension(contactTelephone.getTelephoneExtension());
-                                edit.setDescription(partyContactMechanismDetailValue.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(contactMechanism));
-                        } else if(editMode.equals(EditMode.ABANDON)) {
-                            unlockEntity(contactMechanism);
-                        } else if(editMode.equals(EditMode.UPDATE)) {
-                            ContactMechanismDetailValue lastContactMechanismDetailValue = contactControl.getContactMechanismDetailValue(lastContactMechanismDetail);
-                            ContactTelephoneValue contactTelephoneValue = contactControl.getContactTelephoneValueForUpdate(contactMechanism);
-                            String countryName = edit.getCountryName();
-                            String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
-                            GeoCode countryGeoCode = geoControl.getCountryByAlias(countryAlias);
-                            
-                            if(countryGeoCode != null) {
-                                GeoCodeCountry geoCodeCountry = geoControl.getGeoCodeCountry(countryGeoCode);
-                                String areaCode = edit.getAreaCode();
-                                
-                                if(!geoCodeCountry.getAreaCodeRequired() || areaCode != null) {
-                                    String areaCodePattern = geoCodeCountry.getAreaCodePattern();
-                                    Pattern pattern = areaCodePattern == null? null: Pattern.compile(areaCodePattern);
-                                    
-                                    if(pattern == null || pattern.matcher(areaCode).matches()) {
-                                        String telephoneNumberPattern = geoCodeCountry.getTelephoneNumberPattern();
-                                        String telephoneNumber = edit.getTelephoneNumber();
-                                        
-                                        pattern = telephoneNumberPattern == null? null: Pattern.compile(telephoneNumberPattern);
-                                        
-                                        if(pattern == null || pattern.matcher(telephoneNumber).matches()) {
-                                            if(lockEntityForUpdate(contactMechanism)) {
-                                                String telephoneExtension = edit.getTelephoneExtension();
-                                                Boolean allowSolicitation = Boolean.valueOf(edit.getAllowSolicitation());
-                                                
-                                                try {
-                                                    BasePK updatedBy = getPartyPK();
-                                                    
-                                                    lastContactMechanismDetailValue.setAllowSolicitation(allowSolicitation);
-                                                    contactTelephoneValue.setCountryGeoCodePK(countryGeoCode.getPrimaryKey());
-                                                    contactTelephoneValue.setAreaCode(areaCode);
-                                                    contactTelephoneValue.setTelephoneNumber(telephoneNumber);
-                                                    contactTelephoneValue.setTelephoneExtension(telephoneExtension);
-                                                    partyContactMechanismDetailValue.setDescription(edit.getDescription());
-                                                    
-                                                    contactControl.updateContactMechanismFromValue(lastContactMechanismDetailValue, updatedBy);
-                                                    contactControl.updateContactTelephoneFromValue(contactTelephoneValue, updatedBy);
-                                                    contactControl.updatePartyContactMechanismFromValue(partyContactMechanismDetailValue, updatedBy);
-                                                } finally {
-                                                    unlockEntity(contactMechanism);
-                                                }
-                                            } else {
-                                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                            }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.InvalidTelephoneNumber.name(), telephoneNumber);
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.InvalidAreaCode.name(), areaCode);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.MissingAreaCode.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
-                            }
-                            
-                            if(hasExecutionErrors()) {
-                                result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(), contactMechanism));
-                                result.setEntityLock(getEntityLockTransfer(contactMechanism));
-                            }
-                        }
-                    } else {
+
+                    if(!ContactConstants.ContactMechanismType_TELECOM_ADDRESS.equals(contactMechanismTypeName)) {
                         addExecutionError(ExecutionErrors.InvalidContactMechanismType.name(), contactMechanismTypeName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name());
+                    addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name(), partyName, contactMechanismName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownContactMechanismName.name(), contactMechanismName);
@@ -220,9 +140,98 @@ public class EditContactTelephoneCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
         }
-        
-        return result;
+
+        return partyContactMechanism;
     }
-    
+
+    @Override
+    public ContactMechanism getLockEntity(PartyContactMechanism partyContactMechanism) {
+        return partyContactMechanism.getLastDetail().getContactMechanism();
+    }
+
+    @Override
+    public void fillInResult(EditContactTelephoneResult result, PartyContactMechanism partyContactMechanism) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+
+        result.setContactMechanism(contactControl.getContactMechanismTransfer(getUserVisit(),
+                partyContactMechanism.getLastDetail().getContactMechanism()));
+    }
+
+    @Override
+    public void doLock(ContactTelephoneEdit edit, PartyContactMechanism partyContactMechanism) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
+        var contactMechanismDetail = contactMechanism.getLastDetail();
+        var contactTelephone = contactControl.getContactTelephone(contactMechanism);
+        var partyContactMechanismDetail = partyContactMechanism.getLastDetail();
+
+        edit.setAllowSolicitation(contactMechanismDetail.getAllowSolicitation().toString());
+        edit.setCountryName(geoControl.getAliasForCountry(contactTelephone.getCountryGeoCode()));
+        edit.setAreaCode(contactTelephone.getAreaCode());
+        edit.setTelephoneNumber(contactTelephone.getTelephoneNumber());
+        edit.setTelephoneExtension(contactTelephone.getTelephoneExtension());
+        edit.setDescription(partyContactMechanismDetail.getDescription());
+    }
+
+    GeoCode countryGeoCode;
+
+    @Override
+    public void canUpdate(PartyContactMechanism partyContactMechanism) {
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var countryName = edit.getCountryName();
+        var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
+
+        countryGeoCode = geoControl.getCountryByAlias(countryAlias);
+
+        if(countryGeoCode != null) {
+            var geoCodeCountry = geoControl.getGeoCodeCountry(countryGeoCode);
+            var areaCode = edit.getAreaCode();
+
+            if(!geoCodeCountry.getAreaCodeRequired() || areaCode != null) {
+                var areaCodePattern = geoCodeCountry.getAreaCodePattern();
+                var pattern = areaCodePattern == null? null: Pattern.compile(areaCodePattern);
+
+                if(pattern == null || pattern.matcher(areaCode).matches()) {
+                    var telephoneNumberPattern = geoCodeCountry.getTelephoneNumberPattern();
+                    var telephoneNumber = edit.getTelephoneNumber();
+
+                    pattern = telephoneNumberPattern == null? null: Pattern.compile(telephoneNumberPattern);
+
+                    if(!(pattern == null || pattern.matcher(telephoneNumber).matches())) {
+                        addExecutionError(ExecutionErrors.InvalidTelephoneNumber.name(), telephoneNumber);
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.InvalidAreaCode.name(), areaCode);
+                }
+            } else {
+                addExecutionError(ExecutionErrors.MissingAreaCode.name());
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
+        }
+    }
+
+    @Override
+    public void doUpdate(PartyContactMechanism partyContactMechanism) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var updatedBy = getPartyPK();
+        var contactMechanism = partyContactMechanism.getLastDetail().getContactMechanism();
+        var contactMechanismDetailValue = contactControl.getContactMechanismDetailValue(contactMechanism.getLastDetail());
+        var contactTelephoneValue = contactControl.getContactTelephoneValueForUpdate(contactMechanism);
+        var partyContactMechanismDetailValue = contactControl.getPartyContactMechanismDetailValueForUpdate(partyContactMechanism);
+
+        contactMechanismDetailValue.setAllowSolicitation(Boolean.valueOf(edit.getAllowSolicitation()));
+        contactTelephoneValue.setCountryGeoCodePK(countryGeoCode.getPrimaryKey());
+        contactTelephoneValue.setAreaCode(edit.getAreaCode());
+        contactTelephoneValue.setTelephoneNumber(edit.getTelephoneNumber());
+        contactTelephoneValue.setTelephoneExtension(edit.getTelephoneExtension());
+        partyContactMechanismDetailValue.setDescription(edit.getDescription());
+
+        contactControl.updateContactMechanismFromValue(contactMechanismDetailValue, updatedBy);
+        contactControl.updateContactTelephoneFromValue(contactTelephoneValue, updatedBy);
+        contactControl.updatePartyContactMechanismFromValue(partyContactMechanismDetailValue, updatedBy);
+    }
+
 }
 
