@@ -23,4 +23,6 @@ public class CustomerPersona {
     String persona;
     UserVisitPK userVisitPK;
     CommandResult commandResult;
+
+    String lastEmailAddressContactMechanismName;
 }
