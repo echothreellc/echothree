@@ -39,6 +39,14 @@ public class CustomerLoginSteps {
         }
     }
 
+    @Given("^([^\"]*) is currently logged in")
+    public void customerIsCurrentlyLoggedIn(String persona)
+            throws NamingException {
+        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+        assertThat(customerPersona).isNotNull();
+    }
+
     @Given("^([^\"]*) is not currently logged in")
     public void customerIsNotCurrentlyLoggedIn(String persona)
             throws NamingException {
