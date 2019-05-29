@@ -1,5 +1,5 @@
 Feature: Customer email address
-  A customer wants to add and remove email addresses associated with their account
+  A customer wants to add and delete email addresses associated with their account
 
   Scenario: Existing customer adds and then deletes an email address without a description and does not allow solicitations
     Given Test is not currently logged in
