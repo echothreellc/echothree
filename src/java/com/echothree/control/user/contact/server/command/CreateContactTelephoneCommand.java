@@ -72,7 +72,7 @@ public class CreateContactTelephoneCommand
                 )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("AreaCode", FieldType.STRING, false, 1L, 5L),
                 new FieldDefinition("TelephoneNumber", FieldType.STRING, true, 1L, 25L),
@@ -99,7 +99,7 @@ public class CreateContactTelephoneCommand
         CreateContactTelephoneResult result = ContactResultFactory.getCreateContactTelephoneResult();
         PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);

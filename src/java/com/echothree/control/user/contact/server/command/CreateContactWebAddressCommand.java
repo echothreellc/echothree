@@ -67,7 +67,7 @@ public class CreateContactWebAddressCommand
                 )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Url", FieldType.URL, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
                 ));
@@ -90,7 +90,7 @@ public class CreateContactWebAddressCommand
         CreateContactWebAddressResult result = ContactResultFactory.getCreateContactWebAddressResult();
         PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);

@@ -82,7 +82,7 @@ public class CreateContactPostalAddressCommand
         // executing this command = CUSTOMER, FirstName and LastName are required fields. For all other
         // PartyTypes, that requirement is relaxed.
         List<FieldDefinition> temp = new ArrayList<>(17);
-        temp.add(new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null));
+        temp.add(new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null));
         temp.add(new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null));
         temp.add(new FieldDefinition("FirstName", FieldType.STRING, true, 1L, 20L));
         temp.add(new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L));
@@ -103,7 +103,7 @@ public class CreateContactPostalAddressCommand
         customerFormFieldDefinitions = Collections.unmodifiableList(temp);
         
         temp = new ArrayList<>(17);
-        temp.add(new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null));
+        temp.add(new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null));
         temp.add(new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null));
         temp.add(new FieldDefinition("FirstName", FieldType.STRING, false, 1L, 20L));
         temp.add(new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L));
@@ -151,7 +151,7 @@ public class CreateContactPostalAddressCommand
         CreateContactPostalAddressResult result = ContactResultFactory.getCreateContactPostalAddressResult();
         PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
