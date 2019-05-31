@@ -14,10 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
+import com.echothree.cucumber.CustomerPersonas;
 import cucumber.api.java.en.When;
 
 import javax.naming.NamingException;
