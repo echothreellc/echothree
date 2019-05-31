@@ -23,7 +23,7 @@ import cucumber.api.java.en.When;
 
 import javax.naming.NamingException;
 
-public class CustomerContactMechanisms {
+public class CustomerEmailAddress {
 
     @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
     public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
