@@ -20,13 +20,23 @@ import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
 import cucumber.api.java.en.When;
-
 import javax.naming.NamingException;
 
 public class CustomerEmailAddress {
 
     @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
     public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
+            throws NamingException {
+        createContactEmailAddress(persona, emailAddress, description, allowSolicitation);
+    }
+
+    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String allowSolicitation)
+            throws NamingException {
+        createContactEmailAddress(persona, emailAddress, null, allowSolicitation);
+    }
+
+    private void createContactEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
             throws NamingException {
         var contactService = ContactUtil.getHome();
         var createContactEmailAddressForm = contactService.getCreateContactEmailAddressForm();
@@ -35,24 +45,6 @@ public class CustomerEmailAddress {
         createContactEmailAddressForm.setEmailAddress(emailAddress);
         createContactEmailAddressForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
         createContactEmailAddressForm.setDescription(description);
-
-        var commandResult = contactService.createContactEmailAddress(customerPersona.userVisitPK, createContactEmailAddressForm);
-
-        customerPersona.commandResult = commandResult;
-        var result = (CreateContactEmailAddressResult)commandResult.getExecutionResult().getResult();
-
-        customerPersona.lastEmailAddressContactMechanismName = result.getContactMechanismName();
-    }
-
-    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String allowSolicitation)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var createContactEmailAddressForm = contactService.getCreateContactEmailAddressForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-        createContactEmailAddressForm.setEmailAddress(emailAddress);
-        createContactEmailAddressForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
 
         var commandResult = contactService.createContactEmailAddress(customerPersona.userVisitPK, createContactEmailAddressForm);
 

@@ -20,7 +20,6 @@ import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
 import cucumber.api.java.en.When;
-
 import javax.naming.NamingException;
 
 public class CustomerWebAddress {
@@ -28,29 +27,23 @@ public class CustomerWebAddress {
     @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\" with the description \"([^\"]*)\"$")
     public void theCustomerAddsTheWebAddress(String persona, String url, String description)
             throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var createContactWebAddressForm = contactService.getCreateContactWebAddressForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-        createContactWebAddressForm.setUrl(url);
-        createContactWebAddressForm.setDescription(description);
-
-        var commandResult = contactService.createContactWebAddress(customerPersona.userVisitPK, createContactWebAddressForm);
-
-        customerPersona.commandResult = commandResult;
-        var result = (CreateContactWebAddressResult)commandResult.getExecutionResult().getResult();
-
-        customerPersona.lastWebAddressContactMechanismName = result.getContactMechanismName();
+        createContactWebAddress(persona, url, description);
     }
 
     @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\"$")
     public void theCustomerAddsTheWebAddress(String persona, String url)
+            throws NamingException {
+        createContactWebAddress(persona, url, null);
+    }
+
+    private void createContactWebAddress(String persona, String url, String description)
             throws NamingException {
         var contactService = ContactUtil.getHome();
         var createContactWebAddressForm = contactService.getCreateContactWebAddressForm();
         var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
         createContactWebAddressForm.setUrl(url);
+        createContactWebAddressForm.setDescription(description);
 
         var commandResult = contactService.createContactWebAddress(customerPersona.userVisitPK, createContactWebAddressForm);
 

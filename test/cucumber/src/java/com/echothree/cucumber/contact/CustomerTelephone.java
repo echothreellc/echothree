@@ -20,13 +20,25 @@ import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
 import com.echothree.cucumber.CustomerPersonas;
 import cucumber.api.java.en.When;
-
 import javax.naming.NamingException;
 
 public class CustomerTelephone {
 
     @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
     public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
+            String extension, String description, String allowSolicitation)
+            throws NamingException {
+        createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
+    }
+
+    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\" and telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
+            String extension, String allowSolicitation)
+            throws NamingException {
+        createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, null, allowSolicitation);
+    }
+
+    private void createContactTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
             String extension, String description, String allowSolicitation)
             throws NamingException {
         var contactService = ContactUtil.getHome();
@@ -43,29 +55,7 @@ public class CustomerTelephone {
         var commandResult = contactService.createContactTelephone(customerPersona.userVisitPK, createContactTelephoneForm);
 
         customerPersona.commandResult = commandResult;
-        var result = (CreateContactTelephoneResult)commandResult.getExecutionResult().getResult();
-
-        customerPersona.lastTelephoneContactMechanismName = result.getContactMechanismName();
-    }
-
-    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\" and telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-            String extension, String allowSolicitation)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var createContactTelephoneForm = contactService.getCreateContactTelephoneForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-        createContactTelephoneForm.setCountryName(countryName);
-        createContactTelephoneForm.setAreaCode(areaCode);
-        createContactTelephoneForm.setTelephoneNumber(telephoneNumber);
-        createContactTelephoneForm.setTelephoneExtension(extension);
-        createContactTelephoneForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
-
-        var commandResult = contactService.createContactTelephone(customerPersona.userVisitPK, createContactTelephoneForm);
-
-        customerPersona.commandResult = commandResult;
-        var result = (CreateContactTelephoneResult)commandResult.getExecutionResult().getResult();
+        var result = (CreateContactTelephoneResult) commandResult.getExecutionResult().getResult();
 
         customerPersona.lastTelephoneContactMechanismName = result.getContactMechanismName();
     }
