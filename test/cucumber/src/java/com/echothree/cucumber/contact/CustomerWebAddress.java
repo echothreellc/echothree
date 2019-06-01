@@ -18,7 +18,10 @@ package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
+import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
 import cucumber.api.java.en.When;
 import javax.naming.NamingException;
 
@@ -51,6 +54,45 @@ public class CustomerWebAddress {
         var result = (CreateContactWebAddressResult)commandResult.getExecutionResult().getResult();
 
         customerPersona.lastWebAddressContactMechanismName = result.getContactMechanismName();
+    }
+
+    @When("^the customer ([^\"]*) modifies the last web address added to \"([^\"]*)\" with the description \"([^\"]*)\"$")
+    public void theCustomerModifiesTheWebAddress(String persona, String webAddress, String description)
+            throws NamingException {
+        editContactWebAddress(persona, webAddress, description);
+    }
+
+    private void editContactWebAddress(String persona, String webAddress, String description)
+            throws NamingException {
+        var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+        spec.setContactMechanismName(customerPersona.lastWebAddressContactMechanismName);
+
+        var commandForm = ContactUtil.getHome().getEditContactWebAddressForm();
+
+        commandForm.setSpec(spec);
+        commandForm.setEditMode(EditMode.LOCK);
+
+        CommandResult commandResult = ContactUtil.getHome().editContactWebAddress(customerPersona.userVisitPK, commandForm);
+
+        if(!commandResult.hasErrors()) {
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditContactWebAddressResult)executionResult.getResult();
+            var edit = result.getEdit();
+
+            if(webAddress != null)
+                edit.setUrl(webAddress);
+            if(description != null)
+                edit.setDescription(description);
+
+            commandForm.setEdit(edit);
+            commandForm.setEditMode(EditMode.UPDATE);
+
+            commandResult = ContactUtil.getHome().editContactWebAddress(customerPersona.userVisitPK, commandForm);
+        }
+
+        customerPersona.commandResult = commandResult;
     }
 
     @When("^the customer ([^\"]*) deletes the last web address added$")

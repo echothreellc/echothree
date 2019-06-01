@@ -18,7 +18,11 @@ package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
+import com.echothree.control.user.contact.common.result.EditContactTelephoneResult;
+import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.EditMode;
 import cucumber.api.java.en.When;
 import javax.naming.NamingException;
 
@@ -58,6 +62,55 @@ public class CustomerTelephone {
         var result = (CreateContactTelephoneResult) commandResult.getExecutionResult().getResult();
 
         customerPersona.lastTelephoneContactMechanismName = result.getContactMechanismName();
+    }
+
+    @When("^the customer ([^\"]*) modifies the last telephone added to the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+    public void theCustomerModifiesTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
+            String extension, String description, String allowSolicitation)
+            throws NamingException {
+        editContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
+    }
+
+    private void editContactTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
+            String extension, String description, String allowSolicitation)
+            throws NamingException {
+        var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+        spec.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
+
+        var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
+
+        commandForm.setSpec(spec);
+        commandForm.setEditMode(EditMode.LOCK);
+
+        CommandResult commandResult = ContactUtil.getHome().editContactTelephone(customerPersona.userVisitPK, commandForm);
+
+        if(!commandResult.hasErrors()) {
+            var executionResult = commandResult.getExecutionResult();
+            var result = (EditContactTelephoneResult)executionResult.getResult();
+            var edit = result.getEdit();
+
+            if(countryName != null)
+                edit.setCountryName(countryName);
+            if(areaCode != null)
+                edit.setAreaCode(areaCode);
+            if(telephoneNumber != null)
+                edit.setTelephoneNumber(telephoneNumber);
+            if(extension != null)
+                edit.setTelephoneExtension(extension);
+            if(extension != null)
+                edit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
+            if(extension != null)
+                edit.setDescription(description);
+
+            commandForm.setEdit(edit);
+            commandForm.setEditMode(EditMode.UPDATE);
+
+            commandResult = ContactUtil.getHome().editContactTelephone(customerPersona.userVisitPK, commandForm);
+        }
+
+        customerPersona.commandResult = commandResult;
     }
 
     @When("^the customer ([^\"]*) deletes the last telephone added$")

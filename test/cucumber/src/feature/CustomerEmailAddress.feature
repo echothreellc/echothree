@@ -1,5 +1,5 @@
 Feature: Customer email address
-  A customer wants to add and delete email addresses associated with their account
+  A customer wants to add, edit and delete email addresses associated with their account
 
   Background:
     Given Test is not currently logged in
@@ -30,6 +30,15 @@ Feature: Customer email address
   Scenario: Existing customer adds and then deletes an email address with a description and does allow solicitations
     Given Test is currently logged in
     And the customer Test adds the email address "Additional@echothree.com" with the description "Additional Email" and does allow solicitations to it
+    Then no error should occur
+    And the customer Test deletes the last email address added
+    Then no error should occur
+
+  Scenario: Existing customer adds, edits and then deletes an email address with a description and does allow solicitations
+    Given Test is currently logged in
+    And the customer Test adds the email address "Additional@echothree.com" with the description "Additional Email" and does allow solicitations to it
+    Then no error should occur
+    And the customer Test modifies the last email address added to "Edited@echothree.com" with the description "Edited Email" and does not allow solicitations to it
     Then no error should occur
     And the customer Test deletes the last email address added
     Then no error should occur
