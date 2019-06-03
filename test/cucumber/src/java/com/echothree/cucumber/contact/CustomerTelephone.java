@@ -61,7 +61,7 @@ public class CustomerTelephone {
         customerPersona.commandResult = commandResult;
         var result = (CreateContactTelephoneResult) commandResult.getExecutionResult().getResult();
 
-        customerPersona.lastTelephoneContactMechanismName = result.getContactMechanismName();
+        customerPersona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
 
     @When("^the customer ([^\"]*) modifies the last telephone added to the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")

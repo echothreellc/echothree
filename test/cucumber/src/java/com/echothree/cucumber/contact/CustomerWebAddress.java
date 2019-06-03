@@ -53,7 +53,7 @@ public class CustomerWebAddress {
         customerPersona.commandResult = commandResult;
         var result = (CreateContactWebAddressResult)commandResult.getExecutionResult().getResult();
 
-        customerPersona.lastWebAddressContactMechanismName = result.getContactMechanismName();
+        customerPersona.lastWebAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
 
     @When("^the customer ([^\"]*) modifies the last web address added to \"([^\"]*)\" with the description \"([^\"]*)\"$")

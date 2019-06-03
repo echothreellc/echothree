@@ -54,7 +54,7 @@ public class CustomerEmailAddress {
         customerPersona.commandResult = commandResult;
         var result = (CreateContactEmailAddressResult)commandResult.getExecutionResult().getResult();
 
-        customerPersona.lastEmailAddressContactMechanismName = result.getContactMechanismName();
+        customerPersona.lastEmailAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
 
     @When("^the customer ([^\"]*) modifies the last email address added to \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
