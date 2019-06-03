@@ -2266,6 +2266,21 @@
                 <securityRoleDescription languageIsoName="en" description="Postal Address Format List" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ContactMechanism" parentSecurityRoleGroupName="ContactComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Contact Mechanism" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Mechanism Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Mechanism Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Mechanism Delete" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Contact Mechanism Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkflowComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Workflow Component" />
         </securityRoleGroup>
@@ -7283,7 +7298,10 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyTypeAuditPolicy" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PersonalTitle" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PostalAddressFormat" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="RecoveryQuestion" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactMechanism" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactMechanism" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactMechanism" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContactMechanism" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ResponsibilityType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CancellationKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CancellationKind" securityRoleName="Edit" />

@@ -68,6 +68,7 @@ public enum SecurityRoleGroups {
     ContactListFrequency,
     ContactListGroup,
     ContactListType,
+    ContactMechanism,
     ContactMechanismAliasType,
     ContentCatalog,
     ContentCatalogItem,

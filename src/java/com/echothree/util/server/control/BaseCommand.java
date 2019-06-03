@@ -16,10 +16,12 @@
 
 package com.echothree.util.server.control;
 
+import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.core.common.CommandMessageTypes;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.license.server.logic.LicenseCheckLogic;
+import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
@@ -488,7 +490,7 @@ public abstract class BaseCommand
 //            } else {
 //                addExecutionError(ExecutionErrors.LicenseCheckFailed.name());
 //            }
-            
+
             executionResult = new ExecutionResult(executionWarnings, executionErrors, baseResult == null ? getBaseResultAfterErrors() : baseResult);
 
             // Don't waste time getting the preferredLanguage if we don't need to.
@@ -508,7 +510,7 @@ public abstract class BaseCommand
                     MessageUtils.getInstance().fillInMessages(preferredLanguage, CommandMessageTypes.Validation.name(), validationResult.getValidationMessages());
                 }
             }
-            
+
             if(updateLastCommandTime) {
                 if(getUserVisitForUpdate() == null) {
                     getLog().error("Command not logged, unknown userVisit");
@@ -582,7 +584,31 @@ public abstract class BaseCommand
 
         return commandResult;
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Security Utilities
+    // --------------------------------------------------------------------------------
+
+    protected SecurityResult selfOnly(PartySpec spec) {
+        var hasInsufficientSecurity = false;
+        var partyTypeName = getPartyType().getPartyTypeName();
+
+        switch(partyTypeName) {
+            case PartyConstants.PartyType_CUSTOMER:
+            case PartyConstants.PartyType_VENDOR:
+                if(spec.getPartyName() != null) {
+                    hasInsufficientSecurity = true;;
+                }
+            break;
+        }
+
+        return hasInsufficientSecurity ? getInsufficientSecurityResult() : null;
+    }
+
+    protected SecurityResult getInsufficientSecurityResult() {
+        return new SecurityResult(new Messages().add(Messages.SECURITY_MESSAGE, new Message(SecurityMessages.InsufficientSecurity.name())));
+    }
+
     // --------------------------------------------------------------------------------
     //   Event Utilities
     // --------------------------------------------------------------------------------

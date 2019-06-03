@@ -23,7 +23,7 @@ import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.form.GetContactMechanismPurposeChoicesForm;
 import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -58,7 +58,7 @@ public class AddActionForm
             try {
                 GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
                 
-                form.setContactMechanismTypeName(ContactConstants.ContactMechanismType_POSTAL_ADDRESS);
+                form.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                 form.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
                 form.setAllowNullChoice(Boolean.FALSE.toString());
                 

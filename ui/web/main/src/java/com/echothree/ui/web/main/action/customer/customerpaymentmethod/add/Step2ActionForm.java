@@ -24,7 +24,7 @@ import com.echothree.control.user.party.common.form.GetNameSuffixChoicesForm;
 import com.echothree.control.user.party.common.form.GetPersonalTitleChoicesForm;
 import com.echothree.control.user.party.common.result.GetNameSuffixChoicesResult;
 import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismChoicesBean;
 import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
 import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
@@ -118,7 +118,7 @@ public class Step2ActionForm
                 GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
                 commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactConstants.ContactMechanismType_POSTAL_ADDRESS);
+                commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                 commandForm.setDefaultContactMechanismChoice(billingContactMechanismChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
@@ -143,7 +143,7 @@ public class Step2ActionForm
                 GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
                 commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactConstants.ContactMechanismType_TELECOM_ADDRESS);
+                commandForm.setContactMechanismTypeName(ContactMechanismTypes.TELECOM_ADDRESS.name());
                 commandForm.setDefaultContactMechanismChoice(issuerContactMechanismChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 

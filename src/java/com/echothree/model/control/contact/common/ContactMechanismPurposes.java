@@ -31,6 +31,6 @@ public enum ContactMechanismPurposes {
     PHONE_HOME,
     PHONE_MOBILE,
     PHONE_WORK,
-    PHONE_WORK_SEC
+    PHONE_WORK_SEC,
     
 }

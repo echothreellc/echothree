@@ -18,7 +18,7 @@ package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.CreateLetterContactMechanismPurposeForm;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -99,8 +99,8 @@ public class CreateLetterContactMechanismPurposeCommand
                         if(contactMechanismPurpose != null) {
                             String contactMechanismTypeName = contactMechanismPurpose.getContactMechanismType().getContactMechanismTypeName();
                             
-                            if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_EMAIL_ADDRESS)
-                                    || contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS)) {
+                            if(contactMechanismTypeName.equals(ContactMechanismTypes.EMAIL_ADDRESS.name())
+                                    || contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
                                 letterControl.createLetterContactMechanismPurpose(letter, priority, contactMechanismPurpose,
                                         getPartyPK());
                             } else {

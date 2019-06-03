@@ -17,7 +17,7 @@
 package com.echothree.view.client.web.filter;
 
 // Source: http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/Protect-your-Struts1-applications/ba-p/6463188#.U2sCOl4y32N
-// alvaro_munoz | ‎05-06-2014 07:21 AM
+// alvaro_munoz | 05-06-2014 07:21 AM
 // Hi Patrick,
 // Thanks for your comment. The fix is not licensed in any way and its completely open source so that any one is free to use it or modify it.
 // It is provided as-is with no guarantees nor support and designed as a temporal workaround until a patch is made available.

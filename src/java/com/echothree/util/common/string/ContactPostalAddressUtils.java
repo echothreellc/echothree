@@ -16,8 +16,8 @@
 
 package com.echothree.util.common.string;
 
-import com.echothree.model.control.contact.common.ContactConstants;
 import com.echothree.model.control.contact.common.ContactOptions;
+import com.echothree.model.control.contact.common.PostalAddressElementTypes;
 import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
 import com.echothree.model.control.contact.common.transfer.PostalAddressLineElementTransfer;
@@ -89,49 +89,49 @@ public class ContactPostalAddressUtils {
     private String getLineElementAddition(final ContactPostalAddressTransfer contactPostalAddress, final String postalAddressElementTypeName) {
         String addition = null;
         
-        if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_PERSONAL_TITLE)) {
+        if(postalAddressElementTypeName.equals(PostalAddressElementTypes.PERSONAL_TITLE.name())) {
             PersonalTitleTransfer personalTitle = contactPostalAddress.getPersonalTitle();
             
             if(personalTitle != null) {
                 addition = personalTitle.getDescription();
             }
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_FIRST_NAME)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.FIRST_NAME.name())) {
             addition = contactPostalAddress.getFirstName();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_MIDDLE_NAME)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.MIDDLE_NAME.name())) {
             addition = contactPostalAddress.getMiddleName();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_LAST_NAME)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.LAST_NAME.name())) {
             addition = contactPostalAddress.getLastName();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_NAME_SUFFIX)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.NAME_SUFFIX.name())) {
             NameSuffixTransfer nameSuffix = contactPostalAddress.getNameSuffix();
             
             if(nameSuffix != null) {
                 addition = nameSuffix.getDescription();
             }
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COMPANY_NAME)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COMPANY_NAME.name())) {
             addition = contactPostalAddress.getCompanyName();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_ATTENTION)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.ATTENTION.name())) {
             addition = contactPostalAddress.getAttention();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_ADDRESS_1)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.ADDRESS_1.name())) {
             addition = contactPostalAddress.getAddress1();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_ADDRESS_2)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.ADDRESS_2.name())) {
             addition = contactPostalAddress.getAddress2();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_ADDRESS_3)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.ADDRESS_3.name())) {
             addition = contactPostalAddress.getAddress3();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_CITY)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.CITY.name())) {
             CityTransfer city = contactPostalAddress.getCityGeoCode();
             
             addition = city == null? contactPostalAddress.getCity(): city.getDescription();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTY)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTY.name())) {
             CountyTransfer county = contactPostalAddress.getCountyGeoCode();
             
             if(county != null) {
                 addition = county.getDescription();
             }
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_STATE)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.STATE.name())) {
             StateTransfer state = contactPostalAddress.getStateGeoCode();
             
             addition = state == null? contactPostalAddress.getState(): state.getDescription();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_STATE_POSTAL_2_LETTER)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.STATE_POSTAL_2_LETTER.name())) {
             StateTransfer state = contactPostalAddress.getStateGeoCode();
             
             if(state == null) {
@@ -151,17 +151,17 @@ public class ContactPostalAddressUtils {
                     }
                 }
             }
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_POSTAL_CODE)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.POSTAL_CODE.name())) {
             PostalCodeTransfer postalCode = contactPostalAddress.getPostalCodeGeoCode();
             
             addition = postalCode == null? contactPostalAddress.getPostalCode(): postalCode.getDescription();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTRY)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY.name())) {
             addition = contactPostalAddress.getCountryGeoCode().getDescription();
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTRY_ISO_3_NUMBER)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY_ISO_3_NUMBER.name())) {
             addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, contactPostalAddress);
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTRY_ISO_3_LETTER)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY_ISO_3_LETTER.name())) {
             addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_3_LETTER, contactPostalAddress);
-        } else if(postalAddressElementTypeName.equals(ContactConstants.PostalAddressElementType_COUNTRY_ISO_2_LETTER)) {
+        } else if(postalAddressElementTypeName.equals(PostalAddressElementTypes.COUNTRY_ISO_2_LETTER.name())) {
             addition = getCountryAlias(GeoConstants.GeoCodeAliasType_ISO_2_LETTER, contactPostalAddress);
         }
         

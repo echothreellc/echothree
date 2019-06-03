@@ -19,7 +19,7 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.GetPostalAddressStatusChoicesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.GetPostalAddressStatusChoicesResult;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -60,7 +60,7 @@ public class GetPostalAddressStatusChoicesCommand
         if(contactMechanism != null) {
             String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
-            if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_POSTAL_ADDRESS)) {
+            if(contactMechanismTypeName.equals(ContactMechanismTypes.POSTAL_ADDRESS.name())) {
                 String defaultPostalAddressStatusChoice = form.getDefaultPostalAddressStatusChoice();
                 boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

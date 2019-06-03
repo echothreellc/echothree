@@ -19,7 +19,7 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.GetWebAddressStatusChoicesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.GetWebAddressStatusChoicesResult;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -60,7 +60,7 @@ public class GetWebAddressStatusChoicesCommand
         if(contactMechanism != null) {
             String contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
 
-            if(contactMechanismTypeName.equals(ContactConstants.ContactMechanismType_WEB_ADDRESS)) {
+            if(contactMechanismTypeName.equals(ContactMechanismTypes.WEB_ADDRESS.name())) {
                 String defaultWebAddressStatusChoice = form.getDefaultWebAddressStatusChoice();
                 boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

@@ -20,7 +20,12 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
 public class CustomerPersona {
-    String persona;
-    UserVisitPK userVisitPK;
-    CommandResult commandResult;
+    public String persona;
+    public UserVisitPK userVisitPK;
+    public CommandResult commandResult;
+
+    public String lastEmailAddressContactMechanismName;
+    public String lastPostalAddressContactMechanismName;
+    public String lastTelephoneContactMechanismName;
+    public String lastWebAddressContactMechanismName;
 }

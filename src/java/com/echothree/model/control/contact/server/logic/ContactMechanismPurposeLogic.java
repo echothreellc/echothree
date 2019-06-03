@@ -40,8 +40,8 @@ public class ContactMechanismPurposeLogic
     }
     
     public ContactMechanismPurpose getContactMechanismPurposeByName(final ExecutionErrorAccumulator eea, final String contactMechanismPurposeName) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
 
         if(contactMechanismPurpose == null) {
             handleExecutionError(UnknownContactMechanismPurposeNameException.class, eea, ExecutionErrors.UnknownContactMechanismPurposeName.name(), contactMechanismPurposeName);

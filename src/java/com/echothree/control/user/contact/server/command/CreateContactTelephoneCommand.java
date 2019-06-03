@@ -19,12 +19,15 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.CreateContactTelephoneForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
-import com.echothree.model.control.contact.common.ContactConstants;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -35,6 +38,7 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeCountry;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -42,6 +46,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,11 +58,21 @@ import java.util.regex.Pattern;
 public class CreateContactTelephoneCommand
         extends BaseSimpleCommand<CreateContactTelephoneForm> {
 
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Create.name())
+                        )))
+                )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("AreaCode", FieldType.STRING, false, 1L, 5L),
                 new FieldDefinition("TelephoneNumber", FieldType.STRING, true, 1L, 25L),
@@ -67,15 +84,22 @@ public class CreateContactTelephoneCommand
     
     /** Creates a new instance of CreateContactTelephoneCommand */
     public CreateContactTelephoneCommand(UserVisitPK userVisitPK, CreateContactTelephoneForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
+    @Override
+    protected SecurityResult security() {
+        var securityResult = super.security();
+
+        return securityResult != null ? securityResult : selfOnly(form);
+    }
+
     @Override
     protected BaseResult execute() {
         CreateContactTelephoneResult result = ContactResultFactory.getCreateContactTelephoneResult();
         PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
             GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
@@ -107,7 +131,7 @@ public class CreateContactTelephoneCommand
                             String description = form.getDescription();
                             String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_CONTACT_MECHANISM);
                             
-                            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactConstants.ContactMechanismType_TELECOM_ADDRESS);
+                            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.TELECOM_ADDRESS.name());
                             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName,
                                     contactMechanismType, allowSolicitation, createdBy);
                             
