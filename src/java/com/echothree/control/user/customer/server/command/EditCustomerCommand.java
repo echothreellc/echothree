@@ -109,13 +109,13 @@ public class EditCustomerCommand
     
     @Override
     protected BaseResult execute() {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         EditCustomerResult result = CustomerResultFactory.getEditCustomerResult();
         String customerName = spec.getCustomerName();
         Customer customer = customerControl.getCustomerByNameForUpdate(customerName);
 
         if(customer != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             Party party = customer.getParty();
 
             if(editMode.equals(EditMode.LOCK)) {
@@ -179,7 +179,7 @@ public class EditCustomerCommand
                                 CancellationPolicy cancellationPolicy = null;
 
                                 if(cancellationPolicyName != null) {
-                                    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                                    var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                                     CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
                                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -190,14 +190,14 @@ public class EditCustomerCommand
                                     ReturnPolicy returnPolicy = null;
 
                                     if(returnPolicyName != null) {
-                                        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
                                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                                     }
 
                                     if(returnPolicyName == null || returnPolicy != null) {
-                                        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                         String arGlAccountName = edit.getArGlAccountName();
                                         GlAccount arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
 

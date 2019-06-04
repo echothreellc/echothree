@@ -49,7 +49,7 @@ public class GetInventoryConditionsCommand
     
     @Override
     protected Collection<InventoryCondition> getEntities() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         
         return inventoryControl.getInventoryConditions();
     }
@@ -57,7 +57,7 @@ public class GetInventoryConditionsCommand
     @Override
     protected BaseResult getTransfers(Collection<InventoryCondition> entities) {
         GetInventoryConditionsResult result = InventoryResultFactory.getGetInventoryConditionsResult();
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         
         result.setInventoryConditions(inventoryControl.getInventoryConditionTransfers(getUserVisit(), entities));
         

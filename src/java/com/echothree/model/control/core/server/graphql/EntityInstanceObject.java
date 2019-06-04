@@ -61,7 +61,7 @@ public class EntityInstanceObject {
     @GraphQLDescription("key")
     @GraphQLNonNull
     public String getKey() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
         return coreControl.generateKeyForEntityInstance(entityInstance, false);
     }
@@ -70,7 +70,7 @@ public class EntityInstanceObject {
     @GraphQLDescription("guid")
     @GraphQLNonNull
     public String getGuid() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
         return coreControl.generateGuidForEntityInstance(entityInstance, false);
     }
@@ -79,7 +79,7 @@ public class EntityInstanceObject {
     @GraphQLDescription("ulid")
     @GraphQLNonNull
     public String getUlid() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
         return coreControl.generateUlidForEntityInstance(entityInstance, false);
     }
@@ -87,7 +87,7 @@ public class EntityInstanceObject {
     @GraphQLField
     @GraphQLDescription("entity time")
     public EntityTimeObject getEntityTime() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         EntityTime entityTime = coreControl.getEntityTime(entityInstance);
         
         return entityTime == null ? null : new EntityTimeObject(entityTime);
@@ -97,7 +97,7 @@ public class EntityInstanceObject {
     @GraphQLDescription("entity visit")
     public EntityVisitObject getEntityVisit(final DataFetchingEnvironment env) {
         GraphQlContext context = env.getContext();
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         UserSession userSession = context.getUserSession();
         EntityInstance visitingEntityInstance = userSession == null ? null : coreControl.getEntityInstanceByBasePK(userSession.getPartyPK());
         EntityVisit entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
@@ -108,7 +108,7 @@ public class EntityInstanceObject {
     @GraphQLField
     @GraphQLDescription("entity appearance")
     public EntityAppearanceObject getEntityAppearance() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         EntityAppearance entityAppearance = coreControl.getEntityAppearance(entityInstance);
         
         return entityAppearance == null ? null : new EntityAppearanceObject(entityAppearance);
@@ -118,7 +118,7 @@ public class EntityInstanceObject {
     @GraphQLDescription("entity lock")
     public EntityLockObject getEntityLock(final DataFetchingEnvironment env) {
         GraphQlContext context = env.getContext();
-        EntityLockControl entityLockControl = (EntityLockControl)Session.getModelController(EntityLockControl.class);
+        var entityLockControl = (EntityLockControl)Session.getModelController(EntityLockControl.class);
         UserVisit userVisit = context.getUserVisit();
         EntityLockTransfer entityLockTransfer = entityLockControl.getEntityLockTransferByEntityInstance(userVisit, entityInstance);
         

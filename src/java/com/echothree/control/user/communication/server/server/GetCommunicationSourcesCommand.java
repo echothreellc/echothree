@@ -55,7 +55,7 @@ public class GetCommunicationSourcesCommand
         int parameterCount = (communicationSourceTypeName == null? 0: 1);
         
         if(parameterCount < 2) {
-            CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+            var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
             
             if(communicationSourceTypeName != null) {
                 CommunicationSourceType communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);

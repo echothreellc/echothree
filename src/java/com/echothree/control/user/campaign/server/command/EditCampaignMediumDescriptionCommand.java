@@ -87,13 +87,13 @@ public class EditCampaignMediumDescriptionCommand
 
     @Override
     public CampaignMediumDescription getEntity(EditCampaignMediumDescriptionResult result) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         CampaignMediumDescription campaignMediumDescription = null;
         String campaignMediumName = spec.getCampaignMediumName();
         CampaignMedium campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
 
         if(campaignMedium != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditCampaignMediumDescriptionCommand
 
     @Override
     public void fillInResult(EditCampaignMediumDescriptionResult result, CampaignMediumDescription campaignMediumDescription) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
 
         result.setCampaignMediumDescription(campaignControl.getCampaignMediumDescriptionTransfer(getUserVisit(), campaignMediumDescription));
     }
@@ -136,7 +136,7 @@ public class EditCampaignMediumDescriptionCommand
 
     @Override
     public void doUpdate(CampaignMediumDescription campaignMediumDescription) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         CampaignMediumDescriptionValue campaignMediumDescriptionValue = campaignControl.getCampaignMediumDescriptionValue(campaignMediumDescription);
         campaignMediumDescriptionValue.setDescription(edit.getDescription());
 

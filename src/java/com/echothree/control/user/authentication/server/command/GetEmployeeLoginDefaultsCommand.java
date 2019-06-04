@@ -72,7 +72,7 @@ public class GetEmployeeLoginDefaultsCommand
                     username = userLogin.getUsername();
                     
                     if(partyRelationship != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         Party fromParty = partyRelationship.getFromParty();
                         PartyCompany partyCompany = partyControl.getPartyCompany(fromParty);
                         

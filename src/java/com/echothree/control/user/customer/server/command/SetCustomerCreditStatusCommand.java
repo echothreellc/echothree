@@ -52,7 +52,7 @@ public class SetCustomerCreditStatusCommand
     
     @Override
     protected BaseResult execute() {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         String customerName = form.getCustomerName();
         Customer customer = customerControl.getCustomerByName(customerName);
         

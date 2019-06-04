@@ -58,22 +58,22 @@ public class DeleteItemUnitCustomerTypeLimitCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             String inventoryConditionName = form.getInventoryConditionName();
             InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
-                UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = (UomControl)Session.getModelController(UomControl.class);
                 String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                 UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
                 
                 if(unitOfMeasureType != null) {
-                    CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                    var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
                     String customerTypeName = form.getCustomerTypeName();
                     CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
                     

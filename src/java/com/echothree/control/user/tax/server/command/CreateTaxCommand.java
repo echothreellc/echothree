@@ -64,12 +64,12 @@ public class CreateTaxCommand
     
     @Override
     protected BaseResult execute() {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         String taxName = form.getTaxName();
         Tax tax = taxControl.getTaxByName(taxName);
         
         if(tax == null) {
-            ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
             String contactMechanismPurposeName = form.getContactMechanismPurposeName();
             ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
             
@@ -77,7 +77,7 @@ public class CreateTaxCommand
                 ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                 
                 if(contactMechanismPurpose.getContactMechanismType().equals(contactMechanismType)) {
-                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                     String glAccountName = form.getGlAccountName();
                     GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
                     

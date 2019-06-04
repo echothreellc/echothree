@@ -92,7 +92,7 @@ public class TrackControl
     // --------------------------------------------------------------------------------
 
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_TRACK);
         String trackName = sequenceControl.getNextSequenceValue(sequence);
         
@@ -280,7 +280,7 @@ public class TrackControl
 
     public TrackStatusChoicesBean getTrackStatusChoices(String defaultTrackStatusChoice, Language language,
             boolean allowNullChoice, Track track, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         TrackStatusChoicesBean employeeStatusChoicesBean = new TrackStatusChoicesBean();
         
         if(track == null) {
@@ -299,7 +299,7 @@ public class TrackControl
     }
     
     public void setTrackStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
                 entityInstance);
@@ -610,7 +610,7 @@ public class TrackControl
     // --------------------------------------------------------------------------------
 
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Long time, Track track) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         UserVisitStatus userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitTrackSequence = userVisitStatus.getUserVisitTrackSequence()+ 1;
         

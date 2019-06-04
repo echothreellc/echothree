@@ -41,7 +41,7 @@ public class UserKeyLogic {
     }
     
     public void removeInactiveUserKeys(final Long remainingTime, final Long inactiveTime) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         long startTime = System.currentTimeMillis();
         long entityCount = 0;
         
@@ -60,7 +60,7 @@ public class UserKeyLogic {
     /** Sets the Party and PartyRelationship to null.
      */
     public void clearUserKey(UserKey userKey) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         UserKeyDetailValue userKeyDetailValue = userControl.getUserKeyDetailValueForUpdate(userKey);
 
         userKeyDetailValue.setPartyPK(null);
@@ -80,7 +80,7 @@ public class UserKeyLogic {
     /** Sets the Party and PartyRelationship to null when a UserKey contains the specified Party.
      */
     public void clearUserKeysByParty(Party party) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
 
         clearUserKeys(userControl.getUserKeysByPartyForUpdate(party));
     }
@@ -88,7 +88,7 @@ public class UserKeyLogic {
     /** Sets the Party and PartyRelationship to null when a UserKey contains the specified PartyRelationship.
      */
     public void clearUserKeysByPartyRelationship(PartyRelationship partyRelationship) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
 
         clearUserKeys(userControl.getUserKeysByPartyRelationshipForUpdate(partyRelationship));
     }

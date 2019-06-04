@@ -66,12 +66,12 @@ public class DeleteItemAccountingCategoryDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         String itemAccountingCategoryName = form.getItemAccountingCategoryName();
         ItemAccountingCategory itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
         
         if(itemAccountingCategory != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

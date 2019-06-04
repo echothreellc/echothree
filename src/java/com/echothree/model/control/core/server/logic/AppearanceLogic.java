@@ -50,7 +50,7 @@ public class AppearanceLogic
     }
     
     public Appearance getAppearanceByName(final ExecutionErrorAccumulator eea, final String appearanceName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         Appearance appearance = coreControl.getAppearanceByName(appearanceName);
 
         if(appearance == null) {
@@ -61,7 +61,7 @@ public class AppearanceLogic
     }
     
     public Color getColorByName(final ExecutionErrorAccumulator eea, final String colorName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         Color color = coreControl.getColorByName(colorName);
 
         if(color == null) {
@@ -72,7 +72,7 @@ public class AppearanceLogic
     }
     
     public FontStyle getFontStyleByName(final ExecutionErrorAccumulator eea, final String fontStyleName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle == null) {
@@ -83,7 +83,7 @@ public class AppearanceLogic
     }
     
     public FontWeight getFontWeightByName(final ExecutionErrorAccumulator eea, final String fontWeightName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
 
         if(fontWeight == null) {
@@ -94,7 +94,7 @@ public class AppearanceLogic
     }
     
     public TextDecoration getTextDecorationByName(final ExecutionErrorAccumulator eea, final String textDecorationName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
 
         if(textDecoration == null) {
@@ -105,7 +105,7 @@ public class AppearanceLogic
     }
     
     public TextTransformation getTextTransformationByName(final ExecutionErrorAccumulator eea, final String textTransformationName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation == null) {

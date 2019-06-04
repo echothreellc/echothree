@@ -70,7 +70,7 @@ public class CreateInvoiceTypeCommand
     
     @Override
     protected BaseResult execute() {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         String invoiceTypeName = form.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
@@ -83,7 +83,7 @@ public class CreateInvoiceTypeCommand
             }
             
             if(parentInvoiceTypeName == null || parentInvoiceType != null) {
-                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                 String invoiceSequenceTypeName = form.getInvoiceSequenceTypeName();
                 SequenceType invoiceSequenceType = sequenceControl.getSequenceTypeByName(invoiceSequenceTypeName);
                 

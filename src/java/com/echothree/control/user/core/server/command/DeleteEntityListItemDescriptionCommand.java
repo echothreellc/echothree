@@ -72,7 +72,7 @@ public class DeleteEntityListItemDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
@@ -89,7 +89,7 @@ public class DeleteEntityListItemDescriptionCommand
                     EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
                     
                     if(entityListItem != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         String languageIsoName = form.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         

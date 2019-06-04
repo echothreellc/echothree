@@ -1111,7 +1111,7 @@ public class SequenceControl
         String sequenceTypeName = sequenceDetail.getSequenceType().getLastDetail().getSequenceTypeName();
         
         if(SequenceConstants.SequenceType_SALES_ORDER.equals(sequenceTypeName)) {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             
             offerControl.deleteOfferUsesBySalesOrderSequence(sequence, deletedBy);
         }

@@ -87,13 +87,13 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public FontStyleDescription getEntity(EditFontStyleDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         FontStyleDescription fontStyleDescription = null;
         String fontStyleName = spec.getFontStyleName();
         FontStyle fontStyle = coreControl.getFontStyleByName(fontStyleName);
 
         if(fontStyle != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public void fillInResult(EditFontStyleDescriptionResult result, FontStyleDescription fontStyleDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setFontStyleDescription(coreControl.getFontStyleDescriptionTransfer(getUserVisit(), fontStyleDescription));
     }
@@ -136,7 +136,7 @@ public class EditFontStyleDescriptionCommand
 
     @Override
     public void doUpdate(FontStyleDescription fontStyleDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         FontStyleDescriptionValue fontStyleDescriptionValue = coreControl.getFontStyleDescriptionValue(fontStyleDescription);
         fontStyleDescriptionValue.setDescription(edit.getDescription());
 

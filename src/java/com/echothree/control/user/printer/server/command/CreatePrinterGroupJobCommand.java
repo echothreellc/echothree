@@ -91,13 +91,13 @@ public class CreatePrinterGroupJobCommand
 
     @Override
     protected BaseResult execute() {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         CreatePrinterGroupJobResult result = PrinterResultFactory.getCreatePrinterGroupJobResult();
         String printerGroupName = form.getPrinterGroupName();
         PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(printerGroup != null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String mimeTypeName = form.getMimeTypeName();
             MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 

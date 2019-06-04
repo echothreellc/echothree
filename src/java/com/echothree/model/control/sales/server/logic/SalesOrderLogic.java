@@ -150,7 +150,7 @@ public class SalesOrderLogic
     final static long AllocatedInventoryTimeout = 5 * 60 * 1000; // 5 Minutes
 
     public CustomerType getCustomerType(final ExecutionErrorAccumulator eea, final Offer offer, final Customer customer) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         CustomerType customerType = null;
 
         // 1) Try to get it from the customer, if one was supplied.
@@ -160,7 +160,7 @@ public class SalesOrderLogic
 
         // 2) Try to get it from the offer, if one was supplied.
         if(customerType == null && offer != null) {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             OfferCustomerType offerCustomerType = offerControl.getDefaultOfferCustomerType(offer);
 
             if(offerCustomerType != null) {
@@ -201,7 +201,7 @@ public class SalesOrderLogic
             if(requireReference && reference == null) {
                 handleExecutionError(SalesOrderReferenceRequiredException.class, eea, ExecutionErrors.SalesOrderReferenceRequired.name());
             } else if(reference != null) {
-                OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+                var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
                 if(!allowReferenceDuplicates) {
                     if(billToCustomer == null) {
@@ -257,7 +257,7 @@ public class SalesOrderLogic
     public Order createSalesOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit, final Batch batch, Source source,
             final Party billToParty, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
             Boolean allowCombiningShipments, final String reference, Term term, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         Order order = null;
         OrderType orderType = getOrderTypeByName(eea, OrderConstants.OrderType_SALES_ORDER);
         OrderRoleType billToOrderRoleType = getOrderRoleTypeByName(eea, OrderConstants.OrderRoleType_BILL_TO);
@@ -283,7 +283,7 @@ public class SalesOrderLogic
 
         if(eea == null || !eea.hasExecutionErrors()) {
             if(source == null) {
-                OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
                 source = offerControl.getDefaultSource();
 
@@ -301,7 +301,7 @@ public class SalesOrderLogic
             }
 
             if(currency == null) {
-                UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+                var userControl = (UserControl)Session.getModelController(UserControl.class);
 
                 if(billToParty != null) {
                     currency = userControl.getPreferredCurrencyFromParty(billToParty);
@@ -321,7 +321,7 @@ public class SalesOrderLogic
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
-                CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
                 Customer billToCustomer = billToParty == null ? null : customerControl.getCustomer(billToParty);
                 OfferUse offerUse = source.getLastDetail().getOfferUse();
                 CustomerType customerType = getCustomerType(eea, offerUse.getLastDetail().getOffer(), billToCustomer);
@@ -403,9 +403,9 @@ public class SalesOrderLogic
                                 allowSubstitutions, allowCombiningShipments, term, reference, null, cancellationPolicy, returnPolicy, taxable, createdBy);
 
                         if(eea == null || !eea.hasExecutionErrors()) {
-                            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-                            SalesControl salesControl = (SalesControl)Session.getModelController(SalesControl.class);
-                            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+                            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                             AssociateReferral associateReferral = userVisit == null ? null : userVisit.getAssociateReferral();
                             EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
 
@@ -465,14 +465,14 @@ public class SalesOrderLogic
 
     public SalesOrderStatusChoicesBean getSalesOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
             final Order order, final PartyPK partyPK) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         SalesOrderStatusChoicesBean salesOrderStatusChoicesBean = new SalesOrderStatusChoicesBean();
 
         if(order == null) {
             workflowControl.getWorkflowEntranceChoices(salesOrderStatusChoicesBean, defaultOrderStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS), partyPK);
         } else {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
             WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
 
@@ -483,8 +483,8 @@ public class SalesOrderLogic
     }
 
     public void setSalesOrderStatus(final Session session, final ExecutionErrorAccumulator eea, final Order order, final String orderStatusChoice, final PartyPK modifiedBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
@@ -543,7 +543,7 @@ public class SalesOrderLogic
      * @param modifiedBy Required.
      */
     public void checkOrderAvailableForModification(final Session session, final ExecutionErrorAccumulator eea, final Order order, final PartyPK modifiedBy) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, getEntityInstanceByBaseEntity(order));
         String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
         
@@ -566,7 +566,7 @@ public class SalesOrderLogic
      * @param paymentMethod Required.
      */
     public void checkCustomerTypePaymentMethod(final ExecutionErrorAccumulator eea, CustomerType customerType, PaymentMethod paymentMethod) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         
         if(!customerControl.getCustomerTypePaymentMethodExists(customerType, paymentMethod)
                 && customerControl.countCustomerTypePaymentMethodsByCustomerType(customerType) != 0) {
@@ -659,7 +659,7 @@ public class SalesOrderLogic
      * @return The Party used for the BILL_TO OrderRoleType. May be null.
      */
     public Party getOrderBillToParty(final Order order) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderRole billToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderConstants.OrderRoleType_BILL_TO);
         Party party = null;
         
@@ -676,7 +676,7 @@ public class SalesOrderLogic
      * @return The CustomerType for the Party. May be null.
      */
     public CustomerType getCustomerTypeFromParty(final Party party) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         Customer customer = party == null ? null : customerControl.getCustomer(party);
         CustomerType customerType = null;
         
@@ -705,7 +705,7 @@ public class SalesOrderLogic
      * @return The Party that is to be used for the SHIP_TO OrderRoleType. May be null.
      */
     public Party getOrderShipToParty(final Order order, final boolean billToFallback, final BasePK createdBy) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderRole shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderConstants.OrderRoleType_SHIP_TO);
         
         if(shipToOrderRole == null && billToFallback) {
@@ -727,7 +727,7 @@ public class SalesOrderLogic
      * @param shippingMethod Required.
      */
     public void checkCustomerTypeShippingMethod(final ExecutionErrorAccumulator eea, CustomerType customerType, ShippingMethod shippingMethod) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         
         if(!customerControl.getCustomerTypeShippingMethodExists(customerType, shippingMethod)
                 && customerControl.countCustomerTypeShippingMethodsByCustomerType(customerType) != 0) {
@@ -769,9 +769,9 @@ public class SalesOrderLogic
         checkOrderAvailableForModification(session, eea, order, createdBy);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-            SalesControl salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
             OrderDetail orderDetail = order.getLastDetail();
             ItemDetail itemDetail = item.getLastDetail();
             ItemDeliveryType itemDeliveryType = itemDetail.getItemDeliveryType();
@@ -817,7 +817,7 @@ public class SalesOrderLogic
 
                 // Check InventoryCondition.
                 if(inventoryCondition == null) {
-                    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                    var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
                     inventoryCondition = inventoryControl.getDefaultInventoryCondition();
 

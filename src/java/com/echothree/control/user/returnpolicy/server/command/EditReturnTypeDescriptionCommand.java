@@ -88,7 +88,7 @@ public class EditReturnTypeDescriptionCommand
 
     @Override
     public ReturnTypeDescription getEntity(EditReturnTypeDescriptionResult result) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnTypeDescription returnTypeDescription = null;
         String returnKindName = spec.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
@@ -98,7 +98,7 @@ public class EditReturnTypeDescriptionCommand
             ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
 
             if(returnType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,7 +132,7 @@ public class EditReturnTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditReturnTypeDescriptionResult result, ReturnTypeDescription returnTypeDescription) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
 
         result.setReturnTypeDescription(returnPolicyControl.getReturnTypeDescriptionTransfer(getUserVisit(), returnTypeDescription));
     }
@@ -144,7 +144,7 @@ public class EditReturnTypeDescriptionCommand
 
     @Override
     public void doUpdate(ReturnTypeDescription returnTypeDescription) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnTypeDescriptionValue returnTypeDescriptionValue = returnPolicyControl.getReturnTypeDescriptionValue(returnTypeDescription);
 
         returnTypeDescriptionValue.setDescription(edit.getDescription());

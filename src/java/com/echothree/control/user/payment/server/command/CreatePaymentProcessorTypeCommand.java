@@ -58,7 +58,7 @@ public class CreatePaymentProcessorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         String paymentProcessorTypeName = form.getPaymentProcessorTypeName();
         PaymentProcessorType paymentProcessorType = paymentControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
         

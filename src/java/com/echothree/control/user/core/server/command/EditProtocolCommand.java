@@ -89,7 +89,7 @@ public class EditProtocolCommand
 
     @Override
     public Protocol getEntity(EditProtocolResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         Protocol protocol = null;
         String protocolName = spec.getProtocolName();
 
@@ -115,14 +115,14 @@ public class EditProtocolCommand
 
     @Override
     public void fillInResult(EditProtocolResult result, Protocol protocol) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setProtocol(coreControl.getProtocolTransfer(getUserVisit(), protocol));
     }
 
     @Override
     public void doLock(ProtocolEdit edit, Protocol protocol) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ProtocolDescription protocolDescription = coreControl.getProtocolDescription(protocol, getPreferredLanguage());
         ProtocolDetail protocolDetail = protocol.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditProtocolCommand
 
     @Override
     public void canUpdate(Protocol protocol) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String protocolName = edit.getProtocolName();
         Protocol duplicateProtocol = coreControl.getProtocolByName(protocolName);
 
@@ -148,7 +148,7 @@ public class EditProtocolCommand
 
     @Override
     public void doUpdate(Protocol protocol) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         ProtocolDetailValue protocolDetailValue = coreControl.getProtocolDetailValueForUpdate(protocol);
         ProtocolDescription protocolDescription = coreControl.getProtocolDescriptionForUpdate(protocol, getPreferredLanguage());

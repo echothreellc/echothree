@@ -61,7 +61,7 @@ public class CreateRatingTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
@@ -70,7 +70,7 @@ public class CreateRatingTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
                 String ratingTypeName = form.getRatingTypeName();
                 RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
@@ -79,7 +79,7 @@ public class CreateRatingTypeCommand
                     Sequence ratingSequence = null;
                     
                     if(ratingSequenceName != null) {
-                        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_RATING);
                         
                         if(sequenceType != null) {

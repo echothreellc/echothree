@@ -68,7 +68,7 @@ public class DeleteSelectorTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         String selectorKindName = form.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
@@ -77,7 +77,7 @@ public class DeleteSelectorTypeDescriptionCommand
             SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
             
             if(selectorType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

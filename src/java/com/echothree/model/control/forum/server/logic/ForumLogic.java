@@ -50,7 +50,7 @@ public class ForumLogic
     }
     
     public ForumRoleType getForumRoleTypeByName(final ExecutionErrorAccumulator eea, final String forumRoleTypeName) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         ForumRoleType forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
 
         if(forumRoleType == null) {
@@ -67,7 +67,7 @@ public class ForumLogic
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final Forum forum, final Party party, final ForumRoleType forumRoleType) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         boolean hasForumPartyTypeRoles = forumControl.hasForumPartyTypeRoles(forum, forumRoleType);
         boolean hasForumPartyRoles = forumControl.hasForumPartyRoles(forum, forumRoleType);
         boolean permitted = !(hasForumPartyTypeRoles || hasForumPartyRoles);
@@ -125,7 +125,7 @@ public class ForumLogic
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumThread forumThread, final Party party, final ForumRoleType forumRoleType) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         List<ForumForumThread> forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
         boolean permitted = false;
 

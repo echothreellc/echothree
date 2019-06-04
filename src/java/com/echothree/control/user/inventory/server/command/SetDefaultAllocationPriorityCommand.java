@@ -61,7 +61,7 @@ public class SetDefaultAllocationPriorityCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String allocationPriorityName = form.getAllocationPriorityName();
         AllocationPriorityDetailValue allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueByNameForUpdate(allocationPriorityName);
 

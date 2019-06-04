@@ -71,7 +71,7 @@ public class EditRatingTypeListItemDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditRatingTypeListItemDescriptionResult result = RatingResultFactory.getEditRatingTypeListItemDescriptionResult();
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -81,7 +81,7 @@ public class EditRatingTypeListItemDescriptionCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
                 String ratingTypeName = spec.getRatingTypeName();
                 RatingType ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
@@ -90,7 +90,7 @@ public class EditRatingTypeListItemDescriptionCommand
                     RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItem != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         String languageIsoName = spec.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         

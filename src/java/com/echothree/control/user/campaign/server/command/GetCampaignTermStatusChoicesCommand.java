@@ -65,7 +65,7 @@ public class GetCampaignTermStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         GetCampaignTermStatusChoicesResult result = CampaignResultFactory.getGetCampaignTermStatusChoicesResult();
         String campaignTermName = form.getCampaignTermName();
         CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);

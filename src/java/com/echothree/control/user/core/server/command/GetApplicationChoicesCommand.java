@@ -61,7 +61,7 @@ public class GetApplicationChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetApplicationChoicesResult result = CoreResultFactory.getGetApplicationChoicesResult();
         String defaultApplicationChoice = form.getDefaultApplicationChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

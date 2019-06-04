@@ -70,7 +70,7 @@ public class GetVendorItemsCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         GetVendorItemsResult result = VendorResultFactory.getGetVendorItemsResult();
         String vendorName = form.getVendorName();
         String itemName = form.getItemName();
@@ -95,7 +95,7 @@ public class GetVendorItemsCommand
                     addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else if(itemName != null) {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                 Item item = itemControl.getItemByNameThenAlias(itemName);
                 
                 if(item != null) {

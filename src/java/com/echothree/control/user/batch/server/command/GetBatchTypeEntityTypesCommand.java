@@ -62,7 +62,7 @@ public class GetBatchTypeEntityTypesCommand
         int parameterCount = (batchTypeName == null? 0: 1) + (componentVendorName == null && entityTypeName == null? 0: 1);
 
         if(parameterCount == 1) {
-            BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+            var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
 
             if(batchTypeName != null) {
                 BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
@@ -74,7 +74,7 @@ public class GetBatchTypeEntityTypesCommand
                     addExecutionError(ExecutionErrors.UnknownBatchTypeName.name(), batchTypeName);
                 }
             } else {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {

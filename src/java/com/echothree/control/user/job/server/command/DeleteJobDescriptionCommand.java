@@ -66,12 +66,12 @@ public class DeleteJobDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        JobControl jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = (JobControl)Session.getModelController(JobControl.class);
         String jobName = form.getJobName();
         Job job = jobControl.getJobByName(jobName);
         
         if(job != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

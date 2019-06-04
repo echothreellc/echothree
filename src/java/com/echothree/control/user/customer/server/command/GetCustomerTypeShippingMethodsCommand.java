@@ -52,7 +52,7 @@ public class GetCustomerTypeShippingMethodsCommand
     @Override
     protected BaseResult execute() {
         GetCustomerTypeShippingMethodsResult result = CustomerResultFactory.getGetCustomerTypeShippingMethodsResult();
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         

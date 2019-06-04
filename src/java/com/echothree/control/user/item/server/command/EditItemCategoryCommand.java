@@ -99,7 +99,7 @@ public class EditItemCategoryCommand
     
     @Override
     public ItemCategory getEntity(EditItemCategoryResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = null;
         String itemCategoryName = spec.getItemCategoryName();
         int parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
@@ -133,7 +133,7 @@ public class EditItemCategoryCommand
     
     @Override
     public void fillInResult(EditItemCategoryResult result, ItemCategory itemCategory) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         result.setItemCategory(itemControl.getItemCategoryTransfer(getUserVisit(), itemCategory));
     }
@@ -142,7 +142,7 @@ public class EditItemCategoryCommand
     
     @Override
     public void doLock(ItemCategoryEdit edit, ItemCategory itemCategory) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemCategoryDescription itemCategoryDescription = itemControl.getItemCategoryDescription(itemCategory, getPreferredLanguage());
         ItemCategoryDetail itemCategoryDetail = itemCategory.getLastDetail();
         
@@ -160,7 +160,7 @@ public class EditItemCategoryCommand
         
     @Override
     public void canUpdate(ItemCategory itemCategory) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemCategoryName = edit.getItemCategoryName();
         ItemCategory duplicateItemCategory = itemControl.getItemCategoryByName(itemCategoryName);
 
@@ -185,7 +185,7 @@ public class EditItemCategoryCommand
     
     @Override
     public void doUpdate(ItemCategory itemCategory) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         PartyPK partyPK = getPartyPK();
         ItemCategoryDetailValue itemCategoryDetailValue = itemControl.getItemCategoryDetailValueForUpdate(itemCategory);
         ItemCategoryDescription itemCategoryDescription = itemControl.getItemCategoryDescriptionForUpdate(itemCategory, getPreferredLanguage());

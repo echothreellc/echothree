@@ -78,7 +78,7 @@ public class GetCampaignSourceCommand
         int parameterCount = (campaignSourceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+            var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
             CampaignSource campaignSource = null;
 
             if(campaignSourceName == null) {

@@ -61,7 +61,7 @@ public class SetDefaultPeriodKindCommand
     
     @Override
     protected BaseResult execute() {
-        PeriodControl periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
         String periodKindName = form.getPeriodKindName();
         PeriodKindDetailValue periodKindDetailValue = periodControl.getPeriodKindDetailValueByNameForUpdate(periodKindName);
         

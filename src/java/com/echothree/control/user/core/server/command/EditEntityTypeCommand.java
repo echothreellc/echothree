@@ -97,7 +97,7 @@ public class EditEntityTypeCommand
     
     @Override
     public EntityType getEntity(EditEntityTypeResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityType entityType = null;
         String componentVendorName = spec.getComponentVendorName();
         
@@ -129,14 +129,14 @@ public class EditEntityTypeCommand
 
     @Override
     public void fillInResult(EditEntityTypeResult result, EntityType entityType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityType(coreControl.getEntityTypeTransfer(getUserVisit(), entityType));
     }
 
     @Override
     public void doLock(EntityTypeEdit edit, EntityType entityType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         EntityTypeDescription entityTypeDescription = coreControl.getEntityTypeDescription(entityType, getPreferredLanguage());
         EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
@@ -158,7 +158,7 @@ public class EditEntityTypeCommand
 
     @Override
     public void canUpdate(EntityType entityType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String entityTypeName = edit.getEntityTypeName();
         EntityType duplicateEntityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
@@ -177,7 +177,7 @@ public class EditEntityTypeCommand
 
     @Override
     public void doUpdate(EntityType entityType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         EntityTypeDetailValue entityTypeDetailValue = coreControl.getEntityTypeDetailValueForUpdate(entityType);
         EntityTypeDescription entityTypeDescription = coreControl.getEntityTypeDescriptionForUpdate(entityType, getPreferredLanguage());

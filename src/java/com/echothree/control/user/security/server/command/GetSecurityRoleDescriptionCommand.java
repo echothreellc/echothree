@@ -70,7 +70,7 @@ public class GetSecurityRoleDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         GetSecurityRoleDescriptionResult result = SecurityResultFactory.getGetSecurityRoleDescriptionResult();
         String securityRoleGroupName = form.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
@@ -80,7 +80,7 @@ public class GetSecurityRoleDescriptionCommand
             SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             
             if(securityRole != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

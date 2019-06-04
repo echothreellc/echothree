@@ -64,13 +64,13 @@ public class EditUnitOfMeasureKindDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         EditUnitOfMeasureKindDescriptionResult result = UomResultFactory.getEditUnitOfMeasureKindDescriptionResult();
         String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

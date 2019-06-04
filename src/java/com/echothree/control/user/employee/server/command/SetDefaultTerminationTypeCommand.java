@@ -48,7 +48,7 @@ public class SetDefaultTerminationTypeCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String terminationTypeName = form.getTerminationTypeName();
         TerminationTypeDetailValue terminationTypeDetailValue = employeeControl.getTerminationTypeDetailValueByNameForUpdate(terminationTypeName);
         

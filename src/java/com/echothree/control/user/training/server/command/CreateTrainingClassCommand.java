@@ -97,7 +97,7 @@ public class CreateTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         String trainingClassName = form.getTrainingClassName();
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
         
@@ -150,7 +150,7 @@ public class CreateTrainingClassCommand
                                         WorkEffortScope workEffortScope = null;
 
                                         if(workEffortScopeName != null) {
-                                            WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+                                            var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
                                             WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(TrainingConstants.WorkEffortType_TRAINING);
 
                                             if(workEffortType != null) {

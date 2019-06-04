@@ -64,7 +64,7 @@ public class GetLeaveCommand
 
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         GetLeaveResult result = EmployeeResultFactory.getGetLeaveResult();
         String leaveName = form.getLeaveName();
         Leave leave = employeeControl.getLeaveByName(leaveName);

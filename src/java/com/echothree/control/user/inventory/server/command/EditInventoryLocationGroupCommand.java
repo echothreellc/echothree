@@ -71,13 +71,13 @@ public class EditInventoryLocationGroupCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         EditInventoryLocationGroupResult result = InventoryResultFactory.getEditInventoryLocationGroupResult();
         String warehouseName = spec.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             Party warehouseParty = warehouse.getParty();
             
             if(editMode.equals(EditMode.LOCK)) {

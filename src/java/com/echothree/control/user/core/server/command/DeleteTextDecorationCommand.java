@@ -61,7 +61,7 @@ public class DeleteTextDecorationCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String textDecorationName = form.getTextDecorationName();
         TextDecoration textDecoration = coreControl.getTextDecorationByNameForUpdate(textDecorationName);
         

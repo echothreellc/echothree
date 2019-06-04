@@ -71,7 +71,7 @@ public class CreatePartyEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
@@ -79,7 +79,7 @@ public class CreatePartyEntityTypeCommand
             PartyType partyType = party.getLastDetail().getPartyType();
 
             if(partyType.getAllowUserLogins()) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 String componentVendorName = form.getComponentVendorName();
                 ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 

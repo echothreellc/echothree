@@ -55,7 +55,7 @@ public class LotTimeLogic {
 
     public void createOrUpdateLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
             final BasePK partyPK) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotDetail lotDetail = lot.getLastDetail();
         LotType lotType = lotDetail.getLotType();
         LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
@@ -77,7 +77,7 @@ public class LotTimeLogic {
     }
 
     public Long getLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotDetail lotDetail = lot.getLastDetail();
         LotType lotType = lotDetail.getLotType();
         LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
@@ -103,7 +103,7 @@ public class LotTimeLogic {
     }
 
     public void deleteLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final BasePK deletedBy) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotDetail lotDetail = lot.getLastDetail();
         LotType lotType = lotDetail.getLotType();
         LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);

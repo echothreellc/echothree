@@ -56,7 +56,7 @@ public class GetHarmonizedTariffScheduleCodeResultsCommand
     @Override
     protected BaseResult execute() {
         GetHarmonizedTariffScheduleCodeResultsResult result = SearchResultFactory.getGetHarmonizedTariffScheduleCodeResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_HARMONIZED_TARIFF_SCHEDULE_CODE);
         
         if(searchKind != null) {

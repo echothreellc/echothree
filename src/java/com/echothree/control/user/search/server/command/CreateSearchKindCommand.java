@@ -66,7 +66,7 @@ public class CreateSearchKindCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchKindName = form.getSearchKindName();
         SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
         

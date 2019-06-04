@@ -49,7 +49,7 @@ public class GetPostalAddressElementTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         GetPostalAddressElementTypeChoicesResult result = ContactResultFactory.getGetPostalAddressElementTypeChoicesResult();
         String defaultPostalAddressElementTypeChoice = form.getDefaultPostalAddressElementTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -66,7 +66,7 @@ public class GetPartyAliasCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetPartyAliasResult result = PartyResultFactory.getGetPartyAliasResult();
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);

@@ -99,7 +99,7 @@ public class EditLotTypeCommand
 
     @Override
     public LotType getEntity(EditLotTypeResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotType lotType = null;
         String lotTypeName = spec.getLotTypeName();
 
@@ -125,7 +125,7 @@ public class EditLotTypeCommand
 
     @Override
     public void fillInResult(EditLotTypeResult result, LotType lotType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setLotType(inventoryControl.getLotTypeTransfer(getUserVisit(), lotType));
     }
@@ -137,7 +137,7 @@ public class EditLotTypeCommand
 
     @Override
     public void doLock(LotTypeEdit edit, LotType lotType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotTypeDescription lotTypeDescription = inventoryControl.getLotTypeDescription(lotType, getPreferredLanguage());
         LotTypeDetail lotTypeDetail = lotType.getLastDetail();
 
@@ -161,7 +161,7 @@ public class EditLotTypeCommand
 
     @Override
     public void canUpdate(LotType lotType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String lotTypeName = edit.getLotTypeName();
         LotType duplicateLotType = inventoryControl.getLotTypeByName(lotTypeName);
 
@@ -174,13 +174,13 @@ public class EditLotTypeCommand
 
             if(parentLotTypeName == null || parentLotType != null) {
                 if(inventoryControl.isParentLotTypeSafe(lotType, parentLotType)) {
-                    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                     String lotSequenceTypeName = edit.getLotSequenceTypeName();
 
                     lotSequenceType = sequenceControl.getSequenceTypeByName(lotSequenceTypeName);
 
                     if(lotSequenceTypeName == null || lotSequenceType != null) {
-                        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                         String lotWorkflowName = edit.getLotWorkflowName();
 
                         lotWorkflow = lotWorkflowName == null ? null : workflowControl.getWorkflowByName(lotWorkflowName);
@@ -216,7 +216,7 @@ public class EditLotTypeCommand
 
     @Override
     public void doUpdate(LotType lotType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         PartyPK partyPK = getPartyPK();
         LotTypeDetailValue lotTypeDetailValue = inventoryControl.getLotTypeDetailValueForUpdate(lotType);
         LotTypeDescription lotTypeDescription = inventoryControl.getLotTypeDescriptionForUpdate(lotType, getPreferredLanguage());

@@ -49,7 +49,7 @@ public class SetDefaultPersonalTitleCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String personalTitleId = form.getPersonalTitleId();
         PersonalTitlePK personalTitlePK = partyControl.convertPersonalTitleIdToPK(personalTitleId);
         

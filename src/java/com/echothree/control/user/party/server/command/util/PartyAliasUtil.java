@@ -62,7 +62,7 @@ public class PartyAliasUtil {
         String securityRoleGroupName = null;
 
         if(partyName != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             Party party = partyControl.getPartyByName(partyName);
 
             if(party != null) {
@@ -80,7 +80,7 @@ public class PartyAliasUtil {
             String partyName = spec.getPartyName();
             
             if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {

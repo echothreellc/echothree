@@ -92,7 +92,7 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public OrderLineAdjustmentType getEntity(EditOrderLineAdjustmentTypeResult result) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderLineAdjustmentType orderLineAdjustmentType = null;
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
@@ -125,14 +125,14 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void fillInResult(EditOrderLineAdjustmentTypeResult result, OrderLineAdjustmentType orderLineAdjustmentType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderLineAdjustmentType(orderControl.getOrderLineAdjustmentTypeTransfer(getUserVisit(), orderLineAdjustmentType));
     }
 
     @Override
     public void doLock(OrderLineAdjustmentTypeEdit edit, OrderLineAdjustmentType orderLineAdjustmentType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderControl.getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getPreferredLanguage());
         OrderLineAdjustmentTypeDetail orderLineAdjustmentTypeDetail = orderLineAdjustmentType.getLastDetail();
 
@@ -147,7 +147,7 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void canUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
 
@@ -165,7 +165,7 @@ public class EditOrderLineAdjustmentTypeCommand
 
     @Override
     public void doUpdate(OrderLineAdjustmentType orderLineAdjustmentType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         PartyPK partyPK = getPartyPK();
         OrderLineAdjustmentTypeDetailValue orderLineAdjustmentTypeDetailValue = orderControl.getOrderLineAdjustmentTypeDetailValueForUpdate(orderLineAdjustmentType);
         OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription = orderControl.getOrderLineAdjustmentTypeDescriptionForUpdate(orderLineAdjustmentType, getPreferredLanguage());

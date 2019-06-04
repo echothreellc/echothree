@@ -92,7 +92,7 @@ public class EditInvoiceTimeTypeCommand
 
     @Override
     public InvoiceTimeType getEntity(EditInvoiceTimeTypeResult result) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         InvoiceTimeType invoiceTimeType = null;
         String invoiceTypeName = spec.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
@@ -125,14 +125,14 @@ public class EditInvoiceTimeTypeCommand
 
     @Override
     public void fillInResult(EditInvoiceTimeTypeResult result, InvoiceTimeType invoiceTimeType) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
 
         result.setInvoiceTimeType(invoiceControl.getInvoiceTimeTypeTransfer(getUserVisit(), invoiceTimeType));
     }
 
     @Override
     public void doLock(InvoiceTimeTypeEdit edit, InvoiceTimeType invoiceTimeType) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         InvoiceTimeTypeDescription invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescription(invoiceTimeType, getPreferredLanguage());
         InvoiceTimeTypeDetail invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
 
@@ -147,7 +147,7 @@ public class EditInvoiceTimeTypeCommand
 
     @Override
     public void canUpdate(InvoiceTimeType invoiceTimeType) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         String invoiceTypeName = spec.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
 
@@ -165,7 +165,7 @@ public class EditInvoiceTimeTypeCommand
 
     @Override
     public void doUpdate(InvoiceTimeType invoiceTimeType) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         PartyPK partyPK = getPartyPK();
         InvoiceTimeTypeDetailValue invoiceTimeTypeDetailValue = invoiceControl.getInvoiceTimeTypeDetailValueForUpdate(invoiceTimeType);
         InvoiceTimeTypeDescription invoiceTimeTypeDescription = invoiceControl.getInvoiceTimeTypeDescriptionForUpdate(invoiceTimeType, getPreferredLanguage());

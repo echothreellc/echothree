@@ -67,13 +67,13 @@ public class GetCampaignContentDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         GetCampaignContentDescriptionResult result = CampaignResultFactory.getGetCampaignContentDescriptionResult();
         String campaignContentName = form.getCampaignContentName();
         CampaignContent campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
 
         if(campaignContent != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

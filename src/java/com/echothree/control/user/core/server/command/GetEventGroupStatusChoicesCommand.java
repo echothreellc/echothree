@@ -51,7 +51,7 @@ public class GetEventGroupStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEventGroupStatusChoicesResult result = CoreResultFactory.getGetEventGroupStatusChoicesResult();
         String eventGroupName = form.getEventGroupName();
         EventGroup eventGroup = coreControl.getEventGroupByName(eventGroupName);

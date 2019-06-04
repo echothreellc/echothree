@@ -69,7 +69,7 @@ public class CreateShipmentAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         String shipmentTypeName = form.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
@@ -78,7 +78,7 @@ public class CreateShipmentAliasTypeDescriptionCommand
             ShipmentAliasType shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
             if(shipmentAliasType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

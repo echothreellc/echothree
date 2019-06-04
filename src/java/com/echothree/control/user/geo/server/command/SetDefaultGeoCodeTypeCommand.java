@@ -61,7 +61,7 @@ public class SetDefaultGeoCodeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         String geoCodeTypeName = form.getGeoCodeTypeName();
         GeoCodeTypeDetailValue geoCodeTypeDetailValue = geoControl.getGeoCodeTypeDetailValueByNameForUpdate(geoCodeTypeName);
         

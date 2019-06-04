@@ -52,7 +52,7 @@ public class CreateTimeZoneDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String javaTimeZoneName = form.getJavaTimeZoneName();
         TimeZone timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         

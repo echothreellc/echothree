@@ -75,7 +75,7 @@ public class CreateIndexTypeCommand
         int parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
-            IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+            var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
             String indexTypeName = form.getIndexTypeName();
             IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
 

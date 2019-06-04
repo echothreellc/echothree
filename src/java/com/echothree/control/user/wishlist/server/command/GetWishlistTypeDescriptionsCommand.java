@@ -50,7 +50,7 @@ public class GetWishlistTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
 
         GetWishlistTypeDescriptionsResult result = WishlistResultFactory.getGetWishlistTypeDescriptionsResult();
         String wishlistTypeName = form.getWishlistTypeName();

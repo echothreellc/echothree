@@ -60,7 +60,7 @@ public class GetEntityAttributeTypeCommand
     
     @Override
     protected BaseResult getTransfer(EntityAttributeType entityAttributeType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityAttributeTypeResult result = CoreResultFactory.getGetEntityAttributeTypeResult();
 
         if(entityAttributeType != null) {

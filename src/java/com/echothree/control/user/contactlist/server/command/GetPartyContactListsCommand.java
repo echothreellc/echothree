@@ -74,11 +74,11 @@ public class GetPartyContactListsCommand
         int parameterCount = (partyName != null ? 1 : 0) + (contactListName != null ? 1 : 0);
         
         if(parameterCount == 1) {
-            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {

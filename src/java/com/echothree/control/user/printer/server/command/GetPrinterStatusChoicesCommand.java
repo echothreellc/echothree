@@ -51,7 +51,7 @@ public class GetPrinterStatusChoicesCommand
     
    @Override
     protected BaseResult execute() {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         GetPrinterStatusChoicesResult result = PrinterResultFactory.getGetPrinterStatusChoicesResult();
         String printerName = form.getPrinterName();
         Printer printer = printerControl.getPrinterByName(printerName);

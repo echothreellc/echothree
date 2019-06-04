@@ -75,7 +75,7 @@ public class SetDefaultContactListContactMechanismPurposeCommand
             ContactMechanismPurpose contactMechanismPurpose = ContactMechanismPurposeLogic.getInstance().getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
-                ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+                var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
                 ContactListContactMechanismPurposeDetailValue contactListContactMechanismPurposeDetailValue = contactListControl.getContactListContactMechanismPurposeDetailValueForUpdate(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurposeDetailValue != null) {

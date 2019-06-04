@@ -58,7 +58,7 @@ public class CreateAssociateCommand
     
     @Override
     protected BaseResult execute() {
-        AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
         String associateProgramName = form.getAssociateProgramName();
         AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
@@ -67,12 +67,12 @@ public class CreateAssociateCommand
             Associate associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate == null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String partyName = form.getPartyName();
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     String summaryMimeTypeName = form.getSummaryMimeTypeName();
                     MimeType summaryMimeType = coreControl.getMimeTypeByName(summaryMimeTypeName);
                     

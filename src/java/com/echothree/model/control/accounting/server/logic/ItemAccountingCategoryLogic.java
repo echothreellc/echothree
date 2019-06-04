@@ -50,8 +50,8 @@ public class ItemAccountingCategoryLogic {
     }
 
     public void checkDeleteItemAccountingCategory(final ExecutionErrorAccumulator ema, final ItemAccountingCategory itemAccountingCategory) {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         if(countItemsByItemAccountingCategoryChildren(accountingControl, itemControl, itemAccountingCategory) != 0) {
             ema.addExecutionError(ExecutionErrors.CannotDeleteItemAccountingCategoryInUse.name(), itemAccountingCategory.getLastDetail().getItemAccountingCategoryName());
@@ -59,7 +59,7 @@ public class ItemAccountingCategoryLogic {
     }
 
     public void deleteItemAccountingCategory(final ItemAccountingCategory itemAccountingCategory, final BasePK deletedBy) {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
 
         accountingControl.deleteItemAccountingCategory(itemAccountingCategory, deletedBy);
     }

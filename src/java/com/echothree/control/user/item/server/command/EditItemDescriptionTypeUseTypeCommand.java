@@ -90,7 +90,7 @@ public class EditItemDescriptionTypeUseTypeCommand
     
     @Override
     public ItemDescriptionTypeUseType getEntity(EditItemDescriptionTypeUseTypeResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemDescriptionTypeUseType itemDescriptionTypeUseType = null;
         String itemDescriptionTypeUseTypeName = spec.getItemDescriptionTypeUseTypeName();
 
@@ -116,14 +116,14 @@ public class EditItemDescriptionTypeUseTypeCommand
     
     @Override
     public void fillInResult(EditItemDescriptionTypeUseTypeResult result, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         result.setItemDescriptionTypeUseType(itemControl.getItemDescriptionTypeUseTypeTransfer(getUserVisit(), itemDescriptionTypeUseType));
     }
     
     @Override
     public void doLock(ItemDescriptionTypeUseTypeEdit edit, ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getPreferredLanguage());
         ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditItemDescriptionTypeUseTypeCommand
         
     @Override
     public void canUpdate(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemDescriptionTypeUseTypeName = edit.getItemDescriptionTypeUseTypeName();
         ItemDescriptionTypeUseType duplicateItemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
@@ -149,7 +149,7 @@ public class EditItemDescriptionTypeUseTypeCommand
     
     @Override
     public void doUpdate(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         PartyPK partyPK = getPartyPK();
         ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueForUpdate(itemDescriptionTypeUseType);
         ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = itemControl.getItemDescriptionTypeUseTypeDescriptionForUpdate(itemDescriptionTypeUseType, getPreferredLanguage());

@@ -62,7 +62,7 @@ public class CreatePartyTypeAuditPolicyCommand
         int lockoutInactiveTimeParameterCount = (rawRetainUserVisitsTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
 
         if(lockoutInactiveTimeParameterCount == 0 || lockoutInactiveTimeParameterCount == 2) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String partyTypeName = form.getPartyTypeName();
             PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
 
@@ -71,7 +71,7 @@ public class CreatePartyTypeAuditPolicyCommand
                     PartyTypeAuditPolicy partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
 
                     if(partyTypeAuditPolicy == null) {
-                        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
                         UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {

@@ -53,12 +53,12 @@ public class CreateEventTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String eventTypeName = form.getEventTypeName();
         EventType eventType = coreControl.getEventTypeByName(eventTypeName);
         
         if(eventType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -1405,8 +1405,8 @@ public class PaymentControl
     }
     
     public void deletePaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         
         customerControl.deleteCustomerTypePaymentMethodsByPaymentMethod(paymentMethod, deletedBy);
         orderControl.deleteOrderPaymentPreferencesByPaymentMethod(paymentMethod, deletedBy);
@@ -1815,7 +1815,7 @@ public class PaymentControl
     
     public PartyPaymentMethod createPartyPaymentMethod(Party party, String description, PaymentMethod paymentMethod,
             Boolean deleteWhenUnused, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_PARTY_PAYMENT_METHOD);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
         String partyPaymentMethodName = sequenceControl.getNextSequenceValue(sequence);
@@ -2093,7 +2093,7 @@ public class PaymentControl
     }
 
     public void deletePartyPaymentMethod(PartyPaymentMethod partyPaymentMethod, BasePK deletedBy) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         
         orderControl.deleteOrderPaymentPreferencesByPartyPaymentMethod(partyPaymentMethod, deletedBy);
         
@@ -2664,7 +2664,7 @@ public class PaymentControl
     // --------------------------------------------------------------------------------
     
     public BillingAccount createBillingAccount(final Party billFrom, final Currency currency, final String reference, final String description, final BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(billFrom.getLastDetail().getPartyType().getBillingAccountSequenceType());
         String billingAccountName = sequenceControl.getNextSequenceValue(sequence);
         

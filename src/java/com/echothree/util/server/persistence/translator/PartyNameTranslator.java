@@ -96,14 +96,14 @@ public class PartyNameTranslator
         Party party = null;
         
         if(target.equals(EntityNamesConstants.Target_Customer)) {
-            CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
             Customer customer = customerControl.getCustomerByName(value);
             
             if(customer != null) {
                 party = customer.getParty();
             }
         } else if(target.equals(EntityNamesConstants.Target_Employee)) {
-            EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
             PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(value);
             
             if(partyEmployee != null) {
@@ -112,7 +112,7 @@ public class PartyNameTranslator
         }
         
         if(party != null) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             EntityNames entityNames = getNames(sequenceTypesToTargets, sequenceTypeName, party.getLastDetail());
             
             result = entityNames == null ? null : new EntityInstanceAndNames(includeEntityInstance? coreControl.getEntityInstanceByBasePK(party.getPrimaryKey()) : null, entityNames);

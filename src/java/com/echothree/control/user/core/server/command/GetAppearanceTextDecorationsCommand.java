@@ -68,7 +68,7 @@ public class GetAppearanceTextDecorationsCommand
         Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             
             result.setAppearance(coreControl.getAppearanceTransfer(getUserVisit(), appearance));
             result.setAppearanceTextDecorations(coreControl.getAppearanceTextDecorationTransfersByAppearance(getUserVisit(), appearance));

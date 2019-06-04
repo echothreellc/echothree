@@ -61,7 +61,7 @@ public class GetTagScopesCommand
     @Override
     protected BaseResult execute() {
         GetTagScopesResult result = TagResultFactory.getGetTagScopesResult();
-        TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = (TagControl)Session.getModelController(TagControl.class);
         
         result.setTagScopes(tagControl.getTagScopeTransfers(getUserVisit()));
         

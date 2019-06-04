@@ -78,13 +78,13 @@ public class EditInvoiceTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         EditInvoiceTypeDescriptionResult result = InvoiceResultFactory.getEditInvoiceTypeDescriptionResult();
         String invoiceTypeName = spec.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

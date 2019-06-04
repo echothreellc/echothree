@@ -66,7 +66,7 @@ public class CreateSelectorKindCommand
     
     @Override
     protected BaseResult execute() {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         String selectorKindName = form.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         

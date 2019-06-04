@@ -87,13 +87,13 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public SequenceTypeDescription getEntity(EditSequenceTypeDescriptionResult result) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         SequenceTypeDescription sequenceTypeDescription = null;
         String sequenceTypeName = spec.getSequenceTypeName();
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(sequenceType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSequenceTypeDescriptionResult result, SequenceTypeDescription sequenceTypeDescription) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
         result.setSequenceTypeDescription(sequenceControl.getSequenceTypeDescriptionTransfer(getUserVisit(), sequenceTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditSequenceTypeDescriptionCommand
 
     @Override
     public void doUpdate(SequenceTypeDescription sequenceTypeDescription) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         SequenceTypeDescriptionValue sequenceTypeDescriptionValue = sequenceControl.getSequenceTypeDescriptionValue(sequenceTypeDescription);
         
         sequenceTypeDescriptionValue.setDescription(edit.getDescription());

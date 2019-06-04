@@ -52,7 +52,7 @@ public class CreateGenderDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String genderName = form.getGenderName();
         Gender gender = partyControl.getGenderByName(genderName);
         

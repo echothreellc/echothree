@@ -102,13 +102,13 @@ public class CreatePartyDocumentCommand
 
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         CreatePartyDocumentResult result = DocumentResultFactory.getCreatePartyDocumentResult();
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+            var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
             String documentTypeName = form.getDocumentTypeName();
             DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
@@ -147,7 +147,7 @@ public class CreatePartyDocumentCommand
                     }
 
                     if(!hasExecutionErrors()) {
-                        CoreControl coreControl = getCoreControl();
+                        var coreControl = getCoreControl();
                         String mimeTypeName = form.getMimeTypeName();
                         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 

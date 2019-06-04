@@ -74,7 +74,7 @@ public class DeleteEntityLongAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            CoreControl coreControl = getCoreControl();
+                            var coreControl = getCoreControl();
                             EntityLongAttribute entityLongAttribute = coreControl.getEntityLongAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityLongAttribute != null) {

@@ -65,7 +65,7 @@ public class EditEntityNameAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditEntityNameAttributeResult result = CoreResultFactory.getEditEntityNameAttributeResult();
         String entityRef = spec.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);

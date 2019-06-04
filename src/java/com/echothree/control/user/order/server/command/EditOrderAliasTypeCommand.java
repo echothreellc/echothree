@@ -95,7 +95,7 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public OrderAliasType getEntity(EditOrderAliasTypeResult result) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderAliasType orderAliasType = null;
         String orderTypeName = spec.getOrderTypeName();
 
@@ -129,14 +129,14 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void fillInResult(EditOrderAliasTypeResult result, OrderAliasType orderAliasType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderAliasType(orderControl.getOrderAliasTypeTransfer(getUserVisit(), orderAliasType));
     }
 
     @Override
     public void doLock(OrderAliasTypeEdit edit, OrderAliasType orderAliasType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderAliasTypeDescription orderAliasTypeDescription = orderControl.getOrderAliasTypeDescription(orderAliasType, getPreferredLanguage());
         OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
 
@@ -152,7 +152,7 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void canUpdate(OrderAliasType orderAliasType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String orderAliasTypeName = edit.getOrderAliasTypeName();
         OrderAliasType duplicateOrderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
@@ -163,7 +163,7 @@ public class EditOrderAliasTypeCommand
 
     @Override
     public void doUpdate(OrderAliasType orderAliasType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         PartyPK partyPK = getPartyPK();
         OrderAliasTypeDetailValue orderAliasTypeDetailValue = orderControl.getOrderAliasTypeDetailValueForUpdate(orderAliasType);
         OrderAliasTypeDescription orderAliasTypeDescription = orderControl.getOrderAliasTypeDescriptionForUpdate(orderAliasType, getPreferredLanguage());

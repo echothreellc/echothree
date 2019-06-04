@@ -54,7 +54,7 @@ public class DeleteWorkflowStepDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
         
@@ -63,7 +63,7 @@ public class DeleteWorkflowStepDescriptionCommand
             WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

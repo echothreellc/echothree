@@ -52,12 +52,12 @@ public class DeleteForumDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumName = form.getForumName();
         Forum forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

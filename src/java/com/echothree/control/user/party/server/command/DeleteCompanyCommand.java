@@ -48,7 +48,7 @@ public class DeleteCompanyCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String companyName = form.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByNameForUpdate(companyName);
         

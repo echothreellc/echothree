@@ -88,7 +88,7 @@ public class EditGlAccountCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         EditGlAccountResult result = AccountingResultFactory.getEditGlAccountResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

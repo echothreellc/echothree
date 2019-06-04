@@ -73,7 +73,7 @@ public class CreateAppearanceTextDecorationCommand
             TextDecoration textDecoration = AppearanceLogic.getInstance().getTextDecorationByName(this, textDecorationName);
             
             if(!hasExecutionErrors()) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 AppearanceTextDecoration appearanceTextDecoration = coreControl.getAppearanceTextDecoration(appearance, textDecoration);
                 
                 if(appearanceTextDecoration == null) {

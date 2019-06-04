@@ -51,7 +51,7 @@ public class CreateClubItemTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ClubControl clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
         String clubItemTypeName = form.getClubItemTypeName();
         ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
         

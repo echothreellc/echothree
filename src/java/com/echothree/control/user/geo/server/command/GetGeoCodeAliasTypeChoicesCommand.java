@@ -67,7 +67,7 @@ public class GetGeoCodeAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GetGeoCodeAliasTypeChoicesResult result = GeoResultFactory.getGetGeoCodeAliasTypeChoicesResult();
         String geoCodeTypeName = form.getGeoCodeTypeName();
         String geoCodeName = form.getGeoCodeName();

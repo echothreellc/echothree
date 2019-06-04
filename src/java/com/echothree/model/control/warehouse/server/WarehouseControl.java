@@ -414,7 +414,7 @@ public class WarehouseControl
     }
     
     public void deleteWarehouse(Warehouse warehouse, BasePK deletedBy) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         Party party = warehouse.getPartyForUpdate();
         
         deleteLocationsByWarehouseParty(party, deletedBy);
@@ -1632,7 +1632,7 @@ public class WarehouseControl
     
     public LocationStatusChoicesBean getLocationStatusChoices(String defaultLocationStatusChoice, Language language,
             Location location, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         LocationStatusChoicesBean locationStatusChoicesBean = new LocationStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(location);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
@@ -1645,7 +1645,7 @@ public class WarehouseControl
     }
     
     public void setLocationStatus(ExecutionErrorAccumulator eea, Location location, String locationStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(location);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
                 entityInstance);
@@ -1688,7 +1688,7 @@ public class WarehouseControl
     }
     
     public void deleteLocation(Location location, BasePK deletedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(location.getPrimaryKey());
         
         deleteLocationVolumeByLocation(location, deletedBy);

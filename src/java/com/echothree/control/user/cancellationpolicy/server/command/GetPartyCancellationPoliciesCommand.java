@@ -69,7 +69,7 @@ public class GetPartyCancellationPoliciesCommand
 
     @Override
     protected BaseResult execute() {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         GetPartyCancellationPoliciesResult result = CancellationPolicyResultFactory.getGetPartyCancellationPoliciesResult();
         String partyName = form.getPartyName();
         String cancellationKindName = form.getCancellationKindName();
@@ -78,7 +78,7 @@ public class GetPartyCancellationPoliciesCommand
 
         if(parameterCount == 1) {
             if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {

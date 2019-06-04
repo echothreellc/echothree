@@ -87,13 +87,13 @@ public class EditSecurityRoleGroupDescriptionCommand
 
     @Override
     public SecurityRoleGroupDescription getEntity(EditSecurityRoleGroupDescriptionResult result) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         SecurityRoleGroupDescription securityRoleGroupDescription = null;
         String securityRoleGroupName = spec.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
         if(securityRoleGroup != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSecurityRoleGroupDescriptionCommand
 
     @Override
     public void fillInResult(EditSecurityRoleGroupDescriptionResult result, SecurityRoleGroupDescription securityRoleGroupDescription) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
 
         result.setSecurityRoleGroupDescription(securityControl.getSecurityRoleGroupDescriptionTransfer(getUserVisit(), securityRoleGroupDescription));
     }
@@ -136,7 +136,7 @@ public class EditSecurityRoleGroupDescriptionCommand
 
     @Override
     public void doUpdate(SecurityRoleGroupDescription securityRoleGroupDescription) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         SecurityRoleGroupDescriptionValue securityRoleGroupDescriptionValue = securityControl.getSecurityRoleGroupDescriptionValue(securityRoleGroupDescription);
         
         securityRoleGroupDescriptionValue.setDescription(edit.getDescription());

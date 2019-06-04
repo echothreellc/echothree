@@ -37,7 +37,7 @@ public class EntityLockObject {
     @GraphQLField
     @GraphQLDescription("lock target entity instance")
     public EntityInstanceObject getLockTargetEntityInstance() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockTargetEntityInstance().getEntityRef());
         
         return new EntityInstanceObject(entityInstance);
@@ -46,7 +46,7 @@ public class EntityLockObject {
     @GraphQLField
     @GraphQLDescription("locked by entity instance")
     public EntityInstanceObject getLockedByEntityInstance() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockedByEntityInstance().getEntityRef());
         
         return new EntityInstanceObject(entityInstance);

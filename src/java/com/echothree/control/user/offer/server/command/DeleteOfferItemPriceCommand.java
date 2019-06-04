@@ -78,30 +78,30 @@ public class DeleteOfferItemPriceCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
             Item item = itemControl.getItemByName(itemName);
             if(item != null) {
                 OfferItem offerItem = offerControl.getOfferItem(offer, item);
                 
                 if(offerItem != null) {
-                    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                    var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                     String inventoryConditionName = form.getInventoryConditionName();
                     InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                     
                     if(inventoryCondition != null) {
-                        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
                         UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
                         String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                         
                         if(unitOfMeasureType != null) {
-                            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                             String currencyIsoName = form.getCurrencyIsoName();
                             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                             

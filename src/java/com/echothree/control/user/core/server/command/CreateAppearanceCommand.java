@@ -80,11 +80,11 @@ public class CreateAppearanceCommand
     @Override
     protected BaseResult execute() {
         CreateAppearanceResult result = CoreResultFactory.getCreateAppearanceResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String appearanceName = form.getAppearanceName();
         
         if(appearanceName == null) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_APPEARANCE);
             
             appearanceName = sequenceControl.getNextSequenceValue(sequence);

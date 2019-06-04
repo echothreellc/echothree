@@ -66,7 +66,7 @@ public class GetEntityTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityTypeDescriptionsResult result = CoreResultFactory.getGetEntityTypeDescriptionsResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);

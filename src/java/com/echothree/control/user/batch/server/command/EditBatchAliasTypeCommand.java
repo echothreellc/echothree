@@ -95,7 +95,7 @@ public class EditBatchAliasTypeCommand
 
     @Override
     public BatchAliasType getEntity(EditBatchAliasTypeResult result) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchAliasType batchAliasType = null;
         String batchTypeName = spec.getBatchTypeName();
 
@@ -129,14 +129,14 @@ public class EditBatchAliasTypeCommand
 
     @Override
     public void fillInResult(EditBatchAliasTypeResult result, BatchAliasType batchAliasType) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
 
         result.setBatchAliasType(batchControl.getBatchAliasTypeTransfer(getUserVisit(), batchAliasType));
     }
 
     @Override
     public void doLock(BatchAliasTypeEdit edit, BatchAliasType batchAliasType) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchAliasTypeDescription batchAliasTypeDescription = batchControl.getBatchAliasTypeDescription(batchAliasType, getPreferredLanguage());
         BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getLastDetail();
 
@@ -152,7 +152,7 @@ public class EditBatchAliasTypeCommand
 
     @Override
     public void canUpdate(BatchAliasType batchAliasType) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         String batchAliasTypeName = edit.getBatchAliasTypeName();
         BatchAliasType duplicateBatchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
@@ -163,7 +163,7 @@ public class EditBatchAliasTypeCommand
 
     @Override
     public void doUpdate(BatchAliasType batchAliasType) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         PartyPK partyPK = getPartyPK();
         BatchAliasTypeDetailValue batchAliasTypeDetailValue = batchControl.getBatchAliasTypeDetailValueForUpdate(batchAliasType);
         BatchAliasTypeDescription batchAliasTypeDescription = batchControl.getBatchAliasTypeDescriptionForUpdate(batchAliasType, getPreferredLanguage());

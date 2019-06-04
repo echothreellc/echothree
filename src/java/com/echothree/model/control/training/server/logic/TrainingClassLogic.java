@@ -48,7 +48,7 @@ public class TrainingClassLogic
     }
     
     private TrainingClass getTrainingClassByName(final ExecutionErrorAccumulator eea, final String trainingClassName, EntityPermission entityPermission) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName, entityPermission);
 
         if(trainingClass == null) {
@@ -68,7 +68,7 @@ public class TrainingClassLogic
     
     private TrainingClassSection getTrainingClassSectionByName(final ExecutionErrorAccumulator eea, final TrainingClass trainingClass,
             final String trainingClassSectionName, EntityPermission entityPermission) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassSection trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName, entityPermission);
 
         if(trainingClassSection == null) {
@@ -93,7 +93,7 @@ public class TrainingClassLogic
     
     private TrainingClassPage getTrainingClassPageByName(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
             final String trainingClassPageName, EntityPermission entityPermission) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassPage trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName, entityPermission);
 
         if(trainingClassPage == null) {
@@ -119,7 +119,7 @@ public class TrainingClassLogic
     
     private TrainingClassQuestion getTrainingClassQuestionByName(final ExecutionErrorAccumulator eea, final TrainingClassSection trainingClassSection,
             final String trainingClassQuestionName, EntityPermission entityPermission) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName, entityPermission);
 
         if(trainingClassQuestion == null) {
@@ -145,7 +145,7 @@ public class TrainingClassLogic
     
     private TrainingClassAnswer getTrainingClassAnswerByName(final ExecutionErrorAccumulator eea, final TrainingClassQuestion trainingClassQuestion,
             final String trainingClassAnswerName, EntityPermission entityPermission) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassAnswer trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName, entityPermission);
 
         if(trainingClassAnswer == null) {

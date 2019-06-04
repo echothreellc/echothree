@@ -77,7 +77,7 @@ public class CreateApplicationEditorUseCommand
         Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String applicationEditorUseName = form.getApplicationEditorUseName();
             ApplicationEditorUse applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 

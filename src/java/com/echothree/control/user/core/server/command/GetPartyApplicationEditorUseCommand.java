@@ -90,7 +90,7 @@ public class GetPartyApplicationEditorUseCommand
                 ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     PartyApplicationEditorUse partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     PartyPK partyPK = getPartyPK();
                     

@@ -63,7 +63,7 @@ public class CreateComponentVendorCommand
     @Override
     protected BaseResult execute() {
         String componentVendorName = form.getComponentVendorName();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor == null) {

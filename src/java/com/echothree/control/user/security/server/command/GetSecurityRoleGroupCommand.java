@@ -65,7 +65,7 @@ public class GetSecurityRoleGroupCommand
     
     @Override
     protected BaseResult execute() {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         GetSecurityRoleGroupResult result = SecurityResultFactory.getGetSecurityRoleGroupResult();
         String securityRoleGroupName = form.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);

@@ -62,7 +62,7 @@ public class GetCampaignMediumChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         GetCampaignMediumChoicesResult result = CampaignResultFactory.getGetCampaignMediumChoicesResult();
         String defaultCampaignMediumChoice = form.getDefaultCampaignMediumChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

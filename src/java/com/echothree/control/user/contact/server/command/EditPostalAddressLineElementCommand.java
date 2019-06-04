@@ -70,7 +70,7 @@ public class EditPostalAddressLineElementCommand
     
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         EditPostalAddressLineElementResult result = ContactResultFactory.getEditPostalAddressLineElementResult();
         String postalAddressFormatName = spec.getPostalAddressFormatName();
         PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);

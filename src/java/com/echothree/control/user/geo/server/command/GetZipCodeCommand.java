@@ -72,7 +72,7 @@ public class GetZipCodeCommand
     @Override
     protected BaseResult execute() {
         GetZipCodeResult result = GeoResultFactory.getGetZipCodeResult();
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         
         String countryGeoCodeName = form.getCountryGeoCodeName();
         GeoCode countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);

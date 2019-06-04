@@ -89,7 +89,7 @@ public class EditMimeTypeCommand
 
     @Override
     public MimeType getEntity(EditMimeTypeResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         MimeType mimeType = null;
         String mimeTypeName = spec.getMimeTypeName();
 
@@ -115,14 +115,14 @@ public class EditMimeTypeCommand
 
     @Override
     public void fillInResult(EditMimeTypeResult result, MimeType mimeType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setMimeType(coreControl.getMimeTypeTransfer(getUserVisit(), mimeType));
     }
 
     @Override
     public void doLock(MimeTypeEdit edit, MimeType mimeType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         MimeTypeDescription mimeTypeDescription = coreControl.getMimeTypeDescription(mimeType, getPreferredLanguage());
         MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditMimeTypeCommand
 
     @Override
     public void canUpdate(MimeType mimeType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeName = edit.getMimeTypeName();
         MimeType duplicateMimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
@@ -148,7 +148,7 @@ public class EditMimeTypeCommand
 
     @Override
     public void doUpdate(MimeType mimeType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         MimeTypeDetailValue mimeTypeDetailValue = coreControl.getMimeTypeDetailValueForUpdate(mimeType);
         MimeTypeDescription mimeTypeDescription = coreControl.getMimeTypeDescriptionForUpdate(mimeType, getPreferredLanguage());

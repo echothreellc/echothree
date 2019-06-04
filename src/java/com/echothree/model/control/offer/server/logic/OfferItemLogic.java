@@ -42,7 +42,7 @@ public class OfferItemLogic
     }
 
     public OfferItem getOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         OfferItem offerItem = offerControl.getOfferItem(offer, item);
 
         if(offerItem == null) {

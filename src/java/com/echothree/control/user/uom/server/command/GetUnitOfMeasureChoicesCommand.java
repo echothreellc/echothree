@@ -51,7 +51,7 @@ public class GetUnitOfMeasureChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         GetUnitOfMeasureChoicesResult result = UomResultFactory.getGetUnitOfMeasureChoicesResult();
         String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
         UnitOfMeasureKindUseType unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);

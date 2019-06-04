@@ -52,7 +52,7 @@ public class GetUnitOfMeasureTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         GetUnitOfMeasureTypeDescriptionsResult result = UomResultFactory.getGetUnitOfMeasureTypeDescriptionsResult();
         String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);

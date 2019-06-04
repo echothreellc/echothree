@@ -47,7 +47,7 @@ public class SecurityRoleLogic
     }
 
     public SecurityRoleGroup getSecurityRoleGroupByName(final ExecutionErrorAccumulator eea, final String securityRoleGroupName) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
         if(securityRoleGroup == null) {
@@ -58,7 +58,7 @@ public class SecurityRoleLogic
     }
 
     public SecurityRole getSecurityRoleByName(final ExecutionErrorAccumulator eea, final SecurityRoleGroup securityRoleGroup, final String securityRoleName) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
         if(securityRole == null) {
@@ -84,7 +84,7 @@ public class SecurityRoleLogic
         boolean result = false;
 
         if(party != null) {
-            SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
             PartySecurityRole partySecurityRole = securityControl.getPartySecurityRole(party, securityRole);
 
             if(partySecurityRole != null) {
@@ -96,7 +96,7 @@ public class SecurityRoleLogic
                     Selector partySelector = securityRolePartyType.getPartySelector();
 
                     if(partySelector != null) {
-                        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
 
                         if(selectorControl.getSelectorParty(partySelector, party) != null) {
                             result = true;

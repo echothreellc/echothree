@@ -64,7 +64,7 @@ public class GetChainTypesCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         GetChainTypesResult result = ChainResultFactory.getGetChainTypesResult();
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);

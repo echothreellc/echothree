@@ -111,7 +111,7 @@ public class EditItemDescriptionTypeCommand
         ValidationResult validationResult = validator.validate(edit, EDIT_FIELD_DEFINITIONS);
 
         if(!validationResult.getHasErrors()) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(spec.getItemDescriptionTypeName());
             MimeTypeUsageType mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
 
@@ -139,7 +139,7 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public ItemDescriptionType getEntity(EditItemDescriptionTypeResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemDescriptionType itemDescriptionType = null;
         String itemDescriptionTypeName = spec.getItemDescriptionTypeName();
 
@@ -165,7 +165,7 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public void fillInResult(EditItemDescriptionTypeResult result, ItemDescriptionType itemDescriptionType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         result.setItemDescriptionType(itemControl.getItemDescriptionTypeTransfer(getUserVisit(), itemDescriptionType));
     }
@@ -176,7 +176,7 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public void doLock(ItemDescriptionTypeEdit edit, ItemDescriptionType itemDescriptionType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemDescriptionTypeDescription itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescription(itemDescriptionType, getPreferredLanguage());
         ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
 
@@ -226,7 +226,7 @@ public class EditItemDescriptionTypeCommand
 
     @Override
     public void canUpdate(ItemDescriptionType itemDescriptionType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemDescriptionTypeName = edit.getItemDescriptionTypeName();
         ItemDescriptionType duplicateItemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
@@ -261,7 +261,7 @@ public class EditItemDescriptionTypeCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     String preferredMimeTypeName = edit.getPreferredMimeTypeName();
 
                     preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
@@ -288,7 +288,7 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public void doUpdate(ItemDescriptionType itemDescriptionType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         PartyPK partyPK = getPartyPK();
         ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue = itemControl.getItemDescriptionTypeDetailValueForUpdate(itemDescriptionType);
         ItemDescriptionTypeDescription itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescriptionForUpdate(itemDescriptionType, getPreferredLanguage());

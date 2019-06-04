@@ -63,7 +63,7 @@ public class GetProtocolDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetProtocolDescriptionsResult result = CoreResultFactory.getGetProtocolDescriptionsResult();
         String protocolName = form.getProtocolName();
         Protocol protocol = coreControl.getProtocolByName(protocolName);

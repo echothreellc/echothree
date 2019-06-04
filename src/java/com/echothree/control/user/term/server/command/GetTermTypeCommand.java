@@ -50,7 +50,7 @@ public class GetTermTypeCommand
     
     @Override
     protected BaseResult execute() {
-        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = (TermControl)Session.getModelController(TermControl.class);
         GetTermTypeResult result = TermResultFactory.getGetTermTypeResult();
         String termTypeName = form.getTermTypeName();
         TermType termType = termControl.getTermTypeByName(termTypeName);

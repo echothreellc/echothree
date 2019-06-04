@@ -86,7 +86,7 @@ public class GetContentCategoryItemCommand
         ContentCategoryItem contentCategoryItem = null;
 
         if(parameterCount == 1) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -106,18 +106,18 @@ public class GetContentCategoryItemCommand
             }
 
             if(!hasExecutionErrors()) {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                 String itemName = form.getItemName();
                 Item item = itemControl.getItemByName(itemName);
 
                 if(item != null) {
-                    InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                    var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                     String inventoryConditionName = form.getInventoryConditionName();
                     InventoryCondition inventoryCondition = inventoryConditionName == null ? inventoryControl.getDefaultInventoryCondition()
                             : inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
-                        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
                         String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         ItemDetail itemDetail = item.getLastDetail();
                         UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
@@ -125,7 +125,7 @@ public class GetContentCategoryItemCommand
                                 : uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
                         if(unitOfMeasureType != null) {
-                            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                             String currencyIsoName = form.getCurrencyIsoName();
                             Currency currency = currencyIsoName == null ? accountingControl.getDefaultCurrency()
                                     : accountingControl.getCurrencyByIsoName(currencyIsoName);

@@ -53,12 +53,12 @@ public class CreateLocationUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         String locationUseTypeName = form.getLocationUseTypeName();
         LocationUseType locationUseType = warehouseControl.getLocationUseTypeByName(locationUseTypeName);
         
         if(locationUseType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

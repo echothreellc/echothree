@@ -73,7 +73,7 @@ public class EditEntityBlobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditEntityBlobAttributeResult result = CoreResultFactory.getEditEntityBlobAttributeResult();
         String entityRef = spec.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
@@ -83,7 +83,7 @@ public class EditEntityBlobAttributeCommand
             EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
 
             if(entityAttribute != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

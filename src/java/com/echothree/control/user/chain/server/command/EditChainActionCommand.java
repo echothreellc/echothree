@@ -103,7 +103,7 @@ public class EditChainActionCommand
 
     @Override
     public ChainAction getEntity(EditChainActionResult result) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainAction chainAction = null;
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -157,14 +157,14 @@ public class EditChainActionCommand
 
     @Override
     public void fillInResult(EditChainActionResult result, ChainAction chainAction) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
         result.setChainAction(chainControl.getChainActionTransfer(getUserVisit(), chainAction));
     }
 
     @Override
     public void doLock(ChainActionEdit edit, ChainAction chainAction) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainActionDescription chainActionDescription = chainControl.getChainActionDescription(chainAction, getPreferredLanguage());
         ChainActionDetail chainActionDetail = chainAction.getLastDetail();
 
@@ -178,7 +178,7 @@ public class EditChainActionCommand
 
     @Override
     public void canUpdate(ChainAction chainAction) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainActionName = edit.getChainActionName();
         ChainAction duplicateChainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
@@ -195,7 +195,7 @@ public class EditChainActionCommand
 
     @Override
     public void doUpdate(ChainAction chainAction) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         PartyPK partyPK = getPartyPK();
         ChainActionDetailValue chainActionDetailValue = chainControl.getChainActionDetailValueForUpdate(chainAction);
         ChainActionDescription chainActionDescription = chainControl.getChainActionDescriptionForUpdate(chainAction, getPreferredLanguage());

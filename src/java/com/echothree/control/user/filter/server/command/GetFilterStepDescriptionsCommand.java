@@ -57,7 +57,7 @@ public class GetFilterStepDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         GetFilterStepDescriptionsResult result = FilterResultFactory.getGetFilterStepDescriptionsResult();
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);

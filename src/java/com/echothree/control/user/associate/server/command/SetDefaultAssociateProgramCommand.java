@@ -48,7 +48,7 @@ public class SetDefaultAssociateProgramCommand
     
     @Override
     protected BaseResult execute() {
-        AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
         String associateProgramName = form.getAssociateProgramName();
         AssociateProgramDetailValue associateProgramDetailValue = associateControl.getAssociateProgramDetailValueByNameForUpdate(associateProgramName);
         

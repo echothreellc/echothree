@@ -55,12 +55,12 @@ public class CreateCustomerTypePaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
             String paymentMethodName = form.getPaymentMethodName();
             PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
             

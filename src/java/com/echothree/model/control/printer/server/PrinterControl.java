@@ -370,7 +370,7 @@ public class PrinterControl
 
     public PrinterGroupStatusChoicesBean getPrinterGroupStatusChoices(String defaultPrinterGroupStatusChoice, Language language, PrinterGroup printerGroup,
             PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         PrinterGroupStatusChoicesBean printerGroupStatusChoicesBean = new PrinterGroupStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroup);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
@@ -383,7 +383,7 @@ public class PrinterControl
     }
 
     public void setPrinterGroupStatus(ExecutionErrorAccumulator eea, PrinterGroup printerGroup, String printerGroupStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroup);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupStatusConstants.Workflow_PRINTER_GROUP_STATUS,
                 entityInstance);
@@ -796,7 +796,7 @@ public class PrinterControl
     }
 
     public PrinterStatusChoicesBean getPrinterStatusChoices(String defaultPrinterStatusChoice, Language language, Printer printer, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         PrinterStatusChoicesBean printerStatusChoicesBean = new PrinterStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(printer);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
@@ -809,7 +809,7 @@ public class PrinterControl
     }
 
     public void setPrinterStatus(ExecutionErrorAccumulator eea, Printer printer, String printerStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(printer);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterStatusConstants.Workflow_PRINTER_STATUS,
                 entityInstance);
@@ -1000,7 +1000,7 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_PRINTER_GROUP_JOB));
         String printerGroupJobName = sequenceControl.getNextSequenceValue(sequence);
 
@@ -1034,7 +1034,7 @@ public class PrinterControl
     }
 
     private PrinterGroupJob convertEntityInstanceToPrinterGroupJob(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         PrinterGroupJob printerGroupJob = null;
 
         if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.PrinterGroupJob.name())) {
@@ -1298,7 +1298,7 @@ public class PrinterControl
 
     public PrinterGroupJobStatusChoicesBean getPrinterGroupJobStatusChoices(String defaultPrinterGroupJobStatusChoice, Language language,
             PrinterGroupJob printerGroupJob, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         PrinterGroupJobStatusChoicesBean printerGroupJobStatusChoicesBean = new PrinterGroupJobStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS,
@@ -1311,7 +1311,7 @@ public class PrinterControl
     }
 
     public void setPrinterGroupJobStatus(ExecutionErrorAccumulator eea, PrinterGroupJob printerGroupJob, String printerGroupJobStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
         WorkflowDestination workflowDestination = printerGroupJobStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), printerGroupJobStatusChoice);
@@ -1341,7 +1341,7 @@ public class PrinterControl
     }
 
     public void deletePrinterGroupJob(PrinterGroupJob printerGroupJob, BasePK deletedBy) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         PrinterGroupJobDetail printerGroupJobDetail = printerGroupJob.getLastDetailForUpdate();
 
         documentControl.deleteDocument(printerGroupJobDetail.getDocumentForUpdate(), deletedBy);
@@ -1364,7 +1364,7 @@ public class PrinterControl
     }
 
     public void removePrinterGroupJob(PrinterGroupJob printerGroupJob) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
 
         // Cascades to the PrinterGroupJob, so a seprate remove isn't required.
         documentControl.removeDocument(printerGroupJob.getLastDetail().getDocumentForUpdate());

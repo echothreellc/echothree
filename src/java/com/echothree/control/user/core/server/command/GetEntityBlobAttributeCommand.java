@@ -60,7 +60,7 @@ public class GetEntityBlobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityBlobAttributeResult result = CoreResultFactory.getGetEntityBlobAttributeResult();
         String entityRef = form.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
@@ -70,7 +70,7 @@ public class GetEntityBlobAttributeCommand
             EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             
             if(entityAttribute != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = languageIsoName == null ? null : partyControl.getLanguageByIsoName(languageIsoName);
                 

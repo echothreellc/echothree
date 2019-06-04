@@ -56,7 +56,7 @@ public class ProcessQueuedEventsCommand
 
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         long queuedEventsProcessed = 0;
         long remainingTime = (long) 2 * 60 * 1000; // 2 minutes
         List<QueuedEvent> queuedEvents = coreControl.getQueuedEventsForUpdate();

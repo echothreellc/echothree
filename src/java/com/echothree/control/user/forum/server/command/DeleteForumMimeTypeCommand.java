@@ -52,12 +52,12 @@ public class DeleteForumMimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumName = form.getForumName();
         Forum forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String mimeTypeName = form.getMimeTypeName();
             MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
             

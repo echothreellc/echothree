@@ -57,7 +57,7 @@ public class GetSelectorCommand
     
     @Override
     protected BaseResult execute() {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         GetSelectorResult result = SelectorResultFactory.getGetSelectorResult();
         String selectorKindName = form.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);

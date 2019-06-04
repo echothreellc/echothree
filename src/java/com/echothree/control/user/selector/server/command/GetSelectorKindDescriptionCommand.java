@@ -68,13 +68,13 @@ public class GetSelectorKindDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         GetSelectorKindDescriptionResult result = SelectorResultFactory.getGetSelectorKindDescriptionResult();
         String selectorKindName = form.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         
         if(selectorKind != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

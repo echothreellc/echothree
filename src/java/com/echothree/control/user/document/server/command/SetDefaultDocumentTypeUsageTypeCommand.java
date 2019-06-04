@@ -61,7 +61,7 @@ public class SetDefaultDocumentTypeUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = documentControl.getDocumentTypeUsageTypeDetailValueByNameForUpdate(documentTypeUsageTypeName);
         

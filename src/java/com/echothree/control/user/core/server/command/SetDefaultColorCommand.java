@@ -61,7 +61,7 @@ public class SetDefaultColorCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String colorName = form.getColorName();
         ColorDetailValue colorDetailValue = coreControl.getColorDetailValueByNameForUpdate(colorName);
         

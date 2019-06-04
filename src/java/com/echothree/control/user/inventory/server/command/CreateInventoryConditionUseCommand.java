@@ -52,7 +52,7 @@ public class CreateInventoryConditionUseCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
         InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(inventoryConditionUseTypeName);
         

@@ -89,7 +89,7 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public LotAliasTypeDescription getEntity(EditLotAliasTypeDescriptionResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotAliasTypeDescription lotAliasTypeDescription = null;
         String lotTypeName = spec.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
@@ -99,7 +99,7 @@ public class EditLotAliasTypeDescriptionCommand
             LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
 
             if(lotAliasType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLotAliasTypeDescriptionResult result, LotAliasTypeDescription lotAliasTypeDescription) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setLotAliasTypeDescription(inventoryControl.getLotAliasTypeDescriptionTransfer(getUserVisit(), lotAliasTypeDescription));
     }
@@ -145,7 +145,7 @@ public class EditLotAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(LotAliasTypeDescription lotAliasTypeDescription) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotAliasTypeDescriptionValue lotAliasTypeDescriptionValue = inventoryControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
 
         lotAliasTypeDescriptionValue.setDescription(edit.getDescription());

@@ -50,7 +50,7 @@ public class CreateItemDeliveryTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemDeliveryTypeName = form.getItemDeliveryTypeName();
         ItemDeliveryType itemDeliveryType = itemControl.getItemDeliveryTypeByName(itemDeliveryTypeName);
         

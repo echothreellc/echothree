@@ -49,7 +49,7 @@ public class GetPrinterGroupUseTypeChoicesCommand
     
    @Override
     protected BaseResult execute() {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         GetPrinterGroupUseTypeChoicesResult result = PrinterResultFactory.getGetPrinterGroupUseTypeChoicesResult();
         String defaultPrinterGroupUseTypeChoice = form.getDefaultPrinterGroupUseTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

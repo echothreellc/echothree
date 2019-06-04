@@ -65,13 +65,13 @@ public class EditShipmentTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         EditShipmentTypeShippingMethodResult result = ShipmentResultFactory.getEditShipmentTypeShippingMethodResult();
         String shipmentTypeName = spec.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentType != null) {
-            ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+            var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
             String shippingMethodName = spec.getShippingMethodName();
             ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             

@@ -65,7 +65,7 @@ public class CreateApplicationCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String applicationName = form.getApplicationName();
         Application application = coreControl.getApplicationByName(applicationName);
         

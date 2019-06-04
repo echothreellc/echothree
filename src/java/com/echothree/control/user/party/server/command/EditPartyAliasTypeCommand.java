@@ -95,7 +95,7 @@ public class EditPartyAliasTypeCommand
 
     @Override
     public PartyAliasType getEntity(EditPartyAliasTypeResult result) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyAliasType partyAliasType = null;
         String partyTypeName = spec.getPartyTypeName();
 
@@ -129,14 +129,14 @@ public class EditPartyAliasTypeCommand
     
     @Override
     public void fillInResult(EditPartyAliasTypeResult result, PartyAliasType partyAliasType) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         
         result.setPartyAliasType(partyControl.getPartyAliasTypeTransfer(getUserVisit(), partyAliasType));
     }
     
     @Override
     public void doLock(PartyAliasTypeEdit edit, PartyAliasType partyAliasType) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyAliasTypeDescription partyAliasTypeDescription = partyControl.getPartyAliasTypeDescription(partyAliasType, getPreferredLanguage());
         PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetail();
         
@@ -152,7 +152,7 @@ public class EditPartyAliasTypeCommand
         
     @Override
     public void canUpdate(PartyAliasType partyAliasType) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyAliasTypeName = edit.getPartyAliasTypeName();
         PartyAliasType duplicatePartyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
@@ -163,7 +163,7 @@ public class EditPartyAliasTypeCommand
     
     @Override
     public void doUpdate(PartyAliasType partyAliasType) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyPK partyPK = getPartyPK();
         PartyAliasTypeDetailValue partyAliasTypeDetailValue = partyControl.getPartyAliasTypeDetailValueForUpdate(partyAliasType);
         PartyAliasTypeDescription partyAliasTypeDescription = partyControl.getPartyAliasTypeDescriptionForUpdate(partyAliasType, getPreferredLanguage());

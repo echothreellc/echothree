@@ -49,7 +49,7 @@ public class CreateMimeTypeUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
         MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
         

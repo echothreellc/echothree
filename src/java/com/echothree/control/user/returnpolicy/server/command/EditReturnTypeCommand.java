@@ -98,7 +98,7 @@ public class EditReturnTypeCommand
 
     @Override
     public ReturnType getEntity(EditReturnTypeResult result) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnType returnType = null;
         String returnKindName = spec.getReturnKindName();
 
@@ -130,7 +130,7 @@ public class EditReturnTypeCommand
 
     @Override
     public void fillInResult(EditReturnTypeResult result, ReturnType returnType) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
 
         result.setReturnType(returnPolicyControl.getReturnTypeTransfer(getUserVisit(), returnType));
     }
@@ -139,7 +139,7 @@ public class EditReturnTypeCommand
 
     @Override
     public void doLock(ReturnTypeEdit edit, ReturnType returnType) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnTypeDescription returnTypeDescription = returnPolicyControl.getReturnTypeDescription(returnType, getPreferredLanguage());
         ReturnTypeDetail returnTypeDetail = returnType.getLastDetail();
 
@@ -157,7 +157,7 @@ public class EditReturnTypeCommand
 
     @Override
     public void canUpdate(ReturnType returnType) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnKindDetail returnKindDetail = returnKind.getLastDetail();
         String returnTypeName = edit.getReturnTypeName();
         ReturnType duplicateReturnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
@@ -165,7 +165,7 @@ public class EditReturnTypeCommand
         if(duplicateReturnType != null && !returnType.equals(duplicateReturnType)) {
             addExecutionError(ExecutionErrors.DuplicateReturnTypeName.name(), returnKindDetail.getReturnKindName(), returnTypeName);
         } else {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             SequenceType returnSequenceType = returnKindDetail.getReturnSequenceType();
             String returnSequenceName = edit.getReturnSequenceName();
 
@@ -179,7 +179,7 @@ public class EditReturnTypeCommand
 
     @Override
     public void doUpdate(ReturnType returnType) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         PartyPK partyPK = getPartyPK();
         ReturnTypeDetailValue returnTypeDetailValue = returnPolicyControl.getReturnTypeDetailValueForUpdate(returnType);
         ReturnTypeDescription returnTypeDescription = returnPolicyControl.getReturnTypeDescriptionForUpdate(returnType, getPreferredLanguage());

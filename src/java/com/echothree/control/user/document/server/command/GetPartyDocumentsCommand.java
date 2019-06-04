@@ -66,13 +66,13 @@ public class GetPartyDocumentsCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetPartyDocumentsResult result = DocumentResultFactory.getGetPartyDocumentsResult();
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+            var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
             UserVisit userVisit = getUserVisit();
 
             result.setParty(partyControl.getPartyTransfer(userVisit, party));

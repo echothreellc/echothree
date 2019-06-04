@@ -932,7 +932,7 @@ public class ContactControl
     
     public ContactMechanismPurposeChoicesBean getContactMechanismPurposeChoicesByContactList(String defaultContactListContactMechanismPurposeChoice, Language language, boolean allowNullChoice,
             ContactList contactList) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes = contactListControl.getContactListContactMechanismPurposesByContactList(contactList);
         int size = contactListContactMechanismPurposes.size();
         List<String> labels = new ArrayList<>(size);
@@ -1139,7 +1139,7 @@ public class ContactControl
     
     public EmailAddressStatusChoicesBean getEmailAddressStatusChoices(String defaultEmailAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EmailAddressStatusChoicesBean emailAddressStatusChoicesBean = new EmailAddressStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
@@ -1151,7 +1151,7 @@ public class ContactControl
     }
     
     public void setEmailAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String emailAddressStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
                 entityInstance);
@@ -1167,7 +1167,7 @@ public class ContactControl
     
     public EmailAddressVerificationChoicesBean getEmailAddressVerificationChoices(String defaultEmailAddressVerificationChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EmailAddressVerificationChoicesBean emailAddressVerificationChoicesBean = new EmailAddressVerificationChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
@@ -1179,7 +1179,7 @@ public class ContactControl
     }
     
     public void setEmailAddressVerification(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String emailAddressVerificationChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
                 entityInstance);
@@ -1195,7 +1195,7 @@ public class ContactControl
     
     public PostalAddressStatusChoicesBean getPostalAddressStatusChoices(String defaultPostalAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         PostalAddressStatusChoicesBean postalAddressStatusChoicesBean = new PostalAddressStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
@@ -1207,7 +1207,7 @@ public class ContactControl
     }
     
     public void setPostalAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String postalAddressStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
                 entityInstance);
@@ -1223,7 +1223,7 @@ public class ContactControl
     
     public TelephoneStatusChoicesBean getTelephoneStatusChoices(String defaultTelephoneStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         TelephoneStatusChoicesBean telephoneStatusChoicesBean = new TelephoneStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
@@ -1235,7 +1235,7 @@ public class ContactControl
     }
     
     public void setTelephoneStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String telephoneStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
                 entityInstance);
@@ -1251,7 +1251,7 @@ public class ContactControl
     
     public WebAddressStatusChoicesBean getWebAddressStatusChoices(String defaultWebAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         WebAddressStatusChoicesBean webAddressStatusChoicesBean = new WebAddressStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
@@ -1263,7 +1263,7 @@ public class ContactControl
     }
     
     public void setWebAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String webAddressStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
                 entityInstance);
@@ -2628,13 +2628,13 @@ public class ContactControl
     }
     
     public void deletePartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {
-        AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
-        CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-        LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         
         deletePartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism, deletedBy);
         deletePartyContactMechanismRelationshipsByPartyContactMechanism(partyContactMechanism, deletedBy);

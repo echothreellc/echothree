@@ -88,7 +88,7 @@ public class EditFilterTypeDescriptionCommand
 
     @Override
     public FilterTypeDescription getEntity(EditFilterTypeDescriptionResult result) {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         FilterTypeDescription filterTypeDescription = null;
         String filterKindName = spec.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
@@ -98,7 +98,7 @@ public class EditFilterTypeDescriptionCommand
             FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
 
             if(filterType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,7 +132,7 @@ public class EditFilterTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditFilterTypeDescriptionResult result, FilterTypeDescription filterTypeDescription) {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
 
         result.setFilterTypeDescription(filterControl.getFilterTypeDescriptionTransfer(getUserVisit(), filterTypeDescription));
     }
@@ -144,7 +144,7 @@ public class EditFilterTypeDescriptionCommand
 
     @Override
     public void doUpdate(FilterTypeDescription filterTypeDescription) {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         FilterTypeDescriptionValue filterTypeDescriptionValue = filterControl.getFilterTypeDescriptionValue(filterTypeDescription);
 
         filterTypeDescriptionValue.setDescription(edit.getDescription());

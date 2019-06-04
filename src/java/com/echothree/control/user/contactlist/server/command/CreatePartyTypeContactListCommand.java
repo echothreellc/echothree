@@ -67,12 +67,12 @@ public class CreatePartyTypeContactListCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyTypeName = form.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
         
         if(partyType != null) {
-            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
             String contactListName = form.getContactListName();
             ContactList contactList = contactListControl.getContactListByName(contactListName);
             

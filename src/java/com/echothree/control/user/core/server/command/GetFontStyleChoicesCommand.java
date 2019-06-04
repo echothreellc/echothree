@@ -61,7 +61,7 @@ public class GetFontStyleChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetFontStyleChoicesResult result = CoreResultFactory.getGetFontStyleChoicesResult();
         String defaultFontStyleChoice = form.getDefaultFontStyleChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

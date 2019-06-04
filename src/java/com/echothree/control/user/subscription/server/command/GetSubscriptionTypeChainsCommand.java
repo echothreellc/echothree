@@ -52,7 +52,7 @@ public class GetSubscriptionTypeChainsCommand
     
     @Override
     protected BaseResult execute() {
-        SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
         GetSubscriptionTypeChainsResult result = SubscriptionResultFactory.getGetSubscriptionTypeChainsResult();
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);

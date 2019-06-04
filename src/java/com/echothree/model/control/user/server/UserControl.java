@@ -448,8 +448,8 @@ public class UserControl
     }
     
     public UserVisitGroup createUserVisitGroup(BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        WorkflowControl workflowControl = getWorkflowControl();
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var workflowControl = getWorkflowControl();
         UserVisitGroup userVisitGroup = null;
         Workflow workflow = workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS);
         
@@ -581,7 +581,7 @@ public class UserControl
     
     public UserVisitGroupStatusChoicesBean getUserVisitGroupStatusChoices(String defaultUserVisitGroupStatusChoice, Language language, boolean allowNullChoice,
             UserVisitGroup userVisitGroup, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         UserVisitGroupStatusChoicesBean userVisitGroupStatusChoicesBean = new UserVisitGroupStatusChoicesBean();
         
         if(userVisitGroup == null) {
@@ -600,7 +600,7 @@ public class UserControl
     }
     
     public void setUserVisitGroupStatus(ExecutionErrorAccumulator eea, UserVisitGroup userVisitGroup, String userVisitGroupStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
         WorkflowDestination workflowDestination = userVisitGroupStatusChoice == null? null:
@@ -622,7 +622,7 @@ public class UserControl
         UserVisitGroup userVisitGroup = getActiveUserVisitGroup();
 
         if(preferredCurrency == null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
 
             preferredCurrency = accountingControl.getDefaultCurrency();
         }
@@ -747,7 +747,7 @@ public class UserControl
         }
         
         if(currency == null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
             
             currency = accountingControl.getDefaultCurrency();
         }
@@ -763,7 +763,7 @@ public class UserControl
         }
         
         if(currency == null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
             
             currency = accountingControl.getDefaultCurrency();
         }

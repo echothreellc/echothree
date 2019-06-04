@@ -60,7 +60,7 @@ public class GetFontWeightCommand
     
     @Override
     protected FontWeight getEntity() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         FontWeight fontWeight = null;
         String fontWeightName = form.getFontWeightName();
         int parameterCount = (fontWeightName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -89,7 +89,7 @@ public class GetFontWeightCommand
     
     @Override
     protected BaseResult getTransfer(FontWeight fontWeight) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetFontWeightResult result = CoreResultFactory.getGetFontWeightResult();
 
         if(fontWeight != null) {

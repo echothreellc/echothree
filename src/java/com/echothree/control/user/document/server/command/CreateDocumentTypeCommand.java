@@ -71,7 +71,7 @@ public class CreateDocumentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         String documentTypeName = form.getDocumentTypeName();
         DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
@@ -88,7 +88,7 @@ public class CreateDocumentTypeCommand
                 String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
                 if(mimeTypeUsageTypeName != null) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
 
                     mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                 }

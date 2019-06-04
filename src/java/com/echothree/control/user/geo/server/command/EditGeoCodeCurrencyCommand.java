@@ -79,13 +79,13 @@ public class EditGeoCodeCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         EditGeoCodeCurrencyResult result = GeoResultFactory.getEditGeoCodeCurrencyResult();
         String geoCodeName = spec.getGeoCodeName();
         GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
             String currencyIsoName = spec.getCurrencyIsoName();
             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             

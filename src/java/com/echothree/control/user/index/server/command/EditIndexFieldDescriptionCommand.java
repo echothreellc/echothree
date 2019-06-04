@@ -88,7 +88,7 @@ public class EditIndexFieldDescriptionCommand
 
     @Override
     public IndexFieldDescription getEntity(EditIndexFieldDescriptionResult result) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         IndexFieldDescription indexFieldDescription = null;
         String indexTypeName = spec.getIndexTypeName();
         IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
@@ -98,7 +98,7 @@ public class EditIndexFieldDescriptionCommand
             IndexField indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
 
             if(indexField != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,7 +132,7 @@ public class EditIndexFieldDescriptionCommand
 
     @Override
     public void fillInResult(EditIndexFieldDescriptionResult result, IndexFieldDescription indexFieldDescription) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
 
         result.setIndexFieldDescription(indexControl.getIndexFieldDescriptionTransfer(getUserVisit(), indexFieldDescription));
     }
@@ -144,7 +144,7 @@ public class EditIndexFieldDescriptionCommand
 
     @Override
     public void doUpdate(IndexFieldDescription indexFieldDescription) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         IndexFieldDescriptionValue indexFieldDescriptionValue = indexControl.getIndexFieldDescriptionValue(indexFieldDescription);
 
         indexFieldDescriptionValue.setDescription(edit.getDescription());

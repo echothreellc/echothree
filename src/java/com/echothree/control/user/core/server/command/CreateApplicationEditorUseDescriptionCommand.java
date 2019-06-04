@@ -78,12 +78,12 @@ public class CreateApplicationEditorUseDescriptionCommand
             ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
 
             if(!hasExecutionErrors()) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
                 if(language != null) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     ApplicationEditorUseDescription applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, language);
 
                     if(applicationEditorUseDescription == null) {

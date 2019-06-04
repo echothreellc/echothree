@@ -70,12 +70,12 @@ public class CreateItemImageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemImageTypeName = form.getItemImageTypeName();
         ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
         if(itemImageType == null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String preferredMimeTypeName = form.getPreferredMimeTypeName();
             MimeType preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
 

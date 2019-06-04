@@ -82,7 +82,7 @@ public class EditItemPurchasingCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         EditItemPurchasingCategoryResult result = VendorResultFactory.getEditItemPurchasingCategoryResult();
         
         if(editMode.equals(EditMode.LOCK)) {

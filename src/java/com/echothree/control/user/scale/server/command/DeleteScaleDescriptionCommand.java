@@ -52,12 +52,12 @@ public class DeleteScaleDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         String scaleName = form.getScaleName();
         Scale scale = scaleControl.getScaleByName(scaleName);
         
         if(scale != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

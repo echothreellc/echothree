@@ -60,7 +60,7 @@ public class GetPaymentProcessorTypesCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         GetPaymentProcessorTypesResult result = PaymentResultFactory.getGetPaymentProcessorTypesResult();
         
         result.setPaymentProcessorTypes(paymentControl.getPaymentProcessorTypeTransfers(getUserVisit()));

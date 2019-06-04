@@ -48,7 +48,7 @@ public class SetDefaultSkillTypeCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String skillTypeName = form.getSkillTypeName();
         SkillTypeDetailValue skillTypeDetailValue = employeeControl.getSkillTypeDetailValueByNameForUpdate(skillTypeName);
         

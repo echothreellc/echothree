@@ -102,7 +102,7 @@ public class AppearanceObject
     @GraphQLDescription("appearance text decorations")
     @GraphQLNonNull
     public List<AppearanceTextDecorationObject> getAppearanceTextDecorations() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         List<AppearanceTextDecoration> entities = coreControl.getAppearanceTextDecorationsByAppearance(appearance);
         List<AppearanceTextDecorationObject> objects = new ArrayList<>(entities.size());
         
@@ -117,7 +117,7 @@ public class AppearanceObject
     @GraphQLDescription("appearance text transformations")
     @GraphQLNonNull
     public List<AppearanceTextTransformationObject> getAppearanceTextTransformations() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         List<AppearanceTextTransformation> entities = coreControl.getAppearanceTextTransformationsByAppearance(appearance);
         List<AppearanceTextTransformationObject> objects = new ArrayList<>(entities.size());
         
@@ -146,8 +146,8 @@ public class AppearanceObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return coreControl.getBestAppearanceDescription(appearance, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

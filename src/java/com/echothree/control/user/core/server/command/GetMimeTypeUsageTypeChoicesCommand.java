@@ -48,7 +48,7 @@ public class GetMimeTypeUsageTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetMimeTypeUsageTypeChoicesResult result = CoreResultFactory.getGetMimeTypeUsageTypeChoicesResult();
         String defaultMimeTypeUsageTypeChoice = form.getDefaultMimeTypeUsageTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

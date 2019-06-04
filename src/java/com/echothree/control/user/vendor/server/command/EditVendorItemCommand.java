@@ -90,7 +90,7 @@ public class EditVendorItemCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         EditVendorItemResult result = VendorResultFactory.getEditVendorItemResult();
         String vendorName = spec.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
@@ -137,7 +137,7 @@ public class EditVendorItemCommand
                         CancellationPolicy cancellationPolicy = null;
                         
                         if(cancellationPolicyName != null) {
-                            CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                             CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
                             
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -148,7 +148,7 @@ public class EditVendorItemCommand
                             ReturnPolicy returnPolicy = null;
                             
                             if(returnPolicyName != null) {
-                                ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                 ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN);
                                 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);

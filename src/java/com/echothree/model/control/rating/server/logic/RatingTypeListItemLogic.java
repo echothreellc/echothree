@@ -43,7 +43,7 @@ public class RatingTypeListItemLogic
     }
     
     public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final RatingType ratingType, final String ratingTypeListItemName) {
-        RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+        var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
         RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
 
         if(ratingTypeListItem == null) {

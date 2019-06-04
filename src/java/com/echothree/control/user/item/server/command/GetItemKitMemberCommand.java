@@ -63,7 +63,7 @@ public class GetItemKitMemberCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemKitMemberResult result = ItemResultFactory.getGetItemKitMemberResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
@@ -73,12 +73,12 @@ public class GetItemKitMemberCommand
             String itemTypeName = itemDetail.getItemType().getItemTypeName();
             
             if(itemTypeName.equals(ItemConstants.ItemType_KIT)) {
-                InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                 String inventoryConditionName = form.getInventoryConditionName();
                 InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
-                    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
                     String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                     UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                     UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);

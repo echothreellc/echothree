@@ -58,7 +58,7 @@ public class DeleteSubscriptionTypeChainCommand
     
     @Override
     protected BaseResult execute() {
-        SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -67,7 +67,7 @@ public class DeleteSubscriptionTypeChainCommand
             SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
-                ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+                var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
                 ChainKind chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_SUBSCRIPTION);
                 String chainTypeName = form.getChainTypeName();
                 ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);

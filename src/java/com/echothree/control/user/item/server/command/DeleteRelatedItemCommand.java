@@ -52,7 +52,7 @@ public class DeleteRelatedItemCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String relatedItemTypeName = form.getRelatedItemTypeName();
         RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
         

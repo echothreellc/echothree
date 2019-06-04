@@ -75,7 +75,7 @@ public class GetEntityIntegerRangeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityIntegerRangeDescriptionResult result = CoreResultFactory.getGetEntityIntegerRangeDescriptionResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -97,7 +97,7 @@ public class GetEntityIntegerRangeDescriptionCommand
                         EntityIntegerRange entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
                         if(entityIntegerRange != null) {
-                            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                             String languageIsoName = form.getLanguageIsoName();
                             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

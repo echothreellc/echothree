@@ -52,7 +52,7 @@ public class GetTransactionGroupStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetTransactionGroupStatusChoicesResult result = AccountingResultFactory.getGetTransactionGroupStatusChoicesResult();
         String transactionGroupName = form.getTransactionGroupName();
         TransactionGroup transactionGroup = accountingControl.getTransactionGroupByName(transactionGroupName);

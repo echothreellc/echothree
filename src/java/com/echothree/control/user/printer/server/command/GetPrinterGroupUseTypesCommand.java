@@ -46,7 +46,7 @@ public class GetPrinterGroupUseTypesCommand
     
     @Override
     protected BaseResult execute() {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         GetPrinterGroupUseTypesResult result = PrinterResultFactory.getGetPrinterGroupUseTypesResult();
 
         result.setPrinterGroupUseTypes(printerControl.getPrinterGroupUseTypeTransfers(getUserVisit()));

@@ -88,7 +88,7 @@ public class EditVendorItemCostCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         String vendorName = spec.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
         
@@ -101,7 +101,7 @@ public class EditVendorItemCostCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         EditVendorItemCostResult result = VendorResultFactory.getEditVendorItemCostResult();
         String vendorName = spec.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
@@ -112,12 +112,12 @@ public class EditVendorItemCostCommand
             VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
             
             if(vendorItem != null) {
-                InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                 String inventoryConditionName = spec.getInventoryConditionName();
                 InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
-                    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
                     UnitOfMeasureKind unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
                     String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                     UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);

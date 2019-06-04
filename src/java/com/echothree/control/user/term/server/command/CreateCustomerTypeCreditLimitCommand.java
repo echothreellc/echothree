@@ -55,17 +55,17 @@ public class CreateCustomerTypeCreditLimitCommand
     
     @Override
     protected BaseResult execute() {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
             String currencyIsoName = form.getCurrencyIsoName();
             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
-                TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+                var termControl = (TermControl)Session.getModelController(TermControl.class);
                 CustomerTypeCreditLimit customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency);
                 
                 if(customerTypeCreditLimit == null) {

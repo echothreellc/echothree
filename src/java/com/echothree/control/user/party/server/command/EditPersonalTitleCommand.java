@@ -66,7 +66,7 @@ public class EditPersonalTitleCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditPersonalTitleResult result = PartyResultFactory.getEditPersonalTitleResult();
         
         if(editMode.equals(EditMode.LOCK)) {

@@ -51,12 +51,12 @@ public class DeleteWorkRequirementTypeCommand
     
     @Override
     protected BaseResult execute() {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByNameForUpdate(workEffortTypeName);
         
         if(workEffortType != null) {
-            WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+            var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
             String workRequirementTypeName = form.getWorkRequirementTypeName();
             WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByNameForUpdate(workEffortType, workRequirementTypeName);
             

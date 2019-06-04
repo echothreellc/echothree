@@ -52,12 +52,12 @@ public class DeleteCustomerTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+            var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
             String shippingMethodName = form.getShippingMethodName();
             ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             

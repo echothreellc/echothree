@@ -55,7 +55,7 @@ public class DeleteLocationDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
@@ -65,7 +65,7 @@ public class DeleteLocationDescriptionCommand
             Location location = warehouseControl.getLocationByName(warehouseParty, locationName);
             
             if(location != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

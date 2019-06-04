@@ -1906,7 +1906,7 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
     
     public PartyTrainingClass createPartyTrainingClass(Party party, TrainingClass trainingClass, Long completedTime, Long validUntilTime, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_PARTY_TRAINING_CLASS);
         String partyTrainingClassName = sequenceControl.getNextSequenceValue(sequence);
         
@@ -1941,7 +1941,7 @@ public class TrainingControl
     }
 
     private PartyTrainingClass convertEntityInstanceToPartyTrainingClass(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         PartyTrainingClass partyTrainingClass = null;
         
         if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.PartyTrainingClass.name())) {
@@ -2145,7 +2145,7 @@ public class TrainingControl
     }
     
     public long countPartyTrainingClassesUsingNames(Party party, TrainingClass trainingClass, String workflowStepName) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         Workflow workflow = workflowControl.getWorkflowByName(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS);
         WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
         
@@ -2154,7 +2154,7 @@ public class TrainingControl
     
     public PartyTrainingClassStatusChoicesBean getPartyTrainingClassStatusChoices(String defaultPartyTrainingClassStatusChoice, Language language,
             boolean allowNullChoice, PartyTrainingClass partyTrainingClass, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         PartyTrainingClassStatusChoicesBean partyTrainingClassStatusChoicesBean = new PartyTrainingClassStatusChoicesBean();
 
         if(partyTrainingClass == null) {
@@ -2173,7 +2173,7 @@ public class TrainingControl
     }
 
     public void setPartyTrainingClassStatus(ExecutionErrorAccumulator eea, PartyTrainingClass partyTrainingClass, String partyTrainingClassStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(partyTrainingClass);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
                 entityInstance);

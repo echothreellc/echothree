@@ -84,7 +84,7 @@ public class EditComponentVendorCommand
 
     @Override
     public ComponentVendor getEntity(EditComponentVendorResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ComponentVendor componentVendor = null;
         String componentVendorName = spec.getComponentVendorName();
 
@@ -110,7 +110,7 @@ public class EditComponentVendorCommand
 
     @Override
     public void fillInResult(EditComponentVendorResult result, ComponentVendor componentVendor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setComponentVendor(coreControl.getComponentVendorTransfer(getUserVisit(), componentVendor));
     }
@@ -125,7 +125,7 @@ public class EditComponentVendorCommand
 
     @Override
     public void canUpdate(ComponentVendor componentVendor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String componentVendorName = edit.getComponentVendorName();
         ComponentVendor duplicateComponentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
@@ -136,7 +136,7 @@ public class EditComponentVendorCommand
 
     @Override
     public void doUpdate(ComponentVendor componentVendor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ComponentVendorDetailValue componentVendorDetailValue = coreControl.getComponentVendorDetailValueForUpdate(componentVendor);
 
         componentVendorDetailValue.setComponentVendorName(edit.getComponentVendorName());

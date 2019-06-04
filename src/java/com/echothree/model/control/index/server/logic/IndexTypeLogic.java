@@ -40,7 +40,7 @@ public class IndexTypeLogic
     }
     
     public IndexType getIndexTypeByName(final ExecutionErrorAccumulator eea, final String indexTypeName) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
 
         if(indexType == null) {

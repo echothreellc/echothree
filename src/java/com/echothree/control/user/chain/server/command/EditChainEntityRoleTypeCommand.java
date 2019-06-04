@@ -102,7 +102,7 @@ public class EditChainEntityRoleTypeCommand
 
     @Override
     public ChainEntityRoleType getEntity(EditChainEntityRoleTypeResult result) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainEntityRoleType chainEntityRoleType = null;
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -141,14 +141,14 @@ public class EditChainEntityRoleTypeCommand
 
     @Override
     public void fillInResult(EditChainEntityRoleTypeResult result, ChainEntityRoleType chainEntityRoleType) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
         result.setChainEntityRoleType(chainControl.getChainEntityRoleTypeTransfer(getUserVisit(), chainEntityRoleType));
     }
 
     @Override
     public void doLock(ChainEntityRoleTypeEdit edit, ChainEntityRoleType chainEntityRoleType) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescription(chainEntityRoleType, getPreferredLanguage());
         ChainEntityRoleTypeDetail chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetail();
         EntityTypeDetail entityTypeDetail = chainEntityRoleTypeDetail.getEntityType().getLastDetail();
@@ -167,7 +167,7 @@ public class EditChainEntityRoleTypeCommand
     
     @Override
     public void canUpdate(ChainEntityRoleType chainEntityRoleType) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
         String chainEntityRoleTypeName = edit.getChainEntityRoleTypeName();
         ChainEntityRoleType duplicateChainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
@@ -175,7 +175,7 @@ public class EditChainEntityRoleTypeCommand
         if(duplicateChainEntityRoleType != null && !chainEntityRoleType.equals(duplicateChainEntityRoleType)) {
             addExecutionError(ExecutionErrors.DuplicateChainEntityRoleTypeName.name(), chainTypeDetail.getChainTypeName(), chainEntityRoleTypeName);
         } else {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String componentVendorName = edit.getComponentVendorName();
             ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
@@ -195,7 +195,7 @@ public class EditChainEntityRoleTypeCommand
 
     @Override
     public void doUpdate(ChainEntityRoleType chainEntityRoleType) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         PartyPK partyPK = getPartyPK();
         ChainEntityRoleTypeDetailValue chainEntityRoleTypeDetailValue = chainControl.getChainEntityRoleTypeDetailValueForUpdate(chainEntityRoleType);
         ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = chainControl.getChainEntityRoleTypeDescriptionForUpdate(chainEntityRoleType, getPreferredLanguage());

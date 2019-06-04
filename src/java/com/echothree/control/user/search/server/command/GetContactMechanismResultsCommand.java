@@ -56,7 +56,7 @@ public class GetContactMechanismResultsCommand
     @Override
     protected BaseResult execute() {
         GetContactMechanismResultsResult result = SearchResultFactory.getGetContactMechanismResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_CONTACT_MECHANISM);
         
         if(searchKind != null) {

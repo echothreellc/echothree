@@ -64,7 +64,7 @@ public class GetCacheEntryDependenciesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetCacheEntryDependenciesResult result = CoreResultFactory.getGetCacheEntryDependenciesResult();
         String cacheEntryKey = form.getCacheEntryKey();
         CacheEntry cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);

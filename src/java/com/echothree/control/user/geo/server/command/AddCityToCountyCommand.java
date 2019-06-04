@@ -77,7 +77,7 @@ public class AddCityToCountyCommand
         int parameterCount = (countyGeoCodeName == null? 0: 1) + (countyName == null? 0: 1);
         
         if(parameterCount == 1) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTY);
             String cityGeoCodeName = form.getCityGeoCodeName();
             GeoCode cityGeoCode = geoControl.getGeoCodeByName(cityGeoCodeName);

@@ -66,7 +66,7 @@ public class GetContentSectionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         GetContentSectionChoicesResult result = ContentResultFactory.getGetContentSectionChoicesResult();
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);

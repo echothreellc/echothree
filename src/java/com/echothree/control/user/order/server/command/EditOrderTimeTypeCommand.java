@@ -92,7 +92,7 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public OrderTimeType getEntity(EditOrderTimeTypeResult result) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderTimeType orderTimeType = null;
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
@@ -125,14 +125,14 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void fillInResult(EditOrderTimeTypeResult result, OrderTimeType orderTimeType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderTimeType(orderControl.getOrderTimeTypeTransfer(getUserVisit(), orderTimeType));
     }
 
     @Override
     public void doLock(OrderTimeTypeEdit edit, OrderTimeType orderTimeType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderTimeTypeDescription orderTimeTypeDescription = orderControl.getOrderTimeTypeDescription(orderTimeType, getPreferredLanguage());
         OrderTimeTypeDetail orderTimeTypeDetail = orderTimeType.getLastDetail();
 
@@ -147,7 +147,7 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void canUpdate(OrderTimeType orderTimeType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
 
@@ -165,7 +165,7 @@ public class EditOrderTimeTypeCommand
 
     @Override
     public void doUpdate(OrderTimeType orderTimeType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         PartyPK partyPK = getPartyPK();
         OrderTimeTypeDetailValue orderTimeTypeDetailValue = orderControl.getOrderTimeTypeDetailValueForUpdate(orderTimeType);
         OrderTimeTypeDescription orderTimeTypeDescription = orderControl.getOrderTimeTypeDescriptionForUpdate(orderTimeType, getPreferredLanguage());

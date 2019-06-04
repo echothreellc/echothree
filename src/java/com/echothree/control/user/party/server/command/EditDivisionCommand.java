@@ -80,7 +80,7 @@ public class EditDivisionCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditDivisionResult result = PartyResultFactory.getEditDivisionResult();
         String companyName = spec.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
@@ -145,7 +145,7 @@ public class EditDivisionCommand
                                     if(preferredCurrencyIsoName == null)
                                         preferredCurrency = null;
                                     else {
-                                        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                         preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                     }
                                     

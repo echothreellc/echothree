@@ -63,7 +63,7 @@ public class DeleteOfferCommand
     @Override
     protected BaseResult execute() {
         String offerName = form.getOfferName();
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Offer offer = offerControl.getOfferByNameForUpdate(offerName);
         
         if(offer != null) {

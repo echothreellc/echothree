@@ -90,7 +90,7 @@ public class EditCampaignMediumCommand
 
     @Override
     public CampaignMedium getEntity(EditCampaignMediumResult result) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         CampaignMedium campaignMedium;
         String campaignMediumName = spec.getCampaignMediumName();
 
@@ -114,14 +114,14 @@ public class EditCampaignMediumCommand
 
     @Override
     public void fillInResult(EditCampaignMediumResult result, CampaignMedium campaignMedium) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
 
         result.setCampaignMedium(campaignControl.getCampaignMediumTransfer(getUserVisit(), campaignMedium));
     }
 
     @Override
     public void doLock(CampaignMediumEdit edit, CampaignMedium campaignMedium) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         CampaignMediumDescription campaignMediumDescription = campaignControl.getCampaignMediumDescription(campaignMedium, getPreferredLanguage());
         CampaignMediumDetail campaignMediumDetail = campaignMedium.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditCampaignMediumCommand
 
     @Override
     public void canUpdate(CampaignMedium campaignMedium) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         String value = edit.getValue();
         CampaignMedium duplicateCampaignMedium = campaignControl.getCampaignMediumByValue(value);
 
@@ -147,7 +147,7 @@ public class EditCampaignMediumCommand
 
     @Override
     public void doUpdate(CampaignMedium campaignMedium) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         PartyPK partyPK = getPartyPK();
         CampaignMediumDetailValue campaignMediumDetailValue = campaignControl.getCampaignMediumDetailValueForUpdate(campaignMedium);
         CampaignMediumDescription campaignMediumDescription = campaignControl.getCampaignMediumDescriptionForUpdate(campaignMedium, getPreferredLanguage());

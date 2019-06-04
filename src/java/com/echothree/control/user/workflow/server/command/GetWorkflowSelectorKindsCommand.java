@@ -59,7 +59,7 @@ public class GetWorkflowSelectorKindsCommand
         int parameterCount = (workflowName == null? 0: 1) + (selectorKindName == null? 0: 1);
         
         if(parameterCount == 1) {
-            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
             
             if(workflowName != null) {
                 Workflow workflow = workflowControl.getWorkflowByName(workflowName);
@@ -71,7 +71,7 @@ public class GetWorkflowSelectorKindsCommand
                     addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
                 }
             } else if(selectorKindName != null) {
-                SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
                 
                 if(selectorKind != null) {

@@ -87,13 +87,13 @@ public class EditAllocationPriorityDescriptionCommand
 
     @Override
     public AllocationPriorityDescription getEntity(EditAllocationPriorityDescriptionResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         AllocationPriorityDescription allocationPriorityDescription = null;
         String allocationPriorityName = spec.getAllocationPriorityName();
         AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditAllocationPriorityDescriptionCommand
 
     @Override
     public void fillInResult(EditAllocationPriorityDescriptionResult result, AllocationPriorityDescription allocationPriorityDescription) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setAllocationPriorityDescription(inventoryControl.getAllocationPriorityDescriptionTransfer(getUserVisit(), allocationPriorityDescription));
     }
@@ -136,7 +136,7 @@ public class EditAllocationPriorityDescriptionCommand
 
     @Override
     public void doUpdate(AllocationPriorityDescription allocationPriorityDescription) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         AllocationPriorityDescriptionValue allocationPriorityDescriptionValue = inventoryControl.getAllocationPriorityDescriptionValue(allocationPriorityDescription);
         allocationPriorityDescriptionValue.setDescription(edit.getDescription());
 

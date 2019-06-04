@@ -56,7 +56,7 @@ public class GetSecurityRoleGroupResultsCommand
     @Override
     protected BaseResult execute() {
         GetSecurityRoleGroupResultsResult result = SearchResultFactory.getGetSecurityRoleGroupResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_SECURITY_ROLE_GROUP);
         
         if(searchKind != null) {

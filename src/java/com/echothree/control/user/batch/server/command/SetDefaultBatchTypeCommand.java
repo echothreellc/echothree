@@ -61,7 +61,7 @@ public class SetDefaultBatchTypeCommand
     
     @Override
     protected BaseResult execute() {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         String batchTypeName = form.getBatchTypeName();
         BatchTypeDetailValue batchTypeDetailValue = batchControl.getBatchTypeDetailValueByNameForUpdate(batchTypeName);
         

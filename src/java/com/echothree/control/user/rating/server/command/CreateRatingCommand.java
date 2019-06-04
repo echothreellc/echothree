@@ -64,13 +64,13 @@ public class CreateRatingCommand
     @Override
     protected BaseResult execute() {
         CreateRatingResult result = RatingResultFactory.getCreateRatingResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String ratingName = null;
         String entityRef = form.getEntityRef();
         EntityInstance ratedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(ratedEntityInstance != null) {
-            RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+            var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
             EntityInstance ratedByEntityInstance = null;
             BasePK createdBy = getPartyPK();
             String ratedByUsername = form.getRatedByUsername();
@@ -101,7 +101,7 @@ public class CreateRatingCommand
                         RatingTypeListItem ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                         
                         if(ratingTypeListItem != null) {
-                            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                             Sequence ratingSequence = ratingType.getLastDetail().getRatingSequence();
                             
                             if(ratingSequence == null) {

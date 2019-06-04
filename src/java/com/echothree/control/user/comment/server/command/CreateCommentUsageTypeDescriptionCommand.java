@@ -60,7 +60,7 @@ public class CreateCommentUsageTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
@@ -69,7 +69,7 @@ public class CreateCommentUsageTypeDescriptionCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
                 String commentTypeName = form.getCommentTypeName();
                 CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 
@@ -78,7 +78,7 @@ public class CreateCommentUsageTypeDescriptionCommand
                     CommentUsageType commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
                     
                     if(commentUsageType != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         String languageIsoName = form.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         

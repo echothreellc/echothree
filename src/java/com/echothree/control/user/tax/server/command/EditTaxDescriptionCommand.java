@@ -64,13 +64,13 @@ public class EditTaxDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         EditTaxDescriptionResult result = TaxResultFactory.getEditTaxDescriptionResult();
         String taxName = spec.getTaxName();
         Tax tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

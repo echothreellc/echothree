@@ -63,7 +63,7 @@ public class GetTextTransformationDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetTextTransformationDescriptionsResult result = CoreResultFactory.getGetTextTransformationDescriptionsResult();
         String textTransformationName = form.getTextTransformationName();
         TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);

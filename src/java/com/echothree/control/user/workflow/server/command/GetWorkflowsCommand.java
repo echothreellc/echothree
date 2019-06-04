@@ -52,7 +52,7 @@ public class GetWorkflowsCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         GetWorkflowsResult result = WorkflowResultFactory.getGetWorkflowsResult();
         String selectorKindName = form.getSelectorKindName();
         UserVisit userVisit = getUserVisit();
@@ -60,7 +60,7 @@ public class GetWorkflowsCommand
         if(selectorKindName == null) {
             result.setWorkflows(workflowControl.getWorkflowTransfers(userVisit));
         } else {
-            SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
             SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
             
             if(selectorKind != null) {

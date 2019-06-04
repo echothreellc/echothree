@@ -96,7 +96,7 @@ public class EditSecurityRolePartyTypeCommand
     
     @Override
     public SecurityRolePartyType getEntity(EditSecurityRolePartyTypeResult result) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         SecurityRolePartyType securityRolePartyType = null;
         String securityRoleGroupName = spec.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
@@ -106,7 +106,7 @@ public class EditSecurityRolePartyTypeCommand
             SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
             if(securityRole != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String partyTypeName = spec.getPartyTypeName();
                 
                 partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -141,7 +141,7 @@ public class EditSecurityRolePartyTypeCommand
 
     @Override
     public void fillInResult(EditSecurityRolePartyTypeResult result, SecurityRolePartyType securityRolePartyType) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
 
         result.setSecurityRolePartyType(securityControl.getSecurityRolePartyTypeTransfer(getUserVisit(), securityRolePartyType));
     }
@@ -163,7 +163,7 @@ public class EditSecurityRolePartyTypeCommand
             String partyTypeName = partyType.getPartyTypeName();
             
             if(partyType.getAllowUserLogins()) {
-                SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
 
                 if(selectorKind != null) {
@@ -190,7 +190,7 @@ public class EditSecurityRolePartyTypeCommand
     
     @Override
     public void doUpdate(SecurityRolePartyType securityRolePartyType) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         SecurityRolePartyTypeValue securityRolePartyTypeValue = securityControl.getSecurityRolePartyTypeValue(securityRolePartyType);
         
         securityRolePartyTypeValue.setPartySelectorPK(partySelector == null? null: partySelector.getPrimaryKey());

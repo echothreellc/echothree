@@ -63,7 +63,7 @@ public class EditDateTimeFormatDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditDateTimeFormatDescriptionResult result = PartyResultFactory.getEditDateTimeFormatDescriptionResult();
         String dateTimeFormatName = spec.getDateTimeFormatName();
         DateTimeFormat dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);

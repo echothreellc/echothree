@@ -53,12 +53,12 @@ public class CreateForumGroupDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumGroupName = form.getForumGroupName();
         ForumGroup forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
         if(forumGroup != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

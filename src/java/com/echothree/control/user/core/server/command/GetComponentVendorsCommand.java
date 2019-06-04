@@ -59,7 +59,7 @@ public class GetComponentVendorsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetComponentVendorsResult result = CoreResultFactory.getGetComponentVendorsResult();
         
         result.setComponentVendors(coreControl.getComponentVendorTransfers(getUserVisit()));

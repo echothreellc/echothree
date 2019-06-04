@@ -59,7 +59,7 @@ public class GetApplicationsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetApplicationsResult result = CoreResultFactory.getGetApplicationsResult();
         
         result.setApplications(coreControl.getApplicationTransfers(getUserVisit()));

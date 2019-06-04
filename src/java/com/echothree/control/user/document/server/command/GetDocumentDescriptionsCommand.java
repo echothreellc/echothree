@@ -64,7 +64,7 @@ public class GetDocumentDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         GetDocumentDescriptionsResult result = DocumentResultFactory.getGetDocumentDescriptionsResult();
         String documentName = form.getDocumentName();
         Document document = documentControl.getDocumentByName(documentName);

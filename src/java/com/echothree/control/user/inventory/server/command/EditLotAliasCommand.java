@@ -89,7 +89,7 @@ public class EditLotAliasCommand
     
     @Override
     public LotAlias getEntity(EditLotAliasResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotAlias lotAlias = null;
         String lotTypeName = spec.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
@@ -135,7 +135,7 @@ public class EditLotAliasCommand
 
     @Override
     public void fillInResult(EditLotAliasResult result, LotAlias lotAlias) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setLotAlias(inventoryControl.getLotAliasTransfer(getUserVisit(), lotAlias));
     }
@@ -147,7 +147,7 @@ public class EditLotAliasCommand
 
     @Override
     public void canUpdate(LotAlias lotAlias) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String alias = edit.getAlias();
         LotAlias duplicateLotAlias = inventoryControl.getLotAliasByAlias(lotAliasType, alias);
 
@@ -161,7 +161,7 @@ public class EditLotAliasCommand
 
     @Override
     public void doUpdate(LotAlias lotAlias) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotAliasValue lotAliasValue = inventoryControl.getLotAliasValue(lotAlias);
 
         lotAliasValue.setAlias(edit.getAlias());

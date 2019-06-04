@@ -101,7 +101,7 @@ public class EditChainActionSetCommand
 
     @Override
     public ChainActionSet getEntity(EditChainActionSetResult result) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainActionSet chainActionSet = null;
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -147,14 +147,14 @@ public class EditChainActionSetCommand
 
     @Override
     public void fillInResult(EditChainActionSetResult result, ChainActionSet chainActionSet) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
         result.setChainActionSet(chainControl.getChainActionSetTransfer(getUserVisit(), chainActionSet));
     }
 
     @Override
     public void doLock(ChainActionSetEdit edit, ChainActionSet chainActionSet) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainActionSetDescription chainActionSetDescription = chainControl.getChainActionSetDescription(chainActionSet, getPreferredLanguage());
         ChainActionSetDetail chainActionSetDetail = chainActionSet.getLastDetail();
 
@@ -169,7 +169,7 @@ public class EditChainActionSetCommand
 
     @Override
     public void canUpdate(ChainActionSet chainActionSet) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainActionSetName = edit.getChainActionSetName();
         ChainActionSet duplicateChainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
 
@@ -185,7 +185,7 @@ public class EditChainActionSetCommand
 
     @Override
     public void doUpdate(ChainActionSet chainActionSet) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         PartyPK partyPK = getPartyPK();
         ChainActionSetDetailValue chainActionSetDetailValue = chainControl.getChainActionSetDetailValueForUpdate(chainActionSet);
         ChainActionSetDescription chainActionSetDescription = chainControl.getChainActionSetDescriptionForUpdate(chainActionSet, getPreferredLanguage());

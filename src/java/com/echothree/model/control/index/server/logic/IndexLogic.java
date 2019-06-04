@@ -63,7 +63,7 @@ public class IndexLogic
     }
     
     public Index getIndexByName(final ExecutionErrorAccumulator eea, final String indexName) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         Index index = indexControl.getIndexByName(indexName);
 
         if(index == null) {
@@ -118,8 +118,8 @@ public class IndexLogic
         QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(eea, QueueConstants.QueueType_INDEXING);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
-            QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+            var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+            var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
             QueueTypePK queueTypePK = queueType.getPrimaryKey();
             Set<EntityType> queuedEntityTypes = new HashSet<>();
             List<IndexType> indexTypes = entityType == null ? indexControl.getIndexTypes() : indexControl.getIndexTypesByEntityType(entityType);

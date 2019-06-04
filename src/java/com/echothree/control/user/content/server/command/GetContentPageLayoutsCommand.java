@@ -62,7 +62,7 @@ public class GetContentPageLayoutsCommand
     
     @Override
     protected Collection<ContentPageLayout> getEntities() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         return contentControl.getContentPageLayouts();
     }
@@ -70,7 +70,7 @@ public class GetContentPageLayoutsCommand
     @Override
     protected BaseResult getTransfers(Collection<ContentPageLayout> entities) {
         GetContentPageLayoutsResult result = ContentResultFactory.getGetContentPageLayoutsResult();
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         result.setContentPageLayouts(contentControl.getContentPageLayoutTransfers(getUserVisit(), entities));
         

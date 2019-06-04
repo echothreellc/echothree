@@ -32,7 +32,7 @@ public class SalesOrderTrigger
         implements OrderTypeTrigger {
 
     private void unallocateInventory(final Session session, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         Order order = orderControl.getOrderByEntityInstance(workflowEntityStatus.getEntityInstance());
         
         SalesOrderLogic.getInstance().setSalesOrderStatus(session, null, order, SalesOrderStatusConstants.WorkflowDestination_ENTRY_ALLOCATED_TO_UNALLOCATED, triggeredBy);

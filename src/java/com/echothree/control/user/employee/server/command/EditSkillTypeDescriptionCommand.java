@@ -64,13 +64,13 @@ public class EditSkillTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         EditSkillTypeDescriptionResult result = EmployeeResultFactory.getEditSkillTypeDescriptionResult();
         String skillTypeName = spec.getSkillTypeName();
         SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
         
         if(skillType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

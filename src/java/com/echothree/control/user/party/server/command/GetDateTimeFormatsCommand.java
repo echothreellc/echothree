@@ -49,7 +49,7 @@ public class GetDateTimeFormatsCommand
     
     @Override
     protected Collection<DateTimeFormat> getEntities() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         
         return partyControl.getDateTimeFormats();
     }
@@ -57,7 +57,7 @@ public class GetDateTimeFormatsCommand
     @Override
     protected BaseResult getTransfers(Collection<DateTimeFormat> entities) {
         GetDateTimeFormatsResult result = PartyResultFactory.getGetDateTimeFormatsResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         
         result.setDateTimeFormats(partyControl.getDateTimeFormatTransfers(getUserVisit(), entities));
         

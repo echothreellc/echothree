@@ -96,7 +96,7 @@ public class OrderLogic
     }
     
     public OrderType getOrderTypeByName(final ExecutionErrorAccumulator eea, final String orderTypeName) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
 
         if(orderType == null) {
@@ -107,7 +107,7 @@ public class OrderLogic
     }
 
     public OrderRoleType getOrderRoleTypeByName(final ExecutionErrorAccumulator eea, final String orderRoleTypeName) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderRoleType orderRoleType = orderControl.getOrderRoleTypeByName(orderRoleTypeName);
 
         if(orderRoleType == null) {
@@ -134,7 +134,7 @@ public class OrderLogic
         } while(parentOrderType != null);
 
         if(sequenceType == null) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
             sequenceType = sequenceControl.getDefaultSequenceType();
         }
@@ -151,7 +151,7 @@ public class OrderLogic
         SequenceType sequenceType = getOrderSequenceType(eea, orderType);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
@@ -171,7 +171,7 @@ public class OrderLogic
         }
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
             orderName = sequenceControl.getNextSequenceValue(sequence);
         }
@@ -187,7 +187,7 @@ public class OrderLogic
         String orderName = getOrderName(eea, orderType, sequence);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             
             order = orderControl.createOrder(orderType, orderName, orderPriority, currency, holdUntilComplete, allowBackorders, allowSubstitutions,
                     allowCombiningShipments, term, reference, description, cancellationPolicy, returnPolicy, taxable, createdBy);
@@ -197,7 +197,7 @@ public class OrderLogic
     }
 
     public OrderAliasType getOrderAliasTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderAliasTypeName) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderAliasType orderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
         if(orderAliasType == null) {
@@ -210,7 +210,7 @@ public class OrderLogic
 
     private Order getOrderByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName,
             final EntityPermission entityPermission) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderType orderType = getOrderTypeByName(eea, orderTypeName);
         Order order = null;
 
@@ -234,7 +234,7 @@ public class OrderLogic
     }
     
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderType orderType = getOrderTypeByName(eea, orderTypeName);
         OrderPriority orderPriority = null;
 
@@ -250,7 +250,7 @@ public class OrderLogic
     }
 
     public OrderPriority getOrderPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderPriorityName) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderType orderType = getOrderTypeByName(eea, orderTypeName);
         OrderPriority orderPriority = null;
 
@@ -268,7 +268,7 @@ public class OrderLogic
     public OrderShipmentGroup createOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order, Integer orderShipmentGroupSequence,
             final ItemDeliveryType itemDeliveryType, final Boolean isDefault, final PartyContactMechanism partyContactMechanism,
             final ShippingMethod shippingMethod, final Boolean holdUntilComplete, final BasePK createdBy) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderShipmentGroup orderShipmentGroup = null;
         OrderStatus orderStatus = orderControl.getOrderStatusForUpdate(order);
 
@@ -299,13 +299,13 @@ public class OrderLogic
     }
     
     public OrderShipmentGroup getDefaultOrderShipmentGroup(final Order order, final ItemDeliveryType itemDeliveryType) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         
         return orderControl.getDefaultOrderShipmentGroup(order, itemDeliveryType);
     }
 
     public Set<Item> getItemsFromOrder(Order order) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         List<OrderLine> orderLines = orderControl.getOrderLinesByOrder(order);
         Set<Item> items = new HashSet<>(orderLines.size());
 
@@ -354,7 +354,7 @@ public class OrderLogic
                 PaymentMethodLogic.getInstance().checkAcceptanceOfItems(session, eea, paymentMethod, getItemsFromOrder(order), createdBy);
                 
                 if(eea == null || !eea.hasExecutionErrors()) {
-                    OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+                    var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
                     OrderStatus orderStatus = orderControl.getOrderStatusForUpdate(order);
 
                     if(orderPaymentPreferenceSequence == null) {
@@ -394,7 +394,7 @@ public class OrderLogic
 
     private OrderPaymentPreference getOrderPaymentPreferenceByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName,
             final String orderPaymentPreferenceSequence, final EntityPermission entityPermission) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         Order order = getOrderByName(eea, orderTypeName, orderName);
         OrderPaymentPreference orderPaymentPreference = null;
         
@@ -422,7 +422,7 @@ public class OrderLogic
     
     public void checkItemAgainstOrderPaymentPreferences(final Session session, final ExecutionErrorAccumulator eea, final Order order, final Item item,
             BasePK evaluatedBy) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         List<OrderPaymentPreference> orderPaymentPreferences = orderControl.getOrderPaymentPreferencesByOrder(order);
         
         orderPaymentPreferences.stream().forEach((orderPaymentPreference) -> {
@@ -454,7 +454,7 @@ public class OrderLogic
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             OrderStatus orderStatus = orderControl.getOrderStatusForUpdate(order);
 
             if(orderLineSequence == null) {
@@ -486,7 +486,7 @@ public class OrderLogic
 
     private OrderLine getOrderLineByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName, final String orderLineSequence,
             final EntityPermission entityPermission) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         Order order = getOrderByName(eea, orderTypeName, orderName);
         OrderLine orderLine = null;
         
@@ -510,7 +510,7 @@ public class OrderLogic
     }
     
     public Long getOrderTotalWithAdjustments(final Order order) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         long total = 0;
         List<OrderAdjustment> orderAdjustments = orderControl.getOrderAdjustmentsByOrder(order);
 
@@ -520,7 +520,7 @@ public class OrderLogic
     }
 
     public Long getOrderLineTotalsWithAdjustments(final Order order) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         List<OrderLine> orderLines = orderControl.getOrderLinesByOrder(order);
         long total = 0;
 
@@ -530,7 +530,7 @@ public class OrderLogic
     }
 
     public Long getOrderLineTotalWithAdjustments(final OrderLine orderLine) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderLineDetail orderLineDetail = orderLine.getLastDetail();
         long total = orderLineDetail.getQuantity() * orderLineDetail.getUnitAmount();
         List<OrderLineAdjustment> orderLineAdjustments = orderControl.getOrderLineAdjustmentsByOrderLine(orderLine);

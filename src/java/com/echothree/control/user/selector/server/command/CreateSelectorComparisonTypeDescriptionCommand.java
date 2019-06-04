@@ -53,12 +53,12 @@ public class CreateSelectorComparisonTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         String selectorComparisonTypeName = form.getSelectorComparisonTypeName();
         SelectorComparisonType selectorComparisonType = selectorControl.getSelectorComparisonTypeByName(selectorComparisonTypeName);
         
         if(selectorComparisonType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

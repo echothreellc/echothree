@@ -81,7 +81,7 @@ public class EditClubCommand
     
     @Override
     protected BaseResult execute() {
-        ClubControl clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
         EditClubResult result = ClubResultFactory.getEditClubResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -126,7 +126,7 @@ public class EditClubCommand
                 Club duplicateClub = clubControl.getClubByName(clubName);
                 
                 if(duplicateClub == null || club.equals(duplicateClub)) {
-                    SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+                    var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
                     SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
                     String subscriptionTypeName = edit.getSubscriptionTypeName();
                     SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
@@ -139,7 +139,7 @@ public class EditClubCommand
                             Filter clubPriceFilter = null;
                             
                             if(clubPriceFilterName != null) {
-                                FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+                                var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
                                 FilterKind filterKind = filterControl.getFilterKindByName(FilterConstants.FilterKind_PRICE);
                                 FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterConstants.FilterType_CLUB);
                                 
@@ -149,7 +149,7 @@ public class EditClubCommand
                             }
                             
                             if(clubPriceFilterName == null || clubPriceFilter != null) {
-                                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                 String currencyIsoName = edit.getCurrencyIsoName();
                                 Currency currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 

@@ -60,7 +60,7 @@ public class GetSearchResultActionTypesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         GetSearchResultActionTypesResult result = SearchResultFactory.getGetSearchResultActionTypesResult();
         
         result.setSearchResultActionTypes(searchControl.getSearchResultActionTypeTransfers(getUserVisit()));

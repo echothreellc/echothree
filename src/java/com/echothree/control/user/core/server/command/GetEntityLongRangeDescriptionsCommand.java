@@ -72,7 +72,7 @@ public class GetEntityLongRangeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityLongRangeDescriptionsResult result = CoreResultFactory.getGetEntityLongRangeDescriptionsResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);

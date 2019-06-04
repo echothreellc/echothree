@@ -124,7 +124,7 @@ public class CreateVendorCommand
     @Override
     protected BaseResult execute() {
         CreateVendorResult result = PartyResultFactory.getCreateVendorResult();
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
 
@@ -137,7 +137,7 @@ public class CreateVendorCommand
                 CancellationPolicy cancellationPolicy = null;
 
                 if(cancellationPolicyName != null) {
-                    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                    var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                     CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
 
                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -148,14 +148,14 @@ public class CreateVendorCommand
                     ReturnPolicy returnPolicy = null;
 
                     if(returnPolicyName != null) {
-                        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN);
 
                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                     }
 
                     if(returnPolicyName == null || returnPolicy != null) {
-                        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                         String apGlAccountName = form.getApGlAccountName();
                         GlAccount apGlAccount = apGlAccountName == null ? null : accountingControl.getGlAccountByName(apGlAccountName);
 
@@ -164,13 +164,13 @@ public class CreateVendorCommand
                                     : apGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
-                                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                                 String defaultItemAliasTypeName = form.getDefaultItemAliasTypeName();
                                 ItemAliasType defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
 
                                 if(defaultItemAliasTypeName == null || defaultItemAliasType != null) {
                                     if(defaultItemAliasType == null || !defaultItemAliasType.getLastDetail().getAllowMultiple()) {
-                                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                                         String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
                                         Language preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
@@ -193,10 +193,10 @@ public class CreateVendorCommand
                                                     }
 
                                                     if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                                        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-                                                        CoreControl coreControl = getCoreControl();
-                                                        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
-                                                        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                                        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                                                        var coreControl = getCoreControl();
+                                                        var termControl = (TermControl)Session.getModelController(TermControl.class);
+                                                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                                         VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
                                                         Soundex soundex = new Soundex();
                                                         PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_VENDOR);

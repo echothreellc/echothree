@@ -1876,7 +1876,7 @@ public class SelectorControl
     }
     
     public void deleteSelector(Selector selector, BasePK deletedBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         
         securityControl.deleteSecurityRolePartyTypesBySelector(selector, deletedBy);
         deleteSelectorNodesBySelector(selector, deletedBy);

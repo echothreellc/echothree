@@ -51,7 +51,7 @@ public class GetGeoCodeTaxesCommand
     
     @Override
     protected BaseResult execute() {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         GetGeoCodeTaxesResult result = TaxResultFactory.getGetGeoCodeTaxesResult();
         String taxName = form.getTaxName();
         Tax tax = taxControl.getTaxByName(taxName);

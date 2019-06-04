@@ -51,7 +51,7 @@ public class GetLocationTypesCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         GetLocationTypesResult result = WarehouseResultFactory.getGetLocationTypesResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);

@@ -56,7 +56,7 @@ public class GetMimeTypeCommand
 
     @Override
     protected MimeType getEntity() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeName = form.getMimeTypeName();
         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
@@ -69,7 +69,7 @@ public class GetMimeTypeCommand
 
     @Override
     protected BaseResult getTransfer(MimeType mimeType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetMimeTypeResult result = CoreResultFactory.getGetMimeTypeResult();
 
         if(mimeType != null) {

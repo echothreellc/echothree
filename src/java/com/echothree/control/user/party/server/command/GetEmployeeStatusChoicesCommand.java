@@ -65,7 +65,7 @@ public class GetEmployeeStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         GetEmployeeStatusChoicesResult result = PartyResultFactory.getGetEmployeeStatusChoicesResult();
         String employeeName = form.getEmployeeName();
         PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);

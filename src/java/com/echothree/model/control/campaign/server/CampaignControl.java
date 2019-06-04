@@ -156,7 +156,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public Campaign createCampaign(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN);
         String campaignName = sequenceControl.getNextSequenceValue(sequence);
         
@@ -344,7 +344,7 @@ public class CampaignControl
 
     public CampaignStatusChoicesBean getCampaignStatusChoices(String defaultCampaignStatusChoice, Language language,
             boolean allowNullChoice, Campaign campaign, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         CampaignStatusChoicesBean employeeStatusChoicesBean = new CampaignStatusChoicesBean();
         
         if(campaign == null) {
@@ -363,7 +363,7 @@ public class CampaignControl
     }
     
     public void setCampaignStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 entityInstance);
@@ -674,7 +674,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignSource createCampaignSource(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN_SOURCE);
         String campaignSourceName = sequenceControl.getNextSequenceValue(sequence);
         
@@ -862,7 +862,7 @@ public class CampaignControl
 
     public CampaignSourceStatusChoicesBean getCampaignSourceStatusChoices(String defaultCampaignSourceStatusChoice, Language language,
             boolean allowNullChoice, CampaignSource campaignSource, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         CampaignSourceStatusChoicesBean employeeStatusChoicesBean = new CampaignSourceStatusChoicesBean();
         
         if(campaignSource == null) {
@@ -881,7 +881,7 @@ public class CampaignControl
     }
     
     public void setCampaignSourceStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 entityInstance);
@@ -1192,7 +1192,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignMedium createCampaignMedium(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN_MEDIUM);
         String campaignMediumName = sequenceControl.getNextSequenceValue(sequence);
         
@@ -1380,7 +1380,7 @@ public class CampaignControl
 
     public CampaignMediumStatusChoicesBean getCampaignMediumStatusChoices(String defaultCampaignMediumStatusChoice, Language language,
             boolean allowNullChoice, CampaignMedium campaignMedium, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         CampaignMediumStatusChoicesBean employeeStatusChoicesBean = new CampaignMediumStatusChoicesBean();
         
         if(campaignMedium == null) {
@@ -1399,7 +1399,7 @@ public class CampaignControl
     }
     
     public void setCampaignMediumStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 entityInstance);
@@ -1710,7 +1710,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignTerm createCampaignTerm(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN_TERM);
         String campaignTermName = sequenceControl.getNextSequenceValue(sequence);
         
@@ -1898,7 +1898,7 @@ public class CampaignControl
 
     public CampaignTermStatusChoicesBean getCampaignTermStatusChoices(String defaultCampaignTermStatusChoice, Language language,
             boolean allowNullChoice, CampaignTerm campaignTerm, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         CampaignTermStatusChoicesBean employeeStatusChoicesBean = new CampaignTermStatusChoicesBean();
         
         if(campaignTerm == null) {
@@ -1917,7 +1917,7 @@ public class CampaignControl
     }
     
     public void setCampaignTermStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 entityInstance);
@@ -2228,7 +2228,7 @@ public class CampaignControl
     // --------------------------------------------------------------------------------
 
     public CampaignContent createCampaignContent(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN_CONTENT);
         String campaignContentName = sequenceControl.getNextSequenceValue(sequence);
         
@@ -2416,7 +2416,7 @@ public class CampaignControl
 
     public CampaignContentStatusChoicesBean getCampaignContentStatusChoices(String defaultCampaignContentStatusChoice, Language language,
             boolean allowNullChoice, CampaignContent campaignContent, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         CampaignContentStatusChoicesBean employeeStatusChoicesBean = new CampaignContentStatusChoicesBean();
         
         if(campaignContent == null) {
@@ -2435,7 +2435,7 @@ public class CampaignControl
     }
     
     public void setCampaignContentStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 entityInstance);
@@ -2747,7 +2747,7 @@ public class CampaignControl
 
     public UserVisitCampaign createUserVisitCampaign(UserVisit userVisit, Long time, Campaign campaign, CampaignSource campaignSource,
             CampaignMedium campaignMedium, CampaignTerm campaignTerm, CampaignContent campaignContent) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         UserVisitStatus userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitCampaignSequence = userVisitStatus.getUserVisitCampaignSequence()+ 1;
         

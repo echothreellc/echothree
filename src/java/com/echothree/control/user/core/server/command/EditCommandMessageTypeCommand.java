@@ -89,7 +89,7 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public CommandMessageType getEntity(EditCommandMessageTypeResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandMessageType commandMessageType = null;
         String commandMessageTypeName = spec.getCommandMessageTypeName();
 
@@ -115,14 +115,14 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void fillInResult(EditCommandMessageTypeResult result, CommandMessageType commandMessageType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setCommandMessageType(coreControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
     }
 
     @Override
     public void doLock(CommandMessageTypeEdit edit, CommandMessageType commandMessageType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandMessageTypeDescription commandMessageTypeDescription = coreControl.getCommandMessageTypeDescription(commandMessageType, getPreferredLanguage());
         CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void canUpdate(CommandMessageType commandMessageType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String commandMessageTypeName = edit.getCommandMessageTypeName();
         CommandMessageType duplicateCommandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
 
@@ -148,7 +148,7 @@ public class EditCommandMessageTypeCommand
 
     @Override
     public void doUpdate(CommandMessageType commandMessageType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         CommandMessageTypeDetailValue commandMessageTypeDetailValue = coreControl.getCommandMessageTypeDetailValueForUpdate(commandMessageType);
         CommandMessageTypeDescription commandMessageTypeDescription = coreControl.getCommandMessageTypeDescriptionForUpdate(commandMessageType, getPreferredLanguage());

@@ -87,13 +87,13 @@ public class EditServerDescriptionCommand
 
     @Override
     public ServerDescription getEntity(EditServerDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ServerDescription serverDescription = null;
         String serverName = spec.getServerName();
         Server server = coreControl.getServerByName(serverName);
 
         if(server != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditServerDescriptionCommand
 
     @Override
     public void fillInResult(EditServerDescriptionResult result, ServerDescription serverDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setServerDescription(coreControl.getServerDescriptionTransfer(getUserVisit(), serverDescription));
     }
@@ -136,7 +136,7 @@ public class EditServerDescriptionCommand
 
     @Override
     public void doUpdate(ServerDescription serverDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ServerDescriptionValue serverDescriptionValue = coreControl.getServerDescriptionValue(serverDescription);
         serverDescriptionValue.setDescription(edit.getDescription());
 

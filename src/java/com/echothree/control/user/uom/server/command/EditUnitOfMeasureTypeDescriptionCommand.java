@@ -68,7 +68,7 @@ public class EditUnitOfMeasureTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         EditUnitOfMeasureTypeDescriptionResult result = UomResultFactory.getEditUnitOfMeasureTypeDescriptionResult();
         String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
@@ -78,7 +78,7 @@ public class EditUnitOfMeasureTypeDescriptionCommand
             UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 

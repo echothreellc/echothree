@@ -48,7 +48,7 @@ public class SetDefaultGenderCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String genderName = form.getGenderName();
         GenderDetailValue genderDetailValue = partyControl.getGenderDetailValueByNameForUpdate(genderName);
         

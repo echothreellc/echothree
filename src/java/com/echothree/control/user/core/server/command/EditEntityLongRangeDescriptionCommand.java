@@ -93,7 +93,7 @@ public class EditEntityLongRangeDescriptionCommand
 
     @Override
     public EntityLongRangeDescription getEntity(EditEntityLongRangeDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityLongRangeDescription entityLongRangeDescription = null;
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -111,7 +111,7 @@ public class EditEntityLongRangeDescriptionCommand
                     EntityLongRange entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
 
                     if(entityLongRange != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         String languageIsoName = spec.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -152,7 +152,7 @@ public class EditEntityLongRangeDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityLongRangeDescriptionResult result, EntityLongRangeDescription entityLongRangeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityLongRangeDescription(coreControl.getEntityLongRangeDescriptionTransfer(getUserVisit(), entityLongRangeDescription, null));
     }
@@ -164,7 +164,7 @@ public class EditEntityLongRangeDescriptionCommand
 
     @Override
     public void doUpdate(EntityLongRangeDescription entityLongRangeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityLongRangeDescriptionValue entityLongRangeDescriptionValue = coreControl.getEntityLongRangeDescriptionValue(entityLongRangeDescription);
         
         entityLongRangeDescriptionValue.setDescription(edit.getDescription());

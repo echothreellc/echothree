@@ -43,7 +43,7 @@ public class OfferUseLogic
     }
     
     public Use getUseByName(final ExecutionErrorAccumulator eea, final String useName) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Use use = offerControl.getUseByName(useName);
 
         if(use == null) {
@@ -54,7 +54,7 @@ public class OfferUseLogic
     }
 
     public OfferUse getOfferUseByName(final ExecutionErrorAccumulator eea, final String offerName, final String useName) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Offer offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
         OfferUse offerUse = null;
         

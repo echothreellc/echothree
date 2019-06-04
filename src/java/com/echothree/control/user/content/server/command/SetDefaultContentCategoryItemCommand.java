@@ -82,7 +82,7 @@ public class SetDefaultContentCategoryItemCommand
     
     @Override
     protected BaseResult execute() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -95,24 +95,24 @@ public class SetDefaultContentCategoryItemCommand
                 ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
-                    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                    var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                     String itemName = form.getItemName();
                     Item item = itemControl.getItemByName(itemName);
                     
                     if(item != null) {
-                        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                         String inventoryConditionName = form.getInventoryConditionName();
                         InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                         
                         if(inventoryCondition != null) {
-                            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
                             String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             ItemDetail itemDetail = item.getLastDetail();
                             UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                             UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
-                                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                 String currencyIsoName = form.getCurrencyIsoName();
                                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 

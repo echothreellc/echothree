@@ -82,7 +82,7 @@ public class CreateEntityCollectionAttributeCommand
 
                         if(EntityAttributeTypes.COLLECTION.name().equals(entityAttributeTypeName)) {
                             if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                                CoreControl coreControl = getCoreControl();
+                                var coreControl = getCoreControl();
                                 String entityRefAttribute = form.getEntityRefAttribute();
                                 EntityInstance entityInstanceAttribute = coreControl.getEntityInstanceByEntityRef(entityRefAttribute);
 

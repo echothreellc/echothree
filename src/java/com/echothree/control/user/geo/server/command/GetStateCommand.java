@@ -90,7 +90,7 @@ public class GetStateCommand
         }
         
         if(parameterCount == 1) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             
             String countryGeoCodeName = form.getCountryGeoCodeName();
             GeoCode countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);

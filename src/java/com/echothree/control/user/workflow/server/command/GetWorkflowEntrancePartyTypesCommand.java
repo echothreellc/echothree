@@ -52,7 +52,7 @@ public class GetWorkflowEntrancePartyTypesCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         GetWorkflowEntrancePartyTypesResult result = WorkflowResultFactory.getGetWorkflowEntrancePartyTypesResult();
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);

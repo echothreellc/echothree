@@ -63,7 +63,7 @@ public class GetEditorDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEditorDescriptionsResult result = CoreResultFactory.getGetEditorDescriptionsResult();
         String editorName = form.getEditorName();
         Editor editor = coreControl.getEditorByName(editorName);

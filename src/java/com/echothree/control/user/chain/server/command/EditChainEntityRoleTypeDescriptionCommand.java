@@ -91,7 +91,7 @@ public class EditChainEntityRoleTypeDescriptionCommand
 
     @Override
     public ChainEntityRoleTypeDescription getEntity(EditChainEntityRoleTypeDescriptionResult result) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainEntityRoleTypeDescription chainEntityRoleTypeDescription = null;
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -105,7 +105,7 @@ public class EditChainEntityRoleTypeDescriptionCommand
                 ChainEntityRoleType chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
                 if(chainEntityRoleType != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -142,7 +142,7 @@ public class EditChainEntityRoleTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditChainEntityRoleTypeDescriptionResult result, ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
         result.setChainEntityRoleTypeDescription(chainControl.getChainEntityRoleTypeDescriptionTransfer(getUserVisit(), chainEntityRoleTypeDescription));
     }
@@ -154,7 +154,7 @@ public class EditChainEntityRoleTypeDescriptionCommand
 
     @Override
     public void doUpdate(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainEntityRoleTypeDescriptionValue chainEntityRoleTypeDescriptionValue = chainControl.getChainEntityRoleTypeDescriptionValue(chainEntityRoleTypeDescription);
 
         chainEntityRoleTypeDescriptionValue.setDescription(edit.getDescription());

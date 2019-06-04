@@ -62,7 +62,7 @@ public class GetShipmentTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         GetShipmentTypeChoicesResult result = ShipmentResultFactory.getGetShipmentTypeChoicesResult();
         String defaultShipmentTypeChoice = form.getDefaultShipmentTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

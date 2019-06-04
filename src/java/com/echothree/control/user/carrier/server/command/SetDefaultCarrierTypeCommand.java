@@ -62,7 +62,7 @@ public class SetDefaultCarrierTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
         String carrierTypeName = form.getCarrierTypeName();
         CarrierTypeDetailValue carrierTypeDetailValue = carrierControl.getCarrierTypeDetailValueByNameForUpdate(carrierTypeName);
         

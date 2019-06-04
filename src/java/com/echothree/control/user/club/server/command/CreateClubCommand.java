@@ -66,12 +66,12 @@ public class CreateClubCommand
     
     @Override
     protected BaseResult execute() {
-        ClubControl clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
         String clubName = form.getClubName();
         Club club = clubControl.getClubByName(clubName);
         
         if(club == null) {
-            SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+            var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
             SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
             String subscriptionTypeName = form.getSubscriptionTypeName();
             SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
@@ -84,7 +84,7 @@ public class CreateClubCommand
                     Filter clubPriceFilter = null;
                     
                     if(clubPriceFilterName != null) {
-                        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+                        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
                         FilterKind filterKind = filterControl.getFilterKindByName(FilterConstants.FilterKind_PRICE);
                         FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterConstants.FilterType_CLUB);
                         
@@ -94,7 +94,7 @@ public class CreateClubCommand
                     }
                     
                     if(clubPriceFilterName == null || clubPriceFilter != null) {
-                        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                         String currencyIsoName = form.getCurrencyIsoName();
                         Currency currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
                         

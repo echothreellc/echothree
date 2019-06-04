@@ -89,7 +89,7 @@ public class EditBatchAliasCommand
     
     @Override
     public BatchAlias getEntity(EditBatchAliasResult result) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchAlias batchAlias = null;
         String batchTypeName = spec.getBatchTypeName();
         BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
@@ -135,7 +135,7 @@ public class EditBatchAliasCommand
 
     @Override
     public void fillInResult(EditBatchAliasResult result, BatchAlias batchAlias) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
 
         result.setBatchAlias(batchControl.getBatchAliasTransfer(getUserVisit(), batchAlias));
     }
@@ -147,7 +147,7 @@ public class EditBatchAliasCommand
 
     @Override
     public void canUpdate(BatchAlias batchAlias) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         String alias = edit.getAlias();
         BatchAlias duplicateBatchAlias = batchControl.getBatchAliasByAlias(batchAliasType, alias);
 
@@ -161,7 +161,7 @@ public class EditBatchAliasCommand
 
     @Override
     public void doUpdate(BatchAlias batchAlias) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchAliasValue batchAliasValue = batchControl.getBatchAliasValue(batchAlias);
 
         batchAliasValue.setAlias(edit.getAlias());

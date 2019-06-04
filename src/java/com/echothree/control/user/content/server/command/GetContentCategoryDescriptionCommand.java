@@ -73,7 +73,7 @@ public class GetContentCategoryDescriptionCommand
     @Override
     protected BaseResult execute() {
         GetContentCategoryDescriptionResult result = ContentResultFactory.getGetContentCategoryDescriptionResult();
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -86,7 +86,7 @@ public class GetContentCategoryDescriptionCommand
                 ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = form.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
                     

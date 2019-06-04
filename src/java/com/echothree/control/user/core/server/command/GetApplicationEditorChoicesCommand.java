@@ -69,7 +69,7 @@ public class GetApplicationEditorChoicesCommand
         Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String defaultEditorChoice = form.getDefaultEditorChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

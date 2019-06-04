@@ -46,7 +46,7 @@ public class GetClubsCommand
     
     @Override
     protected BaseResult execute() {
-        ClubControl clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
         GetClubsResult result = ClubResultFactory.getGetClubsResult();
         
         result.setClubs(clubControl.getClubTransfers(getUserVisit()));

@@ -67,7 +67,7 @@ public class GetInventoryConditionCommand
     
     @Override
     protected BaseResult getTransfer(InventoryCondition inventoryCondition) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetInventoryConditionResult result = InventoryResultFactory.getGetInventoryConditionResult();
 
         if(inventoryCondition != null) {

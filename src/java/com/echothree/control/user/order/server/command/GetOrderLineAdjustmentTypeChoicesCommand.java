@@ -65,7 +65,7 @@ public class GetOrderLineAdjustmentTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         GetOrderLineAdjustmentTypeChoicesResult result = OrderResultFactory.getGetOrderLineAdjustmentTypeChoicesResult();
         String orderTypeName = form.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);

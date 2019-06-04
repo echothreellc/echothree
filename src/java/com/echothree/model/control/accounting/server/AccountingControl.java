@@ -822,7 +822,7 @@ public class AccountingControl
     }
     
     private void deleteItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, boolean checkDefault, BasePK deletedBy) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         ItemAccountingCategoryDetail itemAccountingCategoryDetail = itemAccountingCategory.getLastDetailForUpdate();
         
         deleteItemAccountingCategoriesByParentItemAccountingCategory(itemAccountingCategory, deletedBy);
@@ -4722,7 +4722,7 @@ public class AccountingControl
     }
     
     public TransactionGroup createTransactionGroup(BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_TRANSACTION_GROUP);
         String transactionGroupName = sequenceControl.getNextSequenceValue(sequence);
         
@@ -4845,7 +4845,7 @@ public class AccountingControl
     
     public TransactionGroupStatusChoicesBean getTransactionGroupStatusChoices(String defaultTransactionGroupStatusChoice, Language language, boolean allowNullChoice,
             TransactionGroup transactionGroup, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         TransactionGroupStatusChoicesBean transactionGroupStatusChoicesBean = new TransactionGroupStatusChoicesBean();
         
         if(transactionGroup == null) {
@@ -4864,7 +4864,7 @@ public class AccountingControl
     }
     
     public void setTransactionGroupStatus(ExecutionErrorAccumulator eea, TransactionGroup transactionGroup, String transactionGroupStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
         WorkflowDestination workflowDestination = transactionGroupStatusChoice == null? null:
@@ -4887,7 +4887,7 @@ public class AccountingControl
     
     public Transaction createTransaction(Party groupParty, TransactionGroup transactionGroup, TransactionType transactionType, Long postingTime,
             BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_TRANSACTION);
         String transactionName = sequenceControl.getNextSequenceValue(sequence);
         

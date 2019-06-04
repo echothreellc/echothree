@@ -52,7 +52,7 @@ public class GetWorkflowEntranceCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         GetWorkflowEntranceResult result = WorkflowResultFactory.getGetWorkflowEntranceResult();
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);

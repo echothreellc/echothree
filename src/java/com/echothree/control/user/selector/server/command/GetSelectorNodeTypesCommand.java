@@ -51,7 +51,7 @@ public class GetSelectorNodeTypesCommand
     
     @Override
     protected BaseResult execute() {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         GetSelectorNodeTypesResult result = SelectorResultFactory.getGetSelectorNodeTypesResult();
         String selectorKindName = form.getSelectorKindName();
         UserVisit userVisit = getUserVisit();

@@ -65,7 +65,7 @@ public class GetUseTypeCommand
     
     @Override
     protected UseType getEntity() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String useTypeName = form.getUseTypeName();
         UseType useType = offerControl.getUseTypeByName(useTypeName);
         
@@ -80,7 +80,7 @@ public class GetUseTypeCommand
     
     @Override
     protected BaseResult getTransfer(UseType useType) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetUseTypeResult result = OfferResultFactory.getGetUseTypeResult();
         
         if(useType != null) {

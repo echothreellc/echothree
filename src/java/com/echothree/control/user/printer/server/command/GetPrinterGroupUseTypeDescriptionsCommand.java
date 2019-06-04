@@ -50,7 +50,7 @@ public class GetPrinterGroupUseTypeDescriptionsCommand
     
    @Override
     protected BaseResult execute() {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         GetPrinterGroupUseTypeDescriptionsResult result = PrinterResultFactory.getGetPrinterGroupUseTypeDescriptionsResult();
         String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
         PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);

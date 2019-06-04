@@ -67,7 +67,7 @@ public class GetGeoCodeCurrenciesCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GetGeoCodeCurrenciesResult result = GeoResultFactory.getGetGeoCodeCurrenciesResult();
         String geoCodeName = form.getGeoCodeName();
         String currencyIsoName = form.getCurrencyIsoName();
@@ -84,7 +84,7 @@ public class GetGeoCodeCurrenciesCommand
                     addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
                 }
             } else if(currencyIsoName != null) {
-                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                 
                 if(currency != null) {

@@ -64,7 +64,7 @@ public class SetCampaignMediumStatusCommand
     
     @Override
     protected BaseResult execute() {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         String campaignMediumName = form.getCampaignMediumName();
         CampaignMedium campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
         

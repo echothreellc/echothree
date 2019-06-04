@@ -53,12 +53,12 @@ public class CreateContactMechanismTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         String contactMechanismTypeName = form.getContactMechanismTypeName();
         ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
         
         if(contactMechanismType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

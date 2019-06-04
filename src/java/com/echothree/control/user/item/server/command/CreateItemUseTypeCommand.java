@@ -50,7 +50,7 @@ public class CreateItemUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemUseTypeName = form.getItemUseTypeName();
         ItemUseType itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
         

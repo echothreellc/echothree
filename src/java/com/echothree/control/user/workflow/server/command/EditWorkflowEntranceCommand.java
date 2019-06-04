@@ -83,7 +83,7 @@ public class EditWorkflowEntranceCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         EditWorkflowEntranceResult result = WorkflowResultFactory.getEditWorkflowEntranceResult();
         String workflowName = spec.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);

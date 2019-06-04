@@ -61,7 +61,7 @@ public class SetDefaultReturnKindCommand
     
     @Override
     protected BaseResult execute() {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         String returnKindName = form.getReturnKindName();
         ReturnKindDetailValue returnKindDetailValue = returnPolicyControl.getReturnKindDetailValueByNameForUpdate(returnKindName);
         

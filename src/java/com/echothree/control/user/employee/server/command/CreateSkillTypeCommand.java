@@ -52,7 +52,7 @@ public class CreateSkillTypeCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String skillTypeName = form.getSkillTypeName();
         SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);
         

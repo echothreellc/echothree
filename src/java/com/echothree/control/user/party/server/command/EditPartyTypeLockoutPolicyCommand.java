@@ -72,7 +72,7 @@ public class EditPartyTypeLockoutPolicyCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditPartyTypeLockoutPolicyResult result = PartyResultFactory.getEditPartyTypeLockoutPolicyResult();
         String partyTypeName = spec.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -81,7 +81,7 @@ public class EditPartyTypeLockoutPolicyCommand
             PartyTypeLockoutPolicy partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
             
             if(partyTypeLockoutPolicy != null) {
-                UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = (UomControl)Session.getModelController(UomControl.class);
                 UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                 
                 if(timeUnitOfMeasureKind != null) {

@@ -62,7 +62,7 @@ public class GetLetterSourceChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
         GetLetterSourceChoicesResult result = LetterResultFactory.getGetLetterSourceChoicesResult();
         String defaultLetterSourceChoice = form.getDefaultLetterSourceChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

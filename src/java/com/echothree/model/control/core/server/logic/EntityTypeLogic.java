@@ -41,7 +41,7 @@ public class EntityTypeLogic
     }
     
     public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor, final String entityTypeName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
 
         if(entityType == null) {

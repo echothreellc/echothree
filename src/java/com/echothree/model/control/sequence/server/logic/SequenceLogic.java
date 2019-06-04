@@ -69,7 +69,7 @@ public class SequenceLogic
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
             sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
     
@@ -122,7 +122,7 @@ public class SequenceLogic
     }
     
     public Sequence getSequenceByName(final ExecutionErrorAccumulator eea, final SequenceType sequenceType, final String sequenceName) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
 
         if(sequence == null) {
@@ -134,7 +134,7 @@ public class SequenceLogic
     }
     
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
 
         if(sequence == null) {
@@ -156,7 +156,7 @@ public class SequenceLogic
     }
     
     public String getNextSequenceValue(final ExecutionErrorAccumulator eea, final Sequence sequence) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         
         return sequenceControl.getNextSequenceValue(sequence);
     }

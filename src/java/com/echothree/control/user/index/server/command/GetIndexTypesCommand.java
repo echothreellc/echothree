@@ -60,7 +60,7 @@ public class GetIndexTypesCommand
     
     @Override
     protected BaseResult execute() {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         GetIndexTypesResult result = IndexResultFactory.getGetIndexTypesResult();
         
         result.setIndexTypes(indexControl.getIndexTypeTransfers(getUserVisit()));

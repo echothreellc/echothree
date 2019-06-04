@@ -68,7 +68,7 @@ public class CreateOrderAliasCommand
 
     @Override
     protected BaseResult execute() {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String orderTypeName = form.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
 

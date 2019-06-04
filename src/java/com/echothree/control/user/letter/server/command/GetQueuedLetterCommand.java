@@ -67,13 +67,13 @@ public class GetQueuedLetterCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         GetQueuedLetterResult result = LetterResultFactory.getGetQueuedLetterResult();
         String chainInstanceName = form.getChainInstanceName();
         ChainInstance chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
         
         if(chainInstance != null) {
-            LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+            var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
             String strQueuedLetterSequence = form.getQueuedLetterSequence();
             Integer queuedLetterSequence = Integer.valueOf(strQueuedLetterSequence);
             QueuedLetter queuedLetter = letterControl.getQueuedLetter(chainInstance, queuedLetterSequence);

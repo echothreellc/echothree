@@ -87,7 +87,7 @@ public class CreateVendorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         String vendorTypeName = form.getVendorTypeName();
         VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
 
@@ -96,7 +96,7 @@ public class CreateVendorTypeCommand
             CancellationPolicy defaultCancellationPolicy = null;
 
             if(defaultCancellationPolicyName != null) {
-                CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                 CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
                 defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, defaultCancellationPolicyName);
@@ -107,14 +107,14 @@ public class CreateVendorTypeCommand
                 ReturnPolicy defaultReturnPolicy = null;
 
                 if(defaultReturnPolicyName != null) {
-                    ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                    var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                     ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
                     defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                 }
 
                 if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                     String defaultApGlAccountName = form.getDefaultApGlAccountName();
                     GlAccount defaultApGlAccount = defaultApGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultApGlAccountName);
 

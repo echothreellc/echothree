@@ -57,7 +57,7 @@ public class CreateForumMessageAttachmentDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         GetForumMessageAttachmentDescriptionsResult result = ForumResultFactory.getGetForumMessageAttachmentDescriptionsResult();
         String forumMessageName = form.getForumMessageName();
         ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
@@ -67,7 +67,7 @@ public class CreateForumMessageAttachmentDescriptionCommand
             ForumMessageAttachment forumMessageAttachment = forumControl.getForumMessageAttachmentBySequence(forumMessage, forumMessageAttachmentSequence);
 
             if(forumMessageAttachment != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

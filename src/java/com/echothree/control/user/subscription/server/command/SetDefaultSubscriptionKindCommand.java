@@ -61,7 +61,7 @@ public class SetDefaultSubscriptionKindCommand
     
     @Override
     protected BaseResult execute() {
-        SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKindDetailValue subscriptionKindDetailValue = subscriptionControl.getSubscriptionKindDetailValueByNameForUpdate(subscriptionKindName);
         

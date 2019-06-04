@@ -64,7 +64,7 @@ public class GetUseDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetUseDescriptionsResult result = OfferResultFactory.getGetUseDescriptionsResult();
         String useName = form.getUseName();
         Use use = offerControl.getUseByName(useName);

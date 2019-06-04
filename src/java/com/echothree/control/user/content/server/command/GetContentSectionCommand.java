@@ -68,7 +68,7 @@ public class GetContentSectionCommand
         ContentSection contentSection = null;
 
         if(parameterCount == 1) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -117,7 +117,7 @@ public class GetContentSectionCommand
         GetContentSectionResult result = ContentResultFactory.getGetContentSectionResult();
         
         if(contentSection != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             
             result.setContentSection(contentControl.getContentSectionTransfer(getUserVisit(), contentSection));
         }

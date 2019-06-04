@@ -64,7 +64,7 @@ public class GetUseNameElementDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetUseNameElementDescriptionsResult result = OfferResultFactory.getGetUseNameElementDescriptionsResult();
         String useNameElementName = form.getUseNameElementName();
         UseNameElement useNameElement = offerControl.getUseNameElementByName(useNameElementName);

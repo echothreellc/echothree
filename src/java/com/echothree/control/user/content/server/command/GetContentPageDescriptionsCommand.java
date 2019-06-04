@@ -68,7 +68,7 @@ public class GetContentPageDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         GetContentPageDescriptionsResult result = ContentResultFactory.getGetContentPageDescriptionsResult();
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);

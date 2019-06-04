@@ -52,7 +52,7 @@ public class DeleteUnitOfMeasureEquivalentCommand
     
     @Override
     protected BaseResult execute() {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         

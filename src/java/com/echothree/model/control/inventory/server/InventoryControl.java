@@ -486,7 +486,7 @@ public class InventoryControl
     
     public InventoryLocationGroupStatusChoicesBean getInventoryLocationGroupStatusChoices(String defaultInventoryLocationGroupStatusChoice, Language language,
             InventoryLocationGroup inventoryLocationGroup, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         InventoryLocationGroupStatusChoicesBean inventoryLocationGroupStatusChoicesBean = new InventoryLocationGroupStatusChoicesBean();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
@@ -500,7 +500,7 @@ public class InventoryControl
     
     public void setInventoryLocationGroupStatus(ExecutionErrorAccumulator eea, InventoryLocationGroup inventoryLocationGroup,
             String inventoryLocationGroupStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                 entityInstance);
@@ -515,7 +515,7 @@ public class InventoryControl
     }
     
     private void deleteInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy, boolean adjustDefault) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
         
         deleteInventoryLocationGroupDescriptionsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
@@ -1277,8 +1277,8 @@ public class InventoryControl
     }
     
     public void deleteInventoryCondition(InventoryCondition inventoryCondition, BasePK deletedBy) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         
         deleteInventoryConditionDescriptionsByInventoryCondition(inventoryCondition, deletedBy);
         deleteInventoryConditionGlAccountsByInventoryCondition(inventoryCondition, deletedBy);

@@ -64,7 +64,7 @@ public class GetIndexTypeCommand
         int parameterCount = (indexTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+            var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
             IndexType indexType = null;
 
             if(indexTypeName == null) {

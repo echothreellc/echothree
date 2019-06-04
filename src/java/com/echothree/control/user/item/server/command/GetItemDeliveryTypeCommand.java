@@ -50,7 +50,7 @@ public class GetItemDeliveryTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemDeliveryTypeResult result = ItemResultFactory.getGetItemDeliveryTypeResult();
         String itemDeliveryTypeName = form.getItemDeliveryTypeName();
         ItemDeliveryType itemDeliveryType = itemControl.getItemDeliveryTypeByName(itemDeliveryTypeName);

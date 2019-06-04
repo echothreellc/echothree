@@ -87,13 +87,13 @@ public class EditApplicationDescriptionCommand
 
     @Override
     public ApplicationDescription getEntity(EditApplicationDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ApplicationDescription applicationDescription = null;
         String applicationName = spec.getApplicationName();
         Application application = coreControl.getApplicationByName(applicationName);
 
         if(application != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditApplicationDescriptionCommand
 
     @Override
     public void fillInResult(EditApplicationDescriptionResult result, ApplicationDescription applicationDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setApplicationDescription(coreControl.getApplicationDescriptionTransfer(getUserVisit(), applicationDescription));
     }
@@ -136,7 +136,7 @@ public class EditApplicationDescriptionCommand
 
     @Override
     public void doUpdate(ApplicationDescription applicationDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ApplicationDescriptionValue applicationDescriptionValue = coreControl.getApplicationDescriptionValue(applicationDescription);
         applicationDescriptionValue.setDescription(edit.getDescription());
 

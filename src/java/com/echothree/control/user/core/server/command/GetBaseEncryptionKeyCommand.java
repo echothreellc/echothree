@@ -64,7 +64,7 @@ public class GetBaseEncryptionKeyCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetBaseEncryptionKeyResult result = CoreResultFactory.getGetBaseEncryptionKeyResult();
         String baseEncryptionKeyName = form.getBaseEncryptionKeyName();
         BaseEncryptionKey baseEncryptionKey = baseEncryptionKeyName == null? null: coreControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);

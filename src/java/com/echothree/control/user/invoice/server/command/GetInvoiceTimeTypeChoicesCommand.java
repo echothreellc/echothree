@@ -65,7 +65,7 @@ public class GetInvoiceTimeTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         GetInvoiceTimeTypeChoicesResult result = InvoiceResultFactory.getGetInvoiceTimeTypeChoicesResult();
         String invoiceTypeName = form.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);

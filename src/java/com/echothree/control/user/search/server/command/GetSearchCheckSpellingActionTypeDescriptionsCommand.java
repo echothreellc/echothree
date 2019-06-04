@@ -64,7 +64,7 @@ public class GetSearchCheckSpellingActionTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         GetSearchCheckSpellingActionTypeDescriptionsResult result = SearchResultFactory.getGetSearchCheckSpellingActionTypeDescriptionsResult();
         String searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
         SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);

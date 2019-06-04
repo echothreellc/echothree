@@ -68,13 +68,13 @@ public class GetContactListTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         GetContactListTypeDescriptionResult result = ContactListResultFactory.getGetContactListTypeDescriptionResult();
         String contactListTypeName = form.getContactListTypeName();
         ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
         
         if(contactListType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

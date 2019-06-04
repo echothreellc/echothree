@@ -56,7 +56,7 @@ public class PartySecurityRoleTemplateLogic {
 
     public PartySecurityRoleTemplateRole createPartySecurityRoleTemplateRole(final PartySecurityRoleTemplate partySecurityRoleTemplate,
             final SecurityRole securityRole, final BasePK createdBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = securityControl.createPartySecurityRoleTemplateRole(partySecurityRoleTemplate,
                 securityRole, createdBy);
 
@@ -70,7 +70,7 @@ public class PartySecurityRoleTemplateLogic {
     }
 
     public void deletePartySecurityRoleTemplateRole(final PartySecurityRoleTemplateRole partySecurityRoleTemplateRole, final BasePK deletedBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplate partySecurityRoleTemplate = partySecurityRoleTemplateRole.getPartySecurityRoleTemplate();
 
         securityControl.deletePartySecurityRoleTemplateRole(partySecurityRoleTemplateRole, deletedBy);
@@ -93,13 +93,13 @@ public class PartySecurityRoleTemplateLogic {
     }
 
     public void deletePartySecurityRoleTemplateRoleByPartySecurityRoleTemplate(final PartySecurityRoleTemplate partySecurityRoleTemplate, final BasePK deletedBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
 
         deletePartySecurityRoleTemplateRoles(securityControl.getPartySecurityRoleTemplateRolesForUpdate(partySecurityRoleTemplate), deletedBy);
     }
 
     public void deletePartySecurityRoleTemplateRolesBySecurityRole(final SecurityRole securityRole, final BasePK deletedBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
 
         deletePartySecurityRoleTemplateRoles(securityControl.getPartySecurityRoleTemplateRolesBySecurityRoleForUpdate(securityRole), deletedBy);
     }
@@ -160,7 +160,7 @@ public class PartySecurityRoleTemplateLogic {
 
     public PreparedPartySecurityRoleTemplateTrainingClass preparePartySecurityRoleTemplateTrainingClass(final ExecutionErrorAccumulator eea,
             final PartySecurityRoleTemplate partySecurityRoleTemplate, final TrainingClass trainingClass) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         PreparedPartySecurityRoleTemplateTrainingClass preparedPartySecurityRoleTemplateTrainingClass = new PreparedPartySecurityRoleTemplateTrainingClass();
 
         preparedPartySecurityRoleTemplateTrainingClass.setPartySecurityRoleTemplate(partySecurityRoleTemplate);
@@ -170,7 +170,7 @@ public class PartySecurityRoleTemplateLogic {
         List<PartySecurityRoleTemplateUse> partySecurityRoleTemplateUses = securityControl.getPartySecurityRoleTemplateUsesByPartySecurityRoleTemplate(partySecurityRoleTemplate);
         Set<PreparedPartyTrainingClass> preparedPartyTrainingClasses = new HashSet<>();
         if(partySecurityRoleTemplateUses.size() > 0) {
-            TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+            var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
 
             for(PartySecurityRoleTemplateUse partySecurityRoleTemplateUse: partySecurityRoleTemplateUses) {
                 Party party = partySecurityRoleTemplateUse.getParty();
@@ -194,7 +194,7 @@ public class PartySecurityRoleTemplateLogic {
 
     public PartySecurityRoleTemplateTrainingClass createPartySecurityRoleTemplateTrainingClass(final Session session,
             final PreparedPartySecurityRoleTemplateTrainingClass preparedPartySecurityRoleTemplateTrainingClass, final BasePK createdBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         TrainingClass trainingClass = preparedPartySecurityRoleTemplateTrainingClass.getTrainingClass();
         PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass = securityControl.createPartySecurityRoleTemplateTrainingClass(preparedPartySecurityRoleTemplateTrainingClass.partySecurityRoleTemplate,
             trainingClass, createdBy);
@@ -209,7 +209,7 @@ public class PartySecurityRoleTemplateLogic {
 
     public void deletePartySecurityRoleTemplateTrainingClass(final PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass,
             final BasePK deletedBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         PartySecurityRoleTemplate partySecurityRoleTemplate = partySecurityRoleTemplateTrainingClass.getPartySecurityRoleTemplate();
 
         securityControl.deletePartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplateTrainingClass, deletedBy);
@@ -217,7 +217,7 @@ public class PartySecurityRoleTemplateLogic {
         // If Party has a PartyTrainingClass in ASSIGNED status for this TrainingClass, then delete it.
         List<PartySecurityRoleTemplateUse> partySecurityRoleTemplateUses = securityControl.getPartySecurityRoleTemplateUsesByPartySecurityRoleTemplate(partySecurityRoleTemplate);
         if(partySecurityRoleTemplateUses.size() > 0) {
-            TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+            var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
             TrainingClass trainingClass = partySecurityRoleTemplateTrainingClass.getTrainingClass();
 
             partySecurityRoleTemplateUses.stream().map((partySecurityRoleTemplateUse) -> partySecurityRoleTemplateUse.getParty()).map((party) -> trainingControl.getPartyTrainingClassesByStatusesForUpdate(party, trainingClass,
@@ -238,13 +238,13 @@ public class PartySecurityRoleTemplateLogic {
 
     public void deletePartySecurityRoleTemplateTrainingClassByPartySecurityRoleTemplate(final PartySecurityRoleTemplate partySecurityRoleTemplate,
             final BasePK deletedBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
 
         deletePartySecurityRoleTemplateTrainingClasses(securityControl.getPartySecurityRoleTemplateTrainingClassesForUpdate(partySecurityRoleTemplate), deletedBy);
     }
 
     public void deletePartySecurityRoleTemplateTrainingClassesByTrainingClass(final TrainingClass trainingClass, final BasePK deletedBy) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
 
         deletePartySecurityRoleTemplateTrainingClasses(securityControl.getPartySecurityRoleTemplateTrainingClassesByTrainingClassForUpdate(trainingClass), deletedBy);
     }

@@ -104,7 +104,7 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public CarrierServiceOption getEntity(EditCarrierServiceOptionResult result) {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
         CarrierServiceOption carrierServiceOption = null;
         String carrierName = spec.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
@@ -150,7 +150,7 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void fillInResult(EditCarrierServiceOptionResult result, CarrierServiceOption carrierServiceOption) {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
 
         result.setCarrierServiceOption(carrierControl.getCarrierServiceOptionTransfer(getUserVisit(), carrierServiceOption));
     }
@@ -189,7 +189,7 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void canUpdate(CarrierServiceOption carrierServiceOption) {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
 
         if(selectorKind != null) {
@@ -326,7 +326,7 @@ public class EditCarrierServiceOptionCommand
 
     @Override
     public void doUpdate(CarrierServiceOption carrierServiceOption) {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
         PartyPK partyPK = getPartyPK();
         CarrierServiceOptionValue carrierServiceOptionValue = carrierControl.getCarrierServiceOptionValue(carrierServiceOption);
     

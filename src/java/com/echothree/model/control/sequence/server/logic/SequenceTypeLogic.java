@@ -45,7 +45,7 @@ public class SequenceTypeLogic
     }
     
     public SequenceType getSequenceTypeByName(final ExecutionErrorAccumulator eea, final String sequenceTypeName) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
 
         if(sequenceType == null) {
@@ -106,7 +106,7 @@ public class SequenceTypeLogic
     }
     
     public SequenceType identifySequenceType(final String value) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         SequenceType result = null;
         List<SequenceType> sequenceTypes = sequenceControl.getSequenceTypes();
         

@@ -62,7 +62,7 @@ public class DeleteChainActionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainActionTypeName = form.getChainActionTypeName();
         ChainActionType chainActionType = chainControl.getChainActionTypeByNameForUpdate(chainActionTypeName);
         

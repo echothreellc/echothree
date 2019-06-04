@@ -61,7 +61,7 @@ public class SetDefaultApplicationCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String applicationName = form.getApplicationName();
         ApplicationDetailValue applicationDetailValue = coreControl.getApplicationDetailValueByNameForUpdate(applicationName);
         

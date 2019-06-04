@@ -74,7 +74,7 @@ public class EditEntityGeoPointAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditEntityGeoPointAttributeResult result = CoreResultFactory.getEditEntityGeoPointAttributeResult();
         String entityRef = spec.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);

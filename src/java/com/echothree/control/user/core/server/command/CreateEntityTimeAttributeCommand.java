@@ -80,7 +80,7 @@ public class CreateEntityTimeAttributeCommand
 
                         if(EntityAttributeTypes.TIME.name().equals(entityAttributeTypeName)) {
                             if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                                CoreControl coreControl = getCoreControl();
+                                var coreControl = getCoreControl();
                                 EntityTimeAttribute entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
 
                                 if(entityTimeAttribute == null) {

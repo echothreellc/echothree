@@ -60,7 +60,7 @@ public class GetLicenseTypesCommand
     
     @Override
     protected BaseResult execute() {
-        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
         GetLicenseTypesResult result = LicenseResultFactory.getGetLicenseTypesResult();
         
         result.setLicenseTypes(licenseControl.getLicenseTypeTransfers(getUserVisit()));

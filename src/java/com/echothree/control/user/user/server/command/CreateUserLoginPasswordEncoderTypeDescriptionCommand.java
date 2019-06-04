@@ -57,7 +57,7 @@ public class CreateUserLoginPasswordEncoderTypeDescriptionCommand
         UserLoginPasswordEncoderType userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeByName(userLoginPasswordEncoderTypeName);
         
         if(userLoginPasswordEncoderType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

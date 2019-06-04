@@ -90,7 +90,7 @@ public class EditEntityIntegerAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            CoreControl coreControl = getCoreControl();
+                            var coreControl = getCoreControl();
                             EntityIntegerAttribute entityIntegerAttribute = null;
                             BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

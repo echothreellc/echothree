@@ -47,7 +47,7 @@ public class ReturnPolicyLogic
     }
 
     public ReturnKind getReturnKindByName(final ExecutionErrorAccumulator eea, final String returnKindName) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind == null) {
@@ -58,7 +58,7 @@ public class ReturnPolicyLogic
     }
 
     public ReturnPolicy getReturnPolicyByName(final ExecutionErrorAccumulator eea, final String returnKindName, final String returnPolicyName) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnKind returnKind = getReturnKindByName(eea, returnKindName);
         ReturnPolicy returnPolicy = null;
         
@@ -83,7 +83,7 @@ public class ReturnPolicyLogic
         }
 
         if(returnPolicy == null) {
-            ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+            var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
             ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
             if(returnKind != null) {
@@ -101,7 +101,7 @@ public class ReturnPolicyLogic
     }
 
     public void checkDeleteReturnPolicy(final ExecutionErrorAccumulator eea, final ReturnPolicy returnPolicy) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         // Both CUSTOMERs and VENDORs use Orders and OrderLines, so check for ReturnPolicy use there first.
         boolean inUse = orderControl.countOrdersByReturnPolicy(returnPolicy) != 0;
@@ -114,11 +114,11 @@ public class ReturnPolicyLogic
             String returnKindName = returnPolicy.getLastDetail().getReturnKind().getLastDetail().getReturnKindName();
 
             if(returnKindName.equals(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN)) {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
                 inUse |= itemControl.countItemsByReturnPolicy(returnPolicy) != 0;
             } else if(returnKindName.equals(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN)) {
-                VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
 
                 inUse |= vendorControl.countVendorItemsByReturnPolicy(returnPolicy) != 0;
             }
@@ -130,7 +130,7 @@ public class ReturnPolicyLogic
     }
 
     public void deleteReturnPolicy(final ReturnPolicy returnPolicy, final BasePK deletedBy) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
 
         returnPolicyControl.deleteReturnPolicy(returnPolicy, deletedBy);
     }

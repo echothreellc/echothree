@@ -73,7 +73,7 @@ public class SetDefaultApplicationEditorCommand
             Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 ApplicationEditorDetailValue applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(application, editor);
                 
                 if(applicationEditorDetailValue != null) {

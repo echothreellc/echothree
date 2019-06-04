@@ -76,7 +76,7 @@ public class GetItemDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemDescriptionsResult result = ItemResultFactory.getGetItemDescriptionsResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
@@ -102,7 +102,7 @@ public class GetItemDescriptionsCommand
                         addExecutionError(ExecutionErrors.InvalidParameterCombination.name());
                     }
                 } else {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = form.getLanguageIsoName();
                     Language language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
 

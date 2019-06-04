@@ -75,14 +75,14 @@ public class GetOfferItemPricesCommand
     
     @Override
     protected Collection<OfferItemPrice> getEntities() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Collection<OfferItemPrice> offerItemPrices = null;
         
         offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             UserVisit userVisit = getUserVisit();
             String itemName = form.getItemName();
            

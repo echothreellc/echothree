@@ -50,7 +50,7 @@ public class CreateMimeTypeFileExtensionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeName = form.getMimeTypeName();
         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         

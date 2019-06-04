@@ -100,7 +100,7 @@ public class EditLeaveCommand
 
     @Override
     public Leave getEntity(EditLeaveResult result) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         Leave leave;
         String leaveName = spec.getLeaveName();
 
@@ -124,7 +124,7 @@ public class EditLeaveCommand
 
     @Override
     public void fillInResult(EditLeaveResult result, Leave leave) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
 
         result.setLeave(employeeControl.getLeaveTransfer(getUserVisit(), leave));
     }
@@ -133,7 +133,7 @@ public class EditLeaveCommand
     
     @Override
     public void doLock(LeaveEdit edit, Leave leave) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         LeaveDetail leaveDetail = leave.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
@@ -166,7 +166,7 @@ public class EditLeaveCommand
 
     @Override
     public void canUpdate(Leave leave) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String companyName = edit.getCompanyName();
 
         partyCompany = partyControl.getPartyCompanyByName(companyName);
@@ -180,7 +180,7 @@ public class EditLeaveCommand
                     null, ExecutionErrors.UnknownTotalTimeUnitOfMeasureTypeName.name());
 
             if(!hasExecutionErrors()) {
-                EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+                var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
                 String leaveTypeName = edit.getLeaveTypeName();
 
                 leaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
@@ -213,7 +213,7 @@ public class EditLeaveCommand
 
     @Override
     public void doUpdate(Leave leave) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         LeaveDetailValue leaveDetailValue = employeeControl.getLeaveDetailValueForUpdate(leave);
 
         leaveDetailValue.setCompanyPartyPK(partyCompany.getPartyPK());

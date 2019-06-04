@@ -69,7 +69,7 @@ public class EditWishlistTypePriorityCommand
     
     @Override
     protected BaseResult execute() {
-        WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
         EditWishlistTypePriorityResult result = WishlistResultFactory.getEditWishlistTypePriorityResult();
         
         if(editMode.equals(EditMode.LOCK)) {

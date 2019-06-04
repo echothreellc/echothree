@@ -62,7 +62,7 @@ public class GetRelatedItemTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetRelatedItemTypeChoicesResult result = ItemResultFactory.getGetRelatedItemTypeChoicesResult();
         String defaultRelatedItemTypeChoice = form.getDefaultRelatedItemTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -76,7 +76,7 @@ public class CreateGlAccountCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         String glAccountName = form.getGlAccountName();
         GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
         

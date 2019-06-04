@@ -1870,7 +1870,7 @@ public class ContactListControl
     }
 
     public void deleteContactList(ContactList contactList, BasePK deletedBy) {
-        LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
         
         letterControl.deleteLettersByContactList(contactList, deletedBy);
         deletePartyContactListsByContactList(contactList, deletedBy);
@@ -2256,7 +2256,7 @@ public class ContactListControl
     
     public PartyContactListStatusChoicesBean getPartyContactListStatusChoices(String defaultPartyContactListStatusChoice, Language language,
             boolean allowNullChoice, PartyContactList partyContactList, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         PartyContactListStatusChoicesBean partyContactListStatusChoicesBean = new PartyContactListStatusChoicesBean();
 
         if(partyContactList == null) {
@@ -2276,7 +2276,7 @@ public class ContactListControl
 
     public void setPartyContactListStatus(ExecutionErrorAccumulator eea, PartyContactList partyContactList, String partyContactListStatusChoice,
             PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(partyContactList);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS,
                 entityInstance);
@@ -3261,7 +3261,7 @@ public class ContactListControl
     
     public ContactListContactMechanismPurposeChoicesBean getContactListContactMechanismPurposeChoices(String defaultContactListContactMechanismPurposeChoice, Language language, boolean allowNullChoice,
             ContactList contactList) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes = getContactListContactMechanismPurposesByContactList(contactList);
         int size = contactListContactMechanismPurposes.size();
         List<String> labels = new ArrayList<>(size);

@@ -62,7 +62,7 @@ public class GetCampaignTermChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         GetCampaignTermChoicesResult result = CampaignResultFactory.getGetCampaignTermChoicesResult();
         String defaultCampaignTermChoice = form.getDefaultCampaignTermChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

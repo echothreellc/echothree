@@ -62,7 +62,7 @@ public class GetContentPageAreaTypesCommand
     
     @Override
     protected Collection<ContentPageAreaType> getEntities() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         return contentControl.getContentPageAreaTypes();
     }
@@ -70,7 +70,7 @@ public class GetContentPageAreaTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<ContentPageAreaType> entities) {
         GetContentPageAreaTypesResult result = ContentResultFactory.getGetContentPageAreaTypesResult();
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         result.setContentPageAreaTypes(contentControl.getContentPageAreaTypeTransfers(getUserVisit(), entities));
         

@@ -99,7 +99,7 @@ public class CreateCountryCommand
     @Override
     protected BaseResult execute() {
         CreateCountryResult result = GeoResultFactory.getCreateCountryResult();
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
         GeoCode geoCode = null;
         GeoCodeType geoCodeType = geoCodeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
@@ -128,7 +128,7 @@ public class CreateCountryCommand
                             geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_COUNTRY_NAME, countryName);
 
                             if(geoCode == null && !hasExecutionErrors()) {
-                                ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                                var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                                 String postalAddressFormatName = form.getPostalAddressFormatName();
                                 PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
 

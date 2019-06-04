@@ -55,7 +55,7 @@ public class GetCommandDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetCommandDescriptionResult result = CoreResultFactory.getGetCommandDescriptionResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -65,7 +65,7 @@ public class GetCommandDescriptionCommand
             Command command = coreControl.getCommandByName(componentVendor, commandName);
 
             if(command != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

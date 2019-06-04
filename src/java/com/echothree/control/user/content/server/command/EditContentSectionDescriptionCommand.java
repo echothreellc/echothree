@@ -89,7 +89,7 @@ public class EditContentSectionDescriptionCommand
     
     @Override
     public ContentSectionDescription getEntity(EditContentSectionDescriptionResult result) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         ContentSectionDescription contentSectionDescription = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -99,7 +99,7 @@ public class EditContentSectionDescriptionCommand
             ContentSection contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -135,7 +135,7 @@ public class EditContentSectionDescriptionCommand
     
     @Override
     public void fillInResult(EditContentSectionDescriptionResult result, ContentSectionDescription contentSectionDescription) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         result.setContentSectionDescription(contentControl.getContentSectionDescriptionTransfer(getUserVisit(), contentSectionDescription));
     }
@@ -147,7 +147,7 @@ public class EditContentSectionDescriptionCommand
     
     @Override
     public void doUpdate(ContentSectionDescription contentSectionDescription) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         ContentSectionDescriptionValue contentSectionDescriptionValue = contentControl.getContentSectionDescriptionValue(contentSectionDescription);
         contentSectionDescriptionValue.setDescription(edit.getDescription());
 

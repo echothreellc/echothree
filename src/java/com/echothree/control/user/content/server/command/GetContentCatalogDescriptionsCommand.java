@@ -66,7 +66,7 @@ public class GetContentCatalogDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         GetContentCatalogDescriptionsResult result = ContentResultFactory.getGetContentCatalogDescriptionsResult();
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);

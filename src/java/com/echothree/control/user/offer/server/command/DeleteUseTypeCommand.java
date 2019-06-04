@@ -62,7 +62,7 @@ public class DeleteUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String useTypeName = form.getUseTypeName();
         UseType useType = offerControl.getUseTypeByNameForUpdate(useTypeName);
         

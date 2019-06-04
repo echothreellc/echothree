@@ -52,7 +52,7 @@ public class GetForumGroupForumsCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         GetForumGroupForumsResult result = ForumResultFactory.getGetForumGroupForumsResult();
         String forumGroupName = form.getForumGroupName();
         String forumName = form.getForumName();

@@ -65,7 +65,7 @@ public class GetStatesCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GetStatesResult result = GeoResultFactory.getGetStatesResult();
         String countryName = form.getCountryName();
         GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);

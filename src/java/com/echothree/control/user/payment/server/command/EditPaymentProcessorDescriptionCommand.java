@@ -87,13 +87,13 @@ public class EditPaymentProcessorDescriptionCommand
 
     @Override
     public PaymentProcessorDescription getEntity(EditPaymentProcessorDescriptionResult result) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PaymentProcessorDescription paymentProcessorDescription = null;
         String paymentProcessorName = spec.getPaymentProcessorName();
         PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
 
         if(paymentProcessor != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditPaymentProcessorDescriptionCommand
 
     @Override
     public void fillInResult(EditPaymentProcessorDescriptionResult result, PaymentProcessorDescription paymentProcessorDescription) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
 
         result.setPaymentProcessorDescription(paymentControl.getPaymentProcessorDescriptionTransfer(getUserVisit(), paymentProcessorDescription));
     }
@@ -136,7 +136,7 @@ public class EditPaymentProcessorDescriptionCommand
 
     @Override
     public void doUpdate(PaymentProcessorDescription paymentProcessorDescription) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PaymentProcessorDescriptionValue paymentProcessorDescriptionValue = paymentControl.getPaymentProcessorDescriptionValue(paymentProcessorDescription);
         paymentProcessorDescriptionValue.setDescription(edit.getDescription());
 

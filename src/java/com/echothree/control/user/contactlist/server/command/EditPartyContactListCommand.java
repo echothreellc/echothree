@@ -94,13 +94,13 @@ public class EditPartyContactListCommand
     
     @Override
     public PartyContactList getEntity(EditPartyContactListResult result) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyContactList partyContactList = null;
         String partyName = spec.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
             String contactListName = spec.getContactListName();
             
             contactList = contactListControl.getContactListByName(contactListName);
@@ -132,7 +132,7 @@ public class EditPartyContactListCommand
 
     @Override
     public void fillInResult(EditPartyContactListResult result, PartyContactList partyContactList) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
 
         result.setPartyContactList(contactListControl.getPartyContactListTransfer(getUserVisit(), partyContactList));
     }
@@ -150,12 +150,12 @@ public class EditPartyContactListCommand
 
     @Override
     public void canUpdate(PartyContactList partyContactList) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         String preferredContactMechanismPurposeName = edit.getPreferredContactMechanismPurposeName();
         ContactMechanismPurpose preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
 
         if(preferredContactMechanismPurposeName == null || preferredContactMechanismPurpose != null) {
-            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
             
             preferredContactListContactMechanismPurpose = preferredContactMechanismPurpose == null ? null : contactListControl.getContactListContactMechanismPurpose(contactList, preferredContactMechanismPurpose);
 
@@ -170,7 +170,7 @@ public class EditPartyContactListCommand
 
     @Override
     public void doUpdate(PartyContactList partyContactList) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         PartyPK partyPK = getPartyPK();
         PartyContactListDetailValue partyContactListDetailValue = contactListControl.getPartyContactListDetailValueForUpdate(partyContactList);
 

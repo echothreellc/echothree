@@ -212,7 +212,7 @@ public class ShippingControl
     
     public ShippingMethodChoicesBean getShippingMethodChoices(String defaultShippingMethodChoice, Language language,
             boolean allowNullChoice, ShipmentType shipmentType) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods = shipmentControl.getShipmentTypeShippingMethodsByShipmentType(shipmentType);
         int size = shipmentTypeShippingMethods.size();
         List<String> labels = new ArrayList<>(size);
@@ -288,8 +288,8 @@ public class ShippingControl
     }
     
     public void deleteShippingMethod(ShippingMethod shippingMethod, BasePK deletedBy) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         
         returnPolicyControl.deleteReturnTypeShippingMethodsByShippingMethod(shippingMethod, deletedBy);
         shipmentControl.deleteShipmentTypeShippingMethodsByShippingMethod(shippingMethod, deletedBy);

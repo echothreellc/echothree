@@ -87,13 +87,13 @@ public class EditSelectorKindDescriptionCommand
 
     @Override
     public SelectorKindDescription getEntity(EditSelectorKindDescriptionResult result) {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         SelectorKindDescription selectorKindDescription = null;
         String selectorKindName = spec.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 
         if(selectorKind != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSelectorKindDescriptionCommand
 
     @Override
     public void fillInResult(EditSelectorKindDescriptionResult result, SelectorKindDescription selectorKindDescription) {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
 
         result.setSelectorKindDescription(selectorControl.getSelectorKindDescriptionTransfer(getUserVisit(), selectorKindDescription));
     }
@@ -136,7 +136,7 @@ public class EditSelectorKindDescriptionCommand
 
     @Override
     public void doUpdate(SelectorKindDescription selectorKindDescription) {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         SelectorKindDescriptionValue selectorKindDescriptionValue = selectorControl.getSelectorKindDescriptionValue(selectorKindDescription);
 
         selectorKindDescriptionValue.setDescription(edit.getDescription());

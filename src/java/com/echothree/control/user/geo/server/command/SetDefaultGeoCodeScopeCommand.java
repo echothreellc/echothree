@@ -61,7 +61,7 @@ public class SetDefaultGeoCodeScopeCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         String geoCodeScopeName = form.getGeoCodeScopeName();
         GeoCodeScopeDetailValue geoCodeScopeDetailValue = geoControl.getGeoCodeScopeDetailValueByNameForUpdate(geoCodeScopeName);
         

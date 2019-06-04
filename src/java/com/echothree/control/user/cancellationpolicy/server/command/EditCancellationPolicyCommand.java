@@ -99,7 +99,7 @@ public class EditCancellationPolicyCommand
 
     @Override
     public CancellationPolicy getEntity(EditCancellationPolicyResult result) {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         CancellationPolicy cancellationPolicy = null;
         String cancellationKindName = spec.getCancellationKindName();
 
@@ -133,7 +133,7 @@ public class EditCancellationPolicyCommand
 
     @Override
     public void fillInResult(EditCancellationPolicyResult result, CancellationPolicy cancellationPolicy) {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
 
         result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(getUserVisit(), cancellationPolicy));
     }
@@ -142,7 +142,7 @@ public class EditCancellationPolicyCommand
 
     @Override
     public void doLock(CancellationPolicyEdit edit, CancellationPolicy cancellationPolicy) {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         CancellationPolicyTranslation cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslation(cancellationPolicy, getPreferredLanguage());
         CancellationPolicyDetail cancellationPolicyDetail = cancellationPolicy.getLastDetail();
 
@@ -161,7 +161,7 @@ public class EditCancellationPolicyCommand
 
     @Override
     public void canUpdate(CancellationPolicy cancellationPolicy) {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         String cancellationPolicyName = edit.getCancellationPolicyName();
         CancellationPolicy duplicateCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
@@ -180,7 +180,7 @@ public class EditCancellationPolicyCommand
 
     @Override
     public void doUpdate(CancellationPolicy cancellationPolicy) {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         PartyPK partyPK = getPartyPK();
         CancellationPolicyDetailValue cancellationPolicyDetailValue = cancellationPolicyControl.getCancellationPolicyDetailValueForUpdate(cancellationPolicy);
         CancellationPolicyTranslation cancellationPolicyTranslation = cancellationPolicyControl.getCancellationPolicyTranslationForUpdate(cancellationPolicy, getPreferredLanguage());

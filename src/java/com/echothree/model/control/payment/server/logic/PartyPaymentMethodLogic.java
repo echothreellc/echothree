@@ -112,7 +112,7 @@ public class PartyPaymentMethodLogic
     }
 
     public void checkNameOnCard(final ExecutionErrorAccumulator ema, final PartyPaymentMethodEdit ppme, final PaymentMethodCreditCard paymentMethodCreditCard) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String personalTitleId = ppme.getPersonalTitleId();
         PersonalTitle personalTitle = personalTitleId == null? null: partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);
 
@@ -164,7 +164,7 @@ public class PartyPaymentMethodLogic
 
         if(strExpirationMonth != null && strExpirationYear != null) {
             if(paymentMethodCreditCard.getCheckExpirationDate()) {
-                UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+                var userControl = (UserControl)Session.getModelController(UserControl.class);
                 TimeZone timeZone = userControl.getPreferredTimeZoneFromParty(party);
                 int expirationMonth = Integer.valueOf(strExpirationMonth);
                 int expirationYear = Integer.valueOf(strExpirationYear);
@@ -220,7 +220,7 @@ public class PartyPaymentMethodLogic
 
     public void checkBillingContactMechanism(final ExecutionErrorAccumulator ema, final Party party, final PartyPaymentMethodEdit ppme,
             final PaymentMethodCreditCard paymentMethodCreditCard) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         String billingContactMechanismName = ppme.getBillingContactMechanismName();
         ContactMechanism billingContactMechanism = billingContactMechanismName == null? null: contactControl.getContactMechanismByName(billingContactMechanismName);
 
@@ -241,7 +241,7 @@ public class PartyPaymentMethodLogic
 
     public void checkIssuer(final ExecutionErrorAccumulator ema, final Party party, final PartyPaymentMethodEdit ppme,
             final PaymentMethodCreditCard paymentMethodCreditCard) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         String issuerName = ppme.getIssuerName();
         String issuerContactMechanismName = ppme.getIssuerContactMechanismName();
         ContactMechanism issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
@@ -273,7 +273,7 @@ public class PartyPaymentMethodLogic
 
     public void checkCreditCard(final Session session, final ExecutionErrorAccumulator ema, final Party party, final PaymentMethod paymentMethod,
             final PartyPaymentMethodEdit ppme) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PaymentMethodCreditCard paymentMethodCreditCard = paymentControl.getPaymentMethodCreditCard(paymentMethod);
 
         if(paymentMethodCreditCard.getRequestNameOnCard()) {
@@ -341,7 +341,7 @@ public class PartyPaymentMethodLogic
 
     private PartyPaymentMethod getPartyPaymentMethodByName(final ExecutionErrorAccumulator eea, final String partyPaymentMethodName,
             final EntityPermission entityPermission) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PartyPaymentMethod partyPaymentMethod = null;
 
         partyPaymentMethod = paymentControl.getPartyPaymentMethodByName(partyPaymentMethodName, entityPermission);

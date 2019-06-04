@@ -60,7 +60,7 @@ public class GetJobsCommand
     
     @Override
     protected BaseResult execute() {
-        JobControl jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = (JobControl)Session.getModelController(JobControl.class);
         GetJobsResult result = JobResultFactory.getGetJobsResult();
         
         result.setJobs(jobControl.getJobTransfers(getUserVisit()));

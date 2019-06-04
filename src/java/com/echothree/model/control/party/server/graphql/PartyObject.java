@@ -173,7 +173,7 @@ public class PartyObject
     @GraphQLField
     @GraphQLDescription("person")
     public PersonObject getPerson(final DataFetchingEnvironment env) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         Person person = partyControl.getPerson(party);
         
         return person == null ? null : new PersonObject(person);
@@ -182,7 +182,7 @@ public class PartyObject
     @GraphQLField
     @GraphQLDescription("party group")
     public PartyGroupObject getPartyGroup(final DataFetchingEnvironment env) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyGroup partyGroup = partyControl.getPartyGroup(party);
         
         return partyGroup == null ? null : new PartyGroupObject(partyGroup);
@@ -192,8 +192,8 @@ public class PartyObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return partyControl.getBestPartyDescription(party, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

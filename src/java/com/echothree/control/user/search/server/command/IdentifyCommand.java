@@ -82,7 +82,7 @@ public class IdentifyCommand
     private void checkItems(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             Item item = itemControl.getItemByNameThenAlias(target);
 
             if(item != null) {
@@ -97,7 +97,7 @@ public class IdentifyCommand
     private void checkVendors(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
-            VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
             Vendor vendor = vendorControl.getVendorByName(target);
 
             if(vendor != null) {
@@ -112,7 +112,7 @@ public class IdentifyCommand
     private void checkVendorItems(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
-            VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
             List<VendorItem> vendorItems = vendorControl.getVendorItemsByVendorItemName(target);
 
             vendorItems.stream().map((vendorItem) -> getCoreControl().getEntityInstanceByBasePK(vendorItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {

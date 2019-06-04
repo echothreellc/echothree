@@ -68,7 +68,7 @@ public class GetCancellationPolicyReasonsCommand
     
     @Override
     protected BaseResult execute() {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         GetCancellationPolicyReasonsResult result = CancellationPolicyResultFactory.getGetCancellationPolicyReasonsResult();
         String cancellationPolicyName = form.getCancellationPolicyName();
         String cancellationReasonName = form.getCancellationReasonName();

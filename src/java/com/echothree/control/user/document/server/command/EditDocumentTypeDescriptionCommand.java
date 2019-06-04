@@ -87,13 +87,13 @@ public class EditDocumentTypeDescriptionCommand
 
     @Override
     public DocumentTypeDescription getEntity(EditDocumentTypeDescriptionResult result) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentTypeDescription documentTypeDescription = null;
         String documentTypeName = spec.getDocumentTypeName();
         DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
         if(documentType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditDocumentTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditDocumentTypeDescriptionResult result, DocumentTypeDescription documentTypeDescription) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
 
         result.setDocumentTypeDescription(documentControl.getDocumentTypeDescriptionTransfer(getUserVisit(), documentTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditDocumentTypeDescriptionCommand
 
     @Override
     public void doUpdate(DocumentTypeDescription documentTypeDescription) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentTypeDescriptionValue documentTypeDescriptionValue = documentControl.getDocumentTypeDescriptionValue(documentTypeDescription);
         documentTypeDescriptionValue.setDescription(edit.getDescription());
 

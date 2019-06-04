@@ -49,7 +49,7 @@ public class GetNameSuffixesCommand
     
     @Override
     protected Collection<NameSuffix> getEntities() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         
         return partyControl.getNameSuffixes();
     }
@@ -57,7 +57,7 @@ public class GetNameSuffixesCommand
     @Override
     protected BaseResult getTransfers(Collection<NameSuffix> entities) {
         GetNameSuffixesResult result = PartyResultFactory.getGetNameSuffixesResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         
         result.setNameSuffixes(partyControl.getNameSuffixTransfers(getUserVisit(), entities));
         

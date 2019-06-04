@@ -72,7 +72,7 @@ public class GetEntityListItemDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityListItemDescriptionsResult result = CoreResultFactory.getGetEntityListItemDescriptionsResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);

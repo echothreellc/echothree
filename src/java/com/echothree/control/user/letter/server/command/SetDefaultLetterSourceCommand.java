@@ -61,7 +61,7 @@ public class SetDefaultLetterSourceCommand
     
     @Override
     protected BaseResult execute() {
-        LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
         String letterSourceName = form.getLetterSourceName();
         LetterSourceDetailValue letterSourceDetailValue = letterControl.getLetterSourceDetailValueByNameForUpdate(letterSourceName);
         

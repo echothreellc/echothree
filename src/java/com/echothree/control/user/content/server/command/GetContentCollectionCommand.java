@@ -52,7 +52,7 @@ public class GetContentCollectionCommand
     
     @Override
     protected ContentCollection getEntity() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -70,7 +70,7 @@ public class GetContentCollectionCommand
         GetContentCollectionResult result = ContentResultFactory.getGetContentCollectionResult();
         
         if(contentCollection != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
     
             result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));
         }

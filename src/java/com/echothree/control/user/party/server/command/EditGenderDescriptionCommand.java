@@ -63,7 +63,7 @@ public class EditGenderDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditGenderDescriptionResult result = PartyResultFactory.getEditGenderDescriptionResult();
         String genderName = spec.getGenderName();
         Gender gender = partyControl.getGenderByName(genderName);

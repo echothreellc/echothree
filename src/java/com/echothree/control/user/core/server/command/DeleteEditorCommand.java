@@ -61,7 +61,7 @@ public class DeleteEditorCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String editorName = form.getEditorName();
         Editor editor = coreControl.getEditorByNameForUpdate(editorName);
         

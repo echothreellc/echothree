@@ -61,7 +61,7 @@ public class SetDefaultPartySecurityRoleTemplateCommand
     
     @Override
     protected BaseResult execute() {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         String partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
         PartySecurityRoleTemplateDetailValue partySecurityRoleTemplateDetailValue = securityControl.getPartySecurityRoleTemplateDetailValueByNameForUpdate(partySecurityRoleTemplateName);
         

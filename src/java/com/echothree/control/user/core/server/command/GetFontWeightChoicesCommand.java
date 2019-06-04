@@ -61,7 +61,7 @@ public class GetFontWeightChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetFontWeightChoicesResult result = CoreResultFactory.getGetFontWeightChoicesResult();
         String defaultFontWeightChoice = form.getDefaultFontWeightChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

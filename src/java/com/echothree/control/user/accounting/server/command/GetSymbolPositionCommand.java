@@ -61,7 +61,7 @@ public class GetSymbolPositionCommand
     
     @Override
     protected SymbolPosition getEntity() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         SymbolPosition symbolPosition = null;
         String symbolPositionName = form.getSymbolPositionName();
         int parameterCount = (symbolPositionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -96,7 +96,7 @@ public class GetSymbolPositionCommand
     
     @Override
     protected BaseResult getTransfer(SymbolPosition symbolPosition) {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetSymbolPositionResult result = AccountingResultFactory.getGetSymbolPositionResult();
 
         if(symbolPosition != null) {

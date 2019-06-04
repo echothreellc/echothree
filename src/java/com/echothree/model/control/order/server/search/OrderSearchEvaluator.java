@@ -321,7 +321,7 @@ public class OrderSearchEvaluator
                 }
             }
         } else {
-            OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             Order order = null;
 
             if(parameterCount == 1) {

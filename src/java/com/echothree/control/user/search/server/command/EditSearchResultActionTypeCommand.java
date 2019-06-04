@@ -90,7 +90,7 @@ public class EditSearchResultActionTypeCommand
 
     @Override
     public SearchResultActionType getEntity(EditSearchResultActionTypeResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchResultActionType searchResultActionType;
         String searchResultActionTypeName = spec.getSearchResultActionTypeName();
 
@@ -114,14 +114,14 @@ public class EditSearchResultActionTypeCommand
 
     @Override
     public void fillInResult(EditSearchResultActionTypeResult result, SearchResultActionType searchResultActionType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchResultActionType(searchControl.getSearchResultActionTypeTransfer(getUserVisit(), searchResultActionType));
     }
 
     @Override
     public void doLock(SearchResultActionTypeEdit edit, SearchResultActionType searchResultActionType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchResultActionTypeDescription searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescription(searchResultActionType, getPreferredLanguage());
         SearchResultActionTypeDetail searchResultActionTypeDetail = searchResultActionType.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditSearchResultActionTypeCommand
 
     @Override
     public void canUpdate(SearchResultActionType searchResultActionType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchResultActionTypeName = edit.getSearchResultActionTypeName();
         SearchResultActionType duplicateSearchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
 
@@ -147,7 +147,7 @@ public class EditSearchResultActionTypeCommand
 
     @Override
     public void doUpdate(SearchResultActionType searchResultActionType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         PartyPK partyPK = getPartyPK();
         SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = searchControl.getSearchResultActionTypeDetailValueForUpdate(searchResultActionType);
         SearchResultActionTypeDescription searchResultActionTypeDescription = searchControl.getSearchResultActionTypeDescriptionForUpdate(searchResultActionType, getPreferredLanguage());

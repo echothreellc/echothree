@@ -49,7 +49,7 @@ public class GetMimeTypeFileExtensionCommand
 
     @Override
     protected MimeTypeFileExtension getEntity() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String fileExtension = form.getFileExtension();
         MimeTypeFileExtension mimeTypeFileExtension = coreControl.getMimeTypeFileExtension(fileExtension);
 
@@ -62,7 +62,7 @@ public class GetMimeTypeFileExtensionCommand
 
     @Override
     protected BaseResult getTransfer(MimeTypeFileExtension mimeTypeFileExtension) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetMimeTypeFileExtensionResult result = CoreResultFactory.getGetMimeTypeFileExtensionResult();
 
         if(mimeTypeFileExtension != null) {

@@ -74,7 +74,7 @@ public class CreateSecurityRolePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         String securityRoleGroupName = form.getSecurityRoleGroupName();
         SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
         
@@ -83,7 +83,7 @@ public class CreateSecurityRolePartyTypeCommand
             SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
             
             if(securityRole != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String partyTypeName = form.getPartyTypeName();
                 PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
                 
@@ -96,7 +96,7 @@ public class CreateSecurityRolePartyTypeCommand
                         
                         if(partySelectorName != null) {
                             if(partyType.getAllowUserLogins()) {
-                                SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
 
                                 if(selectorKind != null) {

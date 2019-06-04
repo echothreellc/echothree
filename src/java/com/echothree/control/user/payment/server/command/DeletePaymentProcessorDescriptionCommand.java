@@ -66,12 +66,12 @@ public class DeletePaymentProcessorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         String paymentProcessorName = form.getPaymentProcessorName();
         PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

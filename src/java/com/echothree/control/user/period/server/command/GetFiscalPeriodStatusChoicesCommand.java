@@ -69,7 +69,7 @@ public class GetFiscalPeriodStatusChoicesCommand
         Period period = FiscalPeriodLogic.getInstance().getFiscalPeriodByName(this, form.getPeriodName());
         
         if(!hasExecutionErrors()) {
-            PeriodControl periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+            var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
             String defaultFiscalPeriodStatusChoice = form.getDefaultFiscalPeriodStatusChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

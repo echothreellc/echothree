@@ -94,7 +94,7 @@ public class CreateCommunicationSourceCommand
     
     @Override
     protected BaseResult execute() {
-        CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
         String communicationSourceName = form.getCommunicationSourceName();
         CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
@@ -110,12 +110,12 @@ public class CreateCommunicationSourceCommand
                 communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
                 
                 if(communicationSourceTypeName.equals(CommunicationConstants.CommunicationSourceType_EMAIL)) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     String serverName = form.getServerName();
                     Server server = coreControl.getServerByName(serverName);
                     
                     if(server != null) {
-                        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+                        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
                         String receiveWorkEffortScopeName = form.getReceiveWorkEffortScopeName();
                         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(ReceiveCustomerEmailConstants.WorkEffortType_RECEIVE_CUSTOMER_EMAIL);
                         WorkEffortScope receiveWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, receiveWorkEffortScopeName);
@@ -131,7 +131,7 @@ public class CreateCommunicationSourceCommand
                                 Selector reviewEmployeeSelector = null;
                                 
                                 if(reviewEmployeeSelectorName != null) {
-                                    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                                     SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_EMPLOYEE);
                                     
                                     if(selectorKind != null) {

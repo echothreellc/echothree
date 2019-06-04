@@ -107,7 +107,7 @@ public class EditEntityStringAttributeCommand
                                         LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {
-                                    CoreControl coreControl = getCoreControl();
+                                    var coreControl = getCoreControl();
                                     EntityStringAttribute entityStringAttribute = null;
                                     BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

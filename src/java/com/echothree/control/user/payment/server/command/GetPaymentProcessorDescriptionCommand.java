@@ -68,13 +68,13 @@ public class GetPaymentProcessorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         GetPaymentProcessorDescriptionResult result = PaymentResultFactory.getGetPaymentProcessorDescriptionResult();
         String paymentProcessorName = form.getPaymentProcessorName();
         PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

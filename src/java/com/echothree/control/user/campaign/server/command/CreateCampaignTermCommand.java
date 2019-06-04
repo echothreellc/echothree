@@ -69,7 +69,7 @@ public class CreateCampaignTermCommand
     @Override
     protected BaseResult execute() {
         CreateCampaignTermResult result = CampaignResultFactory.getCreateCampaignTermResult();
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         String value = form.getValue();
         CampaignTerm campaignTerm = campaignControl.getCampaignTermByValue(value);
         

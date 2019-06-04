@@ -65,7 +65,7 @@ public class CreateItemDescriptionTypeUseCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemDescriptionTypeName = form.getItemDescriptionTypeName();
         ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 

@@ -70,7 +70,7 @@ public class GetGeoCodeAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GetGeoCodeAliasTypeDescriptionResult result = GeoResultFactory.getGetGeoCodeAliasTypeDescriptionResult();
         String geoCodeTypeName = form.getGeoCodeTypeName();
         GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
@@ -80,7 +80,7 @@ public class GetGeoCodeAliasTypeDescriptionCommand
             GeoCodeAliasType geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
             if(geoAliasType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

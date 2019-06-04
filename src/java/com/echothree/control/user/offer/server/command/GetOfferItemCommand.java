@@ -69,13 +69,13 @@ public class GetOfferItemCommand
     
     @Override
     protected OfferItem getEntity() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         OfferItem offerItem = null;
         String offerName = form.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
             Item item = itemControl.getItemByName(itemName);
             
@@ -100,7 +100,7 @@ public class GetOfferItemCommand
     
     @Override
     protected BaseResult getTransfer(OfferItem offerItem) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetOfferItemResult result = OfferResultFactory.getGetOfferItemResult();
 
         if(offerItem != null) {

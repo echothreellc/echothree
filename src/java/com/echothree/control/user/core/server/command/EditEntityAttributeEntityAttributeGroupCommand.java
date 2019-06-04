@@ -97,7 +97,7 @@ public class EditEntityAttributeEntityAttributeGroupCommand
             EntityAttributeGroup entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, spec.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
@@ -126,7 +126,7 @@ public class EditEntityAttributeEntityAttributeGroupCommand
 
     @Override
     public void fillInResult(EditEntityAttributeEntityAttributeGroupResult result, EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityAttributeEntityAttributeGroup(coreControl.getEntityAttributeEntityAttributeGroupTransfer(getUserVisit(), entityAttributeEntityAttributeGroup, null));
     }
@@ -138,7 +138,7 @@ public class EditEntityAttributeEntityAttributeGroupCommand
 
     @Override
     public void doUpdate(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttributeEntityAttributeGroupValue entityAttributeEntityAttributeGroupValue = coreControl.getEntityAttributeEntityAttributeGroupValue(entityAttributeEntityAttributeGroup);
         
         entityAttributeEntityAttributeGroupValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));

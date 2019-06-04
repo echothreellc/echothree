@@ -62,7 +62,7 @@ public class GetQueueTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
         GetQueueTypeChoicesResult result = QueueResultFactory.getGetQueueTypeChoicesResult();
         String defaultQueueTypeChoice = form.getDefaultQueueTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

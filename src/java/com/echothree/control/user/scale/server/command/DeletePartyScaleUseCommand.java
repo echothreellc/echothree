@@ -70,7 +70,7 @@ public class DeletePartyScaleUseCommand
         Party party = null;
 
         if(partyName != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
             party = partyControl.getPartyByName(partyName);
             if(party == null) {
@@ -81,7 +81,7 @@ public class DeletePartyScaleUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+            var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
             String scaleUseTypeName = form.getScaleUseTypeName();
             ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 

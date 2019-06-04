@@ -67,13 +67,13 @@ public class GetServerDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetServerDescriptionResult result = CoreResultFactory.getGetServerDescriptionResult();
         String serverName = form.getServerName();
         Server server = coreControl.getServerByName(serverName);
 
         if(server != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

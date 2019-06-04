@@ -50,7 +50,7 @@ public class GetSkillTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         GetSkillTypeDescriptionsResult result = EmployeeResultFactory.getGetSkillTypeDescriptionsResult();
         String skillTypeName = form.getSkillTypeName();
         SkillType skillType = employeeControl.getSkillTypeByName(skillTypeName);

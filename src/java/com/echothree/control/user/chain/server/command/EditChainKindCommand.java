@@ -90,7 +90,7 @@ public class EditChainKindCommand
 
     @Override
     public ChainKind getEntity(EditChainKindResult result) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainKind chainKind = null;
         String chainKindName = spec.getChainKindName();
 
@@ -114,14 +114,14 @@ public class EditChainKindCommand
 
     @Override
     public void fillInResult(EditChainKindResult result, ChainKind chainKind) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
         result.setChainKind(chainControl.getChainKindTransfer(getUserVisit(), chainKind));
     }
 
     @Override
     public void doLock(ChainKindEdit edit, ChainKind chainKind) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainKindDescription chainKindDescription = chainControl.getChainKindDescription(chainKind, getPreferredLanguage());
         ChainKindDetail chainKindDetail = chainKind.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditChainKindCommand
 
     @Override
     public void canUpdate(ChainKind chainKind) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainKindName = edit.getChainKindName();
         ChainKind duplicateChainKind = chainControl.getChainKindByName(chainKindName);
 
@@ -147,7 +147,7 @@ public class EditChainKindCommand
 
     @Override
     public void doUpdate(ChainKind chainKind) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         PartyPK partyPK = getPartyPK();
         ChainKindDetailValue chainKindDetailValue = chainControl.getChainKindDetailValueForUpdate(chainKind);
         ChainKindDescription chainKindDescription = chainControl.getChainKindDescriptionForUpdate(chainKind, getPreferredLanguage());

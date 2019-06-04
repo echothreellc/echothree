@@ -43,9 +43,9 @@ public class PartyTrainingClassTrigger
 
     private void expireCurrentPartyTrainingClass(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus,
             final PartyTrainingClass partyTrainingClass, final PartyPK triggeredBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         PartyTrainingClassDetail partyTrainingClassDetail = partyTrainingClass.getLastDetail();
         Party party = partyTrainingClassDetail.getParty();
         TrainingClass trainingClass = partyTrainingClassDetail.getTrainingClass();
@@ -81,7 +81,7 @@ public class PartyTrainingClassTrigger
         if(trainingClass.getLastDetail().getAlwaysReassignOnExpiration()) {
             trainingRequired = true;
         } else {
-            SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
             PartySecurityRoleTemplateUse partySecurityRoleTemplateUse = securityControl.getPartySecurityRoleTemplateUse(party);
             if(partySecurityRoleTemplateUse != null) {
                 if(securityControl.getPartySecurityRoleTemplateTrainingClass(partySecurityRoleTemplateUse.getPartySecurityRoleTemplate(), trainingClass) != null) {
@@ -95,7 +95,7 @@ public class PartyTrainingClassTrigger
     
     @Override
     public void handleTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         PartyTrainingClass partyTrainingClass = trainingControl.convertEntityInstanceToPartyTrainingClassForUpdate(getEntityInstance(workflowEntityStatus));
         String workflowStepName = getWorkflowStepName(workflowEntityStatus);
         

@@ -90,7 +90,7 @@ public class EditScaleTypeCommand
 
     @Override
     public ScaleType getEntity(EditScaleTypeResult result) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         ScaleType scaleType = null;
         String scaleTypeName = spec.getScaleTypeName();
 
@@ -116,14 +116,14 @@ public class EditScaleTypeCommand
 
     @Override
     public void fillInResult(EditScaleTypeResult result, ScaleType scaleType) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
 
         result.setScaleType(scaleControl.getScaleTypeTransfer(getUserVisit(), scaleType));
     }
 
     @Override
     public void doLock(ScaleTypeEdit edit, ScaleType scaleType) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         ScaleTypeDescription scaleTypeDescription = scaleControl.getScaleTypeDescription(scaleType, getPreferredLanguage());
         ScaleTypeDetail scaleTypeDetail = scaleType.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditScaleTypeCommand
 
     @Override
     public void canUpdate(ScaleType scaleType) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         String scaleTypeName = edit.getScaleTypeName();
         ScaleType duplicateScaleType = scaleControl.getScaleTypeByName(scaleTypeName);
 
@@ -149,7 +149,7 @@ public class EditScaleTypeCommand
 
     @Override
     public void doUpdate(ScaleType scaleType) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         PartyPK partyPK = getPartyPK();
         ScaleTypeDetailValue scaleTypeDetailValue = scaleControl.getScaleTypeDetailValueForUpdate(scaleType);
         ScaleTypeDescription scaleTypeDescription = scaleControl.getScaleTypeDescriptionForUpdate(scaleType, getPreferredLanguage());

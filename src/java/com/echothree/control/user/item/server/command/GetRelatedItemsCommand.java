@@ -55,7 +55,7 @@ public class GetRelatedItemsCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetRelatedItemsResult result = ItemResultFactory.getGetRelatedItemsResult();
         String fromItemName = form.getFromItemName();
         String toItemName = form.getToItemName();

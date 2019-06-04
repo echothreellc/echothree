@@ -65,7 +65,7 @@ public class CustomerLogic
         Customer customer = null;
 
         if(parameterCount == 1) {
-            CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
             if(customerName != null) {
                 customer = customerControl.getCustomerByName(customerName);
@@ -74,7 +74,7 @@ public class CustomerLogic
                     handleExecutionError(UnknownCustomerNameException.class, eea, ExecutionErrors.UnknownCustomerName.name(), customerName);
                 }
             } else {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
@@ -97,8 +97,8 @@ public class CustomerLogic
     }
 
     public void setCustomerStatus(final Session session, ExecutionErrorAccumulator eea, Party party, String customerStatusChoice, PartyPK modifiedBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(eea, CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());

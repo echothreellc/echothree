@@ -115,7 +115,7 @@ public class CreateCustomerTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
@@ -124,7 +124,7 @@ public class CreateCustomerTypeCommand
             Sequence customerSequence = null;
             
             if(customerSequenceName != null) {
-                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                 SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_CUSTOMER);
                 
                 if(sequenceType != null) {
@@ -133,7 +133,7 @@ public class CreateCustomerTypeCommand
             }
             
             if(customerSequenceName == null || customerSequence != null) {
-                OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                 String defaultOfferName = form.getDefaultOfferName();
                 String defaultUseName = form.getDefaultUseName();
                 String defaultSourceName = form.getDefaultSourceName();
@@ -178,7 +178,7 @@ public class CreateCustomerTypeCommand
                     Term defaultTerm = null;
                     
                     if(defaultTermName != null) {
-                        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+                        var termControl = (TermControl)Session.getModelController(TermControl.class);
                         
                         defaultTerm = termControl.getTermByName(defaultTermName);
                     }
@@ -188,7 +188,7 @@ public class CreateCustomerTypeCommand
                         CancellationPolicy defaultCancellationPolicy = null;
                         
                         if(defaultCancellationPolicyName != null) {
-                            CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                             CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
                             
                             defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, defaultCancellationPolicyName);
@@ -199,14 +199,14 @@ public class CreateCustomerTypeCommand
                             ReturnPolicy defaultReturnPolicy = null;
                             
                             if(defaultReturnPolicyName != null) {
-                                ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                 ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
                                 
                                 defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                             }
                             
                             if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                 String defaultCustomerStatusChoice = form.getDefaultCustomerStatusChoice();
                                 WorkflowEntrance defaultCustomerStatus = null;
                                 
@@ -225,7 +225,7 @@ public class CreateCustomerTypeCommand
                                     }
                                     
                                     if(defaultCustomerCreditStatusChoice == null || defaultCustomerCreditStatus != null) {
-                                        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                         String defaultArGlAccountName = form.getDefaultArGlAccountName();
                                         GlAccount defaultArGlAccount = defaultArGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultArGlAccountName);
 
@@ -238,7 +238,7 @@ public class CreateCustomerTypeCommand
                                                 AllocationPriority allocationPriority = allocationPriorityName == null ? null : AllocationPriorityLogic.getInstance().getAllocationPriorityByName(this, allocationPriorityName);
                                                 
                                                 if(!hasExecutionErrors()) {
-                                                    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                                                    var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                                                     PartyPK partyPK = getPartyPK();
                                                     Boolean defaultHoldUntilComplete = Boolean.valueOf(form.getDefaultHoldUntilComplete());
                                                     Boolean defaultAllowBackorders = Boolean.valueOf(form.getDefaultAllowBackorders());

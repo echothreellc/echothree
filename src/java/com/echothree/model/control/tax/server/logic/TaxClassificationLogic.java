@@ -41,7 +41,7 @@ public class TaxClassificationLogic
     }
 
     public TaxClassification getTaxClassificationByName(final ExecutionErrorAccumulator eea, final GeoCode countryGeoCode, final String taxClassificationName) {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         TaxClassification taxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
 
         if(taxClassification == null) {

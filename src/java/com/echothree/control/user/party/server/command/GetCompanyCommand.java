@@ -58,7 +58,7 @@ public class GetCompanyCommand
         PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, partyName, true);
             
         if(!hasExecutionErrors()) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             
             result.setCompany(partyControl.getCompanyTransfer(getUserVisit(), partyCompany));
 

@@ -58,7 +58,7 @@ public class DeleteEntityMessageCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String entityRef = form.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
@@ -71,7 +71,7 @@ public class DeleteEntityMessageCommand
                 EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
-                    MessageControl messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                    var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
                     String messageTypeName = form.getMessageTypeName();
                     MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                     

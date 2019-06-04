@@ -63,7 +63,7 @@ public class WishlistLogic
     }
 
     private OfferUse getOrderOfferUse(final UserVisit userVisit, final OfferUse offerUse, final Party companyParty) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         OfferUse orderOfferUse = userVisit.getOfferUse();
 
         if(orderOfferUse == null) {
@@ -90,9 +90,9 @@ public class WishlistLogic
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
 
         if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-            OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-            WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
             OrderLogic orderLogic = OrderLogic.getInstance();
             Currency currency = offerItemPrice.getCurrency();
             OfferUse offerUse = source.getLastDetail().getOfferUse();
@@ -124,7 +124,7 @@ public class WishlistLogic
                 OrderLine orderLine = wishlistControl.getWishlistLineByItemForUpdate(order, item, inventoryCondition, unitOfMeasureType);
 
                 if(orderLine == null) {
-                    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                    var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                     OfferItemFixedPrice offerItemFixedPrice = offerControl.getOfferItemFixedPrice(offerItemPrice);
                     Long unitAmount = offerItemFixedPrice.getUnitPrice();
                     AssociateReferral associateReferral = userVisit.getAssociateReferral();

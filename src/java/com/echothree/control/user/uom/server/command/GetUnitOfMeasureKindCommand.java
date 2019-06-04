@@ -62,7 +62,7 @@ public class GetUnitOfMeasureKindCommand
     
     @Override
     protected BaseResult getTransfer(UnitOfMeasureKind unitOfMeasureKind) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         GetUnitOfMeasureKindResult result = UomResultFactory.getGetUnitOfMeasureKindResult();
         
         if(unitOfMeasureKind != null) {

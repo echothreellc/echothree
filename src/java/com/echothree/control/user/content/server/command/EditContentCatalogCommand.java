@@ -107,7 +107,7 @@ public class EditContentCatalogCommand
     
     @Override
     public ContentCatalog getEntity(EditContentCatalogResult result) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         ContentCatalog contentCatalog = null;
         String contentCollectionName = spec.getContentCollectionName();
         
@@ -141,15 +141,15 @@ public class EditContentCatalogCommand
     
     @Override
     public void fillInResult(EditContentCatalogResult result, ContentCatalog contentCatalog) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         result.setContentCatalog(contentControl.getContentCatalogTransfer(getUserVisit(), contentCatalog));
     }
     
     @Override
     public void doLock(ContentCatalogEdit edit, ContentCatalog contentCatalog) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescription(contentCatalog, getPreferredLanguage());
         ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
         OfferUse offerUse = contentCatalogDetail.getDefaultOfferUse();
@@ -172,12 +172,12 @@ public class EditContentCatalogCommand
     
     @Override
     public void canUpdate(ContentCatalog contentCatalog) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCatalogName = edit.getContentCatalogName();
         ContentCatalog duplicateContentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
 
         if(duplicateContentCatalog == null || contentCatalog.equals(duplicateContentCatalog)) {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             String defaultOfferName = edit.getDefaultOfferName();
             String defaultUseName = edit.getDefaultUseName();
             String defaultSourceName = edit.getDefaultSourceName();
@@ -221,7 +221,7 @@ public class EditContentCatalogCommand
 
             if(defaultOfferUse != null) {
                 if(defaultOfferUse != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     Offer defaultOffer = defaultOfferUse.getLastDetail().getOffer();
                     PartyDepartment defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
                     PartyDivision defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
@@ -244,7 +244,7 @@ public class EditContentCatalogCommand
     
     @Override
     public void doUpdate(ContentCatalog contentCatalog) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         PartyPK partyPK = getPartyPK();
         ContentCatalogDetailValue contentCatalogDetailValue = contentControl.getContentCatalogDetailValueForUpdate(contentCatalog);
         ContentCatalogDescription contentCatalogDescription = contentControl.getContentCatalogDescriptionForUpdate(contentCatalog, getPreferredLanguage());

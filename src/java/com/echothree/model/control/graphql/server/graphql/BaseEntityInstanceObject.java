@@ -37,7 +37,7 @@ public class BaseEntityInstanceObject {
     
     protected EntityInstance getEntityInstanceByBasePK() {
         if(entityInstance == null) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
             entityInstance = coreControl.getEntityInstanceByBasePK(basePrimaryKey);
         }
@@ -49,7 +49,7 @@ public class BaseEntityInstanceObject {
     @GraphQLDescription("id")
     @GraphQLNonNull
     public String getId() {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
         return coreControl.generateUlidForEntityInstance(getEntityInstanceByBasePK(), false);
     }

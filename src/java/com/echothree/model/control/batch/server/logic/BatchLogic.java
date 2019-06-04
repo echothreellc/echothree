@@ -74,7 +74,7 @@ public class BatchLogic
         } while(parentBatchType != null);
 
         if(sequenceType == null) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
             sequenceType = sequenceControl.getDefaultSequenceType();
         }
@@ -91,7 +91,7 @@ public class BatchLogic
         SequenceType sequenceType = getBatchSequenceType(eea, batchType);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
@@ -108,7 +108,7 @@ public class BatchLogic
         Sequence sequence = getBatchSequence(eea, batchType);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
             batchName = sequenceControl.getNextSequenceValue(sequence);
         }
@@ -117,12 +117,12 @@ public class BatchLogic
     }
 
     public Batch createBatch(final ExecutionErrorAccumulator eea, final String batchTypeName, final BasePK createdBy) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
         Batch batch = null;
 
         if(batchType != null) {
-            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
             String batchName = getBatchName(eea, batchType);
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -145,7 +145,7 @@ public class BatchLogic
                     batch = batchControl.createBatch(batchType, batchName, createdBy);
 
                     if(workflowEntrance != null) {
-                        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
                         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
 
                         // TODO: A WorkEffort should be created for the batch entry, if it's manually entered.
@@ -161,13 +161,13 @@ public class BatchLogic
     }
 
     public void deleteBatch(final ExecutionErrorAccumulator eea, final Batch batch, final BasePK deletedBy) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
 
         batchControl.deleteBatch(batch, deletedBy);
     }
 
     public BatchType getBatchTypeByName(final ExecutionErrorAccumulator eea, final String batchTypeName) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchType batchType = batchControl.getBatchTypeByName(batchTypeName);
 
         if(batchType == null) {
@@ -178,7 +178,7 @@ public class BatchLogic
     }
 
     public BatchAliasType getBatchAliasTypeByName(final ExecutionErrorAccumulator eea, final BatchType batchType, final String batchAliasTypeName) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchAliasType batchAliasType = batchControl.getBatchAliasTypeByName(batchType, batchAliasTypeName);
 
         if(batchAliasType == null) {
@@ -190,7 +190,7 @@ public class BatchLogic
     }
 
     public Batch getBatchByName(final ExecutionErrorAccumulator eea, final String batchTypeName, final String batchName) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchType batchType = getBatchTypeByName(eea, batchTypeName);
         Batch batch = null;
 
@@ -206,7 +206,7 @@ public class BatchLogic
     }
 
     public Batch getBatchByNameForUpdate(final ExecutionErrorAccumulator eea, final String batchTypeName, final String batchName) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchType batchType = getBatchTypeByName(eea, batchTypeName);
         Batch batch = null;
 
@@ -226,7 +226,7 @@ public class BatchLogic
     }
     
     public BatchEntity createBatchEntity(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance, final Batch batch, final BasePK createdBy) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         BatchType batchType = batch.getLastDetail().getBatchType();
         BatchEntity batchEntity = null;
 
@@ -254,13 +254,13 @@ public class BatchLogic
     }
     
     public boolean batchEntityExists(final EntityInstance entityInstance, final Batch batch) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
         
         return batchControl.batchEntityExists(entityInstance, batch);
     }
     
     public void deleteBatchEntity(BatchEntity batchEntity, BasePK deletedBy) {
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
 
         batchControl.deleteBatchEntity(batchEntity, deletedBy);
     }

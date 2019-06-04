@@ -61,10 +61,10 @@ public class GetWishlistLinesCommand
         int parameterCount = (wishlistName == null? 0: 1) + (itemName == null? 0: 1);
         
         if(parameterCount == 1) {
-            WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+            var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
             
             if(wishlistName != null) {
-                OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+                var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
                 Order order = orderControl.getOrderByName(orderControl.getOrderTypeByName(OrderConstants.OrderType_WISHLIST), wishlistName);
                 
                 if(order != null && order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName().equals(OrderConstants.OrderType_WISHLIST)) {
@@ -75,7 +75,7 @@ public class GetWishlistLinesCommand
             }
             
             if(itemName != null) {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                 Item item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {

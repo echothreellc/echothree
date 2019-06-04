@@ -48,7 +48,7 @@ public class DeleteSkillTypeCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String skillTypeName = form.getSkillTypeName();
         SkillType skillType = employeeControl.getSkillTypeByNameForUpdate(skillTypeName);
         

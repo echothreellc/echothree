@@ -61,8 +61,8 @@ public class UnitOfMeasureTypeObject
     
     private UnitOfMeasureTypeDescription getUnitOfMeasureTypeDescription(final DataFetchingEnvironment env) {
         if(unitOfMeasureTypeDescription == null) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
-            UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var userControl = (UserControl)Session.getModelController(UserControl.class);
             GraphQlContext context = env.getContext();
 
             unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -145,7 +145,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLDescription("singular description")
     @GraphQLNonNull
     public String getSingularDescription(final DataFetchingEnvironment env) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         
         return uomControl.getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, getUnitOfMeasureTypeDescription(env));
     }
@@ -154,7 +154,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLDescription("plural description")
     @GraphQLNonNull
     public String getPluralDescription(final DataFetchingEnvironment env) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         
         return uomControl.getBestPluralUnitOfMeasureTypeDescription(unitOfMeasureType, getUnitOfMeasureTypeDescription(env));
     }
@@ -163,7 +163,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLDescription("symbol")
     @GraphQLNonNull
     public String getSymbol(final DataFetchingEnvironment env) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         
         return uomControl.getBestUnitOfMeasureTypeDescriptionSymbol(unitOfMeasureType, getUnitOfMeasureTypeDescription(env));
     }

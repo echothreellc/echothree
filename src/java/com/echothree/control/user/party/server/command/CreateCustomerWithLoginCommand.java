@@ -176,7 +176,7 @@ public class CreateCustomerWithLoginCommand
     protected BaseResult execute() {
         UserControl userControl = getUserControl();
         CreateCustomerWithLoginResult result = PartyResultFactory.getCreateCustomerWithLoginResult();
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         Customer customer = null;
         String username = form.getUsername();
         UserLogin userLogin = userControl.getUserLoginByUsername(username);
@@ -186,7 +186,7 @@ public class CreateCustomerWithLoginCommand
             String password2 = form.getPassword2();
 
             if(password1.equals(password2)) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_CUSTOMER);
                 PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
                         getUserVisit(), this, partyType, null, null, password1);
@@ -200,7 +200,7 @@ public class CreateCustomerWithLoginCommand
                         CancellationPolicy cancellationPolicy = null;
 
                         if(cancellationPolicyName != null) {
-                            CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                             CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -211,14 +211,14 @@ public class CreateCustomerWithLoginCommand
                             ReturnPolicy returnPolicy = null;
 
                             if(returnPolicyName != null) {
-                                ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                 ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                             }
 
                             if(returnPolicyName == null || returnPolicy != null) {
-                                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                 String arGlAccountName = form.getArGlAccountName();
                                 GlAccount arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
 
@@ -227,7 +227,7 @@ public class CreateCustomerWithLoginCommand
                                             : arGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                                     if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
-                                        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+                                        var termControl = (TermControl)Session.getModelController(TermControl.class);
                                         CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
                                         Term term = customerTypeDetail.getDefaultTerm();
 
@@ -236,7 +236,7 @@ public class CreateCustomerWithLoginCommand
                                         }
 
                                         if(term != null) {
-                                            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                                            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                                             String initialOfferName = form.getInitialOfferName();
                                             String initialUseName = form.getInitialUseName();
                                             String initialSourceName = form.getInitialSourceName();
@@ -315,7 +315,7 @@ public class CreateCustomerWithLoginCommand
                                                                 RecoveryQuestion recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
 
                                                                 if(recoveryQuestion != null) {
-                                                                    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                                                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                                                     Soundex soundex = new Soundex();
                                                                     BasePK createdBy = getPartyPK();
                                                                     String personalTitleId = form.getPersonalTitleId();

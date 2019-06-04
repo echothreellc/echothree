@@ -65,7 +65,7 @@ public class GetLotTypeCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetLotTypeResult result = InventoryResultFactory.getGetLotTypeResult();
         String lotTypeName = form.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);

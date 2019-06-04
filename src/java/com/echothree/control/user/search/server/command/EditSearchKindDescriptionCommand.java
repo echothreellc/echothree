@@ -87,13 +87,13 @@ public class EditSearchKindDescriptionCommand
 
     @Override
     public SearchKindDescription getEntity(EditSearchKindDescriptionResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKindDescription searchKindDescription = null;
         String searchKindName = spec.getSearchKindName();
         SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSearchKindDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchKindDescriptionResult result, SearchKindDescription searchKindDescription) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchKindDescription(searchControl.getSearchKindDescriptionTransfer(getUserVisit(), searchKindDescription));
     }
@@ -136,7 +136,7 @@ public class EditSearchKindDescriptionCommand
 
     @Override
     public void doUpdate(SearchKindDescription searchKindDescription) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKindDescriptionValue searchKindDescriptionValue = searchControl.getSearchKindDescriptionValue(searchKindDescription);
 
         searchKindDescriptionValue.setDescription(edit.getDescription());

@@ -64,7 +64,7 @@ public class EditUnitOfMeasureEquivalentCommand
     
     @Override
     protected BaseResult execute() {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         EditUnitOfMeasureEquivalentResult result = UomResultFactory.getEditUnitOfMeasureEquivalentResult();
         String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);

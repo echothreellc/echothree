@@ -104,7 +104,7 @@ public class CreateCommunicationEventCommand
     
     @Override
     protected BaseResult execute() {
-        CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
         String communicationSourceName = form.getCommunicationSourceName();
         CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
 
@@ -119,10 +119,10 @@ public class CreateCommunicationEventCommand
                 CommunicationEventType communicationEventType = communicationControl.getCommunicationEventTypeByName(communicationEventTypeName);
 
                 if(communicationEventType != null) {
-                    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-                    CoreControl coreControl = getCoreControl();
-                    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
-                    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                    var coreControl = getCoreControl();
+                    var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                     PartyPK createdBy = getPartyPK();
                     Party party = null;
                     PartyContactMechanism partyContactMechanism = null;
@@ -181,15 +181,15 @@ public class CreateCommunicationEventCommand
                             List<PartyContactMechanism> partyContactMechanisms = contactControl.getPartyContactMechanismsByEmailAddress(emailAddress);
 
                             if(partyContactMechanisms.isEmpty()) {
-                                OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                                 Source source = offerControl.getDefaultSource();
 
                                 if(source != null) {
-                                    CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                                    var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
                                     CustomerType customerType = customerControl.getDefaultCustomerType();
 
                                     if(customerType != null) {
-                                        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+                                        var termControl = (TermControl)Session.getModelController(TermControl.class);
                                         CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
                                         Term term = customerTypeDetail.getDefaultTerm();
 
@@ -201,7 +201,7 @@ public class CreateCommunicationEventCommand
                                             GlAccount defaultArGlAccount = customerTypeDetail.getDefaultArGlAccount();
 
                                             if(defaultArGlAccount == null) {
-                                                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                                 GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
 
                                                 if(glAccountCategory != null) {
@@ -212,7 +212,7 @@ public class CreateCommunicationEventCommand
                                             }
 
                                             if(defaultArGlAccount != null) {
-                                                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                                                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                                                 OfferUse defaultOfferUse = source.getLastDetail().getOfferUse();
                                                 PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_CUSTOMER);
 

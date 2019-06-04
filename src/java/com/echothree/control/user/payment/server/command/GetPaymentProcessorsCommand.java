@@ -60,7 +60,7 @@ public class GetPaymentProcessorsCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         GetPaymentProcessorsResult result = PaymentResultFactory.getGetPaymentProcessorsResult();
         
         result.setPaymentProcessors(paymentControl.getPaymentProcessorTransfers(getUserVisit()));

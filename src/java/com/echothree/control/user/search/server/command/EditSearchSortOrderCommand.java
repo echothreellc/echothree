@@ -94,7 +94,7 @@ public class EditSearchSortOrderCommand
 
     @Override
     public SearchSortOrder getEntity(EditSearchSortOrderResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchSortOrder searchSortOrder = null;
         String searchKindName = spec.getSearchKindName();
 
@@ -126,14 +126,14 @@ public class EditSearchSortOrderCommand
 
     @Override
     public void fillInResult(EditSearchSortOrderResult result, SearchSortOrder searchSortOrder) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchSortOrder(searchControl.getSearchSortOrderTransfer(getUserVisit(), searchSortOrder));
     }
 
     @Override
     public void doLock(SearchSortOrderEdit edit, SearchSortOrder searchSortOrder) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchSortOrderDescription searchSortOrderDescription = searchControl.getSearchSortOrderDescription(searchSortOrder, getPreferredLanguage());
         SearchSortOrderDetail searchSortOrderDetail = searchSortOrder.getLastDetail();
 
@@ -148,7 +148,7 @@ public class EditSearchSortOrderCommand
 
     @Override
     public void canUpdate(SearchSortOrder searchSortOrder) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKindDetail searchKindDetail = searchKind.getLastDetail();
         String searchSortOrderName = edit.getSearchSortOrderName();
         SearchSortOrder duplicateSearchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
@@ -160,7 +160,7 @@ public class EditSearchSortOrderCommand
 
     @Override
     public void doUpdate(SearchSortOrder searchSortOrder) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         PartyPK partyPK = getPartyPK();
         SearchSortOrderDetailValue searchSortOrderDetailValue = searchControl.getSearchSortOrderDetailValueForUpdate(searchSortOrder);
         SearchSortOrderDescription searchSortOrderDescription = searchControl.getSearchSortOrderDescriptionForUpdate(searchSortOrder, getPreferredLanguage());

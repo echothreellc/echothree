@@ -80,7 +80,7 @@ public class EditJobCommand
     
     @Override
     protected BaseResult execute() {
-        JobControl jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = (JobControl)Session.getModelController(JobControl.class);
         EditJobResult result = JobResultFactory.getEditJobResult();
         
         if(editMode.equals(EditMode.LOCK)) {

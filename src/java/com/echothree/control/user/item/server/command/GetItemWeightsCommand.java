@@ -52,7 +52,7 @@ public class GetItemWeightsCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemWeightsResult result = ItemResultFactory.getGetItemWeightsResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

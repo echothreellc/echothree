@@ -1659,7 +1659,7 @@ public class ItemControl
     
     public ItemStatusChoicesBean getItemStatusChoices(String defaultItemStatusChoice, Language language, boolean allowNullChoice,
             Item item, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         ItemStatusChoicesBean itemStatusChoicesBean = new ItemStatusChoicesBean();
         
         if(item == null) {
@@ -1678,7 +1678,7 @@ public class ItemControl
     }
     
     public void setItemStatus(ExecutionErrorAccumulator eea, Item item, String itemStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(item);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(ItemStatusConstants.Workflow_ITEM_STATUS,
                 entityInstance);
@@ -2015,8 +2015,8 @@ public class ItemControl
     }
     
     public void deleteItemUnitOfMeasureType(ItemUnitOfMeasureType itemUnitOfMeasureType, BasePK deletedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         Item item = itemUnitOfMeasureType.getItem();
         UnitOfMeasureType unitOfMeasureType = itemUnitOfMeasureType.getUnitOfMeasureType();
         
@@ -2628,7 +2628,7 @@ public class ItemControl
     }
     
     public void deleteItemAliasType(ItemAliasType itemAliasType, BasePK deletedBy) {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         
         List<Vendor> vendors = vendorControl.getVendorsByDefaultItemAliasTypeForUpdate(itemAliasType);
         vendors.stream().map((vendor) -> vendorControl.getVendorValue(vendor)).map((vendorValue) -> {
@@ -5509,7 +5509,7 @@ public class ItemControl
     }
     
     public void deleteItemPrice(ItemPrice itemPrice, BasePK deletedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Item item = itemPrice.getItem();
         String itemPriceTypeName = item.getLastDetail().getItemPriceType().getItemPriceTypeName();
         

@@ -74,7 +74,7 @@ public class CreatePeriodTypeCommand
     
     @Override
     protected BaseResult execute() {
-        PeriodControl periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
         String workflowName = form.getWorkflowName();
         String workflowEntranceName = form.getWorkflowEntranceName();
         int parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
@@ -92,7 +92,7 @@ public class CreatePeriodTypeCommand
                     PeriodType parentPeriodType = periodControl.getPeriodTypeByName(periodKind, parentPeriodTypeName);
 
                     if(parentPeriodTypeName == null || parentPeriodType != null) {
-                        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                         Workflow workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
 
                         if(workflowName == null || workflow != null) {

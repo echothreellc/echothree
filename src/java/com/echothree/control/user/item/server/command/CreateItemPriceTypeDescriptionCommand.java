@@ -53,12 +53,12 @@ public class CreateItemPriceTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemPriceTypeName = form.getItemPriceTypeName();
         ItemPriceType itemPriceType = itemControl.getItemPriceTypeByName(itemPriceTypeName);
         
         if(itemPriceType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

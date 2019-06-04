@@ -66,7 +66,7 @@ public class GetSearchTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         GetSearchTypeDescriptionsResult result = SearchResultFactory.getGetSearchTypeDescriptionsResult();
         String searchKindName = form.getSearchKindName();
         SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);

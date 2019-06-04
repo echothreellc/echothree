@@ -52,7 +52,7 @@ public class CreateIconUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
+        var iconControl = (IconControl)Session.getModelController(IconControl.class);
         String iconUsageTypeName = form.getIconUsageTypeName();
         IconUsageType iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
         

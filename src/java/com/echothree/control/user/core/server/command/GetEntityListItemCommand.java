@@ -82,7 +82,7 @@ public class GetEntityListItemCommand
 
             if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 String entityListItemName = form.getEntityListItemName();
                 
                 entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);

@@ -75,13 +75,13 @@ public class EditCustomerTypeShippingMethodCommand
 
     @Override
     public CustomerTypeShippingMethod getEntity(EditCustomerTypeShippingMethodResult result) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         CustomerTypeShippingMethod customerTypeShippingMethod = null;
         String customerTypeName = spec.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
-            ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+            var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
             String shippingMethodName = spec.getShippingMethodName();
             ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
@@ -112,7 +112,7 @@ public class EditCustomerTypeShippingMethodCommand
 
     @Override
     public void fillInResult(EditCustomerTypeShippingMethodResult result, CustomerTypeShippingMethod customerTypeShippingMethod) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
         result.setCustomerTypeShippingMethod(customerControl.getCustomerTypeShippingMethodTransfer(getUserVisit(), customerTypeShippingMethod));
     }
@@ -126,7 +126,7 @@ public class EditCustomerTypeShippingMethodCommand
 
     @Override
     public void doUpdate(CustomerTypeShippingMethod customerTypeShippingMethod) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         CustomerTypeShippingMethodValue customerTypeShippingMethodValue = customerControl.getCustomerTypeShippingMethodValue(customerTypeShippingMethod);
         
         customerTypeShippingMethodValue.setDefaultSelectionPriority(Integer.valueOf(edit.getDefaultSelectionPriority()));

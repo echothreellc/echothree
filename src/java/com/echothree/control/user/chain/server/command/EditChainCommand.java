@@ -102,7 +102,7 @@ public class EditChainCommand
 
     @Override
     public Chain getEntity(EditChainResult result) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         Chain chain = null;
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -141,7 +141,7 @@ public class EditChainCommand
 
     @Override
     public void fillInResult(EditChainResult result, Chain chain) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
         result.setChain(chainControl.getChainTransfer(getUserVisit(), chain));
     }
@@ -150,7 +150,7 @@ public class EditChainCommand
     
     @Override
     public void doLock(ChainEdit edit, Chain chain) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainDescription chainDescription = chainControl.getChainDescription(chain, getPreferredLanguage());
         ChainDetail chainDetail = chain.getLastDetail();
         
@@ -168,7 +168,7 @@ public class EditChainCommand
 
     @Override
     public void canUpdate(Chain chain) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
         String chainName = edit.getChainName();
         Chain duplicateChain = chainControl.getChainByName(chainType, chainName);
@@ -176,7 +176,7 @@ public class EditChainCommand
         if(duplicateChain != null && !chain.equals(duplicateChain)) {
             addExecutionError(ExecutionErrors.DuplicateChainName.name(), chainTypeDetail.getChainTypeName(), chainName);
         } else {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_CHAIN_INSTANCE);
             String chainInstanceSequenceName = edit.getChainInstanceSequenceName();
 
@@ -190,7 +190,7 @@ public class EditChainCommand
 
     @Override
     public void doUpdate(Chain chain) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         PartyPK partyPK = getPartyPK();
         ChainDetailValue chainDetailValue = chainControl.getChainDetailValueForUpdate(chain);
         ChainDescription chainDescription = chainControl.getChainDescriptionForUpdate(chain, getPreferredLanguage());

@@ -67,7 +67,7 @@ public class CreateUserVisitCampaignCommand
                 + (campaignTermValue == null ? 0 : 1) + (campaignContentValue == null ? 0 : 1);
 
         if(parameterCount > 0) {
-            CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+            var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
             Campaign campaign = null;
             CampaignSource campaignSource = null;
             CampaignMedium campaignMedium = null;

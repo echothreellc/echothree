@@ -64,7 +64,7 @@ public class GetCampaignContentDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         GetCampaignContentDescriptionsResult result = CampaignResultFactory.getGetCampaignContentDescriptionsResult();
         String campaignContentName = form.getCampaignContentName();
         CampaignContent campaignContent = campaignControl.getCampaignContentByName(campaignContentName);

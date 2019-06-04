@@ -86,7 +86,7 @@ public class GetEventsCommand
                 + (createdByEntityRef == null ? 0 : 1) + (createdByKey == null ? 0 : 1) + (createdByGuid == null ? 0 : 1) + (createdByUlid == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             UserVisit userVisit = getUserVisit();
 
             if(entityRef != null || key != null || guid != null || ulid != null) {

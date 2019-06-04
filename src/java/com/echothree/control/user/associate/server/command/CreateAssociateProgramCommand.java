@@ -61,12 +61,12 @@ public class CreateAssociateProgramCommand
     
     @Override
     protected BaseResult execute() {
-        AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
         String associateProgramName = form.getAssociateProgramName();
         AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram == null) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             String associateSequenceName = form.getAssociateSequenceName();
             Sequence associateSequence = null;
             

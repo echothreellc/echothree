@@ -60,7 +60,7 @@ public class GetTracksCommand
     
     @Override
     protected BaseResult execute() {
-        TrackControl trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
         GetTracksResult result = TrackResultFactory.getGetTracksResult();
         
         result.setTracks(trackControl.getTrackTransfers(getUserVisit()));

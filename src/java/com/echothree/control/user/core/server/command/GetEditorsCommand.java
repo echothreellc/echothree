@@ -59,7 +59,7 @@ public class GetEditorsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEditorsResult result = CoreResultFactory.getGetEditorsResult();
         
         result.setEditors(coreControl.getEditorTransfers(getUserVisit()));

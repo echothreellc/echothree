@@ -81,24 +81,24 @@ public class EditItemUnitCustomerTypeLimitCommand
 
     @Override
     public ItemUnitCustomerTypeLimit getEntity(EditItemUnitCustomerTypeLimitResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             String inventoryConditionName = spec.getInventoryConditionName();
             InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
             if(inventoryCondition != null) {
-                UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = (UomControl)Session.getModelController(UomControl.class);
                 ItemDetail itemDetail = item.getLastDetail();
                 String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
                 UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
                 if(unitOfMeasureType != null) {
-                    CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                    var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
                     String customerTypeName = spec.getCustomerTypeName();
                     CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
@@ -136,7 +136,7 @@ public class EditItemUnitCustomerTypeLimitCommand
 
     @Override
     public void fillInResult(EditItemUnitCustomerTypeLimitResult result, ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemUnitCustomerTypeLimit(itemControl.getItemUnitCustomerTypeLimitTransfer(getUserVisit(), itemUnitCustomerTypeLimit));
     }
@@ -170,7 +170,7 @@ public class EditItemUnitCustomerTypeLimitCommand
 
     @Override
     public void doUpdate(ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemUnitCustomerTypeLimitValue itemUnitCustomerTypeLimitValue = itemControl.getItemUnitCustomerTypeLimitValue(itemUnitCustomerTypeLimit);
 
         itemUnitCustomerTypeLimitValue.setMinimumQuantity(minimumQuantity);

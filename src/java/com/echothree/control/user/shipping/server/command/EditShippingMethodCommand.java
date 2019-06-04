@@ -96,7 +96,7 @@ public class EditShippingMethodCommand
 
     @Override
     public ShippingMethod getEntity(EditShippingMethodResult result) {
-        ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
         ShippingMethod shippingMethod = null;
         String shippingMethodName = spec.getShippingMethodName();
 
@@ -122,7 +122,7 @@ public class EditShippingMethodCommand
 
     @Override
     public void fillInResult(EditShippingMethodResult result, ShippingMethod shippingMethod) {
-        ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
 
         result.setShippingMethod(shippingControl.getShippingMethodTransfer(getUserVisit(), shippingMethod));
     }
@@ -132,7 +132,7 @@ public class EditShippingMethodCommand
 
     @Override
     public void doLock(ShippingMethodEdit edit, ShippingMethod shippingMethod) {
-        ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
         ShippingMethodDescription shippingMethodDescription = shippingControl.getShippingMethodDescription(shippingMethod, getPreferredLanguage());
         ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
 
@@ -151,7 +151,7 @@ public class EditShippingMethodCommand
 
     @Override
     public void canUpdate(ShippingMethod shippingMethod) {
-        ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
         String shippingMethodName = edit.getShippingMethodName();
         ShippingMethod duplicateShippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
 
@@ -159,7 +159,7 @@ public class EditShippingMethodCommand
             String geoCodeSelectorName = edit.getGeoCodeSelectorName();
 
             if(geoCodeSelectorName != null) {
-                SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
 
                 if(selectorKind != null) {
@@ -180,7 +180,7 @@ public class EditShippingMethodCommand
                 String itemSelectorName = edit.getItemSelectorName();
 
                 if(itemSelectorName != null) {
-                    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                     SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
 
                     if(selectorKind != null) {
@@ -210,7 +210,7 @@ public class EditShippingMethodCommand
 
     @Override
     public void doUpdate(ShippingMethod shippingMethod) {
-        ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
         PartyPK partyPK = getPartyPK();
         ShippingMethodDetailValue shippingMethodDetailValue = shippingControl.getShippingMethodDetailValueForUpdate(shippingMethod);
         ShippingMethodDescription shippingMethodDescription = shippingControl.getShippingMethodDescriptionForUpdate(shippingMethod, getPreferredLanguage());

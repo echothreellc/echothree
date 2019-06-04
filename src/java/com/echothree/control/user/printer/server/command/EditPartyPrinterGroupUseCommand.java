@@ -93,7 +93,7 @@ public class EditPartyPrinterGroupUseCommand
         Party party = null;
 
         if(partyName != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
             party = partyControl.getPartyByName(partyName);
             
@@ -105,7 +105,7 @@ public class EditPartyPrinterGroupUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+            var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
             String printerGroupUseTypeName = spec.getPrinterGroupUseTypeName();
             PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
@@ -134,7 +134,7 @@ public class EditPartyPrinterGroupUseCommand
 
     @Override
     public void fillInResult(EditPartyPrinterGroupUseResult result, PartyPrinterGroupUse partyPrinterGroupUse) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
 
         result.setPartyPrinterGroupUse(printerControl.getPartyPrinterGroupUseTransfer(getUserVisit(), partyPrinterGroupUse));
     }
@@ -148,7 +148,7 @@ public class EditPartyPrinterGroupUseCommand
 
     @Override
     public void canUpdate(PartyPrinterGroupUse partyPrinterGroupUse) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         String printerGroupName = edit.getPrinterGroupName();
 
         printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
@@ -160,7 +160,7 @@ public class EditPartyPrinterGroupUseCommand
 
     @Override
     public void doUpdate(PartyPrinterGroupUse partyPrinterGroupUse) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PartyPrinterGroupUseValue partyPrinterGroupUseValue = printerControl.getPartyPrinterGroupUseValue(partyPrinterGroupUse);
 
         partyPrinterGroupUseValue.setPrinterGroupPK(printerGroup.getPrimaryKey());

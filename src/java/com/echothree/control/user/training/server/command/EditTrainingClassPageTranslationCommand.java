@@ -98,7 +98,7 @@ public class EditTrainingClassPageTranslationCommand
     
     @Override
     public TrainingClassPageTranslation getEntity(EditTrainingClassPageTranslationResult result) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassPageTranslation trainingClassPageTranslation = null;
         String trainingClassName = spec.getTrainingClassName();
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -113,7 +113,7 @@ public class EditTrainingClassPageTranslationCommand
                 TrainingClassPage trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
                 if(trainingClassPage != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -151,7 +151,7 @@ public class EditTrainingClassPageTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassPageTranslationResult result, TrainingClassPageTranslation trainingClassPageTranslation) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
 
         result.setTrainingClassPageTranslation(trainingControl.getTrainingClassPageTranslationTransfer(getUserVisit(), trainingClassPageTranslation));
     }
@@ -181,7 +181,7 @@ public class EditTrainingClassPageTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassPageTranslation trainingClassPageTranslation) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassPageTranslationValue trainingClassPageTranslationValue = trainingControl.getTrainingClassPageTranslationValue(trainingClassPageTranslation);
         
         trainingClassPageTranslationValue.setDescription(edit.getDescription());

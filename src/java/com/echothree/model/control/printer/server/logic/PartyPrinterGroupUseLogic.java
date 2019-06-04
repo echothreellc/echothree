@@ -44,7 +44,7 @@ public class PartyPrinterGroupUseLogic
 
     public PartyPrinterGroupUse getPartyPrinterGroupUse(final ExecutionErrorAccumulator ema, final Party party, final PrinterGroupUseType printerGroupUseType,
             final BasePK createdBy) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PartyPrinterGroupUse partyPrinterGroupUse = printerControl.getPartyPrinterGroupUse(party, printerGroupUseType);
 
         if(partyPrinterGroupUse == null) {
@@ -62,7 +62,7 @@ public class PartyPrinterGroupUseLogic
 
     public PartyPrinterGroupUse getPartyPrinterGroupUseUsingNames(final ExecutionErrorAccumulator ema, final Party party, final String printerGroupUseTypeName,
             final BasePK createdBy) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         PartyPrinterGroupUse partyPrinterGroupUse = null;
 

@@ -52,7 +52,7 @@ public class GetWebAddressStatusChoicesCommand
 
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         GetWebAddressStatusChoicesResult result = ContactResultFactory.getGetWebAddressStatusChoicesResult();
         String contactMechanismName = form.getContactMechanismName();
         ContactMechanism contactMechanism = contactControl.getContactMechanismByName(contactMechanismName);

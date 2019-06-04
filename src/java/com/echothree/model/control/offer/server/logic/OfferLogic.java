@@ -55,7 +55,7 @@ public class OfferLogic
     }
     
     public Offer getOfferByName(final ExecutionErrorAccumulator eea, final String offerName) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Offer offer = offerControl.getOfferByName(offerName);
 
         if(offer == null) {
@@ -66,27 +66,27 @@ public class OfferLogic
     }
 
     public OfferItem createOfferItem(final Offer offer, final Item item, final BasePK createdBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         return offerControl.createOfferItem(offer, item, createdBy);
     }
 
     public void deleteOfferItem(final OfferItem offerItem, final BasePK deletedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         offerControl.deleteOfferItem(offerItem, deletedBy);
     }
 
     public OfferItemPrice createOfferItemPrice(final OfferItem offerItem, final InventoryCondition inventoryCondition,
             final UnitOfMeasureType unitOfMeasureType, final Currency currency, final BasePK createdBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         return offerControl.createOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency, createdBy);
     }
 
     public OfferItemPrice getOfferItemPrice(final ExecutionErrorAccumulator eea, final Offer offer, final Item item,
             final InventoryCondition inventoryCondition, final UnitOfMeasureType unitOfMeasureType, final Currency currency) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         OfferItemPrice offerItemPrice = null;
         OfferItem offerItem = offerControl.getOfferItem(offer, item);
         
@@ -107,7 +107,7 @@ public class OfferLogic
     }
     
     public void deleteOfferItemPrice(final OfferItemPrice offerItemPrice, final BasePK deletedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         ContentLogic.getInstance().deleteContentCategoryItemByOfferItemPrice(offerItemPrice, deletedBy);
 
@@ -115,13 +115,13 @@ public class OfferLogic
     }
 
     public OfferItemFixedPrice createOfferItemFixedPrice(final OfferItemPrice offerItemPrice, final Long unitPrice, final BasePK createdBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         return offerControl.createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
     }
 
     public void updateOfferItemFixedPriceFromValue(final OfferItemFixedPriceValue offerItemFixedPriceValue, final BasePK updatedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         OfferItemFixedPrice offerItemFixedPrice = offerControl.updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, updatedBy);
 
@@ -131,20 +131,20 @@ public class OfferLogic
     }
 
     public void deleteOfferItemFixedPrice(final OfferItemFixedPrice offerItemFixedPrice, final BasePK deletedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         offerControl.deleteOfferItemFixedPrice(offerItemFixedPrice, deletedBy);
     }
 
     public OfferItemVariablePrice createOfferItemVariablePrice(final OfferItemPrice offerItemPrice, final Long minimumUnitPrice,
             final Long maximumUnitPrice, final Long unitPriceIncrement, final BasePK createdBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         return offerControl.createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, createdBy);
     }
 
     public void updateOfferItemVariablePriceFromValue(final OfferItemVariablePriceValue offerItemVariablePriceValue, final BasePK updatedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         OfferItemVariablePrice offerItemVariablePrice = offerControl.updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, updatedBy);
 
@@ -154,7 +154,7 @@ public class OfferLogic
     }
 
     public void deleteOfferItemVariablePrice(final OfferItemVariablePrice offerItemVariablePrice, final BasePK deletedBy) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         offerControl.deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
     }

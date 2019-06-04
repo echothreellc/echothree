@@ -80,7 +80,7 @@ public class EditTransactionEntityRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         EditTransactionEntityRoleTypeDescriptionResult result = AccountingResultFactory.getEditTransactionEntityRoleTypeDescriptionResult();
         String transactionTypeName = spec.getTransactionTypeName();
         TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
@@ -90,7 +90,7 @@ public class EditTransactionEntityRoleTypeDescriptionCommand
             TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
 
             if(transactionEntityRoleType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

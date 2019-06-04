@@ -62,7 +62,7 @@ public class SetDefaultSourceCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String sourceName = form.getSourceName();
         SourceDetailValue sourceDetailValue = offerControl.getSourceDetailValueByNameForUpdate(sourceName);
         

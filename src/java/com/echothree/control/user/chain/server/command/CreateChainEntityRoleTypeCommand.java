@@ -74,7 +74,7 @@ public class CreateChainEntityRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -87,7 +87,7 @@ public class CreateChainEntityRoleTypeCommand
                 ChainEntityRoleType chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);
 
                 if(chainEntityRoleType == null) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     String componentVendorName = form.getComponentVendorName();
                     ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                     

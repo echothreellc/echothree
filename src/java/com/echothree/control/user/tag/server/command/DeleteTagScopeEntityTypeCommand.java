@@ -68,12 +68,12 @@ public class DeleteTagScopeEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = (TagControl)Session.getModelController(TagControl.class);
         String tagScopeName = form.getTagScopeName();
         TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
         
         if(tagScope != null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String componentVendorName = form.getComponentVendorName();
             ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
             

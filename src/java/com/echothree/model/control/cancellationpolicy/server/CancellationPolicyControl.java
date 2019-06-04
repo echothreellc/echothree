@@ -292,7 +292,7 @@ public class CancellationPolicyControl
     }
 
     public void deletePartyCancellationPolicy(PartyCancellationPolicy partyCancellationPolicy, BasePK deletedBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
         partyCancellationPolicy.setThruTime(session.START_TIME_LONG);
 

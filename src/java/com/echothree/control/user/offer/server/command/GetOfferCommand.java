@@ -66,7 +66,7 @@ public class GetOfferCommand
     
     @Override
     protected Offer getEntity() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
         
@@ -81,7 +81,7 @@ public class GetOfferCommand
     
     @Override
     protected BaseResult getTransfer(Offer offer) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetOfferResult result = OfferResultFactory.getGetOfferResult();
         
         if(offer != null) {

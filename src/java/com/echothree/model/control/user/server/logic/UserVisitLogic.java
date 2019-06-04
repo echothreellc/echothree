@@ -47,8 +47,8 @@ public class UserVisitLogic
     }
     
     private void cleanupUserVisitDependencies(final UserVisit userVisit, final Long endTime, final PartyPK cleanedUpBy) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         orderControl.deleteOrderUserVisitsByUserVisit(userVisit);
 
@@ -60,7 +60,7 @@ public class UserVisitLogic
     
     public void invalidateUserVisit(UserVisit userVisit, PartyPK invalidatedBy) {
         if(userVisit != null) {
-            UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+            var userControl = (UserControl)Session.getModelController(UserControl.class);
             UserSession userSession = UserSessionLogic.getInstance().deleteUserSessionByUserVisit(userVisit);
             
             cleanupUserVisitDependencies(userVisit, null, invalidatedBy);
@@ -78,13 +78,13 @@ public class UserVisitLogic
     }
     
     public void invalidateUserVisit(UserVisitPK userVisitPK, PartyPK invalidatedBy) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         
         invalidateUserVisit(userControl.getUserVisitByPKForUpdate(userVisitPK), invalidatedBy);
     }
     
     public void invalidateAbandonedUserVisits(Long abandonedTime, PartyPK invalidatedBy) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         
         for(UserVisit userVisit: userControl.getAbandonedUserVisits(abandonedTime)) {
             userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
@@ -94,7 +94,7 @@ public class UserVisitLogic
     }
     
     public void removeInvalidatedUserVisits() {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         
         for(UserVisit userVisit: userControl.getInvalidatedUserVisits()) {
             userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
@@ -106,7 +106,7 @@ public class UserVisitLogic
     /** Disassociate any Party from the specified UserVisit by deleting the UserSession, keep all the Preferred* properties.
      */
     public void disassociatePartyFromUserVisit(final UserVisit userVisit, final Long endTime, final PartyPK disassociatedBy) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         UserSession userSession = userControl.getUserSessionByUserVisitForUpdate(userVisit);
         
         if(userSession != null) {
@@ -122,7 +122,7 @@ public class UserVisitLogic
      * what's provided by disassociatePartyFromUserVisit(...).
      */
     public void logout(final UserVisitPK userVisitPK, final Long endTime, final PartyPK loggedOutBy) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         UserVisit userVisit = userControl.getUserVisitByPK(userVisitPK);
         UserKey userKey = userVisit.getUserKey();
         UserKeyDetailValue userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());

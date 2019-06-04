@@ -52,20 +52,20 @@ public class GeoCodeLogic
     }
     
     public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode, final String geoCodeAliasTypeName) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
 
         return geoControl.getGeoCodeAlias(geoCode, getGeoCodeAliasTypeByName(ema, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
     }
 
     public GeoCodeAliasValue getGeoCodeAliasValueUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode, final String geoCodeAliasTypeName) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
 
         return geoControl.getGeoCodeAliasValueForUpdate(geoCode, getGeoCodeAliasTypeByName(ema, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
     }
 
     public GeoCode getGeoCodeByAlias(final ExecutionErrorAccumulator ema, final GeoCodeType geoCodeType, final GeoCodeScope geoCodeScope,
             final String geoCodeAliasTypeName, final String alias) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeAlias geoCodeAlias = null;
         GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
 
@@ -80,7 +80,7 @@ public class GeoCodeLogic
     }
 
     public GeoCodeAliasType getGeoCodeAliasTypeByName(final ExecutionErrorAccumulator ema, final GeoCodeType geoCodeType, final String geoCodeAliasTypeName) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
 
         if(geoCodeAliasType == null) {
@@ -92,7 +92,7 @@ public class GeoCodeLogic
     }
 
     public GeoCodeType getGeoCodeTypeByName(final ExecutionErrorAccumulator ema, final String geoCodeTypeName) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType == null) {
@@ -104,7 +104,7 @@ public class GeoCodeLogic
     }
 
     public GeoCodeScope getGeoCodeScopeByName(final ExecutionErrorAccumulator ema, final String geoCodeScopeName) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
 
         if(geoCodeScope == null) {
@@ -116,11 +116,11 @@ public class GeoCodeLogic
     }
 
     public void deleteGeoCode(final ExecutionErrorAccumulator ema, final GeoCode geoCode, BasePK deletedBy) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
 
         if(contactControl.countContactPostalAddressCorrectionsByCityGeoCode(geoCode) == 0
                 && contactControl.countContactPostalAddressCorrectionsByCountyGeoCode(geoCode) == 0

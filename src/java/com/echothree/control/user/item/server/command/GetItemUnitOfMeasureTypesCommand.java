@@ -53,7 +53,7 @@ public class GetItemUnitOfMeasureTypesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemUnitOfMeasureTypesResult result = ItemResultFactory.getGetItemUnitOfMeasureTypesResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
@@ -66,7 +66,7 @@ public class GetItemUnitOfMeasureTypesCommand
                 result.setItemUnitOfMeasureTypes(itemControl.getItemUnitOfMeasureTypeTransfersByItem(getUserVisit(),
                         item));
             } else {
-                UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = (UomControl)Session.getModelController(UomControl.class);
                 UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(),
                         unitOfMeasureTypeName);
                 

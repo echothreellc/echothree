@@ -124,7 +124,7 @@ public class CreatePaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         CreatePaymentMethodResult result = PaymentResultFactory.getCreatePaymentMethodResult();
         String paymentMethodName = form.getPaymentMethodName();
         PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
@@ -138,7 +138,7 @@ public class CreatePaymentMethodCommand
                 PaymentProcessor paymentProcessor = paymentProcessorName == null ? null : paymentControl.getPaymentProcessorByName(paymentProcessorName);
 
                 if(paymentProcessorName == null || paymentProcessor != null) {
-                    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                     String itemSelectorName = form.getItemSelectorName();
                     Selector itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorConstants.SelectorKind_ITEM,
                             SelectorConstants.SelectorType_PAYMENT_METHOD, itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());

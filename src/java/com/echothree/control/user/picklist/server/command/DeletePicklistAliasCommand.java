@@ -65,7 +65,7 @@ public class DeletePicklistAliasCommand
     
     @Override
     protected BaseResult execute() {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         String picklistTypeName = form.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 

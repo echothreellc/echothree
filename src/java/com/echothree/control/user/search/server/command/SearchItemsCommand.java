@@ -105,7 +105,7 @@ public class SearchItemsCommand
                     Language language = languageIsoName == null ? null : LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                     if(!hasExecutionErrors()) {
-                        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+                        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
                         PartySearchTypePreference partySearchTypePreference = getPartySearchTypePreference(searchControl, searchType);
                         PartySearchTypePreferenceDetail partySearchTypePreferenceDetail = partySearchTypePreference == null ? null : partySearchTypePreference.getLastDetail();
                         boolean rememberPreferences = Boolean.valueOf(form.getRememberPreferences());

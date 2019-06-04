@@ -67,7 +67,7 @@ public class EditWishlistTypeCommand
     
     @Override
     protected BaseResult execute() {
-        WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
         EditWishlistTypeResult result = WishlistResultFactory.getEditWishlistTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {

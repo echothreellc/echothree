@@ -49,7 +49,7 @@ public class GetItemDeliveryTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemDeliveryTypeChoicesResult result = ItemResultFactory.getGetItemDeliveryTypeChoicesResult();
         String defaultItemDeliveryTypeChoice = form.getDefaultItemDeliveryTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

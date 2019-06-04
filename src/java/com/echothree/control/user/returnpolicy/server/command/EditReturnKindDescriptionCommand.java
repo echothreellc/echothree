@@ -87,13 +87,13 @@ public class EditReturnKindDescriptionCommand
 
     @Override
     public ReturnKindDescription getEntity(EditReturnKindDescriptionResult result) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnKindDescription returnKindDescription = null;
         String returnKindName = spec.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
 
         if(returnKind != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditReturnKindDescriptionCommand
 
     @Override
     public void fillInResult(EditReturnKindDescriptionResult result, ReturnKindDescription returnKindDescription) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
 
         result.setReturnKindDescription(returnPolicyControl.getReturnKindDescriptionTransfer(getUserVisit(), returnKindDescription));
     }
@@ -136,7 +136,7 @@ public class EditReturnKindDescriptionCommand
 
     @Override
     public void doUpdate(ReturnKindDescription returnKindDescription) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnKindDescriptionValue returnKindDescriptionValue = returnPolicyControl.getReturnKindDescriptionValue(returnKindDescription);
 
         returnKindDescriptionValue.setDescription(edit.getDescription());

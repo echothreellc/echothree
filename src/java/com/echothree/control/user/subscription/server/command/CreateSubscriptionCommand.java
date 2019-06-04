@@ -63,7 +63,7 @@ public class CreateSubscriptionCommand
     
     @Override
     protected BaseResult execute() {
-        SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -72,7 +72,7 @@ public class CreateSubscriptionCommand
             SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String partyName = form.getPartyName();
                 Party party = partyControl.getPartyByName(partyName);
                 
@@ -80,7 +80,7 @@ public class CreateSubscriptionCommand
                     Subscription subscription = subscriptionControl.getSubscription(subscriptionType, party);
                     
                     if(subscription == null) {
-                        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
                         String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         UnitOfMeasureType unitOfMeasureType = null;
                         

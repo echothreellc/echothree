@@ -75,7 +75,7 @@ public class GetCarrierCommand
         int parameterCount = (carrierName == null? 0: 1) + (partyName == null? 0: 1);
         
         if(parameterCount == 1) {
-            CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+            var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
             Carrier carrier = null;
             
             if(carrierName != null) {
@@ -85,7 +85,7 @@ public class GetCarrierCommand
                     addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
                 }
             } else {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {

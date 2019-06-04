@@ -91,7 +91,7 @@ public class UserVisitSearchFacetLogic
     
     public UserVisitSearchFacetTransfer getUserVisitSearchFacetTransfer(final ExecutionErrorAccumulator eea, final UserVisitSearch userVisitSearch,
             final EntityAttribute entityAttribute) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         List<UserVisitSearchFacetListItemTransfer> userVisitSearchFacetListItemTransfers = null;
         List<UserVisitSearchFacetIntegerTransfer> userVisitSearchFacetIntegerTransfers = null;
         List<UserVisitSearchFacetLongTransfer> userVisitSearchFacetLongTransfers = null;

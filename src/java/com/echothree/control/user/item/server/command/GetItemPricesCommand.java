@@ -52,7 +52,7 @@ public class GetItemPricesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemPricesResult result = ItemResultFactory.getGetItemPricesResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

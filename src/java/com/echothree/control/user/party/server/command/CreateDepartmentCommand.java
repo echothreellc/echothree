@@ -71,7 +71,7 @@ public class CreateDepartmentCommand
     @Override
     protected BaseResult execute() {
         CreateDepartmentResult result = PartyResultFactory.getCreateDepartmentResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String companyName = form.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
         
@@ -104,7 +104,7 @@ public class CreateDepartmentCommand
                                 if(preferredCurrencyIsoName == null)
                                     preferredCurrency = null;
                                 else {
-                                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                     preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                 }
                                 

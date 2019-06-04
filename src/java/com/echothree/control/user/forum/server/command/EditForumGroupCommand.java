@@ -78,7 +78,7 @@ public class EditForumGroupCommand
 
     @Override
     public ForumGroup getEntity(EditForumGroupResult result) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         ForumGroup forumGroup = null;
         String forumGroupName = spec.getForumGroupName();
 
@@ -102,14 +102,14 @@ public class EditForumGroupCommand
 
     @Override
     public void fillInResult(EditForumGroupResult result, ForumGroup forumGroup) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
 
         result.setForumGroup(forumControl.getForumGroupTransfer(getUserVisit(), forumGroup));
     }
 
     @Override
     public void doLock(ForumGroupEdit edit, ForumGroup forumGroup) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         ForumGroupDescription forumGroupDescription = forumControl.getForumGroupDescription(forumGroup, getPreferredLanguage());
         ForumGroupDetail forumGroupDetail = forumGroup.getLastDetail();
 
@@ -128,12 +128,12 @@ public class EditForumGroupCommand
 
     @Override
     public void canUpdate(ForumGroup forumGroup) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumGroupName = edit.getForumGroupName();
         ForumGroup duplicateForumGroup = forumControl.getForumGroupByName(forumGroupName);
 
         if(duplicateForumGroup == null || forumGroup.equals(duplicateForumGroup)) {
-            IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
+            var iconControl = (IconControl)Session.getModelController(IconControl.class);
             String iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
@@ -148,7 +148,7 @@ public class EditForumGroupCommand
 
     @Override
     public void doUpdate(ForumGroup forumGroup) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         PartyPK partyPK = getPartyPK();
         ForumGroupDetailValue forumGroupDetailValue = forumControl.getForumGroupDetailValueForUpdate(forumGroup);
         ForumGroupDescription forumGroupDescription = forumControl.getForumGroupDescriptionForUpdate(forumGroup, getPreferredLanguage());

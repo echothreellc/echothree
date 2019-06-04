@@ -61,7 +61,7 @@ public class CreateScaleCommand
     
    @Override
     protected BaseResult execute() {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         String scaleName = form.getScaleName();
         Scale scale = scaleControl.getScaleByName(scaleName);
 
@@ -70,7 +70,7 @@ public class CreateScaleCommand
             ScaleType scaleType = scaleControl.getScaleTypeByName(scaleTypeName);
 
             if(scaleType != null) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 String serverName = form.getServerName();
                 Server server = coreControl.getServerByName(serverName);
 

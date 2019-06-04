@@ -58,7 +58,7 @@ public class GetMessageTypeCommand
     @Override
     protected BaseResult execute() {
         GetMessageTypeResult result = MessageResultFactory.getGetMessageTypeResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
@@ -70,7 +70,7 @@ public class GetMessageTypeCommand
             result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
-                MessageControl messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
                 String messageTypeName = form.getMessageTypeName();
                 MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 

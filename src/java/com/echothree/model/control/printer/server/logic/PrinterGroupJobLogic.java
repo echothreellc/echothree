@@ -53,7 +53,7 @@ public class PrinterGroupJobLogic
     }
     
     private void insertPrinterGroupJobIntoWorkflow(final PrinterGroupJob printerGroupJob, final PartyPK createdBy) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
         workflowControl.addEntityToWorkflowUsingNames(null, PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, null,
                 getEntityInstanceByBaseEntity(printerGroupJob), null, null, createdBy);
@@ -62,7 +62,7 @@ public class PrinterGroupJobLogic
     public PrinterGroupJob createPrinterGroupJob(final ExecutionErrorAccumulator ema, final PrinterGroup printerGroup, final Integer copies,
             final Integer priority, final MimeType mimeType, final Language preferredLanguage, final String description, final ByteArray blob, final String clob,
             final PartyPK createdBy) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         PrinterGroupJob printerGroupJob = null;
         DocumentType documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_PRINTER_GROUP_JOB);
 
@@ -72,7 +72,7 @@ public class PrinterGroupJobLogic
             Document document = DocumentLogic.getInstance().createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
 
             if(document != null) {
-                PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+                var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
 
                 printerGroupJob = printerControl.createPrinterGroupJob(printerGroup, document, copies, priority, createdBy);
                 insertPrinterGroupJobIntoWorkflow(printerGroupJob, createdBy);
@@ -83,7 +83,7 @@ public class PrinterGroupJobLogic
     }
 
     public void deletePrinterGroupJob(final ExecutionErrorAccumulator ema, final PrinterGroupJob printerGroupJob, final PartyPK deletedBy) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(printerGroupJob);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS, entityInstance);
         String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
@@ -94,7 +94,7 @@ public class PrinterGroupJobLogic
             Long keepPrintedJobsTime = printerGroupJob.getLastDetail().getPrinterGroup().getLastDetail().getKeepPrintedJobsTime();
 
             if(keepPrintedJobsTime == null) {
-                PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+                var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
                 
                 printerControl.removePrinterGroupJob(printerGroupJob);
             } else {

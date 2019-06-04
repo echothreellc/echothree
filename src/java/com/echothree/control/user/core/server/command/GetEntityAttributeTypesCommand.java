@@ -49,7 +49,7 @@ public class GetEntityAttributeTypesCommand
     
     @Override
     protected Collection<EntityAttributeType> getEntities() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         
         return coreControl.getEntityAttributeTypes();
     }
@@ -57,7 +57,7 @@ public class GetEntityAttributeTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<EntityAttributeType> entities) {
         GetEntityAttributeTypesResult result = CoreResultFactory.getGetEntityAttributeTypesResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         
         result.setEntityAttributeTypes(coreControl.getEntityAttributeTypeTransfers(getUserVisit(), entities));
         

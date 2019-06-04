@@ -71,7 +71,7 @@ public class DeleteLetterDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -80,12 +80,12 @@ public class DeleteLetterDescriptionCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
                 String letterName = form.getLetterName();
                 Letter letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = form.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
                     

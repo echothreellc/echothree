@@ -66,7 +66,7 @@ public class GetOrderPriorityDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         GetOrderPriorityDescriptionsResult result = OrderResultFactory.getGetOrderPriorityDescriptionsResult();
         String orderTypeName = form.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);

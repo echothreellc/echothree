@@ -63,7 +63,7 @@ public class GetColorDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetColorDescriptionsResult result = CoreResultFactory.getGetColorDescriptionsResult();
         String colorName = form.getColorName();
         Color color = coreControl.getColorByName(colorName);

@@ -68,7 +68,7 @@ public class GetPartyApplicationEditorUsesCommand
         Party party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
 
             result.setPartyApplicationEditorUses(coreControl.getPartyApplicationEditorUseTransfersByParty(getUserVisit(), party));
         }

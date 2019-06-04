@@ -78,7 +78,7 @@ public class GetEntityLongRangeChoicesCommand
                 + (entityRef == null && componentVendorName != null && entityTypeName != null? 1: 0);
         
         if(parameterCount == 1) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             EntityType entityType = null;
             
             if(entityRef == null) {

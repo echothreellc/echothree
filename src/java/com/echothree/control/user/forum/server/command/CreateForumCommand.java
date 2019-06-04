@@ -65,7 +65,7 @@ public class CreateForumCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumName = form.getForumName();
         Forum forum = forumControl.getForumByName(forumName);
         
@@ -74,7 +74,7 @@ public class CreateForumCommand
             ForumType forumType = forumControl.getForumTypeByName(forumTypeName);
             
             if(forumType != null) {
-                IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
+                var iconControl = (IconControl)Session.getModelController(IconControl.class);
                 String iconName = form.getIconName();
                 Icon icon = iconName == null? null: iconControl.getIconByName(iconName);
                 

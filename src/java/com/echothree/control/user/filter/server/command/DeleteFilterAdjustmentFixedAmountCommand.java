@@ -62,7 +62,7 @@ public class DeleteFilterAdjustmentFixedAmountCommand
     
     @Override
     protected BaseResult execute() {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
         
@@ -72,7 +72,7 @@ public class DeleteFilterAdjustmentFixedAmountCommand
             
             if(filterAdjustment != null) {
                 if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_FIXED_AMOUNT)) {
-                    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
                     String unitOfMeasureName = form.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
                     String unitOfMeasureTypeName = null;
@@ -96,7 +96,7 @@ public class DeleteFilterAdjustmentFixedAmountCommand
                             UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
                             
                             if(unitOfMeasureType != null) {
-                                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                 String currencyIsoName = form.getCurrencyIsoName();
                                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                                 

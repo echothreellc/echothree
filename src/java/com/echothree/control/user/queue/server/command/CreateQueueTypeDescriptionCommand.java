@@ -67,12 +67,12 @@ public class CreateQueueTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
         String queueTypeName = form.getQueueTypeName();
         QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
         
         if(queueType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

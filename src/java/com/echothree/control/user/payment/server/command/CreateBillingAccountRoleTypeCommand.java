@@ -57,7 +57,7 @@ public class CreateBillingAccountRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         String billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
         BillingAccountRoleType billingAccountRoleType = paymentControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         

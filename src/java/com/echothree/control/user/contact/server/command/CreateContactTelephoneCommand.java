@@ -97,12 +97,12 @@ public class CreateContactTelephoneCommand
     @Override
     protected BaseResult execute() {
         CreateContactTelephoneResult result = ContactResultFactory.getCreateContactTelephoneResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             String countryName = form.getCountryName();
             String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
             GeoCode countryGeoCode = geoControl.getCountryByAlias(countryAlias);
@@ -122,9 +122,9 @@ public class CreateContactTelephoneCommand
                         pattern = telephoneNumberPattern == null? null: Pattern.compile(telephoneNumberPattern);
                         
                         if(pattern == null || pattern.matcher(telephoneNumber).matches()) {
-                            ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-                            CoreControl coreControl = getCoreControl();
-                            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                            var coreControl = getCoreControl();
+                            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                             BasePK createdBy = getPartyPK();
                             String telephoneExtension = form.getTelephoneExtension();
                             Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());

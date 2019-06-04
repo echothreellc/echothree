@@ -77,7 +77,7 @@ public class LockoutPolicyLogic {
     
     public void checkUserLogin(final Session session, final ExecutionErrorAccumulator ema, final Party party,
             final UserLoginStatus userLoginStatus) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyTypeLockoutPolicy policy = partyControl.getPartyTypeLockoutPolicy(party.getLastDetail().getPartyType());
         
         if(policy != null) {

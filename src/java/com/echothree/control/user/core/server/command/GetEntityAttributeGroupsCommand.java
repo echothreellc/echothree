@@ -60,7 +60,7 @@ public class GetEntityAttributeGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityAttributeGroupsResult result = CoreResultFactory.getGetEntityAttributeGroupsResult();
         UserVisit userVisit = getUserVisit();
 

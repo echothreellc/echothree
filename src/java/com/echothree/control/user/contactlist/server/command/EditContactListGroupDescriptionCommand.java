@@ -87,13 +87,13 @@ public class EditContactListGroupDescriptionCommand
 
     @Override
     public ContactListGroupDescription getEntity(EditContactListGroupDescriptionResult result) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         ContactListGroupDescription contactListGroupDescription = null;
         String contactListGroupName = spec.getContactListGroupName();
         ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
         if(contactListGroup != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditContactListGroupDescriptionCommand
 
     @Override
     public void fillInResult(EditContactListGroupDescriptionResult result, ContactListGroupDescription contactListGroupDescription) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
 
         result.setContactListGroupDescription(contactListControl.getContactListGroupDescriptionTransfer(getUserVisit(), contactListGroupDescription));
     }
@@ -136,7 +136,7 @@ public class EditContactListGroupDescriptionCommand
 
     @Override
     public void doUpdate(ContactListGroupDescription contactListGroupDescription) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         ContactListGroupDescriptionValue contactListGroupDescriptionValue = contactListControl.getContactListGroupDescriptionValue(contactListGroupDescription);
 
         contactListGroupDescriptionValue.setDescription(edit.getDescription());

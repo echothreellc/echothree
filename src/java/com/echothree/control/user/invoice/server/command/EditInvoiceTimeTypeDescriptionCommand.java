@@ -89,7 +89,7 @@ public class EditInvoiceTimeTypeDescriptionCommand
 
     @Override
     public InvoiceTimeTypeDescription getEntity(EditInvoiceTimeTypeDescriptionResult result) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         InvoiceTimeTypeDescription invoiceTimeTypeDescription = null;
         String invoiceTypeName = spec.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
@@ -99,7 +99,7 @@ public class EditInvoiceTimeTypeDescriptionCommand
             InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
 
             if(invoiceTimeType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditInvoiceTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditInvoiceTimeTypeDescriptionResult result, InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
 
         result.setInvoiceTimeTypeDescription(invoiceControl.getInvoiceTimeTypeDescriptionTransfer(getUserVisit(), invoiceTimeTypeDescription));
     }
@@ -145,7 +145,7 @@ public class EditInvoiceTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         InvoiceTimeTypeDescriptionValue invoiceTimeTypeDescriptionValue = invoiceControl.getInvoiceTimeTypeDescriptionValue(invoiceTimeTypeDescription);
         invoiceTimeTypeDescriptionValue.setDescription(edit.getDescription());
 

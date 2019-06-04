@@ -51,7 +51,7 @@ public class GetMimeTypesCommand
 
     @Override
     protected Collection<MimeType> getEntities() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
         MimeTypeUsageType mimeTypeUsageType = mimeTypeUsageTypeName == null ? null : MimeTypeLogic.getInstance().getMimeTypeUsageTypeByName(this, mimeTypeUsageTypeName);
         Collection<MimeType> mimeTypes = null;
@@ -69,7 +69,7 @@ public class GetMimeTypesCommand
 
     @Override
     protected BaseResult getTransfers(Collection<MimeType> entities) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetMimeTypesResult result = CoreResultFactory.getGetMimeTypesResult();
 
         result.setMimeTypes(coreControl.getMimeTypeTransfers(getUserVisit(), entities));

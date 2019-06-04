@@ -94,7 +94,7 @@ public class EditItemAliasTypeCommand
     
     @Override
     public ItemAliasType getEntity(EditItemAliasTypeResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemAliasType itemAliasType = null;
         String itemAliasTypeName = spec.getItemAliasTypeName();
 
@@ -120,7 +120,7 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void fillInResult(EditItemAliasTypeResult result, ItemAliasType itemAliasType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         result.setItemAliasType(itemControl.getItemAliasTypeTransfer(getUserVisit(), itemAliasType));
     }
@@ -129,7 +129,7 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void doLock(ItemAliasTypeEdit edit, ItemAliasType itemAliasType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, getPreferredLanguage());
         ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
         
@@ -147,7 +147,7 @@ public class EditItemAliasTypeCommand
         
     @Override
     public void canUpdate(ItemAliasType itemAliasType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemAliasTypeName = edit.getItemAliasTypeName();
         ItemAliasType duplicateItemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
@@ -166,7 +166,7 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void doUpdate(ItemAliasType itemAliasType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         PartyPK partyPK = getPartyPK();
         ItemAliasTypeDetailValue itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueForUpdate(itemAliasType);
         ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescriptionForUpdate(itemAliasType, getPreferredLanguage());

@@ -84,7 +84,7 @@ public class EditForumCommand
 
     @Override
     public Forum getEntity(EditForumResult result) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         Forum forum = null;
         String forumName = spec.getForumName();
 
@@ -108,14 +108,14 @@ public class EditForumCommand
 
     @Override
     public void fillInResult(EditForumResult result, Forum forum) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
 
         result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
     }
 
     @Override
     public void doLock(ForumEdit edit, Forum forum) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         ForumDescription forumDescription = forumControl.getForumDescription(forum, getPreferredLanguage());
         ForumDetail forumDetail = forum.getLastDetail();
 
@@ -140,12 +140,12 @@ public class EditForumCommand
 
     @Override
     public void canUpdate(Forum forum) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumName = edit.getForumName();
         Forum duplicateForum = forumControl.getForumByName(forumName);
 
         if(duplicateForum == null || forum.equals(duplicateForum)) {
-            IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
+            var iconControl = (IconControl)Session.getModelController(IconControl.class);
             String iconName = edit.getIconName();
 
             icon = iconName == null? null: iconControl.getIconByName(iconName);
@@ -187,7 +187,7 @@ public class EditForumCommand
 
     @Override
     public void doUpdate(Forum forum) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         PartyPK partyPK = getPartyPK();
         ForumDetailValue forumDetailValue = forumControl.getForumDetailValueForUpdate(forum);
         ForumDescription forumDescription = forumControl.getForumDescriptionForUpdate(forum, getPreferredLanguage());

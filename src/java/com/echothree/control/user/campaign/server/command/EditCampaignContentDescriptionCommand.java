@@ -87,13 +87,13 @@ public class EditCampaignContentDescriptionCommand
 
     @Override
     public CampaignContentDescription getEntity(EditCampaignContentDescriptionResult result) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         CampaignContentDescription campaignContentDescription = null;
         String campaignContentName = spec.getCampaignContentName();
         CampaignContent campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
 
         if(campaignContent != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditCampaignContentDescriptionCommand
 
     @Override
     public void fillInResult(EditCampaignContentDescriptionResult result, CampaignContentDescription campaignContentDescription) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
 
         result.setCampaignContentDescription(campaignControl.getCampaignContentDescriptionTransfer(getUserVisit(), campaignContentDescription));
     }
@@ -136,7 +136,7 @@ public class EditCampaignContentDescriptionCommand
 
     @Override
     public void doUpdate(CampaignContentDescription campaignContentDescription) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         CampaignContentDescriptionValue campaignContentDescriptionValue = campaignControl.getCampaignContentDescriptionValue(campaignContentDescription);
         campaignContentDescriptionValue.setDescription(edit.getDescription());
 

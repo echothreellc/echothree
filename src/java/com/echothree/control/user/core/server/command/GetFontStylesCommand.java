@@ -62,7 +62,7 @@ public class GetFontStylesCommand
     
     @Override
     protected Collection<FontStyle> getEntities() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         
         return coreControl.getFontStyles();
     }
@@ -70,7 +70,7 @@ public class GetFontStylesCommand
     @Override
     protected BaseResult getTransfers(Collection<FontStyle> entities) {
         GetFontStylesResult result = CoreResultFactory.getGetFontStylesResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         UserVisit userVisit = getUserVisit();
         
         result.setFontStyles(coreControl.getFontStyleTransfers(userVisit, entities));

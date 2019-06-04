@@ -60,20 +60,20 @@ public class CreateInventoryLocationGroupCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             Party warehouseParty = warehouse.getParty();
             String inventoryLocationGroupName = form.getInventoryLocationGroupName();
             InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty,
                     inventoryLocationGroupName);
             
             if(inventoryLocationGroup == null) {
-                CoreControl coreControl = getCoreControl();
-                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var coreControl = getCoreControl();
+                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 BasePK createdBy = getPartyPK();
                 Boolean isDefault = Boolean.valueOf(form.getIsDefault());
                 Integer sortOrder = Integer.valueOf(form.getSortOrder());

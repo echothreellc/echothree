@@ -50,7 +50,7 @@ public class GetPersonalTitleChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetPersonalTitleChoicesResult result = PartyResultFactory.getGetPersonalTitleChoicesResult();
         String defaultPersonalTitleChoice = form.getDefaultPersonalTitleChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

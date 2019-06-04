@@ -94,7 +94,7 @@ public class EditSearchTypeCommand
 
     @Override
     public SearchType getEntity(EditSearchTypeResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchType searchType = null;
         String searchKindName = spec.getSearchKindName();
 
@@ -126,14 +126,14 @@ public class EditSearchTypeCommand
 
     @Override
     public void fillInResult(EditSearchTypeResult result, SearchType searchType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchType(searchControl.getSearchTypeTransfer(getUserVisit(), searchType));
     }
 
     @Override
     public void doLock(SearchTypeEdit edit, SearchType searchType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchTypeDescription searchTypeDescription = searchControl.getSearchTypeDescription(searchType, getPreferredLanguage());
         SearchTypeDetail searchTypeDetail = searchType.getLastDetail();
 
@@ -148,7 +148,7 @@ public class EditSearchTypeCommand
 
     @Override
     public void canUpdate(SearchType searchType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKindDetail searchKindDetail = searchKind.getLastDetail();
         String searchTypeName = edit.getSearchTypeName();
         SearchType duplicateSearchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
@@ -160,7 +160,7 @@ public class EditSearchTypeCommand
 
     @Override
     public void doUpdate(SearchType searchType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         PartyPK partyPK = getPartyPK();
         SearchTypeDetailValue searchTypeDetailValue = searchControl.getSearchTypeDetailValueForUpdate(searchType);
         SearchTypeDescription searchTypeDescription = searchControl.getSearchTypeDescriptionForUpdate(searchType, getPreferredLanguage());

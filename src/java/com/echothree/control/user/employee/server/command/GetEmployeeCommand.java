@@ -70,7 +70,7 @@ public class GetEmployeeCommand
     @Override
     protected BaseResult execute() {
         GetEmployeeResult result = EmployeeResultFactory.getGetEmployeeResult();
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String employeeName = form.getEmployeeName();
         String partyName = form.getPartyName();
         int parameterCount = (employeeName == null? 0: 1) + (partyName == null? 0: 1);
@@ -87,7 +87,7 @@ public class GetEmployeeCommand
                     addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 
                 party = partyControl.getPartyByName(partyName);
                 

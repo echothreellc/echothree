@@ -68,7 +68,7 @@ public class DeleteReturnTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         String returnKindName = form.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
@@ -77,7 +77,7 @@ public class DeleteReturnTypeShippingMethodCommand
             ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
-                ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+                var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
                 String shippingMethodName = form.getShippingMethodName();
                 ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 

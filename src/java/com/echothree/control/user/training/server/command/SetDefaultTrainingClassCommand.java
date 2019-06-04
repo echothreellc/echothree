@@ -61,7 +61,7 @@ public class SetDefaultTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         String trainingClassName = form.getTrainingClassName();
         TrainingClassDetailValue trainingClassDetailValue = trainingControl.getTrainingClassDetailValueByNameForUpdate(trainingClassName);
         

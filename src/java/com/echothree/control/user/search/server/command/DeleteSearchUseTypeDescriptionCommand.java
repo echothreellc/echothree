@@ -66,12 +66,12 @@ public class DeleteSearchUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchUseTypeName = form.getSearchUseTypeName();
         SearchUseType searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
         
         if(searchUseType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

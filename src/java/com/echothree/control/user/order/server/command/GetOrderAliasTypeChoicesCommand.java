@@ -65,7 +65,7 @@ public class GetOrderAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         GetOrderAliasTypeChoicesResult result = OrderResultFactory.getGetOrderAliasTypeChoicesResult();
         String orderTypeName = form.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);

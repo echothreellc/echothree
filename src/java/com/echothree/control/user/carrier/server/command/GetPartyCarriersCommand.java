@@ -65,13 +65,13 @@ public class GetPartyCarriersCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetPartyCarriersResult result = CarrierResultFactory.getGetPartyCarriersResult();
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+            var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
 
             result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
             result.setPartyCarriers(carrierControl.getPartyCarrierTransfersByParty(getUserVisit(), party));

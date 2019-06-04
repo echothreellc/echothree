@@ -46,7 +46,7 @@ public class UnitOfMeasureKindLogic
     }
 
     public UnitOfMeasureKind getUnitOfMeasureKindByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
 
         if(unitOfMeasureKind == null) {
@@ -63,7 +63,7 @@ public class UnitOfMeasureKindLogic
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKind.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
             
             unitOfMeasureKind = uomControl.getUnitOfMeasureKindByEntityInstance(entityInstance, entityPermission);
         }
@@ -80,7 +80,7 @@ public class UnitOfMeasureKindLogic
     }
     
     public void checkDeleteUnitOfMeasureKind(final ExecutionErrorAccumulator ema, final UnitOfMeasureKind unitOfMeasureKind) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         
         if(uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind) != 0) {
             ema.addExecutionError(ExecutionErrors.CannotDeleteUnitOfMeasureKindInUse.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName());
@@ -88,7 +88,7 @@ public class UnitOfMeasureKindLogic
     }
 
     public void deleteUnitOfMeasureKind(final UnitOfMeasureKind unitOfMeasureKind, final BasePK deletedBy) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
 
         uomControl.deleteUnitOfMeasureKind(unitOfMeasureKind, deletedBy);
     }

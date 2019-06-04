@@ -66,13 +66,13 @@ public class GetTaxClassificationsCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GetTaxClassificationsResult result = TaxResultFactory.getGetTaxClassificationsResult();
         String countryName = form.getCountryName();
         GeoCode geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+            var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
             
             if(session.hasLimit(TaxClassificationFactory.class)) {
                 result.setTaxClassificationCount(taxControl.countTaxClassificationsByCountryGeoCode(geoCode));

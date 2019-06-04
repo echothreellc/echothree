@@ -62,7 +62,7 @@ public class GetUseNameElementsCommand
     
     @Override
     protected Collection<UseNameElement> getEntities() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         
         return offerControl.getUseNameElements();
     }
@@ -70,7 +70,7 @@ public class GetUseNameElementsCommand
     @Override
     protected BaseResult getTransfers(Collection<UseNameElement> entities) {
         GetUseNameElementsResult result = OfferResultFactory.getGetUseNameElementsResult();
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         result.setUseNameElements(offerControl.getUseNameElementTransfers(getUserVisit(), entities));
         

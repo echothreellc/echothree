@@ -89,7 +89,7 @@ public class EditOrderAliasCommand
     
     @Override
     public OrderAlias getEntity(EditOrderAliasResult result) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderAlias orderAlias = null;
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
@@ -135,7 +135,7 @@ public class EditOrderAliasCommand
 
     @Override
     public void fillInResult(EditOrderAliasResult result, OrderAlias orderAlias) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderAlias(orderControl.getOrderAliasTransfer(getUserVisit(), orderAlias));
     }
@@ -147,7 +147,7 @@ public class EditOrderAliasCommand
 
     @Override
     public void canUpdate(OrderAlias orderAlias) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String alias = edit.getAlias();
         OrderAlias duplicateOrderAlias = orderControl.getOrderAliasByAlias(orderAliasType, alias);
 
@@ -161,7 +161,7 @@ public class EditOrderAliasCommand
 
     @Override
     public void doUpdate(OrderAlias orderAlias) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderAliasValue orderAliasValue = orderControl.getOrderAliasValue(orderAlias);
 
         orderAliasValue.setAlias(edit.getAlias());

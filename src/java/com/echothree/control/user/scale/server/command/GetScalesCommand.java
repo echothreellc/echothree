@@ -46,7 +46,7 @@ public class GetScalesCommand
     
     @Override
     protected BaseResult execute() {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         GetScalesResult result = ScaleResultFactory.getGetScalesResult();
 
         result.setScales(scaleControl.getScaleTransfers(getUserVisit()));

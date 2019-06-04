@@ -65,7 +65,7 @@ public class DeleteCarrierOptionCommand
     
     @Override
     protected BaseResult execute() {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
         String carrierName = form.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
         

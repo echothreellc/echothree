@@ -67,7 +67,7 @@ public class GetGeoCodeLanguagesCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GetGeoCodeLanguagesResult result = GeoResultFactory.getGetGeoCodeLanguagesResult();
         String geoCodeName = form.getGeoCodeName();
         String languageIsoName = form.getLanguageIsoName();
@@ -84,7 +84,7 @@ public class GetGeoCodeLanguagesCommand
                     addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
                 }
             } else if(languageIsoName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {

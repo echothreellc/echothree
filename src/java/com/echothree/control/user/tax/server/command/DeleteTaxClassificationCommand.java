@@ -65,12 +65,12 @@ public class DeleteTaxClassificationCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         String countryName = form.getCountryName();
         GeoCode geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
-            TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+            var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
             String taxClassificationName = form.getTaxClassificationName();
             TaxClassification taxClassification = taxControl.getTaxClassificationByNameForUpdate(geoCode, taxClassificationName);
             

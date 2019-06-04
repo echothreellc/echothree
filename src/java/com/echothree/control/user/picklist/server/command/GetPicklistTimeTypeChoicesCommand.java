@@ -65,7 +65,7 @@ public class GetPicklistTimeTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         GetPicklistTimeTypeChoicesResult result = PicklistResultFactory.getGetPicklistTimeTypeChoicesResult();
         String picklistTypeName = form.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);

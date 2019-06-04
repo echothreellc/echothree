@@ -56,7 +56,7 @@ public class DeleteWorkflowDestinationPartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
         
@@ -69,7 +69,7 @@ public class DeleteWorkflowDestinationPartyTypeCommand
                 WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                 
                 if(workflowDestination != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String partyTypeName = form.getPartyTypeName();
                     PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
                     

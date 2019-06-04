@@ -47,7 +47,7 @@ public class SetDefaultMimeTypeCommand
     
    @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeName = form.getMimeTypeName();
         MimeTypeDetailValue mimeTypeDetailValue = coreControl.getMimeTypeDetailValueByNameForUpdate(mimeTypeName);
         

@@ -80,7 +80,7 @@ public class CreateEntityNameAttributeCommand
 
                         if(EntityAttributeTypes.NAME.name().equals(entityAttributeTypeName)) {
                             if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                                CoreControl coreControl = getCoreControl();
+                                var coreControl = getCoreControl();
                                 EntityNameAttribute entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
 
                                 if(entityNameAttribute == null) {

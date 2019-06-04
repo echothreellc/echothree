@@ -66,7 +66,7 @@ public class GetDepartmentChoicesCommand
             PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, true);
 
             if(!hasExecutionErrors()) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String defaultDepartmentChoice = form.getDefaultDepartmentChoice();
                 boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 

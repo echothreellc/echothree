@@ -71,7 +71,7 @@ public class EditMessageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditMessageTypeResult result = MessageResultFactory.getEditMessageTypeResult();
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -81,7 +81,7 @@ public class EditMessageTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                MessageControl messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     String messageTypeName = spec.getMessageTypeName();

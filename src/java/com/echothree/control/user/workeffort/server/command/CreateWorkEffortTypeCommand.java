@@ -72,12 +72,12 @@ public class CreateWorkEffortTypeCommand
     
     @Override
     protected BaseResult execute() {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType == null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String componentVendorName = form.getComponentVendorName();
             ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
@@ -90,7 +90,7 @@ public class CreateWorkEffortTypeCommand
                     Sequence workEffortSequence = null;
 
                     if(workEffortSequenceName != null) {
-                        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_WORK_EFFORT);
 
                         if(sequenceType != null) {
@@ -101,7 +101,7 @@ public class CreateWorkEffortTypeCommand
                     }
 
                     if(workEffortSequenceName == null || workEffortSequence != null) {
-                        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
                         UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {

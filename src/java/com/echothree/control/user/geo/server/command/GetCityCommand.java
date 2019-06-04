@@ -76,7 +76,7 @@ public class GetCityCommand
     @Override
     protected BaseResult execute() {
         GetCityResult result = GeoResultFactory.getGetCityResult();
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         BasePK createdBy = getPartyPK();
         
         String stateGeoCodeName = form.getStateGeoCodeName();

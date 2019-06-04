@@ -48,7 +48,7 @@ public class GetPreferredCurrencyCommand
 
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetPreferredCurrencyResult result = AccountingResultFactory.getGetPreferredCurrencyResult();
         Currency currency = getPreferredCurrency();
 

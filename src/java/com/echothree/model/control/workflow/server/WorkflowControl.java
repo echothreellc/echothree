@@ -1060,7 +1060,7 @@ public class WorkflowControl
     }
     
     private void deleteWorkflowStep(WorkflowStep workflowStep, boolean checkDefault, BasePK deletedBy) {
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         
         workRequirementControl.deleteWorkRequirementTypesByWorkflowStep(workflowStep, deletedBy);
         deleteWorkflowEntityStatusesByWorkflowStep(workflowStep, deletedBy);
@@ -4205,7 +4205,7 @@ public class WorkflowControl
 
     public void addEntityToWorkflow(final WorkflowEntrance workflowEntrance, final EntityInstance entityInstance, final WorkEffort workEffort,
             final Long triggerTime, final BasePK createdBy) {
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         List<WorkflowEntranceStep> workflowEntranceSteps = getWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
         WorkEffortScope workEffortScope = workEffort == null ? null : workEffort.getLastDetail().getWorkEffortScope();
 

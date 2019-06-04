@@ -47,7 +47,7 @@ public class CancellationPolicyLogic
     }
 
     public CancellationKind getCancellationKindByName(final ExecutionErrorAccumulator eea, final String cancellationKindName) {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
         if(cancellationKind == null) {
@@ -58,7 +58,7 @@ public class CancellationPolicyLogic
     }
 
     public CancellationPolicy getCancellationPolicyByName(final ExecutionErrorAccumulator eea, final String cancellationKindName, final String cancellationPolicyName) {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         CancellationKind cancellationKind = getCancellationKindByName(eea, cancellationKindName);
         CancellationPolicy cancellationPolicy = null;
         
@@ -83,7 +83,7 @@ public class CancellationPolicyLogic
         }
 
         if(cancellationPolicy == null) {
-            CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
             CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
 
             if(cancellationKind != null) {
@@ -101,7 +101,7 @@ public class CancellationPolicyLogic
     }
 
     public void checkDeleteCancellationPolicy(final ExecutionErrorAccumulator eea, final CancellationPolicy cancellationPolicy) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         // Both CUSTOMERs and VENDORs use Orders and OrderLines, so check for CancellationPolicy use there first.
         boolean inUse = orderControl.countOrdersByCancellationPolicy(cancellationPolicy) != 0;
@@ -114,11 +114,11 @@ public class CancellationPolicyLogic
             String cancellationKindName = cancellationPolicy.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName();
             
             if(cancellationKindName.equals(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION)) {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
                 inUse |= itemControl.countItemsByCancellationPolicy(cancellationPolicy) != 0;
             } else if(cancellationKindName.equals(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION)) {
-                VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
 
                 inUse |= vendorControl.countVendorItemsByCancellationPolicy(cancellationPolicy) != 0;
             }
@@ -130,7 +130,7 @@ public class CancellationPolicyLogic
     }
 
     public void deleteCancellationPolicy(final CancellationPolicy cancellationPolicy, final BasePK deletedBy) {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
 
         cancellationPolicyControl.deleteCancellationPolicy(cancellationPolicy, deletedBy);
     }

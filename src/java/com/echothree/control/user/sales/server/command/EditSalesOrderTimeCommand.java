@@ -80,7 +80,7 @@ public class EditSalesOrderTimeCommand
         OrderTime orderTime = null;
         
         if(!hasExecutionErrors()) {
-            OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
             OrderType orderType = order.getLastDetail().getOrderType();
             String orderTimeTypeName = spec.getOrderTimeTypeName();
             OrderTimeType orderTimeType = orderControl.getOrderTimeTypeByName(orderType, orderTimeTypeName);
@@ -108,7 +108,7 @@ public class EditSalesOrderTimeCommand
 
     @Override
     public void fillInResult(EditSalesOrderTimeResult result, OrderTime orderTime) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderTime(orderControl.getOrderTimeTransfer(getUserVisit(), orderTime));
     }
@@ -120,7 +120,7 @@ public class EditSalesOrderTimeCommand
 
     @Override
     public void doUpdate(OrderTime orderTime) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderTimeValue orderTimeValue = orderControl.getOrderTimeValue(orderTime);
         Long time = Long.valueOf(edit.getTime());
         

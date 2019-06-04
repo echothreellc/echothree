@@ -91,7 +91,7 @@ public class EditSecurityRoleDescriptionCommand
     
     @Override
     public SecurityRoleDescription getEntity(EditSecurityRoleDescriptionResult result) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         SecurityRoleDescription securityRoleDescription = null;
         String securityRoleGroupName = spec.getSecurityRoleGroupName();
         
@@ -102,7 +102,7 @@ public class EditSecurityRoleDescriptionCommand
             SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
             if(securityRole != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -136,7 +136,7 @@ public class EditSecurityRoleDescriptionCommand
 
     @Override
     public void fillInResult(EditSecurityRoleDescriptionResult result, SecurityRoleDescription securityRoleDescription) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
 
         result.setSecurityRoleDescription(securityControl.getSecurityRoleDescriptionTransfer(getUserVisit(), securityRoleDescription));
     }
@@ -148,7 +148,7 @@ public class EditSecurityRoleDescriptionCommand
 
     @Override
     public void doUpdate(SecurityRoleDescription securityRoleDescription) {
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         SecurityRoleDescriptionValue securityRoleDescriptionValue = securityControl.getSecurityRoleDescriptionValue(securityRoleDescription);
         
         securityRoleDescriptionValue.setDescription(edit.getDescription());

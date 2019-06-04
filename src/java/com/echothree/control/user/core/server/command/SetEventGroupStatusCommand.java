@@ -48,7 +48,7 @@ public class SetEventGroupStatusCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String eventGroupName = form.getEventGroupName();
         EventGroup eventGroup = coreControl.getEventGroupByName(eventGroupName);
         

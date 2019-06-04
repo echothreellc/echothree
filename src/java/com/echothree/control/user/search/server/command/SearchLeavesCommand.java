@@ -112,7 +112,7 @@ public class SearchLeavesCommand
                             LeaveReason leaveReason = leaveReasonName == null ? null : LeaveLogic.getInstance().getLeaveReasonByName(this, leaveReasonName);
 
                             if(!hasExecutionErrors()) {
-                                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                 String leaveStatusChoice = form.getLeaveStatusChoice();
                                 WorkflowStep leaveStatusWorkflowStep = leaveStatusChoice == null ? null
                                         : workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(LeaveStatusConstants.Workflow_LEAVE_STATUS),

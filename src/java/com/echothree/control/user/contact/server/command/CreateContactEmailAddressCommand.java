@@ -82,7 +82,7 @@ public class CreateContactEmailAddressCommand
     @Override
     protected BaseResult execute() {
         CreateContactEmailAddressResult result = ContactResultFactory.getCreateContactEmailAddressResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
         

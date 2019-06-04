@@ -105,14 +105,14 @@ public class EditEmployeeCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         EditEmployeeResult result = PartyResultFactory.getEditEmployeeResult();
         String employeeName = spec.getEmployeeName();
         PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByNameForUpdate(employeeName);
         
         if(partyEmployee != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-            SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
             Party party = partyEmployee.getParty();
             
             if(editMode.equals(EditMode.LOCK)) {
@@ -174,7 +174,7 @@ public class EditEmployeeCommand
                                 if(preferredCurrencyIsoName == null) {
                                     preferredCurrency = null;
                                 } else {
-                                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                     preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                 }
 

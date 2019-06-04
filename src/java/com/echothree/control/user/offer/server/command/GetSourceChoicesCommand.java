@@ -63,7 +63,7 @@ public class GetSourceChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetSourceChoicesResult result = OfferResultFactory.getGetSourceChoicesResult();
         String defaultSourceChoice = form.getDefaultSourceChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

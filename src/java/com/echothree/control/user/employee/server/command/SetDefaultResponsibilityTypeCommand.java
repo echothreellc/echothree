@@ -48,7 +48,7 @@ public class SetDefaultResponsibilityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String responsibilityTypeName = form.getResponsibilityTypeName();
         ResponsibilityTypeDetailValue responsibilityTypeDetailValue = employeeControl.getResponsibilityTypeDetailValueByNameForUpdate(responsibilityTypeName);
         

@@ -77,8 +77,8 @@ public class FontWeightObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return coreControl.getBestFontWeightDescription(fontWeight, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

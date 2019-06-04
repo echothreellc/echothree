@@ -736,7 +736,7 @@ public class VendorControl
     
     public VendorStatusChoicesBean getVendorStatusChoices(String defaultVendorStatusChoice, Language language,
             boolean allowNullChoice, Party vendorParty, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         VendorStatusChoicesBean vendorStatusChoicesBean = new VendorStatusChoicesBean();
 
         if(vendorParty == null) {
@@ -755,7 +755,7 @@ public class VendorControl
     }
 
     public void setVendorStatus(ExecutionErrorAccumulator eea, Party party, String vendorStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorStatusConstants.Workflow_VENDOR_STATUS,
                 entityInstance);
@@ -1058,7 +1058,7 @@ public class VendorControl
     
     public VendorItemStatusChoicesBean getVendorItemStatusChoices(String defaultVendorItemStatusChoice, Language language,
             boolean allowNullChoice, VendorItem vendorItem, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         VendorItemStatusChoicesBean vendorItemStatusChoicesBean = new VendorItemStatusChoicesBean();
 
         if(vendorItem == null) {
@@ -1077,7 +1077,7 @@ public class VendorControl
     }
 
     public void setVendorItemStatus(ExecutionErrorAccumulator eea, VendorItem vendorItem, String vendorItemStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(vendorItem);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
                 entityInstance);

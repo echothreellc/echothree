@@ -91,7 +91,7 @@ public class EditEntityAttributeDescriptionCommand
 
     @Override
     public EntityAttributeDescription getEntity(EditEntityAttributeDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttributeDescription entityAttributeDescription = null;
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -105,7 +105,7 @@ public class EditEntityAttributeDescriptionCommand
                 EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
 
                 if(entityAttribute != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -142,7 +142,7 @@ public class EditEntityAttributeDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityAttributeDescriptionResult result, EntityAttributeDescription entityAttributeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityAttributeDescription(coreControl.getEntityAttributeDescriptionTransfer(getUserVisit(), entityAttributeDescription, null));
     }
@@ -154,7 +154,7 @@ public class EditEntityAttributeDescriptionCommand
 
     @Override
     public void doUpdate(EntityAttributeDescription entityAttributeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttributeDescriptionValue entityAttributeDescriptionValue = coreControl.getEntityAttributeDescriptionValue(entityAttributeDescription);
         entityAttributeDescriptionValue.setDescription(edit.getDescription());
 

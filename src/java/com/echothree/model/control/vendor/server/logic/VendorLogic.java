@@ -65,7 +65,7 @@ public class VendorLogic
         Vendor vendor = null;
 
         if(parameterCount == 1) {
-            VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
 
             if(vendorName != null) {
                 vendor = vendorControl.getVendorByName(vendorName);
@@ -74,7 +74,7 @@ public class VendorLogic
                     handleExecutionError(UnknownVendorNameException.class, eea, ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
@@ -97,8 +97,8 @@ public class VendorLogic
     }
 
     public void setVendorStatus(final Session session, ExecutionErrorAccumulator eea, Party party, String vendorStatusChoice, PartyPK modifiedBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(eea, VendorStatusConstants.Workflow_VENDOR_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(party.getPrimaryKey());

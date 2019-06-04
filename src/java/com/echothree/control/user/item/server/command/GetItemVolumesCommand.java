@@ -52,7 +52,7 @@ public class GetItemVolumesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemVolumesResult result = ItemResultFactory.getGetItemVolumesResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

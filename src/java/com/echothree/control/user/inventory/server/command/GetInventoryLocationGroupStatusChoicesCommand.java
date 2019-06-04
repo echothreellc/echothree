@@ -56,12 +56,12 @@ public class GetInventoryLocationGroupStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         GetInventoryLocationGroupStatusChoicesResult result = InventoryResultFactory.getGetInventoryLocationGroupStatusChoicesResult();
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
         if(warehouse != null) {
-            InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             Party warehouseParty = warehouse.getParty();
             String inventoryLocationGroupName = form.getInventoryLocationGroupName();
             InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);

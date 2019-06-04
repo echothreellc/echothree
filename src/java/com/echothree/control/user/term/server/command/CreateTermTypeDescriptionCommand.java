@@ -53,12 +53,12 @@ public class CreateTermTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = (TermControl)Session.getModelController(TermControl.class);
         String termTypeName = form.getTermTypeName();
         TermType termType = termControl.getTermTypeByName(termTypeName);
         
         if(termType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

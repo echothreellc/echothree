@@ -69,7 +69,7 @@ public class GetPartyContactListStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetPartyContactListStatusChoicesResult result = ContactListResultFactory.getGetPartyContactListStatusChoicesResult();
         String partyName = form.getPartyName();
         String contactListName = form.getContactListName();
@@ -79,7 +79,7 @@ public class GetPartyContactListStatusChoicesCommand
             Party party = partyName == null ? null : partyControl.getPartyByName(partyName);
 
             if(partyName == null || party != null) {
-                ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+                var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
                 ContactList contactList = contactListName == null ? null : contactListControl.getContactListByName(contactListName);
 
                 if(contactListName == null || contactList != null) {

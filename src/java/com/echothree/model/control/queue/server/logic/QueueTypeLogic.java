@@ -40,7 +40,7 @@ public class QueueTypeLogic
     }
     
     public QueueType getQueueTypeByName(final ExecutionErrorAccumulator eea, final String queueTypeName) {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
         QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
 
         if(queueType == null) {

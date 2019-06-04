@@ -98,7 +98,7 @@ public class EditEntityListItemCommand
     
     @Override
     public EntityListItem getEntity(EditEntityListItemResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityListItem entityListItem = null;
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -144,14 +144,14 @@ public class EditEntityListItemCommand
 
     @Override
     public void fillInResult(EditEntityListItemResult result, EntityListItem entityListItem) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityListItem(coreControl.getEntityListItemTransfer(getUserVisit(), entityListItem, null));
     }
 
     @Override
     public void doLock(EntityListItemEdit edit, EntityListItem entityListItem) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityListItemDescription entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, getPreferredLanguage());
         EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
 
@@ -166,7 +166,7 @@ public class EditEntityListItemCommand
 
     @Override
     public void canUpdate(EntityListItem entityListItem) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String entityListItemName = edit.getEntityListItemName();
         EntityListItem duplicateEntityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
 
@@ -177,7 +177,7 @@ public class EditEntityListItemCommand
 
     @Override
     public void doUpdate(EntityListItem entityListItem) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         EntityListItemDetailValue entityListItemDetailValue = coreControl.getEntityListItemDetailValueForUpdate(entityListItem);
         EntityListItemDescription entityListItemDescription = coreControl.getEntityListItemDescriptionForUpdate(entityListItem, getPreferredLanguage());

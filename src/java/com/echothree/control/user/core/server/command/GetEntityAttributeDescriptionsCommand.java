@@ -68,7 +68,7 @@ public class GetEntityAttributeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityAttributeDescriptionsResult result = CoreResultFactory.getGetEntityAttributeDescriptionsResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);

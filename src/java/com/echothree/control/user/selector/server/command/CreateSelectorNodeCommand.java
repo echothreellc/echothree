@@ -671,7 +671,7 @@ public class CreateSelectorNodeCommand
     @Override
     protected BaseResult execute() {
         if(!hasExecutionErrors()) {
-            SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
             String selectorKindName = form.getSelectorKindName();
             SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
 

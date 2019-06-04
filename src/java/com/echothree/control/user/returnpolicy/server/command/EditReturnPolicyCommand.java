@@ -99,7 +99,7 @@ public class EditReturnPolicyCommand
 
     @Override
     public ReturnPolicy getEntity(EditReturnPolicyResult result) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnPolicy returnPolicy = null;
         String returnKindName = spec.getReturnKindName();
 
@@ -133,7 +133,7 @@ public class EditReturnPolicyCommand
 
     @Override
     public void fillInResult(EditReturnPolicyResult result, ReturnPolicy returnPolicy) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
 
         result.setReturnPolicy(returnPolicyControl.getReturnPolicyTransfer(getUserVisit(), returnPolicy));
     }
@@ -142,7 +142,7 @@ public class EditReturnPolicyCommand
 
     @Override
     public void doLock(ReturnPolicyEdit edit, ReturnPolicy returnPolicy) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnPolicyTranslation returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslation(returnPolicy, getPreferredLanguage());
         ReturnPolicyDetail returnPolicyDetail = returnPolicy.getLastDetail();
 
@@ -161,7 +161,7 @@ public class EditReturnPolicyCommand
 
     @Override
     public void canUpdate(ReturnPolicy returnPolicy) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         String returnPolicyName = edit.getReturnPolicyName();
         ReturnPolicy duplicateReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
@@ -180,7 +180,7 @@ public class EditReturnPolicyCommand
 
     @Override
     public void doUpdate(ReturnPolicy returnPolicy) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         PartyPK partyPK = getPartyPK();
         ReturnPolicyDetailValue returnPolicyDetailValue = returnPolicyControl.getReturnPolicyDetailValueForUpdate(returnPolicy);
         ReturnPolicyTranslation returnPolicyTranslation = returnPolicyControl.getReturnPolicyTranslationForUpdate(returnPolicy, getPreferredLanguage());

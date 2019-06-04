@@ -62,7 +62,7 @@ public class GetDivisionChoicesCommand
         int parameterCount = (companyName == null? 0: 1) + (partyName == null? 0: 1);
         
         if(parameterCount == 1) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             Party party = null;
             
             if(companyName != null) {

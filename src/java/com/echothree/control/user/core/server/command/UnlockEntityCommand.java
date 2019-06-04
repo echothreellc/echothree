@@ -61,7 +61,7 @@ public class UnlockEntityCommand
             PartyPK partyPK = getPartyPK();
             
             if(partyPK != null) {
-                EntityLockControl entityLockControl = (EntityLockControl)Session.getModelController(EntityLockControl.class);
+                var entityLockControl = (EntityLockControl)Session.getModelController(EntityLockControl.class);
                 BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                 if(entityLockControl.lockEntityForUpdate(basePK, getPartyPK())) {

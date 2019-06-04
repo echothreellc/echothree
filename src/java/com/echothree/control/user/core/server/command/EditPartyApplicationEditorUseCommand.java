@@ -111,7 +111,7 @@ public class EditPartyApplicationEditorUseCommand
                 ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                         partyApplicationEditorUse = coreControl.getPartyApplicationEditorUse(party, applicationEditorUse);
@@ -136,7 +136,7 @@ public class EditPartyApplicationEditorUseCommand
 
     @Override
     public void fillInResult(EditPartyApplicationEditorUseResult result, PartyApplicationEditorUse partyApplicationEditorUse) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setPartyApplicationEditorUse(coreControl.getPartyApplicationEditorUseTransfer(getUserVisit(), partyApplicationEditorUse));
     }
@@ -168,7 +168,7 @@ public class EditPartyApplicationEditorUseCommand
 
     @Override
     public void doUpdate(PartyApplicationEditorUse partyApplicationEditorUse) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         PartyApplicationEditorUseDetailValue partyApplicationEditorUseDetailValue = coreControl.getPartyApplicationEditorUseDetailValueForUpdate(partyApplicationEditorUse);
         String strPreferredHeight = edit.getPreferredHeight();

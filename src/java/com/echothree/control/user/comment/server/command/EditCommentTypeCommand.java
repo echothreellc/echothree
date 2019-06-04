@@ -76,7 +76,7 @@ public class EditCommentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditCommentTypeResult result = CommentResultFactory.getEditCommentTypeResult();
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -86,7 +86,7 @@ public class EditCommentTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     String commentTypeName = spec.getCommentTypeName();
@@ -129,7 +129,7 @@ public class EditCommentTypeCommand
                             Sequence commentSequence = null;
                             
                             if(commentSequenceName != null) {
-                                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                                 SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_COMMENT);
                                 
                                 if(sequenceType != null) {

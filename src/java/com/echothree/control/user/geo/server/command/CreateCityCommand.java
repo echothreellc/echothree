@@ -80,7 +80,7 @@ public class CreateCityCommand
     @Override
     protected BaseResult execute() {
         CreateCityResult result = GeoResultFactory.getCreateCityResult();
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         BasePK createdBy = getPartyPK();
         GeoCode geoCode;
         

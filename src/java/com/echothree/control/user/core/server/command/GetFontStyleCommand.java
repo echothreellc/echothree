@@ -60,7 +60,7 @@ public class GetFontStyleCommand
     
     @Override
     protected FontStyle getEntity() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         FontStyle fontStyle = null;
         String fontStyleName = form.getFontStyleName();
         int parameterCount = (fontStyleName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -89,7 +89,7 @@ public class GetFontStyleCommand
     
     @Override
     protected BaseResult getTransfer(FontStyle fontStyle) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetFontStyleResult result = CoreResultFactory.getGetFontStyleResult();
 
         if(fontStyle != null) {

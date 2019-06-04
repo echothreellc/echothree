@@ -70,7 +70,7 @@ public class GetIndexFieldDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         GetIndexFieldDescriptionResult result = IndexResultFactory.getGetIndexFieldDescriptionResult();
         String indexTypeName = form.getIndexTypeName();
         IndexType indexType = indexControl.getIndexTypeByName(indexTypeName);
@@ -80,7 +80,7 @@ public class GetIndexFieldDescriptionCommand
             IndexField indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
 
             if(indexField != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

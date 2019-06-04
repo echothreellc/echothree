@@ -99,7 +99,7 @@ public class EntityLockControl
      */
     public long lockEntity(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         long lockExpirationTime;
         EntityInstance lockTargetEntityInstance = coreControl.getEntityInstanceByBasePK(lockTarget);
         long lockTargetEntityInstanceId = lockTargetEntityInstance.getPrimaryKey().getEntityId();
@@ -229,7 +229,7 @@ public class EntityLockControl
      */
     public boolean lockEntityForUpdate(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         boolean isLocked;
         long lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         long lockedByEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
@@ -338,7 +338,7 @@ public class EntityLockControl
      */
     public boolean unlockEntity(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         boolean wasUnlocked;
         long lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         
@@ -442,7 +442,7 @@ public class EntityLockControl
      */
     public boolean isEntityLocked(final BasePK lockTarget, final BasePK lockedBy)
             throws EntityLockException {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         boolean isLocked;
         long lockTargetEntityInstanceId = coreControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         

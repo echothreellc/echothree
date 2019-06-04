@@ -76,7 +76,7 @@ public class CreateCarrierServiceCommand
     
     @Override
     protected BaseResult execute() {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
         String carrierName = form.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
         
@@ -90,7 +90,7 @@ public class CreateCarrierServiceCommand
                 Selector geoCodeSelector = null;
 
                 if(geoCodeSelectorName != null) {
-                    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                     SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
 
                     if(selectorKind != null) {
@@ -113,7 +113,7 @@ public class CreateCarrierServiceCommand
                     Selector itemSelector = null;
 
                     if(itemSelectorName != null) {
-                        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                         SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
 
                         if(selectorKind != null) {

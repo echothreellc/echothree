@@ -51,7 +51,7 @@ public class CreateSelectorTextSearchTypeCommand
     @Override
     protected BaseResult execute() {
         String selectorTextSearchTypeName = form.getSelectorTextSearchTypeName();
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         SelectorTextSearchType selectorTextSearchType = selectorControl.getSelectorTextSearchTypeByName(selectorTextSearchTypeName);
         
         if(selectorTextSearchType == null) {

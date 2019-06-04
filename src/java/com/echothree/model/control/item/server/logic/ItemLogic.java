@@ -62,7 +62,7 @@ public class ItemLogic
     }
     
     public ItemType getItemTypeByName(final ExecutionErrorAccumulator eea, final String itemTypeName) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemType itemType = itemControl.getItemTypeByName(itemTypeName);
 
         if(itemType == null) {
@@ -73,7 +73,7 @@ public class ItemLogic
     }
 
     public ItemUseType getItemUseTypeByName(final ExecutionErrorAccumulator eea, final String itemUseTypeName) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemUseType itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
 
         if(itemUseType == null) {
@@ -84,7 +84,7 @@ public class ItemLogic
     }
 
     public Item getItemByName(final ExecutionErrorAccumulator eea, final String itemName) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         Item item = itemControl.getItemByName(itemName);
 
         if(item == null) {
@@ -95,7 +95,7 @@ public class ItemLogic
     }
 
     public Item getItemByNameThenAlias(final ExecutionErrorAccumulator eea, final String itemNameOrAlias) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         Item item = itemControl.getItemByNameThenAlias(itemNameOrAlias);
 
         if(item == null) {

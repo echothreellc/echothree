@@ -68,13 +68,13 @@ public class GetPaymentMethodDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         GetPaymentMethodDescriptionResult result = PaymentResultFactory.getGetPaymentMethodDescriptionResult();
         String paymentMethodName = form.getPaymentMethodName();
         PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
         
         if(paymentMethod != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

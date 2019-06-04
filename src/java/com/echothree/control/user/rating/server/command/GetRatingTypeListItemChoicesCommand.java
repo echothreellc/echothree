@@ -79,7 +79,7 @@ public class GetRatingTypeListItemChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
                 boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 result.setRatingTypeListItemChoices(ratingControl.getRatingTypeListItemChoices(form.getDefaultRatingTypeListItemChoice(), getPreferredLanguage(),

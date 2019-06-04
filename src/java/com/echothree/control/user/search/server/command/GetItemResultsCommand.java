@@ -56,7 +56,7 @@ public class GetItemResultsCommand
     @Override
     protected BaseResult execute() {
         GetItemResultsResult result = SearchResultFactory.getGetItemResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_ITEM);
         
         if(searchKind != null) {

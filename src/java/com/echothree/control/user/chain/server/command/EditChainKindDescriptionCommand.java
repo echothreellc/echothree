@@ -87,13 +87,13 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public ChainKindDescription getEntity(EditChainKindDescriptionResult result) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainKindDescription chainKindDescription = null;
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
 
         if(chainKind != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public void fillInResult(EditChainKindDescriptionResult result, ChainKindDescription chainKindDescription) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
         result.setChainKindDescription(chainControl.getChainKindDescriptionTransfer(getUserVisit(), chainKindDescription));
     }
@@ -136,7 +136,7 @@ public class EditChainKindDescriptionCommand
 
     @Override
     public void doUpdate(ChainKindDescription chainKindDescription) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainKindDescriptionValue chainKindDescriptionValue = chainControl.getChainKindDescriptionValue(chainKindDescription);
 
         chainKindDescriptionValue.setDescription(edit.getDescription());

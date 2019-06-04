@@ -393,7 +393,7 @@ public class IndexControl
     }
 
     private void deleteIndexType(IndexType indexType, boolean checkDefault, BasePK deletedBy) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         IndexTypeDetail indexTypeDetail = indexType.getLastDetailForUpdate();
 
         searchControl.deleteSearchKindsByIndexType(indexType, deletedBy);
@@ -832,7 +832,7 @@ public class IndexControl
     }
 
     public void deleteIndexField(IndexField indexField, BasePK deletedBy) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         
         deleteIndexFieldDescriptionsByIndexField(indexField, deletedBy);
         searchControl.deleteCachedSearchIndexFieldsByIndexField(indexField, deletedBy);
@@ -1385,7 +1385,7 @@ public class IndexControl
     }
 
     private void deleteIndex(Index index, boolean checkDefault, BasePK deletedBy) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         IndexDetail indexDetail = index.getLastDetailForUpdate();
 
         searchControl.deleteCachedSearchesByIndex(index, deletedBy);

@@ -89,7 +89,7 @@ public class EditApplicationCommand
 
     @Override
     public Application getEntity(EditApplicationResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         Application application;
         String applicationName = spec.getApplicationName();
 
@@ -113,14 +113,14 @@ public class EditApplicationCommand
 
     @Override
     public void fillInResult(EditApplicationResult result, Application application) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setApplication(coreControl.getApplicationTransfer(getUserVisit(), application));
     }
 
     @Override
     public void doLock(ApplicationEdit edit, Application application) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ApplicationDescription applicationDescription = coreControl.getApplicationDescription(application, getPreferredLanguage());
         ApplicationDetail applicationDetail = application.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditApplicationCommand
 
     @Override
     public void canUpdate(Application application) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String applicationName = edit.getApplicationName();
         Application duplicateApplication = coreControl.getApplicationByName(applicationName);
 
@@ -146,7 +146,7 @@ public class EditApplicationCommand
 
     @Override
     public void doUpdate(Application application) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         ApplicationDetailValue applicationDetailValue = coreControl.getApplicationDetailValueForUpdate(application);
         ApplicationDescription applicationDescription = coreControl.getApplicationDescriptionForUpdate(application, getPreferredLanguage());

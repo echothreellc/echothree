@@ -87,13 +87,13 @@ public class EditContactMechanismAliasTypeDescriptionCommand
 
     @Override
     public ContactMechanismAliasTypeDescription getEntity(EditContactMechanismAliasTypeDescriptionResult result) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription = null;
         String contactMechanismAliasTypeName = spec.getContactMechanismAliasTypeName();
         ContactMechanismAliasType contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName);
 
         if(contactMechanismAliasType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditContactMechanismAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditContactMechanismAliasTypeDescriptionResult result, ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
 
         result.setContactMechanismAliasTypeDescription(contactControl.getContactMechanismAliasTypeDescriptionTransfer(getUserVisit(), contactMechanismAliasTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditContactMechanismAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         ContactMechanismAliasTypeDescriptionValue contactMechanismAliasTypeDescriptionValue = contactControl.getContactMechanismAliasTypeDescriptionValue(contactMechanismAliasTypeDescription);
         
         contactMechanismAliasTypeDescriptionValue.setDescription(edit.getDescription());

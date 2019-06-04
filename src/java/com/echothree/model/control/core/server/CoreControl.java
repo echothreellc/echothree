@@ -997,14 +997,14 @@ public class CoreControl
     }
     
     public void deleteEntityType(EntityType entityType, BasePK deletedBy) {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-        BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
-        CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
-        MessageControl messageControl = (MessageControl)Session.getModelController(MessageControl.class);
-        RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
-        TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+        var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+        var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+        var tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         
         deleteEntityTypeDescriptionsByEntityType(entityType, deletedBy);
         deleteEntityAttributesByEntityType(entityType, deletedBy);
@@ -2769,7 +2769,7 @@ public class CoreControl
     public void deleteEntityInstanceDependencies(EntityInstance entityInstance, BasePK deletedBy) {
         ChainControl chainControl = ((ChainControl)Session.getModelController(ChainControl.class));
         SearchControl searchControl = ((SearchControl)Session.getModelController(SearchControl.class));
-        SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
 
         ((AccountingControl)Session.getModelController(AccountingControl.class)).deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
         ((AssociateControl)Session.getModelController(AssociateControl.class)).deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
@@ -3333,8 +3333,8 @@ public class CoreControl
     }
     
     public EventGroup createEventGroup(BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        WorkflowControl workflowControl = getWorkflowControl();
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var workflowControl = getWorkflowControl();
         EventGroup eventGroup = null;
         Workflow workflow = workflowControl.getWorkflowByName(Workflow_EVENT_GROUP_STATUS);
         
@@ -3466,7 +3466,7 @@ public class CoreControl
     
     public EventGroupStatusChoicesBean getEventGroupStatusChoices(String defaultEventGroupStatusChoice, Language language, boolean allowNullChoice,
             EventGroup eventGroup, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EventGroupStatusChoicesBean eventGroupStatusChoicesBean = new EventGroupStatusChoicesBean();
         
         if(eventGroup == null) {
@@ -3485,7 +3485,7 @@ public class CoreControl
     }
     
     public void setEventGroupStatus(ExecutionErrorAccumulator eea, EventGroup eventGroup, String eventGroupStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(eventGroup);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_EVENT_GROUP_STATUS,
                 entityInstance);
@@ -9738,7 +9738,7 @@ public class CoreControl
     }
 
     public void deleteServerService(ServerService serverService, BasePK deletedBy) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         
         scaleControl.deleteScalesByServerService(serverService, deletedBy);
 
@@ -12300,7 +12300,7 @@ public class CoreControl
         }
         
         if(!eea.hasExecutionErrors()) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_BASE_ENCRYPTION_KEY);
             String baseEncryptionKeyName = sequenceControl.getNextSequenceValue(sequence);
             String sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
@@ -12498,7 +12498,7 @@ public class CoreControl
     
     public BaseEncryptionKeyStatusChoicesBean getBaseEncryptionKeyStatusChoices(String defaultBaseEncryptionKeyStatusChoice,
             Language language, boolean allowNullChoice, BaseEncryptionKey baseEncryptionKey, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         BaseEncryptionKeyStatusChoicesBean baseEncryptionKeyStatusChoicesBean = new BaseEncryptionKeyStatusChoicesBean();
         
         if(baseEncryptionKey == null) {
@@ -12517,7 +12517,7 @@ public class CoreControl
     }
     
     public void setBaseEncryptionKeyStatus(ExecutionErrorAccumulator eea, BaseEncryptionKey baseEncryptionKey, String baseEncryptionKeyStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(baseEncryptionKey);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
                 entityInstance);
@@ -12597,7 +12597,7 @@ public class CoreControl
     
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_EVENT_SUBSCRIBER);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
         String eventSubscriberName = sequenceControl.getNextSequenceValue(sequence);
@@ -12970,7 +12970,7 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     
     private void queueEntityInstanceToIndexing(EntityInstance entityInstance) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
 
         if(indexControl.isEntityTypeUsedByIndexTypes(entityInstance.getEntityType())) {
             try {

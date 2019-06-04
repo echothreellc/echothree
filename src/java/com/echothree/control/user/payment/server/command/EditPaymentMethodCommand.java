@@ -120,7 +120,7 @@ public class EditPaymentMethodCommand
         ValidationResult validationResult = validator.validate(edit, getEditFieldDefinitions());
         
         if(!validationResult.getHasErrors()) {
-            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
             PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(spec.getPaymentMethodName());
             
             if(paymentMethod != null) {
@@ -149,7 +149,7 @@ public class EditPaymentMethodCommand
 
     @Override
     public PaymentMethod getEntity(EditPaymentMethodResult result) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PaymentMethod paymentMethod = null;
         String paymentMethodName = spec.getPaymentMethodName();
 
@@ -175,7 +175,7 @@ public class EditPaymentMethodCommand
 
     @Override
     public void fillInResult(EditPaymentMethodResult result, PaymentMethod paymentMethod) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
 
         result.setPaymentMethod(paymentControl.getPaymentMethodTransfer(getUserVisit(), paymentMethod));
     }
@@ -185,7 +185,7 @@ public class EditPaymentMethodCommand
 
     @Override
     public void doLock(PaymentMethodEdit edit, PaymentMethod paymentMethod) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PaymentMethodDescription paymentMethodDescription = paymentControl.getPaymentMethodDescription(paymentMethod, getPreferredLanguage());
         PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetail();
         String paymentMethodTypeName = paymentMethodDetail.getPaymentMethodType().getPaymentMethodTypeName();
@@ -231,14 +231,14 @@ public class EditPaymentMethodCommand
 
     @Override
     public void canUpdate(PaymentMethod paymentMethod) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         String paymentMethodName = edit.getPaymentMethodName();
         PaymentMethod duplicatePaymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
 
         if(duplicatePaymentMethod != null && !paymentMethod.equals(duplicatePaymentMethod)) {
             addExecutionError(ExecutionErrors.DuplicatePaymentMethodName.name(), paymentMethodName);
         } else {
-            SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
             String itemSelectorName = edit.getItemSelectorName();
             itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorConstants.SelectorKind_ITEM,
                     SelectorConstants.SelectorType_PAYMENT_METHOD, itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());
@@ -254,7 +254,7 @@ public class EditPaymentMethodCommand
 
     @Override
     public void doUpdate(PaymentMethod paymentMethod) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PartyPK partyPK = getPartyPK();
         PaymentMethodDetailValue paymentMethodDetailValue = paymentControl.getPaymentMethodDetailValueForUpdate(paymentMethod);
         PaymentMethodDescription paymentMethodDescription = paymentControl.getPaymentMethodDescriptionForUpdate(paymentMethod, getPreferredLanguage());

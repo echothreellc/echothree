@@ -49,7 +49,7 @@ public class GetCacheEntryCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetCacheEntryResult result = CoreResultFactory.getGetCacheEntryResult();
         String cacheEntryKey = form.getCacheEntryKey();
         CacheEntryTransfer cacheEntryTransfer = coreControl.getCacheEntryTransferByCacheEntryKey(getUserVisit(), cacheEntryKey);

@@ -49,7 +49,7 @@ public class GetPersonalTitlesCommand
     
     @Override
     protected Collection<PersonalTitle> getEntities() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         
         return partyControl.getPersonalTitles();
     }
@@ -57,7 +57,7 @@ public class GetPersonalTitlesCommand
     @Override
     protected BaseResult getTransfers(Collection<PersonalTitle> entities) {
         GetPersonalTitlesResult result = PartyResultFactory.getGetPersonalTitlesResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         
         result.setPersonalTitles(partyControl.getPersonalTitleTransfers(getUserVisit(), entities));
         

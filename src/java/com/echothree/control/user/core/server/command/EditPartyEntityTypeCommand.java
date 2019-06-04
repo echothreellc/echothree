@@ -90,13 +90,13 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public PartyEntityType getEntity(EditPartyEntityTypeResult result) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyEntityType partyEntityType = null;
         String partyName = spec.getPartyName();
         Party party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String componentVendorName = spec.getComponentVendorName();
             ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
@@ -134,7 +134,7 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public void fillInResult(EditPartyEntityTypeResult result, PartyEntityType partyEntityType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setPartyEntityType(coreControl.getPartyEntityTypeTransfer(getUserVisit(), partyEntityType));
     }
@@ -146,7 +146,7 @@ public class EditPartyEntityTypeCommand
 
     @Override
     public void doUpdate(PartyEntityType partyEntityType) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyEntityTypeValue partyEntityTypeValue = coreControl.getPartyEntityTypeValue(partyEntityType);
         
         partyEntityTypeValue.setConfirmDelete(Boolean.valueOf(edit.getConfirmDelete()));

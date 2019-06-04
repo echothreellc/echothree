@@ -65,7 +65,7 @@ public class GetEntityTypesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityTypesResult result = CoreResultFactory.getGetEntityTypesResult();
         String componentVendorName = form.getComponentVendorName();
         

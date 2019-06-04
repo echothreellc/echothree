@@ -65,7 +65,7 @@ public class CreateSubscriptionTypeChainCommand
     
     @Override
     protected BaseResult execute() {
-        SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -74,7 +74,7 @@ public class CreateSubscriptionTypeChainCommand
             SubscriptionType subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType != null) {
-                ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+                var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
                 ChainKind chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_SUBSCRIPTION);
                 String chainTypeName = form.getChainTypeName();
                 ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
@@ -87,7 +87,7 @@ public class CreateSubscriptionTypeChainCommand
                         SubscriptionTypeChain subscriptionTypeChain = subscriptionControl.getSubscriptionTypeChain(subscriptionType, chain);
                         
                         if(subscriptionTypeChain == null) {
-                            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
                             String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                             UnitOfMeasureType unitOfMeasureType = null;
                             

@@ -68,7 +68,7 @@ public class EditLocationCapacityCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         EditLocationCapacityResult result = WarehouseResultFactory.getEditLocationCapacityResult();
         String warehouseName = spec.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
@@ -78,7 +78,7 @@ public class EditLocationCapacityCommand
             Location location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
             
             if(location != null) {
-                UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                var uomControl = (UomControl)Session.getModelController(UomControl.class);
                 String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
                 UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
                 

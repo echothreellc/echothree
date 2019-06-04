@@ -62,7 +62,7 @@ public class GetDocumentTypeUsageTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         GetDocumentTypeUsageTypeChoicesResult result = DocumentResultFactory.getGetDocumentTypeUsageTypeChoicesResult();
         String defaultDocumentTypeUsageTypeChoice = form.getDefaultDocumentTypeUsageTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

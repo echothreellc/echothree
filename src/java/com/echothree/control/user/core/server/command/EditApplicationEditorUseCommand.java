@@ -105,7 +105,7 @@ public class EditApplicationEditorUseCommand
         application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String applicationEditorUseName = spec.getApplicationEditorUseName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -129,7 +129,7 @@ public class EditApplicationEditorUseCommand
 
     @Override
     public void fillInResult(EditApplicationEditorUseResult result, ApplicationEditorUse applicationEditorUse) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setApplicationEditorUse(coreControl.getApplicationEditorUseTransfer(getUserVisit(), applicationEditorUse));
     }
@@ -138,7 +138,7 @@ public class EditApplicationEditorUseCommand
     
     @Override
     public void doLock(ApplicationEditorUseEdit edit, ApplicationEditorUse applicationEditorUse) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ApplicationEditorUseDescription applicationEditorUseDescription = coreControl.getApplicationEditorUseDescription(applicationEditorUse, getPreferredLanguage());
         ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getLastDetail();
         Integer defaultHeight = applicationEditorUseDetail.getDefaultHeight();
@@ -160,7 +160,7 @@ public class EditApplicationEditorUseCommand
 
     @Override
     public void canUpdate(ApplicationEditorUse applicationEditorUse) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String applicationEditorUseName = edit.getApplicationEditorUseName();
         ApplicationEditorUse duplicateApplicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
@@ -178,7 +178,7 @@ public class EditApplicationEditorUseCommand
 
     @Override
     public void doUpdate(ApplicationEditorUse applicationEditorUse) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         ApplicationEditorUseDetailValue applicationEditorUseDetailValue = coreControl.getApplicationEditorUseDetailValueForUpdate(applicationEditorUse);
         ApplicationEditorUseDescription applicationEditorUseDescription = coreControl.getApplicationEditorUseDescriptionForUpdate(applicationEditorUse, getPreferredLanguage());

@@ -62,7 +62,7 @@ public class DeletePeriodKindCommand
     
     @Override
     protected BaseResult execute() {
-        PeriodControl periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
+        var periodControl = (PeriodControl)Session.getModelController(PeriodControl.class);
         String periodKindName = form.getPeriodKindName();
         PeriodKind periodKind = periodControl.getPeriodKindByNameForUpdate(periodKindName);
         

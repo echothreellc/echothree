@@ -90,7 +90,7 @@ public class EditEntityLongAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            CoreControl coreControl = getCoreControl();
+                            var coreControl = getCoreControl();
                             EntityLongAttribute entityLongAttribute = null;
                             BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

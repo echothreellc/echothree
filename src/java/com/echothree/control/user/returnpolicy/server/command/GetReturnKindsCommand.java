@@ -60,7 +60,7 @@ public class GetReturnKindsCommand
     
     @Override
     protected BaseResult execute() {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         GetReturnKindsResult result = ReturnPolicyResultFactory.getGetReturnKindsResult();
         
         result.setReturnKinds(returnPolicyControl.getReturnKindTransfers(getUserVisit()));

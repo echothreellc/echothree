@@ -53,12 +53,12 @@ public class CreateCommunicationSourceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
         String communicationSourceName = form.getCommunicationSourceName();
         CommunicationSource communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
         if(communicationSource != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

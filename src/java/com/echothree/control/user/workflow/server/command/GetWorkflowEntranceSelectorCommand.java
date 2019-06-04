@@ -58,7 +58,7 @@ public class GetWorkflowEntranceSelectorCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         GetWorkflowEntranceSelectorResult result = WorkflowResultFactory.getGetWorkflowEntranceSelectorResult();
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
@@ -71,7 +71,7 @@ public class GetWorkflowEntranceSelectorCommand
                 WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
 
                 if(workflowEntrance != null) {
-                    SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                     String selectorName = form.getSelectorName();
                     Selector selector = selectorControl.getSelectorByName(workflow.getLastDetail().getSelectorType(), selectorName);
 

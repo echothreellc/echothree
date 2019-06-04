@@ -49,7 +49,7 @@ public class GetContactMechanismTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         GetContactMechanismTypeChoicesResult result = ContactResultFactory.getGetContactMechanismTypeChoicesResult();
         String defaultContactMechanismTypeChoice = form.getDefaultContactMechanismTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

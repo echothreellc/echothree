@@ -49,7 +49,7 @@ public class GetPostalAddressFormatChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         GetPostalAddressFormatChoicesResult result = ContactResultFactory.getGetPostalAddressFormatChoicesResult();
         String defaultPostalAddressFormatChoice = form.getDefaultPostalAddressFormatChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

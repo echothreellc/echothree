@@ -75,7 +75,7 @@ public class GetEntityListItemDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityListItemDescriptionResult result = CoreResultFactory.getGetEntityListItemDescriptionResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -97,7 +97,7 @@ public class GetEntityListItemDescriptionCommand
                         EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
 
                         if(entityListItem != null) {
-                            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                             String languageIsoName = form.getLanguageIsoName();
                             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

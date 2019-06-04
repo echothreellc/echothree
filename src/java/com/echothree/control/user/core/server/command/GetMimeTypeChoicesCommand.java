@@ -76,7 +76,7 @@ public class GetMimeTypeChoicesCommand
     
    @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetMimeTypeChoicesResult result = CoreResultFactory.getGetMimeTypeChoicesResult();
         String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
         String itemDescriptionTypeName = form.getItemDescriptionTypeName();
@@ -106,7 +106,7 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownMimeTypeUsageTypeName.name(), mimeTypeUsageTypeName);
                     }
                 } else if(itemDescriptionTypeName != null) {
-                    ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                    var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                     ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
                     if(itemDescriptionType != null) {
@@ -119,7 +119,7 @@ public class GetMimeTypeChoicesCommand
                         addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeName.name(), itemDescriptionTypeName);
                     }
                 } else if(documentTypeName != null || documentName != null) {
-                    DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+                    var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
 
                     if(documentTypeName != null) {
                         DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
@@ -153,7 +153,7 @@ public class GetMimeTypeChoicesCommand
                             getPreferredLanguage(), allowNullChoice));
                 }
             } else if(forumName != null || forumMessageName != null) {
-                ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+                var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
 
                 if(forumName != null) {
                     Forum forum = forumControl.getForumByName(forumName);
@@ -178,7 +178,7 @@ public class GetMimeTypeChoicesCommand
                     }
                 }
             } else if((componentVendorName != null && entityTypeName != null && commentTypeName != null) || commentName != null) {
-                CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
                 MimeTypeUsageType mimeTypeUsageType = null;
 
                 if(commentName != null) {

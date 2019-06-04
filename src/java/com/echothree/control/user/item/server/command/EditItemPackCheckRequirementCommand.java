@@ -74,13 +74,13 @@ public class EditItemPackCheckRequirementCommand
 
     @Override
     public ItemPackCheckRequirement getEntity(EditItemPackCheckRequirementResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemPackCheckRequirement itemPackCheckRequirement = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
             String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
             UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
@@ -111,7 +111,7 @@ public class EditItemPackCheckRequirementCommand
 
     @Override
     public void fillInResult(EditItemPackCheckRequirementResult result, ItemPackCheckRequirement itemPackCheckRequirement) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemPackCheckRequirement(itemControl.getItemPackCheckRequirementTransfer(getUserVisit(), itemPackCheckRequirement));
     }
@@ -145,7 +145,7 @@ public class EditItemPackCheckRequirementCommand
 
     @Override
     public void doUpdate(ItemPackCheckRequirement itemPackCheckRequirement) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemPackCheckRequirementValue itemPackCheckRequirementValue = itemControl.getItemPackCheckRequirementValue(itemPackCheckRequirement);
 
         itemPackCheckRequirementValue.setMinimumQuantity(minimumQuantity);

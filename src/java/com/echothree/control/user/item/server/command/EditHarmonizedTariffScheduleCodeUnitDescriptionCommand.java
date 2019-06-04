@@ -87,13 +87,13 @@ public class EditHarmonizedTariffScheduleCodeUnitDescriptionCommand
 
     @Override
     public HarmonizedTariffScheduleCodeUnitDescription getEntity(EditHarmonizedTariffScheduleCodeUnitDescriptionResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription = null;
         String harmonizedTariffScheduleCodeUnitName = spec.getHarmonizedTariffScheduleCodeUnitName();
         HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
 
         if(harmonizedTariffScheduleCodeUnit != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditHarmonizedTariffScheduleCodeUnitDescriptionCommand
 
     @Override
     public void fillInResult(EditHarmonizedTariffScheduleCodeUnitDescriptionResult result, HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setHarmonizedTariffScheduleCodeUnitDescription(itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionTransfer(getUserVisit(), harmonizedTariffScheduleCodeUnitDescription));
     }
@@ -136,7 +136,7 @@ public class EditHarmonizedTariffScheduleCodeUnitDescriptionCommand
 
     @Override
     public void doUpdate(HarmonizedTariffScheduleCodeUnitDescription harmonizedTariffScheduleCodeUnitDescription) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeUnitDescriptionValue harmonizedTariffScheduleCodeUnitDescriptionValue = itemControl.getHarmonizedTariffScheduleCodeUnitDescriptionValue(harmonizedTariffScheduleCodeUnitDescription);
 
         harmonizedTariffScheduleCodeUnitDescriptionValue.setDescription(edit.getDescription());

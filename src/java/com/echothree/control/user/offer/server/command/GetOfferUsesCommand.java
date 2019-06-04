@@ -69,7 +69,7 @@ public class GetOfferUsesCommand
     
     @Override
     protected Collection<OfferUse> getEntities() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Collection<OfferUse> offerUses = null;
         String offerName = form.getOfferName();
         
@@ -89,7 +89,7 @@ public class GetOfferUsesCommand
         GetOfferUsesResult result = OfferResultFactory.getGetOfferUsesResult();
         
         if(entities != null) {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setOffer(offerControl.getOfferTransfer(userVisit, offer));

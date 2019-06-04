@@ -57,7 +57,7 @@ public class CreateUserLoginPasswordTypeDescriptionCommand
         UserLoginPasswordType userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(userLoginPasswordTypeName);
         
         if(userLoginPasswordType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

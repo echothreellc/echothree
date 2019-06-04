@@ -89,7 +89,7 @@ public class EditTextDecorationCommand
 
     @Override
     public TextDecoration getEntity(EditTextDecorationResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         TextDecoration textDecoration;
         String textDecorationName = spec.getTextDecorationName();
 
@@ -113,14 +113,14 @@ public class EditTextDecorationCommand
 
     @Override
     public void fillInResult(EditTextDecorationResult result, TextDecoration textDecoration) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setTextDecoration(coreControl.getTextDecorationTransfer(getUserVisit(), textDecoration));
     }
 
     @Override
     public void doLock(TextDecorationEdit edit, TextDecoration textDecoration) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         TextDecorationDescription textDecorationDescription = coreControl.getTextDecorationDescription(textDecoration, getPreferredLanguage());
         TextDecorationDetail textDecorationDetail = textDecoration.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditTextDecorationCommand
 
     @Override
     public void canUpdate(TextDecoration textDecoration) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String textDecorationName = edit.getTextDecorationName();
         TextDecoration duplicateTextDecoration = coreControl.getTextDecorationByName(textDecorationName);
 
@@ -146,7 +146,7 @@ public class EditTextDecorationCommand
 
     @Override
     public void doUpdate(TextDecoration textDecoration) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         TextDecorationDetailValue textDecorationDetailValue = coreControl.getTextDecorationDetailValueForUpdate(textDecoration);
         TextDecorationDescription textDecorationDescription = coreControl.getTextDecorationDescriptionForUpdate(textDecoration, getPreferredLanguage());

@@ -57,7 +57,7 @@ public class GetMessageDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetMessageDescriptionsResult result = MessageResultFactory.getGetMessageDescriptionsResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -67,7 +67,7 @@ public class GetMessageDescriptionsCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                MessageControl messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
                 String messageTypeName = form.getMessageTypeName();
                 MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                 

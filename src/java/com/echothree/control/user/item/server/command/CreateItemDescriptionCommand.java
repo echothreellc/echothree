@@ -165,7 +165,7 @@ public class CreateItemDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
@@ -174,7 +174,7 @@ public class CreateItemDescriptionCommand
             ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
             
             if(itemDescriptionType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 
@@ -200,7 +200,7 @@ public class CreateItemDescriptionCommand
                                 addExecutionError(ExecutionErrors.InvalidMimeType.name());
                             }
                         } else {
-                            CoreControl coreControl = getCoreControl();
+                            var coreControl = getCoreControl();
                             MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
                             
                             if(mimeType != null) {

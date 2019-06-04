@@ -61,7 +61,7 @@ public class DeleteApplicationCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String applicationName = form.getApplicationName();
         Application application = coreControl.getApplicationByNameForUpdate(applicationName);
         

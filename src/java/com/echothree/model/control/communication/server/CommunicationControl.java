@@ -741,7 +741,7 @@ public class CommunicationControl
             CommunicationSource communicationSource, CommunicationEventPurpose communicationEventPurpose,
             CommunicationEvent originalCommunicationEvent, CommunicationEvent parentCommunicationEvent,
             PartyContactMechanism partyContactMechanism, Document document, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_COMMUNICATION_EVENT));
         String communicationEventName = sequenceControl.getNextSequenceValue(sequence);
         

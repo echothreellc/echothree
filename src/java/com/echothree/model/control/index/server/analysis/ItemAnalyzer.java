@@ -43,7 +43,7 @@ public class ItemAnalyzer
     }
     
     protected Map<String, Analyzer> getItemAliasTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         itemControl.getItemAliasTypes().stream().forEach((itemAliasType) -> {
             fieldAnalyzers.put(itemAliasType.getLastDetail().getItemAliasTypeName(), new WhitespaceLowerCaseAnalyzer());
@@ -58,7 +58,7 @@ public class ItemAnalyzer
      * @return the field Analyzer map with additional Analyzers for ItemDescriptionTypes added.
      */
     protected Map<String, Analyzer> getItemDescriptionAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         itemControl.getItemDescriptionTypes().stream().map((itemDescriptionType) -> itemDescriptionType.getLastDetail()).forEach((itemDescriptionTypeDetail) -> {
             MimeTypeUsageType mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();

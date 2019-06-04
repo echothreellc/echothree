@@ -82,7 +82,7 @@ public class WorkflowLogic
     
     public Set<WorkflowEntityStatus> isEntityInWorkflowSteps(final ExecutionErrorAccumulator eea, final String workflowName, final BasePK pk,
             EntityPermission entityPermission, String... workflowStepNames) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(pk);
         
         return isEntityInWorkflowSteps(eea, workflowName, entityInstance, entityPermission, workflowStepNames);
@@ -104,7 +104,7 @@ public class WorkflowLogic
         Set<WorkflowEntityStatus> result = new HashSet<>();
         
         if(!hasExecutionErrors(eea)) {
-            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
             List<WorkflowEntityStatus> workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance, entityPermission);
             Set<String> possibleWorkflowStepNames = new HashSet<>(workflowStepNames.length);
             
@@ -138,7 +138,7 @@ public class WorkflowLogic
     }
 
     public Workflow getWorkflowByName(final ExecutionErrorAccumulator eea, final String workflowName) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
 
         if(workflow == null) {
@@ -149,7 +149,7 @@ public class WorkflowLogic
     }
 
     public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
 
         if(workflowStep == null) {
@@ -172,7 +172,7 @@ public class WorkflowLogic
     }
 
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep, final String workflowDestinationName) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
 
         if(workflowDestination == null) {
@@ -210,7 +210,7 @@ public class WorkflowLogic
     }
 
     public Set<WorkflowStep> getWorkflowDestinationStepsAsSet(final WorkflowDestination workflowDestination) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         List<WorkflowDestinationStep> workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Set<WorkflowStep> workflowSteps = new HashSet<>(workflowDestinationSteps.size());
         
@@ -222,7 +222,7 @@ public class WorkflowLogic
     }
     
     public Map<String, Set<String>> getWorkflowDestinationsAsMap(final WorkflowDestination workflowDestination) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         List<WorkflowDestinationStep> workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         Map<String, Set<String>> map = new HashMap<>();
         

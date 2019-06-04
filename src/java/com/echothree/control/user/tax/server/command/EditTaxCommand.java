@@ -80,7 +80,7 @@ public class EditTaxCommand
     
     @Override
     protected BaseResult execute() {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         EditTaxResult result = TaxResultFactory.getEditTaxResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -126,7 +126,7 @@ public class EditTaxCommand
                 Tax duplicateTax = taxControl.getTaxByName(taxName);
                 
                 if(duplicateTax == null || tax.equals(duplicateTax)) {
-                    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                    var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                     String contactMechanismPurposeName = edit.getContactMechanismPurposeName();
                     ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(contactMechanismPurposeName);
                     
@@ -134,7 +134,7 @@ public class EditTaxCommand
                         ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.POSTAL_ADDRESS.name());
                         
                         if(contactMechanismPurpose.getContactMechanismType().equals(contactMechanismType)) {
-                            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                             String glAccountName = edit.getGlAccountName();
                             GlAccount glAccount = accountingControl.getGlAccountByName(glAccountName);
                             

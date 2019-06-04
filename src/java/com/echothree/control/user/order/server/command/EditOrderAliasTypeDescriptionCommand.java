@@ -89,7 +89,7 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public OrderAliasTypeDescription getEntity(EditOrderAliasTypeDescriptionResult result) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderAliasTypeDescription orderAliasTypeDescription = null;
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
@@ -99,7 +99,7 @@ public class EditOrderAliasTypeDescriptionCommand
             OrderAliasType orderAliasType = orderControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
             if(orderAliasType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderAliasTypeDescriptionResult result, OrderAliasTypeDescription orderAliasTypeDescription) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderAliasTypeDescription(orderControl.getOrderAliasTypeDescriptionTransfer(getUserVisit(), orderAliasTypeDescription));
     }
@@ -145,7 +145,7 @@ public class EditOrderAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderAliasTypeDescription orderAliasTypeDescription) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderAliasTypeDescriptionValue orderAliasTypeDescriptionValue = orderControl.getOrderAliasTypeDescriptionValue(orderAliasTypeDescription);
 
         orderAliasTypeDescriptionValue.setDescription(edit.getDescription());

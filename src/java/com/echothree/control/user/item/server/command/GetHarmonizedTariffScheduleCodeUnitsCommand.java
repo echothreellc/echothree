@@ -60,7 +60,7 @@ public class GetHarmonizedTariffScheduleCodeUnitsCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetHarmonizedTariffScheduleCodeUnitsResult result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUnitsResult();
         
         result.setHarmonizedTariffScheduleCodeUnits(itemControl.getHarmonizedTariffScheduleCodeUnitTransfers(getUserVisit()));

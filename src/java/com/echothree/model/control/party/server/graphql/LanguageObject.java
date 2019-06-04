@@ -66,8 +66,8 @@ public class LanguageObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return partyControl.getBestLanguageDescription(language, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

@@ -63,7 +63,7 @@ public class ChainInstanceStatusLogic {
         ContactList contactList = letter.getLastDetail().getContactList();
         
         if(contactList != null) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             ChainType chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
             EntityType partyEntityType = coreControl.getEntityTypeByName(coreControl.getComponentVendorByName(ComponentVendors.ECHOTHREE.name()), EntityTypes.Party.name());
             
@@ -72,7 +72,7 @@ public class ChainInstanceStatusLogic {
                     ChainInstanceEntityRole chainInstanceEntityRole = chainControl.getChainInstanceEntityRole(chainInstance, chainEntityRoleType);
                     
                     if(chainInstanceEntityRole != null) {
-                        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+                        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
                         EntityInstance entityInstance = chainInstanceEntityRole.getEntityInstance();
                         Party party = PartyLogic.getInstance().getPartyFromEntityInstance(entityInstance);
                         PartyContactList partyContactList = contactListControl.getPartyContactList(party, contactList);
@@ -86,7 +86,7 @@ public class ChainInstanceStatusLogic {
         }
         
         if(letter != null) {
-            LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+            var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
             
             letterControl.createQueuedLetter(chainInstance, letter);
         }

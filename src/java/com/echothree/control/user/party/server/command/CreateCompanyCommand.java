@@ -67,7 +67,7 @@ public class CreateCompanyCommand
     @Override
     protected BaseResult execute() {
         CreateCompanyResult result = PartyResultFactory.getCreateCompanyResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String companyName = form.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
         
@@ -90,7 +90,7 @@ public class CreateCompanyCommand
                         if(preferredCurrencyIsoName == null)
                             preferredCurrency = null;
                         else {
-                            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                             preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                         }
                         

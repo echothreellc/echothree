@@ -94,7 +94,7 @@ public class EditPrinterGroupCommand
 
     @Override
     public PrinterGroup getEntity(EditPrinterGroupResult result) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PrinterGroup printerGroup = null;
         String printerGroupName = spec.getPrinterGroupName();
 
@@ -120,14 +120,14 @@ public class EditPrinterGroupCommand
 
     @Override
     public void fillInResult(EditPrinterGroupResult result, PrinterGroup printerGroup) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
 
         result.setPrinterGroup(printerControl.getPrinterGroupTransfer(getUserVisit(), printerGroup));
     }
 
     @Override
     public void doLock(PrinterGroupEdit edit, PrinterGroup printerGroup) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         PrinterGroupDescription printerGroupDescription = printerControl.getPrinterGroupDescription(printerGroup, getPreferredLanguage());
         PrinterGroupDetail printerGroupDetail = printerGroup.getLastDetail();
@@ -149,7 +149,7 @@ public class EditPrinterGroupCommand
 
     @Override
     public void canUpdate(PrinterGroup printerGroup) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         String printerGroupName = edit.getPrinterGroupName();
         PrinterGroup duplicatePrinterGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
@@ -167,7 +167,7 @@ public class EditPrinterGroupCommand
 
     @Override
     public void doUpdate(PrinterGroup printerGroup) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PartyPK partyPK = getPartyPK();
         PrinterGroupDetailValue printerGroupDetailValue = printerControl.getPrinterGroupDetailValueForUpdate(printerGroup);
         PrinterGroupDescription printerGroupDescription = printerControl.getPrinterGroupDescriptionForUpdate(printerGroup, getPreferredLanguage());
