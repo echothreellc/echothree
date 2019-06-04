@@ -46,7 +46,7 @@ public class GetAssociateProgramsCommand
     
     @Override
     protected BaseResult execute() {
-        AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
         GetAssociateProgramsResult result = AssociateResultFactory.getGetAssociateProgramsResult();
         
         result.setAssociatePrograms(associateControl.getAssociateProgramTransfers(getUserVisit()));

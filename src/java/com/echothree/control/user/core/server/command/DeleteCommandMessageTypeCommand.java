@@ -61,7 +61,7 @@ public class DeleteCommandMessageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String commandMessageTypeName = form.getCommandMessageTypeName();
         CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByNameForUpdate(commandMessageTypeName);
         

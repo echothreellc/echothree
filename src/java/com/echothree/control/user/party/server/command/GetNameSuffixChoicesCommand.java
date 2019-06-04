@@ -50,7 +50,7 @@ public class GetNameSuffixChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetNameSuffixChoicesResult result = PartyResultFactory.getGetNameSuffixChoicesResult();
         String defaultNameSuffixChoice = form.getDefaultNameSuffixChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

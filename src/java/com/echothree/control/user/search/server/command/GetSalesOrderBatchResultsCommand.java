@@ -56,7 +56,7 @@ public class GetSalesOrderBatchResultsCommand
     @Override
     protected BaseResult execute() {
         GetSalesOrderBatchResultsResult result = SearchResultFactory.getGetSalesOrderBatchResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_SALES_ORDER_BATCH);
         
         if(searchKind != null) {

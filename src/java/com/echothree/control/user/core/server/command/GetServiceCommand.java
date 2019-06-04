@@ -64,7 +64,7 @@ public class GetServiceCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetServiceResult result = CoreResultFactory.getGetServiceResult();
         String serviceName = form.getServiceName();
         Service service = coreControl.getServiceByName(serviceName);

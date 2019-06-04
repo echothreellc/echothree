@@ -52,7 +52,7 @@ public class GetCustomerCreditStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         GetCustomerCreditStatusChoicesResult result = CustomerResultFactory.getGetCustomerCreditStatusChoicesResult();
         String customerName = form.getCustomerName();
         Customer customer = customerName == null? null: customerControl.getCustomerByName(customerName);

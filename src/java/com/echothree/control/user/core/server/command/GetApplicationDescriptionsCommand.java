@@ -63,7 +63,7 @@ public class GetApplicationDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetApplicationDescriptionsResult result = CoreResultFactory.getGetApplicationDescriptionsResult();
         String applicationName = form.getApplicationName();
         Application application = coreControl.getApplicationByName(applicationName);

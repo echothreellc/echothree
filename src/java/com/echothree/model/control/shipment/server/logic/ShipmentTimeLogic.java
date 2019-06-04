@@ -55,7 +55,7 @@ public class ShipmentTimeLogic {
 
     public void createOrUpdateShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName, final Long time,
             final BasePK partyPK) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         ShipmentDetail shipmentDetail = shipment.getLastDetail();
         ShipmentType shipmentType = shipmentDetail.getShipmentType();
         ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
@@ -77,7 +77,7 @@ public class ShipmentTimeLogic {
     }
 
     public Long getShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         ShipmentDetail shipmentDetail = shipment.getLastDetail();
         ShipmentType shipmentType = shipmentDetail.getShipmentType();
         ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
@@ -103,7 +103,7 @@ public class ShipmentTimeLogic {
     }
 
     public void deleteShipmentTime(final ExecutionErrorAccumulator ema, final Shipment shipment, final String shipmentTimeTypeName, final BasePK deletedBy) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         ShipmentDetail shipmentDetail = shipment.getLastDetail();
         ShipmentType shipmentType = shipmentDetail.getShipmentType();
         ShipmentTimeType shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);

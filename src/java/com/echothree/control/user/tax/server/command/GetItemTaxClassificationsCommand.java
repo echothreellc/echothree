@@ -74,10 +74,10 @@ public class GetItemTaxClassificationsCommand
         int parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+            var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
 
             if(itemName != null) {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                 Item item = itemControl.getItemByName(itemName);
 
                 if(item != null) {
@@ -87,7 +87,7 @@ public class GetItemTaxClassificationsCommand
                     addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
                 }
             } else {
-                GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+                var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
                 GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
 
                 if(countryGeoCode != null) {

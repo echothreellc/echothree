@@ -79,7 +79,7 @@ public class GetEntityAttributeEntityTypesCommand
                 + (componentVendorName != null && entityTypeName != null && entityAttributeName != null && allowedComponentVendorName == null && allowedEntityTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
 
             if(componentVendorName != null) {
                 ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);

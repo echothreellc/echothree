@@ -51,7 +51,7 @@ public class CreateSelectorBooleanTypeCommand
     @Override
     protected BaseResult execute() {
         String selectorBooleanTypeName = form.getSelectorBooleanTypeName();
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         SelectorBooleanType selectorBooleanType = selectorControl.getSelectorBooleanTypeByName(selectorBooleanTypeName);
         
         if(selectorBooleanType == null) {

@@ -70,7 +70,7 @@ public class GetWorkEffortScopeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         GetWorkEffortScopeDescriptionResult result = WorkEffortResultFactory.getGetWorkEffortScopeDescriptionResult();
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
@@ -80,7 +80,7 @@ public class GetWorkEffortScopeDescriptionCommand
             WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
 
             if(workEffortScope != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

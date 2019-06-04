@@ -66,7 +66,7 @@ public class GetOrderTimeTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         GetOrderTimeTypeDescriptionsResult result = OrderResultFactory.getGetOrderTimeTypeDescriptionsResult();
         String orderTypeName = form.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);

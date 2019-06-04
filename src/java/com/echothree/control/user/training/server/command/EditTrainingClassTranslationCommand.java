@@ -94,13 +94,13 @@ public class EditTrainingClassTranslationCommand
 
     @Override
     public TrainingClassTranslation getEntity(EditTrainingClassTranslationResult result) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassTranslation trainingClassTranslation = null;
         String trainingClassName = spec.getTrainingClassName();
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -131,7 +131,7 @@ public class EditTrainingClassTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassTranslationResult result, TrainingClassTranslation trainingClassTranslation) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
 
         result.setTrainingClassTranslation(trainingControl.getTrainingClassTranslationTransfer(getUserVisit(), trainingClassTranslation));
     }
@@ -173,7 +173,7 @@ public class EditTrainingClassTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassTranslation trainingClassTranslation) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassTranslationValue trainingClassTranslationValue = trainingControl.getTrainingClassTranslationValue(trainingClassTranslation);
         
         trainingClassTranslationValue.setDescription(edit.getDescription());

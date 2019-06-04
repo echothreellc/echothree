@@ -1897,7 +1897,7 @@ public class EmployeeControl
 
     public Leave createLeave(Party party, Party companyParty, LeaveType leaveType, LeaveReason leaveReason, Long startTime, Long endTime, Long totalTime,
             BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_LEAVE);
         String leaveName = sequenceControl.getNextSequenceValue(sequence);
 
@@ -2126,7 +2126,7 @@ public class EmployeeControl
 
     public LeaveStatusChoicesBean getLeaveStatusChoices(String defaultLeaveStatusChoice, Language language,
             boolean allowNullChoice, Leave leave, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         LeaveStatusChoicesBean leaveStatusChoicesBean = new LeaveStatusChoicesBean();
 
         if(leave == null) {
@@ -2145,7 +2145,7 @@ public class EmployeeControl
     }
 
     public void setLeaveStatus(ExecutionErrorAccumulator eea, Leave leave, String leaveStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(leave);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
                 entityInstance);
@@ -3099,7 +3099,7 @@ public class EmployeeControl
 
     public Employment createEmployment(Party party, Party companyParty, Long startTime, Long endTime, TerminationType terminationType,
             TerminationReason terminationReason, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_EMPLOYMENT);
         String employmentName = sequenceControl.getNextSequenceValue(sequence);
 
@@ -3952,7 +3952,7 @@ public class EmployeeControl
     
     public EmployeeStatusChoicesBean getEmployeeStatusChoices(String defaultEmployeeStatusChoice, Language language,
             boolean allowNullChoice, Party employeeParty, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EmployeeStatusChoicesBean employeeStatusChoicesBean = new EmployeeStatusChoicesBean();
         
         if(employeeParty == null) {
@@ -3971,7 +3971,7 @@ public class EmployeeControl
     }
     
     public void setEmployeeStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                 entityInstance);
@@ -3987,7 +3987,7 @@ public class EmployeeControl
     
     public EmployeeAvailabilityChoicesBean getEmployeeAvailabilityChoices(String defaultEmployeeAvailabilityChoice, Language language,
             boolean allowNullChoice, Party employeeParty, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EmployeeAvailabilityChoicesBean employeeAvailabilityChoicesBean = new EmployeeAvailabilityChoicesBean();
         
         if(employeeParty == null) {
@@ -4006,7 +4006,7 @@ public class EmployeeControl
     }
     
     public void setEmployeeAvailability(ExecutionErrorAccumulator eea, Party party, String employeeAvailabilityChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
                 entityInstance);
@@ -4021,7 +4021,7 @@ public class EmployeeControl
     }
     
     public List<EmployeeTransfer> getEmployeeTransfers(UserVisit userVisit, boolean includeInactive) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         List<PartyEmployee> partyEmployees = getPartyEmployees();
         List<EmployeeTransfer> employeeTransfers = new ArrayList<>(partyEmployees.size());
         EmployeeTransferCache employeeTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTransferCache();

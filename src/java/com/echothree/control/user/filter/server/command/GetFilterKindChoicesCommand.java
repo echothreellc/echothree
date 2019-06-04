@@ -62,7 +62,7 @@ public class GetFilterKindChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         GetFilterKindChoicesResult result = FilterResultFactory.getGetFilterKindChoicesResult();
         String defaultFilterKindChoice = form.getDefaultFilterKindChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

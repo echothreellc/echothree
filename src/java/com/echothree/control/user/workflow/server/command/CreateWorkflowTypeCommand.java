@@ -51,7 +51,7 @@ public class CreateWorkflowTypeCommand
     @Override
     protected BaseResult execute() {
         String workflowTypeName = form.getWorkflowTypeName();
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowType workflowType = workflowControl.getWorkflowTypeByName(workflowTypeName);
         
         if(workflowType == null) {

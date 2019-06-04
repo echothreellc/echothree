@@ -61,7 +61,7 @@ public class SetDefaultTextDecorationCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String textDecorationName = form.getTextDecorationName();
         TextDecorationDetailValue textDecorationDetailValue = coreControl.getTextDecorationDetailValueByNameForUpdate(textDecorationName);
         

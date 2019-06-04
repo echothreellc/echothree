@@ -52,12 +52,12 @@ public class DeleteMimeTypeDescriptionCommand
     
    @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeName = form.getMimeTypeName();
         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
         
         if(mimeType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

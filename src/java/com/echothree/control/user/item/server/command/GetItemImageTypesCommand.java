@@ -61,7 +61,7 @@ public class GetItemImageTypesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemImageTypesResult result = ItemResultFactory.getGetItemImageTypesResult();
         UserVisit userVisit = getUserVisit();
 

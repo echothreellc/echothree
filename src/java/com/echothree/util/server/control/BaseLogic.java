@@ -47,13 +47,13 @@ public abstract class BaseLogic {
     }
 
     public EntityInstance getEntityInstanceByBasePK(final BasePK pk) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
         return coreControl.getEntityInstanceByBasePK(pk);
     }
 
     public EntityInstance getEntityInstanceByBaseEntity(final BaseEntity baseEntity) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
         return coreControl.getEntityInstanceByBaseEntity(baseEntity);
     }

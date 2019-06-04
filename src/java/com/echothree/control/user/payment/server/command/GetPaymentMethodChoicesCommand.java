@@ -65,7 +65,7 @@ public class GetPaymentMethodChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         GetPaymentMethodChoicesResult result = PaymentResultFactory.getGetPaymentMethodChoicesResult();        String paymentMethodTypeName = form.getPaymentMethodTypeName();
         PaymentMethodType paymentMethodType = paymentMethodTypeName == null? null: paymentControl.getPaymentMethodTypeByName(paymentMethodTypeName);
 

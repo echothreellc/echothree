@@ -78,8 +78,8 @@ public class QueueTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return queueControl.getBestQueueTypeDescription(queueType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -89,7 +89,7 @@ public class QueueTypeObject
     @GraphQLDescription("queued entity count")
     @GraphQLNonNull
     public long getQueuedEntityCount() {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
 
         return queueControl.countQueuedEntitiesByQueueType(queueType);
     }
@@ -97,7 +97,7 @@ public class QueueTypeObject
     @GraphQLField
     @GraphQLDescription("unformatted oldest queued entity")
     public Long getUnformattedOldestQueuedEntityTime() {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
 
         return queueControl.oldestQueuedEntityTimeByQueueType(queueType);
     }
@@ -106,7 +106,7 @@ public class QueueTypeObject
     @GraphQLDescription("oldest queued entity")
     public String getOldestQueuedEntityTime(final DataFetchingEnvironment env) {
         GraphQlContext context = env.getContext();
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
         Long oldestQueuedEntityTime = queueControl.oldestQueuedEntityTimeByQueueType(queueType);
 
         return oldestQueuedEntityTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), oldestQueuedEntityTime);
@@ -115,7 +115,7 @@ public class QueueTypeObject
     @GraphQLField
     @GraphQLDescription("unformatted latest queued entity")
     public Long getUnformattedLatestQueuedEntityTime() {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
 
         return queueControl.latestQueuedEntityTimeByQueueType(queueType);
     }
@@ -124,7 +124,7 @@ public class QueueTypeObject
     @GraphQLDescription("latest queued entity")
     public String getLatestQueuedEntityTime(final DataFetchingEnvironment env) {
         GraphQlContext context = env.getContext();
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
         Long latestQueuedEntityTime = queueControl.latestQueuedEntityTimeByQueueType(queueType);
 
         return latestQueuedEntityTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), latestQueuedEntityTime);

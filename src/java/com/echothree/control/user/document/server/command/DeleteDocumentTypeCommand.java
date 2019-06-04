@@ -62,7 +62,7 @@ public class DeleteDocumentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         String documentTypeName = form.getDocumentTypeName();
         DocumentType documentType = documentControl.getDocumentTypeByNameForUpdate(documentTypeName);
         

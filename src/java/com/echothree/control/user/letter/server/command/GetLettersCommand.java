@@ -68,7 +68,7 @@ public class GetLettersCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         GetLettersResult result = LetterResultFactory.getGetLettersResult();
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -78,7 +78,7 @@ public class GetLettersCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
                 UserVisit userVisit = getUserVisit();
                 
                 result.setChainType(chainControl.getChainTypeTransfer(userVisit, chainType));

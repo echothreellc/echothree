@@ -74,13 +74,13 @@ public class EditItemUnitOfMeasureTypeCommand
 
     @Override
     public ItemUnitOfMeasureType getEntity(EditItemUnitOfMeasureTypeResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemUnitOfMeasureType itemUnitOfMeasureType = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
             String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
             UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
@@ -111,7 +111,7 @@ public class EditItemUnitOfMeasureTypeCommand
 
     @Override
     public void fillInResult(EditItemUnitOfMeasureTypeResult result, ItemUnitOfMeasureType itemUnitOfMeasureType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemUnitOfMeasureType(itemControl.getItemUnitOfMeasureTypeTransfer(getUserVisit(), itemUnitOfMeasureType));
     }
@@ -124,7 +124,7 @@ public class EditItemUnitOfMeasureTypeCommand
 
     @Override
     public void doUpdate(ItemUnitOfMeasureType itemUnitOfMeasureType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemUnitOfMeasureTypeValue itemUnitOfMeasureTypeValue = itemControl.getItemUnitOfMeasureTypeValue(itemUnitOfMeasureType);
 
         itemUnitOfMeasureTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));

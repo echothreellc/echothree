@@ -40,7 +40,7 @@ public class SelectorCacheFactory {
     }
     
     public SelectorCache getSelectorCache(Session session, String selectorKindName, String selectorTypeName) {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
         SelectorCache selectorCache = null;
         

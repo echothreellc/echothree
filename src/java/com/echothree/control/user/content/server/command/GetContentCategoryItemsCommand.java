@@ -74,7 +74,7 @@ public class GetContentCategoryItemsCommand
         Collection<ContentCategoryItem> contentCategoryItems = null;
 
         if(parameterCount == 1) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -144,7 +144,7 @@ public class GetContentCategoryItemsCommand
         GetContentCategoryItemsResult result = ContentResultFactory.getGetContentCategoryItemsResult();
 
         if(entities != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
                 UserVisit userVisit = getUserVisit();
 
             if(session.hasLimit(ContentCategoryItemFactory.class)) {

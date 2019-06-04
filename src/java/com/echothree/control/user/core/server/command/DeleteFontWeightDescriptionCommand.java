@@ -66,12 +66,12 @@ public class DeleteFontWeightDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String fontWeightName = form.getFontWeightName();
         FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
         
         if(fontWeight != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

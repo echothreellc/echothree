@@ -60,7 +60,7 @@ public class GetCacheEntriesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetCacheEntriesResult result = CoreResultFactory.getGetCacheEntriesResult();
 
         if(session.hasLimit(CacheEntryFactory.class)) {

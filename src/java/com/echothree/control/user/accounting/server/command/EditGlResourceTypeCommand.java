@@ -82,7 +82,7 @@ public class EditGlResourceTypeCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         EditGlResourceTypeResult result = AccountingResultFactory.getEditGlResourceTypeResult();
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

@@ -87,13 +87,13 @@ public class EditContactListTypeDescriptionCommand
 
     @Override
     public ContactListTypeDescription getEntity(EditContactListTypeDescriptionResult result) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         ContactListTypeDescription contactListTypeDescription = null;
         String contactListTypeName = spec.getContactListTypeName();
         ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(contactListType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditContactListTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditContactListTypeDescriptionResult result, ContactListTypeDescription contactListTypeDescription) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
 
         result.setContactListTypeDescription(contactListControl.getContactListTypeDescriptionTransfer(getUserVisit(), contactListTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditContactListTypeDescriptionCommand
 
     @Override
     public void doUpdate(ContactListTypeDescription contactListTypeDescription) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         ContactListTypeDescriptionValue contactListTypeDescriptionValue = contactListControl.getContactListTypeDescriptionValue(contactListTypeDescription);
 
         contactListTypeDescriptionValue.setDescription(edit.getDescription());

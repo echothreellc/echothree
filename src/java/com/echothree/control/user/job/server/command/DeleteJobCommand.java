@@ -62,7 +62,7 @@ public class DeleteJobCommand
     
     @Override
     protected BaseResult execute() {
-        JobControl jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = (JobControl)Session.getModelController(JobControl.class);
         String jobName = form.getJobName();
         Job job = jobControl.getJobByNameForUpdate(jobName);
         

@@ -68,11 +68,11 @@ public class CreateUseDescriptionCommand
     @Override
     protected BaseResult execute() {
         String useName = form.getUseName();
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Use use = offerControl.getUseByName(useName);
         
         if(use != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             if(language != null) {

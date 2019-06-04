@@ -62,7 +62,7 @@ public class GetContentCollectionChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         GetContentCollectionChoicesResult result = ContentResultFactory.getGetContentCollectionChoicesResult();
         String defaultContentCollectionChoice = form.getDefaultContentCollectionChoice();
         

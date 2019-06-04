@@ -53,7 +53,7 @@ public class CreateLeaveReasonCommand
     
    @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String leaveReasonName = form.getLeaveReasonName();
         LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
         

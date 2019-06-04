@@ -75,7 +75,7 @@ public class EditCommandMessageTranslationCommand
 
     @Override
     public CommandMessageTranslation getEntity(EditCommandMessageTranslationResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandMessageTranslation commandMessageTranslation = null;
         String commandMessageTypeName = spec.getCommandMessageTypeName();
         CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
@@ -85,7 +85,7 @@ public class EditCommandMessageTranslationCommand
             CommandMessage commandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
             if(commandMessage != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -119,7 +119,7 @@ public class EditCommandMessageTranslationCommand
 
     @Override
     public void fillInResult(EditCommandMessageTranslationResult result, CommandMessageTranslation commandMessageTranslation) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setCommandMessageTranslation(coreControl.getCommandMessageTranslationTransfer(getUserVisit(), commandMessageTranslation));
     }
@@ -131,7 +131,7 @@ public class EditCommandMessageTranslationCommand
 
     @Override
     public void doUpdate(CommandMessageTranslation commandMessageTranslation) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandMessageTranslationValue commandMessageTranslationValue = coreControl.getCommandMessageTranslationValue(commandMessageTranslation);
         commandMessageTranslationValue.setTranslation(edit.getTranslation());
 

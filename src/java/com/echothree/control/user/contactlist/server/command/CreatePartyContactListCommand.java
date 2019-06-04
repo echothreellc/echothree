@@ -71,12 +71,12 @@ public class CreatePartyContactListCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
             String contactListName = form.getContactListName();
             ContactList contactList = contactListControl.getContactListByName(contactListName);
             
@@ -84,7 +84,7 @@ public class CreatePartyContactListCommand
                 PartyContactList partyContactList = contactListControl.getPartyContactList(party, contactList);
                 
                 if(partyContactList == null) {
-                    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                    var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                     String preferredContactMechanismPurposeName = form.getPreferredContactMechanismPurposeName();
                     ContactMechanismPurpose preferredContactMechanismPurpose = preferredContactMechanismPurposeName == null ? null : contactControl.getContactMechanismPurposeByName(preferredContactMechanismPurposeName);
 

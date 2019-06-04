@@ -92,7 +92,7 @@ public class EditColorCommand
 
     @Override
     public Color getEntity(EditColorResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         Color color;
         String colorName = spec.getColorName();
 
@@ -116,14 +116,14 @@ public class EditColorCommand
 
     @Override
     public void fillInResult(EditColorResult result, Color color) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setColor(coreControl.getColorTransfer(getUserVisit(), color));
     }
 
     @Override
     public void doLock(ColorEdit edit, Color color) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ColorDescription colorDescription = coreControl.getColorDescription(color, getPreferredLanguage());
         ColorDetail colorDetail = color.getLastDetail();
 
@@ -141,7 +141,7 @@ public class EditColorCommand
 
     @Override
     public void canUpdate(Color color) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String colorName = edit.getColorName();
         Color duplicateColor = coreControl.getColorByName(colorName);
 
@@ -152,7 +152,7 @@ public class EditColorCommand
 
     @Override
     public void doUpdate(Color color) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         ColorDetailValue colorDetailValue = coreControl.getColorDetailValueForUpdate(color);
         ColorDescription colorDescription = coreControl.getColorDescriptionForUpdate(color, getPreferredLanguage());

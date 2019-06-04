@@ -1630,8 +1630,8 @@ public class ChainControl
     }
 
     public void deleteChain(Chain chain, BasePK deletedBy) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         
         contactListControl.deleteContactListTypesByChain(chain, deletedBy);
         offerControl.deleteOfferChainTypesByChain(chain, deletedBy);
@@ -3290,7 +3290,7 @@ public class ChainControl
     }
 
     public boolean isChainInstanceUsed(ChainInstance chainInstance) {
-        LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
 
         return letterControl.isChainInstanceUsedByQueuedLetters(chainInstance);
     }
@@ -3398,7 +3398,7 @@ public class ChainControl
     }
     
     public void deleteChainInstance(ChainInstance chainInstance, BasePK deletedBy) {
-        LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
 
         removeChainInstanceStatusByChainInstance(chainInstance);
         letterControl.removedQueuedLettersByChainInstance(chainInstance);

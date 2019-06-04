@@ -56,7 +56,7 @@ public class DepartmentLogic
 
         if(!hasExecutionErrors(eea)) {
             if(parameterCount == 1) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
                 if(departmentName != null) {
                     if(divisionParty == null) {

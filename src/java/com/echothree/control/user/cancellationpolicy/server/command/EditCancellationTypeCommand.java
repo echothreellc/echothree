@@ -86,7 +86,7 @@ public class EditCancellationTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
         EditCancellationTypeResult result = CancellationPolicyResultFactory.getEditCancellationTypeResult();
         String cancellationKindName = spec.getCancellationKindName();
         CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
@@ -130,7 +130,7 @@ public class EditCancellationTypeCommand
                     CancellationType duplicateCancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
                     
                     if(duplicateCancellationType == null || cancellationType.equals(duplicateCancellationType)) {
-                        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                         String cancellationSequenceName = edit.getCancellationSequenceName();
                         Sequence cancellationSequence = null;
                         

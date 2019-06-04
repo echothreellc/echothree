@@ -57,7 +57,7 @@ public class GetWorkRequirementScopeCommand
     
     @Override
     protected BaseResult execute() {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         GetWorkRequirementScopeResult result = WorkRequirementResultFactory.getGetWorkRequirementScopeResult();
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
@@ -67,7 +67,7 @@ public class GetWorkRequirementScopeCommand
             WorkEffortScope workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
             
             if(workEffortScope != null) {
-                WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+                var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
                 String workRequirementTypeName = form.getWorkRequirementTypeName();
                 WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
                 

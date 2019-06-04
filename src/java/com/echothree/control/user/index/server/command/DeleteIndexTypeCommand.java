@@ -62,7 +62,7 @@ public class DeleteIndexTypeCommand
     
     @Override
     protected BaseResult execute() {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         String indexTypeName = form.getIndexTypeName();
         IndexType indexType = indexControl.getIndexTypeByNameForUpdate(indexTypeName);
         

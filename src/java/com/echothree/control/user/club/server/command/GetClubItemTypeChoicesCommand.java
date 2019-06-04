@@ -49,7 +49,7 @@ public class GetClubItemTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ClubControl clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
         GetClubItemTypeChoicesResult result = ClubResultFactory.getGetClubItemTypeChoicesResult();
         String defaultClubItemTypeChoice = form.getDefaultClubItemTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

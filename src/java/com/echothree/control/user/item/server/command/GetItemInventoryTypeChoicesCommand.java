@@ -49,7 +49,7 @@ public class GetItemInventoryTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemInventoryTypeChoicesResult result = ItemResultFactory.getGetItemInventoryTypeChoicesResult();
         String defaultItemInventoryTypeChoice = form.getDefaultItemInventoryTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

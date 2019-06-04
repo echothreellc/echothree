@@ -66,12 +66,12 @@ public class SetDefaultGeoCodeCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         String geoCodeName = form.getGeoCodeName();
         GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
         
         if(geoCode != null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
             String currencyIsoName = form.getCurrencyIsoName();
             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             

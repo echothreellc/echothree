@@ -60,7 +60,7 @@ public class GetCountriesCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GetCountriesResult result = GeoResultFactory.getGetCountriesResult();
         
         result.setCountries(geoControl.getCountryTransfers(getUserVisit()));

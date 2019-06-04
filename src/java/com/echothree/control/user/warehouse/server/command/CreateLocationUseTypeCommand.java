@@ -51,7 +51,7 @@ public class CreateLocationUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         String locationUseTypeName = form.getLocationUseTypeName();
         LocationUseType locationUseType = warehouseControl.getLocationUseTypeByName(locationUseTypeName);
         

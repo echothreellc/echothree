@@ -89,7 +89,7 @@ public class EditLotTimeTypeDescriptionCommand
 
     @Override
     public LotTimeTypeDescription getEntity(EditLotTimeTypeDescriptionResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotTimeTypeDescription lotTimeTypeDescription = null;
         String lotTypeName = spec.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
@@ -99,7 +99,7 @@ public class EditLotTimeTypeDescriptionCommand
             LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
 
             if(lotTimeType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditLotTimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLotTimeTypeDescriptionResult result, LotTimeTypeDescription lotTimeTypeDescription) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setLotTimeTypeDescription(inventoryControl.getLotTimeTypeDescriptionTransfer(getUserVisit(), lotTimeTypeDescription));
     }
@@ -145,7 +145,7 @@ public class EditLotTimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(LotTimeTypeDescription lotTimeTypeDescription) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotTimeTypeDescriptionValue lotTimeTypeDescriptionValue = inventoryControl.getLotTimeTypeDescriptionValue(lotTimeTypeDescription);
         lotTimeTypeDescriptionValue.setDescription(edit.getDescription());
 

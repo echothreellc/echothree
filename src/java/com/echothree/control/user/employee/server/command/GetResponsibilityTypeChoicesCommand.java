@@ -50,7 +50,7 @@ public class GetResponsibilityTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         GetResponsibilityTypeChoicesResult result = EmployeeResultFactory.getGetResponsibilityTypeChoicesResult();
         String defaultResponsibilityTypeChoice = form.getDefaultResponsibilityTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

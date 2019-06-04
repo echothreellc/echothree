@@ -53,7 +53,7 @@ public class GetShipmentTypeShippingMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         GetShipmentTypeShippingMethodsResult result = ShipmentResultFactory.getGetShipmentTypeShippingMethodsResult();
         String shipmentTypeName = form.getShipmentTypeName();
         String shippingMethodName = form.getShippingMethodName();
@@ -71,7 +71,7 @@ public class GetShipmentTypeShippingMethodsCommand
                     addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
                 }
             } else if(shippingMethodName != null) {
-                ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+                var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
                 ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 
                 if(shippingMethod != null) {

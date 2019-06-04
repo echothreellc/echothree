@@ -59,7 +59,7 @@ public class GetUserSessionCommand
         UserSession userSession = getUserSession();
         
         if(userSession != null) {
-            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
             EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(getPartyPK());
             Party party = userSession.getParty();
             String partyTypeName = party == null ? null : party.getLastDetail().getPartyType().getPartyTypeName();

@@ -69,7 +69,7 @@ public class GetTrainingClassAnswersCommand
     
     @Override
     protected BaseResult execute() {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         GetTrainingClassAnswersResult result = TrainingResultFactory.getGetTrainingClassAnswersResult();
         String trainingClassName = form.getTrainingClassName();
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);

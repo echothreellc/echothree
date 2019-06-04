@@ -60,7 +60,7 @@ public class GetOrderTypesCommand
     
     @Override
     protected BaseResult execute() {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         GetOrderTypesResult result = OrderResultFactory.getGetOrderTypesResult();
         
         result.setOrderTypes(orderControl.getOrderTypeTransfers(getUserVisit()));

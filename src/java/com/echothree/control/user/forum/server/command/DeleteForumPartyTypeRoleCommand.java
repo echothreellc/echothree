@@ -54,12 +54,12 @@ public class DeleteForumPartyTypeRoleCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumName = form.getForumName();
         Forum forum = forumControl.getForumByName(forumName);
         
         if(forum != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String partyTypeName = form.getPartyTypeName();
             PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
             

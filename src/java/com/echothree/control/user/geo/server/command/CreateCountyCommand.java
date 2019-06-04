@@ -81,7 +81,7 @@ public class CreateCountyCommand
     @Override
     protected BaseResult execute() {
         CreateCountyResult result = GeoResultFactory.getCreateCountyResult();
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         BasePK createdBy = getPartyPK();
         GeoCode geoCode;
         

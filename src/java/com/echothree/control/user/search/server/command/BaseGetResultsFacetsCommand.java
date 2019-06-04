@@ -63,7 +63,7 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
     }
     
     protected BaseResult execute(String searchKindName, BaseGetResultsFacetsResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchType searchType = SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, form.getSearchTypeName());
 
         if(!hasExecutionErrors()) {
@@ -74,7 +74,7 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
                 EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name());
                 
                 if(!hasExecutionErrors()) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     List<EntityAttribute> entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
                     Map<String, UserVisitSearchFacetTransfer> userVisitSearchFacets = new LinkedHashMap<>();
         

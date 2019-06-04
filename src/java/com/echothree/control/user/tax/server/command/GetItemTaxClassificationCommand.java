@@ -69,18 +69,18 @@ public class GetItemTaxClassificationCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemTaxClassificationResult result = TaxResultFactory.getGetItemTaxClassificationResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             String countryName = form.getCountryName();
             GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
             
             if(countryGeoCode != null) {
-                TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+                var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
                 ItemTaxClassification itemTaxClassification = taxControl.getItemTaxClassification(item, countryGeoCode);
 
                 if(itemTaxClassification != null) {

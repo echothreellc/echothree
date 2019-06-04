@@ -64,7 +64,7 @@ public class GetServerCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetServerResult result = CoreResultFactory.getGetServerResult();
         String serverName = form.getServerName();
         Server server = coreControl.getServerByName(serverName);

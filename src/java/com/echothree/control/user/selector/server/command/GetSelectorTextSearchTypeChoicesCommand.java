@@ -49,7 +49,7 @@ public class GetSelectorTextSearchTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         GetSelectorTextSearchTypeChoicesResult result = SelectorResultFactory.getGetSelectorTextSearchTypeChoicesResult();
         String defaultSelectorTextSearchTypeChoice = form.getDefaultSelectorTextSearchTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

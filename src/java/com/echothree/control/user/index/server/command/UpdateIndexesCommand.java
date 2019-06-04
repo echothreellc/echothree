@@ -90,7 +90,7 @@ public class UpdateIndexesCommand
     }
     
     private Map<EntityInstance, List<QueuedEntity>> getQueuedEntities(final QueueType queueType) {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
         Map<EntityInstance, List<QueuedEntity>> queuedEntityMap = new HashMap<>(QUEUED_ENTITY_COUNT);
         List<QueuedEntity> queuedEntities = queueControl.getQueuedEntitiesByQueueType(queueType);
         
@@ -232,13 +232,13 @@ public class UpdateIndexesCommand
         boolean indexingComplete = false; // Indexing is only complete when we can absolutely verify it as being complete.
         
         if(!hasExecutionErrors()) {
-            QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+            var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
             
             indexingComplete = queueControl.countQueuedEntitiesByQueueType(queueType) == 0;
             
             // If there isn't anything in the queue, skip over all of this.
             if(!indexingComplete) {
-                IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+                var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
                 Map<EntityType, List<BaseIndexer>> indexersMap = new HashMap<>(indexControl.countIndexes());
 
                 try {

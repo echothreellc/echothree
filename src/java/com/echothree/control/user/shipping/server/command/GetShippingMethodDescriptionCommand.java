@@ -68,13 +68,13 @@ public class GetShippingMethodDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+        var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
         GetShippingMethodDescriptionResult result = ShippingResultFactory.getGetShippingMethodDescriptionResult();
         String shippingMethodName = form.getShippingMethodName();
         ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
         
         if(shippingMethod != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

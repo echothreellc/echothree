@@ -52,7 +52,7 @@ public class GetCommandMessageTranslationsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetCommandMessageTranslationsResult result = CoreResultFactory.getGetCommandMessageTranslationsResult();
         String commandMessageTypeName = form.getCommandMessageTypeName();
         CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);

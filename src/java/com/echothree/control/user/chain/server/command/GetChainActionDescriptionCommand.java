@@ -76,7 +76,7 @@ public class GetChainActionDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         GetChainActionDescriptionResult result = ChainResultFactory.getGetChainActionDescriptionResult();
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -98,7 +98,7 @@ public class GetChainActionDescriptionCommand
                         ChainAction chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
                         if(chainAction != null) {
-                            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                             String languageIsoName = form.getLanguageIsoName();
                             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

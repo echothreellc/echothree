@@ -48,7 +48,7 @@ public class SetDefaultCurrencyCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         String currencyIsoName = form.getCurrencyIsoName();
         Currency currency = accountingControl.getCurrencyByIsoNameForUpdate(currencyIsoName);
         

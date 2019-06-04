@@ -59,7 +59,7 @@ public class CreateSubscriptionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        SubscriptionControl subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
+        var subscriptionControl = (SubscriptionControl)Session.getModelController(SubscriptionControl.class);
         String subscriptionKindName = form.getSubscriptionKindName();
         SubscriptionKind subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -72,7 +72,7 @@ public class CreateSubscriptionTypeCommand
                 Sequence subscriptionSequence = null;
                 
                 if(subscriptionSequenceName != null) {
-                    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                     SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_SUBSCRIPTION);
                     subscriptionSequence = sequenceControl.getSequenceByName(sequenceType, subscriptionSequenceName);
                 }

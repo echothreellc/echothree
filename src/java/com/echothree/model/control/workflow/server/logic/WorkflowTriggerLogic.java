@@ -83,7 +83,7 @@ public class WorkflowTriggerLogic {
     }
     
     public void processWorkflowTriggers(final Session session, final ExecutionErrorAccumulator eea, final PartyPK triggeredBy) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         long workflowTriggersProcessed = 0;
         long remainingTime = (long) 1 * 60 * 1000; // 1 minute
         

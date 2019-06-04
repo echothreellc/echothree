@@ -1097,7 +1097,7 @@ public class CommentControl
         
         WorkflowEntrance workflowEntrance = commentType.getLastDetail().getWorkflowEntrance();
         if(workflowEntrance != null) {
-            WorkflowControl workflowControl = getWorkflowControl();
+            var workflowControl = getWorkflowControl();
             Workflow workflow = workflowEntrance.getLastDetail().getWorkflow();
         
             commentStatusChoicesBean = new CommentStatusChoicesBean();
@@ -1123,7 +1123,7 @@ public class CommentControl
         WorkflowEntrance workflowEntrance = commentTypeDetail.getWorkflowEntrance();
         
         if(workflowEntrance != null) {
-            WorkflowControl workflowControl = getWorkflowControl();
+            var workflowControl = getWorkflowControl();
             Workflow workflow = workflowEntrance.getLastDetail().getWorkflow();
             EntityInstance entityInstance = getEntityInstanceByBaseEntity(comment);
             WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);

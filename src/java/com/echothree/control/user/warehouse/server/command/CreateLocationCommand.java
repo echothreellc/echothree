@@ -75,7 +75,7 @@ public class CreateLocationCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         CreateLocationResult result = WarehouseResultFactory.getCreateLocationResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
@@ -133,14 +133,14 @@ public class CreateLocationCommand
                             }
                             
                             if(!multipleUseError) {
-                                InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                                var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                                 String inventoryLocationGroupName = form.getInventoryLocationGroupName();
                                 InventoryLocationGroup inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
                                 
                                 if(inventoryLocationGroup != null) {
-                                    CoreControl coreControl = getCoreControl();
+                                    var coreControl = getCoreControl();
                                     Integer velocity = Integer.valueOf(form.getVelocity());
-                                    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                     BasePK createdBy = getPartyPK();
                                     String description = form.getDescription();
                                     

@@ -52,7 +52,7 @@ public class GetItemKitMembersCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemKitMembersResult result = ItemResultFactory.getGetItemKitMembersResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

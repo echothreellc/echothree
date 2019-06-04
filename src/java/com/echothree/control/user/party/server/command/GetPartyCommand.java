@@ -76,7 +76,7 @@ public class GetPartyCommand
             }
 
             if(!hasExecutionErrors()) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 
                 result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
 

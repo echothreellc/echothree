@@ -110,7 +110,7 @@ public class CreateItemDescriptionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemDescriptionTypeName = form.getItemDescriptionTypeName();
         ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
         
@@ -127,7 +127,7 @@ public class CreateItemDescriptionTypeCommand
                 String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
 
                 if(mimeTypeUsageTypeName != null) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
 
                     mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
                 }
@@ -152,7 +152,7 @@ public class CreateItemDescriptionTypeCommand
                     }
                     
                     if(!hasExecutionErrors()) {
-                        CoreControl coreControl = getCoreControl();
+                        var coreControl = getCoreControl();
                         String preferredMimeTypeName = form.getPreferredMimeTypeName();
                         MimeType preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
 

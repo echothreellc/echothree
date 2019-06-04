@@ -128,7 +128,7 @@ public class CreateCustomerCommand
     @Override
     protected BaseResult execute() {
         CreateCustomerResult result = PartyResultFactory.getCreateCustomerResult();
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         Customer customer = null;
         String customerTypeName = form.getCustomerTypeName();
         CustomerType customerType = customerTypeName == null ? customerControl.getDefaultCustomerType() : customerControl.getCustomerTypeByName(customerTypeName);
@@ -138,7 +138,7 @@ public class CreateCustomerCommand
             CancellationPolicy cancellationPolicy = null;
 
             if(cancellationPolicyName != null) {
-                CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                 CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -149,14 +149,14 @@ public class CreateCustomerCommand
                 ReturnPolicy returnPolicy = null;
 
                 if(returnPolicyName != null) {
-                    ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                    var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                     ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
                     returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                 }
 
                 if(returnPolicyName == null || returnPolicy != null) {
-                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                     String arGlAccountName = form.getArGlAccountName();
                     GlAccount arGlAccount = arGlAccountName == null ? null : accountingControl.getGlAccountByName(arGlAccountName);
 
@@ -165,7 +165,7 @@ public class CreateCustomerCommand
                                 : arGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                         if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE)) {
-                            TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+                            var termControl = (TermControl)Session.getModelController(TermControl.class);
                             CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
                             Term term = customerTypeDetail.getDefaultTerm();
 
@@ -174,7 +174,7 @@ public class CreateCustomerCommand
                             }
 
                             if(term != null) {
-                                OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                                var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                                 String initialOfferName = form.getInitialOfferName();
                                 String initialUseName = form.getInitialUseName();
                                 String initialSourceName = form.getInitialSourceName();
@@ -226,7 +226,7 @@ public class CreateCustomerCommand
                                 }
 
                                 if(initialOfferUse != null) {
-                                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                                     String preferredLanguageIsoName = form.getPreferredLanguageIsoName();
                                     Language preferredLanguage = preferredLanguageIsoName == null ? null : partyControl.getLanguageByIsoName(preferredLanguageIsoName);
 
@@ -249,7 +249,7 @@ public class CreateCustomerCommand
                                                 }
 
                                                 if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                                    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                                     Soundex soundex = new Soundex();
                                                     PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_CUSTOMER);
                                                     BasePK createdBy = getPartyPK();

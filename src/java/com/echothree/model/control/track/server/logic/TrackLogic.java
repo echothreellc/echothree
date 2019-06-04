@@ -53,7 +53,7 @@ public class TrackLogic
     }
     
     public Track getTrackByName(final ExecutionErrorAccumulator eea, final String trackName) {
-        TrackControl trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
         Track track = trackControl.getTrackByName(trackName);
 
         if(track == null) {
@@ -64,7 +64,7 @@ public class TrackLogic
     }
     
     public Track getTrackByValue(final ExecutionErrorAccumulator eea, final String trackValue) {
-        TrackControl trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
         Track track = trackControl.getTrackByValue(trackValue);
 
         if(track == null) {
@@ -75,8 +75,8 @@ public class TrackLogic
     }
     
     public void setTrackStatus(final Session session, ExecutionErrorAccumulator eea, Track track, String trackStatusChoice, PartyPK modifiedBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(eea, TrackStatusConstants.Workflow_TRACK_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());

@@ -89,7 +89,7 @@ public class EditEntityAttributeGroupCommand
     
     @Override
     public EntityAttributeGroup getEntity(EditEntityAttributeGroupResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttributeGroup entityAttributeGroup = null;
         String entityAttributeGroupName = spec.getEntityAttributeGroupName();
 
@@ -113,14 +113,14 @@ public class EditEntityAttributeGroupCommand
     
     @Override
     public void fillInResult(EditEntityAttributeGroupResult result, EntityAttributeGroup entityAttributeGroup) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         
         result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
     }
     
     @Override
     public void doLock(EntityAttributeGroupEdit edit, EntityAttributeGroup entityAttributeGroup) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttributeGroupDescription entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage());
         EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditEntityAttributeGroupCommand
         
     @Override
     public void canUpdate(EntityAttributeGroup entityAttributeGroup) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String entityAttributeGroupName = edit.getEntityAttributeGroupName();
         EntityAttributeGroup duplicateEntityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
 
@@ -146,7 +146,7 @@ public class EditEntityAttributeGroupCommand
     
     @Override
     public void doUpdate(EntityAttributeGroup entityAttributeGroup) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         EntityAttributeGroupDetailValue entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueForUpdate(entityAttributeGroup);
         EntityAttributeGroupDescription entityAttributeGroupDescription = coreControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, getPreferredLanguage());

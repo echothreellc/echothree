@@ -72,7 +72,7 @@ public class CreateWorkEffortScopeCommand
     
     @Override
     protected BaseResult execute() {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
@@ -85,7 +85,7 @@ public class CreateWorkEffortScopeCommand
                 Sequence workEffortSequence = null;
                 
                 if(workEffortSequenceName != null) {
-                    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                     SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_WORK_EFFORT);
                     
                     if(sequenceType != null) {
@@ -96,7 +96,7 @@ public class CreateWorkEffortScopeCommand
                 }
                 
                 if(workEffortSequenceName == null || workEffortSequence != null) {
-                    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
                     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                     
                     if(timeUnitOfMeasureKind != null) {
@@ -151,7 +151,7 @@ public class CreateWorkEffortScopeCommand
                                 }
                                 
                                 if(!hasExecutionErrors()) {
-                                    WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+                                    var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
                                     Conversion scheduledTimeConversion = scheduledTimeUnitOfMeasureType == null? null:
                                         new Conversion(uomControl, scheduledTimeUnitOfMeasureType,
                                             Long.valueOf(scheduledTime)).convertToLowestUnitOfMeasureType();

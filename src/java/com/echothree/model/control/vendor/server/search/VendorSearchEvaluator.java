@@ -59,7 +59,7 @@ public class VendorSearchEvaluator
             Vendor vendor = null;
             
             if(vendorName != null) {
-                VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
                 
                 vendor = vendorControl.getVendorByName(vendorName);
             }

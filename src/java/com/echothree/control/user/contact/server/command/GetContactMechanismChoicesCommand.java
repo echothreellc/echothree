@@ -55,13 +55,13 @@ public class GetContactMechanismChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetContactMechanismChoicesResult result = ContactResultFactory.getGetContactMechanismChoicesResult();
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
             String contactMechanismTypeName = form.getContactMechanismTypeName();
             ContactMechanismType contactMechanismType = contactMechanismTypeName == null ? null : contactControl.getContactMechanismTypeByName(contactMechanismTypeName);
             

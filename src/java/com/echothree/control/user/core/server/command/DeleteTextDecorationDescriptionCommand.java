@@ -66,12 +66,12 @@ public class DeleteTextDecorationDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String textDecorationName = form.getTextDecorationName();
         TextDecoration textDecoration = coreControl.getTextDecorationByName(textDecorationName);
         
         if(textDecoration != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

@@ -98,7 +98,7 @@ public class CreateEntityClobAttributeCommand
                                             LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                     if(!hasExecutionErrors()) {
-                                        CoreControl coreControl = getCoreControl();
+                                        var coreControl = getCoreControl();
                                         EntityClobAttribute entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language);
 
                                         if(entityClobAttribute == null) {

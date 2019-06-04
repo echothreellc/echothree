@@ -90,7 +90,7 @@ public class EditLeaveTypeCommand
 
     @Override
     public LeaveType getEntity(EditLeaveTypeResult result) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         LeaveType leaveType = null;
         String leaveTypeName = spec.getLeaveTypeName();
 
@@ -116,14 +116,14 @@ public class EditLeaveTypeCommand
 
     @Override
     public void fillInResult(EditLeaveTypeResult result, LeaveType leaveType) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
 
         result.setLeaveType(employeeControl.getLeaveTypeTransfer(getUserVisit(), leaveType));
     }
 
     @Override
     public void doLock(LeaveTypeEdit edit, LeaveType leaveType) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         LeaveTypeDescription leaveTypeDescription = employeeControl.getLeaveTypeDescription(leaveType, getPreferredLanguage());
         LeaveTypeDetail leaveTypeDetail = leaveType.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditLeaveTypeCommand
 
     @Override
     public void canUpdate(LeaveType leaveType) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String leaveTypeName = edit.getLeaveTypeName();
         LeaveType duplicateLeaveType = employeeControl.getLeaveTypeByName(leaveTypeName);
 
@@ -149,7 +149,7 @@ public class EditLeaveTypeCommand
 
     @Override
     public void doUpdate(LeaveType leaveType) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         PartyPK partyPK = getPartyPK();
         LeaveTypeDetailValue leaveTypeDetailValue = employeeControl.getLeaveTypeDetailValueForUpdate(leaveType);
         LeaveTypeDescription leaveTypeDescription = employeeControl.getLeaveTypeDescriptionForUpdate(leaveType, getPreferredLanguage());

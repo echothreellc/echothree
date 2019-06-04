@@ -56,7 +56,7 @@ public class GetEmployeeResultsCommand
     @Override
     protected BaseResult execute() {
         GetEmployeeResultsResult result = SearchResultFactory.getGetEmployeeResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_EMPLOYEE);
         
         if(searchKind != null) {

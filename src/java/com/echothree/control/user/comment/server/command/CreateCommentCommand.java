@@ -76,7 +76,7 @@ public class CreateCommentCommand
     
     protected String createComment(CoreControl coreControl, CommentControl commentControl, CommentType commentType, EntityInstance commentedEntityInstance, Language language, MimeType mimeType,
             ByteArray blobComment, String clobComment, String stringComment) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         BasePK createdBy = getPartyPK();
         EntityInstance commentedByEntityInstance = null;
         String commentName = null;
@@ -98,7 +98,7 @@ public class CreateCommentCommand
         }
         
         if(!hasExecutionErrors() && (workflowEntranceName != null && workflowEntrance != null)) {
-            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
             
             workflowEntrance = workflowControl.getWorkflowEntranceByName(workflowEntrance.getLastDetail().getWorkflow(),
                     workflowEntranceName);
@@ -130,7 +130,7 @@ public class CreateCommentCommand
             }
             
             if(workflowEntrance != null) {
-                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
                 
                 // TODO: WorkEffort should be created for addEntityToWorkflow
@@ -144,19 +144,19 @@ public class CreateCommentCommand
     @Override
     protected BaseResult execute() {
         CreateCommentResult result = CommentResultFactory.getCreateCommentResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String commentName = null;
         String entityRef = form.getEntityRef();
         EntityInstance commentedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
         
         if(commentedEntityInstance != null) {
-            CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+            var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
             String commentTypeName = form.getCommentTypeName();
             CommentType commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(),
                     commentTypeName);
             
             if(commentType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = languageIsoName == null? null: partyControl.getLanguageByIsoName(languageIsoName);
 

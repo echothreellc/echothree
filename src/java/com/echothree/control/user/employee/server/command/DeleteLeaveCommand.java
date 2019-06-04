@@ -63,7 +63,7 @@ public class DeleteLeaveCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String leaveName = form.getLeaveName();
         Leave leave = employeeControl.getLeaveByNameForUpdate(leaveName);
 

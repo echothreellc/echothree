@@ -58,7 +58,7 @@ public class GetJobUserVisitCommand
     
     @Override
     protected BaseResult execute() {
-        JobControl jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = (JobControl)Session.getModelController(JobControl.class);
         GetJobUserVisitResult result = AuthenticationResultFactory.getGetJobUserVisitResult();
         
         try {

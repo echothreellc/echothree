@@ -49,7 +49,7 @@ public class GetCommandsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetCommandsResult result = CoreResultFactory.getGetCommandsResult();
         String componentVendorName = form.getComponentVendorName();
         

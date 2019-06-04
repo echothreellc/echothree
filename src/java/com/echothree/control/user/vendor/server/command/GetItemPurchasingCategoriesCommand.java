@@ -60,7 +60,7 @@ public class GetItemPurchasingCategoriesCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         GetItemPurchasingCategoriesResult result = VendorResultFactory.getGetItemPurchasingCategoriesResult();
         
         result.setItemPurchasingCategories(vendorControl.getItemPurchasingCategoryTransfers(getUserVisit()));

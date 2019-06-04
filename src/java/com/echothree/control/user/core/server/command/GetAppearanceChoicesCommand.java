@@ -61,7 +61,7 @@ public class GetAppearanceChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetAppearanceChoicesResult result = CoreResultFactory.getGetAppearanceChoicesResult();
         String defaultAppearanceChoice = form.getDefaultAppearanceChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

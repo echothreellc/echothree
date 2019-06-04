@@ -80,7 +80,7 @@ public class GetPartyPaymentMethodsCommand
             if(partyName == null) {
                 addExecutionError(ExecutionErrors.PartyNameRequired.name());
             } else {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
                 party = partyControl.getPartyByName(partyName);
 
@@ -91,7 +91,7 @@ public class GetPartyPaymentMethodsCommand
         }
 
         if(!hasExecutionErrors()) {
-            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
 
             result.setPartyPaymentMethods(paymentControl.getPartyPaymentMethodTransfersByParty(getUserVisit(), party));
         }

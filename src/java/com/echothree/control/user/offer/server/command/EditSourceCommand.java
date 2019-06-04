@@ -87,7 +87,7 @@ public class EditSourceCommand
 
     @Override
     public Source getEntity(EditSourceResult result) {
-        OfferControl geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
         Source source = null;
         String sourceName = spec.getSourceName();
 
@@ -113,14 +113,14 @@ public class EditSourceCommand
 
     @Override
     public void fillInResult(EditSourceResult result, Source source) {
-        OfferControl geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
 
         result.setSource(geoControl.getSourceTransfer(getUserVisit(), source));
     }
 
     @Override
     public void doLock(SourceEdit edit, Source source) {
-        OfferControl geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
         SourceDetail sourceDetail = source.getLastDetail();
 
         edit.setSourceName(sourceDetail.getSourceName());
@@ -130,7 +130,7 @@ public class EditSourceCommand
 
     @Override
     public void canUpdate(Source source) {
-        OfferControl geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
         String sourceName = edit.getSourceName();
         Source duplicateSource = geoControl.getSourceByName(sourceName);
 
@@ -141,7 +141,7 @@ public class EditSourceCommand
 
     @Override
     public void doUpdate(Source source) {
-        OfferControl geoControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
         PartyPK partyPK = getPartyPK();
         SourceDetailValue sourceDetailValue = geoControl.getSourceDetailValueForUpdate(source);
 

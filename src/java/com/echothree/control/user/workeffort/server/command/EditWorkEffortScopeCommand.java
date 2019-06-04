@@ -108,7 +108,7 @@ public class EditWorkEffortScopeCommand
 
     @Override
     public WorkEffortScope getEntity(EditWorkEffortScopeResult result) {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         WorkEffortScope workEffortScope = null;
         String workEffortTypeName = spec.getWorkEffortTypeName();
 
@@ -142,7 +142,7 @@ public class EditWorkEffortScopeCommand
 
     @Override
     public void fillInResult(EditWorkEffortScopeResult result, WorkEffortScope workEffortScope) {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
 
         result.setWorkEffortScope(workEffortControl.getWorkEffortScopeTransfer(getUserVisit(), workEffortScope));
     }
@@ -152,7 +152,7 @@ public class EditWorkEffortScopeCommand
     
     @Override
     public void doLock(WorkEffortScopeEdit edit, WorkEffortScope workEffortScope) {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
         WorkEffortScopeDescription workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, getPreferredLanguage());
         WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getLastDetail();
@@ -185,7 +185,7 @@ public class EditWorkEffortScopeCommand
     
     @Override
     public void canUpdate(WorkEffortScope workEffortScope) {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         String workEffortScopeName = edit.getWorkEffortScopeName();
         WorkEffortScope duplicateWorkEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
 
@@ -195,7 +195,7 @@ public class EditWorkEffortScopeCommand
             String workEffortSequenceName = edit.getWorkEffortSequenceName();
 
             if(workEffortSequenceName != null) {
-                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                 SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_WORK_EFFORT);
 
                 if(sequenceType != null) {
@@ -234,7 +234,7 @@ public class EditWorkEffortScopeCommand
     
     @Override
     public void doUpdate(WorkEffortScope workEffortScope) {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         PartyPK partyPK = getPartyPK();
         WorkEffortScopeDetailValue workEffortScopeDetailValue = workEffortControl.getWorkEffortScopeDetailValueForUpdate(workEffortScope);
         WorkEffortScopeDescription workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescriptionForUpdate(workEffortScope, getPreferredLanguage());

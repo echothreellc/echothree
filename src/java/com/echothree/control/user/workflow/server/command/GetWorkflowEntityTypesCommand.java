@@ -62,7 +62,7 @@ public class GetWorkflowEntityTypesCommand
         int parameterCount = (workflowName == null? 0: 1) + (componentVendorName == null && entityTypeName == null? 0: 1);
 
         if(parameterCount == 1) {
-            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
             if(workflowName != null) {
                 Workflow workflow = workflowControl.getWorkflowByName(workflowName);
@@ -74,7 +74,7 @@ public class GetWorkflowEntityTypesCommand
                     addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
                 }
             } else {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
                 if(componentVendor != null) {

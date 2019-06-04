@@ -49,7 +49,7 @@ public class GetForumChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         GetForumChoicesResult result = ForumResultFactory.getGetForumChoicesResult();
         String defaultForumChoice = form.getDefaultForumChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

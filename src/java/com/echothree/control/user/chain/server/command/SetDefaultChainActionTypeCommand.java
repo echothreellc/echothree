@@ -61,7 +61,7 @@ public class SetDefaultChainActionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainActionTypeName = form.getChainActionTypeName();
         ChainActionTypeDetailValue chainActionTypeDetailValue = chainControl.getChainActionTypeDetailValueByNameForUpdate(chainActionTypeName);
         

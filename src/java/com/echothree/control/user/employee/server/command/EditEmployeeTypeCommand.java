@@ -81,7 +81,7 @@ public class EditEmployeeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         EditEmployeeTypeResult result = EmployeeResultFactory.getEditEmployeeTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {

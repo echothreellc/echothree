@@ -87,13 +87,13 @@ public class EditColorDescriptionCommand
 
     @Override
     public ColorDescription getEntity(EditColorDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ColorDescription colorDescription = null;
         String colorName = spec.getColorName();
         Color color = coreControl.getColorByName(colorName);
 
         if(color != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditColorDescriptionCommand
 
     @Override
     public void fillInResult(EditColorDescriptionResult result, ColorDescription colorDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setColorDescription(coreControl.getColorDescriptionTransfer(getUserVisit(), colorDescription));
     }
@@ -136,7 +136,7 @@ public class EditColorDescriptionCommand
 
     @Override
     public void doUpdate(ColorDescription colorDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ColorDescriptionValue colorDescriptionValue = coreControl.getColorDescriptionValue(colorDescription);
         colorDescriptionValue.setDescription(edit.getDescription());
 

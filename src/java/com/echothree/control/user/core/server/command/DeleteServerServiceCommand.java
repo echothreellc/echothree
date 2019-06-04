@@ -64,7 +64,7 @@ public class DeleteServerServiceCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String serverName = form.getServerName();
         Server server = coreControl.getServerByName(serverName);
         

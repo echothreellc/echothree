@@ -78,7 +78,7 @@ public class EditCompanyCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditCompanyResult result = PartyResultFactory.getEditCompanyResult();
         String originalCompanyName = spec.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByNameForUpdate(originalCompanyName);
@@ -138,7 +138,7 @@ public class EditCompanyCommand
                                 if(preferredCurrencyIsoName == null)
                                     preferredCurrency = null;
                                 else {
-                                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                     preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                 }
                                 

@@ -91,7 +91,7 @@ public class EditAllocationPriorityCommand
 
     @Override
     public AllocationPriority getEntity(EditAllocationPriorityResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         AllocationPriority allocationPriority;
         String allocationPriorityName = spec.getAllocationPriorityName();
 
@@ -117,14 +117,14 @@ public class EditAllocationPriorityCommand
 
     @Override
     public void fillInResult(EditAllocationPriorityResult result, AllocationPriority allocationPriority) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
     }
 
     @Override
     public void doLock(AllocationPriorityEdit edit, AllocationPriority allocationPriority) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         AllocationPriorityDescription allocationPriorityDescription = inventoryControl.getAllocationPriorityDescription(allocationPriority, getPreferredLanguage());
         AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetail();
 
@@ -140,7 +140,7 @@ public class EditAllocationPriorityCommand
 
     @Override
     public void canUpdate(AllocationPriority allocationPriority) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String allocationPriorityName = edit.getAllocationPriorityName();
         AllocationPriority duplicateAllocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
@@ -151,7 +151,7 @@ public class EditAllocationPriorityCommand
 
     @Override
     public void doUpdate(AllocationPriority allocationPriority) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         PartyPK partyPK = getPartyPK();
         AllocationPriorityDetailValue allocationPriorityDetailValue = inventoryControl.getAllocationPriorityDetailValueForUpdate(allocationPriority);
         AllocationPriorityDescription allocationPriorityDescription = inventoryControl.getAllocationPriorityDescriptionForUpdate(allocationPriority, getPreferredLanguage());

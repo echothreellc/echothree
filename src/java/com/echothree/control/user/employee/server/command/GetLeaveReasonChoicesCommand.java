@@ -49,7 +49,7 @@ public class GetLeaveReasonChoicesCommand
     
    @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         GetLeaveReasonChoicesResult result = EmployeeResultFactory.getGetLeaveReasonChoicesResult();
         String defaultLeaveReasonChoice = form.getDefaultLeaveReasonChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

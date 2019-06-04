@@ -76,7 +76,7 @@ public class EditRatingTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditRatingTypeResult result = RatingResultFactory.getEditRatingTypeResult();
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -86,7 +86,7 @@ public class EditRatingTypeCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+                var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     String ratingTypeName = spec.getRatingTypeName();
@@ -129,7 +129,7 @@ public class EditRatingTypeCommand
                             Sequence ratingSequence = null;
                             
                             if(ratingSequenceName != null) {
-                                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                                 SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_RATING);
                                 
                                 if(sequenceType != null) {

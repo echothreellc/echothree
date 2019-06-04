@@ -85,7 +85,7 @@ public class EditWorkflowDestinationCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         EditWorkflowDestinationResult result = WorkflowResultFactory.getEditWorkflowDestinationResult();
         String workflowName = spec.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);

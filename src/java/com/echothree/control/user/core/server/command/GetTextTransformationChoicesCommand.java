@@ -61,7 +61,7 @@ public class GetTextTransformationChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetTextTransformationChoicesResult result = CoreResultFactory.getGetTextTransformationChoicesResult();
         String defaultTextTransformationChoice = form.getDefaultTextTransformationChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

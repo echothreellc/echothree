@@ -62,7 +62,7 @@ public class GetContactListTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         GetContactListTypeChoicesResult result = ContactListResultFactory.getGetContactListTypeChoicesResult();
         String defaultContactListTypeChoice = form.getDefaultContactListTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

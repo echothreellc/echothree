@@ -87,7 +87,7 @@ public class CreateEntityGeoPointAttributeCommand
 
                         if(EntityAttributeTypes.GEOPOINT.name().equals(entityAttributeTypeName)) {
                             if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                                CoreControl coreControl = getCoreControl();
+                                var coreControl = getCoreControl();
                                 EntityGeoPointAttribute entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
 
                                 if(entityGeoPointAttribute == null) {

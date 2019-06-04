@@ -52,12 +52,12 @@ public class CreateForumMessagePartTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumMessagePartTypeName = form.getForumMessagePartTypeName();
         ForumMessagePartType forumMessagePartType = forumControl.getForumMessagePartTypeByName(forumMessagePartTypeName);
         
         if(forumMessagePartType == null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
             MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
             

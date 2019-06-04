@@ -89,7 +89,7 @@ public class EditEntityBooleanAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            CoreControl coreControl = getCoreControl();
+                            var coreControl = getCoreControl();
                             EntityBooleanAttribute entityBooleanAttribute = null;
                             BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

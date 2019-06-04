@@ -67,7 +67,7 @@ public class GetCustomerResultsCommand
     @Override
     protected BaseResult execute() {
         GetCustomerResultsResult result = SearchResultFactory.getGetCustomerResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchTypeName = form.getSearchTypeName();
         UserVisit userVisit = getUserVisit();
         UserVisitSearch userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchConstants.SearchKind_CUSTOMER, searchTypeName);

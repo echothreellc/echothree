@@ -89,7 +89,7 @@ public class EditFontWeightCommand
 
     @Override
     public FontWeight getEntity(EditFontWeightResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         FontWeight fontWeight;
         String fontWeightName = spec.getFontWeightName();
 
@@ -113,14 +113,14 @@ public class EditFontWeightCommand
 
     @Override
     public void fillInResult(EditFontWeightResult result, FontWeight fontWeight) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setFontWeight(coreControl.getFontWeightTransfer(getUserVisit(), fontWeight));
     }
 
     @Override
     public void doLock(FontWeightEdit edit, FontWeight fontWeight) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         FontWeightDescription fontWeightDescription = coreControl.getFontWeightDescription(fontWeight, getPreferredLanguage());
         FontWeightDetail fontWeightDetail = fontWeight.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditFontWeightCommand
 
     @Override
     public void canUpdate(FontWeight fontWeight) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String fontWeightName = edit.getFontWeightName();
         FontWeight duplicateFontWeight = coreControl.getFontWeightByName(fontWeightName);
 
@@ -146,7 +146,7 @@ public class EditFontWeightCommand
 
     @Override
     public void doUpdate(FontWeight fontWeight) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         FontWeightDetailValue fontWeightDetailValue = coreControl.getFontWeightDetailValueForUpdate(fontWeight);
         FontWeightDescription fontWeightDescription = coreControl.getFontWeightDescriptionForUpdate(fontWeight, getPreferredLanguage());

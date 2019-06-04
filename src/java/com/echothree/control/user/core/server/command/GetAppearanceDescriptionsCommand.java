@@ -63,7 +63,7 @@ public class GetAppearanceDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetAppearanceDescriptionsResult result = CoreResultFactory.getGetAppearanceDescriptionsResult();
         String appearanceName = form.getAppearanceName();
         Appearance appearance = coreControl.getAppearanceByName(appearanceName);

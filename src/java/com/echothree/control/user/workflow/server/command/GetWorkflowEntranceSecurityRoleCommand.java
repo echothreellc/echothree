@@ -61,7 +61,7 @@ public class GetWorkflowEntranceSecurityRoleCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         GetWorkflowEntranceSecurityRoleResult result = WorkflowResultFactory.getGetWorkflowEntranceSecurityRoleResult();
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
@@ -71,7 +71,7 @@ public class GetWorkflowEntranceSecurityRoleCommand
             WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
 
             if(workflowEntrance != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String partyTypeName = form.getPartyTypeName();
                 PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
 
@@ -82,7 +82,7 @@ public class GetWorkflowEntranceSecurityRoleCommand
                         SecurityRoleGroup securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
 
                         if(securityRoleGroup != null) {
-                            SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+                            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
                             String securityRoleName = form.getSecurityRoleName();
                             SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 

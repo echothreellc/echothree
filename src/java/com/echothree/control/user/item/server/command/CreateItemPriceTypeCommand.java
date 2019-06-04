@@ -50,7 +50,7 @@ public class CreateItemPriceTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemPriceTypeName = form.getItemPriceTypeName();
         ItemPriceType itemPriceType = itemControl.getItemPriceTypeByName(itemPriceTypeName);
         

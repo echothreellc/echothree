@@ -70,7 +70,7 @@ public class GetLotAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetLotAliasTypeDescriptionResult result = InventoryResultFactory.getGetLotAliasTypeDescriptionResult();
         String lotTypeName = form.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
@@ -80,7 +80,7 @@ public class GetLotAliasTypeDescriptionCommand
             LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
 
             if(lotAliasType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

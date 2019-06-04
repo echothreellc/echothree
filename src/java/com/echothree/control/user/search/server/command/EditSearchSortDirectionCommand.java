@@ -90,7 +90,7 @@ public class EditSearchSortDirectionCommand
 
     @Override
     public SearchSortDirection getEntity(EditSearchSortDirectionResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchSortDirection searchSortDirection;
         String searchSortDirectionName = spec.getSearchSortDirectionName();
 
@@ -114,14 +114,14 @@ public class EditSearchSortDirectionCommand
 
     @Override
     public void fillInResult(EditSearchSortDirectionResult result, SearchSortDirection searchSortDirection) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchSortDirection(searchControl.getSearchSortDirectionTransfer(getUserVisit(), searchSortDirection));
     }
 
     @Override
     public void doLock(SearchSortDirectionEdit edit, SearchSortDirection searchSortDirection) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchSortDirectionDescription searchSortDirectionDescription = searchControl.getSearchSortDirectionDescription(searchSortDirection, getPreferredLanguage());
         SearchSortDirectionDetail searchSortDirectionDetail = searchSortDirection.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditSearchSortDirectionCommand
 
     @Override
     public void canUpdate(SearchSortDirection searchSortDirection) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchSortDirectionName = edit.getSearchSortDirectionName();
         SearchSortDirection duplicateSearchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
@@ -147,7 +147,7 @@ public class EditSearchSortDirectionCommand
 
     @Override
     public void doUpdate(SearchSortDirection searchSortDirection) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         PartyPK partyPK = getPartyPK();
         SearchSortDirectionDetailValue searchSortDirectionDetailValue = searchControl.getSearchSortDirectionDetailValueForUpdate(searchSortDirection);
         SearchSortDirectionDescription searchSortDirectionDescription = searchControl.getSearchSortDirectionDescriptionForUpdate(searchSortDirection, getPreferredLanguage());

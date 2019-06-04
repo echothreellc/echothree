@@ -91,7 +91,7 @@ public class CustomerSearchEvaluator
             Customer customer = null;
             
             if(customerName != null) {
-                CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
                 
                 customer = customerControl.getCustomerByName(customerName);
             }

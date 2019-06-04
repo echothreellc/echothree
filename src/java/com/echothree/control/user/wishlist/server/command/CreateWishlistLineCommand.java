@@ -79,7 +79,7 @@ public class CreateWishlistLineCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyName == null? getParty(): partyControl.getPartyByName(partyName);
         
@@ -87,7 +87,7 @@ public class CreateWishlistLineCommand
             String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
             
             if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
-                WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+                var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
                 String wishlistTypeName = form.getWishlistTypeName();
                 WishlistType wishlistType = wishlistTypeName == null? wishlistControl.getDefaultWishlistType():
                     wishlistControl.getWishlistTypeByName(wishlistTypeName);
@@ -98,18 +98,18 @@ public class CreateWishlistLineCommand
                         wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
                     
                     if(wishlistTypePriority != null) {
-                        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                         String currencyIsoName = form.getCurrencyIsoName();
                         Currency currency = currencyIsoName == null? accountingControl.getDefaultCurrency():
                             accountingControl.getCurrencyByIsoName(currencyIsoName);
                         
                         if(currency != null) {
-                            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                             String sourceName = form.getSourceName();
                             Source source = sourceName == null? offerControl.getDefaultSource(): offerControl.getSourceByName(sourceName);
                             
                             if(source != null) {
-                                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                                 String itemName = form.getItemName();
                                 Item item = itemControl.getItemByName(itemName);
                                 
@@ -118,7 +118,7 @@ public class CreateWishlistLineCommand
                                     OfferItem offerItem = offerControl.getOfferItem(offer, item);
                                     
                                     if(offerItem != null) {
-                                        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                                        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                                         String inventoryConditionName = form.getInventoryConditionName();
                                         InventoryConditionUseType inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_SALES_ORDER);
                                         InventoryCondition inventoryCondition = null;
@@ -140,7 +140,7 @@ public class CreateWishlistLineCommand
                                         }
                                         
                                         if(!hasExecutionErrors()) {
-                                            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
                                             UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
                                             String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                                             UnitOfMeasureType unitOfMeasureType = unitOfMeasureTypeName == null? uomControl.getDefaultUnitOfMeasureType(unitOfMeasureKind):

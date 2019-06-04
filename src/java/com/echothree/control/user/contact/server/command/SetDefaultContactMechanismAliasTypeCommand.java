@@ -61,7 +61,7 @@ public class SetDefaultContactMechanismAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
         ContactMechanismAliasTypeDetailValue contactMechanismAliasTypeDetailValue = contactControl.getContactMechanismAliasTypeDetailValueByNameForUpdate(contactMechanismAliasTypeName);
         

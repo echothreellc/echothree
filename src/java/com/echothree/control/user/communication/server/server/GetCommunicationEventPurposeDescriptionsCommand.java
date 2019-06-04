@@ -50,7 +50,7 @@ public class GetCommunicationEventPurposeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
         GetCommunicationEventPurposeDescriptionsResult result = CommunicationResultFactory.getGetCommunicationEventPurposeDescriptionsResult();
         String communicationEventPurposeName = form.getCommunicationEventPurposeName();
         CommunicationEventPurpose communicationEventPurpose = communicationControl.getCommunicationEventPurposeByName(communicationEventPurposeName);

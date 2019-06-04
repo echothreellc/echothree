@@ -64,7 +64,7 @@ public class GetGlResourceTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetGlResourceTypeDescriptionsResult result = AccountingResultFactory.getGetGlResourceTypeDescriptionsResult();
         String glResourceTypeName = form.getGlResourceTypeName();
         GlResourceType glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);

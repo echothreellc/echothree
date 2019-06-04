@@ -60,7 +60,7 @@ public class GetFilterKindsCommand
     
     @Override
     protected BaseResult execute() {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         GetFilterKindsResult result = FilterResultFactory.getGetFilterKindsResult();
         
         result.setFilterKinds(filterControl.getFilterKindTransfers(getUserVisit()));

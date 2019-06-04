@@ -82,7 +82,7 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         String preferredClobMimeTypeName = form.getPreferredClobMimeTypeName();
         
         if(preferredClobMimeTypeName != null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             MimeType preferredClobMimeType = coreControl.getMimeTypeByName(preferredClobMimeTypeName);
 
             if(preferredClobMimeType == null) {

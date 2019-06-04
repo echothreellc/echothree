@@ -1478,7 +1478,7 @@ public class PeriodControl
     
     public FiscalPeriodStatusChoicesBean getFiscalPeriodStatusChoices(String defaultFiscalPeriodStatusChoice, Language language, boolean allowNullChoice,
             Period period, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         FiscalPeriodStatusChoicesBean fiscalPeriodStatusChoicesBean = new FiscalPeriodStatusChoicesBean();
         
         if(period == null) {
@@ -1497,7 +1497,7 @@ public class PeriodControl
     }
     
     public void setFiscalPeriodStatus(ExecutionErrorAccumulator eea, Period period, String fiscalPeriodStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(period);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
                 entityInstance);

@@ -72,25 +72,25 @@ public class EditPartyCreditLimitCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         String currencyIsoName = spec.getCurrencyIsoName();
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
     }
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditPartyCreditLimitResult result = TermResultFactory.getEditPartyCreditLimitResult();
         String partyName = spec.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
         
         if(party != null) {
-            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
             String currencyIsoName = spec.getCurrencyIsoName();
             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
             
             if(currency != null) {
-                TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+                var termControl = (TermControl)Session.getModelController(TermControl.class);
                 
                 if(editMode.equals(EditMode.LOCK)) {
                     PartyCreditLimit partyCreditLimit = termControl.getPartyCreditLimit(party, currency);

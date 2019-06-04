@@ -85,13 +85,13 @@ public class CreateBlogEntryCommand
     
     @Override
     protected BaseResult execute() {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         CreateBlogEntryResult result = ForumResultFactory.getCreateBlogEntryResult();
         String username = form.getUsername();
         UserLogin userLogin = username == null ? null : userControl.getUserLoginByUsername(username);
         
         if(username == null || userLogin != null) {
-            ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+            var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
             String forumName = form.getForumName();
             Forum forum = forumControl.getForumByName(forumName);
 
@@ -104,12 +104,12 @@ public class CreateBlogEntryCommand
 
                     if(!hasExecutionErrors()) {
                         if(ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, party, forumRoleType)) {
-                            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                             String languageIsoName = form.getLanguageIsoName();
                             Language language = languageIsoName == null? getPreferredLanguage(): partyControl.getLanguageByIsoName(languageIsoName);
 
                             if(language != null) {
-                                IconControl iconControl = (IconControl)Session.getModelController(IconControl.class);
+                                var iconControl = (IconControl)Session.getModelController(IconControl.class);
                                 String forumThreadIconName = form.getForumThreadIconName();
                                 Icon forumThreadIcon = iconControl.getIconByName(forumThreadIconName);
 
@@ -143,7 +143,7 @@ public class CreateBlogEntryCommand
                                                 int feedSummaryParameterCount = (feedSummaryMimeTypeName == null? 0: 1) + (feedSummary == null? 0: 1);
 
                                                 if(feedSummaryParameterCount == 0 || feedSummaryParameterCount == 2) {
-                                                    CoreControl coreControl = getCoreControl();
+                                                    var coreControl = getCoreControl();
                                                     MimeType feedSummaryMimeType = feedSummaryMimeTypeName == null? null: coreControl.getMimeTypeByName(feedSummaryMimeTypeName);
 
                                                     if(feedSummaryMimeTypeName == null || feedSummaryMimeType != null) {

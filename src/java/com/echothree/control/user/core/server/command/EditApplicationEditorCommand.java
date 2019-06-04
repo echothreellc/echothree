@@ -98,7 +98,7 @@ public class EditApplicationEditorCommand
             Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     applicationEditor = coreControl.getApplicationEditor(application, editor);
@@ -122,14 +122,14 @@ public class EditApplicationEditorCommand
 
     @Override
     public void fillInResult(EditApplicationEditorResult result, ApplicationEditor applicationEditor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setApplicationEditor(coreControl.getApplicationEditorTransfer(getUserVisit(), applicationEditor));
     }
 
     @Override
     public void doLock(ApplicationEditorEdit edit, ApplicationEditor applicationEditor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ApplicationEditorDetail applicationEditorDetail = applicationEditor.getLastDetail();
 
         edit.setIsDefault(applicationEditorDetail.getIsDefault().toString());
@@ -138,7 +138,7 @@ public class EditApplicationEditorCommand
 
     @Override
     public void doUpdate(ApplicationEditor applicationEditor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         ApplicationEditorDetailValue applicationEditorDetailValue = coreControl.getApplicationEditorDetailValueForUpdate(applicationEditor);
 

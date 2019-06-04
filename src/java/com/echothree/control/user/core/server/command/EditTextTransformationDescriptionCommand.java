@@ -87,13 +87,13 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public TextTransformationDescription getEntity(EditTextTransformationDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         TextTransformationDescription textTransformationDescription = null;
         String textTransformationName = spec.getTextTransformationName();
         TextTransformation textTransformation = coreControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public void fillInResult(EditTextTransformationDescriptionResult result, TextTransformationDescription textTransformationDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setTextTransformationDescription(coreControl.getTextTransformationDescriptionTransfer(getUserVisit(), textTransformationDescription));
     }
@@ -136,7 +136,7 @@ public class EditTextTransformationDescriptionCommand
 
     @Override
     public void doUpdate(TextTransformationDescription textTransformationDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         TextTransformationDescriptionValue textTransformationDescriptionValue = coreControl.getTextTransformationDescriptionValue(textTransformationDescription);
         textTransformationDescriptionValue.setDescription(edit.getDescription());
 

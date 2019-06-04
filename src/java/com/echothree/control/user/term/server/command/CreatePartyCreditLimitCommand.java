@@ -56,7 +56,7 @@ public class CreatePartyCreditLimitCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
         
@@ -64,12 +64,12 @@ public class CreatePartyCreditLimitCommand
             String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
             
             if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER) || partyTypeName.equals(PartyConstants.PartyType_VENDOR)) {
-                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                 String currencyIsoName = form.getCurrencyIsoName();
                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                 
                 if(currency != null) {
-                    TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+                    var termControl = (TermControl)Session.getModelController(TermControl.class);
                     PartyCreditLimit partyCreditLimit = termControl.getPartyCreditLimit(party, currency);
                     
                     if(partyCreditLimit == null) {

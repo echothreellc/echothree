@@ -75,7 +75,7 @@ public class CreateChainCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
 
@@ -92,7 +92,7 @@ public class CreateChainCommand
                     Sequence chainInstanceSequence = null;
 
                     if(chainInstanceSequenceName != null) {
-                        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_CHAIN_INSTANCE);
 
                         chainInstanceSequence = sequenceControl.getSequenceByName(sequenceType, chainInstanceSequenceName);

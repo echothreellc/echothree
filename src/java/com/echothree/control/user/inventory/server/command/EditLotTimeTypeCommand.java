@@ -92,7 +92,7 @@ public class EditLotTimeTypeCommand
 
     @Override
     public LotTimeType getEntity(EditLotTimeTypeResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotTimeType lotTimeType = null;
         String lotTypeName = spec.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
@@ -125,14 +125,14 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void fillInResult(EditLotTimeTypeResult result, LotTimeType lotTimeType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setLotTimeType(inventoryControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
     }
 
     @Override
     public void doLock(LotTimeTypeEdit edit, LotTimeType lotTimeType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotTimeTypeDescription lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescription(lotTimeType, getPreferredLanguage());
         LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetail();
 
@@ -147,7 +147,7 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void canUpdate(LotTimeType lotTimeType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String lotTypeName = spec.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
 
@@ -165,7 +165,7 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void doUpdate(LotTimeType lotTimeType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         PartyPK partyPK = getPartyPK();
         LotTimeTypeDetailValue lotTimeTypeDetailValue = inventoryControl.getLotTimeTypeDetailValueForUpdate(lotTimeType);
         LotTimeTypeDescription lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, getPreferredLanguage());

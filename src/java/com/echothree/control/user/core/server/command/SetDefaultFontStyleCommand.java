@@ -61,7 +61,7 @@ public class SetDefaultFontStyleCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String fontStyleName = form.getFontStyleName();
         FontStyleDetailValue fontStyleDetailValue = coreControl.getFontStyleDetailValueByNameForUpdate(fontStyleName);
         

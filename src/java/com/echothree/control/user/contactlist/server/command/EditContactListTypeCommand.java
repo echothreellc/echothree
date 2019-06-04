@@ -98,7 +98,7 @@ public class EditContactListTypeCommand
 
     @Override
     public ContactListType getEntity(EditContactListTypeResult result) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         ContactListType contactListType = null;
         String contactListTypeName = spec.getContactListTypeName();
 
@@ -122,14 +122,14 @@ public class EditContactListTypeCommand
 
     @Override
     public void fillInResult(EditContactListTypeResult result, ContactListType contactListType) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
 
         result.setContactListType(contactListControl.getContactListTypeTransfer(getUserVisit(), contactListType));
     }
 
     @Override
     public void doLock(ContactListTypeEdit edit, ContactListType contactListType) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         ContactListTypeDescription contactListTypeDescription = contactListControl.getContactListTypeDescription(contactListType, getPreferredLanguage());
         ContactListTypeDetail contactListTypeDetail = contactListType.getLastDetail();
         Chain confirmationRequestChain = contactListTypeDetail.getConfirmationRequestChain();
@@ -155,14 +155,14 @@ public class EditContactListTypeCommand
 
     @Override
     public void canUpdate(ContactListType contactListType) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         String contactListTypeName = edit.getContactListTypeName();
         ContactListType duplicateContactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(duplicateContactListType != null && !contactListType.equals(duplicateContactListType)) {
             addExecutionError(ExecutionErrors.DuplicateContactListTypeName.name(), contactListTypeName);
         } else {
-            ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+            var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
             ChainKind chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
             String confirmationRequestChainName = edit.getConfirmationRequestChainName();
 
@@ -195,7 +195,7 @@ public class EditContactListTypeCommand
 
     @Override
     public void doUpdate(ContactListType contactListType) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         PartyPK partyPK = getPartyPK();
         ContactListTypeDetailValue contactListTypeDetailValue = contactListControl.getContactListTypeDetailValueForUpdate(contactListType);
         ContactListTypeDescription contactListTypeDescription = contactListControl.getContactListTypeDescriptionForUpdate(contactListType, getPreferredLanguage());

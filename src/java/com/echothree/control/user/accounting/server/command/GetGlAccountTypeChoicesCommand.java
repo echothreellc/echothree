@@ -49,7 +49,7 @@ public class GetGlAccountTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetGlAccountTypeChoicesResult result = AccountingResultFactory.getGetGlAccountTypeChoicesResult();
         String defaultGlAccountTypeChoice = form.getDefaultGlAccountTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

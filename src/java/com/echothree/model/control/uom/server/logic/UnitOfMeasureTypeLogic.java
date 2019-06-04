@@ -49,7 +49,7 @@ public class UnitOfMeasureTypeLogic
     }
     
     public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind, final String unitOfMeasureTypeName) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
         if(unitOfMeasureType == null) {
@@ -78,7 +78,7 @@ public class UnitOfMeasureTypeLogic
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
             
             unitOfMeasureType = uomControl.getUnitOfMeasureTypeByEntityInstance(entityInstance, entityPermission);
         }
@@ -102,7 +102,7 @@ public class UnitOfMeasureTypeLogic
         int parameterCount = (unitOfMeasureTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
 
         if(parameterCount == 2) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
             UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
@@ -134,7 +134,7 @@ public class UnitOfMeasureTypeLogic
         int parameterCount = (unitOfMeasureTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
 
         if(parameterCount == 2) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
             UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(unitOfMeasureKindUseTypeName);
 
             if(unitOfMeasureKind != null) {
@@ -205,7 +205,7 @@ public class UnitOfMeasureTypeLogic
         StringUnitOfMeasure result = null;
         
         if(value != null) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
             UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(unitOfMeasureKindUseTypeName);
             
             if(unitOfMeasureKind != null) {

@@ -66,7 +66,7 @@ public class CreateLicenseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
         String licenseTypeName = form.getLicenseTypeName();
         LicenseType licenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
         

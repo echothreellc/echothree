@@ -64,7 +64,7 @@ public class GetDocumentTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         GetDocumentTypeDescriptionsResult result = DocumentResultFactory.getGetDocumentTypeDescriptionsResult();
         String documentTypeName = form.getDocumentTypeName();
         DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);

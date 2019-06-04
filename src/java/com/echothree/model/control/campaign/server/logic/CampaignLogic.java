@@ -53,7 +53,7 @@ public class CampaignLogic
     }
     
     public Campaign getCampaignByName(final ExecutionErrorAccumulator eea, final String campaignName) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         Campaign campaign = campaignControl.getCampaignByName(campaignName);
 
         if(campaign == null) {
@@ -64,7 +64,7 @@ public class CampaignLogic
     }
     
     public Campaign getCampaignByValue(final ExecutionErrorAccumulator eea, final String campaignValue) {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         Campaign campaign = campaignControl.getCampaignByValue(campaignValue);
 
         if(campaign == null) {
@@ -75,8 +75,8 @@ public class CampaignLogic
     }
     
     public void setCampaignStatus(final Session session, ExecutionErrorAccumulator eea, Campaign campaign, String campaignStatusChoice, PartyPK modifiedBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(eea, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaign.getPrimaryKey());

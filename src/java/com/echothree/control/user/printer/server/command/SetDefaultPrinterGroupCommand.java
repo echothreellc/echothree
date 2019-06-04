@@ -48,7 +48,7 @@ public class SetDefaultPrinterGroupCommand
     
    @Override
     protected BaseResult execute() {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         String printerGroupName = form.getPrinterGroupName();
         PrinterGroupDetailValue printerGroupDetailValue = printerControl.getPrinterGroupDetailValueByNameForUpdate(printerGroupName);
         

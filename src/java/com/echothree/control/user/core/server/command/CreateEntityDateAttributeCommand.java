@@ -80,7 +80,7 @@ public class CreateEntityDateAttributeCommand
 
                         if(EntityAttributeTypes.DATE.name().equals(entityAttributeTypeName)) {
                             if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                                CoreControl coreControl = getCoreControl();
+                                var coreControl = getCoreControl();
                                 EntityDateAttribute entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
 
                                 if(entityDateAttribute == null) {

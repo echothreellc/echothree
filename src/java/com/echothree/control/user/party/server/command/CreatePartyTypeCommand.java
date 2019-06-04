@@ -56,7 +56,7 @@ public class CreatePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyTypeName = form.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
 
@@ -68,7 +68,7 @@ public class CreatePartyTypeCommand
                 parentPartyType = partyControl.getPartyTypeByName(parentPartyTypeName);
             }
             if(parentPartyTypeName == null || (parentPartyTypeName != null && parentPartyType != null)) {
-                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                 String billingAccountSequenceTypeName = form.getBillingAccountSequenceTypeName();
                 SequenceType billingAccountSequenceType = billingAccountSequenceTypeName == null ? null : sequenceControl.getSequenceTypeByName(billingAccountSequenceTypeName);
 

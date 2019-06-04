@@ -77,7 +77,7 @@ public class GetTagScopeEntityTypesCommand
         int parameterCount = (tagScopeName == null? 0: 1) + (componentVendorName == null && entityTypeName == null? 0: 1);
         
         if(parameterCount == 1) {
-            TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+            var tagControl = (TagControl)Session.getModelController(TagControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(tagScopeName != null) {
@@ -90,7 +90,7 @@ public class GetTagScopeEntityTypesCommand
                     addExecutionError(ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);
                 }
             } else {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {

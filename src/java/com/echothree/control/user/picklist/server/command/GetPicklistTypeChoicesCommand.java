@@ -62,7 +62,7 @@ public class GetPicklistTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         GetPicklistTypeChoicesResult result = PicklistResultFactory.getGetPicklistTypeChoicesResult();
         String defaultPicklistTypeChoice = form.getDefaultPicklistTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

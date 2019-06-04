@@ -87,13 +87,13 @@ public class EditGeoCodeTypeDescriptionCommand
 
     @Override
     public GeoCodeTypeDescription getEntity(EditGeoCodeTypeDescriptionResult result) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeTypeDescription geoCodeTypeDescription = null;
         String geoCodeTypeName = spec.getGeoCodeTypeName();
         GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
         if(geoCodeType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditGeoCodeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditGeoCodeTypeDescriptionResult result, GeoCodeTypeDescription geoCodeTypeDescription) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
 
         result.setGeoCodeTypeDescription(geoControl.getGeoCodeTypeDescriptionTransfer(getUserVisit(), geoCodeTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditGeoCodeTypeDescriptionCommand
 
     @Override
     public void doUpdate(GeoCodeTypeDescription geoCodeTypeDescription) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeTypeDescriptionValue geoCodeTypeDescriptionValue = geoControl.getGeoCodeTypeDescriptionValue(geoCodeTypeDescription);
         geoCodeTypeDescriptionValue.setDescription(edit.getDescription());
 

@@ -48,7 +48,7 @@ public class DeleteRatingCommand
     
     @Override
     protected BaseResult execute() {
-        RatingControl ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
+        var ratingControl = (RatingControl)Session.getModelController(RatingControl.class);
         String ratingName = form.getRatingName();
         Rating rating = ratingControl.getRatingByNameForUpdate(ratingName);
         

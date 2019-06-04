@@ -61,7 +61,7 @@ public class GetServiceChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetServiceChoicesResult result = CoreResultFactory.getGetServiceChoicesResult();
         String defaultServiceChoice = form.getDefaultServiceChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

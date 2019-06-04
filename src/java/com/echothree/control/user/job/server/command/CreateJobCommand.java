@@ -72,17 +72,17 @@ public class CreateJobCommand
     
     @Override
     protected BaseResult execute() {
-        JobControl jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = (JobControl)Session.getModelController(JobControl.class);
         String jobName = form.getJobName();
         Job job = jobControl.getJobByName(jobName);
         
         if(job == null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             Party runAsParty = partyControl.getPartyByName(jobName);
             
             if(runAsParty == null) {
-                CoreControl coreControl = getCoreControl();
-                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var coreControl = getCoreControl();
+                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_UTILITY);
                 Integer sortOrder = Integer.valueOf(form.getSortOrder());
                 String description = form.getDescription();

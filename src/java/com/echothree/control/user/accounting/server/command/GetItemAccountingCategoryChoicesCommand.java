@@ -62,7 +62,7 @@ public class GetItemAccountingCategoryChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetItemAccountingCategoryChoicesResult result = AccountingResultFactory.getGetItemAccountingCategoryChoicesResult();
         String defaultItemAccountingCategoryChoice = form.getDefaultItemAccountingCategoryChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

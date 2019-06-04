@@ -55,7 +55,7 @@ public class GetLocationNameElementDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         GetLocationNameElementDescriptionsResult result = WarehouseResultFactory.getGetLocationNameElementDescriptionsResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);

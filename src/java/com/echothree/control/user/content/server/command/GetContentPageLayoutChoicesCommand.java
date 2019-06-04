@@ -62,7 +62,7 @@ public class GetContentPageLayoutChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         GetContentPageLayoutChoicesResult result = ContentResultFactory.getGetContentPageLayoutChoicesResult();
         String defaultContentPageLayoutChoice = form.getDefaultContentPageLayoutChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

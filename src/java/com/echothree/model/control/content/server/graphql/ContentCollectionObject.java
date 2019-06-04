@@ -73,8 +73,8 @@ public class ContentCollectionObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentCollectionDescription(contentCollection, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -83,7 +83,7 @@ public class ContentCollectionObject
     @GraphQLField
     @GraphQLDescription("content catalogs count")
     public Long getContentCatalogsCount(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         return ContentSecurityUtils.getInstance().getHasContentCatalogsAccess(env) ? contentControl.countContentCatalogsByContentCollection(contentCollection) : null;
     }
@@ -91,7 +91,7 @@ public class ContentCollectionObject
     @GraphQLField
     @GraphQLDescription("content catalogs")
     public List<ContentCatalogObject> getContentCatalogs(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentCatalog> entities = ContentSecurityUtils.getInstance().getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
         List<ContentCatalogObject> contentCatalogs = entities == null ? null : new ArrayList<>(entities.size());
         
@@ -107,7 +107,7 @@ public class ContentCollectionObject
     @GraphQLField
     @GraphQLDescription("content sections count")
     public Long getContentSectionsCount(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         return ContentSecurityUtils.getInstance().getHasContentSectionsAccess(env) ? contentControl.countContentSectionsByContentCollection(contentCollection) : null;
     }
@@ -115,7 +115,7 @@ public class ContentCollectionObject
     @GraphQLField
     @GraphQLDescription("content sections")
     public List<ContentSectionObject> getContentSections(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentSection> entities = ContentSecurityUtils.getInstance().getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
         List<ContentSectionObject> contentSections = entities == null ? null : new ArrayList<>(entities.size());
         

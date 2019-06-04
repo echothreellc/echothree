@@ -62,7 +62,7 @@ public class DeleteComponentVendorCommand
     @Override
     protected BaseResult execute() {
         String componentVendorName = form.getComponentVendorName();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ComponentVendor componentVendor = coreControl.getComponentVendorByNameForUpdate(componentVendorName);
         
         if(componentVendor != null) {

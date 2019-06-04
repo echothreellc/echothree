@@ -97,7 +97,7 @@ public class EditAppearanceCommand
 
     @Override
     public Appearance getEntity(EditAppearanceResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         Appearance appearance;
         String appearanceName = spec.getAppearanceName();
 
@@ -121,7 +121,7 @@ public class EditAppearanceCommand
 
     @Override
     public void fillInResult(EditAppearanceResult result, Appearance appearance) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setAppearance(coreControl.getAppearanceTransfer(getUserVisit(), appearance));
     }
@@ -133,7 +133,7 @@ public class EditAppearanceCommand
 
     @Override
     public void doLock(AppearanceEdit edit, Appearance appearance) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         AppearanceDescription appearanceDescription = coreControl.getAppearanceDescription(appearance, getPreferredLanguage());
         AppearanceDetail appearanceDetail = appearance.getLastDetail();
 
@@ -157,7 +157,7 @@ public class EditAppearanceCommand
 
     @Override
     public void canUpdate(Appearance appearance) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String appearanceName = edit.getAppearanceName();
         Appearance duplicateAppearance = coreControl.getAppearanceByName(appearanceName);
 
@@ -194,7 +194,7 @@ public class EditAppearanceCommand
 
     @Override
     public void doUpdate(Appearance appearance) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         AppearanceDetailValue appearanceDetailValue = coreControl.getAppearanceDetailValueForUpdate(appearance);
         AppearanceDescription appearanceDescription = coreControl.getAppearanceDescriptionForUpdate(appearance, getPreferredLanguage());

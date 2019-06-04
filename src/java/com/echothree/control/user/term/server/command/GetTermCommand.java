@@ -51,7 +51,7 @@ public class GetTermCommand
     
     @Override
     protected BaseResult execute() {
-        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = (TermControl)Session.getModelController(TermControl.class);
         GetTermResult result = TermResultFactory.getGetTermResult();
         String termName = form.getTermName();
         Term term = termControl.getTermByName(termName);

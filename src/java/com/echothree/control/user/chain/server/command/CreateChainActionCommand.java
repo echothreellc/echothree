@@ -185,7 +185,7 @@ public class CreateChainActionCommand
                 nextChainActionSet = chainControl.getChainActionSetByName(chain, nextChainActionSetName);
                 
                 if(nextChainActionSet != null) {
-                    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
                     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                     if(timeUnitOfMeasureKind != null) {
@@ -214,7 +214,7 @@ public class CreateChainActionCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
 

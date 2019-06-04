@@ -90,7 +90,7 @@ public class EditSearchKindCommand
 
     @Override
     public SearchKind getEntity(EditSearchKindResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind;
         String searchKindName = spec.getSearchKindName();
 
@@ -114,14 +114,14 @@ public class EditSearchKindCommand
 
     @Override
     public void fillInResult(EditSearchKindResult result, SearchKind searchKind) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchKind(searchControl.getSearchKindTransfer(getUserVisit(), searchKind));
     }
 
     @Override
     public void doLock(SearchKindEdit edit, SearchKind searchKind) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKindDescription searchKindDescription = searchControl.getSearchKindDescription(searchKind, getPreferredLanguage());
         SearchKindDetail searchKindDetail = searchKind.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditSearchKindCommand
 
     @Override
     public void canUpdate(SearchKind searchKind) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchKindName = edit.getSearchKindName();
         SearchKind duplicateSearchKind = searchControl.getSearchKindByName(searchKindName);
 
@@ -147,7 +147,7 @@ public class EditSearchKindCommand
 
     @Override
     public void doUpdate(SearchKind searchKind) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         PartyPK partyPK = getPartyPK();
         SearchKindDetailValue searchKindDetailValue = searchControl.getSearchKindDetailValueForUpdate(searchKind);
         SearchKindDescription searchKindDescription = searchControl.getSearchKindDescriptionForUpdate(searchKind, getPreferredLanguage());

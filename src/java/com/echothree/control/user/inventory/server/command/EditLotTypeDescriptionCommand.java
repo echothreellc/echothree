@@ -87,13 +87,13 @@ public class EditLotTypeDescriptionCommand
 
     @Override
     public LotTypeDescription getEntity(EditLotTypeDescriptionResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotTypeDescription lotTypeDescription = null;
         String lotTypeName = spec.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
 
         if(lotType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditLotTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditLotTypeDescriptionResult result, LotTypeDescription lotTypeDescription) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setLotTypeDescription(inventoryControl.getLotTypeDescriptionTransfer(getUserVisit(), lotTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditLotTypeDescriptionCommand
 
     @Override
     public void doUpdate(LotTypeDescription lotTypeDescription) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotTypeDescriptionValue lotTypeDescriptionValue = inventoryControl.getLotTypeDescriptionValue(lotTypeDescription);
         lotTypeDescriptionValue.setDescription(edit.getDescription());
 

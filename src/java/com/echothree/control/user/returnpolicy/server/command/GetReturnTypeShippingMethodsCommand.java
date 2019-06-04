@@ -69,7 +69,7 @@ public class GetReturnTypeShippingMethodsCommand
     
     @Override
     protected BaseResult execute() {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         GetReturnTypeShippingMethodsResult result = ReturnPolicyResultFactory.getGetReturnTypeShippingMethodsResult();
         String returnKindName = form.getReturnKindName();
         String returnTypeName = form.getReturnTypeName();
@@ -94,7 +94,7 @@ public class GetReturnTypeShippingMethodsCommand
                     addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
                 }
             } else if(shippingMethodName != null) {
-                ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+                var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
                 ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 
                 if(shippingMethod != null) {

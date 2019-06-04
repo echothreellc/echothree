@@ -87,13 +87,13 @@ public class EditMimeTypeDescriptionCommand
 
     @Override
     public MimeTypeDescription getEntity(EditMimeTypeDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         MimeTypeDescription mimeTypeDescription = null;
         String mimeTypeName = spec.getMimeTypeName();
         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditMimeTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditMimeTypeDescriptionResult result, MimeTypeDescription mimeTypeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setMimeTypeDescription(coreControl.getMimeTypeDescriptionTransfer(getUserVisit(), mimeTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditMimeTypeDescriptionCommand
 
     @Override
     public void doUpdate(MimeTypeDescription mimeTypeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         MimeTypeDescriptionValue mimeTypeDescriptionValue = coreControl.getMimeTypeDescriptionValue(mimeTypeDescription);
 
         mimeTypeDescriptionValue.setDescription(edit.getDescription());

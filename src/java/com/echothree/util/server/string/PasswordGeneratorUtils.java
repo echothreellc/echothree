@@ -137,7 +137,7 @@ public class PasswordGeneratorUtils {
     }
     
     public String getPassword(PartyType partyType) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyControl.getPartyTypePasswordStringPolicy(partyType).getLastDetail();
         Integer intMinimumLength = partyTypePasswordStringPolicyDetail.getMinimumLength();
         Integer intMaximumLength = partyTypePasswordStringPolicyDetail.getMaximumLength();

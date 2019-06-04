@@ -96,7 +96,7 @@ public class EditReturnPolicyTranslationCommand
     
     @Override
     public ReturnPolicyTranslation getEntity(EditReturnPolicyTranslationResult result) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnPolicyTranslation returnPolicyTranslation = null;
         String returnKindName = spec.getReturnKindName();
         
@@ -107,7 +107,7 @@ public class EditReturnPolicyTranslationCommand
             ReturnPolicy returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
 
             if(returnPolicy != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -141,7 +141,7 @@ public class EditReturnPolicyTranslationCommand
 
     @Override
     public void fillInResult(EditReturnPolicyTranslationResult result, ReturnPolicyTranslation returnPolicyTranslation) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
 
         result.setReturnPolicyTranslation(returnPolicyControl.getReturnPolicyTranslationTransfer(getUserVisit(), returnPolicyTranslation));
     }
@@ -171,7 +171,7 @@ public class EditReturnPolicyTranslationCommand
     
     @Override
     public void doUpdate(ReturnPolicyTranslation returnPolicyTranslation) {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         ReturnPolicyTranslationValue returnPolicyTranslationValue = returnPolicyControl.getReturnPolicyTranslationValue(returnPolicyTranslation);
         
         returnPolicyTranslationValue.setDescription(edit.getDescription());

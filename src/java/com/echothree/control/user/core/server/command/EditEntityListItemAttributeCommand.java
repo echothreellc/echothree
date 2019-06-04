@@ -66,7 +66,7 @@ public class EditEntityListItemAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditEntityListItemAttributeResult result = CoreResultFactory.getEditEntityListItemAttributeResult();
         String entityRef = spec.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);

@@ -90,7 +90,7 @@ public class EditRelatedItemTypeCommand
     
     @Override
     public RelatedItemType getEntity(EditRelatedItemTypeResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         RelatedItemType relatedItemType = null;
         String relatedItemTypeName = spec.getRelatedItemTypeName();
 
@@ -116,14 +116,14 @@ public class EditRelatedItemTypeCommand
     
     @Override
     public void fillInResult(EditRelatedItemTypeResult result, RelatedItemType relatedItemType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));
     }
     
     @Override
     public void doLock(RelatedItemTypeEdit edit, RelatedItemType relatedItemType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         RelatedItemTypeDescription relatedItemTypeDescription = itemControl.getRelatedItemTypeDescription(relatedItemType, getPreferredLanguage());
         RelatedItemTypeDetail relatedItemTypeDetail = relatedItemType.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditRelatedItemTypeCommand
         
     @Override
     public void canUpdate(RelatedItemType relatedItemType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String relatedItemTypeName = edit.getRelatedItemTypeName();
         RelatedItemType duplicateRelatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
@@ -149,7 +149,7 @@ public class EditRelatedItemTypeCommand
     
     @Override
     public void doUpdate(RelatedItemType relatedItemType) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         PartyPK partyPK = getPartyPK();
         RelatedItemTypeDetailValue relatedItemTypeDetailValue = itemControl.getRelatedItemTypeDetailValueForUpdate(relatedItemType);
         RelatedItemTypeDescription relatedItemTypeDescription = itemControl.getRelatedItemTypeDescriptionForUpdate(relatedItemType, getPreferredLanguage());

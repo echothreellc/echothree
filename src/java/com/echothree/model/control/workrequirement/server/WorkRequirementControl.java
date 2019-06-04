@@ -943,7 +943,7 @@ public class WorkRequirementControl
     
     public WorkRequirementStatusChoicesBean getWorkRequirementStatusChoices(String defaultWorkRequirementStatusChoice, Language language,
             boolean allowNullChoice, WorkRequirement workRequirement, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         WorkRequirementStatusChoicesBean workRequirementStatusChoicesBean = new WorkRequirementStatusChoicesBean();
 
         if(workRequirement == null) {
@@ -962,7 +962,7 @@ public class WorkRequirementControl
     }
 
     public void setWorkRequirementStatus(ExecutionErrorAccumulator eea, WorkRequirement workRequirement, String workRequirementStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(workRequirement);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS,
                 entityInstance);
@@ -1249,7 +1249,7 @@ public class WorkRequirementControl
 
     public WorkAssignmentStatusChoicesBean getWorkAssignmentStatusChoices(String defaultWorkAssignmentStatusChoice, Language language,
             boolean allowNullChoice, WorkAssignment workAssignment, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         WorkAssignmentStatusChoicesBean workAssignmentStatusChoicesBean = new WorkAssignmentStatusChoicesBean();
 
         if(workAssignment == null) {
@@ -1268,7 +1268,7 @@ public class WorkRequirementControl
     }
 
     public void setWorkAssignmentStatus(ExecutionErrorAccumulator eea, WorkAssignment workAssignment, String workAssignmentStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(workAssignment);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS,
                 entityInstance);
@@ -1500,7 +1500,7 @@ public class WorkRequirementControl
     
     public WorkTimeStatusChoicesBean getWorkTimeStatusChoices(String defaultWorkTimeStatusChoice, Language language,
             boolean allowNullChoice, WorkTime workTime, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         WorkTimeStatusChoicesBean workTimeStatusChoicesBean = new WorkTimeStatusChoicesBean();
 
         if(workTime == null) {
@@ -1519,7 +1519,7 @@ public class WorkRequirementControl
     }
 
     public void setWorkTimeStatus(ExecutionErrorAccumulator eea, WorkTime workTime, String workTimeStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(workTime);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS,
                 entityInstance);

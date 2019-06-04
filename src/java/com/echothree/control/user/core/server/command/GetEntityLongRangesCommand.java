@@ -70,7 +70,7 @@ public class GetEntityLongRangesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityLongRangesResult result = CoreResultFactory.getGetEntityLongRangesResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);

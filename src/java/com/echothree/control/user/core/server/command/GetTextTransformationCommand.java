@@ -60,7 +60,7 @@ public class GetTextTransformationCommand
     
     @Override
     protected TextTransformation getEntity() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         TextTransformation textTransformation = null;
         String textTransformationName = form.getTextTransformationName();
         int parameterCount = (textTransformationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
@@ -89,7 +89,7 @@ public class GetTextTransformationCommand
     
     @Override
     protected BaseResult getTransfer(TextTransformation textTransformation) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetTextTransformationResult result = CoreResultFactory.getGetTextTransformationResult();
 
         if(textTransformation != null) {

@@ -69,7 +69,7 @@ public class CreateDivisionCommand
     @Override
     protected BaseResult execute() {
         CreateDivisionResult result = PartyResultFactory.getCreateDivisionResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String companyName = form.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
         
@@ -97,7 +97,7 @@ public class CreateDivisionCommand
                             if(preferredCurrencyIsoName == null)
                                 preferredCurrency = null;
                             else {
-                                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                 preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                             }
                             

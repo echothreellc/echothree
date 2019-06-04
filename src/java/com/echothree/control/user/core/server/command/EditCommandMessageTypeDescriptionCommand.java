@@ -87,13 +87,13 @@ public class EditCommandMessageTypeDescriptionCommand
 
     @Override
     public CommandMessageTypeDescription getEntity(EditCommandMessageTypeDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandMessageTypeDescription commandMessageTypeDescription = null;
         String commandMessageTypeName = spec.getCommandMessageTypeName();
         CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
 
         if(commandMessageType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditCommandMessageTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditCommandMessageTypeDescriptionResult result, CommandMessageTypeDescription commandMessageTypeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setCommandMessageTypeDescription(coreControl.getCommandMessageTypeDescriptionTransfer(getUserVisit(), commandMessageTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditCommandMessageTypeDescriptionCommand
 
     @Override
     public void doUpdate(CommandMessageTypeDescription commandMessageTypeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandMessageTypeDescriptionValue commandMessageTypeDescriptionValue = coreControl.getCommandMessageTypeDescriptionValue(commandMessageTypeDescription);
         commandMessageTypeDescriptionValue.setDescription(edit.getDescription());
 

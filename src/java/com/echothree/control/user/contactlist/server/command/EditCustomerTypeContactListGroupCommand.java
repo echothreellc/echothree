@@ -87,13 +87,13 @@ public class EditCustomerTypeContactListGroupCommand
 
     @Override
     public CustomerTypeContactListGroup getEntity(EditCustomerTypeContactListGroupResult result) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         CustomerTypeContactListGroup customerTypeContactListGroup = null;
         String customerTypeName = spec.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
-            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
             String contactListGroupName = spec.getContactListGroupName();
             ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
@@ -124,7 +124,7 @@ public class EditCustomerTypeContactListGroupCommand
 
     @Override
     public void fillInResult(EditCustomerTypeContactListGroupResult result, CustomerTypeContactListGroup customerTypeContactListGroup) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
 
         result.setCustomerTypeContactListGroup(contactListControl.getCustomerTypeContactListGroupTransfer(getUserVisit(), customerTypeContactListGroup));
     }
@@ -136,7 +136,7 @@ public class EditCustomerTypeContactListGroupCommand
 
     @Override
     public void doUpdate(CustomerTypeContactListGroup customerTypeContactListGroup) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         CustomerTypeContactListGroupValue customerTypeContactListGroupValue = contactListControl.getCustomerTypeContactListGroupValue(customerTypeContactListGroup);
 
         customerTypeContactListGroupValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));

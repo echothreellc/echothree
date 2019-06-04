@@ -46,7 +46,7 @@ public class ApplicationLogic
     }
     
     public Application getApplicationByName(final ExecutionErrorAccumulator eea, final String applicationName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         Application application = coreControl.getApplicationByName(applicationName);
 
         if(application == null) {
@@ -57,7 +57,7 @@ public class ApplicationLogic
     }
     
     public Editor getEditorByName(final ExecutionErrorAccumulator eea, final String editorName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         Editor editor = coreControl.getEditorByName(editorName);
 
         if(editor == null) {
@@ -68,7 +68,7 @@ public class ApplicationLogic
     }
     
     public ApplicationEditor getApplicationEditor(final ExecutionErrorAccumulator eea, final Application application, final Editor editor) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         ApplicationEditor applicationEditor = coreControl.getApplicationEditor(application, editor);
         
         if(applicationEditor == null) {
@@ -81,7 +81,7 @@ public class ApplicationLogic
 
     public ApplicationEditorUse getApplicationEditorUseByName(final ExecutionErrorAccumulator eea, final Application application,
             final String applicationEditorUseName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         ApplicationEditorUse applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
         if(applicationEditorUse == null) {

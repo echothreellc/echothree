@@ -54,7 +54,7 @@ public class GetWorkflowDestinationPartyTypesCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         GetWorkflowDestinationPartyTypesResult result = WorkflowResultFactory.getGetWorkflowDestinationPartyTypesResult();
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);

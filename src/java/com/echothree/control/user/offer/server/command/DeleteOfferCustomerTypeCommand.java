@@ -66,12 +66,12 @@ public class DeleteOfferCustomerTypeCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
 
         if(offer != null) {
-            CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
             String customerTypeName = form.getCustomerTypeName();
             CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 

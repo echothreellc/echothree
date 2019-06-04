@@ -47,7 +47,7 @@ public class GetTermTypesCommand
     @Override
     protected BaseResult execute() {
         GetTermTypesResult result = TermResultFactory.getGetTermTypesResult();
-        TermControl partyControl = (TermControl)Session.getModelController(TermControl.class);
+        var partyControl = (TermControl)Session.getModelController(TermControl.class);
         
         result.setTermTypes(partyControl.getTermTypeTransfers(getUserVisit()));
         

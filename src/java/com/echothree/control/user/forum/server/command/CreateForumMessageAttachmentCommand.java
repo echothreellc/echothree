@@ -59,12 +59,12 @@ public class CreateForumMessageAttachmentCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumMessageName = form.getForumMessageName();
         ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 
         if(forumMessage != null) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String mimeTypeName = form.getMimeTypeName();
             MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 

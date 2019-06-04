@@ -67,13 +67,13 @@ public class GetColorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetColorDescriptionResult result = CoreResultFactory.getGetColorDescriptionResult();
         String colorName = form.getColorName();
         Color color = coreControl.getColorByName(colorName);
 
         if(color != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

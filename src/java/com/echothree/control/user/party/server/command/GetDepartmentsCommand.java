@@ -55,7 +55,7 @@ public class GetDepartmentsCommand
     @Override
     protected BaseResult execute() {
         GetDepartmentsResult result = PartyResultFactory.getGetDepartmentsResult();
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String companyName = form.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
         

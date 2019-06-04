@@ -90,7 +90,7 @@ public class EditCommandMessageCommand
 
     @Override
     public CommandMessage getEntity(EditCommandMessageResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandMessage commandMessage = null;
         String commandMessageTypeName = spec.getCommandMessageTypeName();
 
@@ -124,14 +124,14 @@ public class EditCommandMessageCommand
 
     @Override
     public void fillInResult(EditCommandMessageResult result, CommandMessage commandMessage) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setCommandMessage(coreControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
     }
 
     @Override
     public void doLock(CommandMessageEdit edit, CommandMessage commandMessage) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandMessageTranslation commandMessageTranslation = coreControl.getCommandMessageTranslation(commandMessage, getPreferredLanguage());
         CommandMessageDetail commandMessageDetail = commandMessage.getLastDetail();
 
@@ -144,7 +144,7 @@ public class EditCommandMessageCommand
 
     @Override
     public void canUpdate(CommandMessage commandMessage) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String commandMessageKey = edit.getCommandMessageKey();
         CommandMessage duplicateCommandMessage = coreControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
 
@@ -155,7 +155,7 @@ public class EditCommandMessageCommand
 
     @Override
     public void doUpdate(CommandMessage commandMessage) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         CommandMessageDetailValue commandMessageDetailValue = coreControl.getCommandMessageDetailValueForUpdate(commandMessage);
         CommandMessageTranslation commandMessageTranslation = coreControl.getCommandMessageTranslationForUpdate(commandMessage, getPreferredLanguage());

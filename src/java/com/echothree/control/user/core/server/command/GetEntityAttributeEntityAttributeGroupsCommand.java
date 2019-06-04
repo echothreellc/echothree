@@ -78,7 +78,7 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
                 + (entityAttributeGroupName != null ? 1 : 0);
 
         if(parameterCount == 1) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             UserVisit userVisit = getUserVisit();
             
             if(entityAttributeGroupName == null) {

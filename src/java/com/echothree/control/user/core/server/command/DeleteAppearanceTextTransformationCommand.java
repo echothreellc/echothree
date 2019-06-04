@@ -73,7 +73,7 @@ public class DeleteAppearanceTextTransformationCommand
             TextTransformation textTransformation = AppearanceLogic.getInstance().getTextTransformationByName(this, textTransformationName);
             
             if(!hasExecutionErrors()) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 AppearanceTextTransformation appearanceTextTransformation = coreControl.getAppearanceTextTransformationForUpdate(appearance, textTransformation);
                 
                 if(appearanceTextTransformation != null) {

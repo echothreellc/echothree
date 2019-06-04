@@ -65,7 +65,7 @@ public class GetItemImageTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemImageTypeResult result = ItemResultFactory.getGetItemImageTypeResult();
         String itemImageTypeName = form.getItemImageTypeName();
         ItemImageType itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);

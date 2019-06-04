@@ -93,7 +93,7 @@ public class EditEntityIntegerRangeDescriptionCommand
 
     @Override
     public EntityIntegerRangeDescription getEntity(EditEntityIntegerRangeDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityIntegerRangeDescription entityIntegerRangeDescription = null;
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -111,7 +111,7 @@ public class EditEntityIntegerRangeDescriptionCommand
                     EntityIntegerRange entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
                     if(entityIntegerRange != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         String languageIsoName = spec.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -152,7 +152,7 @@ public class EditEntityIntegerRangeDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityIntegerRangeDescriptionResult result, EntityIntegerRangeDescription entityIntegerRangeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityIntegerRangeDescription(coreControl.getEntityIntegerRangeDescriptionTransfer(getUserVisit(), entityIntegerRangeDescription, null));
     }
@@ -164,7 +164,7 @@ public class EditEntityIntegerRangeDescriptionCommand
 
     @Override
     public void doUpdate(EntityIntegerRangeDescription entityIntegerRangeDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityIntegerRangeDescriptionValue entityIntegerRangeDescriptionValue = coreControl.getEntityIntegerRangeDescriptionValue(entityIntegerRangeDescription);
         
         entityIntegerRangeDescriptionValue.setDescription(edit.getDescription());

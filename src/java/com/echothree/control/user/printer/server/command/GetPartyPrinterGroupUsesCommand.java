@@ -65,7 +65,7 @@ public class GetPartyPrinterGroupUsesCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetPartyPrinterGroupUsesResult result = PrinterResultFactory.getGetPartyPrinterGroupUsesResult();
         String partyName = form.getPartyName();
         Party party = null;
@@ -81,7 +81,7 @@ public class GetPartyPrinterGroupUsesCommand
         }
 
         if(!hasExecutionErrors()) {
-            PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+            var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
 
             result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
             result.setPartyPrinterGroupUses(printerControl.getPartyPrinterGroupUseTransfersByParty(getUserVisit(), party));

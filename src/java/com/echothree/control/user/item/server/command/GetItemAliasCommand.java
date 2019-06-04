@@ -50,7 +50,7 @@ public class GetItemAliasCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemAliasResult result = ItemResultFactory.getGetItemAliasResult();
         String alias = form.getAlias();
         ItemAlias itemAlias = itemControl.getItemAliasByAliasForUpdate(alias);

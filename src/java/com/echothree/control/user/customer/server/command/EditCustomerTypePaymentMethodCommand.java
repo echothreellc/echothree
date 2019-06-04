@@ -75,13 +75,13 @@ public class EditCustomerTypePaymentMethodCommand
 
     @Override
     public CustomerTypePaymentMethod getEntity(EditCustomerTypePaymentMethodResult result) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         CustomerTypePaymentMethod customerTypePaymentMethod = null;
         String customerTypeName = spec.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
-            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
             String paymentMethodName = spec.getPaymentMethodName();
             PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
 
@@ -112,7 +112,7 @@ public class EditCustomerTypePaymentMethodCommand
 
     @Override
     public void fillInResult(EditCustomerTypePaymentMethodResult result, CustomerTypePaymentMethod customerTypePaymentMethod) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
         result.setCustomerTypePaymentMethod(customerControl.getCustomerTypePaymentMethodTransfer(getUserVisit(), customerTypePaymentMethod));
     }
@@ -126,7 +126,7 @@ public class EditCustomerTypePaymentMethodCommand
 
     @Override
     public void doUpdate(CustomerTypePaymentMethod customerTypePaymentMethod) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         CustomerTypePaymentMethodValue customerTypePaymentMethodValue = customerControl.getCustomerTypePaymentMethodValue(customerTypePaymentMethod);
         
         customerTypePaymentMethodValue.setDefaultSelectionPriority(Integer.valueOf(edit.getDefaultSelectionPriority()));

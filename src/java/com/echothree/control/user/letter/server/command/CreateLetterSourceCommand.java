@@ -82,7 +82,7 @@ public class CreateLetterSourceCommand
     
     @Override
     protected BaseResult execute() {
-        LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
         String letterSourceName = form.getLetterSourceName();
         LetterSource letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
@@ -92,7 +92,7 @@ public class CreateLetterSourceCommand
             int parameterCount = (partyName != null? 1: 0) + (companyName != null? 1: 0);
             
             if(parameterCount == 1) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party companyParty = null;
                 
                 if(partyName != null) {
@@ -118,7 +118,7 @@ public class CreateLetterSourceCommand
                 }
                 
                 if(!hasExecutionErrors()) {
-                    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                    var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                     LetterSourceCommandUtil letterSourceCommandUtil = LetterSourceCommandUtil.getInstance();
                     PartyContactMechanism emailAddressPartyContactMechanism = letterSourceCommandUtil.getEmailAddressContactMechanism(this, form,
                             contactControl, companyParty);

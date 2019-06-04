@@ -78,13 +78,13 @@ public class EditVendorTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         EditVendorTypeDescriptionResult result = VendorResultFactory.getEditVendorTypeDescriptionResult();
         String vendorTypeName = spec.getVendorTypeName();
         VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
         
         if(vendorType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

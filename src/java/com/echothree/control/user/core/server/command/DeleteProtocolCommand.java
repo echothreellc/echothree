@@ -61,7 +61,7 @@ public class DeleteProtocolCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String protocolName = form.getProtocolName();
         Protocol protocol = coreControl.getProtocolByNameForUpdate(protocolName);
         

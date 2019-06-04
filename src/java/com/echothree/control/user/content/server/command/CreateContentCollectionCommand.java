@@ -74,12 +74,12 @@ public class CreateContentCollectionCommand
     
     @Override
     protected BaseResult execute() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
         if(contentCollection == null) {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             String defaultOfferName = form.getDefaultOfferName();
             String defaultUseName = form.getDefaultUseName();
             String defaultSourceName = form.getDefaultSourceName();

@@ -74,12 +74,12 @@ public class CreateContactListTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         String contactListTypeName = form.getContactListTypeName();
         ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
         if(contactListType == null) {
-            ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+            var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
             ChainKind chainKind = chainControl.getChainKindByName(ChainConstants.ChainKind_CONTACT_LIST);
             String confirmationRequestChainName = form.getConfirmationRequestChainName();
             Chain confirmationRequestChain = confirmationRequestChainName == null ? null

@@ -47,7 +47,7 @@ public class RemoveCacheEntryCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String cacheEntryKey = form.getCacheEntryKey();
         
         if(cacheEntryKey == null) {

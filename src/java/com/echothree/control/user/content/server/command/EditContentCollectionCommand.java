@@ -101,7 +101,7 @@ public class EditContentCollectionCommand
     
     @Override
     public ContentCollection getEntity(EditContentCollectionResult result) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         ContentCollection contentCollection = null;
         String contentCollectionName = spec.getContentCollectionName();
 
@@ -127,15 +127,15 @@ public class EditContentCollectionCommand
     
     @Override
     public void fillInResult(EditContentCollectionResult result, ContentCollection contentCollection) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         result.setContentCollection(contentControl.getContentCollectionTransfer(getUserVisit(), contentCollection));
     }
     
     @Override
     public void doLock(ContentCollectionEdit edit, ContentCollection contentCollection) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         ContentCollectionDescription contentCollectionDescription = contentControl.getContentCollectionDescription(contentCollection, getPreferredLanguage());
         ContentCollectionDetail contentCollectionDetail = contentCollection.getLastDetail();
         OfferUse offerUse = contentCollectionDetail.getDefaultOfferUse();
@@ -156,12 +156,12 @@ public class EditContentCollectionCommand
     
     @Override
     public void canUpdate(ContentCollection contentCollection) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCollectionName = edit.getContentCollectionName();
         ContentCollection duplicateContentCollection = contentControl.getContentCollectionByName(contentCollectionName);
 
         if(duplicateContentCollection == null || contentCollection.equals(duplicateContentCollection)) {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             String defaultOfferName = edit.getDefaultOfferName();
             String defaultUseName = edit.getDefaultUseName();
             String defaultSourceName = edit.getDefaultSourceName();
@@ -204,7 +204,7 @@ public class EditContentCollectionCommand
             }
 
             if(defaultOfferUse != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Offer defaultOffer = defaultOfferUse.getLastDetail().getOffer();
                 PartyDepartment defaultPartyDepartment = partyControl.getPartyDepartment(defaultOffer.getLastDetail().getDepartmentParty());
                 PartyDivision defaultPartyDivision = partyControl.getPartyDivision(defaultPartyDepartment.getDivisionParty());
@@ -226,7 +226,7 @@ public class EditContentCollectionCommand
     
     @Override
     public void doUpdate(ContentCollection contentCollection) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         PartyPK partyPK = getPartyPK();
         ContentCollectionDetailValue contentCollectionDetailValue = contentControl.getContentCollectionDetailValueForUpdate(contentCollection);
         ContentCollectionDescription contentCollectionDescription = contentControl.getContentCollectionDescriptionForUpdate(contentCollection, getPreferredLanguage());

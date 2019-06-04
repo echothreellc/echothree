@@ -62,7 +62,7 @@ public class GetTextTransformationsCommand
     
     @Override
     protected Collection<TextTransformation> getEntities() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         
         return coreControl.getTextTransformations();
     }
@@ -70,7 +70,7 @@ public class GetTextTransformationsCommand
     @Override
     protected BaseResult getTransfers(Collection<TextTransformation> entities) {
         GetTextTransformationsResult result = CoreResultFactory.getGetTextTransformationsResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         UserVisit userVisit = getUserVisit();
         
         result.setTextTransformations(coreControl.getTextTransformationTransfers(userVisit, entities));

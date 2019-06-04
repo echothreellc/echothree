@@ -87,13 +87,13 @@ public class EditDocumentDescriptionCommand
 
     @Override
     public DocumentDescription getEntity(EditDocumentDescriptionResult result) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentDescription documentDescription = null;
         String documentName = spec.getDocumentName();
         Document document = documentControl.getDocumentByName(documentName);
 
         if(document != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditDocumentDescriptionCommand
 
     @Override
     public void fillInResult(EditDocumentDescriptionResult result, DocumentDescription documentDescription) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
 
         result.setDocumentDescription(documentControl.getDocumentDescriptionTransfer(getUserVisit(), documentDescription));
     }
@@ -136,7 +136,7 @@ public class EditDocumentDescriptionCommand
 
     @Override
     public void doUpdate(DocumentDescription documentDescription) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentDescriptionValue documentDescriptionValue = documentControl.getDocumentDescriptionValue(documentDescription);
         documentDescriptionValue.setDescription(edit.getDescription());
 

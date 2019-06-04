@@ -75,7 +75,7 @@ public class EditCommandDescriptionCommand
 
     @Override
     public CommandDescription getEntity(EditCommandDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandDescription commandDescription = null;
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -85,7 +85,7 @@ public class EditCommandDescriptionCommand
             Command command = coreControl.getCommandByName(componentVendor, commandName);
 
             if(command != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -119,7 +119,7 @@ public class EditCommandDescriptionCommand
 
     @Override
     public void fillInResult(EditCommandDescriptionResult result, CommandDescription commandDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setCommandDescription(coreControl.getCommandDescriptionTransfer(getUserVisit(), commandDescription));
     }
@@ -131,7 +131,7 @@ public class EditCommandDescriptionCommand
 
     @Override
     public void doUpdate(CommandDescription commandDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandDescriptionValue commandDescriptionValue = coreControl.getCommandDescriptionValue(commandDescription);
         commandDescriptionValue.setDescription(edit.getDescription());
 

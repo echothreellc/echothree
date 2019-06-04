@@ -50,7 +50,7 @@ public class GetTaxDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         GetTaxDescriptionsResult result = TaxResultFactory.getGetTaxDescriptionsResult();
         String taxName = form.getTaxName();
         Tax tax = taxControl.getTaxByName(taxName);

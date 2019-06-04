@@ -49,7 +49,7 @@ public class WorkflowSecurityLogic {
     }
     
     public boolean checkWorkflowEntranceAvailable(final WorkflowEntrance workflowEntrance, final PartyPK partyPK) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         boolean checkPassed = false;
 
         if(workflowControl.countWorkflowEntrancePartyTypes(workflowEntrance) != 0) {
@@ -58,7 +58,7 @@ public class WorkflowSecurityLogic {
             WorkflowEntrancePartyType workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
 
             if(workflowEntrancePartyType != null) {
-                SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+                var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
                 List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles = workflowControl.getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType);
 
                 if(workflowEntranceSecurityRoles.isEmpty()) {
@@ -94,7 +94,7 @@ public class WorkflowSecurityLogic {
     }
 
     public boolean checkWorkflowDestinationAvailable(final WorkflowDestination workflowDestination, final PartyPK partyPK) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         boolean checkPassed = false;
 
         if(workflowControl.countWorkflowDestinationPartyTypes(workflowDestination) != 0) {
@@ -103,7 +103,7 @@ public class WorkflowSecurityLogic {
             WorkflowDestinationPartyType workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
 
             if(workflowDestinationPartyType != null) {
-                SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+                var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
                 List<WorkflowDestinationSecurityRole> workflowDestinationSecurityRoles = workflowControl.getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType);
 
                 if(workflowDestinationSecurityRoles.isEmpty()) {

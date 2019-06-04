@@ -72,7 +72,7 @@ public class EditFilterStepElementDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         EditFilterStepElementDescriptionResult result = FilterResultFactory.getEditFilterStepElementDescriptionResult();
         String filterKindName = spec.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
@@ -94,7 +94,7 @@ public class EditFilterStepElementDescriptionCommand
                         FilterStepElement filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement != null) {
-                            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                             String languageIsoName = spec.getLanguageIsoName();
                             Language language = partyControl.getLanguageByIsoName(languageIsoName);
                             

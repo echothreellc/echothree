@@ -107,7 +107,7 @@ public class CreateItemCommand
     @Override
     protected BaseResult execute() {
         CreateItemResult result = ItemResultFactory.getCreateItemResult();
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemName = form.getItemName();
         Item item = itemName == null ? null : itemControl.getItemByNameThenAlias(itemName);
         
@@ -136,7 +136,7 @@ public class CreateItemCommand
                                 addExecutionError(ExecutionErrors.NotPermittedItemAccountingCategory.name(), itemAccountingCategoryName);
                             }
                         } else {
-                            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                             
                             itemAccountingCategory = itemAccountingCategoryName == null? null: accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
                             
@@ -156,7 +156,7 @@ public class CreateItemCommand
                                     addExecutionError(ExecutionErrors.NotPermittedItemPurchasingCategory.name(), itemPurchasingCategoryName);
                                 }
                             } else {
-                                VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
                                 
                                 itemPurchasingCategory = itemPurchasingCategoryName == null? null: vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
                                 
@@ -168,7 +168,7 @@ public class CreateItemCommand
                             }
                             
                             if(!hasExecutionErrors()) {
-                                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                                 String companyName = form.getCompanyName();
                                 PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
                                 
@@ -209,7 +209,7 @@ public class CreateItemCommand
                                         }
 
                                         if(!hasExecutionErrors()) {
-                                            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
                                             String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                                             UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
 
@@ -222,7 +222,7 @@ public class CreateItemCommand
                                                     CancellationPolicy cancellationPolicy = null;
 
                                                     if(cancellationPolicyName != null) {
-                                                        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                                                        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                                                         CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
                                                         cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -233,7 +233,7 @@ public class CreateItemCommand
                                                         ReturnPolicy returnPolicy = null;
 
                                                         if(returnPolicyName != null) {
-                                                            ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                                            var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                                             ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
                                                             returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
@@ -244,15 +244,15 @@ public class CreateItemCommand
                                                             Boolean inventorySerialized = rawInventorySerialized == null? null: Boolean.valueOf(rawInventorySerialized);
 
                                                             if(isKitOrStyle ? inventorySerialized == null : inventorySerialized != null) {
-                                                                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                                                 String itemStatusChoice = form.getItemStatus();
                                                                 WorkflowEntrance itemStatus = workflowControl.getWorkflowEntranceUsingNames(this, ItemStatusConstants.Workflow_ITEM_STATUS,
                                                                         itemStatusChoice);
                                                                 PartyPK createdBy = getPartyPK();
 
                                                                 if(!hasExecutionErrors() && WorkflowSecurityLogic.getInstance().checkAddEntityToWorkflow(this, itemStatus, createdBy)) {
-                                                                    CoreControl coreControl = getCoreControl();
-                                                                    CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                                                                    var coreControl = getCoreControl();
+                                                                    var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
                                                                     Boolean shippingChargeExempt = Boolean.valueOf(form.getShippingChargeExempt());
                                                                     String strShippingStartTime = form.getShippingStartTime();
                                                                     Long shippingStartTime = strShippingStartTime == null ? session.START_TIME_LONG : Long.valueOf(strShippingStartTime);

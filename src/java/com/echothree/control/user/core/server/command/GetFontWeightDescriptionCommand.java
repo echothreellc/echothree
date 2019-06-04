@@ -67,13 +67,13 @@ public class GetFontWeightDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetFontWeightDescriptionResult result = CoreResultFactory.getGetFontWeightDescriptionResult();
         String fontWeightName = form.getFontWeightName();
         FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
 
         if(fontWeight != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

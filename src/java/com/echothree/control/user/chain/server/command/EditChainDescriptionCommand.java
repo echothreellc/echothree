@@ -91,7 +91,7 @@ public class EditChainDescriptionCommand
 
     @Override
     public ChainDescription getEntity(EditChainDescriptionResult result) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainDescription chainDescription = null;
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -105,7 +105,7 @@ public class EditChainDescriptionCommand
                 Chain chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -142,7 +142,7 @@ public class EditChainDescriptionCommand
 
     @Override
     public void fillInResult(EditChainDescriptionResult result, ChainDescription chainDescription) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
         result.setChainDescription(chainControl.getChainDescriptionTransfer(getUserVisit(), chainDescription));
     }
@@ -154,7 +154,7 @@ public class EditChainDescriptionCommand
 
     @Override
     public void doUpdate(ChainDescription chainDescription) {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         ChainDescriptionValue chainDescriptionValue = chainControl.getChainDescriptionValue(chainDescription);
 
         chainDescriptionValue.setDescription(edit.getDescription());

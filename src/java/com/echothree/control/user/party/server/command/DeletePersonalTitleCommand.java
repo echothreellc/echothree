@@ -49,7 +49,7 @@ public class DeletePersonalTitleCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String personalTitleId = form.getPersonalTitleId();
         PersonalTitle personalTitle = partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_WRITE);
         

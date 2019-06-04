@@ -82,7 +82,7 @@ public class EditDepartmentCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         EditDepartmentResult result = PartyResultFactory.getEditDepartmentResult();
         String companyName = spec.getCompanyName();
         PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
@@ -152,7 +152,7 @@ public class EditDepartmentCommand
                                         if(preferredCurrencyIsoName == null)
                                             preferredCurrency = null;
                                         else {
-                                            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                             preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                         }
                                         

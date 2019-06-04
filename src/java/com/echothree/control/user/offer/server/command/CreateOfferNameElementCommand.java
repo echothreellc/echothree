@@ -67,7 +67,7 @@ public class CreateOfferNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String offerNameElementName = form.getOfferNameElementName();
         OfferNameElement offerNameElement = offerControl.getOfferNameElementByName(offerNameElementName);
         

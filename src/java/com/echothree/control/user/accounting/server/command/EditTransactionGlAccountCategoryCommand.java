@@ -89,7 +89,7 @@ public class EditTransactionGlAccountCategoryCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         EditTransactionGlAccountCategoryResult result = AccountingResultFactory.getEditTransactionGlAccountCategoryResult();
         String transactionTypeName = spec.getTransactionTypeName();
         TransactionType transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);

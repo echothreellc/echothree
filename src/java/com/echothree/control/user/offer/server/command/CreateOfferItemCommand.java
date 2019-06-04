@@ -72,16 +72,16 @@ public class CreateOfferItemCommand
     @Override
     protected BaseResult execute() {
         String offerName = form.getOfferName();
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
             Item item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 PartyDepartment partyDepartment = partyControl.getPartyDepartment(offer.getLastDetail().getDepartmentParty());
                 PartyDivision partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
                 PartyCompany partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());

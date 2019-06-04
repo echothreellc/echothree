@@ -69,7 +69,7 @@ public class GetApplicationEditorsCommand
         Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             UserVisit userVisit = getUserVisit();
             
             result.setApplication(coreControl.getApplicationTransfer(userVisit, application));

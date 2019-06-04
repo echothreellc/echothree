@@ -131,8 +131,8 @@ public class EditCustomerTypeCommand
     
     @Override
     protected BaseResult execute() {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         EditCustomerTypeResult result = CustomerResultFactory.getEditCustomerTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -205,7 +205,7 @@ public class EditCustomerTypeCommand
                     Sequence customerSequence = null;
                     
                     if(customerSequenceName != null) {
-                        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_CUSTOMER);
                         
                         if(sequenceType != null) {
@@ -258,7 +258,7 @@ public class EditCustomerTypeCommand
                             Term defaultTerm = null;
                             
                             if(defaultTermName != null) {
-                                TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+                                var termControl = (TermControl)Session.getModelController(TermControl.class);
                                 
                                 defaultTerm = termControl.getTermByName(defaultTermName);
                             }
@@ -268,7 +268,7 @@ public class EditCustomerTypeCommand
                                 CancellationPolicy defaultCancellationPolicy = null;
                                 
                                 if(defaultCancellationPolicyName != null) {
-                                    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                                    var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                                     CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
                                     
                                     defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, defaultCancellationPolicyName);
@@ -279,14 +279,14 @@ public class EditCustomerTypeCommand
                                     ReturnPolicy defaultReturnPolicy = null;
                                     
                                     if(defaultReturnPolicyName != null) {
-                                        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
                                         
                                         defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                                     }
                                     
                                     if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                                        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                         String defaultCustomerStatusChoice = edit.getDefaultCustomerStatusChoice();
                                         WorkflowEntrance defaultCustomerStatus = null;
                                         
@@ -305,7 +305,7 @@ public class EditCustomerTypeCommand
                                             }
                                             
                                             if(defaultCustomerCreditStatusChoice == null || defaultCustomerCreditStatus != null) {
-                                                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                                 String defaultArGlAccountName = edit.getDefaultArGlAccountName();
                                                 GlAccount defaultArGlAccount = defaultArGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultArGlAccountName);
 

@@ -60,7 +60,7 @@ public class PartyTrainingClassLogic
     }
     
     public PartyTrainingClass getPartyTrainingClassByName(final ExecutionErrorAccumulator eea, final String partyTrainingClassName) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         PartyTrainingClass partyTrainingClass = trainingControl.getPartyTrainingClassByName(partyTrainingClassName);
 
         if(partyTrainingClass == null) {
@@ -72,7 +72,7 @@ public class PartyTrainingClassLogic
     
     private void insertPartyTrainingClassIntoWorkflow(final EntityInstance entityInstance, final Long completedTime, final Long validUntilTime,
             final BasePK partyPK) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         String workflowEntranceName = completedTime == null ? PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_ASSIGNED : PartyTrainingClassStatusConstants.WorkflowEntrance_NEW_PASSED;
         
         workflowControl.addEntityToWorkflowUsingNames(null, PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, workflowEntranceName,
@@ -210,8 +210,8 @@ public class PartyTrainingClassLogic
 
     public PartyTrainingClass createPartyTrainingClass(final Session session, final PreparedPartyTrainingClass preparedPartyTrainingClass,
             final BasePK createdBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         Party party = preparedPartyTrainingClass.getParty();
         TrainingClass trainingClass = preparedPartyTrainingClass.getTrainingClass();
         Long completedTime = preparedPartyTrainingClass.getCompletedTime();
@@ -259,9 +259,9 @@ public class PartyTrainingClassLogic
         boolean invalidPartyTrainingClass = false;
 
         if(modifiedBy.equals(partyTrainingClassDetail.getPartyPK())) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyTrainingClass.getPrimaryKey());
-            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
             WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS,
                     entityInstance);
             String workflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
@@ -283,7 +283,7 @@ public class PartyTrainingClassLogic
     }
 
     public void updatePartyTrainingClassFromValue(final PartyTrainingClassDetailValue partyTrainingClassDetailValue, final BasePK updatedBy) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         
         // TODO: adjust Status if necesssary
         // TODO: delete PartyTrainingClassStatus if necessary
@@ -292,7 +292,7 @@ public class PartyTrainingClassLogic
     }
     
     public void deletePartyTrainingClass(PartyTrainingClass partyTrainingClass, final BasePK deleteBy) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         
         trainingControl.deletePartyTrainingClass(partyTrainingClass, deleteBy);
     }

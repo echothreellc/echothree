@@ -72,7 +72,7 @@ public class GetDepartmentCommand
                 PartyDepartment partyDepartment = DepartmentLogic.getInstance().getPartyDepartmentByName(this, partyDivision == null ? null : partyDivision.getParty(), departmentName, partyName, true);
 
                 if(!hasExecutionErrors()) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
                     result.setDepartment(partyControl.getDepartmentTransfer(getUserVisit(), partyDepartment));
 

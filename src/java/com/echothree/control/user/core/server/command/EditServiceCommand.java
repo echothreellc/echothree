@@ -92,7 +92,7 @@ public class EditServiceCommand
 
     @Override
     public Service getEntity(EditServiceResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         Service service = null;
         String serviceName = spec.getServiceName();
 
@@ -118,14 +118,14 @@ public class EditServiceCommand
 
     @Override
     public void fillInResult(EditServiceResult result, Service service) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setService(coreControl.getServiceTransfer(getUserVisit(), service));
     }
 
     @Override
     public void doLock(ServiceEdit edit, Service service) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ServiceDescription serviceDescription = coreControl.getServiceDescription(service, getPreferredLanguage());
         ServiceDetail serviceDetail = service.getLastDetail();
 
@@ -144,7 +144,7 @@ public class EditServiceCommand
 
     @Override
     public void canUpdate(Service service) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String serviceName = edit.getServiceName();
         Service duplicateService = coreControl.getServiceByName(serviceName);
 
@@ -163,7 +163,7 @@ public class EditServiceCommand
 
     @Override
     public void doUpdate(Service service) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         ServiceDetailValue serviceDetailValue = coreControl.getServiceDetailValueForUpdate(service);
         ServiceDescription serviceDescription = coreControl.getServiceDescriptionForUpdate(service, getPreferredLanguage());

@@ -82,7 +82,7 @@ public class SearchVendorsCommand
     @Override
     protected BaseResult execute() {
         SearchVendorsResult result = SearchResultFactory.getSearchVendorsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_VENDOR);
         
         if(searchKind != null) {

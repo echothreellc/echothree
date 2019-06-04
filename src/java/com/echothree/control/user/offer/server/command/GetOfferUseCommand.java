@@ -67,7 +67,7 @@ public class GetOfferUseCommand
     
     @Override
     protected OfferUse getEntity() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
         OfferUse offerUse = null;
@@ -95,7 +95,7 @@ public class GetOfferUseCommand
     
     @Override
     protected BaseResult getTransfer(OfferUse offerUse) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         GetOfferUseResult result = OfferResultFactory.getGetOfferUseResult();
 
         if(offerUse != null) {

@@ -61,7 +61,7 @@ public class GetTextDecorationChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetTextDecorationChoicesResult result = CoreResultFactory.getGetTextDecorationChoicesResult();
         String defaultTextDecorationChoice = form.getDefaultTextDecorationChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

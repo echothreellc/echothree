@@ -62,14 +62,14 @@ public class GetContentWebAddressesCommand
     
     @Override
     protected Collection<ContentWebAddress> getEntities() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         return contentControl.getContentWebAddresses();
     }
     
     @Override
     protected BaseResult getTransfers(Collection<ContentWebAddress> entities) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         GetContentWebAddressesResult result = ContentResultFactory.getGetContentWebAddressesResult();
         
         if(entities != null) {

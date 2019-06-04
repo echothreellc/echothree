@@ -249,7 +249,7 @@ public class LeaveSearchEvaluator
                 }
             }
         } else {
-            EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
             Leave leave = employeeControl.getLeaveByName(leaveName);
             
             if(leave != null) {

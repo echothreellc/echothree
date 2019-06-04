@@ -59,7 +59,7 @@ public class GetUnitOfMeasureTypesCommand
         unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(this, form.getUnitOfMeasureKindName());
 
         if(!hasExecutionErrors()) {
-            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+            var uomControl = (UomControl)Session.getModelController(UomControl.class);
             
             entities = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
         }
@@ -70,7 +70,7 @@ public class GetUnitOfMeasureTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<UnitOfMeasureType> entities) {
         GetUnitOfMeasureTypesResult result = UomResultFactory.getGetUnitOfMeasureTypesResult();
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         
         result.setUnitOfMeasureKind(uomControl.getUnitOfMeasureKindTransfer(getUserVisit(), unitOfMeasureKind));
         result.setUnitOfMeasureTypes(uomControl.getUnitOfMeasureTypeTransfers(getUserVisit(), entities));

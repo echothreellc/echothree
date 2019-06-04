@@ -78,7 +78,7 @@ public class EditEntityAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditEntityAppearanceResult result = CoreResultFactory.getEditEntityAppearanceResult();
         String entityRef = spec.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);

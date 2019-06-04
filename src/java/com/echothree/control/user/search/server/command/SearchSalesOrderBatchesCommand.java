@@ -91,7 +91,7 @@ public class SearchSalesOrderBatchesCommand
                     PaymentMethod paymentMethod = paymentMethodName == null ? null : PaymentMethodLogic.getInstance().getPaymentMethodByName(this, paymentMethodName);
 
                     if(!hasExecutionErrors()) {
-                        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                         String salesOrderBatchStatusChoice = form.getSalesOrderBatchStatusChoice();
                         WorkflowStep salesOrderBatchStatusWorkflowStep = salesOrderBatchStatusChoice == null ? null :
                             workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS), salesOrderBatchStatusChoice);

@@ -64,7 +64,7 @@ public class GetScaleCommand
     
     @Override
     protected BaseResult execute() {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         GetScaleResult result = ScaleResultFactory.getGetScaleResult();
         String scaleName = form.getScaleName();
         Scale scale = scaleControl.getScaleByName(scaleName);

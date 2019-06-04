@@ -90,7 +90,7 @@ public class EditDocumentTypeUsageTypeCommand
 
     @Override
     public DocumentTypeUsageType getEntity(EditDocumentTypeUsageTypeResult result) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentTypeUsageType documentTypeUsageType = null;
         String documentTypeUsageTypeName = spec.getDocumentTypeUsageTypeName();
 
@@ -116,14 +116,14 @@ public class EditDocumentTypeUsageTypeCommand
 
     @Override
     public void fillInResult(EditDocumentTypeUsageTypeResult result, DocumentTypeUsageType documentTypeUsageType) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
 
         result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(getUserVisit(), documentTypeUsageType));
     }
 
     @Override
     public void doLock(DocumentTypeUsageTypeEdit edit, DocumentTypeUsageType documentTypeUsageType) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescription(documentTypeUsageType, getPreferredLanguage());
         DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditDocumentTypeUsageTypeCommand
 
     @Override
     public void canUpdate(DocumentTypeUsageType documentTypeUsageType) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         String documentTypeUsageTypeName = edit.getDocumentTypeUsageTypeName();
         DocumentTypeUsageType duplicateDocumentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
@@ -149,7 +149,7 @@ public class EditDocumentTypeUsageTypeCommand
 
     @Override
     public void doUpdate(DocumentTypeUsageType documentTypeUsageType) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         PartyPK partyPK = getPartyPK();
         DocumentTypeUsageTypeDetailValue documentTypeUsageTypeDetailValue = documentControl.getDocumentTypeUsageTypeDetailValueForUpdate(documentTypeUsageType);
         DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription = documentControl.getDocumentTypeUsageTypeDescriptionForUpdate(documentTypeUsageType, getPreferredLanguage());

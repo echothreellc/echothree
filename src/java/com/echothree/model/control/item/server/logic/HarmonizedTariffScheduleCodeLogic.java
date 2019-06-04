@@ -42,7 +42,7 @@ public class HarmonizedTariffScheduleCodeLogic
     }
 
     public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByName(final ExecutionErrorAccumulator eea, final String harmonizedTariffScheduleCodeUnitName) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnit = itemControl.getHarmonizedTariffScheduleCodeUnitByName(harmonizedTariffScheduleCodeUnitName);
 
         if(harmonizedTariffScheduleCodeUnit == null) {
@@ -53,7 +53,7 @@ public class HarmonizedTariffScheduleCodeLogic
     }
     
     public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByName(final ExecutionErrorAccumulator eea, final String harmonizedTariffScheduleCodeUseTypeName) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
 
         if(harmonizedTariffScheduleCodeUseType == null) {

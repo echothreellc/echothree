@@ -77,7 +77,7 @@ public class CreateVendorItemCostCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
         
@@ -87,7 +87,7 @@ public class CreateVendorItemCostCommand
             VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
             
             if(vendorItem != null) {
-                InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                 String inventoryConditionName = form.getInventoryConditionName();
                 InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
@@ -97,7 +97,7 @@ public class CreateVendorItemCostCommand
                             inventoryCondition);
                     
                     if(inventoryConditionUse != null) {
-                        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
                         UnitOfMeasureKind unitOfMeasureKind = vendorItem.getLastDetail().getItem().getLastDetail().getUnitOfMeasureKind();
                         String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                         UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);

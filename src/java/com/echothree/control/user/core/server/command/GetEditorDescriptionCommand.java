@@ -67,13 +67,13 @@ public class GetEditorDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEditorDescriptionResult result = CoreResultFactory.getGetEditorDescriptionResult();
         String editorName = form.getEditorName();
         Editor editor = coreControl.getEditorByName(editorName);
 
         if(editor != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

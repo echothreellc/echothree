@@ -79,7 +79,7 @@ public class SearchSalesOrdersCommand
             SearchType searchType = searchLogic.getSearchTypeByName(this, searchKind, searchTypeName);
 
             if(!hasExecutionErrors()) {
-                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 String salesOrderStatusChoice = form.getSalesOrderStatusChoice();
                 WorkflowStep salesOrderStatusWorkflowStep = salesOrderStatusChoice == null ? null :
                     workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS), salesOrderStatusChoice);

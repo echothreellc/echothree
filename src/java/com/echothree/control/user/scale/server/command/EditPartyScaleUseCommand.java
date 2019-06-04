@@ -93,7 +93,7 @@ public class EditPartyScaleUseCommand
         Party party = null;
 
         if(partyName != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
             party = partyControl.getPartyByName(partyName);
 
@@ -105,7 +105,7 @@ public class EditPartyScaleUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+            var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
             String scaleUseTypeName = spec.getScaleUseTypeName();
             ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
 
@@ -134,7 +134,7 @@ public class EditPartyScaleUseCommand
 
     @Override
     public void fillInResult(EditPartyScaleUseResult result, PartyScaleUse partyScaleUse) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
 
         result.setPartyScaleUse(scaleControl.getPartyScaleUseTransfer(getUserVisit(), partyScaleUse));
     }
@@ -148,7 +148,7 @@ public class EditPartyScaleUseCommand
 
     @Override
     public void canUpdate(PartyScaleUse partyScaleUse) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         String scaleName = edit.getScaleName();
 
         scale = scaleControl.getScaleByName(scaleName);
@@ -160,7 +160,7 @@ public class EditPartyScaleUseCommand
 
     @Override
     public void doUpdate(PartyScaleUse partyScaleUse) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         PartyScaleUseValue partyScaleUseValue = scaleControl.getPartyScaleUseValue(partyScaleUse);
 
         partyScaleUseValue.setScalePK(scale.getPrimaryKey());

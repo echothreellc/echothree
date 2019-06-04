@@ -90,7 +90,7 @@ public class EditTransactionEntityRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         EditTransactionEntityRoleTypeResult result = AccountingResultFactory.getEditTransactionEntityRoleTypeResult();
         String transactionTypeName = spec.getTransactionTypeName();
         TransactionType transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
@@ -141,7 +141,7 @@ public class EditTransactionEntityRoleTypeCommand
                     TransactionEntityRoleType duplicateTransactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
 
                     if(duplicateTransactionEntityRoleType == null || transactionEntityRoleType.equals(duplicateTransactionEntityRoleType)) {
-                        CoreControl coreControl = getCoreControl();
+                        var coreControl = getCoreControl();
                         String componentVendorName = edit.getComponentVendorName();
                         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 

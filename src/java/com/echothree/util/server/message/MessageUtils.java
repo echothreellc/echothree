@@ -97,7 +97,7 @@ public class MessageUtils {
     
     public void fillInMessages(Language language, String commandMessageTypeName, Messages messages) {
         if(messages != null) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
             
             if(commandMessageType != null) {
@@ -112,13 +112,13 @@ public class MessageUtils {
 
     // The language used in the Exceptions will always be the default Language (typically English).
     public String getExceptionMessage(String commandMessageTypeName, Message message) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         CommandMessageType commandMessageType = coreControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType == null) {
             throw new UnknownCommandMessageTypeNameException(new Message(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName));
         } else {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             Language language = partyControl.getDefaultLanguage();
             
             fillInMessage(coreControl, language, commandMessageType, message);

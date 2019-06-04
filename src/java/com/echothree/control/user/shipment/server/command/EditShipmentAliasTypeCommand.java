@@ -95,7 +95,7 @@ public class EditShipmentAliasTypeCommand
 
     @Override
     public ShipmentAliasType getEntity(EditShipmentAliasTypeResult result) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         ShipmentAliasType shipmentAliasType = null;
         String shipmentTypeName = spec.getShipmentTypeName();
 
@@ -129,14 +129,14 @@ public class EditShipmentAliasTypeCommand
 
     @Override
     public void fillInResult(EditShipmentAliasTypeResult result, ShipmentAliasType shipmentAliasType) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
 
         result.setShipmentAliasType(shipmentControl.getShipmentAliasTypeTransfer(getUserVisit(), shipmentAliasType));
     }
 
     @Override
     public void doLock(ShipmentAliasTypeEdit edit, ShipmentAliasType shipmentAliasType) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         ShipmentAliasTypeDescription shipmentAliasTypeDescription = shipmentControl.getShipmentAliasTypeDescription(shipmentAliasType, getPreferredLanguage());
         ShipmentAliasTypeDetail shipmentAliasTypeDetail = shipmentAliasType.getLastDetail();
 
@@ -152,7 +152,7 @@ public class EditShipmentAliasTypeCommand
 
     @Override
     public void canUpdate(ShipmentAliasType shipmentAliasType) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         String shipmentAliasTypeName = edit.getShipmentAliasTypeName();
         ShipmentAliasType duplicateShipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
@@ -163,7 +163,7 @@ public class EditShipmentAliasTypeCommand
 
     @Override
     public void doUpdate(ShipmentAliasType shipmentAliasType) {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         PartyPK partyPK = getPartyPK();
         ShipmentAliasTypeDetailValue shipmentAliasTypeDetailValue = shipmentControl.getShipmentAliasTypeDetailValueForUpdate(shipmentAliasType);
         ShipmentAliasTypeDescription shipmentAliasTypeDescription = shipmentControl.getShipmentAliasTypeDescriptionForUpdate(shipmentAliasType, getPreferredLanguage());

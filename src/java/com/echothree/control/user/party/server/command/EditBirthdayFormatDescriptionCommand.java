@@ -86,7 +86,7 @@ public class EditBirthdayFormatDescriptionCommand
 
     @Override
     public BirthdayFormatDescription getEntity(EditBirthdayFormatDescriptionResult result) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         BirthdayFormatDescription birthdayFormatDescription = null;
         String birthdayFormatName = spec.getBirthdayFormatName();
         BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
@@ -122,7 +122,7 @@ public class EditBirthdayFormatDescriptionCommand
 
     @Override
     public void fillInResult(EditBirthdayFormatDescriptionResult result, BirthdayFormatDescription birthdayFormatDescription) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
         result.setBirthdayFormatDescription(partyControl.getBirthdayFormatDescriptionTransfer(getUserVisit(), birthdayFormatDescription));
     }
@@ -134,7 +134,7 @@ public class EditBirthdayFormatDescriptionCommand
 
     @Override
     public void doUpdate(BirthdayFormatDescription birthdayFormatDescription) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         BirthdayFormatDescriptionValue birthdayFormatDescriptionValue = partyControl.getBirthdayFormatDescriptionValue(birthdayFormatDescription);
         birthdayFormatDescriptionValue.setDescription(edit.getDescription());
 

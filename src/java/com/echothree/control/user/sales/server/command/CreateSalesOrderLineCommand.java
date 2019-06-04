@@ -113,17 +113,17 @@ public class CreateSalesOrderLineCommand
         OrderLine orderLine = null;
         
         if(!hasExecutionErrors()) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
             Item item = itemControl.getItemByNameThenAlias(itemName);
             
             if(item != null) {
-                InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+                var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
                 String inventoryConditionName = form.getInventoryConditionName();
                 InventoryCondition inventoryCondition = inventoryConditionName == null ? null : inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryConditionName == null || inventoryCondition != null) {
-                    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
                     ItemDetail itemDetail = item.getLastDetail();
                     UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
                     String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();

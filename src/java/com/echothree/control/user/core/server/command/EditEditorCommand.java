@@ -96,7 +96,7 @@ public class EditEditorCommand
 
     @Override
     public Editor getEntity(EditEditorResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         Editor editor;
         String editorName = spec.getEditorName();
 
@@ -120,14 +120,14 @@ public class EditEditorCommand
 
     @Override
     public void fillInResult(EditEditorResult result, Editor editor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEditor(coreControl.getEditorTransfer(getUserVisit(), editor));
     }
 
     @Override
     public void doLock(EditorEdit edit, Editor editor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EditorDescription editorDescription = coreControl.getEditorDescription(editor, getPreferredLanguage());
         EditorDetail editorDetail = editor.getLastDetail();
         Integer minimumHeight = editorDetail.getMinimumHeight();
@@ -155,7 +155,7 @@ public class EditEditorCommand
 
     @Override
     public void canUpdate(Editor editor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String editorName = edit.getEditorName();
         Editor duplicateEditor = coreControl.getEditorByName(editorName);
 
@@ -166,7 +166,7 @@ public class EditEditorCommand
 
     @Override
     public void doUpdate(Editor editor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         EditorDetailValue editorDetailValue = coreControl.getEditorDetailValueForUpdate(editor);
         EditorDescription editorDescription = coreControl.getEditorDescriptionForUpdate(editor, getPreferredLanguage());

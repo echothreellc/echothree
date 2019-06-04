@@ -61,7 +61,7 @@ public class SetDefaultServiceCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String serviceName = form.getServiceName();
         ServiceDetailValue serviceDetailValue = coreControl.getServiceDetailValueByNameForUpdate(serviceName);
         

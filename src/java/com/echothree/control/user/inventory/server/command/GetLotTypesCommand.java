@@ -60,7 +60,7 @@ public class GetLotTypesCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetLotTypesResult result = InventoryResultFactory.getGetLotTypesResult();
         
         result.setLotTypes(inventoryControl.getLotTypeTransfers(getUserVisit()));

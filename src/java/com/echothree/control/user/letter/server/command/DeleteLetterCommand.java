@@ -67,7 +67,7 @@ public class DeleteLetterCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -76,7 +76,7 @@ public class DeleteLetterCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
                 String letterName = form.getLetterName();
                 Letter letter = letterControl.getLetterByNameForUpdate(chainType, letterName);
                 

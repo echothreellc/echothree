@@ -91,7 +91,7 @@ public class EditApplicationEditorUseDescriptionCommand
     @Override
     public ApplicationEditorUseDescription getEntity(EditApplicationEditorUseDescriptionResult result) {
         ApplicationEditorUseDescription applicationEditorUseDescription = null;
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String applicationName = spec.getApplicationName();
         Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
 
@@ -100,7 +100,7 @@ public class EditApplicationEditorUseDescriptionCommand
             ApplicationEditorUse applicationEditorUse = coreControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,7 +132,7 @@ public class EditApplicationEditorUseDescriptionCommand
 
     @Override
     public void fillInResult(EditApplicationEditorUseDescriptionResult result, ApplicationEditorUseDescription applicationEditorUseDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setApplicationEditorUseDescription(coreControl.getApplicationEditorUseDescriptionTransfer(getUserVisit(), applicationEditorUseDescription));
     }
@@ -144,7 +144,7 @@ public class EditApplicationEditorUseDescriptionCommand
 
     @Override
     public void doUpdate(ApplicationEditorUseDescription applicationEditorUseDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ApplicationEditorUseDescriptionValue applicationEditorUseDescriptionValue = coreControl.getApplicationEditorUseDescriptionValue(applicationEditorUseDescription);
         applicationEditorUseDescriptionValue.setDescription(edit.getDescription());
 

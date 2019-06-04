@@ -68,13 +68,13 @@ public class GetPartyDocumentChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetPartyDocumentChoicesResult result = DocumentResultFactory.getGetPartyDocumentChoicesResult();
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+            var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
             String documentTypeName = form.getDocumentTypeName();
             DocumentType documentType = documentControl.getDocumentTypeByName(documentTypeName);
 

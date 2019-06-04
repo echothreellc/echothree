@@ -90,7 +90,7 @@ public class EditSearchDefaultOperatorCommand
 
     @Override
     public SearchDefaultOperator getEntity(EditSearchDefaultOperatorResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchDefaultOperator searchDefaultOperator;
         String searchDefaultOperatorName = spec.getSearchDefaultOperatorName();
 
@@ -114,14 +114,14 @@ public class EditSearchDefaultOperatorCommand
 
     @Override
     public void fillInResult(EditSearchDefaultOperatorResult result, SearchDefaultOperator searchDefaultOperator) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchDefaultOperator(searchControl.getSearchDefaultOperatorTransfer(getUserVisit(), searchDefaultOperator));
     }
 
     @Override
     public void doLock(SearchDefaultOperatorEdit edit, SearchDefaultOperator searchDefaultOperator) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchDefaultOperatorDescription searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescription(searchDefaultOperator, getPreferredLanguage());
         SearchDefaultOperatorDetail searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditSearchDefaultOperatorCommand
 
     @Override
     public void canUpdate(SearchDefaultOperator searchDefaultOperator) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchDefaultOperatorName = edit.getSearchDefaultOperatorName();
         SearchDefaultOperator duplicateSearchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
 
@@ -147,7 +147,7 @@ public class EditSearchDefaultOperatorCommand
 
     @Override
     public void doUpdate(SearchDefaultOperator searchDefaultOperator) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         PartyPK partyPK = getPartyPK();
         SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = searchControl.getSearchDefaultOperatorDetailValueForUpdate(searchDefaultOperator);
         SearchDefaultOperatorDescription searchDefaultOperatorDescription = searchControl.getSearchDefaultOperatorDescriptionForUpdate(searchDefaultOperator, getPreferredLanguage());

@@ -69,8 +69,8 @@ public class ContentWebAddressObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentWebAddressDescription(contentWebAddress, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

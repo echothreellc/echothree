@@ -65,7 +65,7 @@ public class GetLotAliasTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetLotAliasTypeChoicesResult result = InventoryResultFactory.getGetLotAliasTypeChoicesResult();
         String lotTypeName = form.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);

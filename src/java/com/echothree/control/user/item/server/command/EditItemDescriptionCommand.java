@@ -117,7 +117,7 @@ public class EditItemDescriptionCommand
 
     @Override
     public ItemDescription getEntity(EditItemDescriptionResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemDescription itemDescription = null;
         String itemDescriptionTypeName = spec.getItemDescriptionTypeName();
 
@@ -129,7 +129,7 @@ public class EditItemDescriptionCommand
             item = itemControl.getItemByName(itemName);
 
             if(item != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -163,7 +163,7 @@ public class EditItemDescriptionCommand
 
     @Override
     public void fillInResult(EditItemDescriptionResult result, ItemDescription itemDescription) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemDescription(itemControl.getItemDescriptionTransfer(getUserVisit(), itemDescription));
     }
@@ -172,7 +172,7 @@ public class EditItemDescriptionCommand
 
     @Override
     public void doLock(ItemDescriptionEdit edit, ItemDescription itemDescription) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         
         mimeType = itemDescription.getLastDetail().getMimeType();
 
@@ -217,7 +217,7 @@ public class EditItemDescriptionCommand
                 addExecutionError(ExecutionErrors.InvalidMimeType.name());
             }
         } else {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
 
             mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
@@ -244,7 +244,7 @@ public class EditItemDescriptionCommand
                                     String itemImageTypeName = edit.getItemImageTypeName();
 
                                     if(itemImageTypeName != null) {
-                                        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                                        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
                                         itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
 
@@ -314,7 +314,7 @@ public class EditItemDescriptionCommand
 
     @Override
     public void doUpdate(ItemDescription itemDescription) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         PartyPK partyPK = getPartyPK();
 
         if(mimeType == null) {

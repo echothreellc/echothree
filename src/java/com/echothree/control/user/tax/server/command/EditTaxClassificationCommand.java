@@ -101,14 +101,14 @@ public class EditTaxClassificationCommand
 
     @Override
     public TaxClassification getEntity(EditTaxClassificationResult result) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         TaxClassification taxClassification = null;
         String countryName = spec.getCountryName();
 
         countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
-            TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+            var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
             String taxClassificationName = spec.getTaxClassificationName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
@@ -134,7 +134,7 @@ public class EditTaxClassificationCommand
 
     @Override
     public void fillInResult(EditTaxClassificationResult result, TaxClassification taxClassification) {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
 
         result.setTaxClassification(taxControl.getTaxClassificationTransfer(getUserVisit(), taxClassification));
     }
@@ -143,7 +143,7 @@ public class EditTaxClassificationCommand
     
     @Override
     public void doLock(TaxClassificationEdit edit, TaxClassification taxClassification) {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         TaxClassificationTranslation taxClassificationTranslation = taxControl.getTaxClassificationTranslation(taxClassification, getPreferredLanguage());
         TaxClassificationDetail taxClassificationDetail = taxClassification.getLastDetail();
 
@@ -162,7 +162,7 @@ public class EditTaxClassificationCommand
     
     @Override
     public void canUpdate(TaxClassification taxClassification) {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         GeoCodeDetail geoCodeDetail = countryGeoCode.getLastDetail();
         String taxClassificationName = edit.getTaxClassificationName();
         TaxClassification duplicateTaxClassification = taxControl.getTaxClassificationByName(countryGeoCode, taxClassificationName);
@@ -181,7 +181,7 @@ public class EditTaxClassificationCommand
 
     @Override
     public void doUpdate(TaxClassification taxClassification) {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         PartyPK partyPK = getPartyPK();
         TaxClassificationDetailValue taxClassificationDetailValue = taxControl.getTaxClassificationDetailValueForUpdate(taxClassification);
         TaxClassificationTranslation taxClassificationTranslation = taxControl.getTaxClassificationTranslationForUpdate(taxClassification, getPreferredLanguage());

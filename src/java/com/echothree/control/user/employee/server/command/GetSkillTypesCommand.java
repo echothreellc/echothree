@@ -47,7 +47,7 @@ public class GetSkillTypesCommand
     @Override
     protected BaseResult execute() {
         GetSkillTypesResult result = EmployeeResultFactory.getGetSkillTypesResult();
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         
         result.setSkillTypes(employeeControl.getSkillTypeTransfers(getUserVisit()));
         

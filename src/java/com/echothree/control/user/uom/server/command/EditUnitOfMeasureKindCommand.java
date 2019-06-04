@@ -68,7 +68,7 @@ public class EditUnitOfMeasureKindCommand
     
     @Override
     protected BaseResult execute() {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         EditUnitOfMeasureKindResult result = UomResultFactory.getEditUnitOfMeasureKindResult();
         
         if(editMode.equals(EditMode.LOCK)) {

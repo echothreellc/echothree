@@ -70,7 +70,7 @@ public class GetOfferItemsCommand
     
     @Override
     protected Collection<OfferItem> getEntities() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         Collection<OfferItem> offerItems = null;
         
@@ -90,7 +90,7 @@ public class GetOfferItemsCommand
         GetOfferItemsResult result = OfferResultFactory.getGetOfferItemsResult();
         
         if(entities != null) {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(session.hasLimit(OfferItemFactory.class)) {

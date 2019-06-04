@@ -945,8 +945,8 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, BasePK deletedBy) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         
         deleteUnitOfMeasureEquivalentsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
         deleteUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(unitOfMeasureType, deletedBy);

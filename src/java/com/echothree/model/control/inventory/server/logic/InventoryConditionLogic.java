@@ -53,7 +53,7 @@ public class InventoryConditionLogic
     public InventoryCondition createInventoryCondition(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
         if(inventoryCondition == null) {
@@ -71,7 +71,7 @@ public class InventoryConditionLogic
 
     public InventoryCondition getInventoryConditionByName(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
             final EntityPermission entityPermission) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName, entityPermission);
 
         if(inventoryCondition == null) {
@@ -92,7 +92,7 @@ public class InventoryConditionLogic
     public InventoryCondition getInventoryConditionByUniversalSpec(final ExecutionErrorAccumulator eea,
             final InventoryConditionUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         InventoryCondition inventoryCondition = null;
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String inventoryConditionName = universalSpec.getInventoryConditionName();
         int parameterCount = (inventoryConditionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
@@ -140,7 +140,7 @@ public class InventoryConditionLogic
 
     public void deleteInventoryCondition(final ExecutionErrorAccumulator eea, final InventoryCondition inventoryCondition,
             final BasePK deletedBy) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         inventoryControl.deleteInventoryCondition(inventoryCondition, deletedBy);
     }

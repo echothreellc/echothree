@@ -57,7 +57,7 @@ public class CreateEmploymentCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
@@ -66,7 +66,7 @@ public class CreateEmploymentCommand
             PartyCompany partyCompany = partyControl.getPartyCompanyByName(companyName);
 
             if(partyCompany != null) {
-                EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+                var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
                 String terminationTypeName = form.getTerminationTypeName();
                 TerminationType terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
 

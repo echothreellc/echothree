@@ -97,7 +97,7 @@ public class EditTrainingClassQuestionTranslationCommand
     
     @Override
     public TrainingClassQuestionTranslation getEntity(EditTrainingClassQuestionTranslationResult result) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassQuestionTranslation trainingClassQuestionTranslation = null;
         String trainingClassName = spec.getTrainingClassName();
         TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
@@ -112,7 +112,7 @@ public class EditTrainingClassQuestionTranslationCommand
                 TrainingClassQuestion trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -150,7 +150,7 @@ public class EditTrainingClassQuestionTranslationCommand
 
     @Override
     public void fillInResult(EditTrainingClassQuestionTranslationResult result, TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
 
         result.setTrainingClassQuestionTranslation(trainingControl.getTrainingClassQuestionTranslationTransfer(getUserVisit(), trainingClassQuestionTranslation));
     }
@@ -178,7 +178,7 @@ public class EditTrainingClassQuestionTranslationCommand
     
     @Override
     public void doUpdate(TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         TrainingClassQuestionTranslationValue trainingClassQuestionTranslationValue = trainingControl.getTrainingClassQuestionTranslationValue(trainingClassQuestionTranslation);
         
         trainingClassQuestionTranslationValue.setQuestionMimeTypePK(questionMimeType.getPrimaryKey());

@@ -65,7 +65,7 @@ public class GetJobStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        JobControl jobControl = (JobControl)Session.getModelController(JobControl.class);
+        var jobControl = (JobControl)Session.getModelController(JobControl.class);
         GetJobStatusChoicesResult result = JobResultFactory.getGetJobStatusChoicesResult();
         String jobName = form.getJobName();
         Job job = jobControl.getJobByName(jobName);

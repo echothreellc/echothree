@@ -74,7 +74,7 @@ public class GetSecurityRoleChoicesCommand
         int parameterCount = (securityRoleGroupName == null? 0: 1) + (workflowName == null? 0: 1);
         
         if(parameterCount == 1) {
-            SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
             SecurityRoleGroup securityRoleGroup = null;
             
             if(securityRoleGroupName != null) {
@@ -84,7 +84,7 @@ public class GetSecurityRoleChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownSecurityRoleGroupName.name(), securityRoleGroupName);
                 }
             } else {
-                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 Workflow workflow = workflowControl.getWorkflowByName(workflowName);
 
                 if(workflow != null) {

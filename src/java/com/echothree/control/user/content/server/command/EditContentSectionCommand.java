@@ -96,7 +96,7 @@ public class EditContentSectionCommand
     
     @Override
     public ContentSection getEntity(EditContentSectionResult result) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         ContentSection contentSection = null;
         String contentCollectionName = spec.getContentCollectionName();
         
@@ -130,14 +130,14 @@ public class EditContentSectionCommand
     
     @Override
     public void fillInResult(EditContentSectionResult result, ContentSection contentSection) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         result.setContentSection(contentControl.getContentSectionTransfer(getUserVisit(), contentSection));
     }
     
     @Override
     public void doLock(ContentSectionEdit edit, ContentSection contentSection) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         ContentSectionDescription contentSectionDescription = contentControl.getContentSectionDescription(contentSection, getPreferredLanguage());
         ContentSectionDetail contentSectionDetail = contentSection.getLastDetail();
         ContentSection parentContentSection = contentSectionDetail.getParentContentSection();
@@ -156,7 +156,7 @@ public class EditContentSectionCommand
     
     @Override
     public void canUpdate(ContentSection contentSection) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentSectionName = edit.getContentSectionName();
         ContentSection duplicateContentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
 
@@ -180,7 +180,7 @@ public class EditContentSectionCommand
     
     @Override
     public void doUpdate(ContentSection contentSection) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         PartyPK partyPK = getPartyPK();
         ContentSectionDetailValue contentSectionDetailValue = contentControl.getContentSectionDetailValueForUpdate(contentSection);
         ContentSectionDescription contentSectionDescription = contentControl.getContentSectionDescriptionForUpdate(contentSection, getPreferredLanguage());

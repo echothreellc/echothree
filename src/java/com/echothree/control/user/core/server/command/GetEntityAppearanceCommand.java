@@ -64,7 +64,7 @@ public class GetEntityAppearanceCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityAppearanceResult result = CoreResultFactory.getGetEntityAppearanceResult();
         String entityRef = form.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);

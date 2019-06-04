@@ -62,7 +62,7 @@ public class GetSearchUseTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         GetSearchUseTypeChoicesResult result = SearchResultFactory.getGetSearchUseTypeChoicesResult();
         String defaultSearchUseTypeChoice = form.getDefaultSearchUseTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

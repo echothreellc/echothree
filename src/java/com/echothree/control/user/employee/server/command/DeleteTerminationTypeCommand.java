@@ -48,7 +48,7 @@ public class DeleteTerminationTypeCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         String terminationTypeName = form.getTerminationTypeName();
         TerminationType terminationType = employeeControl.getTerminationTypeByNameForUpdate(terminationTypeName);
         

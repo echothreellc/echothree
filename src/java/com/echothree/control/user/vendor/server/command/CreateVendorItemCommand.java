@@ -90,12 +90,12 @@ public class CreateVendorItemCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
         
         if(vendor != null) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
             Item item = itemControl.getItemByNameThenAlias(itemName);
             
@@ -137,7 +137,7 @@ public class CreateVendorItemCommand
                         CancellationPolicy cancellationPolicy = null;
                         
                         if(cancellationPolicyName != null) {
-                            CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                             CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
                             
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -148,15 +148,15 @@ public class CreateVendorItemCommand
                             ReturnPolicy returnPolicy = null;
                             
                             if(returnPolicyName != null) {
-                                ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                 ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN);
                                 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                             }
                             
                             if(returnPolicyName == null || returnPolicy != null) {
-                                CoreControl coreControl = getCoreControl();
-                                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                var coreControl = getCoreControl();
+                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                 String description = form.getDescription();
                                 Integer priority = Integer.valueOf(form.getPriority());
                                 BasePK createdBy = getPartyPK();

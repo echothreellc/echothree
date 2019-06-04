@@ -49,7 +49,7 @@ public class AssociateReferralLogic {
         String associateName = spec.getAssociateName();
         
         if(associateName != null) {
-            AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+            var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
             String associateProgramName = spec.getAssociateProgramName();
             AssociateProgram associateProgram = associateProgramName == null? associateControl.getDefaultAssociateProgram():
                 associateControl.getAssociateProgramByName(associateProgramName);
@@ -67,7 +67,7 @@ public class AssociateReferralLogic {
                         eea.addExecutionError(ExecutionErrors.UnknownAssociatePartyContactMechanismName.name(), associateProgramName, associateName,
                                 associatePartyContactMechanismName);
                     } else {
-                        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
                         
                         associateReferral = associateControl.createAssociateReferral(associate, associatePartyContactMechanism,
                                 coreControl.getEntityInstanceByBasePK(targetPK), session.START_TIME_LONG, partyPK);

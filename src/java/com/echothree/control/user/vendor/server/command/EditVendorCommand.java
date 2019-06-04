@@ -135,14 +135,14 @@ public class EditVendorCommand
     
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         String vendorName = spec.getVendorName();
         
         if(vendorName != null) {
             Vendor vendor = vendorControl.getVendorByNameForUpdate(vendorName);
             
             if(vendor != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 
                 validator.setCurrency(partyControl.getPreferredCurrency(vendor.getParty()));
             }
@@ -151,13 +151,13 @@ public class EditVendorCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         EditVendorResult result = VendorResultFactory.getEditVendorResult();
         String originalVendorName = spec.getVendorName();
         Vendor vendor = vendorControl.getVendorByNameForUpdate(originalVendorName);
 
         if(vendor != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             Party party = vendor.getParty();
 
             if(editMode.equals(EditMode.LOCK)) {
@@ -237,7 +237,7 @@ public class EditVendorCommand
                                 CancellationPolicy cancellationPolicy = null;
 
                                 if(cancellationPolicyName != null) {
-                                    CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                                    var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                                     CancellationKind returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_VENDOR_CANCELLATION);
 
                                     cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, cancellationPolicyName);
@@ -248,14 +248,14 @@ public class EditVendorCommand
                                     ReturnPolicy returnPolicy = null;
 
                                     if(returnPolicyName != null) {
-                                        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_VENDOR_RETURN);
 
                                         returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                                     }
 
                                     if(returnPolicyName == null || returnPolicy != null) {
-                                        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                         String apGlAccountName = edit.getApGlAccountName();
                                         GlAccount apGlAccount = apGlAccountName == null ? null : accountingControl.getGlAccountByName(apGlAccountName);
 
@@ -264,7 +264,7 @@ public class EditVendorCommand
                                                     : apGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
                                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
-                                                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                                                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                                                 String defaultItemAliasTypeName = edit.getDefaultItemAliasTypeName();
                                                 ItemAliasType defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
 

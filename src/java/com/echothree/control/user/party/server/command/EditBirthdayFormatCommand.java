@@ -90,7 +90,7 @@ public class EditBirthdayFormatCommand
 
     @Override
     public BirthdayFormat getEntity(EditBirthdayFormatResult result) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         BirthdayFormat birthdayFormat = null;
         String birthdayFormatName = spec.getBirthdayFormatName();
 
@@ -116,14 +116,14 @@ public class EditBirthdayFormatCommand
 
     @Override
     public void fillInResult(EditBirthdayFormatResult result, BirthdayFormat birthdayFormat) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
         result.setBirthdayFormat(partyControl.getBirthdayFormatTransfer(getUserVisit(), birthdayFormat));
     }
 
     @Override
     public void doLock(BirthdayFormatEdit edit, BirthdayFormat birthdayFormat) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         BirthdayFormatDescription birthdayFormatDescription = partyControl.getBirthdayFormatDescription(birthdayFormat, getPreferredLanguage());
         BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetail();
 
@@ -138,7 +138,7 @@ public class EditBirthdayFormatCommand
 
     @Override
     public void canUpdate(BirthdayFormat birthdayFormat) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String birthdayFormatName = edit.getBirthdayFormatName();
         BirthdayFormat duplicateBirthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
 
@@ -149,7 +149,7 @@ public class EditBirthdayFormatCommand
 
     @Override
     public void doUpdate(BirthdayFormat birthdayFormat) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyPK partyPK = getPartyPK();
         BirthdayFormatDetailValue birthdayFormatDetailValue = partyControl.getBirthdayFormatDetailValueForUpdate(birthdayFormat);
         BirthdayFormatDescription birthdayFormatDescription = partyControl.getBirthdayFormatDescriptionForUpdate(birthdayFormat, getPreferredLanguage());

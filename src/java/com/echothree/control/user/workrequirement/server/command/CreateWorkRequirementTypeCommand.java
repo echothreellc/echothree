@@ -75,17 +75,17 @@ public class CreateWorkRequirementTypeCommand
     
     @Override
     protected BaseResult execute() {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
-            WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+            var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
             String workRequirementTypeName = form.getWorkRequirementTypeName();
             WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType == null) {
-                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                 String workRequirementSequenceName = form.getWorkRequirementSequenceName();
                 Sequence workRequirementSequence = resolveWorkRequirementSequence(sequenceControl, workRequirementSequenceName);
                 
@@ -95,7 +95,7 @@ public class CreateWorkRequirementTypeCommand
                     WorkflowStep workflowStep  = resolveWorkflowStep(workflowStepName, workflowName);
 
                     if(!hasExecutionErrors()) {
-                        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
                         UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {
@@ -182,7 +182,7 @@ public class CreateWorkRequirementTypeCommand
         WorkflowStep workflowStep = null;
         
         if(workflowName != null && workflowStepName != null) {
-            WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
             Workflow workflow = workflowControl.getWorkflowByName(workflowName);
             
             if(workflow != null) {

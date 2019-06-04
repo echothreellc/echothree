@@ -3411,7 +3411,7 @@ public class OrderControl
         OrderDetail orderDetail = order.getLastDetailForUpdate();
         String orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
         if(orderTypeName.equals(OrderConstants.OrderType_WISHLIST)) {
-            WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+            var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
             
             wishlistControl.deleteWishlistByOrder(order, deletedBy);
         }
@@ -3430,7 +3430,7 @@ public class OrderControl
     }
     
     public void deleteOrdersByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
         List<Wishlist> wishlists = wishlistControl.getWishlistsByWishlistTypeForUpdate(wishlistType);
         
         wishlists.stream().forEach((wishlist) -> {
@@ -4906,7 +4906,7 @@ public class OrderControl
     }
     
     public void deleteOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
-        WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+        var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
         List<WishlistLine> wishlistLines = wishlistControl.getWishlistLinesByWishlistTypePriorityForUpdate(wishlistTypePriority);
         
         wishlistLines.stream().forEach((wishlistLine) -> {

@@ -77,7 +77,7 @@ public class GetApplicationEditorCommand
             Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 ApplicationEditor applicationEditor = coreControl.getApplicationEditor(application, editor);
                 
                 if(applicationEditor != null) {

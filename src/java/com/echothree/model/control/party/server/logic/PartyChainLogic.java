@@ -54,7 +54,7 @@ public class PartyChainLogic
             ChainEntityRoleType chainEntityRoleType = getChainEntityRoleTypeByName(eea, chainType, partyTypeName);
             
             if(!hasExecutionErrors(eea)) {
-                CoreControl ccoreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var ccoreControl = (CoreControl)Session.getModelController(CoreControl.class);
                 EntityInstance entityInstance = ccoreControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                 
                 if(resetChainIfRunning) {
@@ -64,7 +64,7 @@ public class PartyChainLogic
                 chainInstance = createChainInstance(eea, chainType, party, createdBy);
 
                 if(!hasExecutionErrors(eea) && chainInstance != null) {
-                    ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+                    var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
 
                     chainControl.createChainInstanceEntityRole(chainInstance, chainEntityRoleType, entityInstance, createdBy);
                 }

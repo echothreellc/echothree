@@ -50,7 +50,7 @@ public class CreateForumTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         String forumTypeName = form.getForumTypeName();
         ForumType forumType = forumControl.getForumTypeByName(forumTypeName);
         

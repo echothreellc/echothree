@@ -69,8 +69,8 @@ public class GetEntityMessagesCommand
         int parameterCount = (componentVendorName == null && entityTypeName == null && messageTypeName == null && messageName == null? 0: 1) + (entityRef == null? 0: 1);
         
         if(parameterCount == 1) {
-            CoreControl coreControl = getCoreControl();
-            MessageControl messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+            var coreControl = getCoreControl();
+            var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(entityRef != null) {

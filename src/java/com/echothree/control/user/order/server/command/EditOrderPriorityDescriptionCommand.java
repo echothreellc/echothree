@@ -89,7 +89,7 @@ public class EditOrderPriorityDescriptionCommand
 
     @Override
     public OrderPriorityDescription getEntity(EditOrderPriorityDescriptionResult result) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderPriorityDescription orderPriorityDescription = null;
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
@@ -99,7 +99,7 @@ public class EditOrderPriorityDescriptionCommand
             OrderPriority orderPriority = orderControl.getOrderPriorityByName(orderType, orderPriorityName);
 
             if(orderPriority != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -133,7 +133,7 @@ public class EditOrderPriorityDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderPriorityDescriptionResult result, OrderPriorityDescription orderPriorityDescription) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderPriorityDescription(orderControl.getOrderPriorityDescriptionTransfer(getUserVisit(), orderPriorityDescription));
     }
@@ -145,7 +145,7 @@ public class EditOrderPriorityDescriptionCommand
 
     @Override
     public void doUpdate(OrderPriorityDescription orderPriorityDescription) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderPriorityDescriptionValue orderPriorityDescriptionValue = orderControl.getOrderPriorityDescriptionValue(orderPriorityDescription);
         orderPriorityDescriptionValue.setDescription(edit.getDescription());
 

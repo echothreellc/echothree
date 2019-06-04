@@ -81,7 +81,7 @@ public class EditUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         EditUseTypeResult result = OfferResultFactory.getEditUseTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {

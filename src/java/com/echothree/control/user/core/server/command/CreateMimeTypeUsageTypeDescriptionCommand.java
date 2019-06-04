@@ -53,12 +53,12 @@ public class CreateMimeTypeUsageTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-      CoreControl coreControl = getCoreControl();
+      var coreControl = getCoreControl();
         String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
         MimeTypeUsageType mimeTypeUsageType = coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
         
         if(mimeTypeUsageType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

@@ -145,7 +145,7 @@ public class EditCommentCommand
     
     @Override
     protected BaseResult execute() {
-        CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+        var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
         EditCommentResult result = CommentResultFactory.getEditCommentResult();
         String commentName = spec.getCommentName();
         Comment comment = commentControl.getCommentByName(commentName);
@@ -190,7 +190,7 @@ public class EditCommentCommand
             } else if(editMode.equals(EditMode.ABANDON)) {
                 unlockEntity(comment);
             } else if(editMode.equals(EditMode.UPDATE)) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = edit.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -214,7 +214,7 @@ public class EditCommentCommand
                             addExecutionError(ExecutionErrors.InvalidMimeType.name());
                         }
                     } else {
-                        CoreControl coreControl = getCoreControl();
+                        var coreControl = getCoreControl();
                         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
 
                         if(mimeType != null) {

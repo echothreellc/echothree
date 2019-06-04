@@ -72,7 +72,7 @@ public class GetEntityIntegerRangeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityIntegerRangeDescriptionsResult result = CoreResultFactory.getGetEntityIntegerRangeDescriptionsResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);

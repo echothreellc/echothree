@@ -73,10 +73,10 @@ public class GetPartyTrainingClassesCommand
         int parameterCount = (partyName == null? 0: 1) + (trainingClassName == null? 0: 1);
         
         if(parameterCount == 1) {
-            TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+            var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
             
             if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {

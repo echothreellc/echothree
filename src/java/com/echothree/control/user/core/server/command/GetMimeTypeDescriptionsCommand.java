@@ -49,7 +49,7 @@ public class GetMimeTypeDescriptionsCommand
     
    @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetMimeTypeDescriptionsResult result = CoreResultFactory.getGetMimeTypeDescriptionsResult();
         String mimeTypeName = form.getMimeTypeName();
         MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);

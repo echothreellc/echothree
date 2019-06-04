@@ -91,7 +91,7 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public GeoCodeType getEntity(EditGeoCodeTypeResult result) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeType geoCodeType = null;
         String geoCodeTypeName = spec.getGeoCodeTypeName();
 
@@ -117,7 +117,7 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public void fillInResult(EditGeoCodeTypeResult result, GeoCodeType geoCodeType) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
 
         result.setGeoCodeType(geoControl.getGeoCodeTypeTransfer(getUserVisit(), geoCodeType));
     }
@@ -126,7 +126,7 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public void doLock(GeoCodeTypeEdit edit, GeoCodeType geoCodeType) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GeoCodeTypeDescription geoCodeTypeDescription = geoControl.getGeoCodeTypeDescription(geoCodeType, getPreferredLanguage());
         GeoCodeTypeDetail geoCodeTypeDetail = geoCodeType.getLastDetail();
 
@@ -144,7 +144,7 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public void canUpdate(GeoCodeType geoCodeType) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         String geoCodeTypeName = edit.getGeoCodeTypeName();
         GeoCodeType duplicateGeoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
 
@@ -169,7 +169,7 @@ public class EditGeoCodeTypeCommand
 
     @Override
     public void doUpdate(GeoCodeType geoCodeType) {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         PartyPK partyPK = getPartyPK();
         GeoCodeTypeDetailValue geoCodeTypeDetailValue = geoControl.getGeoCodeTypeDetailValueForUpdate(geoCodeType);
         GeoCodeTypeDescription geoCodeTypeDescription = geoControl.getGeoCodeTypeDescriptionForUpdate(geoCodeType, getPreferredLanguage());

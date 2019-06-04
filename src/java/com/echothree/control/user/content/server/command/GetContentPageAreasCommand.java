@@ -56,7 +56,7 @@ public class GetContentPageAreasCommand
     
     @Override
     protected Collection<ContentPageArea> getEntities() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         Collection<ContentPageArea> contentPageAreas = null;
@@ -89,7 +89,7 @@ public class GetContentPageAreasCommand
         GetContentPageAreasResult result = ContentResultFactory.getGetContentPageAreasResult();
                 
         if(entities != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             result.setContentPageAreas(contentControl.getContentPageAreaTransfers(getUserVisit(), entities));
         }

@@ -52,12 +52,12 @@ public class DeleteWorkflowSelectorKindCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
-            SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
             String selectorKindName = form.getSelectorKindName();
             SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
             

@@ -63,7 +63,7 @@ public class GetUseTypesCommand
     
     @Override
     protected Collection<UseType> getEntities() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         
         return offerControl.getUseTypes();
     }
@@ -71,7 +71,7 @@ public class GetUseTypesCommand
     @Override
     protected BaseResult getTransfers(Collection<UseType> entities) {
         GetUseTypesResult result = OfferResultFactory.getGetUseTypesResult();
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         
         if(session.hasLimit(UseTypeFactory.class)) {
             result.setUseTypeCount(offerControl.countUseTypes());

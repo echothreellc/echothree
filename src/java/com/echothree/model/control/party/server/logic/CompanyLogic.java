@@ -49,7 +49,7 @@ public class CompanyLogic
         PartyCompany partyCompany = null;
 
         if(parameterCount == 1) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
             if(companyName != null) {
                 partyCompany = partyControl.getPartyCompanyByName(companyName);

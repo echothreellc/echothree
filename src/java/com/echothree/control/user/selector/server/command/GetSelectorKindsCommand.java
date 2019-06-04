@@ -60,7 +60,7 @@ public class GetSelectorKindsCommand
     
     @Override
     protected BaseResult execute() {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         GetSelectorKindsResult result = SelectorResultFactory.getGetSelectorKindsResult();
         
         result.setSelectorKinds(selectorControl.getSelectorKindTransfers(getUserVisit()));

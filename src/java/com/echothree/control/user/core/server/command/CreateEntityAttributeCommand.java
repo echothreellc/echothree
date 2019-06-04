@@ -280,7 +280,7 @@ public class CreateEntityAttributeCommand
                         SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceConstants.SequenceType_ENTITY_LIST_ITEM);
 
                         if(!hasExecutionErrors()) {
-                            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
                             entityListItemSequence = sequenceControl.getSequenceByName(sequenceType, entityListItemSequenceName);
 

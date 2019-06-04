@@ -87,13 +87,13 @@ public class EditScaleDescriptionCommand
 
     @Override
     public ScaleDescription getEntity(EditScaleDescriptionResult result) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         ScaleDescription scaleDescription = null;
         String scaleName = spec.getScaleName();
         Scale scale = scaleControl.getScaleByName(scaleName);
 
         if(scale != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditScaleDescriptionCommand
 
     @Override
     public void fillInResult(EditScaleDescriptionResult result, ScaleDescription scaleDescription) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
 
         result.setScaleDescription(scaleControl.getScaleDescriptionTransfer(getUserVisit(), scaleDescription));
     }
@@ -136,7 +136,7 @@ public class EditScaleDescriptionCommand
 
     @Override
     public void doUpdate(ScaleDescription scaleDescription) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         ScaleDescriptionValue scaleDescriptionValue = scaleControl.getScaleDescriptionValue(scaleDescription);
 
         scaleDescriptionValue.setDescription(edit.getDescription());

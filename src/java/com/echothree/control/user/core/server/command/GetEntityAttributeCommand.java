@@ -68,7 +68,7 @@ public class GetEntityAttributeCommand
     
     @Override
     protected EntityAttribute getEntity() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttribute entityAttribute = null;
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -97,7 +97,7 @@ public class GetEntityAttributeCommand
     
     @Override
     protected BaseResult getTransfer(EntityAttribute entityAttribute) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityAttributeResult result = CoreResultFactory.getGetEntityAttributeResult();
 
         if(entityAttribute != null) {

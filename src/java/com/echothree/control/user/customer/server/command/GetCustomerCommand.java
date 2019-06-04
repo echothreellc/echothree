@@ -63,7 +63,7 @@ public class GetCustomerCommand
         int parameterCount = (customerName == null? 0: 1) + (partyName == null? 0: 1);
         
         if(parameterCount == 1) {
-            CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
             Customer customer = null;
             Party party = null;
             
@@ -76,7 +76,7 @@ public class GetCustomerCommand
                     addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
                 }
             } else if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 
                 party = partyControl.getPartyByName(partyName);
                 
@@ -98,7 +98,7 @@ public class GetCustomerCommand
                 result.setCustomer(customerControl.getCustomerTransfer(userVisit, customer));
 
                 if(companyParty != null) {
-                    WishlistControl wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
+                    var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
 
                     result.setWishlists(wishlistControl.getWishlistTransfers(userVisit, companyParty, party));
                 }

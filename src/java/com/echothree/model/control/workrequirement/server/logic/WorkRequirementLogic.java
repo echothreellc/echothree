@@ -65,7 +65,7 @@ public class WorkRequirementLogic {
 
     public WorkRequirement createWorkRequirementUsingNames(final Session session, final WorkEffort workEffort, final String workRequirementTypeName,
             final Party assignedParty, final Long assignedEndTime, final Long requiredTime, final BasePK createdBy) {
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         WorkEffortScope workEffortScope = workEffort.getLastDetail().getWorkEffortScope();
         WorkEffortType workEffortType = workEffortScope.getLastDetail().getWorkEffortType();
         WorkRequirementType workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
@@ -76,10 +76,10 @@ public class WorkRequirementLogic {
 
     public WorkRequirement createWorkRequirement(final Session session, final WorkEffort workEffort, final WorkRequirementScope workRequirementScope,
             final Party assignedParty, final Long assignedEndTime, Long requiredTime, final BasePK createdBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         WorkRequirementScopeDetail workRequirementScopeDetail = workRequirementScope.getLastDetail();
         WorkRequirementTypeDetail workRequirementTypeDetail = workRequirementScopeDetail.getWorkRequirementType().getLastDetail();
         Sequence workRequirementSequence = workRequirementScopeDetail.getWorkRequirementSequence();
@@ -126,9 +126,9 @@ public class WorkRequirementLogic {
 
     public WorkAssignment createWorkAssignment(final WorkRequirement workRequirement, final Party party, final Long startTime, final Long endTime,
             final String workflowEntranceName, final BasePK createdBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         WorkAssignment workAssignment = workRequirementControl.createWorkAssignment(workRequirement, party, startTime, endTime, createdBy);
         WorkRequirementStatus workRequirementStatus = workRequirementControl.getWorkRequirementStatusForUpdate(workRequirement);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
@@ -145,9 +145,9 @@ public class WorkRequirementLogic {
 
     public WorkTime createWorkTime(final UserVisit userVisit, final WorkRequirement workRequirement, final Party party, final Long startTime,
             final Long endTime, final boolean complete, final BasePK createdBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         WorkTime workTime = workRequirementControl.createWorkTime(workRequirement, party, startTime, endTime, createdBy);
         WorkRequirementStatus workRequirementStatus = workRequirementControl.getWorkRequirementStatusForUpdate(workRequirement);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
@@ -168,9 +168,9 @@ public class WorkRequirementLogic {
     }
     
     public void endWorkTime(final WorkTime workTime, final Long endTime, final boolean complete, final PartyPK endedBy) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS, entityInstance);
         WorkflowDestination workflowDestination = WorkflowLogic.getInstance().getWorkflowDestinationByName(null, workflowEntityStatus.getWorkflowStep(),
@@ -184,7 +184,7 @@ public class WorkRequirementLogic {
     }
     
     public void endWorkTimesByUserVisit(final UserVisit userVisit, final Long endTime, final PartyPK updatedBy) {
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         List<WorkTimeUserVisit> workTimeUserVisits = workRequirementControl.getWorkTimeUserVisitsByUserVisitForUpdate(userVisit);
         
         workTimeUserVisits.stream().map((workTimeUserVisit) -> {

@@ -83,7 +83,7 @@ public class CreateCarrierServiceOptionCommand
     
     @Override
     protected BaseResult execute() {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
         String carrierName = form.getCarrierName();
         Carrier carrier = carrierControl.getCarrierByName(carrierName);
         
@@ -100,7 +100,7 @@ public class CreateCarrierServiceOptionCommand
                     CarrierServiceOption carrierServiceOption = carrierControl.getCarrierServiceOption(carrierService, carrierOption);
                     
                     if(carrierServiceOption == null) {
-                        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                         SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
 
                         if(selectorKind != null) {

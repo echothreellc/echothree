@@ -47,7 +47,7 @@ public class GetTerminationReasonsCommand
     @Override
     protected BaseResult execute() {
         GetTerminationReasonsResult result = EmployeeResultFactory.getGetTerminationReasonsResult();
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         
         result.setTerminationReasons(employeeControl.getTerminationReasonTransfers(getUserVisit()));
         

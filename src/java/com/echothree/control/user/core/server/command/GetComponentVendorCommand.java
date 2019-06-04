@@ -64,7 +64,7 @@ public class GetComponentVendorCommand
     
     @Override
     protected ComponentVendor getEntity() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
         
@@ -77,7 +77,7 @@ public class GetComponentVendorCommand
     
     @Override
     protected BaseResult getTransfer(ComponentVendor componentVendor) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetComponentVendorResult result = CoreResultFactory.getGetComponentVendorResult();
         
         if(componentVendor != null) {

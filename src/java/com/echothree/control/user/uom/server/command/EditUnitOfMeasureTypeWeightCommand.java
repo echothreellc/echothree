@@ -66,7 +66,7 @@ public class EditUnitOfMeasureTypeWeightCommand
     
     @Override
     protected BaseResult execute() {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         EditUnitOfMeasureTypeWeightResult result = UomResultFactory.getEditUnitOfMeasureTypeWeightResult();
         String unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
         UnitOfMeasureKind unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);

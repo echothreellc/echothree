@@ -83,8 +83,8 @@ public class EditItemVolumeCommand
 
     @Override
     public ItemVolume getEntity(EditItemVolumeResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         ItemVolume itemVolume = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
@@ -128,14 +128,14 @@ public class EditItemVolumeCommand
 
     @Override
     public void fillInResult(EditItemVolumeResult result, ItemVolume itemVolume) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemVolume(itemControl.getItemVolumeTransfer(getUserVisit(), itemVolume));
     }
 
     @Override
     public void doLock(ItemVolumeEdit edit, ItemVolume itemVolume) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
 
         height = itemVolume.getHeight();
         Conversion heightConversion = height == null ? null : new Conversion(uomControl, volumeUnitOfMeasureKind, height).convertToHighestUnitOfMeasureType();
@@ -163,7 +163,7 @@ public class EditItemVolumeCommand
 
     @Override
     public void canUpdate(ItemVolume itemVolume) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         String heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
 
         heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind, heightUnitOfMeasureTypeName);
@@ -209,8 +209,8 @@ public class EditItemVolumeCommand
 
     @Override
     public void doUpdate(ItemVolume itemVolume) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         ItemVolumeValue itemVolumeValue = itemControl.getItemVolumeValue(itemVolume);
 
         Conversion heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();

@@ -52,12 +52,12 @@ public class CreateGeoCodeTaxCommand
     
     @Override
     protected BaseResult execute() {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         String taxName = form.getTaxName();
         Tax tax = taxControl.getTaxByName(taxName);
         
         if(tax != null) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             String geoCodeName = form.getGeoCodeName();
             GeoCode geoCode = geoControl.getGeoCodeByName(geoCodeName);
             

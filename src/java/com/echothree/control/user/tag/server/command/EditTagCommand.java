@@ -88,7 +88,7 @@ public class EditTagCommand
     
     @Override
     public Tag getEntity(EditTagResult result) {
-        TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = (TagControl)Session.getModelController(TagControl.class);
         Tag tag = null;
         String tagScopeName = spec.getTagScopeName();
         
@@ -122,7 +122,7 @@ public class EditTagCommand
 
     @Override
     public void fillInResult(EditTagResult result, Tag tag) {
-        TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = (TagControl)Session.getModelController(TagControl.class);
 
         result.setTag(tagControl.getTagTransfer(getUserVisit(), tag));
     }
@@ -136,7 +136,7 @@ public class EditTagCommand
 
     @Override
     public void canUpdate(Tag tag) {
-        TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = (TagControl)Session.getModelController(TagControl.class);
         String tagName = edit.getTagName();
         Tag duplicateTag = tagControl.getTagByName(tagScope, tagName);
 
@@ -147,7 +147,7 @@ public class EditTagCommand
 
     @Override
     public void doUpdate(Tag tag) {
-        TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+        var tagControl = (TagControl)Session.getModelController(TagControl.class);
         TagDetailValue tagDetailValue = tagControl.getTagDetailValueForUpdate(tag);
 
         tagDetailValue.setTagName(edit.getTagName());

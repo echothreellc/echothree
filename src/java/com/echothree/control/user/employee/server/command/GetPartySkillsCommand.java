@@ -59,10 +59,10 @@ public class GetPartySkillsCommand
         int parameterCount = (partyName == null? 0: 1) + (skillTypeName == null? 0: 1);
         
         if(parameterCount == 1) {
-            EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
             
             if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {

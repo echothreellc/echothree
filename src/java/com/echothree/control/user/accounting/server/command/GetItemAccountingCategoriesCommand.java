@@ -60,7 +60,7 @@ public class GetItemAccountingCategoriesCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetItemAccountingCategoriesResult result = AccountingResultFactory.getGetItemAccountingCategoriesResult();
         
         result.setItemAccountingCategories(accountingControl.getItemAccountingCategoryTransfers(getUserVisit()));

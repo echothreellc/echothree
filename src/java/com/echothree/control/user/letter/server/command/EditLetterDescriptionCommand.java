@@ -83,7 +83,7 @@ public class EditLetterDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         EditLetterDescriptionResult result = LetterResultFactory.getEditLetterDescriptionResult();
         String chainKindName = spec.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -93,12 +93,12 @@ public class EditLetterDescriptionCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
                 String letterName = spec.getLetterName();
                 Letter letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter != null) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     String languageIsoName = spec.getLanguageIsoName();
                     Language language = partyControl.getLanguageByIsoName(languageIsoName);
                     

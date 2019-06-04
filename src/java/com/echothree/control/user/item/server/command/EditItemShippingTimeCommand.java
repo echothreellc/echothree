@@ -77,13 +77,13 @@ public class EditItemShippingTimeCommand
 
     @Override
     public ItemShippingTime getEntity(EditItemShippingTimeResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemShippingTime itemShippingTime = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
             String customerTypeName = spec.getCustomerTypeName();
             CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
@@ -114,7 +114,7 @@ public class EditItemShippingTimeCommand
 
     @Override
     public void fillInResult(EditItemShippingTimeResult result, ItemShippingTime itemShippingTime) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemShippingTime(itemControl.getItemShippingTimeTransfer(getUserVisit(), itemShippingTime));
     }
@@ -132,7 +132,7 @@ public class EditItemShippingTimeCommand
 
     @Override
     public void doUpdate(ItemShippingTime itemShippingTime) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemShippingTimeValue itemShippingTimeValue = itemControl.getItemShippingTimeValue(itemShippingTime);
         String strShippingEndTime = edit.getShippingEndTime();
         Long shippingEndTime = strShippingEndTime == null? null: Long.valueOf(strShippingEndTime);

@@ -104,14 +104,14 @@ public class EditInventoryConditionCommand
     
     @Override
     public void fillInResult(EditInventoryConditionResult result, InventoryCondition inventoryCondition) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         
         result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));
     }
     
     @Override
     public void doLock(InventoryConditionEdit edit, InventoryCondition inventoryCondition) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         InventoryConditionDescription inventoryConditionDescription = inventoryControl.getInventoryConditionDescription(inventoryCondition, getPreferredLanguage());
         InventoryConditionDetail inventoryConditionDetail = inventoryCondition.getLastDetail();
         
@@ -126,7 +126,7 @@ public class EditInventoryConditionCommand
         
     @Override
     public void canUpdate(InventoryCondition inventoryCondition) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String inventoryConditionName = edit.getInventoryConditionName();
         InventoryCondition duplicateInventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
@@ -137,7 +137,7 @@ public class EditInventoryConditionCommand
     
     @Override
     public void doUpdate(InventoryCondition inventoryCondition) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         PartyPK partyPK = getPartyPK();
         InventoryConditionDetailValue inventoryConditionDetailValue = inventoryControl.getInventoryConditionDetailValueForUpdate(inventoryCondition);
         InventoryConditionDescription inventoryConditionDescription = inventoryControl.getInventoryConditionDescriptionForUpdate(inventoryCondition, getPreferredLanguage());

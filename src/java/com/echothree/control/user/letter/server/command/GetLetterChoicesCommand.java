@@ -68,7 +68,7 @@ public class GetLetterChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         GetLetterChoicesResult result = LetterResultFactory.getGetLetterChoicesResult();
         String chainKindName = form.getChainKindName();
         ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
@@ -78,7 +78,7 @@ public class GetLetterChoicesCommand
             ChainType chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType != null) {
-                LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+                var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
                 String defaultLetterChoice = form.getDefaultLetterChoice();
                 boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
                 

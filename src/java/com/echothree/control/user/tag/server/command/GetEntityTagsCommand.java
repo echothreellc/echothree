@@ -77,11 +77,11 @@ public class GetEntityTagsCommand
         int parameterCount = (tagScopeName == null && tagName == null? 0: 1) + (entityRef == null? 0: 1);
         
         if(parameterCount == 1) {
-            TagControl tagControl = (TagControl)Session.getModelController(TagControl.class);
+            var tagControl = (TagControl)Session.getModelController(TagControl.class);
             UserVisit userVisit = getUserVisit();
             
             if(entityRef != null) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 EntityInstance taggedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(taggedEntityInstance != null) {

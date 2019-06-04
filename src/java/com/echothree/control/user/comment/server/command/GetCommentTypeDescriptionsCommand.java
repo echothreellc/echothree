@@ -55,7 +55,7 @@ public class GetCommentTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetCommentTypeDescriptionsResult result = CommentResultFactory.getGetCommentTypeDescriptionsResult();
         String componentVendorName = form.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -65,7 +65,7 @@ public class GetCommentTypeDescriptionsCommand
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
                 String commentTypeName = form.getCommentTypeName();
                 CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                 

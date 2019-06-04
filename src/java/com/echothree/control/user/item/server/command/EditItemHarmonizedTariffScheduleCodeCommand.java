@@ -95,13 +95,13 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
 
     @Override
     public ItemHarmonizedTariffScheduleCode getEntity(EditItemHarmonizedTariffScheduleCodeResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             String countryName = spec.getCountryName();
             
             countryGeoCode = geoControl.getCountryByAlias(countryName);
@@ -143,7 +143,7 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
 
     @Override
     public void fillInResult(EditItemHarmonizedTariffScheduleCodeResult result, ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemHarmonizedTariffScheduleCode(itemControl.getItemHarmonizedTariffScheduleCodeTransfer(getUserVisit(), itemHarmonizedTariffScheduleCode));
     }
@@ -159,7 +159,7 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
     
     @Override
     public void canUpdate(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String harmonizedTariffScheduleCodeName = edit.getHarmonizedTariffScheduleCodeName();
         
         harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(countryGeoCode, harmonizedTariffScheduleCodeName);
@@ -179,7 +179,7 @@ public class EditItemHarmonizedTariffScheduleCodeCommand
 
     @Override
     public void doUpdate(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemHarmonizedTariffScheduleCodeDetailValue itemHarmonizedTariffScheduleCodeDetailValue = itemControl.getItemHarmonizedTariffScheduleCodeDetailValueForUpdate(itemHarmonizedTariffScheduleCode);
         
         itemHarmonizedTariffScheduleCodeDetailValue.setHarmonizedTariffScheduleCodePK(harmonizedTariffScheduleCode.getPrimaryKey());

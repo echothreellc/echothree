@@ -50,7 +50,7 @@ public class GetAssociateProgramDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        AssociateControl associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
         GetAssociateProgramDescriptionsResult result = AssociateResultFactory.getGetAssociateProgramDescriptionsResult();
         String associateProgramName = form.getAssociateProgramName();
         AssociateProgram associateProgram = associateControl.getAssociateProgramByName(associateProgramName);

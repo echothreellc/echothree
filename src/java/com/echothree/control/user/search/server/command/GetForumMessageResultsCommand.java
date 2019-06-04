@@ -60,7 +60,7 @@ public class GetForumMessageResultsCommand
         setupPreferredClobMimeType();
         
         if(!hasExecutionErrors()) {
-            SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
             SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_FORUM_MESSAGE);
 
             if(searchKind != null) {

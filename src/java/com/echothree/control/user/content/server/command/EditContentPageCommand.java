@@ -98,7 +98,7 @@ public class EditContentPageCommand
     
     @Override
     public ContentPage getEntity(EditContentPageResult result) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         ContentPage contentPage = null;
         String contentCollectionName = spec.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
@@ -139,14 +139,14 @@ public class EditContentPageCommand
     
     @Override
     public void fillInResult(EditContentPageResult result, ContentPage contentPage) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         result.setContentPage(contentControl.getContentPageTransfer(getUserVisit(), contentPage));
     }
     
     @Override
     public void doLock(ContentPageEdit edit, ContentPage contentPage) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         ContentPageDescription contentPageDescription = contentControl.getContentPageDescription(contentPage, getPreferredLanguage());
         ContentPageDetail contentPageDetail = contentPage.getLastDetail();
 
@@ -164,7 +164,7 @@ public class EditContentPageCommand
     
     @Override
     public void canUpdate(ContentPage contentPage) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentPageName = edit.getContentPageName();
         ContentPage duplicateContentPage = contentControl.getContentPageByName(contentSection, contentPageName);
 
@@ -183,7 +183,7 @@ public class EditContentPageCommand
     
     @Override
     public void doUpdate(ContentPage contentPage) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         PartyPK partyPK = getPartyPK();
         ContentPageDetailValue contentPageDetailValue = contentControl.getContentPageDetailValueForUpdate(contentPage);
         ContentPageDescription contentPageDescription = contentControl.getContentPageDescriptionForUpdate(contentPage, getPreferredLanguage());

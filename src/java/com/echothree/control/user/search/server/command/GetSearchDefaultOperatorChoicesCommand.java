@@ -81,7 +81,7 @@ public class GetSearchDefaultOperatorChoicesCommand
             SearchType searchType = searchTypeName != null && defaultSearchDefaultOperatorChoice == null && party != null ? SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, searchTypeName) : null;
             
             if(!hasExecutionErrors()) {
-                SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+                var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
                 boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
                 if(searchType != null) {

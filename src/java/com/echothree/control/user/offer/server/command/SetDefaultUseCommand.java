@@ -62,7 +62,7 @@ public class SetDefaultUseCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         String useName = form.getUseName();
         UseDetailValue useDetailValue = offerControl.getUseDetailValueByNameForUpdate(useName);
         

@@ -52,7 +52,7 @@ public class GetWorkflowStepDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         GetWorkflowStepDescriptionsResult result = WorkflowResultFactory.getGetWorkflowStepDescriptionsResult();
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);

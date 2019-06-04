@@ -55,7 +55,7 @@ public class InvoiceTimeLogic {
 
     public void createOrUpdateInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final Long time,
             final BasePK partyPK) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         InvoiceDetail invoiceDetail = invoice.getLastDetail();
         InvoiceType invoiceType = invoiceDetail.getInvoiceType();
         InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
@@ -77,7 +77,7 @@ public class InvoiceTimeLogic {
     }
 
     public Long getInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         InvoiceDetail invoiceDetail = invoice.getLastDetail();
         InvoiceType invoiceType = invoiceDetail.getInvoiceType();
         InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);
@@ -103,7 +103,7 @@ public class InvoiceTimeLogic {
     }
 
     public void deleteInvoiceTime(final ExecutionErrorAccumulator ema, final Invoice invoice, final String invoiceTimeTypeName, final BasePK deletedBy) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         InvoiceDetail invoiceDetail = invoice.getLastDetail();
         InvoiceType invoiceType = invoiceDetail.getInvoiceType();
         InvoiceTimeType invoiceTimeType = invoiceControl.getInvoiceTimeTypeByName(invoiceType, invoiceTimeTypeName);

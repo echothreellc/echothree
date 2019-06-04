@@ -93,7 +93,7 @@ public class EditEntityListItemDescriptionCommand
 
     @Override
     public EntityListItemDescription getEntity(EditEntityListItemDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityListItemDescription entityListItemDescription = null;
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -111,7 +111,7 @@ public class EditEntityListItemDescriptionCommand
                     EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
 
                     if(entityListItem != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         String languageIsoName = spec.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -152,7 +152,7 @@ public class EditEntityListItemDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityListItemDescriptionResult result, EntityListItemDescription entityListItemDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityListItemDescription(coreControl.getEntityListItemDescriptionTransfer(getUserVisit(), entityListItemDescription, null));
     }
@@ -164,7 +164,7 @@ public class EditEntityListItemDescriptionCommand
 
     @Override
     public void doUpdate(EntityListItemDescription entityListItemDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityListItemDescriptionValue entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
         
         entityListItemDescriptionValue.setDescription(edit.getDescription());

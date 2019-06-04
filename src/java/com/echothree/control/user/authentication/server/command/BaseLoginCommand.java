@@ -108,7 +108,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         if(result == null) {
             addExecutionError(ExecutionErrors.IncorrectPassword.name());
         } else if(doStatusChecks) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(party.getLastDetail().getPartyType());
             
             if(partyTypePasswordStringPolicy != null) {
@@ -129,7 +129,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
                         long warningTime = expirationTime - expirationWarningTime;
                         
                         if(session.START_TIME > warningTime) {
-                            UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                            var uomControl = (UomControl)Session.getModelController(UomControl.class);
                             UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
                             String remainingTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(getUserVisit(), timeUnitOfMeasureKind, Long.valueOf(expirationTime - session.START_TIME));
                             
@@ -160,7 +160,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
    }
 
     protected void successfulLogin(UserLoginStatus userLoginStatus, Party party, PartyRelationship partyRelationship, Integer remoteInet4Address) {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         UserControl userControl = getUserControl();
         UserVisit userVisit = getUserVisitForUpdate();
         UserKey userKey = userVisit.getUserKey();

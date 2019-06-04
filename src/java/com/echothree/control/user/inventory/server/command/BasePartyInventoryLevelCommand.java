@@ -45,7 +45,7 @@ public abstract class BasePartyInventoryLevelCommand<F
         Party party = null;
         
         if(partyName != null || companyName != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             
             if(partyName != null) {
                 party = partyControl.getPartyByName(partyName);
@@ -71,7 +71,7 @@ public abstract class BasePartyInventoryLevelCommand<F
                 }
             }
         } else if(warehouseName != null) {
-            WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+            var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
             Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
             
             if(warehouse != null) {

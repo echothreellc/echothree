@@ -87,7 +87,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public ForumMessageAttachment getEntity(EditForumMessageAttachmentResult result) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         ForumMessageAttachment forumMessageAttachment = null;
         String forumMessageName = spec.getForumMessageName();
         ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
@@ -118,7 +118,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void fillInResult(EditForumMessageAttachmentResult result, ForumMessageAttachment forumMessageAttachment) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
 
         result.setForumMessageAttachment(forumControl.getForumMessageAttachmentTransfer(getUserVisit(), forumMessageAttachment));
     }
@@ -127,7 +127,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void doLock(ForumMessageAttachmentEdit edit, ForumMessageAttachment forumMessageAttachment) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         
         mimeType = forumMessageAttachment.getLastDetail().getMimeType();
 
@@ -147,7 +147,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void canUpdate(ForumMessageAttachment forumMessageAttachment) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeName = edit.getMimeTypeName();
 
         mimeType = coreControl.getMimeTypeByName(mimeTypeName);
@@ -171,7 +171,7 @@ public class EditForumMessageAttachmentCommand
 
     @Override
     public void doUpdate(ForumMessageAttachment forumMessageAttachment) {
-        ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+        var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
         ForumMessageAttachmentDetailValue forumMessageAttachmentDetailValue = forumControl.getForumMessageAttachmentDetailValueForUpdate(forumMessageAttachment);
         String entityAttributeTypeName = mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
         PartyPK updatedBy = getPartyPK();

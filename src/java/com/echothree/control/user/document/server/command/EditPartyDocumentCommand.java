@@ -103,7 +103,7 @@ public class EditPartyDocumentCommand
 
     @Override
     public PartyDocument getEntity(EditPartyDocumentResult result) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         PartyDocument partyDocument = null;
         String documentName = spec.getDocumentName();
         Document document = documentControl.getDocumentByName(documentName);
@@ -134,7 +134,7 @@ public class EditPartyDocumentCommand
 
     @Override
     public void fillInResult(EditPartyDocumentResult result, PartyDocument partyDocument) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
 
         result.setPartyDocument(documentControl.getPartyDocumentTransfer(getUserVisit(), partyDocument));
     }
@@ -143,7 +143,7 @@ public class EditPartyDocumentCommand
 
     @Override
     public void doLock(PartyDocumentEdit edit, PartyDocument partyDocument) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         Document document = partyDocument.getDocument();
         DocumentDescription documentDescription = documentControl.getDocumentDescription(document, getPreferredLanguage());
 
@@ -166,7 +166,7 @@ public class EditPartyDocumentCommand
 
     @Override
     public void canUpdate(PartyDocument partyDocument) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String mimeTypeName = edit.getMimeTypeName();
 
         mimeType = coreControl.getMimeTypeByName(mimeTypeName);
@@ -203,7 +203,7 @@ public class EditPartyDocumentCommand
 
     @Override
     public void doUpdate(PartyDocument partyDocument) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         PartyDocumentValue partyDocumentValue = documentControl.getPartyDocumentValueForUpdate(partyDocument);
         Document document = partyDocument.getDocument();
         DocumentDetailValue documentDetailValue = documentControl.getDocumentDetailValueForUpdate(document);
@@ -227,7 +227,7 @@ public class EditPartyDocumentCommand
     }
 
     private void doLobUpdate(Document document, ByteArray blob, String clob) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentBlob documentBlob = null;
         DocumentClob documentClob = null;
         String oldEntityAttributeTypeName = document.getLastDetail().getMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
@@ -262,7 +262,7 @@ public class EditPartyDocumentCommand
     }
 
     private void doDescriptionUpdate(Document document) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         DocumentDescription documentDescription = documentControl.getDocumentDescriptionForUpdate(document, getPreferredLanguage());
         String description = edit.getDescription();
         PartyPK partyPK = getPartyPK();

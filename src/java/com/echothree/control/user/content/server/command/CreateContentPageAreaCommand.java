@@ -82,7 +82,7 @@ public class CreateContentPageAreaCommand
     
     @Override
     protected BaseResult execute() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -100,7 +100,7 @@ public class CreateContentPageAreaCommand
                     ContentPageLayoutArea contentPageLayoutArea = contentControl.getContentPageLayoutArea(contentPageLayout, sortOrder);
                     
                     if(contentPageLayoutArea != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         String languageIsoName = form.getLanguageIsoName();
                         Language language = partyControl.getLanguageByIsoName(languageIsoName);
                         
@@ -108,7 +108,7 @@ public class CreateContentPageAreaCommand
                             ContentPageArea contentPageArea = contentControl.getContentPageArea(contentPage, contentPageLayoutArea, language);
                             
                             if(contentPageArea == null) {
-                                CoreControl coreControl = getCoreControl();
+                                var coreControl = getCoreControl();
                                 String mimeTypeName = form.getMimeTypeName();
                                 MimeType mimeType = coreControl.getMimeTypeByName(mimeTypeName);
                                 

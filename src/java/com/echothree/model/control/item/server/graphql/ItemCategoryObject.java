@@ -94,8 +94,8 @@ public class ItemCategoryObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return itemControl.getBestItemCategoryDescription(itemCategory, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));

@@ -88,14 +88,14 @@ public class EditWarehouseCommand
     
     @Override
     protected BaseResult execute() {
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         EditWarehouseResult result = WarehouseResultFactory.getEditWarehouseResult();
         String originalWarehouseName = spec.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByNameForUpdate(originalWarehouseName);
         
         if(warehouse != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-            PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
             Party party = warehouse.getParty();
             
             if(editMode.equals(EditMode.LOCK)) {
@@ -170,7 +170,7 @@ public class EditWarehouseCommand
                                                 if(preferredCurrencyIsoName == null) {
                                                     preferredCurrency = null;
                                                 } else {
-                                                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
 
                                                     preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
                                                 }

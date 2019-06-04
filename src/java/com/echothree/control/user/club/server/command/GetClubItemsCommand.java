@@ -50,7 +50,7 @@ public class GetClubItemsCommand
     
     @Override
     protected BaseResult execute() {
-        ClubControl clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
         GetClubItemsResult result = ClubResultFactory.getGetClubItemsResult();
         String clubName = form.getClubName();
         Club club = clubControl.getClubByName(clubName);

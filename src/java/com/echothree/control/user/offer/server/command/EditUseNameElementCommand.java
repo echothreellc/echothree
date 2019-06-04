@@ -82,7 +82,7 @@ public class EditUseNameElementCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         EditUseNameElementResult result = OfferResultFactory.getEditUseNameElementResult();
         
         if(editMode.equals(EditMode.LOCK)) {

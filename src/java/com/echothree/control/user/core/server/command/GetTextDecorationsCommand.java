@@ -62,7 +62,7 @@ public class GetTextDecorationsCommand
     
     @Override
     protected Collection<TextDecoration> getEntities() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         
         return coreControl.getTextDecorations();
     }
@@ -70,7 +70,7 @@ public class GetTextDecorationsCommand
     @Override
     protected BaseResult getTransfers(Collection<TextDecoration> entities) {
         GetTextDecorationsResult result = CoreResultFactory.getGetTextDecorationsResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         UserVisit userVisit = getUserVisit();
         
         result.setTextDecorations(coreControl.getTextDecorationTransfers(userVisit, entities));

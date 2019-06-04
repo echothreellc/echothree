@@ -65,7 +65,7 @@ public class CreateFontWeightCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String fontWeightName = form.getFontWeightName();
         FontWeight fontWeight = coreControl.getFontWeightByName(fontWeightName);
         

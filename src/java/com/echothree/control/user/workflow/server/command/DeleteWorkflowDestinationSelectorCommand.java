@@ -57,7 +57,7 @@ public class DeleteWorkflowDestinationSelectorCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);
         
@@ -73,7 +73,7 @@ public class DeleteWorkflowDestinationSelectorCommand
                     WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
                     
                     if(workflowDestination != null) {
-                        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                         String selectorName = form.getSelectorName();
                         Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
                         

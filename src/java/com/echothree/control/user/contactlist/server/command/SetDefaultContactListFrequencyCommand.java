@@ -61,7 +61,7 @@ public class SetDefaultContactListFrequencyCommand
     
     @Override
     protected BaseResult execute() {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         String contactListFrequencyName = form.getContactListFrequencyName();
         ContactListFrequencyDetailValue contactListFrequencyDetailValue = contactListControl.getContactListFrequencyDetailValueByNameForUpdate(contactListFrequencyName);
         

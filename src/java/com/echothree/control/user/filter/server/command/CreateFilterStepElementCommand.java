@@ -66,7 +66,7 @@ public class CreateFilterStepElementCommand
     
     @Override
     protected BaseResult execute() {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
         
@@ -91,7 +91,7 @@ public class CreateFilterStepElementCommand
                             Selector filterItemSelector = null;
                             
                             if(filterItemSelectorName != null) {
-                                SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+                                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
                                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
                                 
                                 if(selectorKind != null) {

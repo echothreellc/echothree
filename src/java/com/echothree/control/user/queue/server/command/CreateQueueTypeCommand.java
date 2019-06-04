@@ -66,7 +66,7 @@ public class CreateQueueTypeCommand
     
     @Override
     protected BaseResult execute() {
-        QueueControl queueControl = (QueueControl)Session.getModelController(QueueControl.class);
+        var queueControl = (QueueControl)Session.getModelController(QueueControl.class);
         String queueTypeName = form.getQueueTypeName();
         QueueType queueType = queueControl.getQueueTypeByName(queueTypeName);
         

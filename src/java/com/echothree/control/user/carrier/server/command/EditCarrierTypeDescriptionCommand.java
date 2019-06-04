@@ -87,13 +87,13 @@ public class EditCarrierTypeDescriptionCommand
 
     @Override
     public CarrierTypeDescription getEntity(EditCarrierTypeDescriptionResult result) {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
         CarrierTypeDescription carrierTypeDescription = null;
         String carrierTypeName = spec.getCarrierTypeName();
         CarrierType carrierType = carrierControl.getCarrierTypeByName(carrierTypeName);
 
         if(carrierType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditCarrierTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditCarrierTypeDescriptionResult result, CarrierTypeDescription carrierTypeDescription) {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
 
         result.setCarrierTypeDescription(carrierControl.getCarrierTypeDescriptionTransfer(getUserVisit(), carrierTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditCarrierTypeDescriptionCommand
 
     @Override
     public void doUpdate(CarrierTypeDescription carrierTypeDescription) {
-        CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
+        var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
         CarrierTypeDescriptionValue carrierTypeDescriptionValue = carrierControl.getCarrierTypeDescriptionValue(carrierTypeDescription);
         
         carrierTypeDescriptionValue.setDescription(edit.getDescription());

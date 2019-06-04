@@ -61,7 +61,7 @@ public class SetDefaultVendorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         String vendorTypeName = form.getVendorTypeName();
         VendorTypeDetailValue vendorTypeDetailValue = vendorControl.getVendorTypeDetailValueByNameForUpdate(vendorTypeName);
         

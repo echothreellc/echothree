@@ -53,7 +53,7 @@ public class DeleteFilterCommand
     
     @Override
     protected BaseResult execute() {
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
         
@@ -66,7 +66,7 @@ public class DeleteFilterCommand
                 Filter filter = filterControl.getFilterByNameForUpdate(filterType, filterName);
                 
                 if(filter != null) {
-                    OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+                    var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
                     long count = offerControl.countOffersByFilter(filter);
                     
                     if(count == 0) {

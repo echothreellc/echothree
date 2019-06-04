@@ -40,7 +40,7 @@ public class UseLogic
     }
     
     public Use getUseByName(final ExecutionErrorAccumulator eea, final String useName) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Use use = offerControl.getUseByName(useName);
 
         if(use == null) {

@@ -75,13 +75,13 @@ public class EditItemCountryOfOriginCommand
 
     @Override
     public ItemCountryOfOrigin getEntity(EditItemCountryOfOriginResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemCountryOfOrigin itemCountryOfOrigin = null;
         String itemName = spec.getItemName();
         Item item = itemControl.getItemByName(itemName);
 
         if(item != null) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             String countryName = spec.getCountryName();
             GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
             
@@ -112,21 +112,21 @@ public class EditItemCountryOfOriginCommand
 
     @Override
     public void fillInResult(EditItemCountryOfOriginResult result, ItemCountryOfOrigin itemCountryOfOrigin) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemCountryOfOrigin(itemControl.getItemCountryOfOriginTransfer(getUserVisit(), itemCountryOfOrigin));
     }
 
     @Override
     public void doLock(ItemCountryOfOriginEdit edit, ItemCountryOfOrigin itemCountryOfOrigin) {
-        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+        var uomControl = (UomControl)Session.getModelController(UomControl.class);
 
         edit.setPercent(PercentUtils.getInstance().formatFractionalPercent(itemCountryOfOrigin.getPercent()));
     }
 
     @Override
     public void doUpdate(ItemCountryOfOrigin itemCountryOfOrigin) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemCountryOfOriginValue itemCountryOfOriginValue = itemControl.getItemCountryOfOriginValue(itemCountryOfOrigin);
 
         itemCountryOfOriginValue.setPercent(Integer.valueOf(edit.getPercent()));

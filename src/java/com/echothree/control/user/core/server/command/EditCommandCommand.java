@@ -78,7 +78,7 @@ public class EditCommandCommand
     
     @Override
     public Command getEntity(EditCommandResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         Command command = null;
         String componentVendorName = spec.getComponentVendorName();
         
@@ -110,14 +110,14 @@ public class EditCommandCommand
 
     @Override
     public void fillInResult(EditCommandResult result, Command command) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setCommand(coreControl.getCommandTransfer(getUserVisit(), command));
     }
 
     @Override
     public void doLock(CommandEdit edit, Command command) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         CommandDescription commandDescription = coreControl.getCommandDescription(command, getPreferredLanguage());
         CommandDetail commandDetail = command.getLastDetail();
 
@@ -131,7 +131,7 @@ public class EditCommandCommand
 
     @Override
     public void canUpdate(Command command) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String commandName = edit.getCommandName();
         Command duplicateCommand = coreControl.getCommandByName(componentVendor, commandName);
 
@@ -142,7 +142,7 @@ public class EditCommandCommand
 
     @Override
     public void doUpdate(Command command) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         CommandDetailValue commandDetailValue = coreControl.getCommandDetailValueForUpdate(command);
         CommandDescription commandDescription = coreControl.getCommandDescriptionForUpdate(command, getPreferredLanguage());

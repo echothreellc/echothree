@@ -92,7 +92,7 @@ public class EditPicklistTimeTypeCommand
 
     @Override
     public PicklistTimeType getEntity(EditPicklistTimeTypeResult result) {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         PicklistTimeType picklistTimeType = null;
         String picklistTypeName = spec.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
@@ -125,14 +125,14 @@ public class EditPicklistTimeTypeCommand
 
     @Override
     public void fillInResult(EditPicklistTimeTypeResult result, PicklistTimeType picklistTimeType) {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
 
         result.setPicklistTimeType(picklistControl.getPicklistTimeTypeTransfer(getUserVisit(), picklistTimeType));
     }
 
     @Override
     public void doLock(PicklistTimeTypeEdit edit, PicklistTimeType picklistTimeType) {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         PicklistTimeTypeDescription picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescription(picklistTimeType, getPreferredLanguage());
         PicklistTimeTypeDetail picklistTimeTypeDetail = picklistTimeType.getLastDetail();
 
@@ -147,7 +147,7 @@ public class EditPicklistTimeTypeCommand
 
     @Override
     public void canUpdate(PicklistTimeType picklistTimeType) {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         String picklistTypeName = spec.getPicklistTypeName();
         PicklistType picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
@@ -165,7 +165,7 @@ public class EditPicklistTimeTypeCommand
 
     @Override
     public void doUpdate(PicklistTimeType picklistTimeType) {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         PartyPK partyPK = getPartyPK();
         PicklistTimeTypeDetailValue picklistTimeTypeDetailValue = picklistControl.getPicklistTimeTypeDetailValueForUpdate(picklistTimeType);
         PicklistTimeTypeDescription picklistTimeTypeDescription = picklistControl.getPicklistTimeTypeDescriptionForUpdate(picklistTimeType, getPreferredLanguage());

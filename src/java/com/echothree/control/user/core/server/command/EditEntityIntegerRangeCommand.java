@@ -99,7 +99,7 @@ public class EditEntityIntegerRangeCommand
     
     @Override
     public EntityIntegerRange getEntity(EditEntityIntegerRangeResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityIntegerRange entityIntegerRange = null;
         String componentVendorName = spec.getComponentVendorName();
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
@@ -145,14 +145,14 @@ public class EditEntityIntegerRangeCommand
 
     @Override
     public void fillInResult(EditEntityIntegerRangeResult result, EntityIntegerRange entityIntegerRange) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityIntegerRange(coreControl.getEntityIntegerRangeTransfer(getUserVisit(), entityIntegerRange, null));
     }
 
     @Override
     public void doLock(EntityIntegerRangeEdit edit, EntityIntegerRange entityIntegerRange) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityIntegerRangeDescription entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescription(entityIntegerRange, getPreferredLanguage());
         EntityIntegerRangeDetail entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
         Integer minimumIntegerValue = entityIntegerRangeDetail.getMinimumIntegerValue();
@@ -177,7 +177,7 @@ public class EditEntityIntegerRangeCommand
         Integer maximumIntegerValue = strMaximumIntegerValue == null ? null : Integer.valueOf(strMaximumIntegerValue);
 
         if(minimumIntegerValue == null || maximumIntegerValue == null || maximumIntegerValue >= minimumIntegerValue) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String entityIntegerRangeName = edit.getEntityIntegerRangeName();
             EntityIntegerRange duplicateEntityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
@@ -191,7 +191,7 @@ public class EditEntityIntegerRangeCommand
 
     @Override
     public void doUpdate(EntityIntegerRange entityIntegerRange) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         EntityIntegerRangeDetailValue entityIntegerRangeDetailValue = coreControl.getEntityIntegerRangeDetailValueForUpdate(entityIntegerRange);
         EntityIntegerRangeDescription entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescriptionForUpdate(entityIntegerRange, getPreferredLanguage());

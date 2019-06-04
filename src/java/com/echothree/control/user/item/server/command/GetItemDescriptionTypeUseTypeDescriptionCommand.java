@@ -68,13 +68,13 @@ public class GetItemDescriptionTypeUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemDescriptionTypeUseTypeDescriptionResult result = ItemResultFactory.getGetItemDescriptionTypeUseTypeDescriptionResult();
         String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
         ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
         
         if(itemDescriptionTypeUseType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

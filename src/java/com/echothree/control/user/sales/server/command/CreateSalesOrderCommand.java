@@ -87,7 +87,7 @@ public class CreateSalesOrderCommand
 
     @Override
     protected BaseResult execute() {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         CreateSalesOrderResult result = SalesResultFactory.getCreateSalesOrderResult();
         Order order = null;
         String batchName = form.getBatchName();

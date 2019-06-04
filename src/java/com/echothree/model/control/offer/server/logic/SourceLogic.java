@@ -40,7 +40,7 @@ public class SourceLogic
     }
     
     public Source getSourceByName(final ExecutionErrorAccumulator eea, final String sourceName) {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         Source source = offerControl.getSourceByName(sourceName);
 
         if(source == null) {

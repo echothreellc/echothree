@@ -76,7 +76,7 @@ public class GetItemHarmonizedTariffScheduleCodesCommand
         int parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1) + (harmonizedTariffScheduleCodeUseTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
             if(itemName != null) {
                 Item item = itemControl.getItemByName(itemName);
@@ -88,7 +88,7 @@ public class GetItemHarmonizedTariffScheduleCodesCommand
                     addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
                 }
             } else if(countryName != null) {
-                GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+                var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
                 GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
 
                 if(countryGeoCode != null) {

@@ -75,7 +75,7 @@ public class DeleteItemCategoryCommand
         int parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             ItemCategory itemCategory = null;
             
             if(itemCategoryName == null) {

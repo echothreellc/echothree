@@ -61,7 +61,7 @@ public class GetCommandMessageTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetCommandMessageTypeChoicesResult result = CoreResultFactory.getGetCommandMessageTypeChoicesResult();
         String defaultCommandMessageTypeChoice = form.getDefaultCommandMessageTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

@@ -89,7 +89,7 @@ public class EditTextTransformationCommand
 
     @Override
     public TextTransformation getEntity(EditTextTransformationResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         TextTransformation textTransformation;
         String textTransformationName = spec.getTextTransformationName();
 
@@ -113,14 +113,14 @@ public class EditTextTransformationCommand
 
     @Override
     public void fillInResult(EditTextTransformationResult result, TextTransformation textTransformation) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setTextTransformation(coreControl.getTextTransformationTransfer(getUserVisit(), textTransformation));
     }
 
     @Override
     public void doLock(TextTransformationEdit edit, TextTransformation textTransformation) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         TextTransformationDescription textTransformationDescription = coreControl.getTextTransformationDescription(textTransformation, getPreferredLanguage());
         TextTransformationDetail textTransformationDetail = textTransformation.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditTextTransformationCommand
 
     @Override
     public void canUpdate(TextTransformation textTransformation) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String textTransformationName = edit.getTextTransformationName();
         TextTransformation duplicateTextTransformation = coreControl.getTextTransformationByName(textTransformationName);
 
@@ -146,7 +146,7 @@ public class EditTextTransformationCommand
 
     @Override
     public void doUpdate(TextTransformation textTransformation) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         TextTransformationDetailValue textTransformationDetailValue = coreControl.getTextTransformationDetailValueForUpdate(textTransformation);
         TextTransformationDescription textTransformationDescription = coreControl.getTextTransformationDescriptionForUpdate(textTransformation, getPreferredLanguage());

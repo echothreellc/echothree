@@ -60,7 +60,7 @@ public class GetSequenceTypesCommand
     
     @Override
     protected BaseResult execute() {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         GetSequenceTypesResult result = SequenceResultFactory.getGetSequenceTypesResult();
 
         result.setSequenceTypes(sequenceControl.getSequenceTypeTransfers(getUserVisit()));

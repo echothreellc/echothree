@@ -78,7 +78,7 @@ public class GetTrackCommand
         int parameterCount = (trackName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            TrackControl trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+            var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
             Track track = null;
 
             if(trackName == null) {

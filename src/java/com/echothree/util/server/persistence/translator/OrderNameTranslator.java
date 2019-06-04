@@ -95,7 +95,7 @@ public class OrderNameTranslator
 
     @Override
     public EntityInstanceAndNames getNames(final String sequenceTypeName, final String orderName, final boolean includeEntityInstance) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String orderTypeName = sequenceTypesToOrderTypes.get(sequenceTypeName);
         EntityInstanceAndNames result = null;
         
@@ -104,7 +104,7 @@ public class OrderNameTranslator
             Order order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
-                CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
                 EntityNames entityNames = getNames(sequenceTypesToTargets, sequenceTypeName, order.getLastDetail());
             
                 result = entityNames == null ? null : new EntityInstanceAndNames(includeEntityInstance ? coreControl.getEntityInstanceByBasePK(order.getPrimaryKey()) : null, entityNames);

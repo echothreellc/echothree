@@ -104,8 +104,8 @@ public class ContentCategoryObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentCategoryDescription(contentCategory, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -114,7 +114,7 @@ public class ContentCategoryObject
     @GraphQLField
     @GraphQLDescription("content category items count")
     public Long getContentCategoryItemsCount(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         return ContentSecurityUtils.getInstance().getHasContentCategoryItemsAccess(env) ? contentControl.countContentCategoryItemsByContentCategory(contentCategory) : null;
     }
@@ -122,7 +122,7 @@ public class ContentCategoryObject
     @GraphQLField
     @GraphQLDescription("content category items")
     public List<ContentCategoryItemObject> getContentCategoryItems(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentCategoryItem> entities = ContentSecurityUtils.getInstance().getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
         List<ContentCategoryItemObject> contentCategoryItems = entities == null ? null : new ArrayList<>(entities.size());
                 

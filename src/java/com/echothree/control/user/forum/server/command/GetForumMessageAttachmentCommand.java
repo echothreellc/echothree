@@ -60,7 +60,7 @@ public class GetForumMessageAttachmentCommand
         ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
 
         if(!hasExecutionErrors()) {
-            ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+            var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
             String forumMessageName = form.getForumMessageName();
             ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 

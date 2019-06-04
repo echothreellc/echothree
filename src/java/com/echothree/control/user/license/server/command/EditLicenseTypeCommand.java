@@ -90,7 +90,7 @@ public class EditLicenseTypeCommand
 
     @Override
     public LicenseType getEntity(EditLicenseTypeResult result) {
-        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
         LicenseType licenseType;
         String licenseTypeName = spec.getLicenseTypeName();
 
@@ -114,14 +114,14 @@ public class EditLicenseTypeCommand
 
     @Override
     public void fillInResult(EditLicenseTypeResult result, LicenseType licenseType) {
-        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
 
         result.setLicenseType(licenseControl.getLicenseTypeTransfer(getUserVisit(), licenseType));
     }
 
     @Override
     public void doLock(LicenseTypeEdit edit, LicenseType licenseType) {
-        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
         LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescription(licenseType, getPreferredLanguage());
         LicenseTypeDetail licenseTypeDetail = licenseType.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditLicenseTypeCommand
 
     @Override
     public void canUpdate(LicenseType licenseType) {
-        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
         String licenseTypeName = edit.getLicenseTypeName();
         LicenseType duplicateLicenseType = licenseControl.getLicenseTypeByName(licenseTypeName);
 
@@ -147,7 +147,7 @@ public class EditLicenseTypeCommand
 
     @Override
     public void doUpdate(LicenseType licenseType) {
-        LicenseControl licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
+        var licenseControl = (LicenseControl)Session.getModelController(LicenseControl.class);
         PartyPK partyPK = getPartyPK();
         LicenseTypeDetailValue licenseTypeDetailValue = licenseControl.getLicenseTypeDetailValueForUpdate(licenseType);
         LicenseTypeDescription licenseTypeDescription = licenseControl.getLicenseTypeDescriptionForUpdate(licenseType, getPreferredLanguage());

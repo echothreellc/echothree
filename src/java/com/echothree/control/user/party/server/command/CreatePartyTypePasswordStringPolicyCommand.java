@@ -86,7 +86,7 @@ public class CreatePartyTypePasswordStringPolicyCommand
         if((minimumPasswordLifetimeParameterCount == 0 || minimumPasswordLifetimeParameterCount == 2) &&
                 (maximumPasswordLifetimeParameterCount == 0 || maximumPasswordLifetimeParameterCount == 2) &&
                 (expirationWarningTimeParameterCount == 0 || expirationWarningTimeParameterCount == 2)) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String partyTypeName = form.getPartyTypeName();
             PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
             
@@ -95,7 +95,7 @@ public class CreatePartyTypePasswordStringPolicyCommand
                     PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
 
                     if(partyTypePasswordStringPolicy == null) {
-                        UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                        var uomControl = (UomControl)Session.getModelController(UomControl.class);
                         UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
                         if(timeUnitOfMeasureKind != null) {

@@ -50,7 +50,7 @@ public class GetWorkEffortTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        WorkEffortControl workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
+        var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
         GetWorkEffortTypeDescriptionsResult result = WorkEffortResultFactory.getGetWorkEffortTypeDescriptionsResult();
         String workEffortTypeName = form.getWorkEffortTypeName();
         WorkEffortType workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);

@@ -69,12 +69,12 @@ public class CreatePartyTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String partyName = form.getPartyName();
         Party party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+            var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
             String trainingClassName = form.getTrainingClassName();
             TrainingClass trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 

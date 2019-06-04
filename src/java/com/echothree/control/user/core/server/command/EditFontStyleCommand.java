@@ -89,7 +89,7 @@ public class EditFontStyleCommand
 
     @Override
     public FontStyle getEntity(EditFontStyleResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         FontStyle fontStyle;
         String fontStyleName = spec.getFontStyleName();
 
@@ -113,14 +113,14 @@ public class EditFontStyleCommand
 
     @Override
     public void fillInResult(EditFontStyleResult result, FontStyle fontStyle) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setFontStyle(coreControl.getFontStyleTransfer(getUserVisit(), fontStyle));
     }
 
     @Override
     public void doLock(FontStyleEdit edit, FontStyle fontStyle) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         FontStyleDescription fontStyleDescription = coreControl.getFontStyleDescription(fontStyle, getPreferredLanguage());
         FontStyleDetail fontStyleDetail = fontStyle.getLastDetail();
 
@@ -135,7 +135,7 @@ public class EditFontStyleCommand
 
     @Override
     public void canUpdate(FontStyle fontStyle) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String fontStyleName = edit.getFontStyleName();
         FontStyle duplicateFontStyle = coreControl.getFontStyleByName(fontStyleName);
 
@@ -146,7 +146,7 @@ public class EditFontStyleCommand
 
     @Override
     public void doUpdate(FontStyle fontStyle) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         FontStyleDetailValue fontStyleDetailValue = coreControl.getFontStyleDetailValueForUpdate(fontStyle);
         FontStyleDescription fontStyleDescription = coreControl.getFontStyleDescriptionForUpdate(fontStyle, getPreferredLanguage());

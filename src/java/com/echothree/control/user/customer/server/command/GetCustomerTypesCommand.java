@@ -61,7 +61,7 @@ public class GetCustomerTypesCommand
     @Override
     protected BaseResult execute() {
         GetCustomerTypesResult result = CustomerResultFactory.getGetCustomerTypesResult();
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         
         result.setCustomerTypes(customerControl.getCustomerTypeTransfers(getUserVisit()));
         

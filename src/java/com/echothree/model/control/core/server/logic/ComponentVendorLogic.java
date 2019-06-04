@@ -40,7 +40,7 @@ public class ComponentVendorLogic
     }
     
     public ComponentVendor getComponentVendorByName(final ExecutionErrorAccumulator eea, final String componentVendorName) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor == null) {

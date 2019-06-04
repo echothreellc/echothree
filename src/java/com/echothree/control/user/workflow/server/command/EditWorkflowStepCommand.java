@@ -85,7 +85,7 @@ public class EditWorkflowStepCommand
     
     @Override
     protected BaseResult execute() {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         EditWorkflowStepResult result = WorkflowResultFactory.getEditWorkflowStepResult();
         String workflowName = spec.getWorkflowName();
         Workflow workflow = workflowControl.getWorkflowByName(workflowName);

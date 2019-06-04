@@ -73,7 +73,7 @@ public class CreateCommentTypeCommand
         int parameterCount = (workflowName == null? 0: 1) + (workflowEntranceName == null? 0: 1);
         
         if(parameterCount == 0 || parameterCount == 2) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             String componentVendorName = form.getComponentVendorName();
             ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
             
@@ -82,7 +82,7 @@ public class CreateCommentTypeCommand
                 EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
                 
                 if(entityType != null) {
-                    CommentControl commentControl = (CommentControl)Session.getModelController(CommentControl.class);
+                    var commentControl = (CommentControl)Session.getModelController(CommentControl.class);
                     String commentTypeName = form.getCommentTypeName();
                     CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
                     
@@ -91,7 +91,7 @@ public class CreateCommentTypeCommand
                         Sequence commentSequence = null;
                         
                         if(commentSequenceName != null) {
-                            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                             SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_COMMENT);
                             
                             if(sequenceType != null) {
@@ -105,7 +105,7 @@ public class CreateCommentTypeCommand
                             WorkflowEntrance workflowEntrance = null;
                             
                             if(parameterCount != 0) {
-                                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                 Workflow workflow = workflowControl.getWorkflowByName(workflowName);
                                 
                                 if(workflow != null) {

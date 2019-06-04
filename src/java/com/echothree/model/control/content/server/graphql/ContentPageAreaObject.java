@@ -73,7 +73,7 @@ public class ContentPageAreaObject
     private ContentPageAreaClob getContentPageAreaClob() {
         if(contentPageAreaClob == null) {
             if(getContentPageAreaTypeName().equals(ContentPageAreaTypes.CLOB.name())) {
-                ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+                var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
                 contentPageAreaClob = contentControl.getContentPageAreaClob(getContentPageAreaDetail());
             }
@@ -86,7 +86,7 @@ public class ContentPageAreaObject
 
     private ContentPageAreaString getContentPageAreaString() {
         if(contentPageAreaString == null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             contentPageAreaString = contentControl.getContentPageAreaString(getContentPageAreaDetail());
         }
@@ -99,7 +99,7 @@ public class ContentPageAreaObject
     private ContentPageAreaUrl getContentPageAreaUrl() {
         if(contentPageAreaUrl == null) {
             if(getContentPageAreaTypeName().equals(ContentPageAreaTypes.LINK.name())) {
-                ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+                var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
                 contentPageAreaUrl = contentControl.getContentPageAreaUrl(getContentPageAreaDetail());
             }

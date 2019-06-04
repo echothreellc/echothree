@@ -75,7 +75,7 @@ public class SearchLogic
     }
     
     public SearchDefaultOperator getSearchDefaultOperatorByName(final ExecutionErrorAccumulator eea, final String searchDefaultOperatorName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchDefaultOperator searchDefaultOperator = searchControl.getSearchDefaultOperatorByName(searchDefaultOperatorName);
 
         if(searchDefaultOperator == null) {
@@ -86,7 +86,7 @@ public class SearchLogic
     }
     
     public SearchDefaultOperator getDefaultSearchDefaultOperator(final ExecutionErrorAccumulator eea) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchDefaultOperator searchDefaultOperator = searchControl.getDefaultSearchDefaultOperator();
 
         if(searchDefaultOperator == null) {
@@ -97,7 +97,7 @@ public class SearchLogic
     }
 
     public SearchSortDirection getSearchSortDirectionByName(final ExecutionErrorAccumulator eea, final String searchSortDirectionName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchSortDirection searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
 
         if(searchSortDirection == null) {
@@ -108,7 +108,7 @@ public class SearchLogic
     }
     
     public SearchSortDirection getDefaultSearchSortDirection(final ExecutionErrorAccumulator eea) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchSortDirection searchSortDirection = searchControl.getDefaultSearchSortDirection();
 
         if(searchSortDirection == null) {
@@ -119,7 +119,7 @@ public class SearchLogic
     }
 
     public SearchUseType getSearchUseTypeByName(final ExecutionErrorAccumulator eea, final String searchUseTypeName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchUseType searchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
         if(searchUseType == null) {
@@ -130,7 +130,7 @@ public class SearchLogic
     }
     
     public SearchResultActionType getSearchResultActionTypeByName(final ExecutionErrorAccumulator eea, final String searchResultActionTypeName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchResultActionType searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
 
         if(searchResultActionType == null) {
@@ -141,7 +141,7 @@ public class SearchLogic
     }
     
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(final ExecutionErrorAccumulator eea, final String searchCheckSpellingActionTypeName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
 
         if(searchCheckSpellingActionType == null) {
@@ -152,13 +152,13 @@ public class SearchLogic
     }
     
     public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransferByName(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchCheckSpellingActionTypeName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         
         return searchControl.getSearchCheckSpellingActionTypeTransfer(userVisit, getSearchCheckSpellingActionTypeByName(eea, searchCheckSpellingActionTypeName));
     }
     
     public SearchKind getSearchKindByName(final ExecutionErrorAccumulator eea, final String searchKindName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
 
         if(searchKind == null) {
@@ -169,7 +169,7 @@ public class SearchLogic
     }
 
     public SearchType getSearchTypeByName(final ExecutionErrorAccumulator eea, final SearchKind searchKind, final String searchTypeName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
 
         if(searchType == null) {
@@ -187,7 +187,7 @@ public class SearchLogic
     }
     
     public SearchSortOrder getSearchSortOrderByName(final ExecutionErrorAccumulator eea, final SearchKind searchKind, final String searchSortOrderName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchSortOrder searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
 
         if(searchSortOrder == null) {
@@ -205,7 +205,7 @@ public class SearchLogic
     }
     
     public SearchSortOrder getDefaultSearchSortOrder(final ExecutionErrorAccumulator eea, final SearchKind searchKind) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchSortOrder searchSortOrder = searchControl.getDefaultSearchSortOrder(searchKind);
 
         if(searchSortOrder == null) {
@@ -223,7 +223,7 @@ public class SearchLogic
     }
     
     public UserVisitSearch getUserVisitSearch(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final SearchType searchType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
         
         if(userVisitSearch == null) {
@@ -243,7 +243,7 @@ public class SearchLogic
     
     public void removeUserVisitSearch(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchKindName,
             final String searchTypeName) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         UserVisitSearch userVisitSearch = getUserVisitSearchByName(eea, userVisit, searchKindName, searchTypeName);
 
         if(!hasExecutionErrors(eea)) {
@@ -252,7 +252,7 @@ public class SearchLogic
     }
     
     public Integer countSearchResults(final Search search) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         CachedSearch cachedSearch = search.getCachedSearch();
         int count;
         
@@ -284,8 +284,8 @@ public class SearchLogic
             SearchResultActionType searchResultActionType = getSearchResultActionTypeByName(eea, searchResultActionTypeName);
             
             if(eea == null || !eea.hasExecutionErrors()) {
-                CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-                SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+                var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
                 Search search = userVisitSearch.getSearch();
                 CachedSearch cachedSearch = search.getCachedSearch();
                 BasePK basePK = baseEntity.getPrimaryKey();

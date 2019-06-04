@@ -82,7 +82,7 @@ public class EditOfferUseCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         EditOfferUseResult result = OfferResultFactory.getEditOfferUseResult();
         String offerName = spec.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
@@ -121,7 +121,7 @@ public class EditOfferUseCommand
                         Sequence salesOrderSequence = null;
                         
                         if(salesOrderSequenceName != null) {
-                            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                             SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_SALES_ORDER);
                             
                             if(sequenceType != null) {

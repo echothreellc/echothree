@@ -90,7 +90,7 @@ public class DocumentLogic
         }
 
         if(!hasErrors) {
-            DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+            var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
 
             document = documentControl.createDocument(documentType, mimeType, pages, createdBy);
 
@@ -111,7 +111,7 @@ public class DocumentLogic
     public PartyDocument createPartyDocument(final ExecutionErrorAccumulator ema, final Party party, final DocumentType documentType, final MimeType mimeType,
             final Boolean isDefault, final Integer sortOrder,  final Language preferredLanguage, final String description, final ByteArray blob,
             final String clob, final PartyPK createdBy) {
-        DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+        var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
         Document document = createDocument(ema, documentType, mimeType, preferredLanguage, description, blob, clob, createdBy);
 
         return document == null ? null : documentControl.createPartyDocument(party, document, isDefault, sortOrder, createdBy);

@@ -55,7 +55,7 @@ public class PicklistTimeLogic {
 
     public void createOrUpdatePicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName, final Long time,
             final BasePK partyPK) {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         PicklistDetail picklistDetail = picklist.getLastDetail();
         PicklistType picklistType = picklistDetail.getPicklistType();
         PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
@@ -77,7 +77,7 @@ public class PicklistTimeLogic {
     }
 
     public Long getPicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName) {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         PicklistDetail picklistDetail = picklist.getLastDetail();
         PicklistType picklistType = picklistDetail.getPicklistType();
         PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);
@@ -103,7 +103,7 @@ public class PicklistTimeLogic {
     }
 
     public void deletePicklistTime(final ExecutionErrorAccumulator ema, final Picklist picklist, final String picklistTimeTypeName, final BasePK deletedBy) {
-        PicklistControl picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
+        var picklistControl = (PicklistControl)Session.getModelController(PicklistControl.class);
         PicklistDetail picklistDetail = picklist.getLastDetail();
         PicklistType picklistType = picklistDetail.getPicklistType();
         PicklistTimeType picklistTimeType = picklistControl.getPicklistTimeTypeByName(picklistType, picklistTimeTypeName);

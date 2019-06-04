@@ -150,7 +150,7 @@ public class EditEntityAttributeCommand
 
     @Override
     public void fillInResult(EditEntityAttributeResult result, EntityAttribute entityAttribute) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityAttribute(coreControl.getEntityAttributeTransfer(getUserVisit(), entityAttribute, null));
     }
@@ -160,7 +160,7 @@ public class EditEntityAttributeCommand
     
     @Override
     public void doLock(EntityAttributeEdit edit, EntityAttribute entityAttribute) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttributeDescription entityAttributeDescription = coreControl.getEntityAttributeDescription(entityAttribute, getPreferredLanguage());
         EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
         String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
@@ -250,7 +250,7 @@ public class EditEntityAttributeCommand
 
     @Override
     public void canUpdate(EntityAttribute entityAttribute) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String entityAttributeName = edit.getEntityAttributeName();
         EntityAttribute duplicateEntityAttribute = coreControl.getEntityAttributeByName(entityAttribute.getLastDetail().getEntityType(),
                 entityAttributeName);
@@ -265,7 +265,7 @@ public class EditEntityAttributeCommand
                 SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceConstants.SequenceType_ENTITY_LIST_ITEM);
 
                 if(!hasExecutionErrors()) {
-                    SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                    var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
                     entityListItemSequence = sequenceControl.getSequenceByName(sequenceType, entityListItemSequenceName);
 
@@ -295,7 +295,7 @@ public class EditEntityAttributeCommand
 
     @Override
     public void doUpdate(EntityAttribute entityAttribute) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         EntityAttributeDetailValue entityAttributeDetailValue = coreControl.getEntityAttributeDetailValueForUpdate(entityAttribute);
         EntityAttributeDescription entityAttributeDescription = coreControl.getEntityAttributeDescriptionForUpdate(entityAttribute, getPreferredLanguage());

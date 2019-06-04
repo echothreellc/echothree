@@ -62,7 +62,7 @@ public class GetPartySecurityRoleTemplateChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        SecurityControl coreControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+        var coreControl = (SecurityControl)Session.getModelController(SecurityControl.class);
         GetPartySecurityRoleTemplateChoicesResult result = SecurityResultFactory.getGetPartySecurityRoleTemplateChoicesResult();
         String defaultPartySecurityRoleTemplateChoice = form.getDefaultPartySecurityRoleTemplateChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

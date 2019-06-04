@@ -65,7 +65,7 @@ public class GetShipmentTimeTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         GetShipmentTimeTypeChoicesResult result = ShipmentResultFactory.getGetShipmentTimeTypeChoicesResult();
         String shipmentTypeName = form.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);

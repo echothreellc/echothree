@@ -93,7 +93,7 @@ public class EditLetterSourceCommand
     
     @Override
     protected BaseResult execute() {
-        LetterControl letterControl = (LetterControl)Session.getModelController(LetterControl.class);
+        var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
         EditLetterSourceResult result = LetterResultFactory.getEditLetterSourceResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -135,7 +135,7 @@ public class EditLetterSourceCommand
                 LetterSource duplicateLetterSource = letterControl.getLetterSourceByName(letterSourceName);
                 
                 if(duplicateLetterSource == null || letterSource.equals(duplicateLetterSource)) {
-                    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                    var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                     Party companyParty = letterSource.getLastDetail().getCompanyParty();
                     LetterSourceCommandUtil letterSourceCommandUtil = LetterSourceCommandUtil.getInstance();
                     PartyContactMechanism emailAddressPartyContactMechanism = letterSourceCommandUtil.getEmailAddressContactMechanism(this, edit, contactControl,

@@ -56,7 +56,7 @@ public class GetPartyDocumentCommand
         ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
         
         if(!hasExecutionErrors()) {
-            DocumentControl documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
+            var documentControl = (DocumentControl)Session.getModelController(DocumentControl.class);
             String documentName = form.getDocumentName();
             Document document = documentControl.getDocumentByName(documentName);
 

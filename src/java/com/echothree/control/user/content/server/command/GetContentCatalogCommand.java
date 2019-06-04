@@ -67,7 +67,7 @@ public class GetContentCatalogCommand
         ContentCatalog contentCatalog = null;
 
         if(parameterCount == 1) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             ContentCollection contentCollection = null;
 
             if(contentWebAddressName != null) {
@@ -117,7 +117,7 @@ public class GetContentCatalogCommand
         GetContentCatalogResult result = ContentResultFactory.getGetContentCatalogResult();
 
         if(contentCatalog != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             result.setContentCatalog(contentControl.getContentCatalogTransfer(getUserVisit(), contentCatalog));
         }

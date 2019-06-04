@@ -87,13 +87,13 @@ public class EditPrinterGroupDescriptionCommand
 
     @Override
     public PrinterGroupDescription getEntity(EditPrinterGroupDescriptionResult result) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PrinterGroupDescription printerGroupDescription = null;
         String printerGroupName = spec.getPrinterGroupName();
         PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
 
         if(printerGroup != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditPrinterGroupDescriptionCommand
 
     @Override
     public void fillInResult(EditPrinterGroupDescriptionResult result, PrinterGroupDescription printerGroupDescription) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
 
         result.setPrinterGroupDescription(printerControl.getPrinterGroupDescriptionTransfer(getUserVisit(), printerGroupDescription));
     }
@@ -136,7 +136,7 @@ public class EditPrinterGroupDescriptionCommand
 
     @Override
     public void doUpdate(PrinterGroupDescription printerGroupDescription) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PrinterGroupDescriptionValue printerGroupDescriptionValue = printerControl.getPrinterGroupDescriptionValue(printerGroupDescription);
 
         printerGroupDescriptionValue.setDescription(edit.getDescription());

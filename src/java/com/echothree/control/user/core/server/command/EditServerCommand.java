@@ -89,7 +89,7 @@ public class EditServerCommand
 
     @Override
     public Server getEntity(EditServerResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         Server server = null;
         String serverName = spec.getServerName();
 
@@ -115,14 +115,14 @@ public class EditServerCommand
 
     @Override
     public void fillInResult(EditServerResult result, Server server) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setServer(coreControl.getServerTransfer(getUserVisit(), server));
     }
 
     @Override
     public void doLock(ServerEdit edit, Server server) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         ServerDescription serverDescription = coreControl.getServerDescription(server, getPreferredLanguage());
         ServerDetail serverDetail = server.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditServerCommand
 
     @Override
     public void canUpdate(Server server) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String serverName = edit.getServerName();
         Server duplicateServer = coreControl.getServerByName(serverName);
 
@@ -148,7 +148,7 @@ public class EditServerCommand
 
     @Override
     public void doUpdate(Server server) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         PartyPK partyPK = getPartyPK();
         ServerDetailValue serverDetailValue = coreControl.getServerDetailValueForUpdate(server);
         ServerDescription serverDescription = coreControl.getServerDescriptionForUpdate(server, getPreferredLanguage());

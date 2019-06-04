@@ -76,14 +76,14 @@ public class GetRecoveryAnswerCommand
             Party party = null;
             
             if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 
                 party = partyControl.getPartyByName(partyName);
                 if(party == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(employeeName != null) {
-                EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+                var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
                 PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
                 
                 if(partyEmployee != null) {
@@ -92,7 +92,7 @@ public class GetRecoveryAnswerCommand
                     addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else if(customerName != null) {
-                CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
                 Customer customer = customerControl.getCustomerByName(customerName);
                 
                 if(customer != null) {
@@ -101,7 +101,7 @@ public class GetRecoveryAnswerCommand
                     addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
                 }
             } else if(vendorName != null) {
-                VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
                 Vendor vendor = vendorControl.getVendorByName(vendorName);
                 
                 if(vendor != null) {

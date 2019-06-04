@@ -60,7 +60,7 @@ public class GetVendorTypesCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         GetVendorTypesResult result = VendorResultFactory.getGetVendorTypesResult();
         
         result.setVendorTypes(vendorControl.getVendorTypeTransfers(getUserVisit()));

@@ -56,7 +56,7 @@ public class GetSalesOrderResultsCommand
     @Override
     protected BaseResult execute() {
         GetSalesOrderResultsResult result = SearchResultFactory.getGetSalesOrderResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_SALES_ORDER);
         
         if(searchKind != null) {

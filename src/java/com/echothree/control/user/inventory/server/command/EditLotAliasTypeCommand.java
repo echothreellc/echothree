@@ -95,7 +95,7 @@ public class EditLotAliasTypeCommand
 
     @Override
     public LotAliasType getEntity(EditLotAliasTypeResult result) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotAliasType lotAliasType = null;
         String lotTypeName = spec.getLotTypeName();
 
@@ -129,14 +129,14 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void fillInResult(EditLotAliasTypeResult result, LotAliasType lotAliasType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
 
         result.setLotAliasType(inventoryControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
     }
 
     @Override
     public void doLock(LotAliasTypeEdit edit, LotAliasType lotAliasType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotAliasTypeDescription lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescription(lotAliasType, getPreferredLanguage());
         LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
 
@@ -152,7 +152,7 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void canUpdate(LotAliasType lotAliasType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String lotAliasTypeName = edit.getLotAliasTypeName();
         LotAliasType duplicateLotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
 
@@ -163,7 +163,7 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void doUpdate(LotAliasType lotAliasType) {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         PartyPK partyPK = getPartyPK();
         LotAliasTypeDetailValue lotAliasTypeDetailValue = inventoryControl.getLotAliasTypeDetailValueForUpdate(lotAliasType);
         LotAliasTypeDescription lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, getPreferredLanguage());

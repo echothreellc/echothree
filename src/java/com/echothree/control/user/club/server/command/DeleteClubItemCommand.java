@@ -54,7 +54,7 @@ public class DeleteClubItemCommand
     
     @Override
     protected BaseResult execute() {
-        ClubControl clubControl = (ClubControl)Session.getModelController(ClubControl.class);
+        var clubControl = (ClubControl)Session.getModelController(ClubControl.class);
         String clubName = form.getClubName();
         Club club = clubControl.getClubByName(clubName);
         
@@ -63,7 +63,7 @@ public class DeleteClubItemCommand
             ClubItemType clubItemType = clubControl.getClubItemTypeByName(clubItemTypeName);
             
             if(clubItemType != null) {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                 String itemName = form.getItemName();
                 Item item = itemControl.getItemByName(itemName);
                 

@@ -46,7 +46,7 @@ public class GetGendersCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetGendersResult result = PartyResultFactory.getGetGendersResult();
         
         result.setGenders(partyControl.getGenderTransfers(getUserVisit()));

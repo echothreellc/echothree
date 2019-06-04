@@ -61,7 +61,7 @@ public class GetItemDescriptionTypeUseTypesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemDescriptionTypeUseTypesResult result = ItemResultFactory.getGetItemDescriptionTypeUseTypesResult();
         UserVisit userVisit = getUserVisit();
 

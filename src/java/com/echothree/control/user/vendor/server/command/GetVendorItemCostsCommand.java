@@ -68,7 +68,7 @@ public class GetVendorItemCostsCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         GetVendorItemCostsResult result = VendorResultFactory.getGetVendorItemCostsResult();
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);

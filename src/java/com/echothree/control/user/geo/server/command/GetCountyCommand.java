@@ -82,7 +82,7 @@ public class GetCountyCommand
         int parameterCount = (countyName == null? 0: 1) + (countyNumber == null? 0: 1);
         
         if(parameterCount == 1) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             BasePK createdBy = getPartyPK();
             
             String stateGeoCodeName = form.getStateGeoCodeName();

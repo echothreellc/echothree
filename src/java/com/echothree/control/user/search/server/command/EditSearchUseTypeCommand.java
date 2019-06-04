@@ -90,7 +90,7 @@ public class EditSearchUseTypeCommand
 
     @Override
     public SearchUseType getEntity(EditSearchUseTypeResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchUseType searchUseType;
         String searchUseTypeName = spec.getSearchUseTypeName();
 
@@ -114,14 +114,14 @@ public class EditSearchUseTypeCommand
 
     @Override
     public void fillInResult(EditSearchUseTypeResult result, SearchUseType searchUseType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchUseType(searchControl.getSearchUseTypeTransfer(getUserVisit(), searchUseType));
     }
 
     @Override
     public void doLock(SearchUseTypeEdit edit, SearchUseType searchUseType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchUseTypeDescription searchUseTypeDescription = searchControl.getSearchUseTypeDescription(searchUseType, getPreferredLanguage());
         SearchUseTypeDetail searchUseTypeDetail = searchUseType.getLastDetail();
 
@@ -136,7 +136,7 @@ public class EditSearchUseTypeCommand
 
     @Override
     public void canUpdate(SearchUseType searchUseType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchUseTypeName = edit.getSearchUseTypeName();
         SearchUseType duplicateSearchUseType = searchControl.getSearchUseTypeByName(searchUseTypeName);
 
@@ -147,7 +147,7 @@ public class EditSearchUseTypeCommand
 
     @Override
     public void doUpdate(SearchUseType searchUseType) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         PartyPK partyPK = getPartyPK();
         SearchUseTypeDetailValue searchUseTypeDetailValue = searchControl.getSearchUseTypeDetailValueForUpdate(searchUseType);
         SearchUseTypeDescription searchUseTypeDescription = searchControl.getSearchUseTypeDescriptionForUpdate(searchUseType, getPreferredLanguage());

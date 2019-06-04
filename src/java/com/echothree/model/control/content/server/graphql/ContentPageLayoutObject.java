@@ -80,8 +80,8 @@ public class ContentPageLayoutObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return contentControl.getBestContentPageLayoutDescription(contentPageLayout, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -91,7 +91,7 @@ public class ContentPageLayoutObject
     @GraphQLDescription("content page layout areas count")
     @GraphQLNonNull
     public Long getContentPageLayoutAreasCount(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         
         return contentControl.countContentPageLayoutAreasByContentPageLayout(contentPageLayout);
     }
@@ -100,7 +100,7 @@ public class ContentPageLayoutObject
     @GraphQLDescription("content page layout areas")
     @GraphQLNonNull
     public List<ContentPageLayoutAreaObject> getContentPageLayoutAreas(final DataFetchingEnvironment env) {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(contentPageLayout);
         List<ContentPageLayoutAreaObject> contentPageLayoutAreas = new ArrayList<>(entities.size());
         

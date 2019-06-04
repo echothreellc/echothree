@@ -61,7 +61,7 @@ public class SetDefaultPaymentProcessorCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         String paymentProcessorName = form.getPaymentProcessorName();
         PaymentProcessorDetailValue paymentProcessorDetailValue = paymentControl.getPaymentProcessorDetailValueByNameForUpdate(paymentProcessorName);
         

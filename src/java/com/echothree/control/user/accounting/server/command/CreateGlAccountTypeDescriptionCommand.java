@@ -53,12 +53,12 @@ public class CreateGlAccountTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         String glAccountTypeName = form.getGlAccountTypeName();
         GlAccountType glAccountType = accountingControl.getGlAccountTypeByName(glAccountTypeName);
         
         if(glAccountType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

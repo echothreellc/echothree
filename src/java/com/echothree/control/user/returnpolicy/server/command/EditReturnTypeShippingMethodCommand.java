@@ -81,7 +81,7 @@ public class EditReturnTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+        var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
         EditReturnTypeShippingMethodResult result = ReturnPolicyResultFactory.getEditReturnTypeShippingMethodResult();
         String returnKindName = spec.getReturnKindName();
         ReturnKind returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
@@ -91,7 +91,7 @@ public class EditReturnTypeShippingMethodCommand
             ReturnType returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType != null) {
-                ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+                var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
                 String shippingMethodName = spec.getShippingMethodName();
                 ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
                 

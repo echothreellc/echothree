@@ -49,7 +49,7 @@ public class DeleteNameSuffixCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         String nameSuffixId = form.getNameSuffixId();
         NameSuffix nameSuffix = partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_WRITE);
         

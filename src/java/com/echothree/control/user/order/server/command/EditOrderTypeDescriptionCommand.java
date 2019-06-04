@@ -87,13 +87,13 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public OrderTypeDescription getEntity(EditOrderTypeDescriptionResult result) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderTypeDescription orderTypeDescription = null;
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditOrderTypeDescriptionResult result, OrderTypeDescription orderTypeDescription) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderTypeDescription(orderControl.getOrderTypeDescriptionTransfer(getUserVisit(), orderTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditOrderTypeDescriptionCommand
 
     @Override
     public void doUpdate(OrderTypeDescription orderTypeDescription) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderTypeDescriptionValue orderTypeDescriptionValue = orderControl.getOrderTypeDescriptionValue(orderTypeDescription);
         orderTypeDescriptionValue.setDescription(edit.getDescription());
 

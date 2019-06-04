@@ -66,7 +66,7 @@ public class GetCitiesCommand
     
     @Override
     protected BaseResult execute() {
-        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         GetCitiesResult result = GeoResultFactory.getGetCitiesResult();
         String countryName = form.getCountryName();
         GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);

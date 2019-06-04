@@ -49,7 +49,7 @@ public class CreateComponentStageCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String componentStageName = form.getComponentStageName();
         ComponentStage componentStage = coreControl.getComponentStageByName(componentStageName);
         

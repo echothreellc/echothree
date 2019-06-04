@@ -87,13 +87,13 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public PaymentMethodDescription getEntity(EditPaymentMethodDescriptionResult result) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PaymentMethodDescription paymentMethodDescription = null;
         String paymentMethodName = spec.getPaymentMethodName();
         PaymentMethod paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
 
         if(paymentMethod != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public void fillInResult(EditPaymentMethodDescriptionResult result, PaymentMethodDescription paymentMethodDescription) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
 
         result.setPaymentMethodDescription(paymentControl.getPaymentMethodDescriptionTransfer(getUserVisit(), paymentMethodDescription));
     }
@@ -136,7 +136,7 @@ public class EditPaymentMethodDescriptionCommand
 
     @Override
     public void doUpdate(PaymentMethodDescription paymentMethodDescription) {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PaymentMethodDescriptionValue paymentMethodDescriptionValue = paymentControl.getPaymentMethodDescriptionValue(paymentMethodDescription);
         paymentMethodDescriptionValue.setDescription(edit.getDescription());
 

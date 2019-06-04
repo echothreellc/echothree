@@ -59,7 +59,7 @@ public class PurchaseInvoiceLogic {
     }
     
     public Invoice getInvoiceByName(String invoiceName) {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         
         return invoiceControl.getInvoiceByNameUsingNames(InvoiceConstants.InvoiceType_PURCHASE_INVOICE, invoiceName);
     }
@@ -68,7 +68,7 @@ public class PurchaseInvoiceLogic {
         if(vendor.getRequireReference() && reference == null) {
             eea.addExecutionError(ExecutionErrors.PurchaseInvoiceReferenceRequired.name());
         } else if(reference != null) {
-            InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+            var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
             
             if(!vendor.getAllowReferenceDuplicates() && invoiceControl.countInvoicesByInvoiceFromAndReference(billFrom, reference) != 0) {
                 eea.addExecutionError(ExecutionErrors.PurchaseInvoiceDuplicateReference.name());
@@ -98,7 +98,7 @@ public class PurchaseInvoiceLogic {
             final Currency currency, final Term term, final String reference, final String description, final Long invoicedTime, final Long dueTime,
             final Long paidTime, final String workflowEntranceName, final BasePK createdBy) {
         Invoice invoice = null;
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         Vendor vendor = vendorControl.getVendor(billFrom);
         GlAccount glAccount = getApGlAccount(eea, vendor);
         
@@ -110,8 +110,8 @@ public class PurchaseInvoiceLogic {
                     dueTime, paidTime, createdBy);
 
             if(!eea.hasExecutionErrors() && workflowEntranceName != null) {
-                CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
 
                 workflowControl.addEntityToWorkflowUsingNames(null, PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, workflowEntranceName,
@@ -124,8 +124,8 @@ public class PurchaseInvoiceLogic {
     
     public InvoiceLine createInvoiceLine(final ExecutionErrorAccumulator eea, final Invoice invoice, final Integer invoiceLineSequence, final InvoiceLine parentInvoiceLine,
             final Long amount, final InvoiceLineType invoiceLineType, final GlAccount glAccount, final String description, final BasePK createdBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         InvoiceLine invoiceLine = null;
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
@@ -142,14 +142,14 @@ public class PurchaseInvoiceLogic {
     
     public PurchaseInvoiceStatusChoicesBean getPurchaseInvoiceStatusChoices(final String defaultInvoiceStatusChoice, final Language language, final boolean allowNullChoice,
             final Invoice invoice, final PartyPK partyPK) {
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         PurchaseInvoiceStatusChoicesBean purchaseInvoiceStatusChoicesBean = new PurchaseInvoiceStatusChoicesBean();
         
         if(invoice == null) {
             workflowControl.getWorkflowEntranceChoices(purchaseInvoiceStatusChoicesBean, defaultInvoiceStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS), partyPK);
         } else {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
             WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
             
@@ -160,8 +160,8 @@ public class PurchaseInvoiceLogic {
     }
     
     public void setPurchaseInvoiceStatus(final ExecutionErrorAccumulator eea, final Invoice invoice, final String invoiceStatusChoice, final PartyPK modifiedBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS,
                 entityInstance);

@@ -236,7 +236,7 @@ public class WorkEffortControl
     }
     
     public void deleteWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         
         deleteWorkEffortScopesByWorkEffortType(workEffortType, deletedBy);
         workRequirementControl.deleteWorkRequirementTypesByWorkEffortType(workEffortType, deletedBy);
@@ -687,7 +687,7 @@ public class WorkEffortControl
     }
     
     private void deleteWorkEffortScope(WorkEffortScope workEffortScope, boolean checkDefault, BasePK deletedBy) {
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         
         deleteWorkEffortsByWorkEffortScope(workEffortScope, deletedBy);
         workRequirementControl.deleteWorkRequirementScopesByWorkEffortScope(workEffortScope, deletedBy);
@@ -1149,7 +1149,7 @@ public class WorkEffortControl
     }
     
     public void deleteWorkEffort(WorkEffort workEffort, BasePK deletedBy) {
-        WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+        var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
         
         workRequirementControl.deleteWorkRequirementsByWorkEffort(workEffort, deletedBy);
         

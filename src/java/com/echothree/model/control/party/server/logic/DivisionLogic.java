@@ -56,7 +56,7 @@ public class DivisionLogic
 
         if(!hasExecutionErrors(eea)) {
             if(parameterCount == 1) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
                 if(divisionName != null) {
                     if(companyParty == null) {

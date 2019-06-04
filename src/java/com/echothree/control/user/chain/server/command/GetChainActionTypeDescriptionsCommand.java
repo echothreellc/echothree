@@ -64,7 +64,7 @@ public class GetChainActionTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+        var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
         GetChainActionTypeDescriptionsResult result = ChainResultFactory.getGetChainActionTypeDescriptionsResult();
         String chainActionTypeName = form.getChainActionTypeName();
         ChainActionType chainActionType = chainControl.getChainActionTypeByName(chainActionTypeName);

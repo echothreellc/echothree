@@ -88,7 +88,7 @@ public class EditPartyAliasTypeDescriptionCommand
 
     @Override
     public PartyAliasTypeDescription getEntity(EditPartyAliasTypeDescriptionResult result) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyAliasTypeDescription partyAliasTypeDescription = null;
         String partyTypeName = spec.getPartyTypeName();
         PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
@@ -131,7 +131,7 @@ public class EditPartyAliasTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditPartyAliasTypeDescriptionResult result, PartyAliasTypeDescription partyAliasTypeDescription) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
         result.setPartyAliasTypeDescription(partyControl.getPartyAliasTypeDescriptionTransfer(getUserVisit(), partyAliasTypeDescription));
     }
@@ -143,7 +143,7 @@ public class EditPartyAliasTypeDescriptionCommand
 
     @Override
     public void doUpdate(PartyAliasTypeDescription partyAliasTypeDescription) {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         PartyAliasTypeDescriptionValue partyAliasTypeDescriptionValue = partyControl.getPartyAliasTypeDescriptionValue(partyAliasTypeDescription);
         
         partyAliasTypeDescriptionValue.setDescription(edit.getDescription());

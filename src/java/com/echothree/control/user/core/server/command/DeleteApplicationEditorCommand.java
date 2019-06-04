@@ -73,7 +73,7 @@ public class DeleteApplicationEditorCommand
             Editor editor = ApplicationLogic.getInstance().getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 ApplicationEditor applicationEditor = coreControl.getApplicationEditorForUpdate(application, editor);
                 
                 if(applicationEditor != null) {

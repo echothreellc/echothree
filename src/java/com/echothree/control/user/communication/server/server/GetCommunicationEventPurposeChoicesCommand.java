@@ -50,7 +50,7 @@ public class GetCommunicationEventPurposeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
+        var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
         GetCommunicationEventPurposeChoicesResult result = CommunicationResultFactory.getGetCommunicationEventPurposeChoicesResult();
         String defaultCommunicationEventPurposeChoice = form.getDefaultCommunicationEventPurposeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

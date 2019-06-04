@@ -70,7 +70,7 @@ public class DeletePartyPrinterGroupUseCommand
         Party party = null;
 
         if(partyName != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
             party = partyControl.getPartyByName(partyName);
 
@@ -82,7 +82,7 @@ public class DeletePartyPrinterGroupUseCommand
         }
 
         if(!hasExecutionErrors()) {
-            PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+            var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
             String printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
             PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 

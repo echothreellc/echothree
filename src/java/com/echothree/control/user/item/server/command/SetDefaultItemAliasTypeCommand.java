@@ -61,7 +61,7 @@ public class SetDefaultItemAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemAliasTypeName = form.getItemAliasTypeName();
         ItemAliasTypeDetailValue itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueByNameForUpdate(itemAliasTypeName);
         

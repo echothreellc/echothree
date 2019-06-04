@@ -66,12 +66,12 @@ public class DeleteTrackDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        TrackControl trackControl = (TrackControl)Session.getModelController(TrackControl.class);
+        var trackControl = (TrackControl)Session.getModelController(TrackControl.class);
         String trackName = form.getTrackName();
         Track track = trackControl.getTrackByName(trackName);
         
         if(track != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

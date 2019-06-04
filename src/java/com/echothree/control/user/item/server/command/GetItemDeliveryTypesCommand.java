@@ -46,7 +46,7 @@ public class GetItemDeliveryTypesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemDeliveryTypesResult result = ItemResultFactory.getGetItemDeliveryTypesResult();
         
         result.setItemDeliveryTypes(itemControl.getItemDeliveryTypeTransfers(getUserVisit()));

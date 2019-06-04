@@ -64,7 +64,7 @@ public class GetCampaignTermDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        CampaignControl campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
+        var campaignControl = (CampaignControl)Session.getModelController(CampaignControl.class);
         GetCampaignTermDescriptionsResult result = CampaignResultFactory.getGetCampaignTermDescriptionsResult();
         String campaignTermName = form.getCampaignTermName();
         CampaignTerm campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);

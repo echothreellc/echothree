@@ -67,13 +67,13 @@ public class GetIndexDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         GetIndexDescriptionResult result = IndexResultFactory.getGetIndexDescriptionResult();
         String indexName = form.getIndexName();
         Index index = indexControl.getIndexByName(indexName);
 
         if(index != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

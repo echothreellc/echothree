@@ -61,7 +61,7 @@ public class DeleteColorCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String colorName = form.getColorName();
         Color color = coreControl.getColorByNameForUpdate(colorName);
         

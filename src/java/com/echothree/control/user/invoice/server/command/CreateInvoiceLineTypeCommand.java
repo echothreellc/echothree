@@ -72,7 +72,7 @@ public class CreateInvoiceLineTypeCommand
     
     @Override
     protected BaseResult execute() {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         String invoiceTypeName = form.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
@@ -89,7 +89,7 @@ public class CreateInvoiceLineTypeCommand
                 }
                 
                 if(parentInvoiceLineTypeName == null || parentInvoiceLineType != null) {
-                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                     String defaultGlAccountName = form.getDefaultGlAccountName();
                     GlAccount defaultGlAccount = defaultGlAccountName == null? null: accountingControl.getGlAccountByName(defaultGlAccountName);
                     

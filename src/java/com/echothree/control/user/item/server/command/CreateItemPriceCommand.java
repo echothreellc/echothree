@@ -70,12 +70,12 @@ public class CreateItemPriceCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
             String inventoryConditionName = form.getInventoryConditionName();
             InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
@@ -85,7 +85,7 @@ public class CreateItemPriceCommand
                         inventoryCondition);
                 
                 if(inventoryConditionUse != null) {
-                    UomControl uomControl = (UomControl)Session.getModelController(UomControl.class);
+                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
                     String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                     ItemDetail itemDetail = item.getLastDetail();
                     UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
@@ -95,7 +95,7 @@ public class CreateItemPriceCommand
                         ItemUnitOfMeasureType itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item, unitOfMeasureType);
                         
                         if(itemUnitOfMeasureType != null) {
-                            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                             String currencyIsoName = form.getCurrencyIsoName();
                             Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
                             

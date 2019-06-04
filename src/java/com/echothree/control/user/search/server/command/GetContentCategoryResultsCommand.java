@@ -56,7 +56,7 @@ public class GetContentCategoryResultsCommand
     @Override
     protected BaseResult execute() {
         GetContentCategoryResultsResult result = SearchResultFactory.getGetContentCategoryResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_CONTENT_CATEGORY);
         
         if(searchKind != null) {

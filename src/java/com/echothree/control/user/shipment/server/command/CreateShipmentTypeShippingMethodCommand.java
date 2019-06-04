@@ -54,12 +54,12 @@ public class CreateShipmentTypeShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
-        ShipmentControl shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
+        var shipmentControl = (ShipmentControl)Session.getModelController(ShipmentControl.class);
         String shipmentTypeName = form.getShipmentTypeName();
         ShipmentType shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
         
         if(shipmentType != null) {
-            ShippingControl shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
+            var shippingControl = (ShippingControl)Session.getModelController(ShippingControl.class);
             String shippingMethodName = form.getShippingMethodName();
             ShippingMethod shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
             

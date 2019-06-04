@@ -56,7 +56,7 @@ public class GetOfferResultsCommand
     @Override
     protected BaseResult execute() {
         GetOfferResultsResult result = SearchResultFactory.getGetOfferResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_OFFER);
         
         if(searchKind != null) {

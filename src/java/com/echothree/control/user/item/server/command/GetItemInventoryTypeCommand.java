@@ -50,7 +50,7 @@ public class GetItemInventoryTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemInventoryTypeResult result = ItemResultFactory.getGetItemInventoryTypeResult();
         String itemInventoryTypeName = form.getItemInventoryTypeName();
         ItemInventoryType itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);

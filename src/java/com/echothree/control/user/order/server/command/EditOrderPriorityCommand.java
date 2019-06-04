@@ -93,7 +93,7 @@ public class EditOrderPriorityCommand
 
     @Override
     public OrderPriority getEntity(EditOrderPriorityResult result) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderPriority orderPriority = null;
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
@@ -126,14 +126,14 @@ public class EditOrderPriorityCommand
 
     @Override
     public void fillInResult(EditOrderPriorityResult result, OrderPriority orderPriority) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
 
         result.setOrderPriority(orderControl.getOrderPriorityTransfer(getUserVisit(), orderPriority));
     }
 
     @Override
     public void doLock(OrderPriorityEdit edit, OrderPriority orderPriority) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         OrderPriorityDescription orderPriorityDescription = orderControl.getOrderPriorityDescription(orderPriority, getPreferredLanguage());
         OrderPriorityDetail orderPriorityDetail = orderPriority.getLastDetail();
 
@@ -149,7 +149,7 @@ public class EditOrderPriorityCommand
 
     @Override
     public void canUpdate(OrderPriority orderPriority) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String orderTypeName = spec.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
 
@@ -167,7 +167,7 @@ public class EditOrderPriorityCommand
 
     @Override
     public void doUpdate(OrderPriority orderPriority) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         PartyPK partyPK = getPartyPK();
         OrderPriorityDetailValue orderPriorityDetailValue = orderControl.getOrderPriorityDetailValueForUpdate(orderPriority);
         OrderPriorityDescription orderPriorityDescription = orderControl.getOrderPriorityDescriptionForUpdate(orderPriority, getPreferredLanguage());

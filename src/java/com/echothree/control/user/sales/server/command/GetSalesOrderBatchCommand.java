@@ -69,7 +69,7 @@ public class GetSalesOrderBatchCommand
         Batch batch = SalesOrderBatchLogic.getInstance().getBatchByName(this, form.getBatchName());
 
         if(batch != null) {
-            SalesControl salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
 
             result.setSalesOrderBatch(salesControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
 

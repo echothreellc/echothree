@@ -87,7 +87,7 @@ public class EditInvoiceLineTypeCommand
     
     @Override
     protected BaseResult execute() {
-        InvoiceControl invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         EditInvoiceLineTypeResult result = InvoiceResultFactory.getEditInvoiceLineTypeResult();
         String invoiceTypeName = spec.getInvoiceTypeName();
         InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
@@ -140,7 +140,7 @@ public class EditInvoiceLineTypeCommand
                         
                         if(parentInvoiceLineTypeName == null || parentInvoiceLineType != null) {
                             if(invoiceControl.isParentInvoiceLineTypeSafe(invoiceLineType, parentInvoiceLineType)) {
-                                AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                                var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                                 String defaultGlAccountName = edit.getDefaultGlAccountName();
                                 GlAccount defaultGlAccount = defaultGlAccountName == null? null: accountingControl.getGlAccountByName(defaultGlAccountName);
 

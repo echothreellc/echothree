@@ -72,7 +72,7 @@ public class CreateTransactionEntityRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         String transactionTypeName = form.getTransactionTypeName();
         TransactionType transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
@@ -81,7 +81,7 @@ public class CreateTransactionEntityRoleTypeCommand
             TransactionEntityRoleType transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
             
             if(transactionEntityRoleType == null) {
-                CoreControl coreControl = getCoreControl();
+                var coreControl = getCoreControl();
                 String componentVendorName = form.getComponentVendorName();
                 ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
                 

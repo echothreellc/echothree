@@ -487,7 +487,7 @@ public class PartySearchEvaluator
             }
         } else {
             if(parameterCount == 1) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = null;
 
                 if(alias != null) {

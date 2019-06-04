@@ -4973,7 +4973,7 @@ public class SearchControl
         }
         
         try (ResultSet rs = getCustomerResults(userVisit, userVisitSearch)) {
-            CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+            var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
                 Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
@@ -5041,7 +5041,7 @@ public class SearchControl
         }
 
         try {
-            EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5083,7 +5083,7 @@ public class SearchControl
         }
         
         try {
-            EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+            var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5129,7 +5129,7 @@ public class SearchControl
             itemResultTransfers = new ArrayList<>(countSearchResults(search));
 
             try {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                 PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityuniqueid "
                         + "FROM searchresults, entityinstances "
@@ -5160,7 +5160,7 @@ public class SearchControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
             
             try {
-                ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+                var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                 PreparedStatement ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityuniqueid "
                         + "FROM cachedexecutedsearchresults, entityinstances "
@@ -5203,7 +5203,7 @@ public class SearchControl
         }
 
         try {
-            VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5245,7 +5245,7 @@ public class SearchControl
         }
 
         try {
-            ForumControl forumControl = (ForumControl)Session.getModelController(ForumControl.class);
+            var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5287,8 +5287,8 @@ public class SearchControl
         }
         
         try {
-            BatchControl batchControl = (BatchControl)Session.getModelController(BatchControl.class);
-            SalesControl salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
+            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5324,8 +5324,8 @@ public class SearchControl
         List<SalesOrderResultTransfer> salesOrderResultTransfers = new ArrayList<>();
         
         try {
-            CoreControl coreControl = getCoreControl();
-            WorkflowControl workflowControl = getWorkflowControl();
+            var coreControl = getCoreControl();
+            var workflowControl = getWorkflowControl();
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5375,7 +5375,7 @@ public class SearchControl
             entityListItemResultTransfers = new ArrayList<>(countSearchResults(search));
 
             try {
-                CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
                 PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityuniqueid "
                         + "FROM searchresults, entityinstances "
@@ -5410,7 +5410,7 @@ public class SearchControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
             
             try {
-                CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+                var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
                 PreparedStatement ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityuniqueid "
                         + "FROM cachedexecutedsearchresults, entityinstances "
@@ -5457,7 +5457,7 @@ public class SearchControl
         }
         
         try {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5502,7 +5502,7 @@ public class SearchControl
         }
         
         try {
-            SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5544,7 +5544,7 @@ public class SearchControl
         }
         
         try {
-            SecurityControl securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
+            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5588,7 +5588,7 @@ public class SearchControl
         }
         
         try {
-            ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5633,7 +5633,7 @@ public class SearchControl
         }
         
         try {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5676,7 +5676,7 @@ public class SearchControl
         }
         
         try {
-            ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+            var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5719,7 +5719,7 @@ public class SearchControl
         }
         
         try {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5762,7 +5762,7 @@ public class SearchControl
         }
         
         try {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
@@ -5805,7 +5805,7 @@ public class SearchControl
         }
         
         try {
-            OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+            var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +

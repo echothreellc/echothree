@@ -99,7 +99,7 @@ public class GetCountryCommand
         }
         
         if(parameterCount < 2) {
-            GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
             GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
             GeoCode geoCode = null;
             

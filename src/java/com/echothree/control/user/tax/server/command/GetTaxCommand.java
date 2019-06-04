@@ -51,7 +51,7 @@ public class GetTaxCommand
     
     @Override
     protected BaseResult execute() {
-        TaxControl taxControl = (TaxControl)Session.getModelController(TaxControl.class);
+        var taxControl = (TaxControl)Session.getModelController(TaxControl.class);
         GetTaxResult result = TaxResultFactory.getGetTaxResult();
         String taxName = form.getTaxName();
         Tax tax = taxControl.getTaxByName(taxName);

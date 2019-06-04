@@ -59,7 +59,7 @@ public class CreateCacheEntryCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String cacheEntryKey = form.getCacheEntryKey();
         CacheEntry cacheEntry = coreControl.getCacheEntryByCacheEntryKey(cacheEntryKey);
 

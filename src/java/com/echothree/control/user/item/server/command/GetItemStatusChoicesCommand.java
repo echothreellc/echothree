@@ -52,7 +52,7 @@ public class GetItemStatusChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemStatusChoicesResult result = ItemResultFactory.getGetItemStatusChoicesResult();
         String itemName = form.getItemName();
         Item item = itemControl.getItemByName(itemName);

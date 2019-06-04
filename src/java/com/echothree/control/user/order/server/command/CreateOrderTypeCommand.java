@@ -75,7 +75,7 @@ public class CreateOrderTypeCommand
     
     @Override
     protected BaseResult execute() {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String orderTypeName = form.getOrderTypeName();
         OrderType orderType = orderControl.getOrderTypeByName(orderTypeName);
 
@@ -88,12 +88,12 @@ public class CreateOrderTypeCommand
             }
 
             if(parentOrderTypeName == null || parentOrderType != null) {
-                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                 String orderSequenceTypeName = form.getOrderSequenceTypeName();
                 SequenceType orderSequenceType = sequenceControl.getSequenceTypeByName(orderSequenceTypeName);
 
                 if(orderSequenceTypeName == null || orderSequenceType != null) {
-                    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                     String orderWorkflowName = form.getOrderWorkflowName();
                     Workflow orderWorkflow = orderWorkflowName == null ? null : workflowControl.getWorkflowByName(orderWorkflowName);
 

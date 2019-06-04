@@ -71,7 +71,7 @@ public class GetContentSectionsCommand
         Collection<ContentSection> contentSections = null;
 
         if(parameterCount == 1) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
 
             if(contentWebAddressName != null) {
                 ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
@@ -121,7 +121,7 @@ public class GetContentSectionsCommand
         GetContentSectionsResult result = ContentResultFactory.getGetContentSectionsResult();
         
         if(entities != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             UserVisit userVisit = getUserVisit();
 
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));

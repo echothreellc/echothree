@@ -87,13 +87,13 @@ public class EditSearchResultActionTypeDescriptionCommand
 
     @Override
     public SearchResultActionTypeDescription getEntity(EditSearchResultActionTypeDescriptionResult result) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchResultActionTypeDescription searchResultActionTypeDescription = null;
         String searchResultActionTypeName = spec.getSearchResultActionTypeName();
         SearchResultActionType searchResultActionType = searchControl.getSearchResultActionTypeByName(searchResultActionTypeName);
 
         if(searchResultActionType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditSearchResultActionTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSearchResultActionTypeDescriptionResult result, SearchResultActionTypeDescription searchResultActionTypeDescription) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
 
         result.setSearchResultActionTypeDescription(searchControl.getSearchResultActionTypeDescriptionTransfer(getUserVisit(), searchResultActionTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditSearchResultActionTypeDescriptionCommand
 
     @Override
     public void doUpdate(SearchResultActionTypeDescription searchResultActionTypeDescription) {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchResultActionTypeDescriptionValue searchResultActionTypeDescriptionValue = searchControl.getSearchResultActionTypeDescriptionValue(searchResultActionTypeDescription);
         searchResultActionTypeDescriptionValue.setDescription(edit.getDescription());
 

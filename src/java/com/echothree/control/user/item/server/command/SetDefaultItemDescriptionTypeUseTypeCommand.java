@@ -61,7 +61,7 @@ public class SetDefaultItemDescriptionTypeUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
         ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue = itemControl.getItemDescriptionTypeUseTypeDetailValueByNameForUpdate(itemDescriptionTypeUseTypeName);
         

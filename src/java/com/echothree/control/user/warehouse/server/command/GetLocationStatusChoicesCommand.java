@@ -55,7 +55,7 @@ public class GetLocationStatusChoicesCommand
     @Override
     protected BaseResult execute() {
         GetLocationStatusChoicesResult result = WarehouseResultFactory.getGetLocationStatusChoicesResult();
-        WarehouseControl warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
+        var warehouseControl = (WarehouseControl)Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         

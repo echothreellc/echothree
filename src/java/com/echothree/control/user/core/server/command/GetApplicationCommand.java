@@ -63,7 +63,7 @@ public class GetApplicationCommand
         int parameterCount = (applicationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             Application application = null;
 
             if(applicationName == null) {

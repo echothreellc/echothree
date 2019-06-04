@@ -59,7 +59,7 @@ public class GetAppearancesCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetAppearancesResult result = CoreResultFactory.getGetAppearancesResult();
         
         result.setAppearances(coreControl.getAppearanceTransfers(getUserVisit()));

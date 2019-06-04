@@ -91,7 +91,7 @@ public class EditIndexCommand
 
     @Override
     public Index getEntity(EditIndexResult result) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         Index index;
         String indexName = spec.getIndexName();
 
@@ -115,14 +115,14 @@ public class EditIndexCommand
 
     @Override
     public void fillInResult(EditIndexResult result, Index index) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
 
         result.setIndex(indexControl.getIndexTransfer(getUserVisit(), index));
     }
 
     @Override
     public void doLock(IndexEdit edit, Index index) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         IndexDescription indexDescription = indexControl.getIndexDescription(index, getPreferredLanguage());
         IndexDetail indexDetail = index.getLastDetail();
 
@@ -137,7 +137,7 @@ public class EditIndexCommand
 
     @Override
     public void canUpdate(Index index) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         String indexName = edit.getIndexName();
         Index duplicateIndex = indexControl.getIndexByName(indexName);
 
@@ -148,7 +148,7 @@ public class EditIndexCommand
 
     @Override
     public void doUpdate(Index index) {
-        IndexControl indexControl = (IndexControl)Session.getModelController(IndexControl.class);
+        var indexControl = (IndexControl)Session.getModelController(IndexControl.class);
         PartyPK partyPK = getPartyPK();
         IndexDetailValue indexDetailValue = indexControl.getIndexDetailValueForUpdate(index);
         IndexDescription indexDescription = indexControl.getIndexDescriptionForUpdate(index, getPreferredLanguage());

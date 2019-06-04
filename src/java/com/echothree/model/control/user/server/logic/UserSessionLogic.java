@@ -48,7 +48,7 @@ public class UserSessionLogic {
      */
     public UserSession invalidateUserSession(UserSession userSession) {
         if(userSession.getPasswordVerifiedTime() != null) {
-            UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+            var userControl = (UserControl)Session.getModelController(UserControl.class);
 
             if(!userSession.getEntityPermission().equals(EntityPermission.READ_WRITE)) {
                 userSession = UserSessionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userSession.getPrimaryKey());
@@ -65,7 +65,7 @@ public class UserSessionLogic {
     /** Sets the Party and PartyRelationship to null when a UserSession contains the specified Party.
      */
     public void deleteUserSessionsByParty(Party party) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
 
         userControl.deleteUserSessions(userControl.getUserSessionsByPartyForUpdate(party));
     }
@@ -73,13 +73,13 @@ public class UserSessionLogic {
     /** Sets the Party and PartyRelationship to null when a UserSession contains the specified PartyRelationship.
      */
     public void deleteUserSessionsByPartyRelationship(PartyRelationship partyRelationship) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
 
         userControl.deleteUserSessions(userControl.getUserSessionsByPartyRelationshipForUpdate(partyRelationship));
     }
 
     public UserSession deleteUserSessionByUserVisit(UserVisit userVisit) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         UserSession userSession = userControl.getUserSessionByUserVisitForUpdate(userVisit);
 
         if(userSession != null) {
@@ -90,7 +90,7 @@ public class UserSessionLogic {
     }
 
     public UserSession deleteUserSessionByUserVisitPK(UserVisitPK userVisitPK) {
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         
         return deleteUserSessionByUserVisit(userControl.getUserVisitByPKForUpdate(userVisitPK));
     }

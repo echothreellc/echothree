@@ -103,7 +103,7 @@ public class GetEntityListItemsCommand
     
     @Override
     protected BaseResult getTransfers(Collection<EntityListItem> entities) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
         GetEntityListItemsResult result = CoreResultFactory.getGetEntityListItemsResult();
         
         if(entities != null) {

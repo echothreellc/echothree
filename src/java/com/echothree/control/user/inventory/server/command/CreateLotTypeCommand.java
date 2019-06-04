@@ -75,7 +75,7 @@ public class CreateLotTypeCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String lotTypeName = form.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
 
@@ -88,12 +88,12 @@ public class CreateLotTypeCommand
             }
 
             if(parentLotTypeName == null || parentLotType != null) {
-                SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+                var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                 String lotSequenceTypeName = form.getLotSequenceTypeName();
                 SequenceType lotSequenceType = sequenceControl.getSequenceTypeByName(lotSequenceTypeName);
 
                 if(lotSequenceTypeName == null || lotSequenceType != null) {
-                    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                     String lotWorkflowName = form.getLotWorkflowName();
                     Workflow lotWorkflow = lotWorkflowName == null ? null : workflowControl.getWorkflowByName(lotWorkflowName);
 

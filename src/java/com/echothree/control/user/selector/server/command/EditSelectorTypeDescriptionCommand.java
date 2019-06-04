@@ -88,7 +88,7 @@ public class EditSelectorTypeDescriptionCommand
 
     @Override
     public SelectorTypeDescription getEntity(EditSelectorTypeDescriptionResult result) {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         SelectorTypeDescription selectorTypeDescription = null;
         String selectorKindName = spec.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
@@ -98,7 +98,7 @@ public class EditSelectorTypeDescriptionCommand
             SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
 
             if(selectorType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -132,7 +132,7 @@ public class EditSelectorTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditSelectorTypeDescriptionResult result, SelectorTypeDescription selectorTypeDescription) {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
 
         result.setSelectorTypeDescription(selectorControl.getSelectorTypeDescriptionTransfer(getUserVisit(), selectorTypeDescription));
     }
@@ -144,7 +144,7 @@ public class EditSelectorTypeDescriptionCommand
 
     @Override
     public void doUpdate(SelectorTypeDescription selectorTypeDescription) {
-        SelectorControl selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
         SelectorTypeDescriptionValue selectorTypeDescriptionValue = selectorControl.getSelectorTypeDescriptionValue(selectorTypeDescription);
 
         selectorTypeDescriptionValue.setDescription(edit.getDescription());

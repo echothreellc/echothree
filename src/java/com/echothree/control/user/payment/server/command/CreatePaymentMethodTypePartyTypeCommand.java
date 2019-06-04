@@ -56,12 +56,12 @@ public class CreatePaymentMethodTypePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         String paymentMethodTypeName = form.getPaymentMethodTypeName();
         PaymentMethodType paymentMethodType = paymentControl.getPaymentMethodTypeByName(paymentMethodTypeName);
         
         if(paymentMethodType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String partyTypeName = form.getPartyTypeName();
             PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
             
@@ -70,7 +70,7 @@ public class CreatePaymentMethodTypePartyTypeCommand
                         partyType);
                 
                 if(paymentMethodTypePartyType == null) {
-                    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                    var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                     String partyPaymentMethodWorkflowName = form.getPartyPaymentMethodWorkflowName();
                     Workflow partyPaymentMethodWorkflow = partyPaymentMethodWorkflowName == null? null: workflowControl.getWorkflowByName(partyPaymentMethodWorkflowName);
                     

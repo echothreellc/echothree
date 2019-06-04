@@ -82,13 +82,13 @@ public class EditOfferChainTypeCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         EditOfferChainTypeResult result = OfferResultFactory.getEditOfferChainTypeResult();
         String offerName = spec.getOfferName();
         Offer offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
-            ChainControl chainControl = (ChainControl)Session.getModelController(ChainControl.class);
+            var chainControl = (ChainControl)Session.getModelController(ChainControl.class);
             String chainKindName = spec.getChainKindName();
             ChainKind chainKind = chainControl.getChainKindByName(chainKindName);
             

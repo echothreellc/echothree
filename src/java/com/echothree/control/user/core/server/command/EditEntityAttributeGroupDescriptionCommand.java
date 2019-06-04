@@ -87,13 +87,13 @@ public class EditEntityAttributeGroupDescriptionCommand
 
     @Override
     public EntityAttributeGroupDescription getEntity(EditEntityAttributeGroupDescriptionResult result) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttributeGroupDescription entityAttributeGroupDescription = null;
         String entityAttributeGroupName = spec.getEntityAttributeGroupName();
         EntityAttributeGroup entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
 
         if(entityAttributeGroup != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditEntityAttributeGroupDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityAttributeGroupDescriptionResult result, EntityAttributeGroupDescription entityAttributeGroupDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
 
         result.setEntityAttributeGroupDescription(coreControl.getEntityAttributeGroupDescriptionTransfer(getUserVisit(), entityAttributeGroupDescription, null));
     }
@@ -136,7 +136,7 @@ public class EditEntityAttributeGroupDescriptionCommand
 
     @Override
     public void doUpdate(EntityAttributeGroupDescription entityAttributeGroupDescription) {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         EntityAttributeGroupDescriptionValue entityAttributeGroupDescriptionValue = coreControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
         
         entityAttributeGroupDescriptionValue.setDescription(edit.getDescription());

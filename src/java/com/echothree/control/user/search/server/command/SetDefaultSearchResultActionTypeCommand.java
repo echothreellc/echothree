@@ -62,7 +62,7 @@ public class SetDefaultSearchResultActionTypeCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchResultActionTypeName = form.getSearchResultActionTypeName();
         SearchResultActionTypeDetailValue searchResultActionTypeDetailValue = searchControl.getSearchResultActionTypeDetailValueByNameForUpdate(searchResultActionTypeName);
         

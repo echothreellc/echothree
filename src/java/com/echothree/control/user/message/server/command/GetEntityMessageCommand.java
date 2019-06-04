@@ -61,7 +61,7 @@ public class GetEntityMessageCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEntityMessageResult result = MessageResultFactory.getGetEntityMessageResult();
         String entityRef = form.getEntityRef();
         EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
@@ -80,7 +80,7 @@ public class GetEntityMessageCommand
                 result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
                 
                 if(entityType != null) {
-                    MessageControl messageControl = (MessageControl)Session.getModelController(MessageControl.class);
+                    var messageControl = (MessageControl)Session.getModelController(MessageControl.class);
                     String messageTypeName = form.getMessageTypeName();
                     MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                     

@@ -44,7 +44,7 @@ public class PartyScaleUseLogic
 
     public PartyScaleUse getPartyScaleUse(final ExecutionErrorAccumulator ema, final Party party, final ScaleUseType scaleUseType,
             final BasePK createdBy) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         PartyScaleUse partyScaleUse = scaleControl.getPartyScaleUse(party, scaleUseType);
 
         if(partyScaleUse == null) {
@@ -62,7 +62,7 @@ public class PartyScaleUseLogic
 
     public PartyScaleUse getPartyScaleUseUsingNames(final ExecutionErrorAccumulator ema, final Party party, final String scaleUseTypeName,
             final BasePK createdBy) {
-        ScaleControl scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
+        var scaleControl = (ScaleControl)Session.getModelController(ScaleControl.class);
         ScaleUseType scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         PartyScaleUse partyScaleUse = null;
 

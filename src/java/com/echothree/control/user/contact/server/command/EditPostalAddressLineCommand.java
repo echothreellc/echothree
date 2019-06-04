@@ -68,7 +68,7 @@ public class EditPostalAddressLineCommand
     
     @Override
     protected BaseResult execute() {
-        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         EditPostalAddressLineResult result = ContactResultFactory.getEditPostalAddressLineResult();
         String postalAddressFormatName = spec.getPostalAddressFormatName();
         PostalAddressFormat postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);

@@ -69,7 +69,7 @@ public class CreateLotTimeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String lotTypeName = form.getLotTypeName();
         LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
 
@@ -78,7 +78,7 @@ public class CreateLotTimeTypeDescriptionCommand
             LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
 
             if(lotTimeType != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
 

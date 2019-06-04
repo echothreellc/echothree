@@ -102,7 +102,7 @@ public class EditVendorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
         EditVendorTypeResult result = VendorResultFactory.getEditVendorTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
@@ -158,7 +158,7 @@ public class EditVendorTypeCommand
                     CancellationPolicy defaultCancellationPolicy = null;
 
                     if(defaultCancellationPolicyName != null) {
-                        CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                        var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                         CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
                         defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, defaultCancellationPolicyName);
@@ -169,14 +169,14 @@ public class EditVendorTypeCommand
                         ReturnPolicy defaultReturnPolicy = null;
 
                         if(defaultReturnPolicyName != null) {
-                            ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                            var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                             ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
                             defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                         }
 
                         if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                            AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                            var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                             String defaultApGlAccountName = edit.getDefaultApGlAccountName();
                             GlAccount defaultApGlAccount = defaultApGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultApGlAccountName);
 

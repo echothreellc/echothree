@@ -62,7 +62,7 @@ public class GetLotTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        InventoryControl inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetLotTypeChoicesResult result = InventoryResultFactory.getGetLotTypeChoicesResult();
         String defaultLotTypeChoice = form.getDefaultLotTypeChoice();
         boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

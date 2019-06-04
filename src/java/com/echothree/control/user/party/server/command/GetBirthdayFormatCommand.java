@@ -64,7 +64,7 @@ public class GetBirthdayFormatCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetBirthdayFormatResult result = PartyResultFactory.getGetBirthdayFormatResult();
         String birthdayFormatName = form.getBirthdayFormatName();
         BirthdayFormat birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);

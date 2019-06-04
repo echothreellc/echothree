@@ -1679,7 +1679,7 @@ public class ForumControl
     
     public MimeTypeChoicesBean getForumMimeTypeChoices(Forum forum, String defaultMimeTypeChoice, Language language,
             boolean allowNullChoice) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         List<ForumMimeType> forumMimeTypes = getForumMimeTypesByForum(forum);
         int size = forumMimeTypes.size();
         List<String> labels = new ArrayList<>(size);
@@ -2590,7 +2590,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumThread createForumThread(Forum forum, Icon icon, Long postedTime, Integer sortOrder, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
         
         if(sequence == null) {
@@ -2815,7 +2815,7 @@ public class ForumControl
     
     public ForumMessage createForumMessage(ForumThread forumThread, ForumMessageType forumMessageType,
             ForumMessage parentForumMessage, Icon icon, Long postedTime, BasePK createdBy) {
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         ForumForumThread forumForumThread = getDefaultForumForumThread(forumThread);
         Forum forum = forumForumThread == null? null: forumForumThread.getForum();
         Sequence sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();

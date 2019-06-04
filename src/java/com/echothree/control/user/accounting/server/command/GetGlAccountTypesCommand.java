@@ -46,7 +46,7 @@ public class GetGlAccountTypesCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetGlAccountTypesResult result = AccountingResultFactory.getGetGlAccountTypesResult();
         
         result.setGlAccountTypes(accountingControl.getGlAccountTypeTransfers(getUserVisit()));

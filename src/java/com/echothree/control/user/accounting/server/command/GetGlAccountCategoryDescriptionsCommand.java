@@ -64,7 +64,7 @@ public class GetGlAccountCategoryDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         GetGlAccountCategoryDescriptionsResult result = AccountingResultFactory.getGetGlAccountCategoryDescriptionsResult();
         String glAccountCategoryName = form.getGlAccountCategoryName();
         GlAccountCategory glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);

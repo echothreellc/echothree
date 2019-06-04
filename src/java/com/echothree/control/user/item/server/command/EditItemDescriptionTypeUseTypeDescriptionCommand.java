@@ -87,13 +87,13 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
 
     @Override
     public ItemDescriptionTypeUseTypeDescription getEntity(EditItemDescriptionTypeUseTypeDescriptionResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription = null;
         String itemDescriptionTypeUseTypeName = spec.getItemDescriptionTypeUseTypeName();
         ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
         if(itemDescriptionTypeUseType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditItemDescriptionTypeUseTypeDescriptionResult result, ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItemDescriptionTypeUseTypeDescription(itemControl.getItemDescriptionTypeUseTypeDescriptionTransfer(getUserVisit(), itemDescriptionTypeUseTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditItemDescriptionTypeUseTypeDescriptionCommand
 
     @Override
     public void doUpdate(ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         ItemDescriptionTypeUseTypeDescriptionValue itemDescriptionTypeUseTypeDescriptionValue = itemControl.getItemDescriptionTypeUseTypeDescriptionValue(itemDescriptionTypeUseTypeDescription);
         
         itemDescriptionTypeUseTypeDescriptionValue.setDescription(edit.getDescription());

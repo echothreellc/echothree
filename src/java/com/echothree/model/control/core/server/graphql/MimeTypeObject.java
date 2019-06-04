@@ -138,8 +138,8 @@ public class MimeTypeObject
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        UserControl userControl = (UserControl)Session.getModelController(UserControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var userControl = (UserControl)Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
         return coreControl.getBestMimeTypeDescription(mimeType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
@@ -152,7 +152,7 @@ public class MimeTypeObject
         List<MimeTypeUsageObject> mimeTypeUsages = null;
         
         if(getHasMimeTypeUsagesAccess(env)) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             List<MimeTypeUsage> entities = coreControl.getMimeTypeUsagesByMimeType(mimeType);
             List<MimeTypeUsageObject> objects = new ArrayList<>(entities.size());
 
@@ -173,7 +173,7 @@ public class MimeTypeObject
         List<MimeTypeFileExtensionObject> mimeTypeFileExtensions = null;
         
         if(getHasMimeTypeFileExtensionsAccess(env)) {
-            CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             List<MimeTypeFileExtension> entities = coreControl.getMimeTypeFileExtensionsByMimeType(mimeType);
             List<MimeTypeFileExtensionObject> objects = new ArrayList<>(entities.size());
 

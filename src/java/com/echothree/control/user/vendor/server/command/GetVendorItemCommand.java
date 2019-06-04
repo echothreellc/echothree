@@ -75,7 +75,7 @@ public class GetVendorItemCommand
         int parameterCount = (vendorName == null? 0: 1) + (partyName == null? 0: 1);
 
         if(parameterCount == 1) {
-            VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+            var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
             Vendor vendor = null;
 
             if(vendorName != null) {
@@ -85,7 +85,7 @@ public class GetVendorItemCommand
                     addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
             } else if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {

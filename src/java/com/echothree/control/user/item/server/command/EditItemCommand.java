@@ -103,7 +103,7 @@ public class EditItemCommand
 
     @Override
     public Item getEntity(EditItemResult result) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         Item item = null;
         String itemName = spec.getItemName();
 
@@ -129,7 +129,7 @@ public class EditItemCommand
 
     @Override
     public void fillInResult(EditItemResult result, Item item) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
 
         result.setItem(itemControl.getItemTransfer(getUserVisit(), item));
     }
@@ -174,7 +174,7 @@ public class EditItemCommand
 
     @Override
     public void canUpdate(Item item) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         String itemName = edit.getItemName();
         Item duplicateItem = itemControl.getItemByName(itemName);
 
@@ -194,7 +194,7 @@ public class EditItemCommand
                         addExecutionError(ExecutionErrors.NotPermittedItemAccountingCategory.name(), itemAccountingCategoryName);
                     }
                 } else {
-                    AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+                    var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
 
                     itemAccountingCategory = itemAccountingCategoryName == null? null: accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
 
@@ -213,7 +213,7 @@ public class EditItemCommand
                             addExecutionError(ExecutionErrors.NotPermittedItemPurchasingCategory.name(), itemPurchasingCategoryName);
                         }
                     } else {
-                        VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                        var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
 
                         itemPurchasingCategory = itemPurchasingCategoryName == null? null: vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
 
@@ -228,7 +228,7 @@ public class EditItemCommand
                         String cancellationPolicyName = edit.getCancellationPolicyName();
 
                         if(cancellationPolicyName != null) {
-                            CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
+                            var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
                             CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
@@ -238,7 +238,7 @@ public class EditItemCommand
                             String returnPolicyName = edit.getReturnPolicyName();
 
                             if(returnPolicyName != null) {
-                                ReturnPolicyControl returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
+                                var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
                                 ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
@@ -262,7 +262,7 @@ public class EditItemCommand
 
     @Override
     public void doUpdate(Item item) {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         PartyPK partyPK = getPartyPK();
         ItemDetailValue itemDetailValue = itemControl.getItemDetailValueForUpdate(item);
         Boolean shippingChargeExempt = Boolean.valueOf(edit.getShippingChargeExempt());

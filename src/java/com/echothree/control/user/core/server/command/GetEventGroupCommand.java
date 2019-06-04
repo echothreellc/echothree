@@ -50,7 +50,7 @@ public class GetEventGroupCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         GetEventGroupResult result = CoreResultFactory.getGetEventGroupResult();
         String eventGroupName = form.getEventGroupName();
         EventGroup eventGroup = coreControl.getEventGroupByName(eventGroupName);

@@ -46,10 +46,10 @@ public class EntityAttributeGroupLogic
     
     public EntityAttributeGroup createEntityAttributeGroup(final ExecutionErrorAccumulator eea, String entityAttributeGroupName,
             final Boolean isDefault, final Integer sortOrder, final String description, final Language language, final BasePK createdBy) {
-        CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         
         if(entityAttributeGroupName == null) {
-            SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_ENTITY_ATTRIBUTE_GROUP);
             
             entityAttributeGroupName = sequenceControl.getNextSequenceValue(sequence);

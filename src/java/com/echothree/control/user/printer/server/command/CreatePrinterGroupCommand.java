@@ -61,7 +61,7 @@ public class CreatePrinterGroupCommand
     
    @Override
     protected BaseResult execute() {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         String printerGroupName = form.getPrinterGroupName();
         PrinterGroup printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
@@ -73,8 +73,8 @@ public class CreatePrinterGroupCommand
                     null, ExecutionErrors.UnknownKeepPrintedJobsTimeUnitOfMeasureTypeName.name());
 
             if(!hasExecutionErrors()) {
-                CoreControl coreControl = getCoreControl();
-                WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+                var coreControl = getCoreControl();
+                var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                 Boolean isDefault = Boolean.valueOf(form.getIsDefault());
                 Integer sortOrder = Integer.valueOf(form.getSortOrder());
                 String description = form.getDescription();

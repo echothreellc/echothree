@@ -68,7 +68,7 @@ public class GetEmployeeAvailabilityChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         GetEmployeeAvailabilityChoicesResult result = PartyResultFactory.getGetEmployeeAvailabilityChoicesResult();
         String employeeName = form.getEmployeeName();
         String partyName = form.getPartyName();
@@ -86,7 +86,7 @@ public class GetEmployeeAvailabilityChoicesCommand
                     addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
                 }
             } else if(partyName != null) {
-                PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                 
                 party = partyControl.getPartyByName(partyName);
                 if(party == null) {

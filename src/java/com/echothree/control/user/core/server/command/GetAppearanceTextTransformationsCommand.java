@@ -68,7 +68,7 @@ public class GetAppearanceTextTransformationsCommand
         Appearance appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
-            CoreControl coreControl = getCoreControl();
+            var coreControl = getCoreControl();
             
             result.setAppearance(coreControl.getAppearanceTransfer(getUserVisit(), appearance));
             result.setAppearanceTextTransformations(coreControl.getAppearanceTextTransformationTransfersByAppearance(getUserVisit(), appearance));

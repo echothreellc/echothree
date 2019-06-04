@@ -56,7 +56,7 @@ public class GetEntityListItemResultsCommand
     @Override
     protected BaseResult execute() {
         GetEntityListItemResultsResult result = SearchResultFactory.getGetEntityListItemResultsResult();
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_ENTITY_LIST_ITEM);
         
         if(searchKind != null) {

@@ -43,7 +43,7 @@ public class TermLogic
     }
     
     public Term getTermByName(final ExecutionErrorAccumulator eea, final String termName) {
-        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = (TermControl)Session.getModelController(TermControl.class);
         Term term = termControl.getTermByName(termName);
 
         if(term == null) {
@@ -54,7 +54,7 @@ public class TermLogic
     }
     
     public PartyTerm getPartyTerm(final ExecutionErrorAccumulator eea, final Party party) {
-        TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+        var termControl = (TermControl)Session.getModelController(TermControl.class);
         PartyTerm partyTerm = null;
 
         partyTerm = termControl.getPartyTerm(party);

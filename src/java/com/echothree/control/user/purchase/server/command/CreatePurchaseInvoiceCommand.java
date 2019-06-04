@@ -90,23 +90,23 @@ public class CreatePurchaseInvoiceCommand
     protected BaseResult execute() {
         CreatePurchaseInvoiceResult result = PurchaseResultFactory.getCreatePurchaseInvoiceResult();
         Invoice invoice = null;
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         String currencyIsoName = form.getCurrencyIsoName();
         Currency currency = currencyIsoName == null ? null : accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currencyIsoName == null || currency != null) {
-            TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
+            var termControl = (TermControl)Session.getModelController(TermControl.class);
             String termName = form.getTermName();
             Term term = termName == null ? null : termControl.getTermByName(termName);
 
             if(termName == null || term != null) {
-                VendorControl vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
+                var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
                 String vendorName = form.getVendorName();
                 String billFromPartyName = form.getBillFromPartyName();
                 int parameterCount = (vendorName == null? 0: 1) + (billFromPartyName == null? 0: 1);
 
                 if(parameterCount == 1) {
-                    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                     Party billFrom = null;
                     
                     if(vendorName == null) {
@@ -130,7 +130,7 @@ public class CreatePurchaseInvoiceCommand
                     }
                     
                     if(!hasExecutionErrors()) {
-                        ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+                        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                         String billFromContactMechanismName = form.getBillFromContactMechanismName();
                         PartyContactMechanism billFromContactMechanism = billFromContactMechanismName == null? null: contactControl.getPartyContactMechanismByContactMechanismName(this, billFrom, billFromContactMechanismName);
                         

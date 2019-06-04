@@ -51,7 +51,7 @@ public class CreateFilterAdjustmentTypeCommand
     @Override
     protected BaseResult execute() {
         String filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
-        FilterControl filterControl = (FilterControl)Session.getModelController(FilterControl.class);
+        var filterControl = (FilterControl)Session.getModelController(FilterControl.class);
         FilterAdjustmentType filterAdjustmentType = filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
         
         if(filterAdjustmentType == null) {

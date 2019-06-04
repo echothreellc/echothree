@@ -78,13 +78,13 @@ public class EditUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         EditUseTypeDescriptionResult result = OfferResultFactory.getEditUseTypeDescriptionResult();
         String useTypeName = spec.getUseTypeName();
         UseType useType = offerControl.getUseTypeByName(useTypeName);
         
         if(useType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

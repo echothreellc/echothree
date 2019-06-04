@@ -87,13 +87,13 @@ public class EditCustomerTypeContactListCommand
 
     @Override
     public CustomerTypeContactList getEntity(EditCustomerTypeContactListResult result) {
-        CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
         CustomerTypeContactList customerTypeContactList = null;
         String customerTypeName = spec.getCustomerTypeName();
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
 
         if(customerType != null) {
-            ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+            var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
             String contactListName = spec.getContactListName();
             ContactList contactList = contactListControl.getContactListByName(contactListName);
 
@@ -124,7 +124,7 @@ public class EditCustomerTypeContactListCommand
 
     @Override
     public void fillInResult(EditCustomerTypeContactListResult result, CustomerTypeContactList customerTypeContactList) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
 
         result.setCustomerTypeContactList(contactListControl.getCustomerTypeContactListTransfer(getUserVisit(), customerTypeContactList));
     }
@@ -136,7 +136,7 @@ public class EditCustomerTypeContactListCommand
 
     @Override
     public void doUpdate(CustomerTypeContactList customerTypeContactList) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
         CustomerTypeContactListValue customerTypeContactListValue = contactListControl.getCustomerTypeContactListValue(customerTypeContactList);
 
         customerTypeContactListValue.setAddWhenCreated(Boolean.valueOf(edit.getAddWhenCreated()));

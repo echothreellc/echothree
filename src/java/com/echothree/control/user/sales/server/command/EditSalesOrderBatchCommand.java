@@ -107,7 +107,7 @@ public class EditSalesOrderBatchCommand
         }
 
         if(!hasExecutionErrors()) {
-            SalesControl salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+            var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
             
             result.setSalesOrderBatch(salesControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
         }
@@ -122,15 +122,15 @@ public class EditSalesOrderBatchCommand
 
     @Override
     public void fillInResult(EditSalesOrderBatchResult result, Batch batch) {
-        SalesControl salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+        var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
 
         result.setSalesOrderBatch(salesControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
     }
 
     @Override
     public void doLock(SalesOrderBatchEdit edit, Batch batch) {
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        SalesControl salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
         OrderBatch orderBatch = orderControl.getOrderBatch(batch);
         SalesOrderBatch salesOrderBatch = salesControl.getSalesOrderBatch(batch);
         Long count = orderBatch.getCount();
@@ -148,13 +148,13 @@ public class EditSalesOrderBatchCommand
     @Override
     public void canUpdate(Batch batch) {
         // TODO: currency and payment method should be checked only if the batch has no orders in it.
-        AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+        var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
         String currencyIsoName = edit.getCurrencyIsoName();
 
         currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
 
         if(currency != null) {
-            PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+            var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
             String paymentMethodName = edit.getPaymentMethodName();
 
             paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName);
@@ -169,8 +169,8 @@ public class EditSalesOrderBatchCommand
 
     @Override
     public void doUpdate(Batch batch) {
-        SalesControl salesControl = (SalesControl)Session.getModelController(SalesControl.class);
-        OrderControl orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         PartyPK partyPK = getPartyPK();
         String strCount = edit.getCount();
         Long count = strCount == null ? null : Long.valueOf(strCount);

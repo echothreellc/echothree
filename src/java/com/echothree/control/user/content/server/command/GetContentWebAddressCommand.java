@@ -51,7 +51,7 @@ public class GetContentWebAddressCommand
     
     @Override
     protected ContentWebAddress getEntity() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         GetContentWebAddressResult result = ContentResultFactory.getGetContentWebAddressResult();
         String contentWebAddressName = form.getContentWebAddressName();
         ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
@@ -70,7 +70,7 @@ public class GetContentWebAddressCommand
         GetContentWebAddressResult result = ContentResultFactory.getGetContentWebAddressResult();
         
         if(contentWebAddress != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             
             result.setContentWebAddress(contentControl.getContentWebAddressTransfer(getUserVisit(), contentWebAddress));
         }

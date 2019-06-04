@@ -385,9 +385,9 @@ public class CustomerControl
     }
     
     public void deleteCustomerType(CustomerType customerType, BasePK deletedBy) {
-        ContactListControl contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        OfferControl offerControl = (OfferControl)Session.getModelController(OfferControl.class);
+        var contactListControl = (ContactListControl)Session.getModelController(ContactListControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
         
         contactListControl.deleteCustomerTypeContactListGroupsByCustomerType(customerType, deletedBy);
         contactListControl.deleteCustomerTypeContactListsByCustomerType(customerType, deletedBy);
@@ -601,7 +601,7 @@ public class CustomerControl
             Boolean allowBackorders, Boolean allowSubstitutions, Boolean allowCombiningShipments, Boolean requireReference, Boolean allowReferenceDuplicates,
             String referenceValidationPattern, BasePK createdBy) {
         Sequence sequence = customerType.getLastDetail().getCustomerSequence();
-        SequenceControl sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
         if(sequence == null) {
             SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_CUSTOMER);
@@ -724,7 +724,7 @@ public class CustomerControl
     
     public CustomerStatusChoicesBean getCustomerStatusChoices(String defaultCustomerStatusChoice, Language language,
             boolean allowNullChoice, Party customerParty, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         CustomerStatusChoicesBean customerStatusChoicesBean = new CustomerStatusChoicesBean();
         
         if(customerParty == null) {
@@ -743,7 +743,7 @@ public class CustomerControl
     }
     
     public void setCustomerStatus(ExecutionErrorAccumulator eea, Party party, String customerStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerStatusConstants.Workflow_CUSTOMER_STATUS,
                 entityInstance);
@@ -759,7 +759,7 @@ public class CustomerControl
     
     public CustomerCreditStatusChoicesBean getCustomerCreditStatusChoices(String defaultCustomerCreditStatusChoice, Language language,
             boolean allowNullChoice, Party customerParty, PartyPK partyPK) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         CustomerCreditStatusChoicesBean customerCreditStatusChoicesBean = new CustomerCreditStatusChoicesBean();
         
         if(customerParty == null) {
@@ -778,7 +778,7 @@ public class CustomerControl
     }
     
     public void setCustomerCreditStatus(ExecutionErrorAccumulator eea, Party party, String customerCreditStatusChoice, PartyPK modifiedBy) {
-        WorkflowControl workflowControl = getWorkflowControl();
+        var workflowControl = getWorkflowControl();
         EntityInstance entityInstance = getEntityInstanceByBaseEntity(party);
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS,
                 entityInstance);

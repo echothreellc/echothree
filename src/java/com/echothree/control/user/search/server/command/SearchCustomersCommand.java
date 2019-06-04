@@ -122,7 +122,7 @@ public class SearchCustomersCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         SearchCustomersResult result = SearchResultFactory.getSearchCustomersResult();
         SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_CUSTOMER);
         
@@ -131,7 +131,7 @@ public class SearchCustomersCommand
             SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
-                CustomerControl customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
+                var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
                 String customerTypeName = form.getCustomerTypeName();
                 CustomerType customerType = customerTypeName == null? null: customerControl.getCustomerTypeByName(customerTypeName);
                 
@@ -141,7 +141,7 @@ public class SearchCustomersCommand
                     PartyAliasType partyAliasType = null;
                     
                     if(partyAliasTypeName != null) {
-                        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+                        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
                         PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_CUSTOMER);
                         
                         if(partyType != null) {
@@ -156,7 +156,7 @@ public class SearchCustomersCommand
                     }
                     
                     if(!hasExecutionErrors()) {
-                        GeoControl geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+                        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
                         String countryName = form.getCountryName();
                         String countryAlias = countryName == null ? null : StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
                         GeoCode countryGeoCode = countryAlias == null ? null : geoControl.getCountryByAlias(countryAlias);

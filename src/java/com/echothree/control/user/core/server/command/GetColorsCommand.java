@@ -62,7 +62,7 @@ public class GetColorsCommand
     
     @Override
     protected Collection<Color> getEntities() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         
         return coreControl.getColors();
     }
@@ -70,7 +70,7 @@ public class GetColorsCommand
     @Override
     protected BaseResult getTransfers(Collection<Color> entities) {
         GetColorsResult result = CoreResultFactory.getGetColorsResult();
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         UserVisit userVisit = getUserVisit();
         
         result.setColors(coreControl.getColorTransfers(userVisit, entities));

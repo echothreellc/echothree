@@ -56,7 +56,7 @@ public class GetWorkAssignmentsCommand
     
     @Override
     protected BaseResult execute() {
-        PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         GetWorkAssignmentsResult result = WorkRequirementResultFactory.getGetWorkAssignmentsResult();
         String employeeName = form.getEmployeeName();
         String partyName = form.getPartyName();
@@ -66,7 +66,7 @@ public class GetWorkAssignmentsCommand
             Party party = null;
 
             if(employeeName != null) {
-                EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+                var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
                 PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
 
                 if(partyEmployee != null) {
@@ -85,7 +85,7 @@ public class GetWorkAssignmentsCommand
             }
 
             if(!hasExecutionErrors()) {
-                WorkRequirementControl workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
+                var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
                 UserVisit userVisit = getUserVisit();
 
                 if(session.hasLimit(WorkAssignmentFactory.class)) {

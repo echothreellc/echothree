@@ -87,13 +87,13 @@ public class EditLeaveReasonDescriptionCommand
 
     @Override
     public LeaveReasonDescription getEntity(EditLeaveReasonDescriptionResult result) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         LeaveReasonDescription leaveReasonDescription = null;
         String leaveReasonName = spec.getLeaveReasonName();
         LeaveReason leaveReason = employeeControl.getLeaveReasonByName(leaveReasonName);
 
         if(leaveReason != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditLeaveReasonDescriptionCommand
 
     @Override
     public void fillInResult(EditLeaveReasonDescriptionResult result, LeaveReasonDescription leaveReasonDescription) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
 
         result.setLeaveReasonDescription(employeeControl.getLeaveReasonDescriptionTransfer(getUserVisit(), leaveReasonDescription));
     }
@@ -136,7 +136,7 @@ public class EditLeaveReasonDescriptionCommand
 
     @Override
     public void doUpdate(LeaveReasonDescription leaveReasonDescription) {
-        EmployeeControl employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
+        var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
         LeaveReasonDescriptionValue leaveReasonDescriptionValue = employeeControl.getLeaveReasonDescriptionValue(leaveReasonDescription);
 
         leaveReasonDescriptionValue.setDescription(edit.getDescription());

@@ -55,7 +55,7 @@ public class GetContentForumsCommand
     
     @Override
     protected Collection<ContentForum> getEntities() {
-        ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+        var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         Collection<ContentForum> contentForums = null;
         
@@ -75,7 +75,7 @@ public class GetContentForumsCommand
         GetContentForumsResult result = ContentResultFactory.getGetContentForumsResult();
         
         if(entities != null) {
-            ContentControl contentControl = (ContentControl)Session.getModelController(ContentControl.class);
+            var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setContentCollection(contentControl.getContentCollectionTransfer(userVisit, contentCollection));

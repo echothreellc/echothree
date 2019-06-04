@@ -64,7 +64,7 @@ public class GetItemAliasTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        ItemControl itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
         GetItemAliasTypeDescriptionsResult result = ItemResultFactory.getGetItemAliasTypeDescriptionsResult();
         String itemAliasTypeName = form.getItemAliasTypeName();
         ItemAliasType itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);

@@ -87,13 +87,13 @@ public class EditPrinterGroupUseTypeDescriptionCommand
 
     @Override
     public PrinterGroupUseTypeDescription getEntity(EditPrinterGroupUseTypeDescriptionResult result) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PrinterGroupUseTypeDescription printerGroupUseTypeDescription = null;
         String printerGroupUseTypeName = spec.getPrinterGroupUseTypeName();
         PrinterGroupUseType printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
         if(printerGroupUseType != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = spec.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -124,7 +124,7 @@ public class EditPrinterGroupUseTypeDescriptionCommand
 
     @Override
     public void fillInResult(EditPrinterGroupUseTypeDescriptionResult result, PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
 
         result.setPrinterGroupUseTypeDescription(printerControl.getPrinterGroupUseTypeDescriptionTransfer(getUserVisit(), printerGroupUseTypeDescription));
     }
@@ -136,7 +136,7 @@ public class EditPrinterGroupUseTypeDescriptionCommand
 
     @Override
     public void doUpdate(PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
-        PrinterControl printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
+        var printerControl = (PrinterControl)Session.getModelController(PrinterControl.class);
         PrinterGroupUseTypeDescriptionValue printerGroupUseTypeDescriptionValue = printerControl.getPrinterGroupUseTypeDescriptionValue(printerGroupUseTypeDescription);
 
         printerGroupUseTypeDescriptionValue.setDescription(edit.getDescription());

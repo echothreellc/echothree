@@ -66,12 +66,12 @@ public class DeleteAppearanceDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        CoreControl coreControl = getCoreControl();
+        var coreControl = getCoreControl();
         String appearanceName = form.getAppearanceName();
         Appearance appearance = coreControl.getAppearanceByName(appearanceName);
         
         if(appearance != null) {
-            PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String languageIsoName = form.getLanguageIsoName();
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             

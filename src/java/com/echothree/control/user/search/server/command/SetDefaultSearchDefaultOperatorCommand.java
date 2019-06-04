@@ -62,7 +62,7 @@ public class SetDefaultSearchDefaultOperatorCommand
     
     @Override
     protected BaseResult execute() {
-        SearchControl searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
         SearchDefaultOperatorDetailValue searchDefaultOperatorDetailValue = searchControl.getSearchDefaultOperatorDetailValueByNameForUpdate(searchDefaultOperatorName);
         

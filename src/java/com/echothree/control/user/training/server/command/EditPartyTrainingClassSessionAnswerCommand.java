@@ -148,7 +148,7 @@ public class EditPartyTrainingClassSessionAnswerCommand
 
     @Override
     public void fillInResult(EditPartyTrainingClassSessionAnswerResult result, PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
 
         result.setPartyTrainingClassSessionAnswer(trainingControl.getPartyTrainingClassSessionAnswerTransfer(getUserVisit(), partyTrainingClassSessionAnswer));
     }
@@ -188,7 +188,7 @@ public class EditPartyTrainingClassSessionAnswerCommand
 
     @Override
     public void doUpdate(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer) {
-        TrainingControl trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
+        var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
         PartyPK partyPK = getPartyPK();
         PartyTrainingClassSessionAnswerValue partyTrainingClassSessionAnswerValue = trainingControl.getPartyTrainingClassSessionAnswerValue(partyTrainingClassSessionAnswer);
 

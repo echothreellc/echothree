@@ -80,7 +80,7 @@ public class DeletePartyApplicationEditorUseCommand
                 ApplicationEditorUse applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    CoreControl coreControl = getCoreControl();
+                    var coreControl = getCoreControl();
                     PartyApplicationEditorUse partyApplicationEditorUse = coreControl.getPartyApplicationEditorUseForUpdate(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse != null) {
