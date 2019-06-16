@@ -32,6 +32,7 @@ import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS;
 import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS;
 import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_MAX_AGE;
+import static com.google.common.net.HttpHeaders.ACCESS_CONTROL_REQUEST_HEADERS;
 import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static com.google.common.net.HttpHeaders.ORIGIN;
 import static com.google.common.net.MediaType.JSON_UTF_8;
@@ -40,7 +41,6 @@ import graphql.introspection.IntrospectionQuery;
 import javax.naming.NamingException;
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -162,26 +162,25 @@ public class GraphQlServlet
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         doRequestAsync(request, response, getHandler);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         doRequestAsync(request, response, postHandler);
     }
 
     @Override
-    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response) {
         String origin = request.getHeader(ORIGIN);
+        String accessControlRequestHeaders = request.getHeader(ACCESS_CONTROL_REQUEST_HEADERS);
 
         response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
         response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, Boolean.TRUE.toString());
         response.addHeader(ACCESS_CONTROL_ALLOW_METHODS, METHOD_POST + ", " + METHOD_GET + ", " + METHOD_OPTIONS);
-        response.addHeader(ACCESS_CONTROL_ALLOW_HEADERS, CONTENT_TYPE + ", " + ORIGIN);
+        response.addHeader(ACCESS_CONTROL_ALLOW_HEADERS,
+                accessControlRequestHeaders == null ? CONTENT_TYPE + ", " + ORIGIN : accessControlRequestHeaders);
         response.addHeader(ACCESS_CONTROL_MAX_AGE, "86400");
     }
 
