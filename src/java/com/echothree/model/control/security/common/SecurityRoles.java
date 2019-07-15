@@ -39,5 +39,7 @@ public enum SecurityRoles {
     Search,
     Translation,
     UserLogin,
+    WorkflowDestinationStep,
+    WorkflowEntranceStep,
     
 }
