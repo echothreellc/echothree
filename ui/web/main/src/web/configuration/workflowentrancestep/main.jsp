@@ -38,11 +38,11 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="WorkflowEntranceStep.Create:WorkflowEntranceStep.Delete" />
-            <et:hasSecurityRole securityRoles="WorkflowEntranceStep.Delete">
+            <et:checkSecurityRoles securityRoles="WorkflowEntrance.WorkflowEntranceStep" />
+            <et:hasSecurityRole securityRoles="WorkflowEntrance.WorkflowEntranceStep">
                 <c:set var="linksInFirstRow" value="true" />
             </et:hasSecurityRole>
-            <et:hasSecurityRole securityRole="WorkflowEntranceStep.Create">
+            <et:hasSecurityRole securityRole="WorkflowEntrance.WorkflowEntranceStep">
                 <c:url var="addUrl" value="/action/Configuration/WorkflowEntranceStep/Add">
                     <c:param name="WorkflowName" value="${workflow.workflowName}" />
                     <c:param name="WorkflowEntranceName" value="${workflowEntrance.workflowEntranceName}" />
@@ -58,7 +58,7 @@
                 </display:column>
                 <c:if test="${linksInFirstRow}">
                     <display:column>
-                        <et:hasSecurityRole securityRole="WorkflowEntranceStep.Delete">
+                        <et:hasSecurityRole securityRole="WorkflowEntrance.WorkflowEntranceStep">
                             <c:url var="deleteUrl" value="/action/Configuration/WorkflowEntranceStep/Delete">
                                 <c:param name="WorkflowName" value="${workflowEntranceStep.workflowEntrance.workflow.workflowName}" />
                                 <c:param name="WorkflowEntranceName" value="${workflowEntranceStep.workflowEntrance.workflowEntranceName}" />
