@@ -2188,11 +2188,11 @@ public class WorkflowControl
     }
     
     public List<WorkflowEntrancePartyType> getWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
-        return getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance, EntityPermission.READ_WRITE);
+        return getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance, EntityPermission.READ_ONLY);
     }
     
     public List<WorkflowEntrancePartyType> getWorkflowEntrancePartyTypesByWorkflowEntranceForUpdate(WorkflowEntrance workflowEntrance) {
-        return getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance, EntityPermission.READ_ONLY);
+        return getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance, EntityPermission.READ_WRITE);
     }
     
     private WorkflowEntrancePartyType getWorkflowEntrancePartyType(WorkflowEntrance workflowEntrance, PartyType partyType,
@@ -2330,11 +2330,11 @@ public class WorkflowControl
     }
     
     public List<WorkflowEntranceSecurityRole> getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType) {
-        return getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType, EntityPermission.READ_WRITE);
+        return getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType, EntityPermission.READ_ONLY);
     }
     
     public List<WorkflowEntranceSecurityRole> getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyTypeForUpdate(WorkflowEntrancePartyType workflowEntrancePartyType) {
-        return getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType, EntityPermission.READ_ONLY);
+        return getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType, EntityPermission.READ_WRITE);
     }
     
     private WorkflowEntranceSecurityRole getWorkflowEntranceSecurityRole(WorkflowEntrancePartyType workflowEntrancePartyType, SecurityRole securityRole,
@@ -3263,11 +3263,11 @@ public class WorkflowControl
     }
     
     public List<WorkflowDestinationPartyType> getWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination) {
-        return getWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination, EntityPermission.READ_WRITE);
+        return getWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination, EntityPermission.READ_ONLY);
     }
     
     public List<WorkflowDestinationPartyType> getWorkflowDestinationPartyTypesByWorkflowDestinationForUpdate(WorkflowDestination workflowDestination) {
-        return getWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination, EntityPermission.READ_ONLY);
+        return getWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination, EntityPermission.READ_WRITE);
     }
     
     private WorkflowDestinationPartyType getWorkflowDestinationPartyType(WorkflowDestination workflowDestination, PartyType partyType,
@@ -3405,11 +3405,11 @@ public class WorkflowControl
     }
     
     public List<WorkflowDestinationSecurityRole> getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(WorkflowDestinationPartyType workflowDestinationPartyType) {
-        return getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType, EntityPermission.READ_WRITE);
+        return getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType, EntityPermission.READ_ONLY);
     }
     
     public List<WorkflowDestinationSecurityRole> getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyTypeForUpdate(WorkflowDestinationPartyType workflowDestinationPartyType) {
-        return getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType, EntityPermission.READ_ONLY);
+        return getWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType, EntityPermission.READ_WRITE);
     }
     
     private WorkflowDestinationSecurityRole getWorkflowDestinationSecurityRole(WorkflowDestinationPartyType workflowDestinationPartyType, SecurityRole securityRole,
