@@ -2325,20 +2325,8 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Entrance Description" />
             </securityRole>
-        </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="WorkflowEntranceStep" parentSecurityRoleGroupName="WorkflowComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Workflow Entrance Step" />
-            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Entrance Step Create" />
-            </securityRole>
-            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Entrance Step Delete" />
-            </securityRole>
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Entrance Step List" />
-            </securityRole>
-            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Entrance Step Review" />
+            <securityRole securityRoleName="WorkflowEntranceStep" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Entrance Step" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkflowStep" parentSecurityRoleGroupName="WorkflowComponent" isDefault="false" sortOrder="1">
@@ -2382,20 +2370,8 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Destination Description" />
             </securityRole>
-        </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="WorkflowDestinationStep" parentSecurityRoleGroupName="WorkflowComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Workflow Destination Step" />
-            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Destination Step Create" />
-            </securityRole>
-            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Destination Step Delete" />
-            </securityRole>
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Destination Step List" />
-            </securityRole>
-            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Destination Step Review" />
+            <securityRole securityRoleName="WorkflowDestinationStep" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Destination Step" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkEffortComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -7611,10 +7587,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntranceStep" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntranceStep" securityRoleName="Delete" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntranceStep" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntranceStep" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="WorkflowEntranceStep" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Delete" />
@@ -7627,10 +7600,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestinationStep" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestinationStep" securityRoleName="Delete" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestinationStep" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestinationStep" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="WorkflowDestinationStep" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkEffortType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkEffortType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkEffortType" securityRoleName="Delete" />
