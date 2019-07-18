@@ -17,6 +17,9 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceSelectorForm;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.selector.server.entity.Selector;
@@ -30,6 +33,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,9 +44,17 @@ import java.util.List;
 public class CreateWorkflowEntranceSelectorCommand
         extends BaseSimpleCommand<CreateWorkflowEntranceSelectorForm> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                    new SecurityRoleDefinition(SecurityRoleGroups.WorkflowEntrance.name(), SecurityRoles.Selector.name())
+                    )))
+                )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null),
@@ -50,7 +64,7 @@ public class CreateWorkflowEntranceSelectorCommand
     
     /** Creates a new instance of CreateWorkflowEntranceSelectorCommand */
     public CreateWorkflowEntranceSelectorCommand(UserVisitPK userVisitPK, CreateWorkflowEntranceSelectorForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

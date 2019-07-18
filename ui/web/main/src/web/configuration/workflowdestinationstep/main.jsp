@@ -43,11 +43,11 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="WorkflowDestination.WorkflowDestinationStep" />
-            <et:hasSecurityRole securityRoles="WorkflowDestination.WorkflowDestinationStep">
+            <et:checkSecurityRoles securityRoles="WorkflowDestination.WorkflowStep" />
+            <et:hasSecurityRole securityRoles="WorkflowDestination.WorkflowStep">
                 <c:set var="linksInFirstRow" value="true" />
             </et:hasSecurityRole>
-            <et:hasSecurityRole securityRole="WorkflowDestination.WorkflowDestinationStep">
+            <et:hasSecurityRole securityRole="WorkflowDestination.WorkflowStep">
                 <c:url var="addUrl" value="/action/Configuration/WorkflowDestinationStep/Add">
                     <c:param name="WorkflowName" value="${workflow.workflowName}" />
                     <c:param name="WorkflowStepName" value="${workflowStep.workflowStepName}" />
@@ -64,7 +64,7 @@
                 </display:column>
                 <c:if test="${linksInFirstRow}">
                     <display:column>
-                        <et:hasSecurityRole securityRole="WorkflowDestination.WorkflowDestinationStep">
+                        <et:hasSecurityRole securityRole="WorkflowDestination.WorkflowStep">
                             <c:url var="deleteUrl" value="/action/Configuration/WorkflowDestinationStep/Delete">
                                 <c:param name="WorkflowName" value="${workflowDestinationStep.workflowDestination.workflowStep.workflow.workflowName}" />
                                 <c:param name="WorkflowStepName" value="${workflowDestinationStep.workflowDestination.workflowStep.workflowStepName}" />

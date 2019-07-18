@@ -2304,6 +2304,12 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Description" />
             </securityRole>
+            <securityRole securityRoleName="EntityType" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Entity Type" />
+            </securityRole>
+            <securityRole securityRoleName="SelectorKind" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Selector Kind" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkflowEntrance" parentSecurityRoleGroupName="WorkflowComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Workflow Entrance" />
@@ -2325,7 +2331,16 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Entrance Description" />
             </securityRole>
-            <securityRole securityRoleName="WorkflowEntranceStep" isDefault="false" sortOrder="1">
+            <securityRole securityRoleName="PartyType" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Entrance Party Type" />
+            </securityRole>
+            <securityRole securityRoleName="SecurityRole" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Entrance Security Role" />
+            </securityRole>
+            <securityRole securityRoleName="Selector" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Entrance Selector" />
+            </securityRole>
+            <securityRole securityRoleName="WorkflowStep" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Entrance Step" />
             </securityRole>
         </securityRoleGroup>
@@ -2370,7 +2385,16 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Destination Description" />
             </securityRole>
-            <securityRole securityRoleName="WorkflowDestinationStep" isDefault="false" sortOrder="1">
+            <securityRole securityRoleName="PartyType" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Destination Party Type" />
+            </securityRole>
+            <securityRole securityRoleName="SecurityRole" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Destination Security Role" />
+            </securityRole>
+            <securityRole securityRoleName="Selector" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Destination Selector" />
+            </securityRole>
+            <securityRole securityRoleName="WorkflowStep" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Destination Step" />
             </securityRole>
         </securityRoleGroup>
@@ -7581,13 +7605,18 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="EntityType" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="SelectorKind" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="WorkflowEntranceStep" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="PartyType" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="SecurityRole" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Selector" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="WorkflowStep" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Delete" />
@@ -7600,7 +7629,10 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="Description" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="WorkflowDestinationStep" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="PartyType" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="SecurityRole" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="Selector" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="WorkflowStep" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkEffortType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkEffortType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkEffortType" securityRoleName="Delete" />
