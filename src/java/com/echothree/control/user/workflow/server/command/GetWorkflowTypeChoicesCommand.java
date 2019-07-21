@@ -37,9 +37,9 @@ public class GetWorkflowTypeChoicesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("DefaultWorkflowTypeChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-        ));
+                new FieldDefinition("DefaultWorkflowTypeChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                ));
     }
     
     /** Creates a new instance of GetWorkflowTypeChoicesCommand */

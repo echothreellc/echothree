@@ -40,9 +40,9 @@ public class GetWorkflowEntranceCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null)
+                ));
     }
     
     /** Creates a new instance of GetWorkflowEntranceCommand */
