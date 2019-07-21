@@ -2311,6 +2311,12 @@
                 <securityRoleDescription languageIsoName="en" description="Workflow Selector Kind" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="WorkflowEntityStatus" parentSecurityRoleGroupName="WorkflowComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Workflow Entity Status" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Entity Status List" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WorkflowEntrance" parentSecurityRoleGroupName="WorkflowComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Workflow Entrance" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -2360,6 +2366,9 @@
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Step Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Step Choices" />
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Step Description" />
@@ -7607,6 +7616,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="EntityType" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="SelectorKind" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntityStatus" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowEntrance" securityRoleName="Delete" />
@@ -7622,6 +7632,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowStep" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowDestination" securityRoleName="Edit" />
