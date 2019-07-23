@@ -307,17 +307,28 @@
             use="${javadoc.use}"
             windowtitle="${javadoc.windowtitle}"
             doctitle="${javadoc.doctitle}"
-            bottom="${javadoc.bottom}"
-            additionalparam="-J-Xmx4096m -linksource"
+            additionalparam="-J-Xmx4096m -linksource --allow-script-in-comments"
             classpath="${compile.task.classpath}"
-	    classpathref="shared.class.path">
-            
+	        classpathref="shared.class.path">
+            <bottom>
+${javadoc.copyright}
+<![CDATA[
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=${javadoc.trackingId}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '${javadoc.trackingId}');
+</script>
+]]>
+            </bottom>
             <sourcepath>
                 <pathelement path="${dir.home}/generated/data/java"/>
                 <pathelement path="${dir.home}/generated/form/java"/>
                 <pathelement path="java"/>
             </sourcepath>
-            
         </javadoc>
     </target>
         
