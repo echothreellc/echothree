@@ -23,7 +23,7 @@ import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
-import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -68,7 +68,7 @@ public class VendorLoginCommand
                 UserControl userControl = getUserControl();
                 UserLoginStatus userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
 
-                if(!WorkflowLogic.getInstance().isEntityInWorkflowSteps(this, VendorStatusConstants.Workflow_VENDOR_STATUS, party,
+                if(!WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(this, VendorStatusConstants.Workflow_VENDOR_STATUS, party,
                         VendorStatusConstants.WorkflowStep_ACTIVE).isEmpty()) {
                     LockoutPolicyLogic.getInstance().checkUserLogin(session, this, party, userLoginStatus);
 

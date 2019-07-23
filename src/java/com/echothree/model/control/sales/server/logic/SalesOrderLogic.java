@@ -72,7 +72,9 @@ import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.batch.server.entity.Batch;
@@ -443,7 +445,7 @@ public class SalesOrderLogic
     }
 
     public boolean isOrderInWorkflowSteps(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance, final String... workflowStepNames) {
-        return !WorkflowLogic.getInstance().isEntityInWorkflowSteps(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance,
+        return !WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance,
                 workflowStepNames).isEmpty();
     }
 
@@ -485,40 +487,40 @@ public class SalesOrderLogic
     public void setSalesOrderStatus(final Session session, final ExecutionErrorAccumulator eea, final Order order, final String orderStatusChoice, final PartyPK modifiedBy) {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
-        Workflow workflow = workflowLogic.getWorkflowByName(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS);
+        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         WorkflowDestination workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);
 
         if(workflowDestination != null || orderStatusChoice == null) {
+            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             boolean handled = false;
             Long triggerTime = null;
             
             if(currentWorkflowStepName.equals(SalesOrderStatusConstants.WorkflowStep_ENTRY_ALLOCATED)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_UNALLOCATED)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_UNALLOCATED)) {
                     // TODO: Unallocate inventory.
                     handled = true;
-                } else if(workflowLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
+                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
                     // TODO: Verify the order is not part of a batch.
                     // TODO: Verify all aspects of the order are valid.
                     handled = true;
-                } else if(workflowLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_BATCH_AUDIT)) {
+                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_BATCH_AUDIT)) {
                     // TODO: Verify the order is part of a batch.
                     // TODO: Verify all aspects of the order are valid.
                     handled = true;
                 }
             } else if(currentWorkflowStepName.equals(SalesOrderStatusConstants.WorkflowStep_ENTRY_UNALLOCATED)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_ALLOCATED)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_ALLOCATED)) {
                     // TODO: Allocate inventory.
                     
                     triggerTime = session.START_TIME + AllocatedInventoryTimeout;
                     handled = true;
                 }
             } else if(currentWorkflowStepName.equals(SalesOrderStatusConstants.WorkflowStep_BATCH_AUDIT)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_COMPLETE)) {
                     handled = true;
                 }
             }
@@ -953,7 +955,7 @@ public class SalesOrderLogic
                 }
 
                 // Check Item's status.
-                if(!WorkflowLogic.getInstance().isEntityInWorkflowSteps(eea, ItemStatusConstants.Workflow_ITEM_STATUS, item,
+                if(!WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, ItemStatusConstants.Workflow_ITEM_STATUS, item,
                         ItemStatusConstants.WorkflowStep_ITEM_STATUS_DISCONTINUED).isEmpty()) {
                     handleExecutionError(ItemDiscontinuedException.class, eea, ExecutionErrors.ItemDiscontinued.name(), item.getLastDetail().getItemName());
                 }

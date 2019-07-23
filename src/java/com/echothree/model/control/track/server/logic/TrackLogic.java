@@ -23,6 +23,7 @@ import com.echothree.model.control.track.common.exception.UnknownTrackValueExcep
 import com.echothree.model.control.track.server.TrackControl;
 import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -77,23 +78,23 @@ public class TrackLogic
     public void setTrackStatus(final Session session, ExecutionErrorAccumulator eea, Track track, String trackStatusChoice, PartyPK modifiedBy) {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
-        Workflow workflow = workflowLogic.getWorkflowByName(eea, TrackStatusConstants.Workflow_TRACK_STATUS);
+        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, TrackStatusConstants.Workflow_TRACK_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         WorkflowDestination workflowDestination = trackStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), trackStatusChoice);
 
         if(workflowDestination != null || trackStatusChoice == null) {
+            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(TrackStatusConstants.WorkflowStep_ACTIVE)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, TrackStatusConstants.Workflow_TRACK_STATUS, TrackStatusConstants.WorkflowStep_INACTIVE)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, TrackStatusConstants.Workflow_TRACK_STATUS, TrackStatusConstants.WorkflowStep_INACTIVE)) {
                     // Nothing at this time.
                 }
             } else if(currentWorkflowStepName.equals(TrackStatusConstants.WorkflowStep_INACTIVE)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, TrackStatusConstants.Workflow_TRACK_STATUS, TrackStatusConstants.WorkflowStep_ACTIVE)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, TrackStatusConstants.Workflow_TRACK_STATUS, TrackStatusConstants.WorkflowStep_ACTIVE)) {
                     // Nothing at this time.
                 }
             }

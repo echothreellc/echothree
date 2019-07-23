@@ -32,7 +32,9 @@ import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchEntity;
@@ -84,7 +86,7 @@ public class SalesOrderBatchLogic
     }
     
     public boolean checkBatchInWorkflowSteps(final ExecutionErrorAccumulator eea, final Batch batch, final String... workflowStepNames) {
-        return !WorkflowLogic.getInstance().isEntityInWorkflowSteps(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
+        return !WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
                 getEntityInstanceByBaseEntity(batch), workflowStepNames).isEmpty();
     }
 
@@ -102,7 +104,7 @@ public class SalesOrderBatchLogic
         if(workflowStepNames.length == 0) {
             result = BatchLogic.getInstance().batchEntityExists(order, batch);
         } else {
-            if(!WorkflowLogic.getInstance().isEntityInWorkflowSteps(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
+            if(!WorkflowStepLogic.getInstance().isEntityInWorkflowSteps(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS,
                     getEntityInstanceByBaseEntity(order), workflowStepNames).isEmpty()) {
                 result = true;
             } else {
@@ -166,19 +168,19 @@ public class SalesOrderBatchLogic
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
-        Workflow workflow = workflowLogic.getWorkflowByName(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
+        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         WorkflowDestination workflowDestination = salesOrderBatchStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), salesOrderBatchStatusChoice);
 
         if(workflowDestination != null || salesOrderBatchStatusChoice == null) {
+            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
             
             if(currentWorkflowStepName.equals(SalesOrderBatchStatusConstants.WorkflowStep_ENTRY)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS, SalesOrderBatchStatusConstants.WorkflowStep_AUDIT)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS, SalesOrderBatchStatusConstants.WorkflowStep_AUDIT)) {
                     var batchControl = (BatchControl)Session.getModelController(BatchControl.class);
                     List<BatchEntity> batchEntities = batchControl.getBatchEntitiesByBatch(batch);
                     
@@ -195,7 +197,7 @@ public class SalesOrderBatchLogic
                     });
                 }
             } else if(currentWorkflowStepName.equals(SalesOrderBatchStatusConstants.WorkflowStep_AUDIT)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS, SalesOrderBatchStatusConstants.WorkflowStep_COMPLETE)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS, SalesOrderBatchStatusConstants.WorkflowStep_COMPLETE)) {
                     OrderBatch orderBatch = orderControl.getOrderBatch(batch);
                     Long count = orderBatch.getCount();
                     Long amount = orderBatch.getAmount();

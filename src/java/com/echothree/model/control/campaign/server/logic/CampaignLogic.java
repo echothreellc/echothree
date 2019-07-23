@@ -23,6 +23,7 @@ import com.echothree.model.control.campaign.server.CampaignControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.campaign.server.entity.Campaign;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -77,23 +78,24 @@ public class CampaignLogic
     public void setCampaignStatus(final Session session, ExecutionErrorAccumulator eea, Campaign campaign, String campaignStatusChoice, PartyPK modifiedBy) {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
+        var workflowLogic = WorkflowLogic.getInstance();
         Workflow workflow = workflowLogic.getWorkflowByName(eea, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(campaign.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         WorkflowDestination workflowDestination = campaignStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), campaignStatusChoice);
 
         if(workflowDestination != null || campaignStatusChoice == null) {
+            WorkflowDestinationLogic workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
             String currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
-            Map<String, Set<String>> map = workflowLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            Map<String, Set<String>> map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
             Long triggerTime = null;
 
             if(currentWorkflowStepName.equals(CampaignStatusConstants.WorkflowStep_ACTIVE)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS, CampaignStatusConstants.WorkflowStep_INACTIVE)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS, CampaignStatusConstants.WorkflowStep_INACTIVE)) {
                     // Nothing at this time.
                 }
             } else if(currentWorkflowStepName.equals(CampaignStatusConstants.WorkflowStep_INACTIVE)) {
-                if(workflowLogic.workflowDestinationMapContainsStep(map, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS, CampaignStatusConstants.WorkflowStep_ACTIVE)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS, CampaignStatusConstants.WorkflowStep_ACTIVE)) {
                     // Nothing at this time.
                 }
             }
