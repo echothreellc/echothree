@@ -33,6 +33,7 @@
         <mkdir dir="${root.dir.home}/build/lib" />
         <mkdir dir="${root.dir.home}/build/metadata" />
         <mkdir dir="${root.dir.home}/build/metadata/common" />
+        <mkdir dir="${wildfly.output.dir}" />
     </target>
     
     <target name="build-properties-instance" depends="prepare">
@@ -173,6 +174,35 @@
     </target>
     
     <target name="setup" depends="build-properties,setup-ivy" />
-    
+
+    <target name="wildfly-start" depends="prepare">
+        <property environment="env"/>
+        <exec executable="../../${wildfly.home.bin}/${wildfly.instance}.sh" spawn="true" dir="${wildfly.output.dir}">
+            <env key="JAVA_OPTS" value="${wildfly.javaopts.memory} ${wildfly.javaopts.network} ${wildfly.javaopts.debug} ${wildfly.javaopts.jooq} ${wildfly.javaopts.coverage} ${wildfly.javaopts.required}"/>
+            <arg value="-b=${wildfly.host}"/>
+            <arg value="--server-config=standalone-full-ha.xml"/>
+        </exec>
+        <waitfor maxwait="2" maxwaitunit="minute">
+            <and>
+                <socket server="${wildfly.host}" port="${wildfly.console.port}" />
+                <http url="http://${wildfly.host}:${wildfly.console.port}${wildfly.console.url}" />
+            </and>
+        </waitfor>
+    </target>
+
+    <target name="wildfly-reload" depends="prepare">
+        <exec executable="${wildfly.home.bin}/jboss-cli.sh" output="${wildfly.output.reload}">
+            <arg value="--connect"/>
+            <arg value="command=:reload"/>
+        </exec>
+    </target>
+
+    <target name="wildfly-shutdown" depends="prepare">
+        <exec executable="${wildfly.home.bin}/jboss-cli.sh" output="${wildfly.output.shutdown}">
+            <arg value="--connect"/>
+            <arg value="command=:shutdown"/>
+        </exec>
+    </target>
+
 </project>
 
