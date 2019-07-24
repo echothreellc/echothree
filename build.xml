@@ -34,6 +34,7 @@
         <mkdir dir="${root.dir.home}/build/metadata" />
         <mkdir dir="${root.dir.home}/build/metadata/common" />
         <mkdir dir="${wildfly.output.dir}" />
+        <mkdir dir="${jacoco.output.dir}" />
     </target>
     
     <target name="build-properties-instance" depends="prepare">

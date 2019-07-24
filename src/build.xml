@@ -295,7 +295,7 @@
   
     <target name="deploy" depends="ear" >
         <!-- Copy the ear file to the application server -->        
-        <copy file="${dir.home}/build/ears/echothree.ear" todir="${wildfly.home.deploy}" />
+        <copy file="${dir.home}/build/ears/echothree.ear" todir="../${wildfly.home.deploy}" />
     </target>
     
     <target name="javadoc" depends="generated">

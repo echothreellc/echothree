@@ -72,7 +72,7 @@
     </target>
 
     <target name="deploy" depends="jar">
-        <copy file="${service.job.jarfile}" todir="../${wildfly.home.deploy}" />
+        <copy file="${service.job.jarfile}" todir="../../${wildfly.home.deploy}" />
     </target>
 
     <target name="clean">

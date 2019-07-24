@@ -168,7 +168,7 @@
     </target>
 
     <target name="deploy" depends="war">
-        <copy file="${ui.web.letter.warfile}" todir="../../${wildfly.home.deploy}" />
+        <copy file="${ui.web.letter.warfile}" todir="../../../${wildfly.home.deploy}" />
     </target>
 
     <target name="clean">

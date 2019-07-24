@@ -72,7 +72,7 @@
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
-                <fileset dir="../../${wildfly.home.modules}">
+                <fileset dir="../../../${wildfly.home.modules}">
                     <include name="**/*.jar"/>
                 </fileset>
                 <fileset dir="../../../lib">
