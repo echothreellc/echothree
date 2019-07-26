@@ -85,7 +85,7 @@
     </target>
 
     <target name="deploy" depends="war">
-        <copy file="${service.graphql.warfile}" todir="../${wildfly.home.deploy}" />
+        <copy file="${service.graphql.warfile}" todir="../../${wildfly.home.deploy}" />
     </target>
 
     <target name="clean">

@@ -15,8 +15,9 @@
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
 <project basedir="." default="compile" name="Echo Three"
-    xmlns:ivy="antlib:org.apache.ivy.ant">
-    
+    xmlns:ivy="antlib:org.apache.ivy.ant"
+    xmlns:jacoco="antlib:org.jacoco.ant">
+
     <!-- The component root directory of the workspace -->
     <property name="root.dir.home" value="." />
     <!-- where all application jars are stored -->
@@ -33,6 +34,9 @@
         <mkdir dir="${root.dir.home}/build/lib" />
         <mkdir dir="${root.dir.home}/build/metadata" />
         <mkdir dir="${root.dir.home}/build/metadata/common" />
+        <mkdir dir="${wildfly.output.dir}" />
+        <mkdir dir="${jacoco.output.dir}" />
+        <mkdir dir="${jacoco.output.report.dir}" />
     </target>
     
     <target name="build-properties-instance" depends="prepare">
@@ -173,6 +177,80 @@
     </target>
     
     <target name="setup" depends="build-properties,setup-ivy" />
-    
+
+    <target name="wildfly-start" description="Start WildFly.">
+        <property name="wildfly.javaopts" value="${wildfly.javaopts.memory} ${wildfly.javaopts.network} ${wildfly.javaopts.jooq} ${wildfly.javaopts.required}"/>
+        <property name="wildfly.spawn" value="false"/>
+        <ant target="wildfly-start-server"/>
+    </target>
+
+    <target name="wildfly-start-debug" description="Start WildFly with remote debugging enabled.">
+        <property name="wildfly.javaopts" value="${wildfly.javaopts.memory} ${wildfly.javaopts.network} ${wildfly.javaopts.jooq} ${wildfly.javaopts.required} ${wildfly.javaopts.debug}"/>
+        <property name="wildfly.spawn" value="false"/>
+        <ant target="wildfly-start-server"/>
+    </target>
+
+    <target name="wildfly-start-jacoco" description="Start WildFly and capture code coverage data.">
+        <property name="wildfly.javaopts" value="${wildfly.javaopts.memory} ${wildfly.javaopts.network} ${wildfly.javaopts.jooq} ${wildfly.javaopts.required} ${wildfly.javaopts.jacoco}"/>
+        <property name="wildfly.spawn" value="true"/>
+        <ant target="wildfly-start-server"/>
+    </target>
+
+    <target name="wildfly-start-server" depends="deploy">
+        <property environment="env"/>
+        <exec executable="../../${wildfly.home.bin}/${wildfly.instance}.sh" spawn="${wildfly.spawn}" dir="${wildfly.output.dir}">
+            <env key="JAVA_OPTS" value="${wildfly.javaopts}"/>
+            <arg value="-b=${wildfly.host}"/>
+            <arg value="--server-config=${wildfly.configuration}"/>
+        </exec>
+        <waitfor maxwait="2" maxwaitunit="minute">
+            <and>
+                <socket server="${wildfly.host}" port="${wildfly.console.port}" />
+                <http url="http://${wildfly.host}:${wildfly.console.port}${wildfly.console.url}" />
+            </and>
+        </waitfor>
+    </target>
+
+    <target name="wildfly-reload" depends="prepare">
+        <exec executable="${wildfly.home.bin}/jboss-cli.sh" output="${wildfly.output.reload}">
+            <arg value="--connect"/>
+            <arg value="command=:reload"/>
+        </exec>
+    </target>
+
+    <target name="wildfly-shutdown" depends="prepare">
+        <exec executable="${wildfly.home.bin}/jboss-cli.sh" output="${wildfly.output.shutdown}">
+            <arg value="--connect"/>
+            <arg value="command=:shutdown"/>
+        </exec>
+    </target>
+
+    <target name="jacoco-report" depends="build-properties,setup-ivy,ivy-lib">
+        <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+            <classpath>
+                <fileset dir="build/lib">
+                    <include name="**/org.jacoco.*.jar"/>
+                </fileset>
+            </classpath>
+        </taskdef>
+
+        <jacoco:report>
+            <executiondata>
+                <file file="${jacoco.output.dir}/${jacoco.output.destfile}"/>
+            </executiondata>
+            <structure name="ContaAzul">
+                <classfiles>
+                    <dirset dir="build/classes" includes="**"/>
+                </classfiles>
+                <sourcefiles encoding="UTF-8">
+                    <dirset dir="generated/data/java" includes="**"/>
+                    <dirset dir="generated/form/java" includes="**"/>
+                    <dirset dir="src/java" includes="**"/>
+                </sourcefiles>
+            </structure>
+            <html destdir="${jacoco.output.report.dir}"/>
+        </jacoco:report>
+    </target>
+
 </project>
 
