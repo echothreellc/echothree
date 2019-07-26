@@ -36,15 +36,16 @@ import java.util.List;
 
 public class GetWorkflowDestinationCommand
         extends BaseSimpleCommand<GetWorkflowDestinationForm> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null)
+                ));
     }
     
     /** Creates a new instance of GetWorkflowDestinationCommand */

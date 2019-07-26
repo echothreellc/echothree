@@ -35,7 +35,8 @@ import java.util.List;
 
 public class GetWorkflowEntranceCommand
         extends BaseSimpleCommand<GetWorkflowEntranceForm> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {

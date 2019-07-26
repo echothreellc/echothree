@@ -33,6 +33,7 @@ import java.util.List;
 public class GetWorkflowStepTypeChoicesCommand
         extends BaseSimpleCommand<GetWorkflowStepTypeChoicesForm> {
     
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
