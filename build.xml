@@ -180,22 +180,25 @@
 
     <target name="wildfly-start" description="Start WildFly.">
         <property name="wildfly.javaopts" value="${wildfly.javaopts.memory} ${wildfly.javaopts.network} ${wildfly.javaopts.jooq} ${wildfly.javaopts.required}"/>
+        <property name="wildfly.spawn" value="false"/>
         <ant target="wildfly-start-server"/>
     </target>
 
     <target name="wildfly-start-debug" description="Start WildFly with remote debugging enabled.">
         <property name="wildfly.javaopts" value="${wildfly.javaopts.memory} ${wildfly.javaopts.network} ${wildfly.javaopts.jooq} ${wildfly.javaopts.required} ${wildfly.javaopts.debug}"/>
+        <property name="wildfly.spawn" value="false"/>
         <ant target="wildfly-start-server"/>
     </target>
 
     <target name="wildfly-start-jacoco" description="Start WildFly and capture code coverage data.">
         <property name="wildfly.javaopts" value="${wildfly.javaopts.memory} ${wildfly.javaopts.network} ${wildfly.javaopts.jooq} ${wildfly.javaopts.required} ${wildfly.javaopts.jacoco}"/>
+        <property name="wildfly.spawn" value="true"/>
         <ant target="wildfly-start-server"/>
     </target>
 
     <target name="wildfly-start-server" depends="deploy">
         <property environment="env"/>
-        <exec executable="../../${wildfly.home.bin}/${wildfly.instance}.sh" spawn="true" dir="${wildfly.output.dir}">
+        <exec executable="../../${wildfly.home.bin}/${wildfly.instance}.sh" spawn="${wildfly.spawn}" dir="${wildfly.output.dir}">
             <env key="JAVA_OPTS" value="${wildfly.javaopts}"/>
             <arg value="-b=${wildfly.host}"/>
             <arg value="--server-config=${wildfly.configuration}"/>
