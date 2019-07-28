@@ -16,16 +16,12 @@
 
 package com.echothree.model.control.security.server.logic;
 
-import com.echothree.model.control.security.common.exception.UnknownSecurityRoleGroupNameException;
 import com.echothree.model.control.security.common.exception.UnknownSecurityRoleNameException;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.security.server.entity.PartySecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
-import com.echothree.model.data.security.server.entity.SecurityRolePartyType;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -46,20 +42,9 @@ public class SecurityRoleLogic
         return SecurityRoleLogicHolder.instance;
     }
 
-    public SecurityRoleGroup getSecurityRoleGroupByName(final ExecutionErrorAccumulator eea, final String securityRoleGroupName) {
-        var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-        SecurityRoleGroup securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
-
-        if(securityRoleGroup == null) {
-            handleExecutionError(UnknownSecurityRoleGroupNameException.class, eea, ExecutionErrors.UnknownSecurityRoleGroupName.name(), securityRoleGroupName);
-        }
-
-        return securityRoleGroup;
-    }
-
     public SecurityRole getSecurityRoleByName(final ExecutionErrorAccumulator eea, final SecurityRoleGroup securityRoleGroup, final String securityRoleName) {
         var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-        SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
+        var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
 
         if(securityRole == null) {
             handleExecutionError(UnknownSecurityRoleNameException.class, eea, ExecutionErrors.UnknownSecurityRoleName.name(),
@@ -70,7 +55,7 @@ public class SecurityRoleLogic
     }
 
     public SecurityRole getSecurityRoleByName(final ExecutionErrorAccumulator eea, final String securityRoleGroupName, final String securityRoleName) {
-        SecurityRoleGroup securityRoleGroup = getSecurityRoleGroupByName(eea, securityRoleGroupName);
+        var securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByName(eea, securityRoleGroupName);
         SecurityRole securityRole = null;
         
         if(!hasExecutionErrors(eea)) {
@@ -85,15 +70,15 @@ public class SecurityRoleLogic
 
         if(party != null) {
             var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-            PartySecurityRole partySecurityRole = securityControl.getPartySecurityRole(party, securityRole);
+            var partySecurityRole = securityControl.getPartySecurityRole(party, securityRole);
 
             if(partySecurityRole != null) {
-                SecurityRolePartyType securityRolePartyType = securityControl.getSecurityRolePartyType(securityRole, party.getLastDetail().getPartyType());
+                var securityRolePartyType = securityControl.getSecurityRolePartyType(securityRole, party.getLastDetail().getPartyType());
 
                 if(securityRolePartyType == null) {
                     result = true;
                 } else {
-                    Selector partySelector = securityRolePartyType.getPartySelector();
+                    var partySelector = securityRolePartyType.getPartySelector();
 
                     if(partySelector != null) {
                         var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
@@ -111,8 +96,8 @@ public class SecurityRoleLogic
 
     public boolean hasSecurityRoleUsingNames(final ExecutionErrorAccumulator eea, final Party party, final String securityRoleGroupName,
             final String securityRoleName) {
-        SecurityRole securityRole = getSecurityRoleByName(eea, securityRoleGroupName, securityRoleName);
-        boolean result = false;
+        var securityRole = getSecurityRoleByName(eea, securityRoleGroupName, securityRoleName);
+        var result = false;
         
         if(!hasExecutionErrors(eea)) {
             result = hasSecurityRole(party, securityRole);
