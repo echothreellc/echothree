@@ -51,13 +51,34 @@ public class WorkflowStepLogic
         return WorkflowStepLogicHolder.instance;
     }
     
-    public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
+    public WorkflowStep getWorkflowStepByName(final Class unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
         WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
 
         if(workflowStep == null) {
-            handleExecutionError(UnknownWorkflowNameException.class, eea, ExecutionErrors.UnknownWorkflowStepName.name(), workflow.getLastDetail().getWorkflowName(),
+            handleExecutionError(unknownException, eea, unknownExecutionError.name(), workflow.getLastDetail().getWorkflowName(),
                     workflowStepName);
+        }
+
+        return workflowStep;
+    }
+
+    public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
+        return getWorkflowStepByName(UnknownWorkflowNameException.class, ExecutionErrors.UnknownWorkflowStepName, eea,
+                workflow, workflowStepName);
+    }
+
+    public WorkflowStep getWorkflowStepByName(final Class unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,
+            final Class unknownWorkflowStepException, final ExecutionErrors unknownWorkflowStepExecutionError,
+            final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName) {
+        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
+                eea, workflowName);
+        WorkflowStep workflowStep = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            workflowStep = getWorkflowStepByName(unknownWorkflowStepException, unknownWorkflowStepExecutionError, eea,
+                    workflow, workflowStepName);
         }
 
         return workflowStep;

@@ -19,9 +19,12 @@ package com.echothree.model.control.workflow.server.logic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.selector.server.logic.SelectorLogic;
+import com.echothree.model.control.workflow.common.exception.UnknownDestinationWorkflowNameException;
+import com.echothree.model.control.workflow.common.exception.UnknownDestinationWorkflowStepNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationPartyTypeException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationSecurityRoleException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationSelectorException;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationStepException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.WorkflowMissingSecurityRoleGroupException;
 import com.echothree.model.control.workflow.common.exception.WorkflowMissingSelectorTypeException;
@@ -29,6 +32,7 @@ import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDetail;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecurityRole;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
@@ -310,5 +314,47 @@ public class WorkflowDestinationLogic
         return getWorkflowDestinationSelectorByName(eea, workflowName, workflowStepName, workflowDestinationName, selectorName,
                 EntityPermission.READ_WRITE);
     }
-    
+
+    public WorkflowStep getDestinationWorkflowStep(final ExecutionErrorAccumulator eea, final String destinationWorkflowName,
+            final String destinationWorkflowStepName) {
+        return WorkflowStepLogic.getInstance().getWorkflowStepByName(
+                UnknownDestinationWorkflowNameException.class, ExecutionErrors.UnknownDestinationWorkflowName,
+                UnknownDestinationWorkflowStepNameException.class, ExecutionErrors.UnknownDestinationWorkflowStepName,
+                eea, destinationWorkflowName, destinationWorkflowStepName);
+    }
+
+    public WorkflowDestinationStep getWorkflowDestinationStep(final ExecutionErrorAccumulator eea,
+            WorkflowDestination workflowDestination, WorkflowStep destinationWorkflowStep) {
+        var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+        var workflowDestinationStep = workflowControl.getWorkflowDestinationStep(workflowDestination, destinationWorkflowStep);
+
+        if(workflowDestinationStep == null) {
+            var workflowDestinationDetail = workflowDestination.getLastDetail();
+            var destinationWorkflowStepDetail = destinationWorkflowStep.getLastDetail();
+
+            handleExecutionError(UnknownWorkflowDestinationStepException.class, eea, ExecutionErrors.UnknownWorkflowDestinationStep.name(),
+                    workflowDestinationDetail.getWorkflowStep().getLastDetail().getWorkflow().getLastDetail().getWorkflowName(),
+                    workflowDestinationDetail.getWorkflowStep().getLastDetail().getWorkflowStepName(),
+                    workflowDestinationDetail.getWorkflowDestinationName(),
+                    destinationWorkflowStepDetail.getWorkflow().getLastDetail().getWorkflowName(),
+                    destinationWorkflowStepDetail.getWorkflowStepName());
+        }
+
+        return workflowDestinationStep;
+    }
+
+    public WorkflowDestinationStep getWorkflowDestinationStepByName(final ExecutionErrorAccumulator eea,
+            final String workflowName, final String workflowStepName, final String workflowDestinationName,
+            final String destinationWorkflowName, final String destinationWorkflowStepName) {
+        var workflowDestination = getWorkflowDestinationByName(eea, workflowName, workflowStepName, workflowDestinationName);
+        var destinationWorkflowStep = getDestinationWorkflowStep(eea, destinationWorkflowName, destinationWorkflowStepName);
+        WorkflowDestinationStep workflowDestinationStep = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            workflowDestinationStep = getWorkflowDestinationStep(eea, workflowDestination, destinationWorkflowStep);
+        }
+
+        return workflowDestinationStep;
+    }
+
 }

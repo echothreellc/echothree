@@ -39,15 +39,20 @@ public class WorkflowLogic
         return WorkflowLogicHolder.instance;
     }
 
-    public Workflow getWorkflowByName(final ExecutionErrorAccumulator eea, final String workflowName) {
+    public Workflow getWorkflowByName(final Class unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final String workflowName) {
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
 
         if(workflow == null) {
-            handleExecutionError(UnknownWorkflowNameException.class, eea, ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+            handleExecutionError(unknownException, eea, unknownExecutionError.name(), workflowName);
         }
 
         return workflow;
+    }
+
+    public Workflow getWorkflowByName(final ExecutionErrorAccumulator eea, final String workflowName) {
+        return getWorkflowByName(UnknownWorkflowNameException.class, ExecutionErrors.UnknownWorkflowName, eea, workflowName);
     }
 
 }

@@ -19,12 +19,13 @@ package com.echothree.model.control.workflow.server.logic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.selector.server.logic.SelectorLogic;
-import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationPartyTypeException;
-import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationSecurityRoleException;
-import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationSelectorException;
+import com.echothree.model.control.workflow.common.exception.UnknownEntranceWorkflowNameException;
+import com.echothree.model.control.workflow.common.exception.UnknownEntranceWorkflowStepNameException;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationStepException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntrancePartyTypeException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntranceSecurityRoleException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntranceSelectorException;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntranceStepException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.WorkflowMissingSecurityRoleGroupException;
 import com.echothree.model.control.workflow.common.exception.WorkflowMissingSelectorTypeException;
@@ -32,13 +33,13 @@ import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecurityRole;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSecurityRole;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSelector;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntranceStep;
+import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -243,6 +244,47 @@ public class WorkflowEntranceLogic
             final String workflowEntranceName, final String selectorName) {
         return getWorkflowEntranceSelectorByName(eea, workflowName, workflowEntranceName, selectorName,
                 EntityPermission.READ_WRITE);
+    }
+
+    public WorkflowStep getEntranceWorkflowStep(final ExecutionErrorAccumulator eea, final String entranceWorkflowName,
+            final String entranceWorkflowStepName) {
+        return WorkflowStepLogic.getInstance().getWorkflowStepByName(
+                UnknownEntranceWorkflowNameException.class, ExecutionErrors.UnknownEntranceWorkflowName,
+                UnknownEntranceWorkflowStepNameException.class, ExecutionErrors.UnknownEntranceWorkflowStepName,
+                eea, entranceWorkflowName, entranceWorkflowStepName);
+    }
+
+    public WorkflowEntranceStep getWorkflowEntranceStep(final ExecutionErrorAccumulator eea,
+            WorkflowEntrance workflowEntrance, WorkflowStep entranceWorkflowStep) {
+        var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+        var workflowEntranceStep = workflowControl.getWorkflowEntranceStep(workflowEntrance, entranceWorkflowStep);
+
+        if(workflowEntranceStep == null) {
+            var workflowEntranceDetail = workflowEntrance.getLastDetail();
+            var entranceWorkflowStepDetail = entranceWorkflowStep.getLastDetail();
+
+            handleExecutionError(UnknownWorkflowEntranceStepException.class, eea, ExecutionErrors.UnknownWorkflowEntranceStep.name(),
+                    workflowEntranceDetail.getWorkflow().getLastDetail().getWorkflowName(),
+                    workflowEntranceDetail.getWorkflowEntranceName(),
+                    entranceWorkflowStepDetail.getWorkflow().getLastDetail().getWorkflowName(),
+                    entranceWorkflowStepDetail.getWorkflowStepName());
+        }
+
+        return workflowEntranceStep;
+    }
+
+    public WorkflowEntranceStep getWorkflowEntranceStepByName(final ExecutionErrorAccumulator eea,
+            final String workflowName, final String workflowEntranceName, final String entranceWorkflowName,
+            final String entranceWorkflowStepName) {
+        var workflowEntrance = getWorkflowEntranceByName(eea, workflowName, workflowEntranceName);
+        var entranceWorkflowStep = getEntranceWorkflowStep(eea, entranceWorkflowName, entranceWorkflowStepName);
+        WorkflowEntranceStep workflowEntranceStep = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            workflowEntranceStep = getWorkflowEntranceStep(eea, workflowEntrance, entranceWorkflowStep);
+        }
+
+        return workflowEntranceStep;
     }
     
 }
