@@ -17,25 +17,22 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowDestinationCommand
-        extends BaseSimpleCommand<GetWorkflowDestinationForm> {
+        extends BaseSingleEntityCommand<WorkflowDestination, GetWorkflowDestinationForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -54,32 +51,25 @@ public class GetWorkflowDestinationCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowDestinationResult result = WorkflowResultFactory.getGetWorkflowDestinationResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
-            
-            if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+    protected WorkflowDestination getEntity() {
+        var workflowName = form.getWorkflowName();
+        var workflowStepName = form.getWorkflowStepName();
+        var workflowDestinationName = form.getWorkflowDestinationName();
 
-                if(workflowDestination != null) {
-                    result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(getUserVisit(), workflowDestination));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowName, workflowStepName, workflowDestinationName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowName, workflowStepName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowName,
+                workflowStepName, workflowDestinationName);
+    }
+
+    @Override
+    protected BaseResult getTransfer(WorkflowDestination workflowDestination) {
+        var result = WorkflowResultFactory.getGetWorkflowDestinationResult();
+
+        if(workflowDestination != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(getUserVisit(), workflowDestination));
         }
-        
+
         return result;
     }
     

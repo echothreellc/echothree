@@ -17,23 +17,18 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowEntityTypeForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowEntityTypeResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.WorkflowControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityType;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -43,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowEntityTypeCommand
-        extends BaseSimpleCommand<GetWorkflowEntityTypeForm> {
+        extends BaseSingleEntityCommand<WorkflowEntityType, GetWorkflowEntityTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -67,42 +62,27 @@ public class GetWorkflowEntityTypeCommand
     public GetWorkflowEntityTypeCommand(UserVisitPK userVisitPK, GetWorkflowEntityTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowEntityTypeResult result = WorkflowResultFactory.getGetWorkflowEntityTypeResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
+    protected WorkflowEntityType getEntity() {
+        var workflowName = form.getWorkflowName();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
 
-            if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+        return WorkflowLogic.getInstance().getWorkflowEntityTypeByName(this, workflowName, componentVendorName, entityTypeName);
+    }
 
-                if(entityType != null) {
-                    WorkflowEntityType workflowEntityType = workflowControl.getWorkflowEntityType(workflow, entityType);
+    @Override
+    protected BaseResult getTransfer(WorkflowEntityType entity) {
+        var result = WorkflowResultFactory.getGetWorkflowEntityTypeResult();
 
-                    if(workflowEntityType != null) {
-                        result.setWorkflowEntityType(workflowControl.getWorkflowEntityTypeTransfer(getUserVisit(), workflowEntityType));
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateWorkflowEntityType.name(), workflowName, componentVendorName, entityTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+        if(entity != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            result.setWorkflowEntityType(workflowControl.getWorkflowEntityTypeTransfer(getUserVisit(), entity));
         }
-        
+
         return result;
     }
-    
+
 }

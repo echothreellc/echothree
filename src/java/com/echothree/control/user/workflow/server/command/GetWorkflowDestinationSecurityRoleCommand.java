@@ -25,6 +25,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
@@ -39,6 +40,7 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -48,7 +50,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowDestinationSecurityRoleCommand
-        extends BaseSimpleCommand<GetWorkflowDestinationSecurityRoleForm> {
+        extends BaseSingleEntityCommand<WorkflowDestinationSecurityRole, GetWorkflowDestinationSecurityRoleForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -76,73 +78,29 @@ public class GetWorkflowDestinationSecurityRoleCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowDestinationSecurityRoleResult result = WorkflowResultFactory.getGetWorkflowDestinationSecurityRoleResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
-            
-            if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
-                
-                if(workflowDestination != null) {
-                    var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                    String partyTypeName = form.getPartyTypeName();
-                    PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
-                    
-                    if(partyType != null) {
-                        WorkflowDestinationPartyType workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType);
-                        
-                        if(workflowDestinationPartyType != null) {
-                            SecurityRoleGroup securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
-                            
-                            if(securityRoleGroup != null) {
-                                var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-                                String securityRoleName = form.getSecurityRoleName();
-                                SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
-                                
-                                if(securityRole != null) {
-                                    WorkflowDestinationSecurityRole workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRole(workflowDestinationPartyType,
-                                            securityRole);
-                                    
-                                    if(workflowDestinationSecurityRole != null) {
-                                        result.setWorkflowDestinationSecurityRole(workflowControl.getWorkflowDestinationSecurityRoleTransfer(getUserVisit(),
-                                                workflowDestinationSecurityRole));
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownWorkflowDestinationSecurityRole.name(), workflowName,
-                                                workflowStepName, workflowDestinationName, partyTypeName, securityRoleName);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownSecurityRoleName.name(),
-                                            securityRoleGroup.getLastDetail().getSecurityRoleGroupName(), securityRoleName);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.WorkflowMissingSecurityRoleGroup.name(), workflowName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownWorkflowDestinationPartyType.name(), workflowName,
-                                    workflowStepName, workflowDestinationName, partyTypeName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowName, workflowStepName,
-                            workflowDestinationName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowName, workflowStepName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+    protected WorkflowDestinationSecurityRole getEntity() {
+        var workflowName = form.getWorkflowName();
+        var workflowStepName = form.getWorkflowStepName();
+        var workflowDestinationName = form.getWorkflowDestinationName();
+        var partyTypeName = form.getPartyTypeName();
+        var securityRoleName = form.getSecurityRoleName();
+
+        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationSecurityRoleByName(this, workflowName,
+                workflowStepName, workflowDestinationName, partyTypeName, securityRoleName);
+    }
+
+    @Override
+    protected BaseResult getTransfer(WorkflowDestinationSecurityRole entity) {
+        var result = WorkflowResultFactory.getGetWorkflowDestinationSecurityRoleResult();
+
+        if(entity != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            result.setWorkflowDestinationSecurityRole(workflowControl.getWorkflowDestinationSecurityRoleTransfer(getUserVisit(),
+                    entity));
         }
-        
+
         return result;
     }
-    
+
 }

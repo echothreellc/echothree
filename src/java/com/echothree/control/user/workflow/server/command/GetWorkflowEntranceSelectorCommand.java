@@ -17,25 +17,18 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowEntranceSelectorForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowEntranceSelectorResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.server.SelectorControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.selector.server.entity.SelectorTypeDetail;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSelector;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -45,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowEntranceSelectorCommand
-        extends BaseSimpleCommand<GetWorkflowEntranceSelectorForm> {
+        extends BaseSingleEntityCommand<WorkflowEntranceSelector, GetWorkflowEntranceSelectorForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -69,53 +62,28 @@ public class GetWorkflowEntranceSelectorCommand
     public GetWorkflowEntranceSelectorCommand(UserVisitPK userVisitPK, GetWorkflowEntranceSelectorForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowEntranceSelectorResult result = WorkflowResultFactory.getGetWorkflowEntranceSelectorResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            SelectorType selectorType = workflow.getLastDetail().getSelectorType();
-            
-            if(selectorType != null) {
-                String workflowEntranceName = form.getWorkflowEntranceName();
-                WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+    protected WorkflowEntranceSelector getEntity() {
+        var workflowName = form.getWorkflowName();
+        var workflowEntranceName = form.getWorkflowEntranceName();
+        var selectorName = form.getSelectorName();
 
-                if(workflowEntrance != null) {
-                    var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-                    String selectorName = form.getSelectorName();
-                    Selector selector = selectorControl.getSelectorByName(workflow.getLastDetail().getSelectorType(), selectorName);
+        return WorkflowEntranceLogic.getInstance().getWorkflowEntranceSelectorByName(this, workflowName, workflowEntranceName,
+                selectorName);
+    }
 
-                    if(selector != null) {
-                        WorkflowEntranceSelector workflowEntranceSelector = workflowControl.getWorkflowEntranceSelector(workflowEntrance, selector);
+    @Override
+    protected BaseResult getTransfer(WorkflowEntranceSelector entity) {
+        var result = WorkflowResultFactory.getGetWorkflowEntranceSelectorResult();
 
-                        if(workflowEntranceSelector != null) {
-                            result.setWorkflowEntranceSelector(workflowControl.getWorkflowEntranceSelectorTransfer(getUserVisit(), workflowEntranceSelector));
-                        } else {
-                            SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
-                            
-                            addExecutionError(ExecutionErrors.UnknownWorkflowEntranceSelector.name(), workflowName, workflowEntranceName,
-                                    selectorTypeDetail.getSelectorKind().getLastDetail().getSelectorKindName(),
-                                    selectorTypeDetail.getSelectorTypeName(), selectorName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorType.getLastDetail().getSelectorKind().getLastDetail().getSelectorKindName(),
-                                selectorType.getLastDetail().getSelectorTypeName(), selectorName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowName, workflowEntranceName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.InvalidWorkflow.name());
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+        if(entity != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            result.setWorkflowEntranceSelector(workflowControl.getWorkflowEntranceSelectorTransfer(getUserVisit(), entity));
         }
-        
+
         return result;
     }
-    
+
 }
