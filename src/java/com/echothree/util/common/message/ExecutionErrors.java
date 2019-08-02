@@ -388,6 +388,7 @@ public enum ExecutionErrors {
     UnknownZipCodeName,
     DuplicateWorkflowDestinationDescription,
     DuplicateWorkflowEntityType,
+    UnknownWorkflowEntityType,
     DuplicateWorkflowEntrance,
     DuplicateWorkflowEntranceDescription,
     DuplicateWorkflowStepTypeDescription,
