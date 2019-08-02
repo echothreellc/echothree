@@ -2073,7 +2073,7 @@ public class WorkflowControl
         return getWorkflowEntranceSelectorsByWorkflow(workflow, EntityPermission.READ_WRITE);
     }
     
-    private WorkflowEntranceSelector getWorkflowEntranceSelector(WorkflowEntrance workflowEntrance, Selector selector,
+    public WorkflowEntranceSelector getWorkflowEntranceSelector(WorkflowEntrance workflowEntrance, Selector selector,
             EntityPermission entityPermission) {
         WorkflowEntranceSelector workflowEntranceSelector = null;
         
@@ -2208,7 +2208,7 @@ public class WorkflowControl
         return getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance, EntityPermission.READ_WRITE);
     }
     
-    private WorkflowEntrancePartyType getWorkflowEntrancePartyType(WorkflowEntrance workflowEntrance, PartyType partyType,
+    public WorkflowEntrancePartyType getWorkflowEntrancePartyType(WorkflowEntrance workflowEntrance, PartyType partyType,
             EntityPermission entityPermission) {
         WorkflowEntrancePartyType workflowEntrancePartyType = null;
         
@@ -2350,7 +2350,7 @@ public class WorkflowControl
         return getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType, EntityPermission.READ_WRITE);
     }
     
-    private WorkflowEntranceSecurityRole getWorkflowEntranceSecurityRole(WorkflowEntrancePartyType workflowEntrancePartyType, SecurityRole securityRole,
+    public WorkflowEntranceSecurityRole getWorkflowEntranceSecurityRole(WorkflowEntrancePartyType workflowEntrancePartyType, SecurityRole securityRole,
             EntityPermission entityPermission) {
         WorkflowEntranceSecurityRole workflowEntranceSecurityRole = null;
         
