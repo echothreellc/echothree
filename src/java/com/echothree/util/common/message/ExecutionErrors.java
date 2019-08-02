@@ -1118,6 +1118,7 @@ public enum ExecutionErrors {
     UnknownWorkflowDestinationSelector,
     DuplicateWorkflowDestinationSelector,
     InvalidWorkflow,
+    WorkflowMissingSelectorType,
     DuplicatePaymentMethodTypePartyType,
     UnknownPartyPaymentMethodWorkflowName,
     UnknownContactMechanismWorkflowName,

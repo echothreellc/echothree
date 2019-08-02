@@ -16,16 +16,29 @@
 
 package com.echothree.model.control.workflow.server.logic;
 
+import com.echothree.model.control.party.server.logic.PartyLogic;
+import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
+import com.echothree.model.control.selector.server.logic.SelectorLogic;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationPartyTypeException;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationSecurityRoleException;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationSelectorException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
+import com.echothree.model.control.workflow.common.exception.WorkflowMissingSecurityRoleGroupException;
+import com.echothree.model.control.workflow.common.exception.WorkflowMissingSelectorTypeException;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecurityRole;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepDetail;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -134,4 +147,168 @@ public class WorkflowDestinationLogic
        return workflowDestinationMapContainsStep(map, workflowName, workflowStepName, false);
     }
 
+    public WorkflowDestinationPartyType getWorkflowDestinationPartyType(final ExecutionErrorAccumulator eea, final WorkflowDestination workflowDestination,
+            final PartyType partyType, final EntityPermission entityPermission) {
+        WorkflowDestinationPartyType workflowDestinationPartyType = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            workflowDestinationPartyType = workflowControl.getWorkflowDestinationPartyType(workflowDestination, partyType, entityPermission);
+
+            if(workflowDestinationPartyType == null) {
+               var workflowDestinationDetail = workflowDestination.getLastDetail();
+               var workflowStepDetail = workflowDestinationDetail.getWorkflowStep().getLastDetail();
+
+                handleExecutionError(UnknownWorkflowDestinationPartyTypeException.class, eea, ExecutionErrors.UnknownWorkflowDestinationPartyType.name(),
+                        workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName(), workflowStepDetail.getWorkflowStepName(),
+                        workflowDestinationDetail.getWorkflowDestinationName(), partyType.getPartyTypeName());
+            }
+        }
+
+        return workflowDestinationPartyType;
+    }
+
+    public WorkflowDestinationPartyType getWorkflowDestinationPartyType(final ExecutionErrorAccumulator eea, final WorkflowDestination workflowDestination,
+            final PartyType partyType) {
+        return getWorkflowDestinationPartyType(eea, workflowDestination, partyType, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowDestinationPartyType getWorkflowDestinationPartyTypeForUpdate(final ExecutionErrorAccumulator eea, final WorkflowDestination workflowDestination,
+            final PartyType partyType) {
+        return getWorkflowDestinationPartyType(eea, workflowDestination, partyType, EntityPermission.READ_WRITE);
+    }
+
+    public WorkflowDestinationPartyType getWorkflowDestinationPartyTypeByName(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String partyTypeName, final EntityPermission entityPermission) {
+        var workflowDestination = getWorkflowDestinationByName(eea, workflowName, workflowStepName, workflowDestinationName);
+        var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+
+        return getWorkflowDestinationPartyType(eea, workflowDestination, partyType, entityPermission);
+    }
+
+    public WorkflowDestinationPartyType getWorkflowDestinationPartyTypeByName(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String partyTypeName) {
+        return getWorkflowDestinationPartyTypeByName(eea, workflowName, workflowStepName, workflowDestinationName, partyTypeName,
+                EntityPermission.READ_ONLY);
+    }
+
+
+    public WorkflowDestinationPartyType getWorkflowDestinationPartyTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String partyTypeName) {
+        return getWorkflowDestinationPartyTypeByName(eea, workflowName, workflowStepName, workflowDestinationName, partyTypeName,
+                EntityPermission.READ_WRITE);
+    }
+    
+    public WorkflowDestinationSecurityRole getWorkflowDestinationSecurityRoleByName(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String partyTypeName, final String securityRoleName,
+            final EntityPermission entityPermission) {
+        var workflowDestination = getWorkflowDestinationByName(eea, workflowName, workflowStepName, workflowDestinationName);
+        var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+        WorkflowDestinationSecurityRole workflowDestinationSecurityRole = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var securityRoleGroup = workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflow().getLastDetail().getSecurityRoleGroup();
+
+            if(securityRoleGroup != null) {
+                var securityRole = SecurityRoleLogic.getInstance().getSecurityRoleByName(eea, securityRoleGroup, securityRoleName);
+
+                if(eea == null || !eea.hasExecutionErrors()) {
+                    var workflowDestinationPartyType = getWorkflowDestinationPartyType(eea, workflowDestination, partyType);
+
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+
+                        workflowDestinationSecurityRole = workflowControl.getWorkflowDestinationSecurityRole(workflowDestinationPartyType,
+                                securityRole, entityPermission);
+
+                        if(workflowDestinationSecurityRole == null) {
+                            var workflowDestinationDetail = workflowDestination.getLastDetail();
+                            var workflowStepDetail = workflowDestinationDetail.getWorkflowStep().getLastDetail();
+                            var securityRoleDetail = securityRole.getLastDetail();
+
+                            handleExecutionError(UnknownWorkflowDestinationSecurityRoleException.class, eea, ExecutionErrors.UnknownWorkflowDestinationSecurityRole.name(),
+                                    workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName(),
+                                    workflowStepDetail.getWorkflowStepName(), workflowDestinationDetail.getWorkflowDestinationName(),
+                                    partyType.getPartyTypeName(), securityRoleDetail.getSecurityRole().getLastDetail().getSecurityRoleName());
+                        }
+                    }
+                }
+            } else {
+                var workflowStepDetail = workflowDestination.getLastDetail().getWorkflowStep().getLastDetail();
+
+                handleExecutionError(WorkflowMissingSecurityRoleGroupException.class, eea, ExecutionErrors.WorkflowMissingSecurityRoleGroup.name(),
+                        workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName());
+            }
+        }
+
+        return workflowDestinationSecurityRole;
+    }
+
+    public WorkflowDestinationSecurityRole getWorkflowDestinationSecurityRoleByName(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String partyTypeName, final String securityRoleName) {
+        return getWorkflowDestinationSecurityRoleByName(eea, workflowName, workflowStepName, workflowDestinationName, partyTypeName,
+                securityRoleName, EntityPermission.READ_ONLY);
+    }
+
+
+    public WorkflowDestinationSecurityRole getWorkflowDestinationSecurityRoleByNameForUpdate(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String partyTypeName, final String securityRoleName) {
+        return getWorkflowDestinationSecurityRoleByName(eea, workflowName, workflowStepName, workflowDestinationName, partyTypeName,
+                securityRoleName, EntityPermission.READ_WRITE);
+    }
+    
+    public WorkflowDestinationSelector getWorkflowDestinationSelectorByName(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String selectorName,
+            final EntityPermission entityPermission) {
+        var workflowDestination = getWorkflowDestinationByName(eea, workflowName, workflowStepName, workflowDestinationName);
+        WorkflowDestinationSelector workflowDestinationSelector = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var selectorType = workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflow().getLastDetail().getSelectorType();
+
+            if(selectorType != null) {
+                var selector = SelectorLogic.getInstance().getSelectorByName(eea, selectorType, selectorName);
+
+                if(eea == null || !eea.hasExecutionErrors()) {
+                    var workflowControl = (WorkflowControl) Session.getModelController(WorkflowControl.class);
+
+                    workflowDestinationSelector = workflowControl.getWorkflowDestinationSelector(workflowDestination,
+                            selector, entityPermission);
+
+                    if(workflowDestinationSelector == null) {
+                        var workflowDestinationDetail = workflowDestination.getLastDetail();
+                        var workflowStepDetail = workflowDestinationDetail.getWorkflowStep().getLastDetail();
+                        var selectorDetail = selector.getLastDetail();
+
+                        handleExecutionError(UnknownWorkflowDestinationSelectorException.class, eea, ExecutionErrors.UnknownWorkflowDestinationSelector.name(),
+                                workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName(),
+                                workflowStepDetail.getWorkflowStepName(), workflowDestinationDetail.getWorkflowDestinationName(),
+                                selectorDetail.getSelector().getLastDetail().getSelectorName());
+                    }
+                }
+            } else {
+                var workflowStepDetail = workflowDestination.getLastDetail().getWorkflowStep().getLastDetail();
+
+                handleExecutionError(WorkflowMissingSelectorTypeException.class, eea, ExecutionErrors.WorkflowMissingSelectorType.name(),
+                        workflowStepDetail.getWorkflow().getLastDetail().getWorkflowName());
+            }
+        }
+
+        return workflowDestinationSelector;
+    }
+
+    public WorkflowDestinationSelector getWorkflowDestinationSelectorByName(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String selectorName) {
+        return getWorkflowDestinationSelectorByName(eea, workflowName, workflowStepName, workflowDestinationName, selectorName,
+                EntityPermission.READ_ONLY);
+    }
+
+
+    public WorkflowDestinationSelector getWorkflowDestinationSelectorByNameForUpdate(final ExecutionErrorAccumulator eea, final String workflowName,
+            final String workflowStepName, final String workflowDestinationName, final String selectorName) {
+        return getWorkflowDestinationSelectorByName(eea, workflowName, workflowStepName, workflowDestinationName, selectorName,
+                EntityPermission.READ_WRITE);
+    }
+    
 }
