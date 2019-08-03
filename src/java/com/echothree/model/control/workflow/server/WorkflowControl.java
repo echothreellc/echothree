@@ -2771,7 +2771,7 @@ public class WorkflowControl
         return getWorkflowTransferCaches(userVisit).getWorkflowDestinationTransferCache().getWorkflowDestinationTransfer(workflowDestination);
     }
     
-    public List<WorkflowDestinationTransfer> getWorkflowDestinationTransfers(UserVisit userVisit, List<WorkflowDestination> workflowDestinations) {
+    public List<WorkflowDestinationTransfer> getWorkflowDestinationTransfers(UserVisit userVisit, Collection<WorkflowDestination> workflowDestinations) {
         List<WorkflowDestinationTransfer> workflowDestinationTransfers = new ArrayList<>(workflowDestinations.size());
         WorkflowDestinationTransferCache workflowDestinationTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationTransferCache();
         
@@ -3676,7 +3676,7 @@ public class WorkflowControl
         return workflowSelectorKind;
     }
     
-    private List<WorkflowSelectorKind> getWorkflowSelectorKindsByWorkflowForUpdate(Workflow workflow,
+    private List<WorkflowSelectorKind> getWorkflowSelectorKindsByWorkflow(Workflow workflow,
             EntityPermission entityPermission) {
         List<WorkflowSelectorKind> workflowSelectorKinds = null;
         
@@ -3685,10 +3685,11 @@ public class WorkflowControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM workflowselectorkinds, selectorkinds " +
+                        "FROM workflowselectorkinds, selectorkinds, selectorkinddetails " +
                         "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ? " +
                         "AND wkflslk_slk_selectorkindid = slk_selectorkindid " +
-                        "ORDER BY slk_sortorder, slk_selectorkindname";
+                        "AND slk_lastdetailid = slkdt_selectorkinddetailid " +
+                        "ORDER BY slkdt_sortorder, slkdt_selectorkindname";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM workflowselectorkinds " +
@@ -3710,11 +3711,11 @@ public class WorkflowControl
     }
     
     public List<WorkflowSelectorKind> getWorkflowSelectorKindsByWorkflow(Workflow workflow) {
-        return getWorkflowSelectorKindsByWorkflowForUpdate(workflow, EntityPermission.READ_ONLY);
+        return getWorkflowSelectorKindsByWorkflow(workflow, EntityPermission.READ_ONLY);
     }
     
     public List<WorkflowSelectorKind> getWorkflowSelectorKindsByWorkflowForUpdate(Workflow workflow) {
-        return getWorkflowSelectorKindsByWorkflowForUpdate(workflow, EntityPermission.READ_WRITE);
+        return getWorkflowSelectorKindsByWorkflow(workflow, EntityPermission.READ_WRITE);
     }
     
     private List<WorkflowSelectorKind> getWorkflowSelectorKindsBySelectorKindForUpdate(SelectorKind selectorKind,
