@@ -23,25 +23,31 @@ import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.selector.server.logic.SelectorKindLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntityType;
+import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowSelectorKindsCommand
-        extends BaseSimpleCommand<GetWorkflowSelectorKindsForm> {
+        extends BaseMultipleEntitiesCommand<WorkflowSelectorKind, GetWorkflowSelectorKindsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,41 +70,60 @@ public class GetWorkflowSelectorKindsCommand
     public GetWorkflowSelectorKindsCommand(UserVisitPK userVisitPK, GetWorkflowSelectorKindsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Workflow workflow;
+    SelectorKind selectorKind;
+
     @Override
-    protected BaseResult execute() {
-        GetWorkflowSelectorKindsResult result = WorkflowResultFactory.getGetWorkflowSelectorKindsResult();
-        String workflowName = form.getWorkflowName();
-        String selectorKindName = form.getSelectorKindName();
-        int parameterCount = (workflowName == null? 0: 1) + (selectorKindName == null? 0: 1);
-        
+    protected Collection<WorkflowSelectorKind> getEntities() {
+        var workflowName = form.getWorkflowName();
+        var selectorKindName = form.getSelectorKindName();
+        int parameterCount = (workflowName == null ? 0 : 1) + (selectorKindName == null ? 0 : 1);
+        Collection<WorkflowSelectorKind> workflowSelectorKinds = null;
+
         if(parameterCount == 1) {
             var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-            
+
             if(workflowName != null) {
-                Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-                
-                if(workflow != null) {
-                    result.setWorkflow(workflowControl.getWorkflowTransfer(getUserVisit(), workflow));
-                    result.setWorkflowSelectorKinds(workflowControl.getWorkflowSelectorKindTransfersByWorkflow(getUserVisit(), workflow));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+                workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+
+                if(!hasExecutionErrors()) {
+                    workflowSelectorKinds = workflowControl.getWorkflowSelectorKindsByWorkflow(workflow);
                 }
-            } else if(selectorKindName != null) {
-                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-                
-                if(selectorKind != null) {
-                    result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));
-                    result.setWorkflowSelectorKinds(workflowControl.getWorkflowSelectorKindTransfersBySelectorKind(getUserVisit(), selectorKind));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
+            } else {
+                selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(this, selectorKindName);
+
+                if(!hasExecutionErrors()) {
+                    workflowSelectorKinds = workflowControl.getWorkflowSelectorKindsBySelectorKind(selectorKind);
                 }
             }
+
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return workflowSelectorKinds;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<WorkflowSelectorKind> entities) {
+        var result = WorkflowResultFactory.getGetWorkflowSelectorKindsResult();
+
+        if(entities != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var userVisit = getUserVisit();
+
+            result.setWorkflow(workflowControl == null ? null : workflowControl.getWorkflowTransfer(userVisit, workflow));
+
+            if(selectorKind != null) {
+                var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
+
+                result.setSelectorKind(selectorControl.getSelectorKindTransfer(userVisit, selectorKind));
+            }
+
+            result.setWorkflowSelectorKinds(workflowControl.getWorkflowSelectorKindTransfers(userVisit, entities));
+        }
+
         return result;
     }
     

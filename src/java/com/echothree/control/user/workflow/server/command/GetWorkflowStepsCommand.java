@@ -17,29 +17,30 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowStepsForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepsResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.workflow.server.entity.WorkflowStep;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowStepsCommand
-        extends BaseSimpleCommand<GetWorkflowStepsForm> {
+        extends BaseMultipleEntitiesCommand<WorkflowStep, GetWorkflowStepsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,22 +62,38 @@ public class GetWorkflowStepsCommand
     public GetWorkflowStepsCommand(UserVisitPK userVisitPK, GetWorkflowStepsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Workflow workflow;
+
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowStepsResult result = WorkflowResultFactory.getGetWorkflowStepsResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            result.setWorkflow(workflowControl.getWorkflowTransfer(getUserVisit(), workflow));
-            result.setWorkflowSteps(workflowControl.getWorkflowStepTransfersByWorkflow(getUserVisit(), workflow));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+    protected Collection<WorkflowStep> getEntities() {
+        var workflowName = form.getWorkflowName();
+        Collection<WorkflowStep> workflowSteps = null;
+
+        workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+
+        if(!this.hasExecutionErrors()) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            workflowSteps = workflowControl.getWorkflowStepsByWorkflow(workflow);
         }
-        
+
+        return workflowSteps;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<WorkflowStep> entities) {
+        var result = WorkflowResultFactory.getGetWorkflowStepsResult();
+
+        if(entities != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var userVisit = getUserVisit();
+
+            result.setWorkflow(workflowControl.getWorkflowTransfer(userVisit, workflow));
+            result.setWorkflowSteps(workflowControl.getWorkflowStepTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
