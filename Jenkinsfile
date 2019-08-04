@@ -17,7 +17,7 @@ pipeline {
         }
         stage('All Tasks') {
             environment {
-                ANT_OPTS = '-Xmx3072m'
+                ANT_OPTS = '-Xmx4096m'
             }
             steps {
                 ansiColor('xterm') {
