@@ -17,32 +17,31 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowStepForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowStepCommand
-        extends BaseSimpleCommand<GetWorkflowStepForm> {
+        extends BaseSingleEntityCommand<WorkflowStep, GetWorkflowStepForm> {
     
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null)
+                ));
     }
     
     /** Creates a new instance of GetWorkflowStepCommand */
@@ -51,27 +50,22 @@ public class GetWorkflowStepCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected WorkflowStep getEntity() {
+        var workflowName = form.getWorkflowName();
+        var workflowStepName = form.getWorkflowStepName();
+
+        return WorkflowStepLogic.getInstance().getWorkflowStepByName(this, workflowName, workflowStepName);
+    }
+
+    @Override
+    protected BaseResult getTransfer(WorkflowStep workflowStep) {
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowStepResult result = WorkflowResultFactory.getGetWorkflowStepResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
-            
-            result.setWorkflow(workflowControl.getWorkflowTransfer(getUserVisit(), workflow));
-            
-            if(workflowStep != null) {
-                result.setWorkflowStep(workflowControl.getWorkflowStepTransfer(getUserVisit(), workflowStep));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowStepName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+        var result = WorkflowResultFactory.getGetWorkflowStepResult();
+
+        if(workflowStep != null) {
+            result.setWorkflowStep(workflowControl.getWorkflowStepTransfer(getUserVisit(), workflowStep));
         }
-        
+
         return result;
     }
     

@@ -17,69 +17,70 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowSelectorKindForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowSelectorKindResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.WorkflowControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowSelectorKindCommand
-        extends BaseSimpleCommand<GetWorkflowSelectorKindForm> {
+        extends BaseSingleEntityCommand<WorkflowSelectorKind, GetWorkflowSelectorKindForm> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.SelectorKind.name())
+                        )))
+                )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkflowSelectorKindName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null)
+                ));
     }
     
     /** Creates a new instance of GetWorkflowSelectorKindCommand */
     public GetWorkflowSelectorKindCommand(UserVisitPK userVisitPK, GetWorkflowSelectorKindForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowSelectorKindResult result = WorkflowResultFactory.getGetWorkflowSelectorKindResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-            String selectorKindName = form.getSelectorKindName();
-            SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-            
-            if(selectorKind != null) {
-                WorkflowSelectorKind workflowSelectorKind = workflowControl.getWorkflowSelectorKind(workflow, selectorKind);
-                
-                if(workflowSelectorKind != null) {
-                    result.setWorkflowSelectorKind(workflowControl.getWorkflowSelectorKindTransfer(getUserVisit(), workflowSelectorKind));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkflowSelectorKind.name(), workflowName, selectorKindName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+    protected WorkflowSelectorKind getEntity() {
+        var workflowName = form.getWorkflowName();
+        var selectorKindName = form.getSelectorKindName();
+
+        return WorkflowLogic.getInstance().getWorkflowSelectorKindByName(this, workflowName, selectorKindName);
+    }
+
+    @Override
+    protected BaseResult getTransfer(WorkflowSelectorKind entity) {
+        var result = WorkflowResultFactory.getGetWorkflowSelectorKindResult();
+
+        if(entity != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            result.setWorkflowSelectorKind(workflowControl.getWorkflowSelectorKindTransfer(getUserVisit(), entity));
         }
-        
+
         return result;
     }
-    
+
 }

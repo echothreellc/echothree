@@ -17,35 +17,40 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowEntranceSecurityRoleForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowEntranceSecurityRoleResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.security.server.SecurityControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.WorkflowControl;
-import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.security.server.entity.SecurityRole;
-import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSecurityRole;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowEntranceSecurityRoleCommand
-        extends BaseSimpleCommand<GetWorkflowEntranceSecurityRoleForm> {
+        extends BaseSingleEntityCommand<WorkflowEntranceSecurityRole, GetWorkflowEntranceSecurityRoleForm> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.WorkflowEntrance.name(), SecurityRoles.SecurityRole.name())
+                        )))
+                )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null),
@@ -56,68 +61,32 @@ public class GetWorkflowEntranceSecurityRoleCommand
     
     /** Creates a new instance of GetWorkflowEntranceSecurityRoleCommand */
     public GetWorkflowEntranceSecurityRoleCommand(UserVisitPK userVisitPK, GetWorkflowEntranceSecurityRoleForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowEntranceSecurityRoleResult result = WorkflowResultFactory.getGetWorkflowEntranceSecurityRoleResult();
+    protected WorkflowEntranceSecurityRole getEntity() {
         String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
+        String workflowEntranceName = form.getWorkflowEntranceName();
+        String partyTypeName = form.getPartyTypeName();
+        String securityRoleName = form.getSecurityRoleName();
 
-            if(workflowEntrance != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                String partyTypeName = form.getPartyTypeName();
-                PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
+        return WorkflowEntranceLogic.getInstance().getWorkflowEntranceSecurityRoleByName(this, workflowName, workflowEntranceName,
+                partyTypeName, securityRoleName);
+    }
 
-                if(partyType != null) {
-                    WorkflowEntrancePartyType workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
+    @Override
+    protected BaseResult getTransfer(WorkflowEntranceSecurityRole entity) {
+        var result = WorkflowResultFactory.getGetWorkflowEntranceSecurityRoleResult();
 
-                    if(workflowEntrancePartyType != null) {
-                        SecurityRoleGroup securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();
+        if(entity != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
-                        if(securityRoleGroup != null) {
-                            var securityControl = (SecurityControl)Session.getModelController(SecurityControl.class);
-                            String securityRoleName = form.getSecurityRoleName();
-                            SecurityRole securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName);
-
-                            if(securityRole != null) {
-                                WorkflowEntranceSecurityRole workflowEntranceSecurityRole = workflowControl.getWorkflowEntranceSecurityRole(workflowEntrancePartyType,
-                                        securityRole);
-
-                                if(workflowEntranceSecurityRole != null) {
-                                    result.setWorkflowEntranceSecurityRole(workflowControl.getWorkflowEntranceSecurityRoleTransfer(getUserVisit(),
-                                            workflowEntranceSecurityRole));
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownWorkflowEntranceSecurityRole.name(), workflowName,
-                                            workflowEntranceName, partyTypeName, securityRoleName);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownSecurityRoleName.name(),
-                                        securityRoleGroup.getLastDetail().getSecurityRoleGroupName(), securityRoleName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.WorkflowMissingSecurityRoleGroup.name(), workflowName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownWorkflowEntrancePartyType.name(), workflowName, workflowEntranceName, partyTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowName, workflowEntranceName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+            result.setWorkflowEntranceSecurityRole(workflowControl.getWorkflowEntranceSecurityRoleTransfer(getUserVisit(),
+                    entity));
         }
-        
+
         return result;
     }
-    
+
 }

@@ -27,6 +27,7 @@ import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -144,18 +145,19 @@ public class SearchItemsCommand
                                                 List<WorkflowStep> itemStatusWorkflowSteps = null;
 
                                                 if(itemStatusChoice != null || itemStatusChoices != null) {
-                                                    WorkflowLogic workflowLogic = WorkflowLogic.getInstance();
-                                                    Workflow workflow = workflowLogic.getWorkflowByName(this, ItemStatusConstants.Workflow_ITEM_STATUS);
+                                                    Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(this, ItemStatusConstants.Workflow_ITEM_STATUS);
 
                                                     if(!hasExecutionErrors()) {
+                                                        WorkflowStepLogic workflowStepLogic = WorkflowStepLogic.getInstance();
+
                                                         if(itemStatusChoice != null) {
-                                                            itemStatusWorkflowStep = workflowLogic.getWorkflowStepByName(this, workflow, itemStatusChoice);
+                                                            itemStatusWorkflowStep = workflowStepLogic.getWorkflowStepByName(this, workflow, itemStatusChoice);
                                                         } else {
                                                             String []workflowStepNames = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(itemStatusChoices).toArray(new String[0]);
 
                                                             itemStatusWorkflowSteps = new ArrayList<>(workflowStepNames.length);
                                                             for(int i = 0; i < workflowStepNames.length; i++) {
-                                                                WorkflowStep workflowStep = workflowLogic.getWorkflowStepByName(this, workflow, workflowStepNames[i]);
+                                                                WorkflowStep workflowStep = workflowStepLogic.getWorkflowStepByName(this, workflow, workflowStepNames[i]);
 
                                                                 if(!hasExecutionErrors()) {
                                                                     itemStatusWorkflowSteps.add(workflowStep);

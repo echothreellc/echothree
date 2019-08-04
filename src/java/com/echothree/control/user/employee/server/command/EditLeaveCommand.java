@@ -31,7 +31,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
-import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.employee.server.entity.LeaveDetail;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
@@ -152,7 +152,7 @@ public class EditLeaveCommand
 
     @Override
     public void canEdit(Leave leave) {
-        if(WorkflowLogic.getInstance().isEntityInWorkflowStepsForUpdate(null, LeaveStatusConstants.Workflow_LEAVE_STATUS, leave,
+        if(WorkflowStepLogic.getInstance().isEntityInWorkflowStepsForUpdate(null, LeaveStatusConstants.Workflow_LEAVE_STATUS, leave,
                 LeaveStatusConstants.WorkflowStep_APPROVED, LeaveStatusConstants.WorkflowStep_DENIED, LeaveStatusConstants.WorkflowStep_SUBMITTED).isEmpty()) {
             addExecutionError(ExecutionErrors.InvalidLeaveStatus.name(), leave.getLastDetail().getLeaveName());
         }

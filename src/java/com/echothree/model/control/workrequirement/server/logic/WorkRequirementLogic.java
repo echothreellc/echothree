@@ -19,11 +19,11 @@ package com.echothree.model.control.workrequirement.server.logic;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
-import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.control.workrequirement.server.WorkRequirementControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -173,7 +173,7 @@ public class WorkRequirementLogic {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS, entityInstance);
-        WorkflowDestination workflowDestination = WorkflowLogic.getInstance().getWorkflowDestinationByName(null, workflowEntityStatus.getWorkflowStep(),
+        WorkflowDestination workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(null, workflowEntityStatus.getWorkflowStep(),
                 complete ? WorkTimeStatusConstants.WorkflowDestination_IN_PROGRESS_TO_COMPLETE : WorkTimeStatusConstants.WorkflowDestination_IN_PROGRESS_TO_INCOMPLETE);
         WorkTimeDetailValue workTimeDetailValue = workRequirementControl.getWorkTimeDetailValueForUpdate(workTime);
         

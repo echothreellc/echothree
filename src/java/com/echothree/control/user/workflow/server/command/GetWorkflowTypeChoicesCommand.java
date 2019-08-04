@@ -33,13 +33,14 @@ import java.util.List;
 public class GetWorkflowTypeChoicesCommand
         extends BaseSimpleCommand<GetWorkflowTypeChoicesForm> {
     
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("DefaultWorkflowTypeChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-        ));
+                new FieldDefinition("DefaultWorkflowTypeChoice", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                ));
     }
     
     /** Creates a new instance of GetWorkflowTypeChoicesCommand */

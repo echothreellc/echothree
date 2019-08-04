@@ -26,12 +26,6 @@ import java.util.List;
 public interface GetWorkflowDestinationSelectorsResult
         extends BaseResult {
     
-    WorkflowTransfer getWorkflow();
-    void setWorkflow(WorkflowTransfer workflow);
-    
-    WorkflowStepTransfer getWorkflowStep();
-    void setWorkflowStep(WorkflowStepTransfer workflowStep);
-    
     WorkflowDestinationTransfer getWorkflowDestination();
     void setWorkflowDestination(WorkflowDestinationTransfer workflowDestination);
     

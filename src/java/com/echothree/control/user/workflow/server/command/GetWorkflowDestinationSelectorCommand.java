@@ -17,34 +17,40 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationSelectorForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationSelectorResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
-import com.echothree.model.control.selector.server.SelectorControl;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.WorkflowControl;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.selector.server.entity.SelectorTypeDetail;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowDestinationSelectorCommand
-        extends BaseSimpleCommand<GetWorkflowDestinationSelectorForm> {
+        extends BaseSingleEntityCommand<WorkflowDestinationSelector, GetWorkflowDestinationSelectorForm> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.Selector.name())
+                        )))
+                )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowSelectorName", FieldType.ENTITY_NAME, true, null, null),
@@ -55,63 +61,30 @@ public class GetWorkflowDestinationSelectorCommand
     
     /** Creates a new instance of GetWorkflowDestinationSelectorCommand */
     public GetWorkflowDestinationSelectorCommand(UserVisitPK userVisitPK, GetWorkflowDestinationSelectorForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowDestinationSelectorResult result = WorkflowResultFactory.getGetWorkflowDestinationSelectorResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            SelectorType selectorType = workflow.getLastDetail().getSelectorType();
-            
-            if(selectorType != null) {
-                String workflowStepName = form.getWorkflowStepName();
-                WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
-                
-                if(workflowStep != null) {
-                    String workflowDestinationName = form.getWorkflowDestinationName();
-                    WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
-                    
-                    if(workflowDestination != null) {
-                        var selectorControl = (SelectorControl)Session.getModelController(SelectorControl.class);
-                        String selectorName = form.getSelectorName();
-                        Selector selector = selectorControl.getSelectorByName(workflow.getLastDetail().getSelectorType(), selectorName);
-                        
-                        if(selector != null) {
-                            WorkflowDestinationSelector workflowDestinationSelector = workflowControl.getWorkflowDestinationSelector(workflowDestination, selector);
-                            
-                            if(workflowDestinationSelector != null) {
-                                result.setWorkflowDestinationSelector(workflowControl.getWorkflowDestinationSelectorTransfer(getUserVisit(), workflowDestinationSelector));
-                            } else {
-                                SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
-                                
-                                addExecutionError(ExecutionErrors.UnknownWorkflowDestinationSelector.name(), workflowName, workflowStepName, workflowDestinationName,
-                                        selectorTypeDetail.getSelectorKind().getLastDetail().getSelectorKindName(),
-                                        selectorTypeDetail.getSelectorTypeName(), selectorName);
-                            }
-                        } else {
-                            SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
+    protected WorkflowDestinationSelector getEntity() {
+        var workflowName = form.getWorkflowName();
+        var workflowStepName = form.getWorkflowStepName();
+        var workflowDestinationName = form.getWorkflowDestinationName();
+        var selectorName = form.getSelectorName();
 
-                            addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorTypeDetail.getSelectorKind().getLastDetail().getSelectorKindName(),
-                                    selectorTypeDetail.getSelectorTypeName(), selectorName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowName, workflowStepName, workflowDestinationName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowName, workflowStepName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.InvalidWorkflow.name());
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+        return WorkflowDestinationLogic.getInstance().getWorkflowDestinationSelectorByName(this, workflowName,
+                workflowStepName, workflowDestinationName, selectorName);
+    }
+
+    @Override
+    protected BaseResult getTransfer(WorkflowDestinationSelector entity) {
+        var result = WorkflowResultFactory.getGetWorkflowDestinationSelectorResult();
+
+        if(entity != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            result.setWorkflowDestinationSelector(workflowControl.getWorkflowDestinationSelectorTransfer(getUserVisit(), entity));
         }
-        
+
         return result;
     }
     
