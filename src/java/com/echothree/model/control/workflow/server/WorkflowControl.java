@@ -3341,7 +3341,7 @@ public class WorkflowControl
         return getWorkflowTransferCaches(userVisit).getWorkflowDestinationPartyTypeTransferCache().getWorkflowDestinationPartyTypeTransfer(workflowDestinationPartyType);
     }
     
-    public List<WorkflowDestinationPartyTypeTransfer> getWorkflowDestinationPartyTypeTransfers(UserVisit userVisit, List<WorkflowDestinationPartyType> workflowDestinationPartyTypes) {
+    public List<WorkflowDestinationPartyTypeTransfer> getWorkflowDestinationPartyTypeTransfers(UserVisit userVisit, Collection<WorkflowDestinationPartyType> workflowDestinationPartyTypes) {
         List<WorkflowDestinationPartyTypeTransfer> workflowDestinationPartyTypeTransfers = new ArrayList<>(workflowDestinationPartyTypes.size());
         WorkflowDestinationPartyTypeTransferCache workflowDestinationPartyTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowDestinationPartyTypeTransferCache();
         
