@@ -17,30 +17,30 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowEntrancePartyTypesForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowEntrancePartyTypesResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowEntrancePartyTypesCommand
-        extends BaseSimpleCommand<GetWorkflowEntrancePartyTypesForm> {
+        extends BaseMultipleEntitiesCommand<WorkflowEntrancePartyType, GetWorkflowEntrancePartyTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,29 +63,40 @@ public class GetWorkflowEntrancePartyTypesCommand
     public GetWorkflowEntrancePartyTypesCommand(UserVisitPK userVisitPK, GetWorkflowEntrancePartyTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    WorkflowEntrance workflowEntrance;
+
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowEntrancePartyTypesResult result = WorkflowResultFactory.getGetWorkflowEntrancePartyTypesResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            String workflowEntranceName = form.getWorkflowEntranceName();
-            WorkflowEntrance workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
-            
-            if(workflowEntrance != null) {
-                result.setWorkflowEntrance(workflowControl.getWorkflowEntranceTransfer(getUserVisit(), workflowEntrance));
-                result.setWorkflowEntrancePartyTypes(workflowControl.getWorkflowEntrancePartyTypeTransfersByWorkflowEntrance(getUserVisit(), workflowEntrance));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowEntranceName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+    protected Collection<WorkflowEntrancePartyType> getEntities() {
+        var workflowName = form.getWorkflowName();
+        var workflowEntranceName = form.getWorkflowEntranceName();
+        Collection<WorkflowEntrancePartyType> workflowEntrancePartyTypes = null;
+
+        workflowEntrance = WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(this,
+                workflowName, workflowEntranceName);
+
+        if(!this.hasExecutionErrors()) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            workflowEntrancePartyTypes = workflowControl.getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance);
         }
-        
+
+        return workflowEntrancePartyTypes;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<WorkflowEntrancePartyType> entities) {
+        var result = WorkflowResultFactory.getGetWorkflowEntrancePartyTypesResult();
+
+        if(entities != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var userVisit = getUserVisit();
+
+            result.setWorkflowEntrance(workflowControl.getWorkflowEntranceTransfer(userVisit, workflowEntrance));
+            result.setWorkflowEntrancePartyTypes(workflowControl.getWorkflowEntrancePartyTypeTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
