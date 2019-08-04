@@ -17,31 +17,30 @@
 package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationStepsForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationStepsResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
-import com.echothree.model.data.workflow.server.entity.WorkflowStep;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationStep;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowDestinationStepsCommand
-        extends BaseSimpleCommand<GetWorkflowDestinationStepsForm> {
+        extends BaseMultipleEntitiesCommand<WorkflowDestinationStep, GetWorkflowDestinationStepsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -66,38 +65,39 @@ public class GetWorkflowDestinationStepsCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    WorkflowDestination workflowDestination;
+
     @Override
-    protected BaseResult execute() {
-        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        GetWorkflowDestinationStepsResult result = WorkflowResultFactory.getGetWorkflowDestinationStepsResult();
-        String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
-        
-        if(workflow != null) {
-            String workflowStepName = form.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
-            
-            result.setWorkflow(workflowControl.getWorkflowTransfer(getUserVisit(), workflow));
-            
-            if(workflowStep != null) {
-                String workflowDestinationName = form.getWorkflowDestinationName();
-                WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
-                
-                result.setWorkflowStep(workflowControl.getWorkflowStepTransfer(getUserVisit(), workflowStep));
-                
-                if(workflowDestination != null) {
-                    result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(getUserVisit(), workflowDestination));
-                    result.setWorkflowDestinationSteps(workflowControl.getWorkflowDestinationStepTransfersByWorkflowDestination(getUserVisit(), workflowDestination));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowName, workflowStepName, workflowDestinationName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowName, workflowStepName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
+    protected Collection<WorkflowDestinationStep> getEntities() {
+        var workflowName = form.getWorkflowName();
+        var workflowStepName = form.getWorkflowStepName();
+        var workflowDestinationName = form.getWorkflowDestinationName();
+        Collection<WorkflowDestinationStep> workflowDestinationSteps = null;
+
+        workflowDestination = WorkflowDestinationLogic.getInstance().getWorkflowDestinationByName(this, workflowName,
+                workflowStepName, workflowDestinationName);
+
+        if(!this.hasExecutionErrors()) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+
+            workflowDestinationSteps = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
         }
-        
+
+        return workflowDestinationSteps;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<WorkflowDestinationStep> entities) {
+        var result = WorkflowResultFactory.getGetWorkflowDestinationStepsResult();
+
+        if(entities != null) {
+            var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+            var userVisit = getUserVisit();
+
+            result.setWorkflowDestination(workflowControl.getWorkflowDestinationTransfer(userVisit, workflowDestination));
+            result.setWorkflowDestinationSteps(workflowControl.getWorkflowDestinationStepTransfers(userVisit, entities));
+        }
+
         return result;
     }
     
