@@ -34,7 +34,12 @@ There are no official releases at this time other than tagged milestones availab
 
 ## Documentation
 
+- [Wiki](https://www.echothree.com/wiki/)
 - [Javadoc](https://www.echothree.com/javadoc/master/)
+
+## Issues
+
+- [Bugzilla](https://www.echothree.com/bugzilla/)
 
 ## Source Code Mirrors:
 
@@ -47,5 +52,3 @@ If you have any questions or if you would like to get involved in the Echo Three
 
 - [Twitter](https://twitter.com/echothree/)
 - [reddit](https://www.reddit.com/r/echothree/)
-- [Bugzilla](https://www.echothree.com/bugzilla/)
-
