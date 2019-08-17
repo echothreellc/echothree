@@ -26,6 +26,8 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
+import com.echothree.model.control.geo.server.logic.GeoCodeScopeLogic;
+import com.echothree.model.control.geo.server.logic.GeoCodeTypeLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -43,10 +45,10 @@ import com.echothree.model.data.geo.server.value.GeoCodeDescriptionValue;
 import com.echothree.model.data.geo.server.value.GeoCodeDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -206,13 +208,15 @@ public class EditCountryCommand
 
     @Override
     public void canUpdate(GeoCode geoCode) {
-        GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
-        GeoCodeType geoCodeType = geoCodeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
+        var geoCodeTypeLogic = GeoCodeTypeLogic.getInstance();
+        GeoCodeType geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
 
         if(!hasExecutionErrors()) {
-            GeoCodeScope geoCodeScope = geoCodeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
+            var geoCodeScopeLogic = GeoCodeScopeLogic.getInstance();
+            GeoCodeScope geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
 
             if(!hasExecutionErrors()) {
+                var geoCodeLogic = GeoCodeLogic.getInstance();
                 String iso3Number = edit.getIso3Number();
                 GeoCode duplicateGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, iso3Number);
 

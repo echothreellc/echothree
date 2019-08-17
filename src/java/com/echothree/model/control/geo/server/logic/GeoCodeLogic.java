@@ -18,8 +18,6 @@ package com.echothree.model.control.geo.server.logic;
 
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeAliasTypeNameException;
-import com.echothree.model.control.geo.common.exception.UnknownGeoCodeScopeNameException;
-import com.echothree.model.control.geo.common.exception.UnknownGeoCodeTypeNameException;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.selector.server.SelectorControl;
@@ -51,71 +49,50 @@ public class GeoCodeLogic
         return GeoLogicHolder.instance;
     }
     
-    public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode, final String geoCodeAliasTypeName) {
+    public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator eea, final GeoCode geoCode,
+            final String geoCodeAliasTypeName) {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
 
-        return geoControl.getGeoCodeAlias(geoCode, getGeoCodeAliasTypeByName(ema, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
+        return geoControl.getGeoCodeAlias(geoCode, getGeoCodeAliasTypeByName(eea, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
     }
 
-    public GeoCodeAliasValue getGeoCodeAliasValueUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode, final String geoCodeAliasTypeName) {
+    public GeoCodeAliasValue getGeoCodeAliasValueUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode,
+            final String geoCodeAliasTypeName) {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
 
         return geoControl.getGeoCodeAliasValueForUpdate(geoCode, getGeoCodeAliasTypeByName(ema, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
     }
 
-    public GeoCode getGeoCodeByAlias(final ExecutionErrorAccumulator ema, final GeoCodeType geoCodeType, final GeoCodeScope geoCodeScope,
+    public GeoCode getGeoCodeByAlias(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType, final GeoCodeScope geoCodeScope,
             final String geoCodeAliasTypeName, final String alias) {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
         GeoCodeAlias geoCodeAlias = null;
-        GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
 
         if(geoCodeAliasType != null) {
             geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias);
         } else {
-            handleExecutionError(UnknownGeoCodeAliasTypeNameException.class, ema, ExecutionErrors.UnknownGeoCodeAliasTypeName.name(),
+            handleExecutionError(UnknownGeoCodeAliasTypeNameException.class, eea, ExecutionErrors.UnknownGeoCodeAliasTypeName.name(),
                     geoCodeType.getLastDetail().getGeoCodeTypeName(), geoCodeAliasTypeName);
         }
 
         return geoCodeAlias == null ? null : geoCodeAlias.getGeoCode();
     }
 
-    public GeoCodeAliasType getGeoCodeAliasTypeByName(final ExecutionErrorAccumulator ema, final GeoCodeType geoCodeType, final String geoCodeAliasTypeName) {
+    public GeoCodeAliasType getGeoCodeAliasTypeByName(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType,
+            final String geoCodeAliasTypeName) {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
+        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
 
         if(geoCodeAliasType == null) {
-            handleExecutionError(UnknownGeoCodeAliasTypeNameException.class, ema, ExecutionErrors.UnknownGeoCodeAliasTypeName.name(),
+            handleExecutionError(UnknownGeoCodeAliasTypeNameException.class, eea, ExecutionErrors.UnknownGeoCodeAliasTypeName.name(),
                     geoCodeType.getLastDetail().getGeoCodeTypeName(), geoCodeAliasTypeName);
         }
 
         return geoCodeAliasType;
     }
 
-    public GeoCodeType getGeoCodeTypeByName(final ExecutionErrorAccumulator ema, final String geoCodeTypeName) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
-
-        if(geoCodeType == null) {
-            handleExecutionError(UnknownGeoCodeTypeNameException.class, ema, ExecutionErrors.UnknownGeoCodeTypeName.name(),
-                    geoCodeTypeName);
-        }
-
-        return geoCodeType;
-    }
-
-    public GeoCodeScope getGeoCodeScopeByName(final ExecutionErrorAccumulator ema, final String geoCodeScopeName) {
-        var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
-
-        if(geoCodeScope == null) {
-            handleExecutionError(UnknownGeoCodeScopeNameException.class, ema, ExecutionErrors.UnknownGeoCodeScopeName.name(),
-                    geoCodeScopeName);
-        }
-
-        return geoCodeScope;
-    }
-
-    public void deleteGeoCode(final ExecutionErrorAccumulator ema, final GeoCode geoCode, BasePK deletedBy) {
+    public void deleteGeoCode(final ExecutionErrorAccumulator eea, final GeoCode geoCode, final BasePK deletedBy) {
         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
@@ -135,7 +112,7 @@ public class GeoCodeLogic
 
             geoControl.deleteGeoCode(geoCode, deletedBy);
         } else {
-            handleExecutionError(null, ema, ExecutionErrors.CannotDeleteGeoCodeInUse.name(),
+            handleExecutionError(null, eea, ExecutionErrors.CannotDeleteGeoCodeInUse.name(),
                     geoCode.getLastDetail().getGeoCodeName());
         }
     }
