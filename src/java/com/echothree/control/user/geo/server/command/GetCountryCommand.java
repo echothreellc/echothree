@@ -22,6 +22,7 @@ import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.control.user.geo.server.GeoDebugFlags;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,12 +33,14 @@ import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -48,7 +51,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 
 public class GetCountryCommand
-        extends BaseSimpleCommand<GetCountryForm> {
+        extends BaseSingleEntityCommand<GeoCode, GetCountryForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -66,9 +69,9 @@ public class GetCountryCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("Iso3Number", FieldType.NUMBER_3, Boolean.FALSE, null, null),
-                new FieldDefinition("Iso3Letter", FieldType.UPPER_LETTER_3, Boolean.FALSE, null, null),
-                new FieldDefinition("Iso2Letter", FieldType.UPPER_LETTER_2, Boolean.FALSE, null, null),
+                new FieldDefinition("Iso3Number", FieldType.NUMBER_3, false, null, null),
+                new FieldDefinition("Iso3Letter", FieldType.UPPER_LETTER_3, false, null, null),
+                new FieldDefinition("Iso2Letter", FieldType.UPPER_LETTER_2, false, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null)
                 ));
     }
@@ -83,33 +86,32 @@ public class GetCountryCommand
             log = getLog();
         }
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetCountryResult result = GeoResultFactory.getGetCountryResult();
-        String geoCodeName = form.getGeoCodeName();
-        String countryName = form.getCountryName();
-        String iso3Number = form.getIso3Number();
-        String iso3Letter = form.getIso3Letter();
-        String iso2Letter = form.getIso2Letter();
-        String alias = form.getAlias();
-        int parameterCount = (geoCodeName == null ? 0 : 1) + (countryName == null ? 0 : 1) + (iso3Number == null ? 0 : 1) + (iso3Letter == null ? 0 : 1)
+    protected GeoCode getEntity() {
+        GeoCode geoCode = null;
+        var geoCodeName = form.getGeoCodeName();
+        var countryName = form.getCountryName();
+        var iso3Number = form.getIso3Number();
+        var iso3Letter = form.getIso3Letter();
+        var iso2Letter = form.getIso2Letter();
+        var alias = form.getAlias();
+        var parameterCount = (geoCodeName == null ? 0 : 1) + (countryName == null ? 0 : 1) + (iso3Number == null ? 0 : 1) + (iso3Letter == null ? 0 : 1)
                 + (iso2Letter == null ? 0 : 1) + (alias == null ? 0 : 1);
-        
+
         if(GeoDebugFlags.GetCountryCommand) {
             log.info("parameterCount = " + parameterCount);
         }
-        
+
         if(parameterCount < 2) {
             var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-            GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
-            GeoCode geoCode = null;
-            
+            var geoCodeScope = geoControl.getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
+
             if(parameterCount == 0) {
                 geoCode = geoControl.getDefaultGeoCode(geoCodeScope);
             } else {
-                GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
-                
+                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+
                 if(geoCodeName != null) {
                     if(GeoDebugFlags.GetCountryCommand) {
                         log.info("lookup will be by geoCodeName");
@@ -118,7 +120,7 @@ public class GetCountryCommand
                     geoCode = geoControl.getGeoCodeByName(geoCodeName);
 
                     if(geoCode != null) {
-                        GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
+                        var geoCodeDetail = geoCode.getLastDetail();
 
                         if(!geoCodeDetail.getGeoCodeType().equals(geoCodeType)) {
                             addExecutionError(ExecutionErrors.InvalidGeoCodeType.name(), geoCodeDetail.getGeoCodeType().getLastDetail().getGeoCodeTypeName());
@@ -136,7 +138,7 @@ public class GetCountryCommand
                     if(GeoDebugFlags.GetCountryCommand) {
                         log.info("lookup will be by alias");
                     }
-                    
+
                     geoCode = geoControl.getCountryByAlias(alias);
 
                     if(geoCode == null) {
@@ -150,7 +152,7 @@ public class GetCountryCommand
                             log.info("lookup will be by countryName");
                         }
 
-                        GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
+                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTRY_NAME);
                         geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countryName);
 
                         if(geoCodeAlias == null) {
@@ -161,7 +163,7 @@ public class GetCountryCommand
                             log.info("lookup will be by iso3Number");
                         }
 
-                        GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
+                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER);
                         geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, iso3Number);
 
                         if(geoCodeAlias == null) {
@@ -172,7 +174,7 @@ public class GetCountryCommand
                             log.info("lookup will be by iso3Letter");
                         }
 
-                        GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
+                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_3_LETTER);
                         geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, iso3Letter);
 
                         if(geoCodeAlias == null) {
@@ -183,7 +185,7 @@ public class GetCountryCommand
                             log.info("lookup will be by iso2Letter");
                         }
 
-                        GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+                        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
                         geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, iso2Letter);
 
                         if(geoCodeAlias == null) {
@@ -196,17 +198,28 @@ public class GetCountryCommand
                     }
                 }
             }
-            
+
             if(geoCode != null) {
-                result.setCountry(geoControl.getCountryTransfer(getUserVisit(), geoCode));
-                
                 sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return geoCode;
+    }
+
+    @Override
+    protected BaseResult getTransfer(GeoCode entity) {
+        var result = GeoResultFactory.getGetCountryResult();
+
+        if(entity != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+
+            result.setCountry(geoControl.getCountryTransfer(getUserVisit(), entity));
+        }
+
         return result;
     }
-    
+
 }

@@ -19,9 +19,14 @@ package com.echothree.control.user.geo.server.command;
 import com.echothree.control.user.geo.common.form.GetZipCodeForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.result.GetZipCodeResult;
+import com.echothree.control.user.inventory.common.result.GetInventoryConditionResult;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.transfer.PostalCodeTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
+import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -30,12 +35,14 @@ import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -45,7 +52,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetZipCodeCommand
-        extends BaseSimpleCommand<GetZipCodeForm> {
+        extends BaseSingleEntityCommand<GeoCode, GetZipCodeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -72,30 +79,29 @@ public class GetZipCodeCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        GetZipCodeResult result = GeoResultFactory.getGetZipCodeResult();
+    protected GeoCode getEntity() {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        
-        String countryGeoCodeName = form.getCountryGeoCodeName();
-        GeoCode countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
-        
-        GeoCodeAliasType countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_ZIP_CODES").toString();
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
-        
-        if(geoCodeScope != null) {
-            GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_ZIP_CODE);
-            GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ZIP_CODE);
-            String zipCodeName = form.getZipCodeName();
-            GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, zipCodeName);
-            
-            if(geoCodeAlias != null) {
-                GeoCode geoCode = geoCodeAlias.getGeoCode();
+        GeoCode geoCode = null;
 
-                result.setPostalCode(geoControl.getPostalCodeTransfer(getUserVisit(), geoCode));
+        var countryGeoCodeName = form.getCountryGeoCodeName();
+        var countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
+
+        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
+                GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+
+        var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
+        var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+
+        if(geoCodeScope != null) {
+            var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_ZIP_CODE);
+            var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_ZIP_CODE);
+            var zipCodeName = form.getZipCodeName();
+            var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, zipCodeName);
+
+            if(geoCodeAlias != null) {
+                geoCode = geoCodeAlias.getGeoCode();
 
                 sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
             } else {
@@ -104,8 +110,21 @@ public class GetZipCodeCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownGeoCodeScopeName.name(), geoCodeScopeName);
         }
-        
+
+        return geoCode;
+    }
+
+    @Override
+    protected BaseResult getTransfer(GeoCode entity) {
+        var result = GeoResultFactory.getGetZipCodeResult();
+
+        if(entity != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+
+            result.setPostalCode(geoControl.getPostalCodeTransfer(getUserVisit(), entity));
+        }
+
         return result;
     }
-    
+
 }

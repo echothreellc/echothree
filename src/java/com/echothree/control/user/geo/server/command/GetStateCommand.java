@@ -22,6 +22,7 @@ import com.echothree.control.user.geo.common.result.GetStateResult;
 import com.echothree.control.user.geo.server.GeoDebugFlags;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.transfer.StateTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,12 +32,14 @@ import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -47,7 +50,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 
 public class GetStateCommand
-        extends BaseSimpleCommand<GetStateForm> {
+        extends BaseSingleEntityCommand<GeoCode, GetStateForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -65,7 +68,7 @@ public class GetStateCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("CountryGeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("StateName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("Postal2Letter", FieldType.UPPER_LETTER_2, Boolean.FALSE, null, null)
+                new FieldDefinition("Postal2Letter", FieldType.UPPER_LETTER_2, false, null, null)
                 ));
     }
     
@@ -79,63 +82,61 @@ public class GetStateCommand
             log = getLog();
         }
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetStateResult result = GeoResultFactory.getGetStateResult();
-        String stateName = form.getStateName();
-        String postal2Letter = form.getPostal2Letter();
-        int parameterCount = (stateName == null? 0: 1) + (postal2Letter == null? 0: 1);
-        
+    protected GeoCode getEntity() {
+        GeoCode geoCode = null;
+        var stateName = form.getStateName();
+        var postal2Letter = form.getPostal2Letter();
+        var parameterCount = (stateName == null? 0: 1) + (postal2Letter == null? 0: 1);
+
         if(GeoDebugFlags.GetStateCommand) {
             log.info("parameterCount = " + parameterCount);
         }
-        
+
         if(parameterCount == 1) {
             var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-            
-            String countryGeoCodeName = form.getCountryGeoCodeName();
-            GeoCode countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
-            
-            GeoCodeAliasType countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-            GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-            String countryIso2Letter = countryGeoCodeAlias.getAlias();
-            
-            String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_STATES").toString();
-            GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
-            
+
+            var countryGeoCodeName = form.getCountryGeoCodeName();
+            var countryGeoCode = geoControl.getGeoCodeByName(countryGeoCodeName);
+
+            var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+            var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+            var countryIso2Letter = countryGeoCodeAlias.getAlias();
+
+            var geoCodeScopeName = countryIso2Letter + "_STATES";
+            var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+
             if(geoCodeScope != null) {
-                GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
-                GeoCodeAlias geoCodeAlias = null;
-                
+                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_STATE);
+                GeoCodeAlias geoCodeAlias;
+
                 if(stateName != null) {
                     if(GeoDebugFlags.GetStateCommand) {
                         log.info("lookup will be by stateName");
                     }
-                    
-                    GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_STATE_NAME);
+
+                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_STATE_NAME);
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, stateName);
-                    
+
                     if(geoCodeAlias == null) {
                         addExecutionError(ExecutionErrors.UnknownStateName.name(), stateName);
                     }
-                } else if(postal2Letter != null) {
+                } else {
                     if(GeoDebugFlags.GetStateCommand) {
                         log.info("lookup will be by postal2Letter");
                     }
-                    
-                    GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+
+                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, postal2Letter);
-                    
+
                     if(geoCodeAlias == null) {
                         addExecutionError(ExecutionErrors.UnknownStatePostal2Letter.name());
                     }
                 }
-                
-                if(geoCodeAlias != null) {
-                    GeoCode geoCode = geoCodeAlias.getGeoCode();
 
-                    result.setState(geoControl.getStateTransfer(getUserVisit(), geoCode));
+                if(geoCodeAlias != null) {
+                    geoCode = geoCodeAlias.getGeoCode();
 
                     sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
                 }
@@ -145,8 +146,21 @@ public class GetStateCommand
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return geoCode;
+    }
+
+    @Override
+    protected BaseResult getTransfer(GeoCode entity) {
+        var result = GeoResultFactory.getGetStateResult();
+
+        if(entity != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+
+            result.setState(geoControl.getStateTransfer(getUserVisit(), entity));
+        }
+
         return result;
     }
-    
+
 }

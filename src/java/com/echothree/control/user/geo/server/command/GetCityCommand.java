@@ -21,6 +21,7 @@ import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.result.GetCityResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.geo.common.GeoConstants;
+import com.echothree.model.control.geo.common.transfer.CityTransfer;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,6 +32,7 @@ import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
+import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -38,6 +40,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -49,7 +52,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GetCityCommand
-        extends BaseSimpleCommand<GetCityForm> {
+        extends BaseSingleEntityCommand<GeoCode, GetCityForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -74,58 +77,68 @@ public class GetCityCommand
     public GetCityCommand(UserVisitPK userVisitPK, GetCityForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetCityResult result = GeoResultFactory.getGetCityResult();
+    protected GeoCode getEntity() {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        BasePK createdBy = getPartyPK();
-        
-        String stateGeoCodeName = form.getStateGeoCodeName();
-        GeoCode stateGeoCode = geoControl.getGeoCodeByName(stateGeoCodeName);
-        
-        GeoCodeAliasType stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
-        GeoCodeAlias stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
-        String statePostal2Letter = stateGeoCodeAlias.getAlias();
-        
-        GeoCodeType countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var createdBy = getPartyPK();
+        GeoCode geoCode = null;
+
+        var stateGeoCodeName = form.getStateGeoCodeName();
+        var stateGeoCode = geoControl.getGeoCodeByName(stateGeoCodeName);
+
+        var stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+        var stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
+        var statePostal2Letter = stateGeoCodeAlias.getAlias();
+
+        var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
         GeoCode countryGeoCode = null;
-        Collection stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
-        for(Iterator iter = stateRelationships.iterator(); iter.hasNext();) {
-            GeoCodeRelationship geoCodeRelationship = (GeoCodeRelationship)iter.next();
+        var stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
+        for(GeoCodeRelationship geoCodeRelationship : stateRelationships) {
             GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                 countryGeoCode = toGeoCode;
                 break;
             }
         }
-        
-        GeoCodeAliasType countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_").append(statePostal2Letter).append("_CITIES").toString();
-        GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+
+        var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+
+        var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
+        var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         if(geoCodeScope == null) {
             geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, Boolean.FALSE, 0, createdBy);
         }
-        
-        GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_CITY);
-        GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_CITY_NAME);
-        String cityName = form.getCityName();
-        GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, cityName);
-        
-        if(geoCodeAlias != null) {
-            GeoCode geoCode = geoCodeAlias.getGeoCode();
 
-            result.setCity(geoControl.getCityTransfer(getUserVisit(), geoCode));
+        var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_CITY);
+        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_CITY_NAME);
+        var cityName = form.getCityName();
+        var geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, cityName);
+
+        if(geoCodeAlias != null) {
+            geoCode = geoCodeAlias.getGeoCode();
 
             sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, createdBy);
         } else {
             addExecutionError(ExecutionErrors.UnknownCityName.name());
         }
-        
+
+        return geoCode;
+    }
+
+    @Override
+    protected BaseResult getTransfer(GeoCode entity) {
+        var result = GeoResultFactory.getGetCityResult();
+
+        if(entity != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+
+            result.setCity(geoControl.getCityTransfer(getUserVisit(), entity));
+        }
+
         return result;
     }
-    
+
 }
