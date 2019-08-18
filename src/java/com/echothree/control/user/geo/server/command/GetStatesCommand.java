@@ -30,17 +30,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetStatesCommand
-        extends BaseSimpleCommand<GetStatesForm> {
+        extends BaseMultipleEntitiesCommand<GeoCode, GetStatesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,24 +66,40 @@ public class GetStatesCommand
     public GetStatesCommand(UserVisitPK userVisitPK, GetStatesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    GeoCode countryGeoCode;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<GeoCode> getEntities() {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        GetStatesResult result = GeoResultFactory.getGetStatesResult();
-        String countryName = form.getCountryName();
-        GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
-        
+        var countryName = form.getCountryName();
+        Collection<GeoCode> stateGeoCodes = null;
+
+        countryGeoCode = geoControl.getCountryByAlias(countryName);
+
         if(countryGeoCode != null) {
-            UserVisit userVisit = getUserVisit();
-            
-            result.setCountry(geoControl.getCountryTransfer(userVisit, countryGeoCode));
-            result.setStates(geoControl.getStateTransfersByCountry(userVisit, countryGeoCode));
+            stateGeoCodes = geoControl.getStatesByCountry(countryGeoCode);
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
-        
+
+        return stateGeoCodes;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<GeoCode> entities) {
+        var result = GeoResultFactory.getGetStatesResult();
+
+        if(entities != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var userVisit = getUserVisit();
+
+            result.setCountry(geoControl.getCountryTransfer(userVisit, countryGeoCode));
+            result.setStates(geoControl.getStateTransfers(userVisit, entities));
+
+        }
+
         return result;
     }
-    
+
 }

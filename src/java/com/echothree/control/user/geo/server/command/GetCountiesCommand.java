@@ -30,17 +30,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetCountiesCommand
-        extends BaseSimpleCommand<GetCountiesForm> {
+        extends BaseMultipleEntitiesCommand<GeoCode, GetCountiesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -65,31 +67,46 @@ public class GetCountiesCommand
     public GetCountiesCommand(UserVisitPK userVisitPK, GetCountiesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    GeoCode stateGeoCode;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<GeoCode> getEntities() {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        GetCountiesResult result = GeoResultFactory.getGetCountiesResult();
-        String countryName = form.getCountryName();
-        GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
-        
+        var countryName = form.getCountryName();
+        var countryGeoCode = geoControl.getCountryByAlias(countryName);
+        Collection<GeoCode> countyGeoCodes = null;
+
         if(countryGeoCode != null) {
-            String stateName = form.getStateName();
-            GeoCode stateGeoCode = geoControl.getStateByAlias(countryGeoCode, stateName);
-            
+            var stateName = form.getStateName();
+
+            stateGeoCode = geoControl.getStateByAlias(countryGeoCode, stateName);
+
             if(stateGeoCode != null) {
-                UserVisit userVisit = getUserVisit();
-                
-                result.setState(geoControl.getStateTransfer(userVisit, stateGeoCode));
-                result.setCounties(geoControl.getCountyTransfersByState(userVisit, stateGeoCode));
+                countyGeoCodes = geoControl.getCountiesByState(stateGeoCode);
             } else {
                 addExecutionError(ExecutionErrors.UnknownStateName.name(), stateName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
-        
+
+        return countyGeoCodes;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<GeoCode> entities) {
+        var result = GeoResultFactory.getGetCountiesResult();
+
+        if(entities != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var userVisit = getUserVisit();
+
+            result.setState(geoControl.getStateTransfer(userVisit, stateGeoCode));
+            result.setCounties(geoControl.getCountyTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }

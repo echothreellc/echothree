@@ -41,9 +41,6 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeTypeDescriptionTra
 import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.common.transfer.PostalCodeTransfer;
 import com.echothree.model.control.geo.common.transfer.StateTransfer;
-import com.echothree.model.control.geo.server.transfer.CityTransferCache;
-import com.echothree.model.control.geo.server.transfer.CountryTransferCache;
-import com.echothree.model.control.geo.server.transfer.CountyTransferCache;
 import com.echothree.model.control.geo.server.transfer.GeoCodeAliasTransferCache;
 import com.echothree.model.control.geo.server.transfer.GeoCodeAliasTypeTransferCache;
 import com.echothree.model.control.geo.server.transfer.GeoCodeCurrencyTransferCache;
@@ -54,8 +51,6 @@ import com.echothree.model.control.geo.server.transfer.GeoCodeTimeZoneTransferCa
 import com.echothree.model.control.geo.server.transfer.GeoCodeTransferCache;
 import com.echothree.model.control.geo.server.transfer.GeoCodeTypeTransferCache;
 import com.echothree.model.control.geo.server.transfer.GeoTransferCaches;
-import com.echothree.model.control.geo.server.transfer.PostalCodeTransferCache;
-import com.echothree.model.control.geo.server.transfer.StateTransferCache;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -132,6 +127,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -172,9 +168,9 @@ public class GeoControl
         return getGeoTransferCaches(userVisit).getCountryTransferCache().getCountryTransfer(geoCode);
     }
     
-    public List<CountryTransfer> getCountryTransfers(UserVisit userVisit, List<GeoCode> geoCodes) {
-        List<CountryTransfer> countryTransfers = new ArrayList<>(geoCodes.size());
-        CountryTransferCache countryTransferCache = getGeoTransferCaches(userVisit).getCountryTransferCache();
+    public List<CountryTransfer> getCountryTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
+        var countryTransfers = new ArrayList<CountryTransfer>(geoCodes.size());
+        var countryTransferCache = getGeoTransferCaches(userVisit).getCountryTransferCache();
         
         geoCodes.stream().forEach((geoCode) -> {
             countryTransfers.add(countryTransferCache.getCountryTransfer(geoCode));
@@ -183,19 +179,19 @@ public class GeoControl
         return countryTransfers;
     }
     
-    public List<CountryTransfer> getCountryTransfers(UserVisit userVisit) {
-        GeoCodeScope geoCodeScope = getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
+    public List<GeoCode> getCountries() {
+        var geoCodeScope = getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
         
-        return getCountryTransfers(userVisit, getGeoCodesByGeoCodeScope(geoCodeScope));
+        return getGeoCodesByGeoCodeScope(geoCodeScope);
     }
-    
+
     public StateTransfer getStateTransfer(UserVisit userVisit, GeoCode geoCode) {
         return getGeoTransferCaches(userVisit).getStateTransferCache().getStateTransfer(geoCode);
     }
     
-    public List<StateTransfer> getStateTransfers(UserVisit userVisit, List<GeoCode> geoCodes) {
-        List<StateTransfer> stateTransfers = new ArrayList<>(geoCodes.size());
-        StateTransferCache stateTransferCache = getGeoTransferCaches(userVisit).getStateTransferCache();
+    public List<StateTransfer> getStateTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
+        var stateTransfers = new ArrayList<StateTransfer>(geoCodes.size());
+        var stateTransferCache = getGeoTransferCaches(userVisit).getStateTransferCache();
         
         geoCodes.stream().forEach((geoCode) -> {
             stateTransfers.add(stateTransferCache.getStateTransfer(geoCode));
@@ -204,30 +200,30 @@ public class GeoControl
         return stateTransfers;
     }
     
-    public List<StateTransfer> getStateTransfersByCountry(UserVisit userVisit, GeoCode countryGeoCode) {
-        GeoCodeAliasType countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_STATES").toString();
-        GeoCodeScope geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
-        List<StateTransfer> stateTransfers = null;
-        
+    public List<GeoCode> getStatesByCountry(GeoCode countryGeoCode) {
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+        var geoCodeScopeName = countryIso2Letter + "_STATES";
+        var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+        List<GeoCode> states = null;
+
         if(geoCodeScope != null) {
-            stateTransfers = getStateTransfers(userVisit, getGeoCodesByGeoCodeScope(geoCodeScope));
+            states = getGeoCodesByGeoCodeScope(geoCodeScope);
         } else {
-            stateTransfers = new ArrayList<>();
+            states = new ArrayList<>();
         }
-        
-        return stateTransfers;
+
+        return states;
     }
-    
+
     public CountyTransfer getCountyTransfer(UserVisit userVisit, GeoCode geoCode) {
         return getGeoTransferCaches(userVisit).getCountyTransferCache().getCountyTransfer(geoCode);
     }
     
-    public List<CountyTransfer> getCountyTransfers(UserVisit userVisit, List<GeoCode> geoCodes) {
-        List<CountyTransfer> countyTransfers = new ArrayList<>(geoCodes.size());
-        CountyTransferCache countyTransferCache = getGeoTransferCaches(userVisit).getCountyTransferCache();
+    public List<CountyTransfer> getCountyTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
+        var countyTransfers = new ArrayList<CountyTransfer>(geoCodes.size());
+        var countyTransferCache = getGeoTransferCaches(userVisit).getCountyTransferCache();
         
         geoCodes.stream().forEach((geoCode) -> {
             countyTransfers.add(countyTransferCache.getCountyTransfer(geoCode));
@@ -236,14 +232,14 @@ public class GeoControl
         return countyTransfers;
     }
     
-    public List<CountyTransfer> getCountyTransfersByState(UserVisit userVisit, GeoCode stateGeoCode) {
-        GeoCodeAliasType stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
-        GeoCodeAlias stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
-        String statePostal2Letter = stateGeoCodeAlias.getAlias();
+    public List<GeoCode> getCountiesByState(GeoCode stateGeoCode) {
+        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+        var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
+        var statePostal2Letter = stateGeoCodeAlias.getAlias();
         
-        GeoCodeType countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
-        List<GeoCodeRelationship> stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         for(GeoCodeRelationship geoCodeRelationship: stateRelationships) {
             GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
             
@@ -253,30 +249,30 @@ public class GeoControl
             }
         }
         
-        GeoCodeAliasType countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
         
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_").append(statePostal2Letter).append("_COUNTIES").toString();
-        GeoCodeScope geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
-        List<CountyTransfer> countyTransfers = null;
+        var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_COUNTIES";
+        var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+        List<GeoCode> counties;
         
         if(geoCodeScope != null) {
-            countyTransfers = getCountyTransfers(userVisit, getGeoCodesByGeoCodeScope(geoCodeScope));
+            counties = getGeoCodesByGeoCodeScope(geoCodeScope);
         } else {
-            countyTransfers = new ArrayList<>();
+            counties = new ArrayList<>();
         }
         
-        return countyTransfers;
+        return counties;
     }
     
     public CityTransfer getCityTransfer(UserVisit userVisit, GeoCode geoCode) {
         return getGeoTransferCaches(userVisit).getCityTransferCache().getCityTransfer(geoCode);
     }
     
-    public List<CityTransfer> getCityTransfers(UserVisit userVisit, List<GeoCode> geoCodes) {
-        List<CityTransfer> cityTransfers = new ArrayList<>(geoCodes.size());
-        CityTransferCache cityTransferCache = getGeoTransferCaches(userVisit).getCityTransferCache();
+    public List<CityTransfer> getCityTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
+        var cityTransfers = new ArrayList<CityTransfer>(geoCodes.size());
+        var cityTransferCache = getGeoTransferCaches(userVisit).getCityTransferCache();
         
         geoCodes.stream().forEach((geoCode) -> {
             cityTransfers.add(cityTransferCache.getCityTransfer(geoCode));
@@ -285,14 +281,14 @@ public class GeoControl
         return cityTransfers;
     }
     
-    public List<CityTransfer> getCityTransfersByState(UserVisit userVisit, GeoCode stateGeoCode) {
-        GeoCodeAliasType stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
-        GeoCodeAlias stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
-        String statePostal2Letter = stateGeoCodeAlias.getAlias();
+    public List<GeoCode> getCitiesByState(GeoCode stateGeoCode) {
+        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+        var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
+        var statePostal2Letter = stateGeoCodeAlias.getAlias();
         
-        GeoCodeType countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var countryGeoCodeType = getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+        var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
-        List<GeoCodeRelationship> stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         for(GeoCodeRelationship geoCodeRelationship: stateRelationships) {
             GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
             
@@ -302,30 +298,30 @@ public class GeoControl
             }
         }
         
-        GeoCodeAliasType countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
         
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_").append(statePostal2Letter).append("_CITIES").toString();
-        GeoCodeScope geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
-        List<CityTransfer> cityTransfers = null;
+        var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
+        var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+        List<GeoCode> cities;
         
         if(geoCodeScope != null) {
-            cityTransfers = getCityTransfers(userVisit, getGeoCodesByGeoCodeScope(geoCodeScope));
+            cities = getGeoCodesByGeoCodeScope(geoCodeScope);
         } else {
-            cityTransfers = new ArrayList<>();
+            cities = new ArrayList<>();
         }
         
-        return cityTransfers;
+        return cities;
     }
     
     public PostalCodeTransfer getPostalCodeTransfer(UserVisit userVisit, GeoCode geoCode) {
         return getGeoTransferCaches(userVisit).getPostalCodeTransferCache().getPostalCodeTransfer(geoCode);
     }
     
-    public List<PostalCodeTransfer> getPostalCodeTransfers(UserVisit userVisit, List<GeoCode> geoCodes) {
-        List<PostalCodeTransfer> postalCodeTransfers = new ArrayList<>(geoCodes.size());
-        PostalCodeTransferCache postalCodeTransferCache = getGeoTransferCaches(userVisit).getPostalCodeTransferCache();
+    public List<PostalCodeTransfer> getPostalCodeTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
+        var postalCodeTransfers = new ArrayList<PostalCodeTransfer>(geoCodes.size());
+        var postalCodeTransferCache = getGeoTransferCaches(userVisit).getPostalCodeTransferCache();
         
         geoCodes.stream().forEach((geoCode) -> {
             postalCodeTransfers.add(postalCodeTransferCache.getPostalCodeTransfer(geoCode));
@@ -334,23 +330,23 @@ public class GeoControl
         return postalCodeTransfers;
     }
     
-    public List<PostalCodeTransfer> getPostalCodeTransfersByCountry(UserVisit userVisit, GeoCode countryGeoCode) {
-        GeoCodeAliasType countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-        GeoCodeAlias countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-        String countryIso2Letter = countryGeoCodeAlias.getAlias();
-        String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_ZIP_CODES").toString();
-        GeoCodeScope geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
-        List<PostalCodeTransfer> postalCodeTransfers = null;
-        
+    public List<GeoCode> getPostalCodesByCountry(GeoCode countryGeoCode) {
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+        var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+        var countryIso2Letter = countryGeoCodeAlias.getAlias();
+        var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
+        var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+        List<GeoCode> postalCodeTransfers;
+
         if(geoCodeScope != null) {
-            postalCodeTransfers = getPostalCodeTransfers(userVisit, getGeoCodesByGeoCodeScope(geoCodeScope));
+            postalCodeTransfers = getGeoCodesByGeoCodeScope(geoCodeScope);
         } else {
             postalCodeTransfers = new ArrayList<>();
         }
-        
+
         return postalCodeTransfers;
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Choices Utilities
     // --------------------------------------------------------------------------------
@@ -375,8 +371,6 @@ public class GeoControl
         }
         
         for(GeoCode geoCode: geoCodes) {
-            GeoCodeDetail geoCodeDetail = geoCode.getLastDetail();
-            
             String label = getBestGeoCodeDescription(geoCode, language);
             String value = getAliasForCountry(geoCode, geoCodeType, geoCodeAliasType);
             
