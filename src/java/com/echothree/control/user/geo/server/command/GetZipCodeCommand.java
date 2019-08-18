@@ -94,10 +94,9 @@ public class GetZipCodeCommand
             
             if(geoCodeAlias != null) {
                 GeoCode geoCode = geoCodeAlias.getGeoCode();
-                
-                result.setEntityRef(geoCode.getPrimaryKey().getEntityRef());
-                result.setGeoCodeName(geoCode.getLastDetail().getGeoCodeName());
-                
+
+                result.setPostalCode(geoControl.getPostalCodeTransfer(getUserVisit(), geoCode));
+
                 sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownZipCodeName.name(), zipCodeName);

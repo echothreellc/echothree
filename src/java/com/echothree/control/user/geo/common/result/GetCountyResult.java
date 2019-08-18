@@ -16,15 +16,13 @@
 
 package com.echothree.control.user.geo.common.result;
 
+import com.echothree.model.control.geo.common.transfer.CountyTransfer;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetCountyResult
         extends BaseResult {
     
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
-    String getGeoCodeName();
-    void setGeoCodeName(String geoCodeName);
+    CountyTransfer getCounty();
+    void setCounty(CountyTransfer county);
     
 }

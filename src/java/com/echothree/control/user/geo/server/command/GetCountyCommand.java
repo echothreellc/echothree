@@ -138,10 +138,9 @@ public class GetCountyCommand
                 
                 if(geoCodeAlias != null) {
                     GeoCode geoCode = geoCodeAlias.getGeoCode();
-                    
-                    result.setEntityRef(geoCode.getPrimaryKey().getEntityRef());
-                    result.setGeoCodeName(geoCode.getLastDetail().getGeoCodeName());
-                    
+
+                    result.setCounty(geoControl.getCountyTransfer(getUserVisit(), geoCode));
+
                     sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, createdBy);
                 }
             } else {

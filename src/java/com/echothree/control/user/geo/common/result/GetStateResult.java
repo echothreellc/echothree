@@ -16,15 +16,13 @@
 
 package com.echothree.control.user.geo.common.result;
 
+import com.echothree.model.control.geo.common.transfer.StateTransfer;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetStateResult
         extends BaseResult {
     
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
-    String getGeoCodeName();
-    void setGeoCodeName(String geoCodeName);
+    StateTransfer getState();
+    void setState(StateTransfer state);
     
 }

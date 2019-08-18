@@ -117,10 +117,9 @@ public class GetCityCommand
         
         if(geoCodeAlias != null) {
             GeoCode geoCode = geoCodeAlias.getGeoCode();
-            
-            result.setEntityRef(geoCode.getPrimaryKey().getEntityRef());
-            result.setGeoCodeName(geoCode.getLastDetail().getGeoCodeName());
-            
+
+            result.setCity(geoControl.getCityTransfer(getUserVisit(), geoCode));
+
             sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, createdBy);
         } else {
             addExecutionError(ExecutionErrors.UnknownCityName.name());
