@@ -18,6 +18,7 @@ package com.echothree.model.control.geo.server.logic;
 
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeAliasTypeNameException;
+import com.echothree.model.control.geo.common.exception.UnknownGeoCodeNameException;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.selector.server.SelectorControl;
@@ -47,6 +48,18 @@ public class GeoCodeLogic
 
     public static GeoCodeLogic getInstance() {
         return GeoLogicHolder.instance;
+    }
+
+    public GeoCode getGeoCodeByName(final ExecutionErrorAccumulator eea, final String geoCodeName) {
+        var geoControl = (GeoControl) Session.getModelController(GeoControl.class);
+        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
+
+        if(geoCode == null) {
+            handleExecutionError(UnknownGeoCodeNameException.class, eea, ExecutionErrors.UnknownGeoCodeName.name(),
+                    geoCodeName);
+        }
+
+        return geoCode;
     }
     
     public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator eea, final GeoCode geoCode,
