@@ -1,5 +1,25 @@
 # Changelog
 
+## 2019-10-09-01
+
+* graphql-java 12.0 and graphql-java-annotations 7.0 Upgrades (graphql) [2443](https://www.echothree.com/bugzilla/show_bug.cgi?id=2443)
+* Remove GraphQL Endpoint Under /main (ui-main) [2492](https://www.echothree.com/bugzilla/show_bug.cgi?id=2492)
+* Include Javadoc and Source JAR Files in Project Libraries (miscellaneous) [2493](https://www.echothree.com/bugzilla/show_bug.cgi?id=2493)
+* Add Security to Contact Email Address, Postal Address, Telephone, and Web Address UCs (contact) [2494](https://www.echothree.com/bugzilla/show_bug.cgi?id=2494)
+* CORS Issue with Apollo GraphQL 8 (service-graphql) [2496](https://www.echothree.com/bugzilla/show_bug.cgi?id=2496)
+* Apache Lucene 8.1.1 Upgrade (index) [2497](https://www.echothree.com/bugzilla/show_bug.cgi?id=2497)
+* WildFly 17.0.0 Upgrade (miscellaneous) [2498](https://www.echothree.com/bugzilla/show_bug.cgi?id=2498)
+* graphql-java 13.0 Upgrade (graphql) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2499)
+* ClassGraph 4.8.43 Upgrade (miscellaneous) [2500](https://www.echothree.com/bugzilla/show_bug.cgi?id=2500)
+* Guava 28.0-jre Upgrade (miscellaneous) [2501](https://www.echothree.com/bugzilla/show_bug.cgi?id=2501)
+* Move WorkflowEntranceStep and WorkflowDestinationStep Security Role Groups (workflow) [2503](https://www.echothree.com/bugzilla/show_bug.cgi?id=2503)
+* Security for Workflow Component (workflow) [2504](https://www.echothree.com/bugzilla/show_bug.cgi?id=2504)
+* Add Google Analytics to Generated Javadoc (miscellaneous) [2505](https://www.echothree.com/bugzilla/show_bug.cgi?id=2505)
+* Allow Start/Reload/Shutdown of WildFly Using Ant (miscellaneous) [2506](https://www.echothree.com/bugzilla/show_bug.cgi?id=2506)
+* Apache Lucene 8.2.0 Upgrade (index) [2507](https://www.echothree.com/bugzilla/show_bug.cgi?id=2507)
+* WildFly 17.0.1 Upgrade (miscellaneous) [2508](https://www.echothree.com/bugzilla/show_bug.cgi?id=2508)
+* Use var to Declare Model Controllers (miscellaneous) [2495](https://www.echothree.com/bugzilla/show_bug.cgi?id=2495)
+
 ## 2019-05-12-01
 
 * Cucumber Tests Incompatible with JDK 11 (miscellaneous) [2468](https://www.echothree.com/bugzilla/show_bug.cgi?id=2468)
