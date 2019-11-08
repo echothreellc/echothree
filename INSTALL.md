@@ -16,7 +16,7 @@ deploying these applications.
 * AdoptOpenJDK jdk-11.0.3+7
 * Apache Ant 1.10.5
 * MySQL 5.7.23
-* WildFly 17.0.1
+* WildFly 18.0.0
 
 ## Recommended Directory Structure
 
@@ -24,8 +24,8 @@ deploying these applications.
 /usr/local/jboss
     ... EchoThree
     ... share
-    ... wildfly-17.0.1.Final
-    ... wildfly-latest -> wildfly-17.0.1.Final
+    ... wildfly-18.0.0.Final
+    ... wildfly-latest -> wildfly-18.0.0.Final
 ```
 
 `/usr/local/jboss` and all files below it are owned by the jboss user and group.
@@ -171,10 +171,10 @@ Re-enter Password :
 What groups do you want this user to belong to? (Please enter a comma separated list, or leave blank for none)[  ]: 
 About to add user 'lukeskywalker' for realm 'ManagementRealm'
 Is this correct yes/no? yes
-Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-17.0.1.Final/standalone/configuration/mgmt-users.properties'
-Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-17.0.1.Final/domain/configuration/mgmt-users.properties'
-Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-17.0.1.Final/standalone/configuration/mgmt-groups.properties'
-Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-17.0.1.Final/domain/configuration/mgmt-groups.properties'
+Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-18.0.0.Final/standalone/configuration/mgmt-users.properties'
+Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-18.0.0.Final/domain/configuration/mgmt-users.properties'
+Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-18.0.0.Final/standalone/configuration/mgmt-groups.properties'
+Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-18.0.0.Final/domain/configuration/mgmt-groups.properties'
 Is this new user going to be used for one AS process to connect to another AS process? 
 e.g. for a slave host controller connecting to the master or for a Remoting connection for server to server EJB calls.
 yes/no? no
@@ -211,7 +211,7 @@ In the datasources subsystem, add the contents of `EchoThree/doc/configuration/w
 
 In the infinispan subsystem, add the contents of `EchoThree/doc/configuration/wildfly/infinispan.txt`:
 ```
-        <subsystem xmlns="urn:jboss:domain:infinispan:7.0">
+        <subsystem xmlns="urn:jboss:domain:infinispan:9.0">
             <!-- file contents added here -->
         </subsystem>
 ```
