@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><!----><!--  Licensed to the Apache Software Foundation (ASF) under one--><!--  or more contributor license agreements.  See the NOTICE file--><!--  distributed with this work for additional information--><!--  regarding copyright ownership.  The ASF licenses this file--><!--  to you under the Apache License, Version 2.0 (the--><!--  "License"); you may not use this file except in compliance--><!--  with the License.  You may obtain a copy of the License at--><!----><!--    https://www.apache.org/licenses/LICENSE-2.0--><!----><!--  Unless required by applicable law or agreed to in writing,--><!--  software distributed under the License is distributed on an--><!--  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY--><!--  KIND, either express or implied.  See the License for the--><!--  specific language governing permissions and limitations--><!--  under the License.--><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="generator" content="Asciidoctor 1.5.5" /><title> | Apache Ivy&trade; Documentation</title><link rel="stylesheet" type="text/css" href="style/style.css" /><script src="js/jquery.pack.js" type="text/javascript"></script><script src="js/jquery.treeview.js" type="text/javascript"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" /><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" type="text/javascript"></script><script>$(document).ready(function(){$("#treemenu").Treeview({speed: "fast",store: true});});
+hljs.initHighlightingOnLoad();</script></head><body><div id="body"><table id="header" summary="Navigation elements." border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td id="home" width="30%"><a href="http://ant.apache.org/" title="Apache Ant"><img src="images/ant-project-logo.svg" alt="Apache Ant" border="0" height="80px" /></a></td><td class="product" width="70%" align="right" valign="middle"><img src="images/logo.png" alt="ivy" border="0" /></td></tr></table><table id="top-menu" summary="Navigation elements." border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><div id="navcontainer"> <a href="http://www.apache.org/">Apache&trade;</a> &gt; <a href="http://ant.apache.org/">Apache Ant&trade;</a> &gt; <a href="http://ant.apache.org/ivy/">Apache Ivy&trade;</a> &gt;<span class="breadCrumb"> </span></div></td></tr></table><table id="content" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td id="sidebar-left"><div class="block block-book" id="block-book-0"><div class="sidebar-title">Apache Ivy&trade;</div><div class="content"><ul id="treemenu" class="treeview">
+</ul>
+<center><iframe src="http://www.apache.org/ads/buttonbar.html" style="border-width:0;" frameborder="0" scrolling="no" width="135" height="265"></iframe></center></div></div></td><td valign="top"><div id="main"><h1></h1><div id="content"><div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following presents the proposal for creating a new Ivy project within the Apache Software Foundation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_abstract">Abstract</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ivy (<a href="http://www.jayasoft.org/ivy" class="bare">http://www.jayasoft.org/ivy</a>) is a Java based tool for tracking, resolving and managing project dependencies.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_proposal">Proposal</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ivy is a tool for managing (recording, tracking, resolving and reporting)  project dependencies. It is characterized by the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>flexibility and configurability - Ivy is essentially process agnostic and is not tied to any methodology or structure. Instead it provides the necessary flexibility and configurability to be adapted to a broad range of dependency management and build processes.</p>
+</li>
+<li>
+<p>tight integration with Apache Ant - while available as a standalone tool, Ivy works particularly well with Apache Ant providing a number of powerful Ant tasks ranging from dependency resolution to dependency reporting and publication.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rationale">Rationale</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Software development is increasingly characterized by leveraging externally provided components/capabilities and by a rapid release cycle. As a result it is not unusual for a project to depend on numerous third-party components which themselves may be dependent on a multitude of third-party of different or identical third-party components. Managing these dependencies - determining what the dependencies are, how they are used, the impact of a change, conflicts among dependencies, etc. - is extremely difficult and absolutely necessary. Ivy is one of a handful of tools addressing this need. While often compared to Maven - which has similar Ant tasks - Ivy differs from Maven in both its focus and philosophy. Ivy is solely focused on dependency management and is designed from the ground up to adapt to a wide range of requirements and scenarios. Examples include multiple artifacts per module, plugin resolvers, configurable repository configurations and conflict managers.</p>
+</div>
+<div class="paragraph">
+<p>The maintainers of Ivy are interested in joining the Apache Software Foundation for several reasons:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ivy has been hosted since its beginning in 2004 by a private company, which make people feel like it&#8217;s a corporate product, thus slowing the contribution by the community. We strongly believe in the open source movement, and would like to make Ivy independent from Jayasoft.</p>
+</li>
+<li>
+<p>We&#8217;d like to enjoy the benefits of utilizing Apache&#8217;s infrastructure and legal protection.</p>
+</li>
+<li>
+<p>It might open the door for cooperation with other projects, such as Ant or Maven.</p>
+</li>
+<li>
+<p>We strongly believe in Apache philosophy, especially Meritocracy.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_current_status">Current status</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_meritocracy">Meritocracy</h3>
+<div class="paragraph">
+<p>Ivy was originally created by Xavier Hanin in September 2004. Since then more than 20 users have contributed patches, and one of them has been promoted to the status of committer based on his merit through patch contribution.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_community">Community</h3>
+<div class="paragraph">
+<p>Ivy already has a growing user community, with more than 10,000 downloads since its 1.0 version and more than 500 users registered on the forum.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_core_developers">Core Developers</h3>
+<div class="paragraph">
+<p>Ivy has only two core developers for the moment, but we hope joining the ASF will help increase this number.</p>
+</div>
+<div class="paragraph">
+<p>Xavier Hanin is the creator of the project, is an independent consultant and co founder of Jayasoft. He has an experience of 9 years in Java software development, uses open source projects intensively, and started his real participation in open source development with Ivy.
+Maarten Coene has joined the committer team in May 2006. He has an experience of 9 years in Java development, is co-administrator of dom4j, ex-committer for scarab, has contributed patches to several open-source projects and is a user of a lot of open-source projects.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_alignment">Alignment</h3>
+<div class="paragraph">
+<p>Ivy has no mandatory dependencies except Java 7. However, it is strongly recommended to be used with Ant. Ivy uses also other Apache projects, especially from Jakarta Commons.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_known_risks">Known risks</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_orphaned_products">Orphaned products</h3>
+<div class="paragraph">
+<p>Due to its small number of committers, there is a risk of being orphaned. The main knowledge of the codebase is still mainly owned by Xavier Hanin. Even if Xavier has no plan to leave Ivy development, this is a problem we are aware of and know that need to be worked on so that the project become less dependent on an individual.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_inexperience_with_open_source">Inexperience with Open Source</h3>
+<div class="paragraph">
+<p>While distributed under an open source license, access to Ivy was initially limited with no public access to the issue tracking system or svn repository. While things have changed since then - the svn repository is publicly accessible, a JIRA instance has been setup since June 2005, many new features are first discussed on the forum or JIRA - experience with a true open source development model is currently limited.
+However, Maarten has already a good experience with true open development process, and bring his experience to the project.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_homogeneous_developers">Homogeneous Developers</h3>
+<div class="paragraph">
+<p>With only two core developers, at least they are not homogeneous! Xavier and Maarten knew each other only due to their common interest in Ivy.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_reliance_on_salaried_developers">Reliance on Salaried Developers</h3>
+<div class="paragraph">
+<p>Maarten is not paid to work on Ivy.
+Xavier&#8217;s case is more complex, as a co founder of Jayasoft, part of his time in Jayasoft was dedicated to Ivy and other open source developments. He now works mainly as an independent consultant, and thus is not a salaried developer.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_relationships_with_other_apache_products">Relationships with Other Apache Products</h3>
+<div class="paragraph">
+<p>Ivy has a strong relationship with Apache Ant, and is often seen as a good companion of Ant. Being part of Apache could help for a closer collaboration between the two projects.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_a_excessive_fascination_with_the_apache_brand">A Excessive Fascination with the Apache Brand</h3>
+<div class="paragraph">
+<p>Even if we recognize the strong value of the Apache Brand, the purpose of joining Apache is not focused on improving the visibility of the project. The main focus of this proposition is to make Ivy a more open project, with a closer integration with Apache Ant. Even if Ivy does not join the ASF, Ivy will move out of Jayasoft umbrella and try to attract more developers.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_documentation">Documentation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Further reading on Ivy can be found at:<br/>
+<a href="http://www.jayasoft.org/ivy" class="bare">http://www.jayasoft.org/ivy</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_initial_source">Initial Source</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The initial code base can be found at:<br/>
+<a href="http://svn.jayasoft.org/projects/tools/ivy" class="bare">http://svn.jayasoft.org/projects/tools/ivy</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_external_dependencies">External Dependencies</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ivy has no mandatory dependencies at runtime.</p>
+</div>
+<div class="paragraph">
+<p>For compilation, it requires:<br/>
+Apache Ant<br/>
+Apache Commons-HttpClient<br/>
+Apache Commons-CLI<br/>
+Apache ORO<br/>
+Apache Commons-VFS<br/>
+JCraft JSch  (BSD, already used by Commons-VFS and by Ant)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_required_resources">Required Resources</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_mailing_lists">Mailing lists</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>ivy-private (with moderated subscriptions)</p>
+</li>
+<li>
+<p>ivy-dev</p>
+</li>
+<li>
+<p>ivy-user</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_subversion_directory">Subversion Directory</h3>
+<div class="paragraph">
+<p><a href="https://svn.apache.org/repos/asf/incubator/ivy" class="bare">https://svn.apache.org/repos/asf/incubator/ivy</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_issue_tracking">Issue Tracking</h3>
+<div class="paragraph">
+<p>JIRA Ivy (IVY)<br/>
+An import from existing JIRA issues at <a href="http://jira.jayasoft.org/" class="bare">http://jira.jayasoft.org/</a> would also be very much appreciated</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_initial_committers">Initial Committers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Xavier Hanin (xavier dot hanin at gmail dot com)<br/>
+Maarten Coene (maarten_coene at yahoo dot com)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_affiliations">Affiliations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As stated in the Reliance on salaried developers section, Xavier is a co founder of Jayasoft which used to host the project. However, Jayasoft is shifting its focus to local consulting and thus won&#8217;t be involved anymore in open source development. The participation of Xavier in the project is thus made as an individual, not as a member of Jayasoft. He also strongly believe in the meritocracy principle, and he&#8217;s ready to see it applied to the project whatever the consequence are for his own weight in the project.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sponsors">Sponsors</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_champion">Champion</h3>
+<div class="paragraph">
+<p>Antoine Levy-Lambert<br/>
+Sylvain Wallez</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_nominated_mentors">Nominated Mentors</h3>
+<div class="paragraph">
+<p>Antoine Levy-Lambert<br/>
+Stephane Baillez<br/>
+Steve Loughran</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sponsoring_entity">Sponsoring Entity</h3>
+<div class="paragraph">
+<p>The Ant PMC has voted the following resolution:<br/>
+The Ant PMC sponsors Ivy moving to the Apache Incubator.
+If the Ivy community wishes to move Ivy to become an Ant subproject
+after successful incubation, and if the ASF board agrees to it, Ant
+will welcome Ivy as a subproject after the incubation period.</p>
+</div>
+</div>
+</div>
+</div></div></div></td></tr></table><table id="footer-menu" summary="Navigation elements." border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center" valign="middle"><div class="primary-links">::<a href="index.html">Home</a>::<a href="reference.html">Reference</a>::<a href="tutorial.html">Tutorials</a>::<a href="dev.html">Developer's doc</a>::</div></td></tr></table><div id="footer-message" class="footer"><hr /><i>Copyright &copy; 2007 - 2019 The Apache Software Foundation, Licensed under the<a href="http://www.apache.org/licenses/">Apache License, Version 2.0</a>.</i><br /><i>Apache Ivy, Apache Ant, Ivy, Ant, Apache, the Apache Ivy logo, the Apache Ant logo and the Apache feather logo are trademarks of The Apache Software Foundation.</i><br /><i>All other marks mentioned may be trademarks or registered trademarks of their respective owners.</i></div></div></body></html>

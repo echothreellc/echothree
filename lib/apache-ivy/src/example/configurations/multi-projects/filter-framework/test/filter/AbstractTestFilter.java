@@ -6,7 +6,7 @@
  *  (the "License"); you may not use this file except in compliance with
  *  the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,54 +17,44 @@
  */
 package filter;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public abstract class AbstractTestFilter extends TestCase {
-    
-    public void testFilterNull() {
-        Exception err = null;
-        try {
-            getIFilter().filter(null, null);
-        } catch (NullPointerException npe) {
-            err = npe;
-        }
-        assertNull(err);
-    }
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+public abstract class AbstractTestFilter {
     /**
-     * @return
+     * @return IFilter
      */
     public abstract IFilter getIFilter();
-    
-    public void testFilterNullValues() {
-        Exception err = null;
-        try {
-            getIFilter().filter(null, "test");
-        } catch (NullPointerException npe) {
-            err = npe;
-        }
-        assertNull(err);
+
+    @Test
+    public void testFilterNull() {
+            getIFilter().filter(null, null);
     }
-    
+
+    @Test
+    public void testFilterNullValues() {
+        getIFilter().filter(null, "test");
+    }
+
+    @Test
     public void testFilterNullPrefix() {
-        Exception err = null;
-        try {
-            getIFilter().filter(new String[]{"test"}, null);
-        } catch (NullPointerException npe) {
-            err = npe;
-        }
-        assertNull(err);
-    } 
-    
+        getIFilter().filter(new String[]{"test"}, null);
+    }
+
+    @Test
     public void testFilter() {
-        String[] result = getIFilter().filter(
-            new String[]{"test", "nogood", "mustbe filtered"}, "t");
+        String[] result = getIFilter().filter(new String[]{"test",
+                "nogood", "mustbe filtered"}, "t");
         assertNotNull(result);
         assertEquals(result.length, 1);
-    }    
-    
+    }
+
+    @Test
     public void testFilterWithNullValues() {
-        String[] result = getIFilter().filter(new String[]{"test", null, "mustbe filtered"}, "t");
+        String[] result = getIFilter().filter(new String[]{"test",
+                null, "mustbe filtered"}, "t");
         assertNotNull(result);
         assertEquals(result.length, 1);
     }

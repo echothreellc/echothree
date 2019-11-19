@@ -6,7 +6,7 @@
  *  (the "License"); you may not use this file except in compliance with
  *  the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,34 +17,34 @@
  */
 package list;
 
-import version.Version;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.io.File;
 
+import static version.Version.register;
+
 public final class ListFile {
   static {
-    Version.register("list");
+    register("list");
   }
-  
-  public static Collection list(File dir) {
-    Collection files = new ArrayList();
-    
+
+  public static Collection<File> list(File dir) {
+    Collection<File> files = new ArrayList<File>();
+
     return list(dir, files);
   }
-  
-  private static Collection list(File file, Collection files) {
+
+  private static Collection<File> list(File file, Collection<File> files) {
     if (file.isDirectory()) {
-      File[] f = file.listFiles();
-      for (int i = 0; i < f.length; i++) {
-        list(f[i], files);
+      for (File f : file.listFiles()) {
+        list(f, files);
       }
     } else {
       files.add(file);
     }
     return files;
   }
-  
+
   private ListFile() {
   }
 }

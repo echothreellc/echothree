@@ -1,4 +1,4 @@
-Apache Ivy 2.4.0
+Apache Ivy 2.5.0
 ASM 3.1 (used by PMD)
 Bootstrap 4.3.1
 cross-revalidator 1.0a

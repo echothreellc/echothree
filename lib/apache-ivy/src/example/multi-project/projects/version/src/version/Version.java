@@ -6,7 +6,7 @@
  *  (the "License"); you may not use this file except in compliance with
  *  the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,12 +24,12 @@ import java.util.HashMap;
 
 public final class Version {
     static {
-        versions = new HashMap();
+        versions = new HashMap<>();
         register("version");
     }
-  
-    private static Map versions;
-  
+
+    private static Map<String, String> versions;
+
     public static void register(String module) {
         try {
             InputStream moduleVersion = Version.class.getResourceAsStream("/" + module
@@ -45,7 +45,7 @@ public final class Version {
             ex.printStackTrace();
         }
     }
-    
+
     private Version() {
     }
 }
