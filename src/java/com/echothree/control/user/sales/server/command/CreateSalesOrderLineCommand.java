@@ -111,8 +111,7 @@ public class CreateSalesOrderLineCommand
         CreateSalesOrderLineResult result = SalesResultFactory.getCreateSalesOrderLineResult();
         String orderName = form.getOrderName();
         Order order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
-        OrderLine orderLine = null;
-        
+
         if(!hasExecutionErrors()) {
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             String itemName = form.getItemName();
@@ -161,9 +160,15 @@ public class CreateSalesOrderLineCommand
                                         Boolean taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
                                         AssociateReferral associateReferral = null;
                                         
-                                        orderLine = SalesOrderLineLogic.getInstance().createSalesOrderLine(session, this, order, null, null, orderLineSequence,
+                                        var orderLine = SalesOrderLineLogic.getInstance().createSalesOrderLine(session, this, order, null, null, orderLineSequence,
                                                 null, null, null, item, inventoryCondition, unitOfMeasureType, quantity, unitAmount, description,
                                                 cancellationPolicy, returnPolicy, taxable, offerUse, associateReferral, getPartyPK());
+                                        
+                                        var orderLineDetail = orderLine.getLastDetail();
+
+                                        result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());
+                                        result.setOrderLineSequence(orderLineDetail.getOrderLineSequence().toString());
+                                        result.setEntityRef(orderLine.getPrimaryKey().getEntityRef());
                                     }
                                 } else {
                                     addExecutionError(ExecutionErrors.InvalidParameterCount.name());
@@ -179,14 +184,6 @@ public class CreateSalesOrderLineCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
             }
-        }
-
-        if(orderLine != null) {
-            OrderLineDetail orderLineDetail = orderLine.getLastDetail();
-            
-            result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());
-            result.setOrderLineSequence(orderLineDetail.getOrderLineSequence().toString());
-            result.setEntityRef(orderLine.getPrimaryKey().getEntityRef());
         }
 
         return result;
