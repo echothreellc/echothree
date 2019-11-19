@@ -17,12 +17,11 @@
 package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.CreateSalesOrderLineForm;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
-import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.offer.server.logic.OfferUseLogic;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -32,29 +31,19 @@ import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.uom.server.UomControl;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderLine;
-import com.echothree.model.data.order.server.entity.OrderLineDetail;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.Arrays;
 import java.util.Collections;
@@ -108,101 +97,61 @@ public class CreateSalesOrderLineCommand
     
     @Override
     protected BaseResult execute() {
-        CreateSalesOrderLineResult result = SalesResultFactory.getCreateSalesOrderLineResult();
-        String orderName = form.getOrderName();
-        Order order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
-        OrderLine orderLine = null;
-        
-        if(!hasExecutionErrors()) {
-            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByNameThenAlias(itemName);
-            
-            if(item != null) {
-                var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-                String inventoryConditionName = form.getInventoryConditionName();
-                InventoryCondition inventoryCondition = inventoryConditionName == null ? null : inventoryControl.getInventoryConditionByName(inventoryConditionName);
-                
-                if(inventoryConditionName == null || inventoryCondition != null) {
-                    var uomControl = (UomControl)Session.getModelController(UomControl.class);
-                    ItemDetail itemDetail = item.getLastDetail();
-                    UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-                    String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                    UnitOfMeasureType unitOfMeasureType = unitOfMeasureTypeName == null ? null : uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+        var result = SalesResultFactory.getCreateSalesOrderLineResult();
+        var orderName = form.getOrderName();
+        var itemName = form.getItemName();
+        var inventoryConditionName = form.getInventoryConditionName();
+        var cancellationPolicyName = form.getCancellationPolicyName();
+        var returnPolicyName = form.getReturnPolicyName();
+        var order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
+        var item = ItemLogic.getInstance().getItemByNameThenAlias(this, itemName);
+        var inventoryCondition = inventoryConditionName == null ? null : InventoryConditionLogic.getInstance().getInventoryConditionByName(this, inventoryConditionName);
+        var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(this, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION, cancellationPolicyName);
+        var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(this, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN, returnPolicyName);
 
-                    if(unitOfMeasureTypeName == null || unitOfMeasureType != null) {
-                        String cancellationPolicyName = form.getCancellationPolicyName();
-                        CancellationPolicy cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(this, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION, cancellationPolicyName);
-                        
-                        if(!hasExecutionErrors()) {
-                            String returnPolicyName = form.getReturnPolicyName();
-                            ReturnPolicy returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(this, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN, returnPolicyName);
-                            
-                            if(!hasExecutionErrors()) {
-                                String offerName = form.getOfferName();
-                                String useName = form.getUseName();
-                                int parameterCount = (offerName == null ? 0 : 1) + (useName == null ? 0 : 1);
-                                
-                                if(parameterCount == 0 || parameterCount == 2) {
-                                    OfferUse offerUse = null;
-                                    
-                                    if(offerName != null) {
-                                        offerUse = OfferUseLogic.getInstance().getOfferUseByName(this, offerName, useName);
-                                    }
-                                    
-                                    if(!hasExecutionErrors()) {
-                                        String strOrderLineSequence = form.getOrderLineSequence();
-                                        Integer orderLineSequence = strOrderLineSequence == null ? null : Integer.valueOf(strOrderLineSequence);
-                                        Long quantity = Long.valueOf(form.getQuantity());
-                                        String strUnitAmount = form.getUnitAmount();
-                                        Long unitAmount = strUnitAmount == null ? null : Long.valueOf(strUnitAmount);;
-                                        String description = form.getDescription();
-                                        String strTaxable = form.getTaxable();
-                                        Boolean taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
-                                        AssociateReferral associateReferral = null;
-                                        
-                                        orderLine = SalesOrderLineLogic.getInstance().createSalesOrderLine(session, this, order, null, null, orderLineSequence,
-                                                null, null, null, item, inventoryCondition, unitOfMeasureType, quantity, unitAmount, description,
-                                                cancellationPolicy, returnPolicy, taxable, offerUse, associateReferral, getPartyPK());
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                                }
-                            }
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
+        if(!hasExecutionErrors()) {
+            var itemDetail = item.getLastDetail();
+            var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureType = unitOfMeasureTypeName == null ? null : UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this, unitOfMeasureKind, unitOfMeasureTypeName);
+
+            if(!hasExecutionErrors()) {
+                var offerName = form.getOfferName();
+                var useName = form.getUseName();
+                var parameterCount = (offerName == null ? 0 : 1) + (useName == null ? 0 : 1);
+
+                if(parameterCount == 0 || parameterCount == 2) {
+                    OfferUse offerUse = null;
+
+                    if(offerName != null) {
+                        offerUse = OfferUseLogic.getInstance().getOfferUseByName(this, offerName, useName);
+                    }
+
+                    if(!hasExecutionErrors()) {
+                        var strOrderLineSequence = form.getOrderLineSequence();
+                        var orderLineSequence = strOrderLineSequence == null ? null : Integer.valueOf(strOrderLineSequence);
+                        var quantity = Long.valueOf(form.getQuantity());
+                        var strUnitAmount = form.getUnitAmount();
+                        var unitAmount = strUnitAmount == null ? null : Long.valueOf(strUnitAmount);
+                        var description = form.getDescription();
+                        var strTaxable = form.getTaxable();
+                        var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
+                        AssociateReferral associateReferral = null;
+
+                        var orderLine = SalesOrderLineLogic.getInstance().createSalesOrderLine(session, this, order, null,
+                                null, orderLineSequence, null, null, null, item, inventoryCondition, unitOfMeasureType, quantity,
+                                unitAmount, description, cancellationPolicy, returnPolicy, taxable, offerUse, associateReferral,
+                                getPartyPK());
+                        var orderLineDetail = orderLine.getLastDetail();
+
+                        result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());
+                        result.setOrderLineSequence(orderLineDetail.getOrderLineSequence().toString());
+                        result.setEntityRef(orderLine.getPrimaryKey().getEntityRef());
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
+                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
             }
-        }
-        
-        
-        
-//    public OrderLine createSalesOrderLine(final Session session, final ExecutionErrorAccumulator eea, final Order order, OrderShipmentGroup orderShipmentGroup,
-//            final Integer orderShipmentGroupSequence, Integer orderLineSequence, final OrderLine parentOrderLine,
-//            final PartyContactMechanism partyContactMechanism, final ShippingMethod shippingMethod, final Item item,
-//            InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, final Integer quantity, Integer unitAmount,
-//            final String description, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable, OfferUse offerUse,
-//            final AssociateReferral associateReferral, final BasePK createdBy) {
-        
-        
-        
-        
-        
-        
-        
-        
-        if(orderLine != null) {
-            OrderLineDetail orderLineDetail = orderLine.getLastDetail();
-            
-            result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());
-            result.setOrderLineSequence(orderLineDetail.getOrderLineSequence().toString());
-            result.setEntityRef(orderLine.getPrimaryKey().getEntityRef());
         }
 
         return result;
