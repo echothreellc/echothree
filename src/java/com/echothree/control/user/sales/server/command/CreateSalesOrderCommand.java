@@ -21,7 +21,6 @@ import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
-import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
@@ -44,7 +43,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -87,7 +85,6 @@ public class CreateSalesOrderCommand
 
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         CreateSalesOrderResult result = SalesResultFactory.getCreateSalesOrderResult();
         Order order = null;
         String batchName = form.getBatchName();
