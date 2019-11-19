@@ -180,23 +180,7 @@ public class CreateSalesOrderLineCommand
                 addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
             }
         }
-        
-        
-        
-//    public OrderLine createSalesOrderLine(final Session session, final ExecutionErrorAccumulator eea, final Order order, OrderShipmentGroup orderShipmentGroup,
-//            final Integer orderShipmentGroupSequence, Integer orderLineSequence, final OrderLine parentOrderLine,
-//            final PartyContactMechanism partyContactMechanism, final ShippingMethod shippingMethod, final Item item,
-//            InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, final Integer quantity, Integer unitAmount,
-//            final String description, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable, OfferUse offerUse,
-//            final AssociateReferral associateReferral, final BasePK createdBy) {
-        
-        
-        
-        
-        
-        
-        
-        
+
         if(orderLine != null) {
             OrderLineDetail orderLineDetail = orderLine.getLastDetail();
             
