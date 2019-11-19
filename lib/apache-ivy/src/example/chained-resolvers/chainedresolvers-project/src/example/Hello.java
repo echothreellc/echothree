@@ -6,7 +6,7 @@
  *  (the "License"); you may not use this file except in compliance with
  *  the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,18 +20,18 @@ package example;
 import org.apache.commons.lang.WordUtils;
 
 /**
- * Simple example world to show how easy it is to retreive libs with ivy !!! 
+ * Simple example world to show how easy it is to retreive libs with ivy !!!
  */
 public final class Hello {
     public static void main(String[] args) {
         String  message = "example world !";
         System.out.println("standard message :" + message);
-        System.out.println("capitalized by " + WordUtils.class.getName() 
+        System.out.println("capitalized by " + WordUtils.class.getName()
             + " : " + WordUtils.capitalizeFully(message));
-        System.out.println("upperCased by " + test.StringUtils.class.getName() 
+        System.out.println("upperCased by " + test.StringUtils.class.getName()
             + " : " + test.StringUtils.upperCase(message));
     }
-    
+
     private Hello() {
     }
 }

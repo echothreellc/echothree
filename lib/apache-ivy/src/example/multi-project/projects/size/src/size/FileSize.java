@@ -6,7 +6,7 @@
  *  (the "License"); you may not use this file except in compliance with
  *  the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,29 +17,30 @@
  */
 package size;
 
-import version.Version;
-import java.util.Collection;
-import java.util.Iterator;
 import java.io.File;
+import java.util.Collection;
+
+import static list.ListFile.list;
+import static version.Version.register;
 
 public final class FileSize {
   static {
-    Version.register("size");
+    register("size");
   }
 
+  @SuppressWarnings("unused")
   public static long totalSize(File dir) {
-    return totalSize(list.ListFile.list(dir));
+    return totalSize(list(dir));
   }
-  
-  public static long totalSize(Collection files) {
+
+  public static long totalSize(Collection<File> files) {
     long total = 0;
-    for (Iterator it = files.iterator(); it.hasNext();) {
-      File f = (File) it.next();
-      total += f.length();
+    for (File file : files) {
+      total += file.length();
     }
     return total;
-  }  
-  
+  }
+
   private FileSize() {
   }
 }

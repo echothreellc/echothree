@@ -6,7 +6,7 @@
  *  (the "License"); you may not use this file except in compliance with
  *  the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,14 +19,14 @@ package filter;
 
 
 public final class FilterProvider {
-    
+
     public static IFilter getFilter() {
         try {
-            Class clazz = Class.forName("filter.ccimpl.CCFilter");
+            Class<?> clazz = Class.forName("filter.ccimpl.CCFilter");
             return (IFilter) clazz.newInstance();
         } catch (Exception e) {
             try {
-                Class clazz = Class.forName("filter.hmimpl.HMFilter");
+                Class<?> clazz = Class.forName("filter.hmimpl.HMFilter");
                 return (IFilter) clazz.newInstance();
             } catch (Exception e1) {
                 System.err.println("No filter implementation found in classpath !");
@@ -34,7 +34,7 @@ public final class FilterProvider {
             return null;
         }
     }
-    
+
     private FilterProvider() {
     }
 }

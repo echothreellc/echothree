@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><!----><!--  Licensed to the Apache Software Foundation (ASF) under one--><!--  or more contributor license agreements.  See the NOTICE file--><!--  distributed with this work for additional information--><!--  regarding copyright ownership.  The ASF licenses this file--><!--  to you under the Apache License, Version 2.0 (the--><!--  "License"); you may not use this file except in compliance--><!--  with the License.  You may obtain a copy of the License at--><!----><!--    https://www.apache.org/licenses/LICENSE-2.0--><!----><!--  Unless required by applicable law or agreed to in writing,--><!--  software distributed under the License is distributed on an--><!--  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY--><!--  KIND, either express or implied.  See the License for the--><!--  specific language governing permissions and limitations--><!--  under the License.--><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="generator" content="Asciidoctor 1.5.5" /><title> | Apache Ivy&trade; Documentation</title><link rel="stylesheet" type="text/css" href="style/style.css" /><script src="js/jquery.pack.js" type="text/javascript"></script><script src="js/jquery.treeview.js" type="text/javascript"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" /><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" type="text/javascript"></script><script>$(document).ready(function(){$("#treemenu").Treeview({speed: "fast",store: true});});
+hljs.initHighlightingOnLoad();</script></head><body><div id="body"><table id="header" summary="Navigation elements." border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td id="home" width="30%"><a href="http://ant.apache.org/" title="Apache Ant"><img src="images/ant-project-logo.svg" alt="Apache Ant" border="0" height="80px" /></a></td><td class="product" width="70%" align="right" valign="middle"><img src="images/logo.png" alt="ivy" border="0" /></td></tr></table><table id="top-menu" summary="Navigation elements." border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><div id="navcontainer"> <a href="http://www.apache.org/">Apache&trade;</a> &gt; <a href="http://ant.apache.org/">Apache Ant&trade;</a> &gt; <a href="http://ant.apache.org/ivy/">Apache Ivy&trade;</a> &gt;<span class="breadCrumb"> </span></div></td></tr></table><table id="content" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td id="sidebar-left"><div class="block block-book" id="block-book-0"><div class="sidebar-title">Apache Ivy&trade;</div><div class="content"><ul id="treemenu" class="treeview">
+</ul>
+<center><iframe src="http://www.apache.org/ads/buttonbar.html" style="border-width:0;" frameborder="0" scrolling="no" width="135" height="265"></iframe></center></div></div></td><td valign="top"><div id="main"><h1></h1><div id="content"><div class="ulist">
+<ul>
+<li>
+<p>messages</p>
+<div class="paragraph">
+<p>It is quite difficult to know exactly what messages should be output to the console or not, and it often
+depends on the user profile: beginner, expert, build manager, simple user, &#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Being able to define the messages output in a single and homogeneous way could be a good thing.</p>
+</div>
+<div class="paragraph">
+<p>To allow this, maybe a solution could be to output messages in the code only by using keys:
+LOGGER.debug("unhandled.revision", mrid.getRevision());</p>
+</div>
+<div class="paragraph">
+<p>The LOGGER would be a constant initialised with the class name.</p>
+</div>
+<div class="paragraph">
+<p>A profile wold consist in a message.properties file, associating each key (prefixed by the FQCN) to a
+message for the given profile. A key with no mapping result in no message at all.</p>
+</div>
+<div class="paragraph">
+<p>It would be possible to disable all messages of a class or activate only a certain level per class
+(as in log4j for instance) to customize a profile at runtime</p>
+</div>
+<div class="paragraph">
+<p>Shifting is costly, about 400 calls to messages</p>
+</div>
+</li>
+<li>
+<p>promote task to update an already published module with a new status</p>
+<div class="paragraph">
+<p>This task would also automatically update compatibility data (see below)</p>
+</div>
+</li>
+<li>
+<p>tag task to add one or several tags to an already published module</p>
+<div class="paragraph">
+<p>Tag could be added in a simple properties file next to the module Ivy file
+this properties would be updated by this task
+every time Ivy parses an Ivy file, it would try to locate corresponding tag file,
+and if any load tags in the module descriptor instance</p>
+</div>
+</li>
+<li>
+<p>compatibility data</p>
+<div class="paragraph">
+<p>Tags could be used for to indicate that a module has some compatibility level
+with another one: if module A 2.0 has been tested successfully with B 1.0 and thus obtain status milestone,
+then a tag <code>compatible.with.A.2.0=milestone</code> is put on B 1.0
+then latest version matcher code could be updated to handle something like this:
+<code>latest.compatible.milestone</code>
+to be able to get the latest version of a dependency with at least a tag like
+<code>compatible.with.A.[any revision]=milestone</code></p>
+</div>
+<div class="paragraph">
+<p>Since all tags should be inspected to know that, maybe using an xml file like this would be better:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>&lt;compatible&gt;
+	&lt;module org="orga" name="A"&gt;
+		&lt;revision name="2.0" status="milestone"/&gt;
+	&lt;/module&gt;
+&lt;/compatible&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would be cleaner, but less simple, and less flexible than using a tags system, which could be used
+for other use cases.</p>
+</div>
+<div class="paragraph">
+<p>Another solution would be to put two tags on B 1.0: one with A revision, and one without. The tag without
+the revision could be used for <code>latest.compatible.*</code>, meaning that the last compatibility status only would
+be used. For instance, A 2.0 is said to be release compatible with B 1.0. using <code>latest.compatible.release</code>
+is thus resolved to B 1.0. But now A 2.1 is built, and a first test tell that it is (at least) milestone
+compatible with B 1.0. The compatibility status of B is thus decreased  to milestone, and
+<code>latest.compatible.release</code> is not resolved anymore to B 1.0, but maybe B 0.9&#8230;&#8203; at least until the release
+compatibility tests are done on A. Then if it is release compatible, the tag is put back to the good status,
+and if it isn&#8217;t compatible, the compatibility status is left to milestone, which is ok.
+Consequently the main problem with this solution is the time before all the tests are run. So maybe a module
+should be promoted (and thus compatibility status updated) only when all tests are done, or when an incompatible
+level is reached. Note that this solution is only acceptable in case of automatic tests. When the promotion is
+done by a QA team several days or even weeks after the previous status, maybe we can&#8217;t wait for these tests
+to be done&#8230;&#8203;</p>
+</div>
+<div class="paragraph">
+<p>Another solution would be to promote the module at each step, but only update the tag if the compatibility level
+is better than the previous one. Another task would then allow to indicate an incompatibility, if some level of
+tests then fails.</p>
+</div>
+<div class="paragraph">
+<p>Switching between latest compatible and latest version could also be done without any modification in Ivy file:
+use <code>latest.*</code> dependency revision, and configure your resolve task to use compatible only versions.</p>
+</div>
+<div class="paragraph">
+<p>This way testing absolute latest version for a continuous integration server would be easy, and if the latest
+version fails, latest compatible could be used easily, to test the module in a relative isolation of dependency
+changes. In this case the continuous integration server should notify of the first failure before notifying of
+the success of the compatible build: integration of latest modules has failed, but not the module itself.
+It would thus allow to have more often a latest successful build, even in case of API breaks.</p>
+</div>
+</li>
+</ul>
+</div></div></div></td></tr></table><table id="footer-menu" summary="Navigation elements." border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td align="center" valign="middle"><div class="primary-links">::<a href="index.html">Home</a>::<a href="reference.html">Reference</a>::<a href="tutorial.html">Tutorials</a>::<a href="dev.html">Developer's doc</a>::</div></td></tr></table><div id="footer-message" class="footer"><hr /><i>Copyright &copy; 2007 - 2019 The Apache Software Foundation, Licensed under the<a href="http://www.apache.org/licenses/">Apache License, Version 2.0</a>.</i><br /><i>Apache Ivy, Apache Ant, Ivy, Ant, Apache, the Apache Ivy logo, the Apache Ant logo and the Apache feather logo are trademarks of The Apache Software Foundation.</i><br /><i>All other marks mentioned may be trademarks or registered trademarks of their respective owners.</i></div></div></body></html>
