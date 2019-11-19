@@ -248,11 +248,11 @@ public class SalesOrderBatchLogic
     }
 
     public Long getBatchOrderTotalsWithAdjustments(Batch batch) {
-        SalesOrderLogic salesOrderLogic = SalesOrderLogic.getInstance();
+        SalesOrderLineLogic salesOrderLineLogic = SalesOrderLineLogic.getInstance();
         List<Order> orders = getBatchOrders(batch);
         long total = 0;
 
-        total = orders.stream().map((order) -> salesOrderLogic.getOrderTotalWithAdjustments(order)).reduce(total, (accumulator, _item) -> accumulator + _item);
+        total = orders.stream().map((order) -> salesOrderLineLogic.getOrderTotalWithAdjustments(order)).reduce(total, (accumulator, _item) -> accumulator + _item);
 
         return total;
     }

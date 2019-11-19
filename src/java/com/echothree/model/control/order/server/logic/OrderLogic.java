@@ -19,14 +19,12 @@ package com.echothree.model.control.order.server.logic;
 import com.echothree.model.control.order.common.exception.CannotSpecifyPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.CannotSpecifyPaymentMethodAndPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.CannotSpecifyWasPresentException;
-import com.echothree.model.control.order.common.exception.DuplicateOrderLineSequenceException;
 import com.echothree.model.control.order.common.exception.DuplicateOrderPaymentPreferenceSequenceException;
 import com.echothree.model.control.order.common.exception.DuplicateOrderShipmentGroupSequenceException;
 import com.echothree.model.control.order.common.exception.MustSpecifyPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.MustSpecifyPaymentMethodOrPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.MustSpecifyWasPresentException;
 import com.echothree.model.control.order.common.exception.UnknownOrderAliasTypeNameException;
-import com.echothree.model.control.order.common.exception.UnknownOrderLineSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownOrderNameException;
 import com.echothree.model.control.order.common.exception.UnknownOrderPaymentPreferenceSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownOrderPriorityNameException;
@@ -42,15 +40,11 @@ import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderAdjustment;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderLine;
-import com.echothree.model.data.order.server.entity.OrderLineAdjustment;
-import com.echothree.model.data.order.server.entity.OrderLineDetail;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
@@ -65,7 +59,6 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.term.server.entity.Term;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -264,7 +257,7 @@ public class OrderLogic
 
         return orderPriority;
     }
-    
+
     public OrderShipmentGroup createOrderShipmentGroup(final ExecutionErrorAccumulator eea, final Order order, Integer orderShipmentGroupSequence,
             final ItemDeliveryType itemDeliveryType, final Boolean isDefault, final PartyContactMechanism partyContactMechanism,
             final ShippingMethod shippingMethod, final Boolean holdUntilComplete, final BasePK createdBy) {
@@ -297,10 +290,10 @@ public class OrderLogic
 
         return orderShipmentGroup;
     }
-    
+
     public OrderShipmentGroup getDefaultOrderShipmentGroup(final Order order, final ItemDeliveryType itemDeliveryType) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        
+
         return orderControl.getDefaultOrderShipmentGroup(order, itemDeliveryType);
     }
 
@@ -324,8 +317,8 @@ public class OrderLogic
         
         // Either the paymentMethod or the partyPaymentMethod must be specified.
         if(parameterCount == 1) {
-            String paymentMethodTypeName = null;
-            
+            String paymentMethodTypeName;
+
             if(paymentMethod == null) {
                 paymentMethod = partyPaymentMethod.getLastDetail().getPaymentMethod();
             }
@@ -437,107 +430,6 @@ public class OrderLogic
         if(shippingMethod != null) {
             ShippingMethodLogic.getInstance().checkAcceptanceOfItem(session, eea, shippingMethod, item, evaluatedBy);
         }
-    }
-    
-    public OrderLine createOrderLine(final Session session, final ExecutionErrorAccumulator eea, final Order order, Integer orderLineSequence,
-            final OrderLine parentOrderLine, final OrderShipmentGroup orderShipmentGroup, final Item item, final InventoryCondition inventoryCondition,
-            final UnitOfMeasureType unitOfMeasureType, final Long quantity, final Long unitAmount, final String description,
-            final CancellationPolicy cancellationPolicy, final ReturnPolicy returnPolicy, final Boolean taxable, final BasePK createdBy) {
-        OrderLine orderLine = null;
-        
-        // Make sure any OrderPaymentPreferences associated with this order are OK with this Item.
-        checkItemAgainstOrderPaymentPreferences(session, eea, order, item, createdBy);
-        
-        if(orderShipmentGroup != null) {
-            // Make sure the ShippingMethod associated with the OrderShipmentGroup is OK with this Item.
-            checkItemAgainstShippingMethod(session, eea, orderShipmentGroup, item, createdBy);
-        }
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-            OrderStatus orderStatus = orderControl.getOrderStatusForUpdate(order);
-
-            if(orderLineSequence == null) {
-                orderLineSequence = orderStatus.getOrderLineSequence() + 1;
-                orderStatus.setOrderLineSequence(orderLineSequence);
-            } else {
-                orderLine = orderControl.getOrderLineBySequence(order, orderLineSequence);
-
-                if(orderLine == null) {
-                    // If the orderLineSequence is > the last one that was recorded in the OrderStatus, jump the
-                    // one in OrderStatus forward - it should always record the greatest orderLineSequence used.
-                    if(orderLineSequence > orderStatus.getOrderLineSequence()) {
-                        orderStatus.setOrderLineSequence(orderLineSequence);
-                    }
-                } else {
-                    handleExecutionError(DuplicateOrderLineSequenceException.class, eea, ExecutionErrors.DuplicateOrderLineSequence.name(),
-                            order.getLastDetail().getOrderName(), orderLineSequence.toString());
-                }
-            }
-
-            if(orderLine == null) {
-                orderLine = orderControl.createOrderLine(order, orderLineSequence, parentOrderLine, orderShipmentGroup, item, inventoryCondition,
-                        unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable, createdBy);
-            }
-        }
-
-        return orderLine;
-    }
-
-    private OrderLine getOrderLineByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName, final String orderLineSequence,
-            final EntityPermission entityPermission) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        Order order = getOrderByName(eea, orderTypeName, orderName);
-        OrderLine orderLine = null;
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            orderLine = orderControl.getOrderLineBySequence(order, Integer.valueOf(orderLineSequence), entityPermission);
-            
-            if(orderLine == null) {
-                handleExecutionError(UnknownOrderLineSequenceException.class, eea, ExecutionErrors.UnknownOrderLineSequence.name(), orderTypeName, orderName, orderLineSequence);
-            }
-        }
-
-        return orderLine;
-    }
-
-    public OrderLine getOrderLineByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName, final String orderLineSequence) {
-        return getOrderLineByName(eea, orderTypeName, orderName, orderLineSequence, EntityPermission.READ_ONLY);
-    }
-
-    public OrderLine getOrderLineByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName, final String orderLineSequence) {
-        return getOrderLineByName(eea, orderTypeName, orderName, orderLineSequence, EntityPermission.READ_WRITE);
-    }
-    
-    public Long getOrderTotalWithAdjustments(final Order order) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        long total = 0;
-        List<OrderAdjustment> orderAdjustments = orderControl.getOrderAdjustmentsByOrder(order);
-
-        total = orderAdjustments.stream().map((orderAdjustment) -> orderAdjustment.getLastDetail().getAmount()).reduce(total, (accumulator, _item) -> accumulator + _item);
-
-        return total + getOrderLineTotalsWithAdjustments(order);
-    }
-
-    public Long getOrderLineTotalsWithAdjustments(final Order order) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        List<OrderLine> orderLines = orderControl.getOrderLinesByOrder(order);
-        long total = 0;
-
-        total = orderLines.stream().map((orderLine) -> getOrderLineTotalWithAdjustments(orderLine)).reduce(total, (accumulator, _item) -> accumulator + _item);
-
-        return total;
-    }
-
-    public Long getOrderLineTotalWithAdjustments(final OrderLine orderLine) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderLineDetail orderLineDetail = orderLine.getLastDetail();
-        long total = orderLineDetail.getQuantity() * orderLineDetail.getUnitAmount();
-        List<OrderLineAdjustment> orderLineAdjustments = orderControl.getOrderLineAdjustmentsByOrderLine(orderLine);
-
-        total = orderLineAdjustments.stream().map((orderLineAdjustment) -> orderLineAdjustment.getLastDetail().getAmount()).reduce(total, (accumulator, _item) -> accumulator + _item);
-
-        return total;
     }
 
 }

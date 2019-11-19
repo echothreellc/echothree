@@ -28,6 +28,7 @@ import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
+import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -160,7 +161,7 @@ public class CreateSalesOrderLineCommand
                                         Boolean taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
                                         AssociateReferral associateReferral = null;
                                         
-                                        orderLine = SalesOrderLogic.getInstance().createSalesOrderLine(session, this, order, null, null, orderLineSequence,
+                                        orderLine = SalesOrderLineLogic.getInstance().createSalesOrderLine(session, this, order, null, null, orderLineSequence,
                                                 null, null, null, item, inventoryCondition, unitOfMeasureType, quantity, unitAmount, description,
                                                 cancellationPolicy, returnPolicy, taxable, offerUse, associateReferral, getPartyPK());
                                     }

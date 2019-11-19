@@ -22,6 +22,7 @@ import com.echothree.model.control.order.common.OrderConstants;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
@@ -129,7 +130,7 @@ public class WishlistLogic
                     Long unitAmount = offerItemFixedPrice.getUnitPrice();
                     AssociateReferral associateReferral = userVisit.getAssociateReferral();
 
-                    orderLine = OrderLogic.getInstance().createOrderLine(session, ema, order, null, null, null, item, inventoryCondition, unitOfMeasureType,
+                    orderLine = SalesOrderLineLogic.getInstance().createOrderLine(session, ema, order, null, null, null, item, inventoryCondition, unitOfMeasureType,
                             quantity, unitAmount, null, null, null, null, createdBy);
 
                     if(!ema.hasExecutionErrors()) {
