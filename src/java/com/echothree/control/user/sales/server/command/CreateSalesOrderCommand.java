@@ -21,7 +21,6 @@ import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
-import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
@@ -44,7 +43,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -87,57 +85,38 @@ public class CreateSalesOrderCommand
 
     @Override
     protected BaseResult execute() {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        CreateSalesOrderResult result = SalesResultFactory.getCreateSalesOrderResult();
-        Order order = null;
-        String batchName = form.getBatchName();
-        Batch batch = batchName == null ? null : SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
+        var result = SalesResultFactory.getCreateSalesOrderResult();
+        var batchName = form.getBatchName();
+        var batch = batchName == null ? null : SalesOrderBatchLogic.getInstance().getBatchByName(this, batchName);
+        var sourceName = form.getSourceName();
+        var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(this, sourceName);
+        var billToPartyName = form.getBillToPartyName();
+        var billToParty = billToPartyName == null ? null : PartyLogic.getInstance().getPartyByName(this, billToPartyName, PartyConstants.PartyType_CUSTOMER);
+        var orderPriorityName = form.getOrderPriorityName();
+        var orderPriority = orderPriorityName == null ? null : SalesOrderLogic.getInstance().getOrderPriorityByName(this, orderPriorityName);
+        var currencyIsoName = form.getCurrencyIsoName();
+        var currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+        var termName = form.getTermName();
+        var term = termName == null ? null : TermLogic.getInstance().getTermByName(this, termName);
 
         if(!hasExecutionErrors()) {
-            String sourceName = form.getSourceName();
-            Source source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(this, sourceName);
+            var strHoldUntilComplete = form.getHoldUntilComplete();
+            var holdUntilComplete = strHoldUntilComplete == null ? null : Boolean.valueOf(strHoldUntilComplete);
+            var strAllowBackorders = form.getAllowBackorders();
+            var allowBackorders = strAllowBackorders == null ? null : Boolean.valueOf(strAllowBackorders);
+            var strAllowSubstitutions = form.getAllowSubstitutions();
+            var allowSubstitutions = strAllowSubstitutions == null ? null : Boolean.valueOf(strAllowSubstitutions);
+            var strAllowCombiningShipments = form.getAllowCombiningShipments();
+            var allowCombiningShipments = strAllowCombiningShipments == null ? null : Boolean.valueOf(strAllowCombiningShipments);
+            var reference = form.getReference();
+            var strTaxable = form.getTaxable();
+            var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
+            var workflowEntranceName = form.getWorkflowEntranceName();
 
-            if(!hasExecutionErrors()) {
-                String billToPartyName = form.getBillToPartyName();
-                Party billToParty = billToPartyName == null ? null : PartyLogic.getInstance().getPartyByName(this, billToPartyName, PartyConstants.PartyType_CUSTOMER);
+            var order = SalesOrderLogic.getInstance().createSalesOrder(session, this, getUserVisit(), batch, source,
+                    billToParty, orderPriority, currency, holdUntilComplete, allowBackorders, allowSubstitutions,
+                    allowCombiningShipments, reference, term, taxable, workflowEntranceName, getParty());
 
-                if(!hasExecutionErrors()) {
-                    String orderPriorityName = form.getOrderPriorityName();
-                    OrderPriority orderPriority = orderPriorityName == null ? null : SalesOrderLogic.getInstance().getOrderPriorityByName(this, orderPriorityName);
-
-                    if(!hasExecutionErrors()) {
-                        String currencyIsoName = form.getCurrencyIsoName();
-                        Currency currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
-
-                        if(!hasExecutionErrors()) {
-                            String termName = form.getTermName();
-                            Term term = termName == null ? null : TermLogic.getInstance().getTermByName(this, termName);
-
-                            if(!hasExecutionErrors()) {
-                                String strHoldUntilComplete = form.getHoldUntilComplete();
-                                Boolean holdUntilComplete = strHoldUntilComplete == null ? null : Boolean.valueOf(strHoldUntilComplete);
-                                String strAllowBackorders = form.getAllowBackorders();
-                                Boolean allowBackorders = strAllowBackorders == null ? null : Boolean.valueOf(strAllowBackorders);
-                                String strAllowSubstitutions = form.getAllowSubstitutions();
-                                Boolean allowSubstitutions = strAllowSubstitutions == null ? null : Boolean.valueOf(strAllowSubstitutions);
-                                String strAllowCombiningShipments = form.getAllowCombiningShipments();
-                                Boolean allowCombiningShipments = strAllowCombiningShipments == null ? null : Boolean.valueOf(strAllowCombiningShipments);
-                                String reference = form.getReference();
-                                String strTaxable = form.getTaxable();
-                                Boolean taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
-                                String workflowEntranceName = form.getWorkflowEntranceName();
-
-                                order = SalesOrderLogic.getInstance().createSalesOrder(session, this, getUserVisit(), batch, source, billToParty,
-                                        orderPriority, currency, holdUntilComplete, allowBackorders, allowSubstitutions,
-                                        allowCombiningShipments, reference, term, taxable, workflowEntranceName, getParty());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        if(order != null) {
             result.setOrderName(order.getLastDetail().getOrderName());
             result.setEntityRef(order.getPrimaryKey().getEntityRef());
         }
