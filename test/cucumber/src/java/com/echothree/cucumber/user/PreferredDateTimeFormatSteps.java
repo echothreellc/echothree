@@ -14,11 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.user;
 
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTimeFormatForm;
+import com.echothree.cucumber.CustomerPersona;
+import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.cucumber.LastCommandResult;
 import cucumber.api.java.en.When;
 import javax.naming.NamingException;
 
