@@ -28,7 +28,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import java.util.Map;
 import javax.naming.NamingException;
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EmployeeLoginSteps {
 

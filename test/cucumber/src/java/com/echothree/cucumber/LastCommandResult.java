@@ -20,7 +20,7 @@ import com.echothree.util.common.command.CommandResult;
 import cucumber.api.Scenario;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LastCommandResult {
 
