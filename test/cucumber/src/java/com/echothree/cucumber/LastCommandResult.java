@@ -17,15 +17,34 @@
 package com.echothree.cucumber;
 
 import com.echothree.util.common.command.CommandResult;
+import cucumber.api.Scenario;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class LastCommandResult {
 
+    private Scenario scenario;
     public static CommandResult commandResult;
+
+    @Before
+    public void before(Scenario scenario) {
+        this.scenario = scenario;
+    }
 
     @Then("^no error should occur$")
     public void noErrorShouldOccur() {
+//        if(commandResult.hasErrors()) {
+//            var executionResult = commandResult.getExecutionResult();
+//            var executionErrors = executionResult.getExecutionErrors().get();
+//
+//            while(executionErrors.hasNext()) {
+//                var message = executionErrors.next();
+//
+//                scenario.write(message.getKey() + ": " + message.getMessage());
+//            }
+//        }
+
         assertThat(commandResult.hasErrors()).isFalse();
     }
 
