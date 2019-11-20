@@ -21,10 +21,10 @@ import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
 import com.echothree.cucumber.EmployeePersona;
 import com.echothree.cucumber.EmployeePersonas;
+import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -73,17 +73,7 @@ public class EmployeeLoginSteps {
         employeeLoginForm.setCompanyName(companyName);
         employeeLoginForm.setRemoteInet4Address("0.0.0.0");
 
-        employeePersona.commandResult = authenticationService.employeeLogin(employeePersona.userVisitPK, employeeLoginForm);
-    }
-
-    @Then("^no employee error should occur$")
-    public void noErrorShouldOccur() {
-        assertThat(EmployeePersonas.lastEmployeePersona.commandResult.hasErrors()).isFalse();
-    }
-
-    @Then("^an employee error should occur$")
-    public void anErrorShouldOccur() {
-        assertThat(EmployeePersonas.lastEmployeePersona.commandResult.hasErrors()).isTrue();
+        LastCommandResult.commandResult = authenticationService.employeeLogin(employeePersona.userVisitPK, employeeLoginForm);
     }
 
 }

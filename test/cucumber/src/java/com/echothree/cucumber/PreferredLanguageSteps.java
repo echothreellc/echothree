@@ -33,7 +33,7 @@ public class PreferredLanguageSteps {
 
         userVisitPreferredLanguageForm.setLanguageIsoName(languageIsoName);
 
-        customerPersona.commandResult = userService.setUserVisitPreferredLanguage(customerPersona.userVisitPK,
+        LastCommandResult.commandResult = userService.setUserVisitPreferredLanguage(customerPersona.userVisitPK,
                 userVisitPreferredLanguageForm);
     }
 }

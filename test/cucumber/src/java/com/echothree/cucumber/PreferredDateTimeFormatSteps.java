@@ -33,7 +33,7 @@ public class PreferredDateTimeFormatSteps {
 
         userVisitPreferredDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);
 
-        customerPersona.commandResult = userService.setUserVisitPreferredDateTimeFormat(customerPersona.userVisitPK,
+        LastCommandResult.commandResult = userService.setUserVisitPreferredDateTimeFormat(customerPersona.userVisitPK,
                 userVisitPreferredDateTimeFormatForm);
     }
 }

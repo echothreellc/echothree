@@ -4,4 +4,4 @@ Feature: Preferred time zone
   Scenario: An anonymous customer sets their preferred time zone
     Given the customer Test is not currently logged in
     When the customer Test sets their preferred time zone to "US/Pacific"
-    Then no customer error should occur
+    Then no error should occur

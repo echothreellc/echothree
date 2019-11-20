@@ -16,19 +16,18 @@
 
 package com.echothree.cucumber.authentication;
 
-import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;
+import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
 import com.echothree.cucumber.CustomerPersona;
 import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import javax.naming.NamingException;
 import java.util.Map;
-
+import javax.naming.NamingException;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class CustomerLoginSteps {
@@ -73,17 +72,7 @@ public class CustomerLoginSteps {
         customerLoginForm.setPassword(password);
         customerLoginForm.setRemoteInet4Address("0.0.0.0");
 
-        customerPersona.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
-    }
-
-    @Then("^no customer error should occur$")
-    public void noErrorShouldOccur() {
-        assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isFalse();
-    }
-
-    @Then("^a customer error should occur$")
-    public void anErrorShouldOccur() {
-        assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isTrue();
+        LastCommandResult.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
     }
 
 }

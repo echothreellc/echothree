@@ -33,7 +33,7 @@ public class PreferredCurrencySteps {
 
         userVisitPreferredCurrencyForm.setCurrencyIsoName(currencyIsoName);
 
-        customerPersona.commandResult = userService.setUserVisitPreferredCurrency(customerPersona.userVisitPK,
+        LastCommandResult.commandResult = userService.setUserVisitPreferredCurrency(customerPersona.userVisitPK,
                 userVisitPreferredCurrencyForm);
     }
 }

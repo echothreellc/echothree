@@ -20,9 +20,9 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
 public class EmployeePersona {
+
     public String persona;
     public UserVisitPK userVisitPK;
-    public CommandResult commandResult;
 
     public String lastEmailAddressContactMechanismName;
     public String lastPostalAddressContactMechanismName;
@@ -31,4 +31,5 @@ public class EmployeePersona {
 
     public String lastSalesOrderName;
     public String lastSalesOrderLineSequence;
+
 }

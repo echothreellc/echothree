@@ -33,7 +33,7 @@ public class PreferredTimeZoneFormatSteps {
 
         userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
 
-        customerPersona.commandResult = userService.setUserVisitPreferredTimeZone(customerPersona.userVisitPK,
+        LastCommandResult.commandResult = userService.setUserVisitPreferredTimeZone(customerPersona.userVisitPK,
                 userVisitPreferredTimeZoneForm);
     }
 }

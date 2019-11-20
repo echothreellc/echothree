@@ -20,6 +20,7 @@ import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import cucumber.api.java.en.When;
@@ -50,7 +51,7 @@ public class CustomerWebAddress {
 
         var commandResult = contactService.createContactWebAddress(customerPersona.userVisitPK, createContactWebAddressForm);
 
-        customerPersona.commandResult = commandResult;
+        LastCommandResult.commandResult = commandResult;
         var result = (CreateContactWebAddressResult)commandResult.getExecutionResult().getResult();
 
         customerPersona.lastWebAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
@@ -92,7 +93,7 @@ public class CustomerWebAddress {
             commandResult = ContactUtil.getHome().editContactWebAddress(customerPersona.userVisitPK, commandForm);
         }
 
-        customerPersona.commandResult = commandResult;
+        LastCommandResult.commandResult = commandResult;
     }
 
     @When("^the customer ([^\"]*) deletes the last web address added$")
@@ -104,7 +105,7 @@ public class CustomerWebAddress {
 
         deleteContactWebAddressForm.setContactMechanismName(customerPersona.lastWebAddressContactMechanismName);
 
-        customerPersona.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactWebAddressForm);
+        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactWebAddressForm);
     }
 
 }

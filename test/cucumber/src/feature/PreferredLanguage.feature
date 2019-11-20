@@ -4,4 +4,4 @@ Feature: Preferred language
   Scenario: An anonymous customer sets their preferred language
     Given the customer Test is not currently logged in
     When the customer Test sets their preferred language to "de"
-    Then no customer error should occur
+    Then no error should occur

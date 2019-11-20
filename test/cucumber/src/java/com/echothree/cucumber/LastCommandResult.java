@@ -16,20 +16,22 @@
 
 package com.echothree.cucumber;
 
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import cucumber.api.java.en.Then;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
-public class CustomerPersona {
+public class LastCommandResult {
 
-    public String persona;
-    public UserVisitPK userVisitPK;
+    public static CommandResult commandResult;
 
-    public String lastEmailAddressContactMechanismName;
-    public String lastPostalAddressContactMechanismName;
-    public String lastTelephoneContactMechanismName;
-    public String lastWebAddressContactMechanismName;
+    @Then("^no error should occur$")
+    public void noErrorShouldOccur() {
+        assertThat(commandResult.hasErrors()).isFalse();
+    }
 
-    public String lastSalesOrderName;
-    public String lastSalesOrderLineSequence;
+    @Then("^an error should occur$")
+    public void anErrorShouldOccur() {
+        assertThat(commandResult.hasErrors()).isTrue();
+    }
 
 }
