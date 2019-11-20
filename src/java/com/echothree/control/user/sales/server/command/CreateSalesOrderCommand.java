@@ -17,7 +17,6 @@
 package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.CreateSalesOrderForm;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
@@ -28,17 +27,10 @@ import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.term.server.logic.TermLogic;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.batch.server.entity.Batch;
-import com.echothree.model.data.offer.server.entity.Source;
-import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderPriority;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
