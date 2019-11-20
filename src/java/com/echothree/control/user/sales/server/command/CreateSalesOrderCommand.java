@@ -109,8 +109,10 @@ public class CreateSalesOrderCommand
                     billToParty, orderPriority, currency, holdUntilComplete, allowBackorders, allowSubstitutions,
                     allowCombiningShipments, reference, term, taxable, workflowEntranceName, getParty());
 
-            result.setOrderName(order.getLastDetail().getOrderName());
-            result.setEntityRef(order.getPrimaryKey().getEntityRef());
+            if(!hasExecutionErrors()) {
+                result.setOrderName(order.getLastDetail().getOrderName());
+                result.setEntityRef(order.getPrimaryKey().getEntityRef());
+            }
         }
 
         return result;
