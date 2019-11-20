@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.result.GetUserVisitResult;

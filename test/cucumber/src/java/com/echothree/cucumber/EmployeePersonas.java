@@ -16,12 +16,7 @@
 
 package com.echothree.cucumber;
 
-import com.echothree.control.user.authentication.common.AuthenticationService;
-import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.form.GetUserVisitForm;
-import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.CommandResult;
+import com.echothree.cucumber.authentication.UserVisits;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

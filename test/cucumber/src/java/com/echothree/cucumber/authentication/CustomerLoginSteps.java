@@ -14,11 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
+import com.echothree.cucumber.CustomerPersona;
+import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.util.common.command.CommandResult;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
