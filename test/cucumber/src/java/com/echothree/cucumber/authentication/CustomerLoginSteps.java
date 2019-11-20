@@ -41,7 +41,7 @@ public class CustomerLoginSteps {
         }
     }
 
-    @Given("^([^\"]*) is currently logged in")
+    @Given("^the customer ([^\"]*) is currently logged in")
     public void customerIsCurrentlyLoggedIn(String persona)
             throws NamingException {
         CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
@@ -49,7 +49,7 @@ public class CustomerLoginSteps {
         assertThat(customerPersona).isNotNull();
     }
 
-    @Given("^([^\"]*) is not currently logged in")
+    @Given("^the customer ([^\"]*) is not currently logged in")
     public void customerIsNotCurrentlyLoggedIn(String persona)
             throws NamingException {
         CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
@@ -76,13 +76,14 @@ public class CustomerLoginSteps {
         customerPersona.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
     }
 
-    @Then("^no error should occur$")
+    @Then("^no customer error should occur$")
     public void noErrorShouldOccur() {
         assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isFalse();
     }
 
-    @Then("^an error should occur$")
+    @Then("^a customer error should occur$")
     public void anErrorShouldOccur() {
         assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isTrue();
     }
+
 }
