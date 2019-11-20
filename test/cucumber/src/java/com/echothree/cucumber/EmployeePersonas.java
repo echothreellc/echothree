@@ -22,37 +22,37 @@ import com.echothree.control.user.authentication.common.form.GetUserVisitForm;
 import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
-import javax.naming.NamingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import javax.naming.NamingException;
 
-public class CustomerPersonas {
+public class EmployeePersonas {
 
-    private CustomerPersonas() {
+    private EmployeePersonas() {
     }
 
-    private static Map<String, CustomerPersona> customerPersonas = new HashMap<>();
-    public static CustomerPersona lastCustomerPersona;
+    private static Map<String, EmployeePersona> employeePersonas = new HashMap<>();
+    public static EmployeePersona lastEmployeePersona;
     
-    public static Set<Map.Entry<String, CustomerPersona>> getCustomerPersonas() {
-        return customerPersonas.entrySet();
+    public static Set<Map.Entry<String, EmployeePersona>> getEmployeePersonas() {
+        return employeePersonas.entrySet();
     }
 
-    public static CustomerPersona getCustomerPersona(String persona)
+    public static EmployeePersona getEmployeePersona(String persona)
             throws NamingException {
-        var customerPersona = customerPersonas.get(persona);
+        var employeePersona = employeePersonas.get(persona);
 
-        if(customerPersona == null) {
-            customerPersona = new CustomerPersona();
-            customerPersona.persona = persona;
-            customerPersona.userVisitPK = UserVisits.getUserVisitPK();
+        if(employeePersona == null) {
+            employeePersona = new EmployeePersona();
+            employeePersona.persona = persona;
+            employeePersona.userVisitPK = UserVisits.getUserVisitPK();
 
-            customerPersonas.put(persona, customerPersona);
+            employeePersonas.put(persona, employeePersona);
         }
 
-        lastCustomerPersona = customerPersona;
+        lastEmployeePersona = employeePersona;
 
-        return customerPersona;
+        return employeePersona;
     }
 }
