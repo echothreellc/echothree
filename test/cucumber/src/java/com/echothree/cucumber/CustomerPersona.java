@@ -28,4 +28,7 @@ public class CustomerPersona {
     public String lastPostalAddressContactMechanismName;
     public String lastTelephoneContactMechanismName;
     public String lastWebAddressContactMechanismName;
+
+    public String lastSalesOrderName;
+    public String lastSalesOrderLineSequence;
 }
