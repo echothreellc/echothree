@@ -29,6 +29,7 @@ public class EmployeePersona {
     public String lastTelephoneContactMechanismName;
     public String lastWebAddressContactMechanismName;
 
+    public String lastSalesOrderBatchName;
     public String lastSalesOrderName;
     public String lastSalesOrderLineSequence;
 
