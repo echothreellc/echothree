@@ -53,4 +53,34 @@ public class LastCommandResult {
         assertThat(commandResult.hasErrors()).isTrue();
     }
 
+    @Then("^no validation error should occur$")
+    public void noValidationErrorShouldOccur() {
+        assertThat(commandResult.hasValidationErrors()).isFalse();
+    }
+
+    @Then("^a validation error should occur$")
+    public void aValidationErrorShouldOccur() {
+        assertThat(commandResult.hasValidationErrors()).isTrue();
+    }
+
+    @Then("^no execution warning should occur$")
+    public void noExecutionWarningShouldOccur() {
+        assertThat(commandResult.hasExecutionWarnings()).isFalse();
+    }
+
+    @Then("^an execution warning should occur$")
+    public void anExecutionWarningShouldOccur() {
+        assertThat(commandResult.hasExecutionWarnings()).isTrue();
+    }
+
+    @Then("^no execution error should occur$")
+    public void noExecutionErrorShouldOccur() {
+        assertThat(commandResult.hasExecutionErrors()).isFalse();
+    }
+
+    @Then("^an execution error should occur$")
+    public void anExecutionErrorShouldOccur() {
+        assertThat(commandResult.hasExecutionErrors()).isTrue();
+    }
+
 }
