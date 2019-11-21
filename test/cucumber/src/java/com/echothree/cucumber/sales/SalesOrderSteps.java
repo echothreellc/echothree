@@ -18,6 +18,7 @@ package com.echothree.cucumber.sales;
 
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
+import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.validation.FieldType;
@@ -26,13 +27,12 @@ import javax.naming.NamingException;
 
 public class SalesOrderSteps {
 
-    private void createSalesOrder(String persona, String batchName, String sourceName, String currencyIsoName, String termName,
+    private void createSalesOrder(BasePersona persona, String batchName, String sourceName, String currencyIsoName, String termName,
             String billToPartyName, String orderPriorityName, String holdUntilComplete, String allowBackorders, String allowSubstitutions,
             String allowCombiningShipments, String reference, String taxable, String workflowEntranceName)
             throws NamingException {
         var salesService = SalesUtil.getHome();
         var createSalesOrderForm = salesService.getCreateSalesOrderForm();
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
         createSalesOrderForm.setBatchName(batchName);
         createSalesOrderForm.setSourceName(sourceName);
@@ -48,18 +48,20 @@ public class SalesOrderSteps {
         createSalesOrderForm.setTaxable(taxable);
         createSalesOrderForm.setWorkflowEntranceName(workflowEntranceName);
 
-        var commandResult = salesService.createSalesOrder(employeePersona.userVisitPK, createSalesOrderForm);
+        var commandResult = salesService.createSalesOrder(persona.userVisitPK, createSalesOrderForm);
 
         LastCommandResult.commandResult = commandResult;
         var result = (CreateSalesOrderResult)commandResult.getExecutionResult().getResult();
 
-        employeePersona.lastSalesOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
+        persona.lastSalesOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
     }
 
     @When("^the employee ([^\"]*) adds a new sales order$")
     public void theEmployeeAddsANewSalesOrder(String persona)
             throws NamingException {
-        createSalesOrder(persona, null, null, null, null, null, null,null, null, null, null, null, null, null);
+        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+        createSalesOrder(employeePersona, null, null, null, null, null, null,null, null, null, null, null, null, null);
     }
 
 }

@@ -16,21 +16,6 @@
 
 package com.echothree.cucumber;
 
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.CommandResult;
-
-public class EmployeePersona {
-
-    public String persona;
-    public UserVisitPK userVisitPK;
-
-    public String lastEmailAddressContactMechanismName;
-    public String lastPostalAddressContactMechanismName;
-    public String lastTelephoneContactMechanismName;
-    public String lastWebAddressContactMechanismName;
-
-    public String lastSalesOrderBatchName;
-    public String lastSalesOrderName;
-    public String lastSalesOrderLineSequence;
+public class EmployeePersona extends BasePersona {
 
 }

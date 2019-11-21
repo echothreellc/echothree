@@ -19,6 +19,7 @@ package com.echothree.cucumber.sales;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
+import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
 import cucumber.api.java.en.When;
@@ -26,34 +27,32 @@ import javax.naming.NamingException;
 
 public class SalesOrderBatchSteps {
 
-    private void createSalesOrderBatch(String persona, String currencyIsoName, String paymentMethodName, String count, String amount)
+    private void createSalesOrderBatch(BasePersona persona, String currencyIsoName, String paymentMethodName, String count, String amount)
             throws NamingException {
         var salesService = SalesUtil.getHome();
         var createSalesOrderBatchForm = salesService.getCreateSalesOrderBatchForm();
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
         createSalesOrderBatchForm.setCurrencyIsoName(currencyIsoName);
         createSalesOrderBatchForm.setPaymentMethodName(paymentMethodName);
         createSalesOrderBatchForm.setCount(count);
         createSalesOrderBatchForm.setAmount(amount);
 
-        var commandResult = salesService.createSalesOrderBatch(employeePersona.userVisitPK, createSalesOrderBatchForm);
+        var commandResult = salesService.createSalesOrderBatch(persona.userVisitPK, createSalesOrderBatchForm);
 
         LastCommandResult.commandResult = commandResult;
         var result = (CreateSalesOrderBatchResult)commandResult.getExecutionResult().getResult();
 
-        employeePersona.lastSalesOrderBatchName = commandResult.getHasErrors() ? null : result.getBatchName();
+        persona.lastSalesOrderBatchName = commandResult.getHasErrors() ? null : result.getBatchName();
     }
 
-    private void deleteSalesOrderBatch(String persona, String batchName)
+    private void deleteSalesOrderBatch(BasePersona persona, String batchName)
             throws NamingException {
         var salesService = SalesUtil.getHome();
         var deleteSalesOrderBatchForm = salesService.getDeleteSalesOrderBatchForm();
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
         deleteSalesOrderBatchForm.setBatchName(batchName);
 
-        var commandResult = salesService.deleteSalesOrderBatch(employeePersona.userVisitPK, deleteSalesOrderBatchForm);
+        var commandResult = salesService.deleteSalesOrderBatch(persona.userVisitPK, deleteSalesOrderBatchForm);
 
         LastCommandResult.commandResult = commandResult;
     }
@@ -61,7 +60,9 @@ public class SalesOrderBatchSteps {
     @When("^the employee ([^\"]*) adds a new sales order batch with the currency ([^\"]*) and payment method ([^\"]*)$")
     public void theEmployeeAddsANewSalesOrderBatch(String persona, String currencyIsoName, String paymentMethodName)
             throws NamingException {
-        createSalesOrderBatch(persona, currencyIsoName, paymentMethodName, null, null);
+        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+        createSalesOrderBatch(employeePersona, currencyIsoName, paymentMethodName, null, null);
     }
 
     @When("^the employee ([^\"]*) deletes the last sales order batch added$")
@@ -69,7 +70,7 @@ public class SalesOrderBatchSteps {
             throws NamingException {
         var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-        deleteSalesOrderBatch(persona, employeePersona.lastSalesOrderBatchName);
+        deleteSalesOrderBatch(employeePersona, employeePersona.lastSalesOrderBatchName);
     }
 
 }

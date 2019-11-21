@@ -19,6 +19,7 @@ package com.echothree.cucumber.sales;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
+import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.validation.FieldType;
@@ -27,15 +28,14 @@ import javax.naming.NamingException;
 
 public class SalesOrderLineSteps {
 
-    private void createSalesOrderLine(String persona, String orderLineSequence, String itemName, String inventoryConditionName,
+    private void createSalesOrderLine(BasePersona persona, String salesOrderName, String orderLineSequence, String itemName, String inventoryConditionName,
             String unitOfMeasureTypeName, String quantity, String unitAmount, String taxable, String description,
             String cancellationPolicyName, String returnPolicyName, String offerName, String useName)
             throws NamingException {
         var salesService = SalesUtil.getHome();
         var createSalesOrderLineForm = salesService.getCreateSalesOrderLineForm();
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-        createSalesOrderLineForm.setOrderName(employeePersona.lastSalesOrderName);
+        createSalesOrderLineForm.setOrderName(salesOrderName);
         createSalesOrderLineForm.setOrderLineSequence(orderLineSequence);
         createSalesOrderLineForm.setItemName(itemName);
         createSalesOrderLineForm.setInventoryConditionName(inventoryConditionName);
@@ -49,19 +49,21 @@ public class SalesOrderLineSteps {
         createSalesOrderLineForm.setOfferName(offerName);
         createSalesOrderLineForm.setUseName(useName);
 
-        var commandResult = salesService.createSalesOrderLine(employeePersona.userVisitPK, createSalesOrderLineForm);
+        var commandResult = salesService.createSalesOrderLine(persona.userVisitPK, createSalesOrderLineForm);
 
         LastCommandResult.commandResult = commandResult;
         var result = (CreateSalesOrderLineResult)commandResult.getExecutionResult().getResult();
 
-        employeePersona.lastSalesOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
-        employeePersona.lastSalesOrderLineSequence = commandResult.getHasErrors() ? null : result.getOrderLineSequence();
+        persona.lastSalesOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
+        persona.lastSalesOrderLineSequence = commandResult.getHasErrors() ? null : result.getOrderLineSequence();
     }
 
     @When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to the sales order$")
     public void theEmployeeAddsToTheSalesOrder(String persona, String quantity, String itemName)
             throws NamingException {
-        createSalesOrderLine(persona, null, itemName, null, null, quantity, null, null, null, null, null, null, null);
+        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+        createSalesOrderLine(employeePersona, employeePersona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null, null);
     }
 
 }
