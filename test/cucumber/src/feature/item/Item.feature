@@ -6,9 +6,21 @@ Feature: Employee item
     When the employee Test logs in with the username "Test E" and password "password" and company "TEST_COMPANY"
     Then no error should occur
 
-  Scenario: Existing employee adds an item
+  Scenario: Existing employee adds an active item and discontinues it
     Given the employee Test is currently logged in
     And the employee Test adds a new item with type REGULAR and use type REGULAR and category DEFAULT and accounting category DEFAULT and purchasing category DEFAULT and company TEST_COMPANY and delivery type PHYSICAL and inventory type INVENTORY and does not have serialized inventory and is not exempt from shipping and does allow club discounts and does allow coupon discounts and does allow associate payments and has a status of NEW_ACTIVE and an unit of measure kind of BASIC and a price type of FIXED
     Then no error should occur
     And the employee Test sets the status of the last item added to ACTIVE_TO_DISCONTINUED
+    Then no error should occur
+
+  Scenario: Existing employee adds a cancel if not in stock item and discontinues it
+    Given the employee Test is currently logged in
+    And the employee Test adds a new item with type REGULAR and use type REGULAR and category DEFAULT and accounting category DEFAULT and purchasing category DEFAULT and company TEST_COMPANY and delivery type PHYSICAL and inventory type INVENTORY and does not have serialized inventory and is not exempt from shipping and does allow club discounts and does allow coupon discounts and does allow associate payments and has a status of NEW_CANCEL_IF_NOT_IN_STOCK and an unit of measure kind of BASIC and a price type of FIXED
+    Then no error should occur
+    And the employee Test sets the status of the last item added to CANCEL_IF_NOT_IN_STOCK_TO_DISCONTINUED
+    Then no error should occur
+
+  Scenario: Existing employee adds a discontinued item
+    Given the employee Test is currently logged in
+    And the employee Test adds a new item with type REGULAR and use type REGULAR and category DEFAULT and accounting category DEFAULT and purchasing category DEFAULT and company TEST_COMPANY and delivery type PHYSICAL and inventory type INVENTORY and does not have serialized inventory and is not exempt from shipping and does allow club discounts and does allow coupon discounts and does allow associate payments and has a status of NEW_DISCONTINUED and an unit of measure kind of BASIC and a price type of FIXED
     Then no error should occur
