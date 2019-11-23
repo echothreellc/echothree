@@ -34,6 +34,8 @@ public class LastCommandResult {
 
     @Then("^no error should occur$")
     public void noErrorShouldOccur() {
+        assertThat(commandResult).isNotNull();
+
 //        if(commandResult.hasErrors()) {
 //            var executionResult = commandResult.getExecutionResult();
 //            var executionErrors = executionResult.getExecutionErrors().get();
@@ -50,36 +52,43 @@ public class LastCommandResult {
 
     @Then("^an error should occur$")
     public void anErrorShouldOccur() {
+        assertThat(commandResult).isNotNull();
         assertThat(commandResult.hasErrors()).isTrue();
     }
 
     @Then("^no validation error should occur$")
     public void noValidationErrorShouldOccur() {
+        assertThat(commandResult).isNotNull();
         assertThat(commandResult.hasValidationErrors()).isFalse();
     }
 
     @Then("^a validation error should occur$")
     public void aValidationErrorShouldOccur() {
+        assertThat(commandResult).isNotNull();
         assertThat(commandResult.hasValidationErrors()).isTrue();
     }
 
     @Then("^no execution warning should occur$")
     public void noExecutionWarningShouldOccur() {
+        assertThat(commandResult).isNotNull();
         assertThat(commandResult.hasExecutionWarnings()).isFalse();
     }
 
     @Then("^an execution warning should occur$")
     public void anExecutionWarningShouldOccur() {
+        assertThat(commandResult).isNotNull();
         assertThat(commandResult.hasExecutionWarnings()).isTrue();
     }
 
     @Then("^no execution error should occur$")
     public void noExecutionErrorShouldOccur() {
+        assertThat(commandResult).isNotNull();
         assertThat(commandResult.hasExecutionErrors()).isFalse();
     }
 
     @Then("^an execution error should occur$")
     public void anExecutionErrorShouldOccur() {
+        assertThat(commandResult).isNotNull();
         assertThat(commandResult.hasExecutionErrors()).isTrue();
     }
 
