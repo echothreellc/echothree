@@ -45,17 +45,17 @@ public class ItemSteps {
         createItemForm.setCompanyName(companyName);
         createItemForm.setItemDeliveryTypeName(itemDeliveryTypeName);
         createItemForm.setItemInventoryTypeName(itemInventoryTypeName);
-        createItemForm.setInventorySerialized(inventorySerialized);
-        createItemForm.setShippingChargeExempt(shippingChargeExempt);
+        createItemForm.setInventorySerialized(Boolean.valueOf(inventorySerialized.equals("has")).toString());
+        createItemForm.setShippingChargeExempt(Boolean.valueOf(shippingChargeExempt.equals("is")).toString());
         createItemForm.setShippingStartTime(shippingStartTime);
         createItemForm.setShippingEndTime(shippingEndTime);
         createItemForm.setSalesOrderStartTime(salesOrderStartTime);
         createItemForm.setSalesOrderEndTime(salesOrderEndTime);
         createItemForm.setPurchaseOrderStartTime(purchaseOrderStartTime);
         createItemForm.setPurchaseOrderEndTime(purchaseOrderEndTime);
-        createItemForm.setAllowClubDiscounts(allowClubDiscounts);
-        createItemForm.setAllowCouponDiscounts(allowCouponDiscounts);
-        createItemForm.setAllowAssociatePayments(allowAssociatePayments);
+        createItemForm.setAllowClubDiscounts(Boolean.valueOf(allowClubDiscounts.equals("does")).toString());
+        createItemForm.setAllowCouponDiscounts(Boolean.valueOf(allowCouponDiscounts.equals("does")).toString());
+        createItemForm.setAllowAssociatePayments(Boolean.valueOf(allowAssociatePayments.equals("does")).toString());
         createItemForm.setItemStatus(itemStatus);
         createItemForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
         createItemForm.setItemPriceTypeName(itemPriceTypeName);
@@ -84,9 +84,9 @@ public class ItemSteps {
     }
 
     @When("^the employee ([^\"]*) adds a new item with type ([^\"]*) and use type ([^\"]*) and category ([^\"]*) " +
-            "and accounting category ([^\"]*) and purchasing category ([^\"]*) and the company ([^\"]*) and delivery type ([^\"]*) " +
-            "and inventory type ([^\"]*) and inventory serialized ([^\"]*) and exempt from shipping ([^\"]*) and " +
-            "allows club discounts ([^\"]*) and allows coupon discounts ([^\"]*) and allows associate payments ([^\"]*) " +
+            "and accounting category ([^\"]*) and purchasing category ([^\"]*) and company ([^\"]*) and delivery type ([^\"]*) " +
+            "and inventory type ([^\"]*) and (has|does not have) serialized inventory and (is|is not) exempt from shipping and " +
+            "(does|does not) allow club discounts and (does|does not) allow coupon discounts and (does|does not) allow associate payments " +
             "and has a status of ([^\"]*) and an unit of measure kind of ([^\"]*) and a price type of ([^\"]*)$")
     public void theEmployeeAddsANewItem(String persona, String itemTypeName, String itemUseTypeName, String itemCategoryName,
             String itemAccountingCategoryName, String itemPurchasingCategoryName, String companyName, String itemDeliveryTypeName,
