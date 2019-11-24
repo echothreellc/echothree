@@ -112,13 +112,14 @@ public class ItemLogic
         return item;
     }
 
-    public Item createItem(final ExecutionErrorAccumulator eea, String itemName, ItemType itemType, ItemUseType itemUseType, ItemCategory itemCategory,
-            ItemAccountingCategory itemAccountingCategory, ItemPurchasingCategory itemPurchasingCategory, Party companyParty,
-            ItemDeliveryType itemDeliveryType, ItemInventoryType itemInventoryType, Boolean inventorySerialized, Sequence serialNumberSequence,
-            Boolean shippingChargeExempt, Long shippingStartTime, Long shippingEndTime, Long salesOrderStartTime, Long salesOrderEndTime,
-            Long purchaseOrderStartTime, Long purchaseOrderEndTime, Boolean allowClubDiscounts, Boolean allowCouponDiscounts, Boolean allowAssociatePayments,
-            UnitOfMeasureKind unitOfMeasureKind, ItemPriceType itemPriceType, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy,
-            StylePath stylePath, BasePK createdBy) {
+    public Item createItem(final ExecutionErrorAccumulator eea, String itemName, final ItemType itemType, final ItemUseType itemUseType,
+            ItemCategory itemCategory, final ItemAccountingCategory itemAccountingCategory, final ItemPurchasingCategory itemPurchasingCategory,
+            final Party companyParty, final ItemDeliveryType itemDeliveryType, final ItemInventoryType itemInventoryType,
+            final Boolean inventorySerialized, final Sequence serialNumberSequence, final Boolean shippingChargeExempt,
+            final Long shippingStartTime, final Long shippingEndTime, final Long salesOrderStartTime, final Long salesOrderEndTime,
+            final Long purchaseOrderStartTime, final Long purchaseOrderEndTime, final Boolean allowClubDiscounts, final Boolean allowCouponDiscounts,
+            final Boolean allowAssociatePayments, final UnitOfMeasureKind unitOfMeasureKind, final ItemPriceType itemPriceType,
+            final CancellationPolicy cancellationPolicy, final ReturnPolicy returnPolicy, final StylePath stylePath, final BasePK createdBy) {
         var itemControl = (ItemControl) Session.getModelController(ItemControl.class);
         Item item = null;
         
@@ -147,7 +148,7 @@ public class ItemLogic
         return item;
     }
 
-    private String getItemName(final ExecutionErrorAccumulator eea, ItemCategory itemCategory) {
+    private String getItemName(final ExecutionErrorAccumulator eea, final ItemCategory itemCategory) {
         String itemName = null;
         var itemSequence = itemCategory.getLastDetail().getItemSequence();
         
