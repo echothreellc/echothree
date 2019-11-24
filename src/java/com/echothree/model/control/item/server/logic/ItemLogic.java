@@ -16,15 +16,21 @@
 
 package com.echothree.model.control.item.server.logic;
 
+import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.item.common.exception.DuplicateItemNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemNameOrAliasException;
+import com.echothree.model.control.item.common.exception.UnknownItemStatusChoiceException;
 import com.echothree.model.control.item.common.exception.UnknownItemTypeNameException;
 import com.echothree.model.control.item.common.exception.UnknownItemUseTypeNameException;
+import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.item.server.entity.Item;
@@ -34,6 +40,7 @@ import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.server.entity.Sequence;
@@ -63,7 +70,7 @@ public class ItemLogic
     
     public ItemType getItemTypeByName(final ExecutionErrorAccumulator eea, final String itemTypeName) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        ItemType itemType = itemControl.getItemTypeByName(itemTypeName);
+        var itemType = itemControl.getItemTypeByName(itemTypeName);
 
         if(itemType == null) {
             handleExecutionError(UnknownItemTypeNameException.class, eea, ExecutionErrors.UnknownItemTypeName.name(), itemTypeName);
@@ -74,7 +81,7 @@ public class ItemLogic
 
     public ItemUseType getItemUseTypeByName(final ExecutionErrorAccumulator eea, final String itemUseTypeName) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        ItemUseType itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
+        var itemUseType = itemControl.getItemUseTypeByName(itemUseTypeName);
 
         if(itemUseType == null) {
             handleExecutionError(UnknownItemUseTypeNameException.class, eea, ExecutionErrors.UnknownItemUseTypeName.name(), itemUseTypeName);
@@ -85,7 +92,7 @@ public class ItemLogic
 
     public Item getItemByName(final ExecutionErrorAccumulator eea, final String itemName) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        Item item = itemControl.getItemByName(itemName);
+        var item = itemControl.getItemByName(itemName);
 
         if(item == null) {
             handleExecutionError(UnknownItemNameException.class, eea, ExecutionErrors.UnknownItemName.name(), itemName);
@@ -96,7 +103,7 @@ public class ItemLogic
 
     public Item getItemByNameThenAlias(final ExecutionErrorAccumulator eea, final String itemNameOrAlias) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        Item item = itemControl.getItemByNameThenAlias(itemNameOrAlias);
+        var item = itemControl.getItemByNameThenAlias(itemNameOrAlias);
 
         if(item == null) {
             handleExecutionError(UnknownItemNameOrAliasException.class, eea, ExecutionErrors.UnknownItemNameOrAlias.name(), itemNameOrAlias);
@@ -112,7 +119,7 @@ public class ItemLogic
             Long purchaseOrderStartTime, Long purchaseOrderEndTime, Boolean allowClubDiscounts, Boolean allowCouponDiscounts, Boolean allowAssociatePayments,
             UnitOfMeasureKind unitOfMeasureKind, ItemPriceType itemPriceType, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy,
             StylePath stylePath, BasePK createdBy) {
-        ItemControl itemControl = (ItemControl) Session.getModelController(ItemControl.class);
+        var itemControl = (ItemControl) Session.getModelController(ItemControl.class);
         Item item = null;
         
         if(itemCategory == null) {
@@ -142,7 +149,7 @@ public class ItemLogic
 
     private String getItemName(final ExecutionErrorAccumulator eea, ItemCategory itemCategory) {
         String itemName = null;
-        Sequence itemSequence = itemCategory.getLastDetail().getItemSequence();
+        var itemSequence = itemCategory.getLastDetail().getItemSequence();
         
         if(itemSequence == null) {
             itemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceConstants.SequenceType_ITEM);
@@ -158,4 +165,57 @@ public class ItemLogic
         return itemName;
     }
 
+    public void setItemStatus(final Session session, final ExecutionErrorAccumulator eea, final Item item, final String itemStatusChoice, final PartyPK modifiedBy) {
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, ItemStatusConstants.Workflow_ITEM_STATUS);
+        var entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
+        var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
+        var workflowDestination = itemStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), itemStatusChoice);
+
+        if(workflowDestination != null || itemStatusChoice == null) {
+            var workflowDestinationLogic = WorkflowDestinationLogic.getInstance();
+            var currentWorkflowStepName = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName();
+            var map = workflowDestinationLogic.getWorkflowDestinationsAsMap(workflowDestination);
+            var handled = false;
+            Long triggerTime = null;
+            
+            if(currentWorkflowStepName.equals(ItemStatusConstants.WorkflowStep_ITEM_STATUS_ACTIVE)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, ItemStatusConstants.Workflow_ITEM_STATUS, ItemStatusConstants.WorkflowStep_ITEM_STATUS_DISCONTINUED)) {
+                    // TODO
+                    handled = true;
+                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, ItemStatusConstants.Workflow_ITEM_STATUS, ItemStatusConstants.WorkflowStep_ITEM_STATUS_CANCEL_IF_NOT_IN_STOCK)) {
+                    // TODO
+                    handled = true;
+                }
+            } else if(currentWorkflowStepName.equals(ItemStatusConstants.WorkflowStep_ITEM_STATUS_DISCONTINUED)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, ItemStatusConstants.Workflow_ITEM_STATUS, ItemStatusConstants.WorkflowStep_ITEM_STATUS_ACTIVE)) {
+                    // TODO
+                    handled = true;
+                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, ItemStatusConstants.Workflow_ITEM_STATUS, ItemStatusConstants.WorkflowStep_ITEM_STATUS_CANCEL_IF_NOT_IN_STOCK)) {
+                    // TODO
+                    handled = true;
+                }
+            } else if(currentWorkflowStepName.equals(ItemStatusConstants.WorkflowStep_ITEM_STATUS_CANCEL_IF_NOT_IN_STOCK)) {
+                if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, ItemStatusConstants.Workflow_ITEM_STATUS, ItemStatusConstants.WorkflowStep_ITEM_STATUS_ACTIVE)) {
+                    // TODO
+                    handled = true;
+                } else if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, ItemStatusConstants.Workflow_ITEM_STATUS, ItemStatusConstants.WorkflowStep_ITEM_STATUS_DISCONTINUED)) {
+                    // TODO
+                    handled = true;
+                }
+            }
+            
+            if(eea == null || !eea.hasExecutionErrors()) {
+                if(handled) {
+                    workflowControl.transitionEntityInWorkflow(eea, workflowEntityStatus, workflowDestination, triggerTime, modifiedBy);
+                } else {
+                    // TODO: An error of some sort.
+                }
+            }
+        } else {
+            handleExecutionError(UnknownItemStatusChoiceException.class, eea, ExecutionErrors.UnknownItemStatusChoice.name(), itemStatusChoice);
+        }
+    }
+    
 }

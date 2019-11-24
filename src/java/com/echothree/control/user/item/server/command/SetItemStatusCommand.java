@@ -18,6 +18,7 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.SetItemStatusForm;
 import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -37,9 +38,9 @@ public class SetItemStatusCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ItemStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+                ));
     }
     
     /** Creates a new instance of SetItemStatusCommand */
@@ -49,16 +50,12 @@ public class SetItemStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
         
-        if(item != null) {
+        if(!hasExecutionErrors()) {
             String itemStatusChoice = form.getItemStatusChoice();
-            
-            itemControl.setItemStatus(this, item, itemStatusChoice, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
+
+            ItemLogic.getInstance().setItemStatus(session, this, item, itemStatusChoice, getPartyPK());
         }
         
         return null;
