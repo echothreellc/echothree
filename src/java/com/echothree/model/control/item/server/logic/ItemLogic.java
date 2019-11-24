@@ -129,13 +129,12 @@ public class ItemLogic
         }
         
         if(!hasExecutionErrors(eea)) {
-            item = itemControl.createItem(itemName, itemType, itemUseType, itemCategory,
-                    itemAccountingCategory, itemPurchasingCategory, companyParty,
-                    itemDeliveryType, itemInventoryType, inventorySerialized, null, shippingChargeExempt,
-                    shippingStartTime, shippingEndTime, salesOrderStartTime, salesOrderEndTime,
-                    purchaseOrderStartTime, purchaseOrderEndTime, allowClubDiscounts, allowCouponDiscounts,
-                    allowAssociatePayments, unitOfMeasureKind, itemPriceType, cancellationPolicy,
-                    returnPolicy, null, createdBy);
+            item = itemControl.createItem(itemName, itemType, itemUseType, itemCategory, itemAccountingCategory,
+                    itemPurchasingCategory, companyParty, itemDeliveryType, itemInventoryType, inventorySerialized,
+                    serialNumberSequence, shippingChargeExempt, shippingStartTime, shippingEndTime, salesOrderStartTime,
+                    salesOrderEndTime, purchaseOrderStartTime, purchaseOrderEndTime, allowClubDiscounts, allowCouponDiscounts,
+                    allowAssociatePayments, unitOfMeasureKind, itemPriceType, cancellationPolicy, returnPolicy, stylePath,
+                    createdBy);
         }
             
         return item;
