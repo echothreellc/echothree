@@ -142,11 +142,14 @@ public class CreateSalesOrderLineCommand
                                 null, orderLineSequence, null, null, null, item, inventoryCondition, unitOfMeasureType, quantity,
                                 unitAmount, description, cancellationPolicy, returnPolicy, taxable, offerUse, associateReferral,
                                 getPartyPK());
-                        var orderLineDetail = orderLine.getLastDetail();
 
-                        result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());
-                        result.setOrderLineSequence(orderLineDetail.getOrderLineSequence().toString());
-                        result.setEntityRef(orderLine.getPrimaryKey().getEntityRef());
+                        if(!hasExecutionErrors()) {
+                            var orderLineDetail = orderLine.getLastDetail();
+
+                            result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());
+                            result.setOrderLineSequence(orderLineDetail.getOrderLineSequence().toString());
+                            result.setEntityRef(orderLine.getPrimaryKey().getEntityRef());
+                        }
                     }
                 } else {
                     addExecutionError(ExecutionErrors.InvalidParameterCount.name());

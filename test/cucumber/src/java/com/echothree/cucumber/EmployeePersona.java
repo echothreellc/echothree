@@ -16,6 +16,6 @@
 
 package com.echothree.cucumber;
 
-public class CustomerPersona extends BasePersona {
+public class EmployeePersona extends BasePersona {
 
 }

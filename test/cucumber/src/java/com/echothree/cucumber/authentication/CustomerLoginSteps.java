@@ -14,20 +14,21 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.authentication;
 
-import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;
+import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
+import com.echothree.cucumber.CustomerPersona;
+import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import javax.naming.NamingException;
 import java.util.Map;
-
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import javax.naming.NamingException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomerLoginSteps {
 
@@ -39,7 +40,7 @@ public class CustomerLoginSteps {
         }
     }
 
-    @Given("^([^\"]*) is currently logged in")
+    @Given("^the customer ([^\"]*) is currently logged in")
     public void customerIsCurrentlyLoggedIn(String persona)
             throws NamingException {
         CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
@@ -47,7 +48,7 @@ public class CustomerLoginSteps {
         assertThat(customerPersona).isNotNull();
     }
 
-    @Given("^([^\"]*) is not currently logged in")
+    @Given("^the customer ([^\"]*) is not currently logged in")
     public void customerIsNotCurrentlyLoggedIn(String persona)
             throws NamingException {
         CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
@@ -71,16 +72,7 @@ public class CustomerLoginSteps {
         customerLoginForm.setPassword(password);
         customerLoginForm.setRemoteInet4Address("0.0.0.0");
 
-        customerPersona.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
+        LastCommandResult.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
     }
 
-    @Then("^no error should occur$")
-    public void noErrorShouldOccur() {
-        assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isFalse();
-    }
-
-    @Then("^an error should occur$")
-    public void anErrorShouldOccur() {
-        assertThat(CustomerPersonas.lastCustomerPersona.commandResult.hasErrors()).isTrue();
-    }
 }

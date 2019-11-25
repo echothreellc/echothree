@@ -27,28 +27,27 @@ import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyC
 import com.echothree.model.control.cancellationpolicy.server.CancellationPolicyControl;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
-import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.model.data.item.server.value.ItemDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import java.util.Arrays;
@@ -58,10 +57,18 @@ import java.util.List;
 public class EditItemCommand
         extends BaseAbstractEditCommand<ItemSpec, ItemEdit, EditItemResult, Item, Item> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemCategory.name(), SecurityRoles.Edit.name())
+                        )))
+                )));
+
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
                 ));
@@ -88,7 +95,7 @@ public class EditItemCommand
     
     /** Creates a new instance of EditItemCommand */
     public EditItemCommand(UserVisitPK userVisitPK, EditItemForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override
@@ -104,8 +111,8 @@ public class EditItemCommand
     @Override
     public Item getEntity(EditItemResult result) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        Item item = null;
-        String itemName = spec.getItemName();
+        Item item;
+        var itemName = spec.getItemName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             item = itemControl.getItemByName(itemName);
@@ -136,10 +143,10 @@ public class EditItemCommand
 
     @Override
     public void doLock(ItemEdit edit, Item item) {
-        DateUtils dateUtils = DateUtils.getInstance();
-        ItemDetail itemDetail = item.getLastDetail();
-        UserVisit userVisit = getUserVisit();
-        DateTimeFormat preferredDateTimeFormat = getPreferredDateTimeFormat();
+        var dateUtils = DateUtils.getInstance();
+        var itemDetail = item.getLastDetail();
+        var userVisit = getUserVisit();
+        var preferredDateTimeFormat = getPreferredDateTimeFormat();
 
         itemAccountingCategory = itemDetail.getItemAccountingCategory();
         itemPurchasingCategory = itemDetail.getItemPurchasingCategory();
@@ -175,17 +182,17 @@ public class EditItemCommand
     @Override
     public void canUpdate(Item item) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        String itemName = edit.getItemName();
-        Item duplicateItem = itemControl.getItemByName(itemName);
+        var itemName = edit.getItemName();
+        var duplicateItem = itemControl.getItemByName(itemName);
 
         if(duplicateItem == null || item.equals(duplicateItem)) {
-            String itemCategoryName = edit.getItemCategoryName();
-            String itemTypeName = item.getLastDetail().getItemType().getItemTypeName();
+            var itemCategoryName = edit.getItemCategoryName();
+            var itemTypeName = item.getLastDetail().getItemType().getItemTypeName();
 
             itemCategory = itemControl.getItemCategoryByName(itemCategoryName);
 
             if(itemCategory != null) {
-                String itemAccountingCategoryName = edit.getItemAccountingCategoryName();
+                var itemAccountingCategoryName = edit.getItemAccountingCategoryName();
 
                 isKit = itemTypeName.equals(ItemConstants.ItemType_KIT);
 
@@ -206,7 +213,7 @@ public class EditItemCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    String itemPurchasingCategoryName = edit.getItemPurchasingCategoryName();
+                    var itemPurchasingCategoryName = edit.getItemPurchasingCategoryName();
 
                     if(isKit) {
                         if(itemPurchasingCategoryName != null) {
@@ -225,21 +232,21 @@ public class EditItemCommand
                     }
 
                     if(!hasExecutionErrors()) {
-                        String cancellationPolicyName = edit.getCancellationPolicyName();
+                        var cancellationPolicyName = edit.getCancellationPolicyName();
 
                         if(cancellationPolicyName != null) {
                             var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
-                            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
+                            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
 
                             cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
                         }
 
                         if(cancellationPolicyName == null || cancellationPolicy != null) {
-                            String returnPolicyName = edit.getReturnPolicyName();
+                            var returnPolicyName = edit.getReturnPolicyName();
 
                             if(returnPolicyName != null) {
                                 var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
-                                ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+                                var returnKind = returnPolicyControl.getReturnKindByName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
 
                                 returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                             }
@@ -263,24 +270,24 @@ public class EditItemCommand
     @Override
     public void doUpdate(Item item) {
         var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        PartyPK partyPK = getPartyPK();
-        ItemDetailValue itemDetailValue = itemControl.getItemDetailValueForUpdate(item);
-        Boolean shippingChargeExempt = Boolean.valueOf(edit.getShippingChargeExempt());
-        String strShippingStartTime = edit.getShippingStartTime();
-        Long shippingStartTime = strShippingStartTime == null? session.START_TIME_LONG: Long.valueOf(strShippingStartTime);
-        String strShippingEndTime = edit.getShippingEndTime();
-        Long shippingEndTime = strShippingEndTime == null? null: Long.valueOf(strShippingEndTime);
-        String strSalesOrderStartTime = edit.getSalesOrderStartTime();
-        Long salesOrderStartTime = strSalesOrderStartTime == null? session.START_TIME_LONG: Long.valueOf(strSalesOrderStartTime);
-        String strSalesOrderEndTime = edit.getSalesOrderEndTime();
-        Long salesOrderEndTime = strSalesOrderEndTime == null? null: Long.valueOf(strSalesOrderEndTime);
-        String strPurchaseOrderStartTime = edit.getPurchaseOrderStartTime();
-        Long purchaseOrderStartTime = isKit? null: strPurchaseOrderStartTime == null? session.START_TIME_LONG: Long.valueOf(strPurchaseOrderStartTime);
-        String strPurchaseOrderEndTime = edit.getPurchaseOrderEndTime();
-        Long purchaseOrderEndTime = isKit? null: strPurchaseOrderEndTime == null? null: Long.valueOf(strPurchaseOrderEndTime);
-        Boolean allowClubDiscounts = Boolean.valueOf(edit.getAllowClubDiscounts());
-        Boolean allowCouponDiscounts = Boolean.valueOf(edit.getAllowCouponDiscounts());
-        Boolean allowAssociatePayments = Boolean.valueOf(edit.getAllowAssociatePayments());
+        var partyPK = getPartyPK();
+        var itemDetailValue = itemControl.getItemDetailValueForUpdate(item);
+        var shippingChargeExempt = Boolean.valueOf(edit.getShippingChargeExempt());
+        var strShippingStartTime = edit.getShippingStartTime();
+        var shippingStartTime = strShippingStartTime == null? session.START_TIME_LONG: Long.valueOf(strShippingStartTime);
+        var strShippingEndTime = edit.getShippingEndTime();
+        var shippingEndTime = strShippingEndTime == null? null: Long.valueOf(strShippingEndTime);
+        var strSalesOrderStartTime = edit.getSalesOrderStartTime();
+        var salesOrderStartTime = strSalesOrderStartTime == null? session.START_TIME_LONG: Long.valueOf(strSalesOrderStartTime);
+        var strSalesOrderEndTime = edit.getSalesOrderEndTime();
+        var salesOrderEndTime = strSalesOrderEndTime == null? null: Long.valueOf(strSalesOrderEndTime);
+        var strPurchaseOrderStartTime = edit.getPurchaseOrderStartTime();
+        var purchaseOrderStartTime = isKit? null: strPurchaseOrderStartTime == null? session.START_TIME_LONG: Long.valueOf(strPurchaseOrderStartTime);
+        var strPurchaseOrderEndTime = edit.getPurchaseOrderEndTime();
+        var purchaseOrderEndTime = isKit? null: strPurchaseOrderEndTime == null? null: Long.valueOf(strPurchaseOrderEndTime);
+        var allowClubDiscounts = Boolean.valueOf(edit.getAllowClubDiscounts());
+        var allowCouponDiscounts = Boolean.valueOf(edit.getAllowCouponDiscounts());
+        var allowAssociatePayments = Boolean.valueOf(edit.getAllowAssociatePayments());
 
         itemDetailValue.setItemName(edit.getItemName());
         itemDetailValue.setItemCategoryPK(itemCategory.getPrimaryKey());

@@ -17,15 +17,18 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.SetItemStatusForm;
-import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,32 +36,36 @@ import java.util.List;
 public class SetItemStatusCommand
         extends BaseSimpleCommand<SetItemStatusForm> {
     
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemCategory.name(), SecurityRoles.Choices.name())
+                        )))
+                )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ItemStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemStatusChoice", FieldType.ENTITY_NAME, true, null, null)
+                ));
     }
     
     /** Creates a new instance of SetItemStatusCommand */
     public SetItemStatusCommand(UserVisitPK userVisitPK, SetItemStatusForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
         
-        if(item != null) {
-            String itemStatusChoice = form.getItemStatusChoice();
-            
-            itemControl.setItemStatus(this, item, itemStatusChoice, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
+        if(!hasExecutionErrors()) {
+            var itemStatusChoice = form.getItemStatusChoice();
+
+            ItemLogic.getInstance().setItemStatus(session, this, item, itemStatusChoice, getPartyPK());
         }
         
         return null;

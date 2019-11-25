@@ -14,26 +14,29 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.user;
 
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredLanguageForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredCurrencyForm;
+import com.echothree.cucumber.CustomerPersona;
+import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.cucumber.LastCommandResult;
 import cucumber.api.java.en.When;
 import javax.naming.NamingException;
 
-public class PreferredLanguageSteps {
+public class PreferredCurrencySteps {
 
-    @When("^the customer ([^\"]*) sets their preferred language to \"([^\"]*)\"$")
-    public void theCustomerSetsTheirPreferredLanguageTo(String persona, String languageIsoName)
+    @When("^the customer ([^\"]*) sets their preferred currency to \"([^\"]*)\"$")
+    public void theCustomerSetsTheirPreferredCurrencyTo(String persona, String currencyIsoName)
             throws NamingException {
         UserService userService = UserUtil.getHome();
-        SetUserVisitPreferredLanguageForm userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
+        SetUserVisitPreferredCurrencyForm userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();
         CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        userVisitPreferredLanguageForm.setLanguageIsoName(languageIsoName);
+        userVisitPreferredCurrencyForm.setCurrencyIsoName(currencyIsoName);
 
-        customerPersona.commandResult = userService.setUserVisitPreferredLanguage(customerPersona.userVisitPK,
-                userVisitPreferredLanguageForm);
+        LastCommandResult.commandResult = userService.setUserVisitPreferredCurrency(customerPersona.userVisitPK,
+                userVisitPreferredCurrencyForm);
     }
 }

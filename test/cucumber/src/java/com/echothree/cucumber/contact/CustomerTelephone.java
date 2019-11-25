@@ -21,6 +21,7 @@ import com.echothree.control.user.contact.common.result.CreateContactTelephoneRe
 import com.echothree.control.user.contact.common.result.EditContactTelephoneResult;
 import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import cucumber.api.java.en.When;
@@ -58,7 +59,7 @@ public class CustomerTelephone {
 
         var commandResult = contactService.createContactTelephone(customerPersona.userVisitPK, createContactTelephoneForm);
 
-        customerPersona.commandResult = commandResult;
+        LastCommandResult.commandResult = commandResult;
         var result = (CreateContactTelephoneResult) commandResult.getExecutionResult().getResult();
 
         customerPersona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
@@ -110,7 +111,7 @@ public class CustomerTelephone {
             commandResult = ContactUtil.getHome().editContactTelephone(customerPersona.userVisitPK, commandForm);
         }
 
-        customerPersona.commandResult = commandResult;
+        LastCommandResult.commandResult = commandResult;
     }
 
     @When("^the customer ([^\"]*) deletes the last telephone added$")
@@ -122,7 +123,7 @@ public class CustomerTelephone {
 
         deleteContactTelephoneForm.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
 
-        customerPersona.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
+        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
     }
 
 }

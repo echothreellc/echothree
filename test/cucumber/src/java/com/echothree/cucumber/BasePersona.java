@@ -16,6 +16,25 @@
 
 package com.echothree.cucumber;
 
-public class CustomerPersona extends BasePersona {
+import com.echothree.model.data.user.common.pk.UserVisitPK;
+
+public class BasePersona {
+
+    public String persona;
+    public UserVisitPK userVisitPK;
+
+    // Contact
+    public String lastEmailAddressContactMechanismName;
+    public String lastPostalAddressContactMechanismName;
+    public String lastTelephoneContactMechanismName;
+    public String lastWebAddressContactMechanismName;
+
+    // Item
+    public String lastItemName;
+
+    // Sales
+    public String lastSalesOrderBatchName;
+    public String lastSalesOrderName;
+    public String lastSalesOrderLineSequence;
 
 }

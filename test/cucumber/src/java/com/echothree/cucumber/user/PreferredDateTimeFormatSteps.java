@@ -14,26 +14,29 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.cucumber;
+package com.echothree.cucumber.user;
 
 import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZoneForm;
+import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTimeFormatForm;
+import com.echothree.cucumber.CustomerPersona;
+import com.echothree.cucumber.CustomerPersonas;
+import com.echothree.cucumber.LastCommandResult;
 import cucumber.api.java.en.When;
 import javax.naming.NamingException;
 
-public class PreferredTimeZoneFormatSteps {
+public class PreferredDateTimeFormatSteps {
 
-    @When("^the customer ([^\"]*) sets their preferred time zone to \"([^\"]*)\"$")
-    public void theCustomerSetsTheirPreferredTimeZoneTo(String persona, String javaTimeZoneName)
+    @When("^the customer ([^\"]*) sets their preferred date time format to \"([^\"]*)\"$")
+    public void theCustomerSetsTheirPreferredDateTimeFormatTo(String persona, String dateTimeFormatName)
             throws NamingException {
         UserService userService = UserUtil.getHome();
-        SetUserVisitPreferredTimeZoneForm userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
+        SetUserVisitPreferredDateTimeFormatForm userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();
         CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
+        userVisitPreferredDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);
 
-        customerPersona.commandResult = userService.setUserVisitPreferredTimeZone(customerPersona.userVisitPK,
-                userVisitPreferredTimeZoneForm);
+        LastCommandResult.commandResult = userService.setUserVisitPreferredDateTimeFormat(customerPersona.userVisitPK,
+                userVisitPreferredDateTimeFormatForm);
     }
 }
