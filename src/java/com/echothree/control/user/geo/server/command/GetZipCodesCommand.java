@@ -18,29 +18,28 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetZipCodesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetZipCodesResult;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetZipCodesCommand
-        extends BaseSimpleCommand<GetZipCodesForm> {
+        extends BaseMultipleEntitiesCommand<GeoCode, GetZipCodesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,6 +47,8 @@ public class GetZipCodesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.ZipCode.name(), SecurityRoles.List.name())
                         )))
@@ -57,29 +58,44 @@ public class GetZipCodesCommand
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
-    
+
     /** Creates a new instance of GetZipCodesCommand */
     public GetZipCodesCommand(UserVisitPK userVisitPK, GetZipCodesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    GeoCode countryGeoCode;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<GeoCode> getEntities() {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        GetZipCodesResult result = GeoResultFactory.getGetZipCodesResult();
-        String countryName = form.getCountryName();
-        GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
-        
+        var countryName = form.getCountryName();
+        Collection<GeoCode> postalCodeGeoCodes = null;
+
+        countryGeoCode = geoControl.getCountryByAlias(countryName);
+
         if(countryGeoCode != null) {
-            UserVisit userVisit = getUserVisit();
-            
-            result.setCountry(geoControl.getCountryTransfer(userVisit, countryGeoCode));
-            result.setPostalCodes(geoControl.getPostalCodeTransfersByCountry(getUserVisit(), countryGeoCode));
+            postalCodeGeoCodes = geoControl.getPostalCodesByCountry(countryGeoCode);
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
-        
+
+        return postalCodeGeoCodes;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<GeoCode> entities) {
+        var result = GeoResultFactory.getGetZipCodesResult();
+
+        if(entities != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var userVisit = getUserVisit();
+
+            result.setCountry(geoControl.getCountryTransfer(userVisit, countryGeoCode));
+            result.setPostalCodes(geoControl.getPostalCodeTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }

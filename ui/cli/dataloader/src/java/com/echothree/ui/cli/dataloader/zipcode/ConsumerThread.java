@@ -88,8 +88,9 @@ public class ConsumerThread
             CommandResult commandResult = zipCodeParser.getGeoService().getZipCode(getUserVisit(), getZipCodeForm);
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetZipCodeResult getZipCodeResult = (GetZipCodeResult)executionResult.getResult();
-            zipCodeGeoCodeName = getZipCodeResult.getGeoCodeName();
-            
+            var postalCode = getZipCodeResult.getPostalCode();
+            zipCodeGeoCodeName = postalCode == null ? null : postalCode.getGeoCodeName();
+
             if(zipCodeGeoCodeName == null) {
                 CreateZipCodeForm createZipCodeForm = GeoFormFactory.getCreateZipCodeForm();
                 
@@ -141,7 +142,8 @@ public class ConsumerThread
                 CommandResult commandResult = zipCodeParser.getGeoService().getCounty(getUserVisit(), getCountyForm);
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 GetCountyResult getCountyResult = (GetCountyResult)executionResult.getResult();
-                countyGeoCodeName = getCountyResult.getGeoCodeName();
+                var country = getCountyResult.getCounty();
+                countyGeoCodeName = country == null ? null : country.getGeoCodeName();
                 
                 if(countyGeoCodeName == null) {
                     CreateCountyForm createCountyForm = GeoFormFactory.getCreateCountyForm();
@@ -174,7 +176,6 @@ public class ConsumerThread
     private String loadCity(String stateGeoCodeName, ZipCodeData zipCodeData) {
         String description = zipCodeData.getCityStateName();
         String cityName = StringUtils.getInstance().cleanStringToName(description);
-        String cityGeoCodeName = null;
         Map citiesByState = (Map)zipCodeParser.getCityGeoCodeNames().get(stateGeoCodeName);
         
         if(citiesByState == null) {
@@ -182,7 +183,7 @@ public class ConsumerThread
             zipCodeParser.getCityGeoCodeNames().put(stateGeoCodeName, citiesByState);
         }
         
-        cityGeoCodeName = (String)citiesByState.get(cityName);
+        var cityGeoCodeName = (String)citiesByState.get(cityName);
         
         if(cityGeoCodeName == null) {
             GetCityForm getCityForm = GeoFormFactory.getGetCityForm();
@@ -193,7 +194,8 @@ public class ConsumerThread
             CommandResult commandResult = zipCodeParser.getGeoService().getCity(getUserVisit(), getCityForm);
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetCityResult getCityResult = (GetCityResult)executionResult.getResult();
-            cityGeoCodeName = getCityResult.getGeoCodeName();
+            var city = getCityResult.getCity();
+            cityGeoCodeName = city == null ? null : city.getGeoCodeName();
             
             if(cityGeoCodeName == null) {
                 CreateCityForm createCityForm = GeoFormFactory.getCreateCityForm();
@@ -234,7 +236,8 @@ public class ConsumerThread
             CommandResult commandResult = zipCodeParser.getGeoService().getState(getUserVisit(), getStateForm);
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetStateResult getStateResult = (GetStateResult)executionResult.getResult();
-            stateGeoCodeName = getStateResult.getGeoCodeName();
+            var state = getStateResult.getState();
+            stateGeoCodeName = state == null ? null : state.getGeoCodeName();
             
             if(stateGeoCodeName != null) {
                 zipCodeParser.getLog().info("put postal2Letter = " + postal2Letter + ", stateGeoCodeName = " + stateGeoCodeName);

@@ -23,6 +23,8 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
+import com.echothree.model.control.geo.server.logic.GeoCodeScopeLogic;
+import com.echothree.model.control.geo.server.logic.GeoCodeTypeLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -98,16 +100,18 @@ public class CreateCountryCommand
 
     @Override
     protected BaseResult execute() {
-        CreateCountryResult result = GeoResultFactory.getCreateCountryResult();
+        var geoCodeTypeLogic = GeoCodeTypeLogic.getInstance();
+        var result = GeoResultFactory.getCreateCountryResult();
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        GeoCodeLogic geoCodeLogic = GeoCodeLogic.getInstance();
         GeoCode geoCode = null;
-        GeoCodeType geoCodeType = geoCodeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
+        GeoCodeType geoCodeType = geoCodeTypeLogic.getGeoCodeTypeByName(this, GeoConstants.GeoCodeType_COUNTRY);
 
         if(!hasExecutionErrors()) {
-            GeoCodeScope geoCodeScope = geoCodeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
+            var geoCodeScopeLogic = GeoCodeScopeLogic.getInstance();
+            GeoCodeScope geoCodeScope = geoCodeScopeLogic.getGeoCodeScopeByName(this, GeoConstants.GeoCodeScope_COUNTRIES);
 
             if(!hasExecutionErrors()) {
+                var geoCodeLogic = GeoCodeLogic.getInstance();
                 String iso3Number = form.getIso3Number();
 
                 geoCode = geoCodeLogic.getGeoCodeByAlias(this, geoCodeType, geoCodeScope, GeoConstants.GeoCodeAliasType_ISO_3_NUMBER, iso3Number);

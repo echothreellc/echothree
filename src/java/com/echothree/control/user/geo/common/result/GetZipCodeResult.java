@@ -16,15 +16,13 @@
 
 package com.echothree.control.user.geo.common.result;
 
+import com.echothree.model.control.geo.common.transfer.PostalCodeTransfer;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetZipCodeResult
         extends BaseResult {
     
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
-    String getGeoCodeName();
-    void setGeoCodeName(String geoCodeName);
+    PostalCodeTransfer getPostalCode();
+    void setPostalCode(PostalCodeTransfer postalCode);
     
 }

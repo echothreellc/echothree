@@ -18,7 +18,6 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetCountyForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetCountyResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.GeoControl;
@@ -27,29 +26,23 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
-import com.echothree.model.data.geo.server.entity.GeoCodeScope;
-import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public class GetCountyCommand
-        extends BaseSimpleCommand<GetCountyForm> {
+        extends BaseSingleEntityCommand<GeoCode, GetCountyForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,6 +50,8 @@ public class GetCountyCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.County.name(), SecurityRoles.Review.name())
                         )))
@@ -65,7 +60,7 @@ public class GetCountyCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("StateGeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CountyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("CountyNumber", FieldType.NUMBER_3, Boolean.FALSE, null, null)
+                new FieldDefinition("CountyNumber", FieldType.NUMBER_3, false, null, null)
                 ));
     }
     
@@ -73,73 +68,69 @@ public class GetCountyCommand
     public GetCountyCommand(UserVisitPK userVisitPK, GetCountyForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetCountyResult result = GeoResultFactory.getGetCountyResult();
-        String countyName = form.getCountyName();
-        String countyNumber = form.getCountyNumber();
-        int parameterCount = (countyName == null? 0: 1) + (countyNumber == null? 0: 1);
-        
+    protected GeoCode getEntity() {
+        GeoCode geoCode = null;
+        var countyName = form.getCountyName();
+        var countyNumber = form.getCountyNumber();
+        var parameterCount = (countyName == null? 0: 1) + (countyNumber == null? 0: 1);
+
         if(parameterCount == 1) {
             var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-            BasePK createdBy = getPartyPK();
-            
-            String stateGeoCodeName = form.getStateGeoCodeName();
-            GeoCode stateGeoCode = geoControl.getGeoCodeByName(stateGeoCodeName);
-            
-            GeoCodeAliasType stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
-            GeoCodeAlias stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
-            String statePostal2Letter = stateGeoCodeAlias.getAlias();
-            
-            GeoCodeType countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
+            var createdBy = getPartyPK();
+
+            var stateGeoCodeName = form.getStateGeoCodeName();
+            var stateGeoCode = geoControl.getGeoCodeByName(stateGeoCodeName);
+
+            var stateGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_POSTAL_2_LETTER);
+            var stateGeoCodeAlias = geoControl.getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
+            var statePostal2Letter = stateGeoCodeAlias.getAlias();
+
+            var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTRY);
             GeoCode countryGeoCode = null;
-            Collection stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
-            for(Iterator iter = stateRelationships.iterator(); iter.hasNext();) {
-                GeoCodeRelationship geoCodeRelationship = (GeoCodeRelationship)iter.next();
+            var stateRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
+            for(GeoCodeRelationship geoCodeRelationship : stateRelationships) {
                 GeoCode toGeoCode = geoCodeRelationship.getToGeoCode();
                 if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                     countryGeoCode = toGeoCode;
                     break;
                 }
             }
-            
-            GeoCodeAliasType countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
-            GeoCodeAlias countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
-            String countryIso2Letter = countryGeoCodeAlias.getAlias();
-            
-            String geoCodeScopeName = new StringBuilder().append(countryIso2Letter).append("_").append(statePostal2Letter).append("_COUNTIES").toString();
-            GeoCodeScope geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
+
+            var countryGeoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoConstants.GeoCodeAliasType_ISO_2_LETTER);
+            var countryGeoCodeAlias = geoControl.getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
+            var countryIso2Letter = countryGeoCodeAlias.getAlias();
+
+            var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_COUNTIES";
+            var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
             if(geoCodeScope == null) {
                 geoCodeScope = geoControl.createGeoCodeScope(geoCodeScopeName, Boolean.FALSE, 0, createdBy);
             }
-            
+
             if(geoCodeScope != null) {
-                GeoCodeType geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTY);
-                GeoCodeAlias geoCodeAlias = null;
-                
+                var geoCodeType = geoControl.getGeoCodeTypeByName(GeoConstants.GeoCodeType_COUNTY);
+                GeoCodeAlias geoCodeAlias;
+
                 if(countyName != null) {
-                    GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NAME);
+                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NAME);
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countyName);
-                    
+
                     if(geoCodeAlias == null) {
                         addExecutionError(ExecutionErrors.UnknownCountyName.name(), countyName);
                     }
-                } else if(countyNumber != null) {
-                    GeoCodeAliasType geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NUMBER);
+                } else {
+                    var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, GeoConstants.GeoCodeAliasType_COUNTY_NUMBER);
                     geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countyNumber);
-                    
+
                     if(geoCodeAlias == null) {
                         addExecutionError(ExecutionErrors.UnknownCountyNumber.name());
                     }
                 }
-                
+
                 if(geoCodeAlias != null) {
-                    GeoCode geoCode = geoCodeAlias.getGeoCode();
-                    
-                    result.setEntityRef(geoCode.getPrimaryKey().getEntityRef());
-                    result.setGeoCodeName(geoCode.getLastDetail().getGeoCodeName());
-                    
+                    geoCode = geoCodeAlias.getGeoCode();
+
                     sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, createdBy);
                 }
             } else {
@@ -148,8 +139,21 @@ public class GetCountyCommand
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return geoCode;
+    }
+
+    @Override
+    protected BaseResult getTransfer(GeoCode entity) {
+        var result = GeoResultFactory.getGetCountyResult();
+
+        if(entity != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+
+            result.setCounty(geoControl.getCountyTransfer(getUserVisit(), entity));
+        }
+
         return result;
     }
-    
+
 }

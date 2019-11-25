@@ -18,29 +18,28 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetCitiesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetCitiesResult;
 import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetCitiesCommand
-        extends BaseSimpleCommand<GetCitiesForm> {
+        extends BaseMultipleEntitiesCommand<GeoCode, GetCitiesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,6 +47,8 @@ public class GetCitiesCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
                 new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.City.name(), SecurityRoles.List.name())
                         )))
@@ -63,31 +64,46 @@ public class GetCitiesCommand
     public GetCitiesCommand(UserVisitPK userVisitPK, GetCitiesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    GeoCode stateGeoCode;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<GeoCode> getEntities() {
         var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
-        GetCitiesResult result = GeoResultFactory.getGetCitiesResult();
-        String countryName = form.getCountryName();
-        GeoCode countryGeoCode = geoControl.getCountryByAlias(countryName);
-        
+        var countryName = form.getCountryName();
+        var countryGeoCode = geoControl.getCountryByAlias(countryName);
+        Collection<GeoCode> cityGeoCodes = null;
+
         if(countryGeoCode != null) {
-            String stateName = form.getStateName();
-            GeoCode stateGeoCode = geoControl.getStateByAlias(countryGeoCode, stateName);
-            
+            var stateName = form.getStateName();
+
+            stateGeoCode = geoControl.getStateByAlias(countryGeoCode, stateName);
+
             if(stateGeoCode != null) {
-                UserVisit userVisit = getUserVisit();
-                
-                result.setState(geoControl.getStateTransfer(userVisit, stateGeoCode));
-                result.setCities(geoControl.getCityTransfersByState(getUserVisit(), stateGeoCode));
+                cityGeoCodes = geoControl.getCitiesByState(stateGeoCode);
             } else {
                 addExecutionError(ExecutionErrors.UnknownStateName.name(), stateName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
-        
+
+        return cityGeoCodes;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<GeoCode> entities) {
+        var result = GeoResultFactory.getGetCitiesResult();
+
+        if(entities != null) {
+            var geoControl = (GeoControl)Session.getModelController(GeoControl.class);
+            var userVisit = getUserVisit();
+
+            result.setState(geoControl.getStateTransfer(userVisit, stateGeoCode));
+            result.setCities(geoControl.getCityTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
