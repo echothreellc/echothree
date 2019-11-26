@@ -66,4 +66,12 @@ public class SalesOrderLineSteps {
         createSalesOrderLine(employeePersona, employeePersona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null, null);
     }
 
+    @When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to a new sales order$")
+    public void theEmployeeAddsToANewSalesOrder(String persona, String quantity, String itemName)
+            throws NamingException {
+        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+        createSalesOrderLine(employeePersona, null, null, itemName, null, null, quantity, null, null, null, null, null, null, null);
+    }
+
 }

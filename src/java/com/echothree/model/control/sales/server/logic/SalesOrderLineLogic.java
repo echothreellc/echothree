@@ -52,6 +52,7 @@ import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
+import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -64,12 +65,14 @@ import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.sales.common.SalesOrderConstants;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.crypto.spec.PSource;
 
 public class SalesOrderLineLogic
         extends OrderLineLogic {
@@ -88,8 +91,10 @@ public class SalesOrderLineLogic
 
     /**
      * 
+     * @param session Required.
      * @param eea Optional.
-     * @param order Required.
+     * @param userVisit Required.
+     * @param order Optional.
      * @param orderShipmentGroup Optional.
      * @param orderShipmentGroupSequence Optional.
      * @param orderLineSequence Optional.
@@ -105,19 +110,26 @@ public class SalesOrderLineLogic
      * @param taxable Optional.
      * @param offerUse Optional.
      * @param associateReferral Optional.
-     * @param createdBy Required.
+     * @param createdByParty Required.
      * @return The newly created OrderLine, otherwise null if there was an error.
      */
-    public OrderLine createSalesOrderLine(final Session session, final ExecutionErrorAccumulator eea, final Order order, OrderShipmentGroup orderShipmentGroup,
-            final Integer orderShipmentGroupSequence, Integer orderLineSequence, final OrderLine parentOrderLine,
-            PartyContactMechanism partyContactMechanism, ShippingMethod shippingMethod, final Item item,
+    public OrderLine createSalesOrderLine(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit,
+            Order order, OrderShipmentGroup orderShipmentGroup, final Integer orderShipmentGroupSequence, Integer orderLineSequence,
+            final OrderLine parentOrderLine, PartyContactMechanism partyContactMechanism, ShippingMethod shippingMethod, final Item item,
             InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, final Long quantity, Long unitAmount,
             final String description, CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, Boolean taxable, OfferUse offerUse,
-            final AssociateReferral associateReferral, final PartyPK createdBy) {
+            final AssociateReferral associateReferral, final Party createdByParty) {
         var salesOrderLogic = SalesOrderLogic.getInstance();
+        var createdByPartyPK = createdByParty.getPrimaryKey();
         OrderLine orderLine = null;
 
-        salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdBy);
+        // Create a new Sales Order if there was not one supplied. Defaults will be used for nearly all options.
+        if(order == null) {
+            order = SalesOrderLogic.getInstance().createSalesOrder(session, eea, userVisit, (Batch)null, null, null,
+                    null, null, null, null, null, null, null, null, null, null, createdByParty);
+        }
+
+        salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdByPartyPK);
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
@@ -143,7 +155,7 @@ public class SalesOrderLineLogic
 
                     if(orderShipmentGroup == null) {
                         var holdUntilComplete = order.getLastDetail().getHoldUntilComplete();
-                        var orderShipToParty = salesOrderLogic.getOrderShipToParty(order, true, createdBy);
+                        var orderShipToParty = salesOrderLogic.getOrderShipToParty(order, true, createdByPartyPK);
 
                         // If partyContactMechanism is null, attempt to get from SHIP_TO party for the order.
                         // If no SHIP_TO party exists, try to copy from the BILL_TO party.
@@ -156,7 +168,7 @@ public class SalesOrderLineLogic
 
                         orderShipmentGroup = salesOrderLogic.createSalesOrderShipmentGroup(session, eea, order,
                                 orderShipmentGroupSequence, itemDeliveryType, Boolean.TRUE, partyContactMechanism,
-                                shippingMethod, holdUntilComplete, createdBy);
+                                shippingMethod, holdUntilComplete, createdByPartyPK);
                     } else {
                         var orderShipmentGroupDetail = orderShipmentGroup.getLastDetail();
 
@@ -338,10 +350,10 @@ public class SalesOrderLineLogic
                     }
 
                     orderLine = createOrderLine(session, eea, order, orderLineSequence, parentOrderLine, orderShipmentGroup, item, inventoryCondition,
-                            unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable, createdBy);
+                            unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable, createdByPartyPK);
 
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        salesControl.createSalesOrderLine(orderLine, offerUse, associateReferral, createdBy);
+                        salesControl.createSalesOrderLine(orderLine, offerUse, associateReferral, createdByPartyPK);
                     }
                 }
             }
@@ -354,8 +366,8 @@ public class SalesOrderLineLogic
             final String orderName, final String itemName, final String inventoryConditionName, final String cancellationPolicyName,
             final String returnPolicyName, final String unitOfMeasureTypeName, final String offerName, final String useName,
             final String strOrderLineSequence, final String strQuantity, final String strUnitAmount, final String description,
-            final String strTaxable, final PartyPK createdByPartyPK) {
-        var order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
+            final String strTaxable, final Party createdByParty) {
+        var order = orderName == null ? null : SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
         var item = ItemLogic.getInstance().getItemByNameThenAlias(eea, itemName);
         var inventoryCondition = inventoryConditionName == null ? null : InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
         var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(eea, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION, cancellationPolicyName);
@@ -384,10 +396,10 @@ public class SalesOrderLineLogic
                         var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
                         AssociateReferral associateReferral = null;
 
-                        orderLine = createSalesOrderLine(session, eea, order, null,
+                        orderLine = createSalesOrderLine(session, eea, userVisit, order, null,
                                 null, orderLineSequence, null, null, null, item, inventoryCondition, unitOfMeasureType, quantity,
                                 unitAmount, description, cancellationPolicy, returnPolicy, taxable, offerUse, associateReferral,
-                                createdByPartyPK);
+                                createdByParty);
                     }
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());

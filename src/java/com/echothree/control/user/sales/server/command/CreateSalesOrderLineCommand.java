@@ -68,7 +68,7 @@ public class CreateSalesOrderLineCommand
                 )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OrderName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("OrderName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("OrderLineSequence", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, false, null, null),
@@ -118,7 +118,7 @@ public class CreateSalesOrderLineCommand
 
         var orderLine = SalesOrderLineLogic.getInstance().createOrderLine(session, this, getUserVisit(), orderName,
                 itemName, inventoryConditionName, cancellationPolicyName, returnPolicyName, unitOfMeasureTypeName, offerName,
-                useName, orderLineSequence, quantity, unitAmount, description, taxable, getPartyPK());
+                useName, orderLineSequence, quantity, unitAmount, description, taxable, getParty());
 
         if(!hasExecutionErrors()) {
             var orderLineDetail = orderLine.getLastDetail();
