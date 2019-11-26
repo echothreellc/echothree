@@ -35,7 +35,9 @@ import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.order.server.entity.Order;
+import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -44,6 +46,8 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.Arrays;
 import java.util.Collections;
@@ -103,58 +107,25 @@ public class CreateSalesOrderLineCommand
         var inventoryConditionName = form.getInventoryConditionName();
         var cancellationPolicyName = form.getCancellationPolicyName();
         var returnPolicyName = form.getReturnPolicyName();
-        var order = SalesOrderLogic.getInstance().getOrderByName(this, orderName);
-        var item = ItemLogic.getInstance().getItemByNameThenAlias(this, itemName);
-        var inventoryCondition = inventoryConditionName == null ? null : InventoryConditionLogic.getInstance().getInventoryConditionByName(this, inventoryConditionName);
-        var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(this, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION, cancellationPolicyName);
-        var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(this, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN, returnPolicyName);
+        var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+        var offerName = form.getOfferName();
+        var useName = form.getUseName();
+        var orderLineSequence = form.getOrderLineSequence();
+        var quantity = form.getQuantity();
+        var unitAmount = form.getUnitAmount();
+        var description = form.getDescription();
+        var taxable = form.getTaxable();
+
+        var orderLine = SalesOrderLineLogic.getInstance().createOrderLine(session, this, getUserVisit(), orderName,
+                itemName, inventoryConditionName, cancellationPolicyName, returnPolicyName, unitOfMeasureTypeName, offerName,
+                useName, orderLineSequence, quantity, unitAmount, description, taxable, getPartyPK());
 
         if(!hasExecutionErrors()) {
-            var itemDetail = item.getLastDetail();
-            var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            var unitOfMeasureType = unitOfMeasureTypeName == null ? null : UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this, unitOfMeasureKind, unitOfMeasureTypeName);
+            var orderLineDetail = orderLine.getLastDetail();
 
-            if(!hasExecutionErrors()) {
-                var offerName = form.getOfferName();
-                var useName = form.getUseName();
-                var parameterCount = (offerName == null ? 0 : 1) + (useName == null ? 0 : 1);
-
-                if(parameterCount == 0 || parameterCount == 2) {
-                    OfferUse offerUse = null;
-
-                    if(offerName != null) {
-                        offerUse = OfferUseLogic.getInstance().getOfferUseByName(this, offerName, useName);
-                    }
-
-                    if(!hasExecutionErrors()) {
-                        var strOrderLineSequence = form.getOrderLineSequence();
-                        var orderLineSequence = strOrderLineSequence == null ? null : Integer.valueOf(strOrderLineSequence);
-                        var quantity = Long.valueOf(form.getQuantity());
-                        var strUnitAmount = form.getUnitAmount();
-                        var unitAmount = strUnitAmount == null ? null : Long.valueOf(strUnitAmount);
-                        var description = form.getDescription();
-                        var strTaxable = form.getTaxable();
-                        var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
-                        AssociateReferral associateReferral = null;
-
-                        var orderLine = SalesOrderLineLogic.getInstance().createSalesOrderLine(session, this, order, null,
-                                null, orderLineSequence, null, null, null, item, inventoryCondition, unitOfMeasureType, quantity,
-                                unitAmount, description, cancellationPolicy, returnPolicy, taxable, offerUse, associateReferral,
-                                getPartyPK());
-
-                        if(!hasExecutionErrors()) {
-                            var orderLineDetail = orderLine.getLastDetail();
-
-                            result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());
-                            result.setOrderLineSequence(orderLineDetail.getOrderLineSequence().toString());
-                            result.setEntityRef(orderLine.getPrimaryKey().getEntityRef());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                }
-            }
+            result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());
+            result.setOrderLineSequence(orderLineDetail.getOrderLineSequence().toString());
+            result.setEntityRef(orderLine.getPrimaryKey().getEntityRef());
         }
 
         return result;

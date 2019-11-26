@@ -16,17 +16,25 @@
 
 package com.echothree.model.control.sales.server.logic;
 
+import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
 import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemUnitOfMeasureTypeException;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemPriceException;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
+import com.echothree.model.control.offer.server.logic.OfferUseLogic;
 import com.echothree.model.control.order.common.OrderConstants;
 import com.echothree.model.control.order.server.logic.OrderLineLogic;
+import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.common.exception.CurrentTimeAfterSalesOrderEndTimeException;
 import com.echothree.model.control.sales.common.exception.CurrentTimeBeforeSalesOrderStartTimeException;
 import com.echothree.model.control.sales.common.exception.ItemDiscontinuedException;
@@ -41,6 +49,7 @@ import com.echothree.model.control.sales.common.exception.UnitAmountBelowMinimum
 import com.echothree.model.control.sales.common.exception.UnitAmountNotMultipleOfUnitPriceIncrementException;
 import com.echothree.model.control.sales.common.exception.UnitAmountRequiredException;
 import com.echothree.model.control.sales.server.SalesControl;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -53,9 +62,11 @@ import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
@@ -336,6 +347,54 @@ public class SalesOrderLineLogic
             }
         }
         
+        return orderLine;
+    }
+
+    public OrderLine createOrderLine(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit,
+            final String orderName, final String itemName, final String inventoryConditionName, final String cancellationPolicyName,
+            final String returnPolicyName, final String unitOfMeasureTypeName, final String offerName, final String useName,
+            final String strOrderLineSequence, final String strQuantity, final String strUnitAmount, final String description,
+            final String strTaxable, final PartyPK createdByPartyPK) {
+        var order = SalesOrderLogic.getInstance().getOrderByName(eea, orderName);
+        var item = ItemLogic.getInstance().getItemByNameThenAlias(eea, itemName);
+        var inventoryCondition = inventoryConditionName == null ? null : InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
+        var cancellationPolicy = cancellationPolicyName == null ? null : CancellationPolicyLogic.getInstance().getCancellationPolicyByName(eea, CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION, cancellationPolicyName);
+        var returnPolicy = returnPolicyName == null ? null : ReturnPolicyLogic.getInstance().getReturnPolicyByName(eea, ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN, returnPolicyName);
+        OrderLine orderLine = null;
+
+        if(!eea.hasExecutionErrors()) {
+            var itemDetail = item.getLastDetail();
+            var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+            var unitOfMeasureType = unitOfMeasureTypeName == null ? null : UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea, unitOfMeasureKind, unitOfMeasureTypeName);
+
+            if(!eea.hasExecutionErrors()) {
+                var parameterCount = (offerName == null ? 0 : 1) + (useName == null ? 0 : 1);
+
+                if(parameterCount == 0 || parameterCount == 2) {
+                    OfferUse offerUse = null;
+
+                    if(offerName != null) {
+                        offerUse = OfferUseLogic.getInstance().getOfferUseByName(eea, offerName, useName);
+                    }
+
+                    if(!eea.hasExecutionErrors()) {
+                        var orderLineSequence = strOrderLineSequence == null ? null : Integer.valueOf(strOrderLineSequence);
+                        var quantity = Long.valueOf(strQuantity);
+                        var unitAmount = strUnitAmount == null ? null : Long.valueOf(strUnitAmount);
+                        var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
+                        AssociateReferral associateReferral = null;
+
+                        orderLine = createSalesOrderLine(session, eea, order, null,
+                                null, orderLineSequence, null, null, null, item, inventoryCondition, unitOfMeasureType, quantity,
+                                unitAmount, description, cancellationPolicy, returnPolicy, taxable, offerUse, associateReferral,
+                                createdByPartyPK);
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            }
+        }
+
         return orderLine;
     }
 

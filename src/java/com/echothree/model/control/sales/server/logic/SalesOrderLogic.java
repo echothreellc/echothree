@@ -28,6 +28,7 @@ import com.echothree.model.control.customer.common.exception.UnknownCustomerType
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
 import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderConstants;
 import com.echothree.model.control.order.common.exception.MissingDefaultOrderPriorityException;
 import com.echothree.model.control.order.common.exception.MissingRequiredBillToPartyException;
@@ -223,10 +224,10 @@ public class SalesOrderLogic
             final Party billToParty, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
             Boolean allowCombiningShipments, final String reference, Term term, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderType = getOrderTypeByName(eea, OrderConstants.OrderType_SALES_ORDER);
+        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderConstants.OrderRoleType_BILL_TO);
+        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderConstants.OrderRoleType_PLACING);
         Order order = null;
-        OrderType orderType = getOrderTypeByName(eea, OrderConstants.OrderType_SALES_ORDER);
-        OrderRoleType billToOrderRoleType = getOrderRoleTypeByName(eea, OrderConstants.OrderRoleType_BILL_TO);
-        OrderRoleType placingOrderRoleType = getOrderRoleTypeByName(eea, OrderConstants.OrderRoleType_PLACING);
 
         if(batch != null) {
             if(SalesOrderBatchLogic.getInstance().checkBatchAvailableForEntry(eea, batch)) {
@@ -398,6 +399,35 @@ public class SalesOrderLogic
                     }
                 }
             }
+        }
+
+        return order;
+    }
+
+    public Order createSalesOrder(final Session session, final ExecutionErrorAccumulator eea, final UserVisit userVisit,
+            final String batchName, final String sourceName, final String billToPartyName, final String orderPriorityName,
+            final String currencyIsoName, final String termName, final String strHoldUntilComplete, final String strAllowBackorders,
+            final String strAllowSubstitutions, final String strAllowCombiningShipments, final String reference, final String strTaxable,
+            final String workflowEntranceName, final Party createdByParty) {
+        var batch = batchName == null ? null : SalesOrderBatchLogic.getInstance().getBatchByName(eea, batchName);
+        var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
+        var billToParty = billToPartyName == null ? null : PartyLogic.getInstance().getPartyByName(eea, billToPartyName, PartyConstants.PartyType_CUSTOMER);
+        var orderPriority = orderPriorityName == null ? null : SalesOrderLogic.getInstance().getOrderPriorityByName(eea, orderPriorityName);
+        var currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
+        var term = termName == null ? null : TermLogic.getInstance().getTermByName(eea, termName);
+        Order order = null;
+
+        if(!eea.hasExecutionErrors()) {
+            var holdUntilComplete = strHoldUntilComplete == null ? null : Boolean.valueOf(strHoldUntilComplete);
+            var allowBackorders = strAllowBackorders == null ? null : Boolean.valueOf(strAllowBackorders);
+            var allowSubstitutions = strAllowSubstitutions == null ? null : Boolean.valueOf(strAllowSubstitutions);
+            var allowCombiningShipments = strAllowCombiningShipments == null ? null : Boolean.valueOf(strAllowCombiningShipments);
+            var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
+
+            order = SalesOrderLogic.getInstance().createSalesOrder(session, eea, userVisit, batch, source,
+                    billToParty, orderPriority, currency, holdUntilComplete, allowBackorders, allowSubstitutions,
+                    allowCombiningShipments, reference, term, taxable, workflowEntranceName, createdByParty);
+
         }
 
         return order;
