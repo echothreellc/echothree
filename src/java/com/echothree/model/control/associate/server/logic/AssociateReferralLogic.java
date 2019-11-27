@@ -88,4 +88,12 @@ public class AssociateReferralLogic
         }
     }
 
+    public AssociateReferral getAssociateReferral(final Session session, final UserVisit userVisit) {
+        var associateReferral = userVisit == null ? null : userVisit.getAssociateReferral();
+
+        // TODO: Check the time of the referral to see if it is still in effect.
+
+        return associateReferral;
+    }
+
 }

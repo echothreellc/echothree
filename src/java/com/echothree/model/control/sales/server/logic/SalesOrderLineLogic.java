@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.sales.server.logic;
 
+import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
@@ -394,7 +395,7 @@ public class SalesOrderLineLogic
                         var quantity = Long.valueOf(strQuantity);
                         var unitAmount = strUnitAmount == null ? null : Long.valueOf(strUnitAmount);
                         var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
-                        AssociateReferral associateReferral = null;
+                        var associateReferral = AssociateReferralLogic.getInstance().getAssociateReferral(session, userVisit);
 
                         orderLine = createSalesOrderLine(session, eea, userVisit, order, null,
                                 null, orderLineSequence, null, null, null, item, inventoryCondition, unitOfMeasureType, quantity,

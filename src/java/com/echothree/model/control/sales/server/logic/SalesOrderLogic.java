@@ -18,6 +18,7 @@ package com.echothree.model.control.sales.server.logic;
 
 import com.echothree.model.control.accounting.common.exception.InvalidCurrencyException;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
+import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
@@ -372,8 +373,8 @@ public class SalesOrderLogic
                             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
                             var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
                             var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-                            AssociateReferral associateReferral = userVisit == null ? null : userVisit.getAssociateReferral();
-                            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
+                            var associateReferral = AssociateReferralLogic.getInstance().getAssociateReferral(session, userVisit);
+                            var entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
 
                             salesControl.createSalesOrder(order, offerUse, associateReferral, createdBy);
 
