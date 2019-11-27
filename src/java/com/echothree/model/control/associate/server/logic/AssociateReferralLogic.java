@@ -23,10 +23,12 @@ import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 
-public class AssociateReferralLogic {
+public class AssociateReferralLogic
+        extends BaseLogic {
 
     private AssociateReferralLogic() {
         super();
@@ -61,8 +63,9 @@ public class AssociateReferralLogic {
                         associateControl.getAssociatePartyContactMechanismByName(associate, associatePartyContactMechanismName);
 
                     if(associatePartyContactMechanismName != null && associatePartyContactMechanism == null) {
-                        eea.addExecutionError(ExecutionErrors.UnknownAssociatePartyContactMechanismName.name(), associateProgramName, associateName,
-                                associatePartyContactMechanismName);
+                        eea.addExecutionError(ExecutionErrors.UnknownAssociatePartyContactMechanismName.name(),
+                                associateProgram.getLastDetail().getAssociateProgramName(),
+                                associate.getLastDetail().getAssociateName(), associatePartyContactMechanismName);
                     } else {
                         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
