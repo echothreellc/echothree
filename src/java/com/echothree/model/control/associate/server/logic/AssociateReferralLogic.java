@@ -72,7 +72,8 @@ public class AssociateReferralLogic {
                         userVisit.setAssociateReferral(associateReferral);
                     }
                 } else {
-                    eea.addExecutionError(ExecutionErrors.UnknownAssociateName.name(), associateProgramName, associateName);
+                    eea.addExecutionError(ExecutionErrors.UnknownAssociateName.name(),
+                            associateProgram.getLastDetail().getAssociateProgramName(), associateName);
                 }
             } else {
                 if(associateProgramName != null) {
