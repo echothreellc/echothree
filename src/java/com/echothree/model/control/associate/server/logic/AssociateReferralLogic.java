@@ -32,8 +32,12 @@ public class AssociateReferralLogic {
         super();
     }
 
+    private static class LogicHolder {
+        static AssociateReferralLogic instance = new AssociateReferralLogic();
+    }
+
     public static AssociateReferralLogic getInstance() {
-        return AssociateReferralLogicHolder.instance;
+        return LogicHolder.instance;
     }
 
     public void handleAssociateReferral(final Session session, final ExecutionErrorAccumulator eea, final AssociatePartyContactMechanismSpec spec,
@@ -78,10 +82,6 @@ public class AssociateReferralLogic {
                 }
             }
         }
-    }
-
-    private static class AssociateReferralLogicHolder {
-        static AssociateReferralLogic instance = new AssociateReferralLogic();
     }
 
 }
