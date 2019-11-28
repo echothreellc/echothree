@@ -411,9 +411,9 @@ public class SalesOrderLogic
             var allowCombiningShipments = strAllowCombiningShipments == null ? null : Boolean.valueOf(strAllowCombiningShipments);
             var taxable = strTaxable == null ? null : Boolean.valueOf(strTaxable);
 
-            order = SalesOrderLogic.getInstance().createSalesOrder(session, eea, userVisit, batch, source,
-                    billToParty, orderPriority, currency, holdUntilComplete, allowBackorders, allowSubstitutions,
-                    allowCombiningShipments, reference, term, taxable, workflowEntranceName, createdByParty);
+            order = createSalesOrder(session, eea, userVisit, batch, source, billToParty, orderPriority, currency,
+                    holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, reference, term,
+                    taxable, workflowEntranceName, createdByParty);
 
         }
 
