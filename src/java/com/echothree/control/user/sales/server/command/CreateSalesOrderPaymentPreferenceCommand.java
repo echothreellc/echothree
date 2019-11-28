@@ -24,6 +24,7 @@ import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
+import com.echothree.model.control.sales.server.logic.SalesOrderPaymentPreferenceLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.Order;
@@ -104,8 +105,9 @@ public class CreateSalesOrderPaymentPreferenceCommand
             Long maximumAmount = strMaximumAmount == null ? null : Long.valueOf(strMaximumAmount);
             Integer sortOrder = Integer.valueOf(form.getSortOrder());
 
-            orderPaymentPreference = SalesOrderLogic.getInstance().createSalesOrderPaymentPreference(session, this, order, orderPaymentPreferenceSequence,
-                    paymentMethod, partyPaymentMethod, wasPresent, maximumAmount, sortOrder, getPartyPK());
+            orderPaymentPreference = SalesOrderPaymentPreferenceLogic.getInstance().createSalesOrderPaymentPreference(session,
+                    this, order, orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount,
+                    sortOrder, getPartyPK());
         }
         
         if(orderPaymentPreference != null) {

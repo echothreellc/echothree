@@ -133,6 +133,7 @@ public class SalesOrderLineLogic
         salesOrderLogic.checkOrderAvailableForModification(session, eea, order, createdByPartyPK);
 
         if(eea == null || !eea.hasExecutionErrors()) {
+            var salesOrderShipmentGroupLogic = SalesOrderShipmentGroupLogic.getInstance();
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             var salesControl = (SalesControl)Session.getModelController(SalesControl.class);
@@ -143,7 +144,7 @@ public class SalesOrderLineLogic
             var customerType = salesOrderLogic.getOrderBillToCustomerType(order);
 
             if(customerType != null && shippingMethod != null) {
-                salesOrderLogic.checkCustomerTypeShippingMethod(eea, customerType, shippingMethod);
+                salesOrderShipmentGroupLogic.checkCustomerTypeShippingMethod(eea, customerType, shippingMethod);
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -167,7 +168,7 @@ public class SalesOrderLineLogic
 
                         // TODO.
 
-                        orderShipmentGroup = salesOrderLogic.createSalesOrderShipmentGroup(session, eea, order,
+                        orderShipmentGroup = salesOrderShipmentGroupLogic.createSalesOrderShipmentGroup(session, eea, order,
                                 orderShipmentGroupSequence, itemDeliveryType, Boolean.TRUE, partyContactMechanism,
                                 shippingMethod, holdUntilComplete, createdByPartyPK);
                     } else {

@@ -24,8 +24,6 @@ import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyC
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.customer.common.exception.MissingDefaultCustomerTypeException;
-import com.echothree.model.control.customer.common.exception.UnknownCustomerTypePaymentMethodException;
-import com.echothree.model.control.customer.common.exception.UnknownCustomerTypeShippingMethodException;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
 import com.echothree.model.control.offer.server.OfferControl;
@@ -40,8 +38,6 @@ import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.common.choice.SalesOrderStatusChoicesBean;
-import com.echothree.model.control.sales.common.exception.BillToPartyMustMatchPartyPaymentMethodsPartyException;
-import com.echothree.model.control.sales.common.exception.BillToRequiredWhenUsingPartyPaymentMethodException;
 import com.echothree.model.control.sales.common.exception.InvalidSalesOrderBatchStatusException;
 import com.echothree.model.control.sales.common.exception.InvalidSalesOrderReferenceException;
 import com.echothree.model.control.sales.common.exception.InvalidSalesOrderStatusException;
@@ -57,34 +53,24 @@ import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogi
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowStepLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeDetail;
-import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderRole;
-import com.echothree.model.data.order.server.entity.OrderRoleType;
-import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
-import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.term.server.entity.PartyTerm;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -553,101 +539,6 @@ public class SalesOrderLogic
             handleExecutionError(InvalidSalesOrderStatusException.class, eea, ExecutionErrors.InvalidSalesOrderStatus.name(), order.getLastDetail().getOrderName(), workflowStepName);
         }
     }
-    
-    /** Verify that the CustomerType is authorized to use the PaymentMethod. If there are no CustomerTypePaymentMethods for any PaymentMethod,
-     * then it is assumed they're authorized.
-     * 
-     * @param eea Required.
-     * @param customerType Required.
-     * @param paymentMethod Required.
-     */
-    public void checkCustomerTypePaymentMethod(final ExecutionErrorAccumulator eea, CustomerType customerType, PaymentMethod paymentMethod) {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-        
-        if(!customerControl.getCustomerTypePaymentMethodExists(customerType, paymentMethod)
-                && customerControl.countCustomerTypePaymentMethodsByCustomerType(customerType) != 0) {
-            handleExecutionError(UnknownCustomerTypePaymentMethodException.class, eea, ExecutionErrors.UnknownCustomerTypePaymentMethod.name(),
-                    customerType.getLastDetail().getCustomerTypeName(), paymentMethod.getLastDetail().getPaymentMethodName());
-        }
-    }
-    
-    /**
-     * 
-     * @param eea Required.
-     * @param order Required.
-     * @param orderPaymentPreferenceSequence Optional.
-     * @param paymentMethod Required for all types except CREDIT_CARDs, GIFT_CARDs, GIFT_CERTIFICATEs.
-     * @param partyPaymentMethod Required for CREDIT_CARDs, GIFT_CARDs, GIFT_CERTIFICATEs, otherwise null.
-     * @param wasPresent Required for CREDIT_CARD, otherwise null.
-     * @param maximumAmount Optional.
-     * @param sortOrder Required.
-     * @param createdBy Required.
-     * @return The newly created OrderPaymentPreference, or null if there was an error.
-     */
-    public OrderPaymentPreference createSalesOrderPaymentPreference(final Session session, final ExecutionErrorAccumulator eea, final Order order,
-            final Integer orderPaymentPreferenceSequence, final PaymentMethod paymentMethod, final PartyPaymentMethod partyPaymentMethod,
-            final Boolean wasPresent, final Long maximumAmount, final Integer sortOrder, final PartyPK createdBy) {
-        OrderPaymentPreference orderPaymentPreference = null;
-        
-        checkOrderAvailableForModification(session, eea, order, createdBy);
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            Party billTo = getOrderBillToParty(order);
-            CustomerType customerType = billTo == null ? null : getCustomerTypeFromParty(billTo);
-
-            if(customerType != null) {
-                checkCustomerTypePaymentMethod(eea, customerType, paymentMethod);
-            }
-
-            if(eea == null || !eea.hasExecutionErrors()) {
-                if(partyPaymentMethod != null) {
-                    if(billTo == null) {
-                        // Order must have a bill to before a payment method that requires a partyPaymentMethod may be set.
-                        handleExecutionError(BillToRequiredWhenUsingPartyPaymentMethodException.class, eea, ExecutionErrors.BillToRequiredWhenUsingPartyPaymentMethod.name());
-                    } else if(!billTo.equals(partyPaymentMethod.getLastDetail().getParty())) {
-                        // Verify partyPaymentMethod belongs to the BILL_TO Party on the order.
-                        handleExecutionError(BillToPartyMustMatchPartyPaymentMethodsPartyException.class, eea, ExecutionErrors.BillToPartyMustMatchPartyPaymentMethodsParty.name());
-                    }
-                }
-
-                if(eea == null || !eea.hasExecutionErrors()) {
-                    orderPaymentPreference = OrderLogic.getInstance().createOrderPaymentPreference(session, eea, order, orderPaymentPreferenceSequence, paymentMethod,
-                            partyPaymentMethod, wasPresent, maximumAmount, sortOrder, createdBy);
-                }
-            }
-        }
-        
-        return orderPaymentPreference;
-    }
-    
-    /**
-     *
-     * @param session Required.
-     * @param eea Required.
-     * @param order Required.
-     * @param orderShipmentGroupSequence Optional.
-     * @param itemDeliveryType Required.
-     * @param isDefault Required.
-     * @param partyContactMechanism Optional.
-     * @param shippingMethod Optional.
-     * @param holdUntilComplete Required.
-     * @param createdBy Required.
-     * @return The newly created OrderShipmentGroup, or null if there was an error.
-     */
-    public OrderShipmentGroup createSalesOrderShipmentGroup(final Session session, final ExecutionErrorAccumulator eea, final Order order,
-            Integer orderShipmentGroupSequence, final ItemDeliveryType itemDeliveryType, final Boolean isDefault, PartyContactMechanism partyContactMechanism,
-            ShippingMethod shippingMethod, final Boolean holdUntilComplete, final PartyPK createdBy) {
-        OrderShipmentGroup orderShipmentGroup = null;
-
-        checkOrderAvailableForModification(session, eea, order, createdBy);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            orderShipmentGroup = createOrderShipmentGroup(eea, order, orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism,
-                    shippingMethod, holdUntilComplete, createdBy);
-        }
-
-        return orderShipmentGroup;
-    }
 
     /** Find the BILL_TO Party for a given Order.
      * 
@@ -715,21 +606,4 @@ public class SalesOrderLogic
         return shipToOrderRole == null ? null : shipToOrderRole.getParty();
     }
     
-    /** Verify that the CustomerType is authorized to use the ShippingMethod. If there are no CustomerTypeShippingMethods for any ShippingMethod,
-     * then it is assumed they're authorized.
-     * 
-     * @param eea Required.
-     * @param customerType Required.
-     * @param shippingMethod Required.
-     */
-    public void checkCustomerTypeShippingMethod(final ExecutionErrorAccumulator eea, CustomerType customerType, ShippingMethod shippingMethod) {
-        var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
-        
-        if(!customerControl.getCustomerTypeShippingMethodExists(customerType, shippingMethod)
-                && customerControl.countCustomerTypeShippingMethodsByCustomerType(customerType) != 0) {
-            handleExecutionError(UnknownCustomerTypeShippingMethodException.class, eea, ExecutionErrors.UnknownCustomerTypeShippingMethod.name(),
-                    customerType.getLastDetail().getCustomerTypeName(), shippingMethod.getLastDetail().getShippingMethodName());
-        }
-    }
-
 }
