@@ -18,36 +18,21 @@ package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.CreateSalesOrderLineForm;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
-import com.echothree.model.control.cancellationpolicy.common.CancellationPolicyConstants;
-import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
-import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
-import com.echothree.model.control.item.server.logic.ItemLogic;
-import com.echothree.model.control.offer.server.logic.OfferUseLogic;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.common.PartyConstants;
-import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
-import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
 import com.echothree.model.control.sales.server.logic.SalesOrderLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.associate.server.entity.AssociateReferral;
-import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,8 +64,7 @@ public class CreateSalesOrderLineCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("OfferName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("UseName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("SourceName", FieldType.ENTITY_NAME, false, null, null)
                 ));
     }
 
@@ -108,8 +92,7 @@ public class CreateSalesOrderLineCommand
         var cancellationPolicyName = form.getCancellationPolicyName();
         var returnPolicyName = form.getReturnPolicyName();
         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-        var offerName = form.getOfferName();
-        var useName = form.getUseName();
+        var sourceName = form.getSourceName();
         var orderLineSequence = form.getOrderLineSequence();
         var quantity = form.getQuantity();
         var unitAmount = form.getUnitAmount();
@@ -117,8 +100,8 @@ public class CreateSalesOrderLineCommand
         var taxable = form.getTaxable();
 
         var orderLine = SalesOrderLineLogic.getInstance().createOrderLine(session, this, getUserVisit(), orderName,
-                itemName, inventoryConditionName, cancellationPolicyName, returnPolicyName, unitOfMeasureTypeName, offerName,
-                useName, orderLineSequence, quantity, unitAmount, description, taxable, getParty());
+                itemName, inventoryConditionName, cancellationPolicyName, returnPolicyName, unitOfMeasureTypeName,
+                sourceName, orderLineSequence, quantity, unitAmount, description, taxable, getParty());
 
         if(!hasExecutionErrors()) {
             var orderLineDetail = orderLine.getLastDetail();

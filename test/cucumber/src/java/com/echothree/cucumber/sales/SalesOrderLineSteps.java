@@ -18,19 +18,17 @@ package com.echothree.cucumber.sales;
 
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
-import com.echothree.util.common.validation.FieldType;
 import cucumber.api.java.en.When;
 import javax.naming.NamingException;
 
 public class SalesOrderLineSteps {
 
-    private void createSalesOrderLine(BasePersona persona, String salesOrderName, String orderLineSequence, String itemName, String inventoryConditionName,
-            String unitOfMeasureTypeName, String quantity, String unitAmount, String taxable, String description,
-            String cancellationPolicyName, String returnPolicyName, String offerName, String useName)
+    private void createSalesOrderLine(BasePersona persona, String salesOrderName, String orderLineSequence, String itemName,
+            String inventoryConditionName, String unitOfMeasureTypeName, String quantity, String unitAmount, String taxable,
+            String description, String cancellationPolicyName, String returnPolicyName, String sourceName)
             throws NamingException {
         var salesService = SalesUtil.getHome();
         var createSalesOrderLineForm = salesService.getCreateSalesOrderLineForm();
@@ -46,8 +44,7 @@ public class SalesOrderLineSteps {
         createSalesOrderLineForm.setDescription(description);
         createSalesOrderLineForm.setCancellationPolicyName(cancellationPolicyName);
         createSalesOrderLineForm.setReturnPolicyName(returnPolicyName);
-        createSalesOrderLineForm.setOfferName(offerName);
-        createSalesOrderLineForm.setUseName(useName);
+        createSalesOrderLineForm.setSourceName(sourceName);
 
         var commandResult = salesService.createSalesOrderLine(persona.userVisitPK, createSalesOrderLineForm);
 
@@ -63,7 +60,7 @@ public class SalesOrderLineSteps {
             throws NamingException {
         var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-        createSalesOrderLine(employeePersona, employeePersona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null, null);
+        createSalesOrderLine(employeePersona, employeePersona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null);
     }
 
     @When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to a new sales order$")
@@ -71,7 +68,7 @@ public class SalesOrderLineSteps {
             throws NamingException {
         var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-        createSalesOrderLine(employeePersona, null, null, itemName, null, null, quantity, null, null, null, null, null, null, null);
+        createSalesOrderLine(employeePersona, null, null, itemName, null, null, quantity, null, null, null, null, null, null);
     }
 
 }
