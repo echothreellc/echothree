@@ -16,9 +16,9 @@
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="sources->sources" />
         <dependency org="com.rometools" name="rome" rev="1.11.0" conf="sources->sources" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="sources->sources" />
-        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.3" conf="sources->sources" />
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="sources->sources" />
         <dependency org="commons-cli" name="commons-cli" rev="1.3.1" conf="sources->sources" />
-        <dependency org="commons-codec" name="commons-codec" rev="1.11" conf="sources->sources" />
+        <dependency org="commons-codec" name="commons-codec" rev="1.13" conf="sources->sources" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="sources->sources" />
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="sources->sources" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8" conf="sources->sources" />
@@ -85,7 +85,7 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.8.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.8.RELEASE" conf="sources->sources" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.0.Final" conf="sources->sources" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.1.Final" conf="sources->sources" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="sources->sources" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="sources->sources" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
@@ -99,9 +99,9 @@
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="javadoc->javadoc" />
         <dependency org="com.rometools" name="rome" rev="1.11.0" conf="javadoc->javadoc" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="javadoc->javadoc" />
-        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.3" conf="javadoc->javadoc" />
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="javadoc->javadoc" />
         <dependency org="commons-cli" name="commons-cli" rev="1.3.1" conf="javadoc->javadoc" />
-        <dependency org="commons-codec" name="commons-codec" rev="1.11" conf="javadoc->javadoc" />
+        <dependency org="commons-codec" name="commons-codec" rev="1.13" conf="javadoc->javadoc" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="javadoc->javadoc" />
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="javadoc->javadoc" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8" conf="javadoc->javadoc" />
@@ -168,7 +168,7 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.8.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.8.RELEASE" conf="javadoc->javadoc" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.0.Final" conf="javadoc->javadoc" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.1.Final" conf="javadoc->javadoc" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="javadoc->javadoc" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="javadoc->javadoc" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
@@ -184,9 +184,9 @@
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="binaries->default" />
         <dependency org="com.rometools" name="rome" rev="1.11.0" conf="binaries->default" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="binaries->default" />
-        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.3" conf="binaries->default" />
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="binaries->default" />
         <dependency org="commons-cli" name="commons-cli" rev="1.3.1" conf="binaries->default" />
-        <dependency org="commons-codec" name="commons-codec" rev="1.11" conf="binaries->default" />
+        <dependency org="commons-codec" name="commons-codec" rev="1.13" conf="binaries->default" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="binaries->default" />
         <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="binaries->default" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8" conf="binaries->default" />
@@ -259,7 +259,7 @@
         <dependency org="org.springframework" name="spring-expression" rev="5.0.8.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-web" rev="5.0.8.RELEASE" conf="binaries->default" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.0.Final" conf="binaries->default" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.1.Final" conf="binaries->default" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="binaries->default" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="binaries->default" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="binaries->default" />
