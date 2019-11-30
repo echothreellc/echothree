@@ -29,8 +29,17 @@ public class BasePersona {
     public String lastTelephoneContactMechanismName;
     public String lastWebAddressContactMechanismName;
 
+    // Core
+    public String lastEntityRef;
+
+    // Customer
+    public String lastCustomerName;
+
     // Item
     public String lastItemName;
+
+    // Party
+    public String lastPartyName;
 
     // Sales
     public String lastSalesOrderBatchName;
