@@ -16,34 +16,6 @@
 
 package com.echothree.cucumber;
 
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-
-public class BasePersona {
-
-    public String persona;
-    public UserVisitPK userVisitPK;
-
-    // Contact
-    public String lastEmailAddressContactMechanismName;
-    public String lastPostalAddressContactMechanismName;
-    public String lastTelephoneContactMechanismName;
-    public String lastWebAddressContactMechanismName;
-
-    // Core
-    public String lastEntityRef;
-
-    // Customer
-    public String lastCustomerName;
-
-    // Item
-    public String lastItemName;
-
-    // Party
-    public String lastPartyName;
-
-    // Sales
-    public String lastSalesOrderBatchName;
-    public String lastSalesOrderName;
-    public String lastSalesOrderLineSequence;
+public class AnonymousPersona extends BasePersona {
 
 }
