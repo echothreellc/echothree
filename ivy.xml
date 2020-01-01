@@ -79,12 +79,12 @@
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.2" conf="sources->sources" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.25" conf="sources->sources" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.25" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-beans" rev="5.0.8.RELEASE" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-context" rev="5.0.8.RELEASE" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-core" rev="5.0.8.RELEASE" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-expression" rev="5.0.8.RELEASE" conf="sources->sources" />
+        <dependency org="org.springframework" name="spring-beans" rev="5.0.15.RELEASE" conf="sources->sources" />
+        <dependency org="org.springframework" name="spring-context" rev="5.0.15.RELEASE" conf="sources->sources" />
+        <dependency org="org.springframework" name="spring-core" rev="5.0.15.RELEASE" conf="sources->sources" />
+        <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-web" rev="5.0.8.RELEASE" conf="sources->sources" />
+        <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="sources->sources" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.1.Final" conf="sources->sources" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="sources->sources" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="sources->sources" />
@@ -162,12 +162,12 @@
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.2" conf="javadoc->javadoc" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.25" conf="javadoc->javadoc" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.25" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-beans" rev="5.0.8.RELEASE" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-context" rev="5.0.8.RELEASE" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-core" rev="5.0.8.RELEASE" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-expression" rev="5.0.8.RELEASE" conf="javadoc->javadoc" />
+        <dependency org="org.springframework" name="spring-beans" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
+        <dependency org="org.springframework" name="spring-context" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
+        <dependency org="org.springframework" name="spring-core" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
+        <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-web" rev="5.0.8.RELEASE" conf="javadoc->javadoc" />
+        <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.1.Final" conf="javadoc->javadoc" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="javadoc->javadoc" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="javadoc->javadoc" />
@@ -253,12 +253,12 @@
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.2" conf="binaries->default" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.25" conf="binaries->default" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.25" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-beans" rev="5.0.8.RELEASE" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-context" rev="5.0.8.RELEASE" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-core" rev="5.0.8.RELEASE" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-expression" rev="5.0.8.RELEASE" conf="binaries->default" />
+        <dependency org="org.springframework" name="spring-beans" rev="5.0.15.RELEASE" conf="binaries->default" />
+        <dependency org="org.springframework" name="spring-context" rev="5.0.15.RELEASE" conf="binaries->default" />
+        <dependency org="org.springframework" name="spring-core" rev="5.0.15.RELEASE" conf="binaries->default" />
+        <dependency org="org.springframework" name="spring-expression" rev="5.0.15.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-web" rev="5.0.8.RELEASE" conf="binaries->default" />
+        <dependency org="org.springframework" name="spring-web" rev="5.0.15.RELEASE" conf="binaries->default" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="18.0.1.Final" conf="binaries->default" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="binaries->default" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="binaries->default" />
