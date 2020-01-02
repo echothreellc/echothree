@@ -18,7 +18,6 @@ package com.echothree.util.server.control;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -31,24 +30,31 @@ import java.util.List;
 
 public abstract class BaseSimpleCommand<F extends BaseForm>
         extends BaseCommand {
-    
+
     protected F form;
     private List<FieldDefinition> formFieldDefinitions;
-    
+    boolean allowLimits;
+
     private void init(F form, List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
         this.form = form;
         this.formFieldDefinitions = formFieldDefinitions;
-        
+        this.allowLimits = allowLimits;
+    }
+
+    @Override
+    protected void setupSession() {
+        super.setupSession();
+
         if(form != null) {
             session.setOptions(form.getOptions());
             session.setTransferProperties(form.getTransferProperties());
-            
+
             if(allowLimits) {
                 session.setLimits(form.getLimits());
             }
         }
     }
-    
+
     protected BaseSimpleCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
         super(userVisitPK, commandSecurityDefinition);

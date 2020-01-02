@@ -72,13 +72,17 @@ public abstract class BaseCommand
         implements ExecutionWarningAccumulator, ExecutionErrorAccumulator, SecurityMessageAccumulator {
     
     private Log log = null;
-    
+
     private UserVisitPK userVisitPK;
     private final CommandSecurityDefinition commandSecurityDefinition;
+
+    private ThreadSession.PreservedSession preservedSession;
+    private ThreadCaches.PreservedCaches preservedCaches;
+    protected Session session;
+
     private UserVisit userVisit = null;
     private UserSession userSession = null;
     private Party party = null;
-    protected Session session;
     private Messages executionWarnings = null;
     private Messages executionErrors = null;
     private Messages securityMessages = null;
@@ -88,17 +92,16 @@ public abstract class BaseCommand
     private boolean checkPasswordVerifiedTime = true;
     private boolean updateLastCommandTime = true;
     private boolean logCommand = true;
-    
+
     protected BaseCommand(UserVisitPK userVisitPK, CommandSecurityDefinition commandSecurityDefinition) {
         if(ControlDebugFlags.LogBaseCommands) {
             getLog().info("BaseCommand()");
         }
-        
+
         this.userVisitPK = userVisitPK;
         this.commandSecurityDefinition = commandSecurityDefinition;
-        session = ThreadSession.currentSession();
     }
-    
+
     protected final Log getLog() {
         if(log == null) {
             log = LogFactory.getLog(this.getClass());
@@ -462,15 +465,37 @@ public abstract class BaseCommand
         return new AsyncResult<>(run());
     }
 
+    protected void setupSession() {
+        preservedSession = ThreadSession.preserveSession();
+        preservedCaches = ThreadCaches.preserveCaches();
+
+        session = ThreadSession.currentSession();
+    }
+
+    protected void teardownSession() {
+        ThreadSession.closeSession();
+        ThreadCaches.closeCaches();
+
+        session = null;
+
+        ThreadCaches.restoreCaches(preservedCaches);
+        preservedCaches = null;
+
+        ThreadSession.restoreSession(preservedSession);
+        preservedSession = null;
+    }
+
     public final CommandResult run()
             throws BaseException {
         if(ControlDebugFlags.LogBaseCommands) {
             log.info(">>> run()");
         }
 
-        SecurityResult securityResult = null;
+        setupSession();
+
+        SecurityResult securityResult;
         ValidationResult validationResult = null;
-        ExecutionResult executionResult = null;
+        ExecutionResult executionResult;
         CommandResult commandResult;
 
         try {
@@ -564,10 +589,10 @@ public abstract class BaseCommand
                 }
             }
         } finally {
-            ThreadSession.closeSession();
-            ThreadCaches.closeCaches();
+            teardownSession();
         }
 
+        // The Session for this Thread must NOT be utilized by anything after teardownSession() has been called.
         commandResult = new CommandResult(securityResult, validationResult, executionResult);
 
         if(commandResult.hasSecurityMessages() || commandResult.hasValidationErrors()) {
@@ -658,7 +683,7 @@ public abstract class BaseCommand
     //   Option Utilities
     // --------------------------------------------------------------------------------
     
-    /** This should only be called from the Command's constructor. After that, TransferCaches may have cached knowledge
+    /** This should only be called an overridden setupSession(). After that, TransferCaches may have cached knowledge
      * that specific options were unset.
      * @param option The option to add.
      */
@@ -666,7 +691,7 @@ public abstract class BaseCommand
         session.getOptions(true).add(option);
     }
     
-    /** This should only be called from the Command's constructor. After that, TransferCaches may have cached knowledge
+    /** This should only be called an overridden setupSession(). After that, TransferCaches may have cached knowledge
      * that specific options were set.
      * @param option The option to remove.
      */
