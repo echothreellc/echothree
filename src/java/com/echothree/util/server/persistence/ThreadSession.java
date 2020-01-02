@@ -23,7 +23,9 @@ public class ThreadSession {
     
     private static Log log = LogFactory.getLog(ThreadSession.class);
     private static final ThreadLocal<Session> sessions = new ThreadLocal<>();
-    
+
+    private ThreadSession() {}
+
     public static Session currentSession() {
         Session session = sessions.get();
         
@@ -39,7 +41,15 @@ public class ThreadSession {
         return session;
     }
 
-    public static class PreservedSession {
+    public static void pushSessionEntityCache() {
+        currentSession().pushSessionEntityCache();
+    }
+
+    public static void popSessionEntityCache() {
+        currentSession().popSessionEntityCache();
+    }
+
+    static class PreservedSession {
         private Session session;
 
         private PreservedSession(Session session) {
@@ -47,7 +57,8 @@ public class ThreadSession {
         }
     }
 
-    public static PreservedSession preserveSession() {
+    // Utilize via ThreadUtils
+    static PreservedSession preserve() {
         Session session = sessions.get();
 
         if(session != null) {
@@ -61,7 +72,8 @@ public class ThreadSession {
         return new PreservedSession(session);
     }
 
-    public static void restoreSession(PreservedSession preservedSession) {
+    // Utilize via ThreadUtils
+    static void restore(PreservedSession preservedSession) {
         var session = preservedSession.session;
 
         if(session != null) {
@@ -73,15 +85,8 @@ public class ThreadSession {
         }
     }
 
-    public static void pushSessionEntityCache() {
-        currentSession().pushSessionEntityCache();
-    }
-
-    public static void popSessionEntityCache() {
-        currentSession().popSessionEntityCache();
-    }
-
-    public static void closeSession() {
+    // Utilize via ThreadUtils
+    static void close() {
         Session session = sessions.get();
         
         if(session != null) {

@@ -20,7 +20,6 @@ import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.core.common.CommandMessageTypes;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.license.server.logic.LicenseCheckLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.UserControl;
@@ -43,7 +42,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.entity.UserVisitStatus;
 import com.echothree.model.data.user.server.factory.UserVisitFactory;
 import com.echothree.util.common.exception.BaseException;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.CommandResult;
@@ -59,8 +57,8 @@ import com.echothree.util.server.message.MessageUtils;
 import com.echothree.util.server.message.SecurityMessageAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.ThreadCaches;
 import com.echothree.util.server.persistence.ThreadSession;
+import com.echothree.util.server.persistence.ThreadUtils;
 import com.google.common.base.Charsets;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -70,14 +68,13 @@ import javax.ejb.AsyncResult;
 
 public abstract class BaseCommand
         implements ExecutionWarningAccumulator, ExecutionErrorAccumulator, SecurityMessageAccumulator {
-    
+
     private Log log = null;
 
     private UserVisitPK userVisitPK;
     private final CommandSecurityDefinition commandSecurityDefinition;
 
-    private ThreadSession.PreservedSession preservedSession;
-    private ThreadCaches.PreservedCaches preservedCaches;
+    private ThreadUtils.PreservedState preservedState;
     protected Session session;
 
     private UserVisit userVisit = null;
@@ -466,23 +463,16 @@ public abstract class BaseCommand
     }
 
     protected void setupSession() {
-        preservedSession = ThreadSession.preserveSession();
-        preservedCaches = ThreadCaches.preserveCaches();
-
+        preservedState = ThreadUtils.preserveState();
         session = ThreadSession.currentSession();
     }
 
     protected void teardownSession() {
-        ThreadSession.closeSession();
-        ThreadCaches.closeCaches();
-
+        ThreadUtils.close();
         session = null;
 
-        ThreadCaches.restoreCaches(preservedCaches);
-        preservedCaches = null;
-
-        ThreadSession.restoreSession(preservedSession);
-        preservedSession = null;
+        ThreadUtils.restoreState(preservedState);
+        preservedState = null;
     }
 
     public final CommandResult run()
@@ -683,7 +673,7 @@ public abstract class BaseCommand
     //   Option Utilities
     // --------------------------------------------------------------------------------
     
-    /** This should only be called an overridden setupSession(). After that, TransferCaches may have cached knowledge
+    /** This should only be called an override of setupSession(). After that, TransferCaches may have cached knowledge
      * that specific options were unset.
      * @param option The option to add.
      */
@@ -691,7 +681,7 @@ public abstract class BaseCommand
         session.getOptions(true).add(option);
     }
     
-    /** This should only be called an overridden setupSession(). After that, TransferCaches may have cached knowledge
+    /** This should only be called an override of setupSession(). After that, TransferCaches may have cached knowledge
      * that specific options were set.
      * @param option The option to remove.
      */

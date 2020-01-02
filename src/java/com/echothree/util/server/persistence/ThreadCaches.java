@@ -23,7 +23,9 @@ public class ThreadCaches {
     
     private static Log log = LogFactory.getLog(ThreadCaches.class);
     private static final ThreadLocal<Caches> cacheses = new ThreadLocal<>();
-    
+
+    private ThreadCaches() {}
+
     public static Caches currentCaches() {
         Caches caches = cacheses.get();
         
@@ -39,7 +41,7 @@ public class ThreadCaches {
         return caches;
     }
 
-    public static class PreservedCaches {
+    static class PreservedCaches {
         private Caches caches;
 
         private PreservedCaches(Caches caches) {
@@ -47,7 +49,8 @@ public class ThreadCaches {
         }
     }
 
-    public static ThreadCaches.PreservedCaches preserveCaches() {
+    // Utilize via ThreadUtils
+    static ThreadCaches.PreservedCaches preserve() {
         Caches caches = cacheses.get();
 
         if(caches != null) {
@@ -61,7 +64,8 @@ public class ThreadCaches {
         return new ThreadCaches.PreservedCaches(caches);
     }
 
-    public static void restoreCaches(ThreadCaches.PreservedCaches preservedCaches) {
+    // Utilize via ThreadUtils
+    static void restore(ThreadCaches.PreservedCaches preservedCaches) {
         var caches = preservedCaches.caches;
 
         if(caches != null) {
@@ -73,7 +77,8 @@ public class ThreadCaches {
         }
     }
 
-    public static void closeCaches() {
+    // Utilize via ThreadUtils
+    public static void close() {
         Caches caches = cacheses.get();
         
         if(caches != null) {

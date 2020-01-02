@@ -29,8 +29,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.ThreadCaches;
-import com.echothree.util.server.persistence.ThreadSession;
+import com.echothree.util.server.persistence.ThreadUtils;
 import javax.ejb.Stateless;
 
 @Stateless
@@ -58,8 +57,7 @@ public class AuthenticationBean
     
     @Override
     public UserVisitPK getDataLoaderUserVisit() {
-        var preservedSession = ThreadSession.preserveSession();
-        var preservedCaches = ThreadCaches.preserveCaches();
+        var preservedState = ThreadUtils.preserveState();
 
         UserVisitPK userVisitPK = null;
         
@@ -86,12 +84,10 @@ public class AuthenticationBean
         } catch (PersistenceDatabaseException pde) {
             throw pde;
         } finally {
-            ThreadSession.closeSession();
-            ThreadCaches.closeCaches();
+            ThreadUtils.close();
         }
 
-        ThreadSession.restoreSession(preservedSession);
-        ThreadCaches.restoreCaches(preservedCaches);
+        ThreadUtils.restoreState(preservedState);
 
         return userVisitPK;
     }
