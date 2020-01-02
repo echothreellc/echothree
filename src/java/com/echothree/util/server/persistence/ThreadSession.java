@@ -23,7 +23,9 @@ public class ThreadSession {
     
     private static Log log = LogFactory.getLog(ThreadSession.class);
     private static final ThreadLocal<Session> sessions = new ThreadLocal<>();
-    
+
+    private ThreadSession() {}
+
     public static Session currentSession() {
         Session session = sessions.get();
         
@@ -38,7 +40,7 @@ public class ThreadSession {
         
         return session;
     }
-    
+
     public static void pushSessionEntityCache() {
         currentSession().pushSessionEntityCache();
     }
@@ -47,7 +49,44 @@ public class ThreadSession {
         currentSession().popSessionEntityCache();
     }
 
-    public static void closeSession() {
+    static class PreservedSession {
+        private Session session;
+
+        private PreservedSession(Session session) {
+            this.session = session;
+        }
+    }
+
+    // Utilize via ThreadUtils
+    static PreservedSession preserve() {
+        Session session = sessions.get();
+
+        if(session != null) {
+            sessions.remove();
+
+            if(PersistenceDebugFlags.LogThreads) {
+                log.info("Preserved Session for Thread " + Thread.currentThread().getName());
+            }
+        }
+
+        return new PreservedSession(session);
+    }
+
+    // Utilize via ThreadUtils
+    static void restore(PreservedSession preservedSession) {
+        var session = preservedSession.session;
+
+        if(session != null) {
+            sessions.set(session);
+
+            if(PersistenceDebugFlags.LogThreads) {
+                log.info("Restored Session for Thread " + Thread.currentThread().getName());
+            }
+        }
+    }
+
+    // Utilize via ThreadUtils
+    static void close() {
         Session session = sessions.get();
         
         if(session != null) {

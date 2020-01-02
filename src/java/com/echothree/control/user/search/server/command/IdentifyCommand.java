@@ -58,7 +58,12 @@ public class IdentifyCommand
     /** Creates a new instance of IdentifyCommand */
     public IdentifyCommand(UserVisitPK userVisitPK, IdentifyForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
-        
+    }
+
+    @Override
+    protected void setupSession() {
+        super.setupSession();
+
         // Names are always included in the JumpResult, assembly of them is a little weird, so always disallow this option.
         removeOption(CoreOptions.EntityInstanceIncludeNames);
     }
