@@ -58,6 +58,9 @@ public class AuthenticationBean
     
     @Override
     public UserVisitPK getDataLoaderUserVisit() {
+        var preservedSession = ThreadSession.preserveSession();
+        var preservedCaches = ThreadCaches.preserveCaches();
+
         UserVisitPK userVisitPK = null;
         
         try {
@@ -86,7 +89,10 @@ public class AuthenticationBean
             ThreadSession.closeSession();
             ThreadCaches.closeCaches();
         }
-        
+
+        ThreadSession.restoreSession(preservedSession);
+        ThreadCaches.restoreCaches(preservedCaches);
+
         return userVisitPK;
     }
     
