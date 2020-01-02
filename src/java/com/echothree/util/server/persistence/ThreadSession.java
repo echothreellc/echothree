@@ -38,7 +38,41 @@ public class ThreadSession {
         
         return session;
     }
-    
+
+    public static class PreservedSession {
+        private Session session;
+
+        private PreservedSession(Session session) {
+            this.session = session;
+        }
+    }
+
+    public static PreservedSession preserveSession() {
+        Session session = sessions.get();
+
+        if(session != null) {
+            sessions.remove();
+
+            if(PersistenceDebugFlags.LogThreads) {
+                log.info("Preserved Session for Thread " + Thread.currentThread().getName());
+            }
+        }
+
+        return new PreservedSession(session);
+    }
+
+    public static void restoreSession(PreservedSession preservedSession) {
+        var session = preservedSession.session;
+
+        if(session != null) {
+            sessions.set(session);
+
+            if(PersistenceDebugFlags.LogThreads) {
+                log.info("Restored Session for Thread " + Thread.currentThread().getName());
+            }
+        }
+    }
+
     public static void pushSessionEntityCache() {
         currentSession().pushSessionEntityCache();
     }
