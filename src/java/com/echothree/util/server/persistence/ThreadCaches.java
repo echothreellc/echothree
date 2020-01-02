@@ -38,7 +38,41 @@ public class ThreadCaches {
         
         return caches;
     }
-    
+
+    public static class PreservedCaches {
+        private Caches caches;
+
+        private PreservedCaches(Caches caches) {
+            this.caches = caches;
+        }
+    }
+
+    public static ThreadCaches.PreservedCaches preserveCaches() {
+        Caches caches = cacheses.get();
+
+        if(caches != null) {
+            cacheses.remove();
+
+            if(PersistenceDebugFlags.LogThreads) {
+                log.info("Preserved Caches for Thread " + Thread.currentThread().getName());
+            }
+        }
+
+        return new ThreadCaches.PreservedCaches(caches);
+    }
+
+    public static void restoreCaches(ThreadCaches.PreservedCaches preservedCaches) {
+        var caches = preservedCaches.caches;
+
+        if(caches != null) {
+            cacheses.set(caches);
+
+            if(PersistenceDebugFlags.LogThreads) {
+                log.info("Restored Caches for Thread " + Thread.currentThread().getName());
+            }
+        }
+    }
+
     public static void closeCaches() {
         Caches caches = cacheses.get();
         
