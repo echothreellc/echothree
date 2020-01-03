@@ -7,7 +7,7 @@
         <conf name="binaries" description="Binary jars"/>
     </configurations>
     <dependencies>
-        <dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="sources->sources" />
+        <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="sources->sources" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="guava" rev="28.2-jre" conf="sources->sources" />
@@ -90,7 +90,7 @@
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="sources->sources" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
 
-        <dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="javadoc->javadoc" />
+        <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="javadoc->javadoc" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="guava" rev="28.2-jre" conf="javadoc->javadoc" />
@@ -173,7 +173,7 @@
         <dependency org="xerces" name="xercesImpl" rev="2.12.0" conf="javadoc->javadoc" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
 
-        <dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="binaries->default" />
+        <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="binaries->default" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.3.3" conf="binaries->default">
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
