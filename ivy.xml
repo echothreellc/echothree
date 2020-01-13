@@ -61,8 +61,8 @@
         <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.4.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.4.0" conf="sources->sources" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="sources->sources" />
-        <dependency org="org.assertj" name="assertj-core" rev="3.11.1" conf="sources->sources" />
-        <dependency org="org.assertj" name="assertj-guava" rev="3.2.0" conf="sources->sources" />
+        <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="sources->sources" />
+        <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="sources->sources" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.29" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="9.4.16.Final" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-core" rev="9.4.16.Final" conf="sources->sources" />
@@ -142,8 +142,8 @@
         <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.4.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.4.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="javadoc->javadoc" />
-        <dependency org="org.assertj" name="assertj-core" rev="3.11.1" conf="javadoc->javadoc" />
-        <dependency org="org.assertj" name="assertj-guava" rev="3.2.0" conf="javadoc->javadoc" />
+        <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="javadoc->javadoc" />
+        <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="javadoc->javadoc" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.29" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="9.4.16.Final" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-core" rev="9.4.16.Final" conf="javadoc->javadoc" />
@@ -227,8 +227,8 @@
         <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.4.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.4.0" conf="binaries->default" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="binaries->default" />
-        <dependency org="org.assertj" name="assertj-core" rev="3.11.1" conf="binaries->default" />
-        <dependency org="org.assertj" name="assertj-guava" rev="3.2.0" conf="binaries->default" />
+        <dependency org="org.assertj" name="assertj-core" rev="3.14.0" conf="binaries->default" />
+        <dependency org="org.assertj" name="assertj-guava" rev="3.3.0" conf="binaries->default" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.29" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="9.4.16.Final" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-core" rev="9.4.16.Final" conf="binaries->default" />
