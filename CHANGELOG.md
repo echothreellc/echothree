@@ -1,5 +1,37 @@
 # Changelog
 
+## 2020-01-15-01
+
+* Relax Security for Geo Component (geo) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2509)
+* graphql-java-annotations 7.2.1 Upgrade (graphql) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2514)
+* WildFly 18.0.0 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2515)
+* Guava 28.1-jre Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2516)
+* jOOQ 3.12.3 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2517)
+* Apache Ivy 2.5.0 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2518)
+* MySQL Connector/J 8.0.18 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2519)
+* Add CODEOWNERS for GitLab (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2520)
+* WildFly 18.0.1 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2521)
+* GraphQL Mutations Resulting in IllegalStateException (graphql) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2522)
+* 2020 Copyright Update (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2523)
+* Lucene 8.4.0 Upgrade (index) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2524)
+* ClassGraph 4.8.59 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2525)
+* ICU4J 65.1 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2526)
+* Commons-FileUpload 1.4 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2527)
+* Guava 28.2-jre Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2528)
+* Spring 5.0.15.RELEASE Upgrade (Except spring-struts) (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2529)
+* taglibs.jsp References taglib Not Included in Deployed Application (ui-cms) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2530)
+* Gson 2.8.6 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2531)
+* Cucumber 4.8.0 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2532)
+* Apache Commons HttpCore 4.4.12 / HttpClient 4.5.10 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2533)
+* JaCoCo 0.8.5 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2534)
+* ROME 1.12.2 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2535)
+* Remove Groovy (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2536)
+* FreeMarker 2.3.29 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2537)
+* Remove Quartz (service-job) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2538)
+* Reactive Streams 1.0.3 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2539)
+* assertj-core 3.14.0 / assertj-guava 3.3.0 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2540)
+* SLF4J 1.7.30 Upgrade (miscellaneous) [2499](https://www.echothree.com/bugzilla/show_bug.cgi?id=2541)
+
 ## 2019-10-09-01
 
 * graphql-java 12.0 and graphql-java-annotations 7.0 Upgrades (graphql) [2443](https://www.echothree.com/bugzilla/show_bug.cgi?id=2443)
