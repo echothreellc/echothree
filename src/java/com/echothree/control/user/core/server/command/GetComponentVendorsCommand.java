@@ -18,24 +18,25 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetComponentVendorsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetComponentVendorsResult;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetComponentVendorsCommand
-        extends BaseSimpleCommand<GetComponentVendorsForm> {
+        extends BaseMultipleEntitiesCommand<ComponentVendor, GetComponentVendorsForm>
+    {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,13 +59,20 @@ public class GetComponentVendorsCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected Collection<ComponentVendor> getEntities() {
         var coreControl = getCoreControl();
-        GetComponentVendorsResult result = CoreResultFactory.getGetComponentVendorsResult();
-        
-        result.setComponentVendors(coreControl.getComponentVendorTransfers(getUserVisit()));
-        
+
+        return coreControl.getComponentVendors();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<ComponentVendor> entities) {
+        var result = CoreResultFactory.getGetComponentVendorsResult();
+        var coreControl = getCoreControl();
+
+        result.setComponentVendors(coreControl.getComponentVendorTransfers(getUserVisit(), entities));
+
         return result;
     }
-    
+
 }
