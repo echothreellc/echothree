@@ -91,6 +91,8 @@ import com.echothree.control.user.core.common.form.GetTextTransformationForm;
 import com.echothree.control.user.core.common.form.GetTextTransformationsForm;
 import com.echothree.control.user.core.server.command.GetColorCommand;
 import com.echothree.control.user.core.server.command.GetColorsCommand;
+import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
+import com.echothree.control.user.core.server.command.GetComponentVendorsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
 import com.echothree.control.user.core.server.command.GetFontStyleCommand;
@@ -182,6 +184,7 @@ import com.echothree.model.control.content.server.graphql.ContentPageObject;
 import com.echothree.model.control.content.server.graphql.ContentSectionObject;
 import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
+import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
 import com.echothree.model.control.core.server.graphql.FontWeightObject;
@@ -222,6 +225,7 @@ import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Color;
+import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
@@ -258,6 +262,58 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("componentVendor")
+    public static ComponentVendorObject componentVendor(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("id") final String id) {
+        ComponentVendor componentVendor;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetComponentVendorForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setUlid(id);
+
+            componentVendor = new GetComponentVendorCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return componentVendor == null ? null : new ComponentVendorObject(componentVendor);
+    }
+
+    @GraphQLField
+    @GraphQLName("componentVendors")
+    public static Collection<ComponentVendorObject> componentVendors(final DataFetchingEnvironment env) {
+        Collection<ComponentVendor> componentVendors;
+        Collection<ComponentVendorObject> componentVendorObjects;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetComponentVendorsForm();
+
+            componentVendors = new GetComponentVendorsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(componentVendors == null) {
+            componentVendorObjects = Collections.EMPTY_LIST;
+        } else {
+            componentVendorObjects = new ArrayList<>(componentVendors.size());
+
+            componentVendors.stream().map((componentVendor) -> {
+                return new ComponentVendorObject(componentVendor);
+            }).forEachOrdered((componentVendorObject) -> {
+                componentVendorObjects.add(componentVendorObject);
+            });
+        }
+
+        return componentVendorObjects;
+    }
 
     @GraphQLField
     @GraphQLName("inventoryCondition")
