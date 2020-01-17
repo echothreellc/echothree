@@ -18,18 +18,15 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetComponentVendorForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetComponentVendorResult;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.logic.ComponentVendorLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -53,8 +50,12 @@ public class GetComponentVendorCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+                ));
     }
     
     /** Creates a new instance of GetComponentVendorCommand */
@@ -64,26 +65,17 @@ public class GetComponentVendorCommand
     
     @Override
     protected ComponentVendor getEntity() {
-        var coreControl = getCoreControl();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor == null) {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-        }
+        var componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByUniversalSpec(this, form);
         
         return componentVendor;
     }
     
     @Override
     protected BaseResult getTransfer(ComponentVendor componentVendor) {
-        var coreControl = getCoreControl();
-        GetComponentVendorResult result = CoreResultFactory.getGetComponentVendorResult();
+        var result = CoreResultFactory.getGetComponentVendorResult();
         
         if(componentVendor != null) {
-            UserVisit userVisit = getUserVisit();
-            
-            result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(getCoreControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
         }
         
         return result;

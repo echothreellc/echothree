@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.ComponentVendorSpec;
+import com.echothree.control.user.core.common.spec.ComponentVendorUniversalSpec;
 
 public interface GetComponentVendorForm
-        extends ComponentVendorSpec {
+        extends ComponentVendorUniversalSpec {
     
-    // Nothing additional beyond ComponentVendorSpec
+    // Nothing additional beyond ComponentVendorUniversalSpec
     
 }
