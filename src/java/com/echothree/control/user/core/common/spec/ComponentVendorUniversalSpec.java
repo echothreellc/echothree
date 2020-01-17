@@ -14,13 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.core.common.spec;
 
-import com.echothree.control.user.core.common.spec.ComponentVendorUniversalSpec;
+public interface ComponentVendorUniversalSpec
+        extends ComponentVendorSpec, UniversalEntitySpec {
 
-public interface GetComponentVendorForm
-        extends ComponentVendorUniversalSpec {
-    
-    // Nothing additional beyond ComponentVendorUniversalSpec
+    // Nothing additional beyond ComponentVendorSpec, UniversalEntitySpec
     
 }

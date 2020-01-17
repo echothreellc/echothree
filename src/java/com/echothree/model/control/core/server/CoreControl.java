@@ -22,9 +22,9 @@ import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.comment.server.CommentControl;
 import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.choice.AppearanceChoicesBean;
 import com.echothree.model.control.core.common.choice.ApplicationChoicesBean;
 import com.echothree.model.control.core.common.choice.ApplicationEditorChoicesBean;
@@ -128,6 +128,11 @@ import com.echothree.model.control.core.common.transfer.TextDecorationDescriptio
 import com.echothree.model.control.core.common.transfer.TextDecorationTransfer;
 import com.echothree.model.control.core.common.transfer.TextTransformationDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.TextTransformationTransfer;
+import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.WorkflowDestination_BASE_ENCRYPTION_KEY_STATUS_ACTIVE_TO_INACTIVE;
+import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE;
+import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS;
+import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.WorkflowStep_EVENT_GROUP_STATUS_ACTIVE;
+import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS;
 import com.echothree.model.control.core.server.transfer.AppearanceDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.AppearanceTextDecorationTransferCache;
 import com.echothree.model.control.core.server.transfer.AppearanceTextTransformationTransferCache;
@@ -148,7 +153,6 @@ import com.echothree.model.control.core.server.transfer.CommandMessageTranslatio
 import com.echothree.model.control.core.server.transfer.CommandMessageTypeDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.CommandMessageTypeTransferCache;
 import com.echothree.model.control.core.server.transfer.CommandTransferCache;
-import com.echothree.model.control.core.server.transfer.ComponentVendorTransferCache;
 import com.echothree.model.control.core.server.transfer.CoreTransferCaches;
 import com.echothree.model.control.core.server.transfer.EditorDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.EditorTransferCache;
@@ -207,11 +211,6 @@ import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
-import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.WorkflowDestination_BASE_ENCRYPTION_KEY_STATUS_ACTIVE_TO_INACTIVE;
-import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE;
-import static com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS;
-import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.WorkflowStep_EVENT_GROUP_STATUS_ACTIVE;
-import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.core.common.pk.AppearancePK;
@@ -658,8 +657,24 @@ public class CoreControl
         
         return componentVendor;
     }
-    
-    private ComponentVendor getComponentVendorByName(String componentVendorName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ComponentVendor */
+    public ComponentVendor getComponentVendorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ComponentVendorPK(entityInstance.getEntityUniqueId());
+        var componentVendor = ComponentVendorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return componentVendor;
+    }
+
+    public ComponentVendor getComponentVendorByEntityInstance(EntityInstance entityInstance) {
+        return getComponentVendorByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ComponentVendor getComponentVendorByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getComponentVendorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public ComponentVendor getComponentVendorByName(String componentVendorName, EntityPermission entityPermission) {
         ComponentVendor componentVendor = null;
         
         try {
@@ -695,7 +710,7 @@ public class CoreControl
     public ComponentVendor getComponentVendorByNameForUpdate(String componentVendorName) {
         return getComponentVendorByName(componentVendorName, EntityPermission.READ_WRITE);
     }
-    
+
     public ComponentVendorDetailValue getComponentVendorDetailValueForUpdate(ComponentVendor componentVendor) {
         return componentVendor == null? null: componentVendor.getLastDetailForUpdate().getComponentVendorDetailValue().clone();
     }
@@ -733,19 +748,22 @@ public class CoreControl
     public ComponentVendorTransfer getComponentVendorTransfer(UserVisit userVisit, ComponentVendor componentVendor) {
         return getCoreTransferCaches(userVisit).getComponentVendorTransferCache().getComponentVendorTransfer(componentVendor);
     }
-    
-    public List<ComponentVendorTransfer> getComponentVendorTransfers(UserVisit userVisit) {
-        List<ComponentVendor> componentVendors = getComponentVendors();
-        List<ComponentVendorTransfer> componentVendorTransfers = new ArrayList<>(componentVendors.size());
-        ComponentVendorTransferCache componentVendorTransferCache = getCoreTransferCaches(userVisit).getComponentVendorTransferCache();
-        
+
+    public List<ComponentVendorTransfer> getComponentVendorTransfers(UserVisit userVisit, Collection<ComponentVendor> componentVendors) {
+        var componentVendorTransfers = new ArrayList<ComponentVendorTransfer>(componentVendors.size());
+        var componentVendorTransferCache = getCoreTransferCaches(userVisit).getComponentVendorTransferCache();
+
         componentVendors.stream().forEach((componentVendor) -> {
             componentVendorTransfers.add(componentVendorTransferCache.getComponentVendorTransfer(componentVendor));
         });
-        
+
         return componentVendorTransfers;
     }
-    
+
+    public List<ComponentVendorTransfer> getComponentVendorTransfers(UserVisit userVisit) {
+        return getComponentVendorTransfers(userVisit, getComponentVendors());
+    }
+
     public void updateComponentVendorFromValue(ComponentVendorDetailValue componentVendorDetailValue, BasePK updatedBy) {
         if(componentVendorDetailValue.hasBeenModified()) {
             ComponentVendor componentVendor = ComponentVendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
