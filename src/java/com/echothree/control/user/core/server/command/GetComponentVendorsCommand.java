@@ -68,9 +68,10 @@ public class GetComponentVendorsCommand
     @Override
     protected BaseResult getTransfers(Collection<ComponentVendor> entities) {
         var result = CoreResultFactory.getGetComponentVendorsResult();
-        var coreControl = getCoreControl();
 
-        result.setComponentVendors(coreControl.getComponentVendorTransfers(getUserVisit(), entities));
+        if(entities != null) {
+            result.setComponentVendors(getCoreControl().getComponentVendorTransfers(getUserVisit(), entities));
+        }
 
         return result;
     }
