@@ -818,13 +818,21 @@ public class CoreControl
         
         return entityType;
     }
-    
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityType */
-    public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance) {
-        EntityTypePK pk = new EntityTypePK(entityInstance.getEntityUniqueId());
-        EntityType entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
+    public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new EntityTypePK(entityInstance.getEntityUniqueId());
+        var entityType = EntityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
         return entityType;
+    }
+
+    public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance) {
+        return getEntityTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public EntityType getEntityTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getEntityTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
     public long countEntityTypes() {
@@ -842,7 +850,7 @@ public class CoreControl
                 componentVendor);
     }
 
-    private EntityType getEntityTypeByName(ComponentVendor componentVendor, String entityTypeName, EntityPermission entityPermission) {
+    public EntityType getEntityTypeByName(ComponentVendor componentVendor, String entityTypeName, EntityPermission entityPermission) {
         EntityType entityType = null;
         
         try {
@@ -969,7 +977,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getEntityTypeTransferCache().getEntityTypeTransfer(entityType);
     }
     
-    private List<EntityTypeTransfer> getEntityTypeTransfers(UserVisit userVisit, List<EntityType> entityTypes) {
+    public List<EntityTypeTransfer> getEntityTypeTransfers(UserVisit userVisit, Collection<EntityType> entityTypes) {
         List<EntityTypeTransfer> entityTypeTransfers = new ArrayList<>(entityTypes.size());
         EntityTypeTransferCache entityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityTypeTransferCache();
         
