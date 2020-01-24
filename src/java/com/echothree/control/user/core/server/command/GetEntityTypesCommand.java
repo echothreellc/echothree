@@ -18,29 +18,29 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityTypesResult;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.logic.ComponentVendorLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetEntityTypesCommand
-        extends BaseSimpleCommand<GetEntityTypesForm> {
+        extends BaseMultipleEntitiesCommand<EntityType, GetEntityTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,37 +62,54 @@ public class GetEntityTypesCommand
     public GetEntityTypesCommand(UserVisitPK userVisitPK, GetEntityTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    ComponentVendor componentVendor;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<EntityType> getEntities() {
         var coreControl = getCoreControl();
-        GetEntityTypesResult result = CoreResultFactory.getGetEntityTypesResult();
-        String componentVendorName = form.getComponentVendorName();
-        
+        var componentVendorName = form.getComponentVendorName();
+        Collection<EntityType> entities = null;
+
         if(componentVendorName == null) {
-            if(session.hasLimit(EntityTypeFactory.class)) {
-                result.setEntityTypeCount(coreControl.countEntityTypes());
-            }
-
-            result.setEntityTypes(coreControl.getEntityTypeTransfers(getUserVisit()));
+            entities = coreControl.getEntityTypes();
         } else {
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-            
-            if(componentVendor != null) {
-                UserVisit userVisit = getUserVisit();
-                
-                if(session.hasLimit(EntityTypeFactory.class)) {
-                    result.setEntityTypeCount(coreControl.countEntityTypesByComponentVendor(componentVendor));
-                }
+            componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByName(this, componentVendorName);
 
-                result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
-                result.setEntityTypes(coreControl.getEntityTypeTransfersByComponentVendor(userVisit, componentVendor));
+            if(!hasExecutionErrors()) {
+                entities = coreControl.getEntityTypesByComponentVendor(componentVendor);
             } else {
                 addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
             }
         }
-        
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<EntityType> entities) {
+        var result = CoreResultFactory.getGetEntityTypesResult();
+
+        if(entities != null) {
+            var coreControl = getCoreControl();
+            var userVisit = getUserVisit();
+
+            if(componentVendor != null) {
+                result.setComponentVendor(coreControl.getComponentVendorTransfer(userVisit, componentVendor));
+
+                if(session.hasLimit(EntityTypeFactory.class)) {
+                    result.setEntityTypeCount(coreControl.countEntityTypesByComponentVendor(componentVendor));
+                }
+            } else {
+                if(session.hasLimit(EntityTypeFactory.class)) {
+                    result.setEntityTypeCount(coreControl.countEntityTypes());
+                }
+            }
+
+            result.setEntityTypes(coreControl.getEntityTypeTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
