@@ -18,19 +18,15 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityTypeResult;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -54,8 +50,12 @@ public class GetEntityTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -66,34 +66,17 @@ public class GetEntityTypeCommand
     
     @Override
     protected EntityType getEntity() {
-        var coreControl = getCoreControl();
-        EntityType entityType = null;
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-
-        if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-
-            if(entityType == null) {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-        }
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
 
         return entityType;
     }
 
     @Override
     protected BaseResult getTransfer(EntityType entityType) {
-        var coreControl = getCoreControl();
-        GetEntityTypeResult result = CoreResultFactory.getGetEntityTypeResult();
+        var result = CoreResultFactory.getGetEntityTypeResult();
 
         if(entityType != null) {
-            UserVisit userVisit = getUserVisit();
-
-            result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+            result.setEntityType(getCoreControl().getEntityTypeTransfer(getUserVisit(), entityType));
         }
 
         return result;
