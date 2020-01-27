@@ -51,6 +51,8 @@ import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
+import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
+import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetFontStyleCommand;
 import com.echothree.control.user.core.server.command.GetFontStylesCommand;
 import com.echothree.control.user.core.server.command.GetFontWeightCommand;
@@ -115,6 +117,7 @@ import com.echothree.model.control.content.server.graphql.ContentWebAddressObjec
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
+import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
 import com.echothree.model.control.core.server.graphql.FontWeightObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeFileExtensionObject;
@@ -156,6 +159,7 @@ import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
+import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -191,6 +195,59 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("entityType")
+    public static EntityTypeObject entityType(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("id") final String id) {
+        EntityType entityType;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetEntityTypeForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setUlid(id);
+
+            entityType = new GetEntityTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityType == null ? null : new EntityTypeObject(entityType);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityTypes")
+    public static Collection<EntityTypeObject> entityTypes(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName) {
+        Collection<EntityType> entityTypes;
+        Collection<EntityTypeObject> entityTypeObjects;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetEntityTypesForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+
+            entityTypes = new GetEntityTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(entityTypes == null) {
+            entityTypeObjects = Collections.EMPTY_LIST;
+        } else {
+            entityTypeObjects = new ArrayList<>(entityTypes.size());
+
+            entityTypes.stream().map(EntityTypeObject::new).forEachOrdered(entityTypeObjects::add);
+        }
+
+        return entityTypeObjects;
+    }
 
     @GraphQLField
     @GraphQLName("componentVendor")
@@ -234,11 +291,7 @@ public final class GraphQlQueries {
         } else {
             componentVendorObjects = new ArrayList<>(componentVendors.size());
 
-            componentVendors.stream().map((componentVendor) -> {
-                return new ComponentVendorObject(componentVendor);
-            }).forEachOrdered((componentVendorObject) -> {
-                componentVendorObjects.add(componentVendorObject);
-            });
+            componentVendors.stream().map(ComponentVendorObject::new).forEachOrdered(componentVendorObjects::add);
         }
 
         return componentVendorObjects;
