@@ -17,23 +17,17 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.uom.server.UomControl;
-import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
