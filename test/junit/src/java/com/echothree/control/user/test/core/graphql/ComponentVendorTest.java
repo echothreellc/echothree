@@ -68,7 +68,7 @@ public class ComponentVendorTest
 
         var componentVendorName = getString(componentVendorBody, "data.componentVendor.componentVendorName");
 
-        assertThat(componentVendorName).isEqualTo(ComponentVendors.ECHOTHREE);
+        assertThat(componentVendorName).isEqualTo(ComponentVendors.ECHOTHREE.toString());
     }
 
 
