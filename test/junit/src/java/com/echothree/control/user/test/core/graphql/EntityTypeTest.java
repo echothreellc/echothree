@@ -47,7 +47,7 @@ public class EntityTypeTest
     }
 
     @Test
-    public void componentVendorsQuery()
+    public void entityTypesQuery()
             throws Exception {
         var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
@@ -60,7 +60,7 @@ public class EntityTypeTest
     }
 
     @Test
-    public void componentVendorQuery()
+    public void entityTypeQuery()
             throws Exception {
         var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
