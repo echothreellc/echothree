@@ -60,7 +60,7 @@ public class EntityTypeTest
     }
 
     @Test
-    public void entityTypeQuery()
+    public void entityTypeQueryUsingNames()
             throws Exception {
         var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
@@ -72,6 +72,25 @@ public class EntityTypeTest
         assertThat(entityTypeName).isEqualTo(EntityTypes.GlAccount.toString());
     }
 
+    @Test
+    public void entityTypeQueryUsingId()
+            throws Exception {
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
+        var entityTypeBodyUsingNames = executeUsingPost("query { entityType(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\", entityTypeName: \"" + EntityTypes.GlAccount + "\") { id } }");
+
+        var id = getString(entityTypeBodyUsingNames, "data.entityType.id");
+
+        assertThat(id).isNotNull();
+
+        var entityTypeBodyUsingId = executeUsingPost("query { entityType(id: \"" + id + "\") { componentVendor { componentVendorName } entityTypeName } }");
+
+        var componentVendorName = getString(entityTypeBodyUsingId, "data.entityType.componentVendor.componentVendorName");
+        var entityTypeName = getString(entityTypeBodyUsingId, "data.entityType.entityTypeName");
+
+        assertThat(componentVendorName).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(entityTypeName).isEqualTo(EntityTypes.GlAccount.toString());
+    }
 
 }
