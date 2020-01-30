@@ -16,13 +16,19 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.control.user.core.common.spec.EntityTypeUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityTypeNameException;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class EntityTypeLogic
@@ -40,9 +46,10 @@ public class EntityTypeLogic
         return EntityTypeLogicHolder.instance;
     }
     
-    public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor, final String entityTypeName) {
+    public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
+            final String entityTypeName, final EntityPermission entityPermission) {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+        var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName, entityPermission);
 
         if(entityType == null) {
             handleExecutionError(UnknownEntityTypeNameException.class, eea, ExecutionErrors.UnknownEntityTypeName.name(),
@@ -52,15 +59,79 @@ public class EntityTypeLogic
         return entityType;
     }
 
-    public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName) {
-        ComponentVendor componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByName(eea, componentVendorName);
+    public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
+            final String entityTypeName) {
+        return getEntityTypeByName(eea, componentVendor, entityTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public EntityType getEntityTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
+            final String entityTypeName) {
+        return getEntityTypeByName(eea, componentVendor, entityTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final EntityPermission entityPermission) {
+        var componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByName(eea, componentVendorName);
         EntityType entityType = null;
         
         if(!hasExecutionErrors(eea)) {
-            entityType = getEntityTypeByName(eea, componentVendor, entityTypeName);
+            entityType = getEntityTypeByName(eea, componentVendor, entityTypeName, entityPermission);
         }
         
         return entityType;
+    }
+
+    public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName) {
+        return getEntityTypeByName(eea, componentVendorName, entityTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public EntityType getEntityTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName) {
+        return getEntityTypeByName(eea, componentVendorName, entityTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public EntityType getEntityTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final EntityTypeUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        EntityType entityType = null;
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var componentVendorName = universalSpec.getComponentVendorName();
+        var entityTypeName = universalSpec.getEntityTypeName();
+        int parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)
+                + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 2:
+                if(componentVendorName != null && entityTypeName != null) {
+                    entityType = getEntityTypeByName(eea, componentVendorName, entityTypeName, entityPermission);
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+                break;
+            case 1:
+                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityType.name());
+
+                if(!eea.hasExecutionErrors()) {
+                    entityType = coreControl.getEntityTypeByEntityInstance(entityInstance, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return entityType;
+    }
+
+    public EntityType getEntityTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final EntityTypeUniversalSpec universalSpec) {
+        return getEntityTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public EntityType getEntityTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final EntityTypeUniversalSpec universalSpec) {
+        return getEntityTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
     
 }

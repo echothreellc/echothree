@@ -118,8 +118,4 @@ public class NameCleanerTest
         tearDown();
     }
 
-    private String printException(Exception e) {
-        return e.getClass().getName() + ", " + e.getMessage();
-    }
-
 }

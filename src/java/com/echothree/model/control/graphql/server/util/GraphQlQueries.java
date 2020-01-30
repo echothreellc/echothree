@@ -17,35 +17,9 @@
 package com.echothree.model.control.graphql.server.util;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.form.GetCurrenciesForm;
-import com.echothree.control.user.accounting.common.form.GetCurrencyForm;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.form.GetContentCatalogForm;
-import com.echothree.control.user.content.common.form.GetContentCatalogItemForm;
-import com.echothree.control.user.content.common.form.GetContentCatalogItemsForm;
-import com.echothree.control.user.content.common.form.GetContentCatalogsForm;
-import com.echothree.control.user.content.common.form.GetContentCategoriesForm;
-import com.echothree.control.user.content.common.form.GetContentCategoryForm;
-import com.echothree.control.user.content.common.form.GetContentCategoryItemForm;
-import com.echothree.control.user.content.common.form.GetContentCategoryItemsForm;
-import com.echothree.control.user.content.common.form.GetContentCollectionForm;
-import com.echothree.control.user.content.common.form.GetContentCollectionsForm;
-import com.echothree.control.user.content.common.form.GetContentPageAreaForm;
-import com.echothree.control.user.content.common.form.GetContentPageAreaTypeForm;
-import com.echothree.control.user.content.common.form.GetContentPageAreaTypesForm;
-import com.echothree.control.user.content.common.form.GetContentPageAreasForm;
-import com.echothree.control.user.content.common.form.GetContentPageForm;
-import com.echothree.control.user.content.common.form.GetContentPageLayoutAreaForm;
-import com.echothree.control.user.content.common.form.GetContentPageLayoutAreasForm;
-import com.echothree.control.user.content.common.form.GetContentPageLayoutForm;
-import com.echothree.control.user.content.common.form.GetContentPageLayoutsForm;
-import com.echothree.control.user.content.common.form.GetContentPagesForm;
-import com.echothree.control.user.content.common.form.GetContentSectionForm;
-import com.echothree.control.user.content.common.form.GetContentSectionsForm;
-import com.echothree.control.user.content.common.form.GetContentWebAddressForm;
-import com.echothree.control.user.content.common.form.GetContentWebAddressesForm;
 import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemsCommand;
@@ -71,30 +45,14 @@ import com.echothree.control.user.content.server.command.GetContentSectionsComma
 import com.echothree.control.user.content.server.command.GetContentWebAddressCommand;
 import com.echothree.control.user.content.server.command.GetContentWebAddressesCommand;
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetColorForm;
-import com.echothree.control.user.core.common.form.GetColorsForm;
-import com.echothree.control.user.core.common.form.GetEntityAttributeTypeForm;
-import com.echothree.control.user.core.common.form.GetEntityAttributeTypesForm;
-import com.echothree.control.user.core.common.form.GetFontStyleForm;
-import com.echothree.control.user.core.common.form.GetFontStylesForm;
-import com.echothree.control.user.core.common.form.GetFontWeightForm;
-import com.echothree.control.user.core.common.form.GetFontWeightsForm;
-import com.echothree.control.user.core.common.form.GetMimeTypeFileExtensionForm;
-import com.echothree.control.user.core.common.form.GetMimeTypeFileExtensionsForm;
-import com.echothree.control.user.core.common.form.GetMimeTypeForm;
-import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypeForm;
-import com.echothree.control.user.core.common.form.GetMimeTypeUsageTypesForm;
-import com.echothree.control.user.core.common.form.GetMimeTypesForm;
-import com.echothree.control.user.core.common.form.GetTextDecorationForm;
-import com.echothree.control.user.core.common.form.GetTextDecorationsForm;
-import com.echothree.control.user.core.common.form.GetTextTransformationForm;
-import com.echothree.control.user.core.common.form.GetTextTransformationsForm;
 import com.echothree.control.user.core.server.command.GetColorCommand;
 import com.echothree.control.user.core.server.command.GetColorsCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
+import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
+import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetFontStyleCommand;
 import com.echothree.control.user.core.server.command.GetFontStylesCommand;
 import com.echothree.control.user.core.server.command.GetFontWeightCommand;
@@ -110,26 +68,13 @@ import com.echothree.control.user.core.server.command.GetTextDecorationsCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationsCommand;
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.form.GetInventoryConditionForm;
-import com.echothree.control.user.inventory.common.form.GetInventoryConditionsForm;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.form.GetItemCategoriesForm;
-import com.echothree.control.user.item.common.form.GetItemCategoryForm;
-import com.echothree.control.user.item.common.form.GetItemForm;
 import com.echothree.control.user.item.server.command.GetItemCategoriesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.form.GetDateTimeFormatForm;
-import com.echothree.control.user.party.common.form.GetDateTimeFormatsForm;
-import com.echothree.control.user.party.common.form.GetLanguageForm;
-import com.echothree.control.user.party.common.form.GetLanguagesForm;
-import com.echothree.control.user.party.common.form.GetNameSuffixesForm;
-import com.echothree.control.user.party.common.form.GetPersonalTitlesForm;
-import com.echothree.control.user.party.common.form.GetTimeZoneForm;
-import com.echothree.control.user.party.common.form.GetTimeZonesForm;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
@@ -139,22 +84,11 @@ import com.echothree.control.user.party.server.command.GetPersonalTitlesCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.control.user.party.server.command.GetTimeZonesCommand;
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.form.GetQueueTypeForm;
-import com.echothree.control.user.queue.common.form.GetQueueTypesForm;
 import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindForm;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindUseForm;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindUseTypeForm;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindUseTypesForm;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindUsesForm;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureKindsForm;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureTypeForm;
-import com.echothree.control.user.uom.common.form.GetUnitOfMeasureTypesForm;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUseCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUseTypeCommand;
@@ -164,9 +98,6 @@ import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindsComman
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypesCommand;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.GetRecoveryQuestionForm;
-import com.echothree.control.user.user.common.form.GetRecoveryQuestionsForm;
-import com.echothree.control.user.user.common.form.GetUserLoginForm;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
@@ -186,6 +117,7 @@ import com.echothree.model.control.content.server.graphql.ContentWebAddressObjec
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
+import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
 import com.echothree.model.control.core.server.graphql.FontWeightObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeFileExtensionObject;
@@ -227,6 +159,7 @@ import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
+import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -262,6 +195,59 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("entityType")
+    public static EntityTypeObject entityType(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("id") final String id) {
+        EntityType entityType;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetEntityTypeForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setUlid(id);
+
+            entityType = new GetEntityTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityType == null ? null : new EntityTypeObject(entityType);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityTypes")
+    public static Collection<EntityTypeObject> entityTypes(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName) {
+        Collection<EntityType> entityTypes;
+        Collection<EntityTypeObject> entityTypeObjects;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetEntityTypesForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+
+            entityTypes = new GetEntityTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(entityTypes == null) {
+            entityTypeObjects = Collections.EMPTY_LIST;
+        } else {
+            entityTypeObjects = new ArrayList<>(entityTypes.size());
+
+            entityTypes.stream().map(EntityTypeObject::new).forEachOrdered(entityTypeObjects::add);
+        }
+
+        return entityTypeObjects;
+    }
 
     @GraphQLField
     @GraphQLName("componentVendor")
@@ -305,11 +291,7 @@ public final class GraphQlQueries {
         } else {
             componentVendorObjects = new ArrayList<>(componentVendors.size());
 
-            componentVendors.stream().map((componentVendor) -> {
-                return new ComponentVendorObject(componentVendor);
-            }).forEachOrdered((componentVendorObject) -> {
-                componentVendorObjects.add(componentVendorObject);
-            });
+            componentVendors.stream().map(ComponentVendorObject::new).forEachOrdered(componentVendorObjects::add);
         }
 
         return componentVendorObjects;
@@ -324,7 +306,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetInventoryConditionForm commandForm = InventoryUtil.getHome().getGetInventoryConditionForm();
+            var commandForm = InventoryUtil.getHome().getGetInventoryConditionForm();
 
             commandForm.setInventoryConditionName(inventoryConditionName);
             commandForm.setUlid(id);
@@ -345,7 +327,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetInventoryConditionsForm commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
+            var commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
         
             inventoryConditions = new GetInventoryConditionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -376,7 +358,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageLayoutForm commandForm = ContentUtil.getHome().getGetContentPageLayoutForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageLayoutForm();
 
             commandForm.setContentPageLayoutName(contentPageLayoutName);
             commandForm.setUlid(id);
@@ -397,7 +379,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageLayoutsForm commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
         
             contentPageLayouts = new GetContentPageLayoutsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -430,7 +412,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageLayoutAreaForm commandForm = ContentUtil.getHome().getGetContentPageLayoutAreaForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageLayoutAreaForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
@@ -456,7 +438,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageLayoutAreasForm commandForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
@@ -491,7 +473,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageAreaTypeForm commandForm = ContentUtil.getHome().getGetContentPageAreaTypeForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageAreaTypeForm();
 
             commandForm.setContentPageAreaTypeName(contentPageAreaTypeName);
             commandForm.setUlid(id);
@@ -512,7 +494,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageAreaTypesForm commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
         
             contentPageAreaTypes = new GetContentPageAreaTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -542,7 +524,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentWebAddressForm commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
+            var commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
         
@@ -562,7 +544,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentWebAddressesForm commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
+            var commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
         
             contentWebAddresses = new GetContentWebAddressesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -592,7 +574,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentCollectionForm commandForm = ContentUtil.getHome().getGetContentCollectionForm();
+            var commandForm = ContentUtil.getHome().getGetContentCollectionForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
 
@@ -612,7 +594,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentCollectionsForm commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
+            var commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
         
             contentCollections = new GetContentCollectionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -647,7 +629,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentSectionForm commandForm = ContentUtil.getHome().getGetContentSectionForm();
+            var commandForm = ContentUtil.getHome().getGetContentSectionForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -678,7 +660,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentSectionsForm commandForm = ContentUtil.getHome().getGetContentSectionsForm();
+            var commandForm = ContentUtil.getHome().getGetContentSectionsForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -721,7 +703,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageForm commandForm = ContentUtil.getHome().getGetContentPageForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -753,7 +735,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentPagesForm commandForm = ContentUtil.getHome().getGetContentPagesForm();
+            var commandForm = ContentUtil.getHome().getGetContentPagesForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -794,7 +776,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageAreaForm commandForm = ContentUtil.getHome().getGetContentPageAreaForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageAreaForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
@@ -821,7 +803,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentPageAreasForm commandForm = ContentUtil.getHome().getGetContentPageAreasForm();
+            var commandForm = ContentUtil.getHome().getGetContentPageAreasForm();
         
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
@@ -860,7 +842,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentCatalogForm commandForm = ContentUtil.getHome().getGetContentCatalogForm();
+            var commandForm = ContentUtil.getHome().getGetContentCatalogForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -890,7 +872,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentCatalogsForm commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
+            var commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -935,7 +917,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentCatalogItemForm commandForm = ContentUtil.getHome().getGetContentCatalogItemForm();
+            var commandForm = ContentUtil.getHome().getGetContentCatalogItemForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -970,7 +952,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentCatalogItemsForm commandForm = ContentUtil.getHome().getGetContentCatalogItemsForm();
+            var commandForm = ContentUtil.getHome().getGetContentCatalogItemsForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -1013,7 +995,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentCategoryForm commandForm = ContentUtil.getHome().getGetContentCategoryForm();
+            var commandForm = ContentUtil.getHome().getGetContentCategoryForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -1046,7 +1028,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentCategoriesForm commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
+            var commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -1094,7 +1076,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetContentCategoryItemForm commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
+            var commandForm = ContentUtil.getHome().getGetContentCategoryItemForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -1131,7 +1113,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetContentCategoryItemsForm commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
+            var commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
         
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
@@ -1169,7 +1151,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetMimeTypeFileExtensionForm commandForm = CoreUtil.getHome().getGetMimeTypeFileExtensionForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeFileExtensionForm();
 
             commandForm.setFileExtension(fileExtension);
 
@@ -1189,7 +1171,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetMimeTypeFileExtensionsForm commandForm = CoreUtil.getHome().getGetMimeTypeFileExtensionsForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeFileExtensionsForm();
 
             mimeTypeFileExtensions = new GetMimeTypeFileExtensionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1219,7 +1201,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetMimeTypeUsageTypeForm commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypeForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypeForm();
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
@@ -1239,7 +1221,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetMimeTypeUsageTypesForm commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypesForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypesForm();
 
             mimeTypeUsageTypes = new GetMimeTypeUsageTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1269,7 +1251,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetMimeTypeForm commandForm = CoreUtil.getHome().getGetMimeTypeForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypeForm();
 
             commandForm.setMimeTypeName(mimeTypeName);
 
@@ -1290,7 +1272,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetMimeTypesForm commandForm = CoreUtil.getHome().getGetMimeTypesForm();
+            var commandForm = CoreUtil.getHome().getGetMimeTypesForm();
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
@@ -1322,7 +1304,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetQueueTypeForm commandForm = QueueUtil.getHome().getGetQueueTypeForm();
+            var commandForm = QueueUtil.getHome().getGetQueueTypeForm();
 
             commandForm.setQueueTypeName(queueTypeName);
 
@@ -1342,7 +1324,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetQueueTypesForm commandForm = QueueUtil.getHome().getGetQueueTypesForm();
+            var commandForm = QueueUtil.getHome().getGetQueueTypesForm();
 
             queueTypes = new GetQueueTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1373,7 +1355,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetUnitOfMeasureKindUseForm commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseForm();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseForm();
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
@@ -1396,7 +1378,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetUnitOfMeasureKindUsesForm commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUsesForm();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUsesForm();
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
@@ -1430,7 +1412,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetUnitOfMeasureTypeForm commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypeForm();
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
@@ -1452,7 +1434,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetUnitOfMeasureTypesForm commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
         
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             
@@ -1484,7 +1466,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetUnitOfMeasureKindForm commandForm = UomUtil.getHome().getGetUnitOfMeasureKindForm();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindForm();
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
         
@@ -1504,7 +1486,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetUnitOfMeasureKindsForm commandForm = UomUtil.getHome().getGetUnitOfMeasureKindsForm();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindsForm();
         
             unitOfMeasureKinds = new GetUnitOfMeasureKindsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1534,7 +1516,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetUnitOfMeasureKindUseTypeForm commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeForm();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeForm();
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
         
@@ -1554,7 +1536,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetUnitOfMeasureKindUseTypesForm commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
         
             unitOfMeasureKindUseTypes = new GetUnitOfMeasureKindUseTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1584,7 +1566,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetEntityAttributeTypeForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypeForm();
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeTypeForm();
 
             commandForm.setEntityAttributeTypeName(entityAttributeTypeName);
         
@@ -1604,7 +1586,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetEntityAttributeTypesForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypesForm();
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeTypesForm();
         
             entityAttributeTypes = new GetEntityAttributeTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1634,7 +1616,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetCustomerResultsForm commandForm = SearchUtil.getHome().getGetCustomerResultsForm();
+            var commandForm = SearchUtil.getHome().getGetCustomerResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
             
@@ -1657,7 +1639,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetColorForm commandForm = CoreUtil.getHome().getGetColorForm();
+            var commandForm = CoreUtil.getHome().getGetColorForm();
 
             commandForm.setColorName(colorName);
             commandForm.setUlid(id);
@@ -1678,7 +1660,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetColorsForm commandForm = CoreUtil.getHome().getGetColorsForm();
+            var commandForm = CoreUtil.getHome().getGetColorsForm();
         
             colors = new GetColorsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1709,7 +1691,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetFontStyleForm commandForm = CoreUtil.getHome().getGetFontStyleForm();
+            var commandForm = CoreUtil.getHome().getGetFontStyleForm();
 
             commandForm.setFontStyleName(fontStyleName);
             commandForm.setUlid(id);
@@ -1730,7 +1712,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetFontStylesForm commandForm = CoreUtil.getHome().getGetFontStylesForm();
+            var commandForm = CoreUtil.getHome().getGetFontStylesForm();
         
             fontStyles = new GetFontStylesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1761,7 +1743,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetFontWeightForm commandForm = CoreUtil.getHome().getGetFontWeightForm();
+            var commandForm = CoreUtil.getHome().getGetFontWeightForm();
 
             commandForm.setFontWeightName(fontWeightName);
             commandForm.setUlid(id);
@@ -1782,7 +1764,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetFontWeightsForm commandForm = CoreUtil.getHome().getGetFontWeightsForm();
+            var commandForm = CoreUtil.getHome().getGetFontWeightsForm();
         
             fontWeights = new GetFontWeightsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1813,7 +1795,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetTextDecorationForm commandForm = CoreUtil.getHome().getGetTextDecorationForm();
+            var commandForm = CoreUtil.getHome().getGetTextDecorationForm();
 
             commandForm.setTextDecorationName(textDecorationName);
             commandForm.setUlid(id);
@@ -1834,7 +1816,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetTextDecorationsForm commandForm = CoreUtil.getHome().getGetTextDecorationsForm();
+            var commandForm = CoreUtil.getHome().getGetTextDecorationsForm();
         
             textDecorations = new GetTextDecorationsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1865,7 +1847,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetTextTransformationForm commandForm = CoreUtil.getHome().getGetTextTransformationForm();
+            var commandForm = CoreUtil.getHome().getGetTextTransformationForm();
 
             commandForm.setTextTransformationName(textTransformationName);
             commandForm.setUlid(id);
@@ -1886,7 +1868,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetTextTransformationsForm commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
+            var commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
         
             textTransformations = new GetTextTransformationsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -1918,7 +1900,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetUserLoginForm commandForm = UserUtil.getHome().getGetUserLoginForm();
+            var commandForm = UserUtil.getHome().getGetUserLoginForm();
 
             commandForm.setUsername(username);
             commandForm.setUlid(partyId);
@@ -1943,7 +1925,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetRecoveryQuestionForm commandForm = UserUtil.getHome().getGetRecoveryQuestionForm();
+            var commandForm = UserUtil.getHome().getGetRecoveryQuestionForm();
 
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             commandForm.setUlid(id);
@@ -1965,7 +1947,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetRecoveryQuestionsForm commandForm = UserUtil.getHome().getGetRecoveryQuestionsForm();
+            var commandForm = UserUtil.getHome().getGetRecoveryQuestionsForm();
         
             recoveryQuestions = new GetRecoveryQuestionsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -2014,7 +1996,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetCurrencyForm commandForm = AccountingUtil.getHome().getGetCurrencyForm();
+            var commandForm = AccountingUtil.getHome().getGetCurrencyForm();
 
             commandForm.setCurrencyIsoName(currencyIsoName);
             commandForm.setUlid(id);
@@ -2035,7 +2017,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetCurrenciesForm commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
+            var commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
         
             currencies = new GetCurrenciesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -2066,7 +2048,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetLanguageForm commandForm = PartyUtil.getHome().getGetLanguageForm();
+            var commandForm = PartyUtil.getHome().getGetLanguageForm();
 
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.setUlid(id);
@@ -2087,7 +2069,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetLanguagesForm commandForm = PartyUtil.getHome().getGetLanguagesForm();
+            var commandForm = PartyUtil.getHome().getGetLanguagesForm();
         
             languages = new GetLanguagesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -2118,7 +2100,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetDateTimeFormatForm commandForm = PartyUtil.getHome().getGetDateTimeFormatForm();
+            var commandForm = PartyUtil.getHome().getGetDateTimeFormatForm();
 
             commandForm.setDateTimeFormatName(dateTimeFormatName);
             commandForm.setUlid(id);
@@ -2139,7 +2121,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetDateTimeFormatsForm commandForm = PartyUtil.getHome().getGetDateTimeFormatsForm();
+            var commandForm = PartyUtil.getHome().getGetDateTimeFormatsForm();
         
             dateTimeFormats = new GetDateTimeFormatsCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -2170,7 +2152,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetTimeZoneForm commandForm = PartyUtil.getHome().getGetTimeZoneForm();
+            var commandForm = PartyUtil.getHome().getGetTimeZoneForm();
 
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
             commandForm.setUlid(id);
@@ -2191,7 +2173,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetTimeZonesForm commandForm = PartyUtil.getHome().getGetTimeZonesForm();
+            var commandForm = PartyUtil.getHome().getGetTimeZonesForm();
         
             timeZones = new GetTimeZonesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -2223,7 +2205,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetItemForm commandForm = ItemUtil.getHome().getGetItemForm();
+            var commandForm = ItemUtil.getHome().getGetItemForm();
 
             commandForm.setItemName(itemName);
             commandForm.setItemNameOrAlias(itemNameOrAlias);
@@ -2246,7 +2228,7 @@ public final class GraphQlQueries {
 
         try {
             GraphQlContext context = env.getContext();
-            GetItemCategoryForm commandForm = ItemUtil.getHome().getGetItemCategoryForm();
+            var commandForm = ItemUtil.getHome().getGetItemCategoryForm();
 
             commandForm.setItemCategoryName(itemCategoryName);
             commandForm.setUlid(id);
@@ -2268,7 +2250,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetItemCategoriesForm commandForm = ItemUtil.getHome().getGetItemCategoriesForm();
+            var commandForm = ItemUtil.getHome().getGetItemCategoriesForm();
 
             commandForm.setParentItemCategoryName(parentItemCategoryName);
         
@@ -2299,7 +2281,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetPersonalTitlesForm commandForm = PartyUtil.getHome().getGetPersonalTitlesForm();
+            var commandForm = PartyUtil.getHome().getGetPersonalTitlesForm();
         
             personalTitles = new GetPersonalTitlesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -2324,7 +2306,7 @@ public final class GraphQlQueries {
         
         try {
             GraphQlContext context = env.getContext();
-            GetNameSuffixesForm commandForm = PartyUtil.getHome().getGetNameSuffixesForm();
+            var commandForm = PartyUtil.getHome().getGetNameSuffixesForm();
         
             nameSuffixes = new GetNameSuffixesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
         } catch (NamingException ex) {
