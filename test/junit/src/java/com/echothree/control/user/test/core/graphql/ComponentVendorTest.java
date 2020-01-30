@@ -71,6 +71,21 @@ public class ComponentVendorTest
         assertThat(componentVendorName).isEqualTo(ComponentVendors.ECHOTHREE.toString());
     }
 
+    @Test
+    public void componentVendorQueryWithEntityTypes()
+            throws Exception {
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
+        var componentVendorBody = executeUsingPost("query { componentVendor(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\") { componentVendorName entityTypeCount entityTypes { entityTypeName } } }");
+
+        var componentVendorName = getString(componentVendorBody, "data.componentVendor.componentVendorName");
+        var entityTypeCount = getLong(componentVendorBody, "data.componentVendor.entityTypeCount");
+        var entityTypes = getList(componentVendorBody, "data.componentVendor.entityTypes");
+
+        assertThat(componentVendorName).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(entityTypeCount).isGreaterThan(0);
+        assertThat(entityTypes).size().isEqualTo(entityTypeCount);
+    }
 
 }
