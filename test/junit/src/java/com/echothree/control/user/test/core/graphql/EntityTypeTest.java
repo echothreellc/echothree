@@ -73,6 +73,32 @@ public class EntityTypeTest
     }
 
     @Test
+    public void entityTypeQueryUsingOnlyComponentVendorName()
+            throws Exception {
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+
+        var entityTypeBody = executeUsingPost("query { entityType(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\") { entityTypeName } }");
+
+        var entityType = getMap(entityTypeBody, "data.entityType");
+
+        assertThat(entityType).isNull();
+    }
+
+    @Test
+    public void entityTypeQueryUsingOnlyEntityTypeName()
+            throws Exception {
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+
+        var entityTypeBody = executeUsingPost("query { entityType(entityTypeName: \"" + EntityTypes.GlAccount + "\") { entityTypeName } }");
+
+        var entityType = getMap(entityTypeBody, "data.entityType");
+
+        assertThat(entityType).isNull();
+    }
+
+    @Test
     public void entityTypeQueryUsingId()
             throws Exception {
         var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
@@ -91,6 +117,19 @@ public class EntityTypeTest
 
         assertThat(componentVendorName).isEqualTo(ComponentVendors.ECHOTHREE.toString());
         assertThat(entityTypeName).isEqualTo(EntityTypes.GlAccount.toString());
+    }
+
+    @Test
+    public void entityTypeQueryUsingNonexistentId()
+            throws Exception {
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+
+        var entityTypeBody = executeUsingPost("query { entityType(id: \"non-existent\") { componentVendor { componentVendorName } entityTypeName } }");
+
+        var entityType = getMap(entityTypeBody, "data.entityType");
+
+        assertThat(entityType).isNull();
     }
 
 }
