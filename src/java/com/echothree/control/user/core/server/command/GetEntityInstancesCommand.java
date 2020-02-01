@@ -18,23 +18,20 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityInstancesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityInstancesResult;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetEntityInstancesCommand
-        extends BaseSimpleCommand<GetEntityInstancesForm> {
+        extends BaseMultipleEntitiesCommand<EntityInstance, GetEntityInstancesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -51,17 +48,28 @@ public class GetEntityInstancesCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetEntityInstancesResult();
+    protected Collection<EntityInstance> getEntities() {
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        Collection<EntityInstance> entities = null;
 
         if(!hasExecutionErrors()) {
-            result.setEntityInstances(getCoreControl().getEntityInstanceTransfersByEntityType(getUserVisit(), entityType,
+            entities = getCoreControl().getEntityInstancesByEntityType(entityType);
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<EntityInstance> entities) {
+        var result = CoreResultFactory.getGetEntityInstancesResult();
+
+        if(entities != null) {
+            result.setEntityInstances(getCoreControl().getEntityInstanceTransfers(getUserVisit(), entities,
                     false, false, false, false, false));
         }
-        
+
         return result;
     }
     
