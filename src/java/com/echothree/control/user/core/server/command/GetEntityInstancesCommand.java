@@ -20,6 +20,7 @@ import com.echothree.control.user.core.common.form.GetEntityInstancesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.GetEntityInstancesResult;
 import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -52,21 +53,14 @@ public class GetEntityInstancesCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        GetEntityInstancesResult result = CoreResultFactory.getGetEntityInstancesResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                result.setEntityInstances(coreControl.getEntityInstanceTransfersByEntityType(getUserVisit(), entityType, false, false, false, false, false));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+        var result = CoreResultFactory.getGetEntityInstancesResult();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+
+        if(!hasExecutionErrors()) {
+            result.setEntityInstances(coreControl.getEntityInstanceTransfersByEntityType(getUserVisit(), entityType,
+                    false, false, false, false, false));
         }
         
         return result;
