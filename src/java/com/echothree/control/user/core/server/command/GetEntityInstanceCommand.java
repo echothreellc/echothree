@@ -19,17 +19,18 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityInstanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetEntityInstanceCommand
-        extends BaseSimpleCommand<GetEntityInstanceForm> {
+        extends BaseSingleEntityCommand<EntityInstance, GetEntityInstanceForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -46,18 +47,24 @@ public class GetEntityInstanceCommand
     public GetEntityInstanceCommand(UserVisitPK userVisitPK, GetEntityInstanceForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetEntityInstanceResult();
+    protected EntityInstance getEntity() {
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
-        if(!hasExecutionErrors()) {
+        return entityInstance;
+    }
+
+    @Override
+    protected BaseResult getTransfer(EntityInstance entityInstance) {
+        var result = CoreResultFactory.getGetEntityInstanceResult();
+
+        if(entityInstance != null) {
             result.setEntityInstance(getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstance,
                     false, false, false, false, false));
         }
 
         return result;
     }
-    
+
 }
