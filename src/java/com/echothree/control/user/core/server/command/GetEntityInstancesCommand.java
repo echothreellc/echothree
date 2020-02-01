@@ -52,14 +52,13 @@ public class GetEntityInstancesCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityInstancesResult();
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
 
         if(!hasExecutionErrors()) {
-            result.setEntityInstances(coreControl.getEntityInstanceTransfersByEntityType(getUserVisit(), entityType,
+            result.setEntityInstances(getCoreControl().getEntityInstanceTransfersByEntityType(getUserVisit(), entityType,
                     false, false, false, false, false));
         }
         
