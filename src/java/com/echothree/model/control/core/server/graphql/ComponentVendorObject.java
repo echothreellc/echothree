@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
+import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
@@ -55,19 +55,19 @@ public class ComponentVendorObject
         return componentVendorDetail;
     }
 
-    private Boolean hasEntityTypeAccess;
+    private Boolean hasEntityTypesAccess;
 
-    private boolean getHasEntityTypeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityTypeAccess == null) {
+    private boolean getHasEntityTypesAccess(final DataFetchingEnvironment env) {
+        if(hasEntityTypesAccess == null) {
             GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetEntityTypeCommand(context.getUserVisitPK(), null);
+            var baseMultipleEntitiesCommand = new GetEntityTypesCommand(context.getUserVisitPK(), null);
 
-            baseSingleEntityCommand.security();
+            baseMultipleEntitiesCommand.security();
 
-            hasEntityTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasEntityTypesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
         }
 
-        return hasEntityTypeAccess;
+        return hasEntityTypesAccess;
     }
     
     @GraphQLField
@@ -87,7 +87,7 @@ public class ComponentVendorObject
     @GraphQLField
     @GraphQLDescription("entity types")
     public List<EntityTypeObject> getEntityTypes(final DataFetchingEnvironment env) {
-        if(getHasEntityTypeAccess(env)) {
+        if(getHasEntityTypesAccess(env)) {
             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
             var entities = coreControl.getEntityTypesByComponentVendor(componentVendor);
             var entityTypes = entities.stream().map(EntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
@@ -101,7 +101,7 @@ public class ComponentVendorObject
     @GraphQLField
     @GraphQLDescription("entity type count")
     public Long getEntityTypeCount(final DataFetchingEnvironment env) {
-        if(getHasEntityTypeAccess(env)) {
+        if(getHasEntityTypesAccess(env)) {
             var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
 
             return coreControl.countEntityTypesByComponentVendor(componentVendor);
