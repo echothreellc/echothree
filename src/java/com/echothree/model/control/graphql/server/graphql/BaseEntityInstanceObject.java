@@ -16,16 +16,19 @@
 
 package com.echothree.model.control.graphql.server.graphql;
 
+import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
-public class BaseEntityInstanceObject {
+public abstract class BaseEntityInstanceObject {
     
     private final BasePK basePrimaryKey;
     
@@ -44,7 +47,22 @@ public class BaseEntityInstanceObject {
         
         return entityInstance;
     }
-    
+
+    private Boolean hasEntityInstanceAccess;
+
+    private boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
+        if(hasEntityInstanceAccess == null) {
+            GraphQlContext context = env.getContext();
+            var baseSingleEntityCommand = new GetEntityInstanceCommand(context.getUserVisitPK(), null);
+
+            baseSingleEntityCommand.security();
+
+            hasEntityInstanceAccess = !baseSingleEntityCommand.hasSecurityMessages();
+        }
+
+        return hasEntityInstanceAccess;
+    }
+
     @GraphQLField
     @GraphQLDescription("id")
     @GraphQLNonNull
@@ -57,8 +75,12 @@ public class BaseEntityInstanceObject {
     @GraphQLField
     @GraphQLDescription("entity instance")
     @GraphQLNonNull
-    public EntityInstanceObject getEntityInstance() {
-        return new EntityInstanceObject(getEntityInstanceByBasePK());
+    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
+        if(getHasEntityInstanceAccess(env)) {
+            return new EntityInstanceObject(getEntityInstanceByBasePK());
+        } else {
+            return null;
+        }
     }
 
 }
