@@ -2398,7 +2398,21 @@ public class CoreControl
         
         return result;
     }
-    
+
+    public long countEntityInstances() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityinstances");
+    }
+
+    public long countEntityInstancesByEntityType(EntityType entityType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityinstances " +
+                "WHERE eni_ent_entitytypeid = ?",
+                entityType);
+    }
+
     public List<EntityInstance> getEntityInstancesByEntityType(EntityType entityType) {
         List<EntityInstance> entityInstances = null;
         
