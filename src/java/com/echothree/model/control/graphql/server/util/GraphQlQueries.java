@@ -51,6 +51,8 @@ import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
+import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
+import com.echothree.control.user.core.server.command.GetEntityInstancesCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetFontStyleCommand;
@@ -117,6 +119,7 @@ import com.echothree.model.control.content.server.graphql.ContentWebAddressObjec
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
+import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
 import com.echothree.model.control.core.server.graphql.FontWeightObject;
@@ -159,6 +162,7 @@ import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
@@ -195,6 +199,57 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("entityInstance")
+    public static EntityInstanceObject entityInstance(final DataFetchingEnvironment env,
+            @GraphQLName("id") final String id) {
+        EntityInstance entityInstance;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetEntityInstanceForm();
+
+            commandForm.setUlid(id);
+
+            entityInstance = new GetEntityInstanceCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityInstance == null ? null : new EntityInstanceObject(entityInstance);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityInstances")
+    public static Collection<EntityInstanceObject> entityInstances(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName) {
+        Collection<EntityInstance> entityInstances;
+        Collection<EntityInstanceObject> entityInstanceObjects;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetEntityInstancesForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+
+            entityInstances = new GetEntityInstancesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(entityInstances == null) {
+            entityInstanceObjects = Collections.EMPTY_LIST;
+        } else {
+            entityInstanceObjects = new ArrayList<>(entityInstances.size());
+
+            entityInstances.stream().map(EntityInstanceObject::new).forEachOrdered(entityInstanceObjects::add);
+        }
+
+        return entityInstanceObjects;
+    }
 
     @GraphQLField
     @GraphQLName("entityType")
