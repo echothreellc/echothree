@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.control.user.core.server.command.GetEntityInstancesCommand;
+import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
@@ -28,6 +30,9 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("entity type object")
 @GraphQLName("EntityType")
@@ -51,7 +56,22 @@ public class EntityTypeObject
         
         return entityTypeDetail;
     }
-    
+
+    private Boolean hasEntityInstancesAccess;
+
+    private boolean getHasEntityInstancesAccess(final DataFetchingEnvironment env) {
+        if(hasEntityInstancesAccess == null) {
+            GraphQlContext context = env.getContext();
+            var baseMultipleEntitiesCommand = new GetEntityInstancesCommand(context.getUserVisitPK(), null);
+
+            baseMultipleEntitiesCommand.security();
+
+            hasEntityInstancesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
+        }
+
+        return hasEntityInstancesAccess;
+    }
+
     @GraphQLField
     @GraphQLDescription("entity type name")
     @GraphQLNonNull
@@ -95,6 +115,32 @@ public class EntityTypeObject
         GraphQlContext context = env.getContext();
         
         return coreControl.getBestEntityTypeDescription(entityType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity instances")
+    public List<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
+        if(getHasEntityInstancesAccess(env)) {
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+            var entities = coreControl.getEntityInstancesByEntityType(entityType);
+            var entityInstances = entities.stream().map(EntityInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return entityInstances;
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity instance count")
+    public Long getEntityInstanceCount(final DataFetchingEnvironment env) {
+        if(getHasEntityInstancesAccess(env)) {
+            var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+
+            return coreControl.countEntityInstancesByEntityType(entityType);
+        } else {
+            return null;
+        }
     }
     
 }
