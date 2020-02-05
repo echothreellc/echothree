@@ -2398,7 +2398,21 @@ public class CoreControl
         
         return result;
     }
-    
+
+    public long countEntityInstances() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityinstances");
+    }
+
+    public long countEntityInstancesByEntityType(EntityType entityType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityinstances " +
+                "WHERE eni_ent_entitytypeid = ?",
+                entityType);
+    }
+
     public List<EntityInstance> getEntityInstancesByEntityType(EntityType entityType) {
         List<EntityInstance> entityInstances = null;
         
@@ -2652,21 +2666,26 @@ public class CoreControl
         return getEntityInstanceTransfer(userVisit, getEntityInstanceByBasePK(baseEntity.getPrimaryKey()), includeEntityAppearance, includeNames, includeKey,
                 includeGuid, includeUlid);
     }
-    
-    public List<EntityInstanceTransfer> getEntityInstanceTransfersByEntityType(UserVisit userVisit, EntityType entityType, boolean includeEntityAppearance,
-            boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
-        List<EntityInstance> entityInstances = getEntityInstancesByEntityType(entityType);
-        List<EntityInstanceTransfer> entityInstanceTransfers = new ArrayList<>(entityInstances.size());
-            EntityInstanceTransferCache entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
-            
-            entityInstances.stream().forEach((entityInstance) -> {
-                entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance, includeEntityAppearance, includeNames,
-                        includeKey, includeGuid, includeUlid));
+
+    public List<EntityInstanceTransfer> getEntityInstanceTransfers(UserVisit userVisit, Collection<EntityInstance> entityInstances,
+            boolean includeEntityAppearance, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+        var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
+        var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
+
+        entityInstances.stream().forEach((entityInstance) -> {
+            entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance, includeEntityAppearance, includeNames,
+                    includeKey, includeGuid, includeUlid));
         });
-        
+
         return entityInstanceTransfers;
     }
-    
+
+    public List<EntityInstanceTransfer> getEntityInstanceTransfersByEntityType(UserVisit userVisit, EntityType entityType,
+            boolean includeEntityAppearance, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+        return getEntityInstanceTransfers(userVisit, getEntityInstancesByEntityType(entityType), includeEntityAppearance,
+                includeNames, includeKey, includeGuid, includeUlid);
+    }
+
     /** Gets an EntityInstance for BasePK, creating it if necessary. Overrides function from BaseModelControl.
      * Some errors from this function are normal during the initial load of data into the database.
      */

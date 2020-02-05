@@ -18,26 +18,38 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityInstancesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityInstancesResult;
-import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
+import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetEntityInstancesCommand
-        extends BaseSimpleCommand<GetEntityInstancesForm> {
-    
+        extends BaseMultipleEntitiesCommand<EntityInstance, GetEntityInstancesForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.EntityInstance.name(), SecurityRoles.List.name())
+                        )))
+                )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null)
@@ -46,29 +58,32 @@ public class GetEntityInstancesCommand
     
     /** Creates a new instance of GetEntityInstancesCommand */
     public GetEntityInstancesCommand(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        GetEntityInstancesResult result = CoreResultFactory.getGetEntityInstancesResult();
-        String componentVendorName = form.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            String entityTypeName = form.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                result.setEntityInstances(coreControl.getEntityInstanceTransfersByEntityType(getUserVisit(), entityType, false, false, false, false, false));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+    protected Collection<EntityInstance> getEntities() {
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        Collection<EntityInstance> entities = null;
+
+        if(!hasExecutionErrors()) {
+            entities = getCoreControl().getEntityInstancesByEntityType(entityType);
         }
-        
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<EntityInstance> entities) {
+        var result = CoreResultFactory.getGetEntityInstancesResult();
+
+        if(entities != null) {
+            result.setEntityInstances(getCoreControl().getEntityInstanceTransfers(getUserVisit(), entities,
+                    false, false, false, false, false));
+        }
+
         return result;
     }
     

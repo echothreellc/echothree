@@ -4633,6 +4633,15 @@
                 <securityRoleDescription languageIsoName="en" description="Entity Type Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="EntityInstance" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Entity Instance" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Instance List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Type Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityAttribute" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Attribute" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8075,6 +8084,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Delete" />

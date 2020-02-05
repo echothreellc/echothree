@@ -344,12 +344,17 @@ public class CoreBean
     // -------------------------------------------------------------------------
     //   Entity Instances
     // -------------------------------------------------------------------------
-    
+
+    @Override
+    public CommandResult getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form) {
+        return new GetEntityInstanceCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
         return new GetEntityInstancesCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult generateKey(UserVisitPK userVisitPK, GenerateKeyForm form) {
         return new GenerateKeyCommand(userVisitPK, form).run();

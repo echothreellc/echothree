@@ -180,9 +180,11 @@ public interface CoreService
     // -------------------------------------------------------------------------
     //   Entity Instances
     // -------------------------------------------------------------------------
-    
+
+    CommandResult getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form);
+
     CommandResult getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form);
-    
+
     CommandResult generateKey(UserVisitPK userVisitPK, GenerateKeyForm form);
     
     CommandResult generateGuid(UserVisitPK userVisitPK, GenerateGuidForm form);
