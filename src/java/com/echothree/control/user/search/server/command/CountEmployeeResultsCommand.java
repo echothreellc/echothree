@@ -19,16 +19,35 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.CountEmployeeResultsForm;
 import com.echothree.control.user.search.common.result.CountEmployeeResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class CountEmployeeResultsCommand
         extends BaseCountResultsCommand<CountEmployeeResultsForm, CountEmployeeResultsResult> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
+                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())
+                        )))
+                )));
+    }
+
     /** Creates a new instance of CountEmployeeResultsCommand */
     public CountEmployeeResultsCommand(UserVisitPK userVisitPK, CountEmployeeResultsForm form) {
-        super(userVisitPK, form, null);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
     }
     
     @Override
