@@ -27,6 +27,7 @@ import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderDetail;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.factory.OrderFactory;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.EntityNames;
 import com.echothree.util.common.persistence.EntityNamesConstants;
 import com.echothree.util.common.transfer.MapWrapper;
@@ -44,7 +45,7 @@ public class OrderNameTranslator
     private final static Map<String, String> sequenceTypesToTargets;
 
     static {
-        Map<String, String> targetMap = new HashMap<>();
+        var targetMap = new HashMap<String, String>();
         
         targetMap.put(OrderConstants.OrderType_PURCHASE_ORDER, EntityNamesConstants.Target_PurchaseOrder);
         targetMap.put(OrderConstants.OrderType_SALES_ORDER, EntityNamesConstants.Target_SalesOrder);
@@ -94,7 +95,8 @@ public class OrderNameTranslator
     }
 
     @Override
-    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String orderName, final boolean includeEntityInstance) {
+    public EntityInstanceAndNames getNames(final Party requestingParty, final String sequenceTypeName, final String orderName,
+            final boolean includeEntityInstance) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         String orderTypeName = sequenceTypesToOrderTypes.get(sequenceTypeName);
         EntityInstanceAndNames result = null;

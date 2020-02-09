@@ -27,6 +27,7 @@ import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.invoice.server.factory.InvoiceFactory;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.EntityNames;
 import com.echothree.util.common.persistence.EntityNamesConstants;
 import com.echothree.util.common.transfer.MapWrapper;
@@ -44,7 +45,7 @@ public class InvoiceNameTranslator
     private final static Map<String, String> sequenceTypesToTargets;
 
     static {
-        Map<String, String> targetMap = new HashMap<>();
+        var targetMap = new HashMap<String, String>();
         
         targetMap.put(InvoiceConstants.InvoiceType_PURCHASE_INVOICE, EntityNamesConstants.Target_PurchaseInvoice);
         targetMap.put(InvoiceConstants.InvoiceType_SALES_INVOICE, EntityNamesConstants.Target_SalesInvoice);
@@ -91,7 +92,8 @@ public class InvoiceNameTranslator
     }
 
     @Override
-    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String invoiceName, final boolean includeEntityInstance) {
+    public EntityInstanceAndNames getNames(final Party requestingParty, final String sequenceTypeName, final String invoiceName,
+            final boolean includeEntityInstance) {
         var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         String invoiceTypeName = sequenceTypesToInvoiceTypes.get(sequenceTypeName);
         EntityInstanceAndNames result = null;

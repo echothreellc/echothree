@@ -88,7 +88,8 @@ public class PartyNameTranslator
     }
 
     @Override
-    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String value, final boolean includeEntityInstance) {
+    public EntityInstanceAndNames getNames(final Party requestingParty, final String sequenceTypeName, final String value,
+            final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
         var target = sequenceTypesToTargets.get(sequenceTypeName);
         Party party = null;
