@@ -231,6 +231,7 @@ public class EntityNamesUtils {
         addComponentVendorTranslator(ComponentVendors.ECHOTHREE.name(), new ComponentVendorTranslator(nameTranslators));
     }
 
+    // Entry point from the Identify UC. Permissions have already been checked at this point.
     public EntityInstanceAndNames getEntityNames(final EntityInstance entityInstance) {
         EntityNames result = null;
         var entityType = entityInstance.getEntityType();
@@ -266,22 +267,24 @@ public class EntityNamesUtils {
         sequenceTypeTranslators = Collections.unmodifiableMap(translators);
     }
     
-    public EntityInstanceAndNames getEntityNames(final Party party, final SequenceType sequenceType, final String value, final boolean includeEntityInstance) {
+    private EntityInstanceAndNames getEntityNames(final Party requestingParty, final SequenceType sequenceType, final String value,
+            final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
         var sequenceTypeName = sequenceType.getLastDetail().getSequenceTypeName();
         var sequenceTypeTranslator = sequenceTypeTranslators.get(sequenceTypeName);
         
         if(sequenceTypeTranslator != null) {
-            result = sequenceTypeTranslator.getNames(sequenceTypeName, value, includeEntityInstance);
+            result = sequenceTypeTranslator.getNames(requestingParty, sequenceTypeName, value, includeEntityInstance);
         }
         
         return result;
     }
-    
-    public EntityInstanceAndNames getEntityNames(final Party party, final String value, final boolean includeEntityInstance) {
+
+    // Entry point from the Identify UC. Permissions have NOT been checked at this point.
+    public EntityInstanceAndNames getEntityNames(final Party requestingParty, final String value, final boolean includeEntityInstance) {
         var sequenceType = SequenceTypeLogic.getInstance().identifySequenceType(value);
         
-        return sequenceType == null ? null : getEntityNames(party, sequenceType, value, includeEntityInstance);
+        return sequenceType == null ? null : getEntityNames(requestingParty, sequenceType, value, includeEntityInstance);
     }
     
 }
