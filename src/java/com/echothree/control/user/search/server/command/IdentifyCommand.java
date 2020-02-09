@@ -76,8 +76,8 @@ public class IdentifyCommand
         return entityInstance;
     }
     
-    private void checkSequenceTypes(final List<EntityInstanceTransfer> entityInstances, final String target) {
-        EntityInstanceAndNames entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(target, true);
+    private void checkSequenceTypes(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+        EntityInstanceAndNames entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(party, target, true);
         
         if(entityInstanceAndNames != null) {
             entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -134,7 +134,7 @@ public class IdentifyCommand
         Party party = getParty();
         
         // Compile a list of all possible EntityInstances that the target may refer to.
-        checkSequenceTypes(entityInstances, target);
+        checkSequenceTypes(party, entityInstances, target);
         checkItems(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);

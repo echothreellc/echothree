@@ -50,6 +50,7 @@ import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
 import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.item.server.factory.ItemDescriptionFactory;
 import com.echothree.model.data.item.server.factory.ItemFactory;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.subscription.common.pk.SubscriptionPK;
 import com.echothree.model.data.subscription.server.entity.Subscription;
@@ -262,7 +263,7 @@ public class EntityNamesUtils {
         return result == null ? null : new EntityInstanceAndNames(entityInstance, result);
     }
     
-    private static Map<String, SequenceTypeTranslator> sequenceTypeTranslators = new HashMap<>();
+    private static Map<String, SequenceTypeTranslator> sequenceTypeTranslators;
     
     static {
         Map<String, SequenceTypeTranslator> translators = new HashMap<>(7);
@@ -278,7 +279,7 @@ public class EntityNamesUtils {
         sequenceTypeTranslators = Collections.unmodifiableMap(translators);
     }
     
-    public EntityInstanceAndNames getEntityNames(final SequenceType sequenceType, final String value, final boolean includeEntityInstance) {
+    public EntityInstanceAndNames getEntityNames(final Party party, final SequenceType sequenceType, final String value, final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
         String sequenceTypeName = sequenceType.getLastDetail().getSequenceTypeName();
         SequenceTypeTranslator sequenceTypeTranslator = sequenceTypeTranslators.get(sequenceTypeName);
@@ -290,10 +291,10 @@ public class EntityNamesUtils {
         return result;
     }
     
-    public EntityInstanceAndNames getEntityNames(final String value, final boolean includeEntityInstance) {
+    public EntityInstanceAndNames getEntityNames(final Party party, final String value, final boolean includeEntityInstance) {
         SequenceType sequenceType = SequenceTypeLogic.getInstance().identifySequenceType(value);
         
-        return sequenceType == null ? null : getEntityNames(sequenceType, value, includeEntityInstance);
+        return sequenceType == null ? null : getEntityNames(party, sequenceType, value, includeEntityInstance);
     }
     
 }
