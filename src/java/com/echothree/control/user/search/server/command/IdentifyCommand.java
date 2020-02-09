@@ -69,7 +69,7 @@ public class IdentifyCommand
     }
     
     private EntityInstanceTransfer fillInEntityInstance(EntityInstanceAndNames entityInstanceAndNames) {
-        EntityInstanceTransfer entityInstance = getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false, false);
+        var entityInstance = getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstanceAndNames.getEntityInstance(), false, false, false, false, false);
 
         entityInstance.setEntityNames(entityInstanceAndNames.getEntityNames());
         
@@ -77,7 +77,7 @@ public class IdentifyCommand
     }
     
     private void checkSequenceTypes(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
-        EntityInstanceAndNames entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(party, target, true);
+        var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(party, target, true);
         
         if(entityInstanceAndNames != null) {
             entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -88,11 +88,11 @@ public class IdentifyCommand
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-            Item item = itemControl.getItemByNameThenAlias(target);
+            var item = itemControl.getItemByNameThenAlias(target);
 
             if(item != null) {
-                EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(item.getPrimaryKey());
-                EntityInstanceAndNames entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(item.getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             }
@@ -103,11 +103,11 @@ public class IdentifyCommand
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-            Vendor vendor = vendorControl.getVendorByName(target);
+            var vendor = vendorControl.getVendorByName(target);
 
             if(vendor != null) {
-                EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(vendor.getParty().getPrimaryKey());
-                EntityInstanceAndNames entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(vendor.getParty().getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             }
@@ -118,7 +118,7 @@ public class IdentifyCommand
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-            List<VendorItem> vendorItems = vendorControl.getVendorItemsByVendorItemName(target);
+            var vendorItems = vendorControl.getVendorItemsByVendorItemName(target);
 
             vendorItems.stream().map((vendorItem) -> getCoreControl().getEntityInstanceByBasePK(vendorItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
@@ -128,10 +128,10 @@ public class IdentifyCommand
     
     @Override
     protected BaseResult execute() {
-        IdentifyResult result = SearchResultFactory.getIdentifyResult();
-        List<EntityInstanceTransfer> entityInstances = new ArrayList<>();
-        String target = form.getTarget();
-        Party party = getParty();
+        var result = SearchResultFactory.getIdentifyResult();
+        var entityInstances = new ArrayList<EntityInstanceTransfer>();
+        var target = form.getTarget();
+        var party = getParty();
         
         // Compile a list of all possible EntityInstances that the target may refer to.
         checkSequenceTypes(party, entityInstances, target);
