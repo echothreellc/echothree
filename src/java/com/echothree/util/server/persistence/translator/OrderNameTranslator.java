@@ -87,9 +87,9 @@ public class OrderNameTranslator
 
     @Override
     public EntityNames getNames(final EntityInstance entityInstance) {
-        OrderDetail orderDetail = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        var orderDetail = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                 new OrderPK(entityInstance.getEntityUniqueId())).getLastDetail();
-        String orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
+        var orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
         
         return getNames(orderTypesToTargets, orderTypeName, orderDetail);
     }
@@ -97,13 +97,13 @@ public class OrderNameTranslator
     @Override
     public EntityInstanceAndNames getNames(final Party requestingParty, final String sequenceTypeName, final String orderName,
             final boolean includeEntityInstance) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        String orderTypeName = sequenceTypesToOrderTypes.get(sequenceTypeName);
         EntityInstanceAndNames result = null;
-        
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeName = sequenceTypesToOrderTypes.get(sequenceTypeName);
+
         if(orderTypeName != null) {
-            OrderType orderType = OrderLogic.getInstance().getOrderTypeByName(null, orderTypeName);
-            Order order = orderControl.getOrderByName(orderType, orderName);
+            var orderType = OrderLogic.getInstance().getOrderTypeByName(null, orderTypeName);
+            var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
                 var coreControl = (CoreControl)Session.getModelController(CoreControl.class);

@@ -68,8 +68,8 @@ public class InvoiceNameTranslator
     }
 
     private EntityNames getNames(final Map<String, String> targetMap, final String key, final InvoiceDetail invoiceDetail) {
-        String target = targetMap.get(key);
         EntityNames result = null;
+        var target = targetMap.get(key);
 
         if(target != null) {
             MapWrapper<String> names = new MapWrapper<>(1);
@@ -86,7 +86,7 @@ public class InvoiceNameTranslator
     public EntityNames getNames(final EntityInstance entityInstance) {
         InvoiceDetail invoiceDetail = InvoiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                 new InvoicePK(entityInstance.getEntityUniqueId())).getLastDetail();
-        String invoiceTypeName = invoiceDetail.getInvoiceType().getLastDetail().getInvoiceTypeName();
+        var invoiceTypeName = invoiceDetail.getInvoiceType().getLastDetail().getInvoiceTypeName();
         
         return getNames(invoiceTypesToTargets, invoiceTypeName, invoiceDetail);
     }
@@ -94,10 +94,10 @@ public class InvoiceNameTranslator
     @Override
     public EntityInstanceAndNames getNames(final Party requestingParty, final String sequenceTypeName, final String invoiceName,
             final boolean includeEntityInstance) {
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = sequenceTypesToInvoiceTypes.get(sequenceTypeName);
         EntityInstanceAndNames result = null;
-        
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceTypeName = sequenceTypesToInvoiceTypes.get(sequenceTypeName);
+
         if(invoiceTypeName != null) {
             InvoiceType invoiceType = InvoiceLogic.getInstance().getInvoiceTypeByName(null, invoiceTypeName);
             Invoice invoice = invoiceControl.getInvoiceByName(invoiceType, invoiceName);
