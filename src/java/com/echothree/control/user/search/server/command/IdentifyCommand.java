@@ -85,7 +85,7 @@ public class IdentifyCommand
     }
     
     private void checkItems(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
             var item = itemControl.getItemByNameThenAlias(target);
@@ -100,7 +100,7 @@ public class IdentifyCommand
     }
     
     private void checkVendors(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
             var vendor = vendorControl.getVendorByName(target);
@@ -115,7 +115,7 @@ public class IdentifyCommand
     }
     
     private void checkVendorItems(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
-        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
             var vendorItems = vendorControl.getVendorItemsByVendorItemName(target);

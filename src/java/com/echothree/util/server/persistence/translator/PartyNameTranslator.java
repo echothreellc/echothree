@@ -20,6 +20,9 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
 import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -94,14 +97,18 @@ public class PartyNameTranslator
         var target = sequenceTypesToTargets.get(sequenceTypeName);
         Party party = null;
         
-        if(target.equals(EntityNamesConstants.Target_Customer)) {
+        if(target.equals(EntityNamesConstants.Target_Customer) &&
+                SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                        SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
             var customer = customerControl.getCustomerByName(value);
             
             if(customer != null) {
                 party = customer.getParty();
             }
-        } else if(target.equals(EntityNamesConstants.Target_Employee)) {
+        } else if(target.equals(EntityNamesConstants.Target_Employee) &&
+                SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                        SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
             var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
             var partyEmployee = employeeControl.getPartyEmployeeByName(value);
             
