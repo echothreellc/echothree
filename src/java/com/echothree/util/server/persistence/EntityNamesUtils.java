@@ -25,9 +25,7 @@ import com.echothree.model.data.communication.server.factory.CommunicationEventF
 import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
 import com.echothree.model.data.contactlist.server.factory.PartyContactListFactory;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.factory.MimeTypeFactory;
 import com.echothree.model.data.forum.common.pk.ForumGroupPK;
 import com.echothree.model.data.forum.common.pk.ForumMessagePK;
@@ -52,7 +50,8 @@ import com.echothree.model.data.training.server.factory.TrainingClassFactory;
 import com.echothree.model.data.vendor.common.pk.VendorItemPK;
 import com.echothree.model.data.vendor.server.factory.VendorItemFactory;
 import com.echothree.util.common.persistence.EntityNames;
-import com.echothree.util.common.persistence.EntityNamesConstants;
+import com.echothree.util.common.persistence.Names;
+import com.echothree.util.common.persistence.Targets;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.translator.ComponentVendorTranslator;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
@@ -97,9 +96,9 @@ public class EntityNamesUtils {
                     new ItemPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ItemName, itemDetail.getItemName());
+            names.put(Names.ItemName.toString(), itemDetail.getItemName());
             
-            return new EntityNames(EntityNamesConstants.Target_Item, names);
+            return new EntityNames(Targets.Item.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.ItemDescription.name(), (final EntityInstance entityInstance) -> {
@@ -107,11 +106,11 @@ public class EntityNamesUtils {
                     new ItemDescriptionPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(3);
             
-            names.put(EntityNamesConstants.Name_ItemDescriptionTypeName, itemDescriptionDetail.getItemDescriptionType().getLastDetail().getItemDescriptionTypeName());
-            names.put(EntityNamesConstants.Name_ItemName, itemDescriptionDetail.getItem().getLastDetail().getItemName());
-            names.put(EntityNamesConstants.Name_LanguageIsoName, itemDescriptionDetail.getLanguage().getLanguageIsoName());
+            names.put(Names.ItemDescriptionTypeName.toString(), itemDescriptionDetail.getItemDescriptionType().getLastDetail().getItemDescriptionTypeName());
+            names.put(Names.ItemName.toString(), itemDescriptionDetail.getItem().getLastDetail().getItemName());
+            names.put(Names.LanguageIsoName.toString(), itemDescriptionDetail.getLanguage().getLanguageIsoName());
             
-            return new EntityNames(EntityNamesConstants.Target_ItemDescription, names);
+            return new EntityNames(Targets.ItemDescription.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.ForumGroup.name(), (final EntityInstance entityInstance) -> {
@@ -119,9 +118,9 @@ public class EntityNamesUtils {
                     new ForumGroupPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ForumGroupName, forumGroupDetail.getForumGroupName());
+            names.put(Names.ForumGroupName.toString(), forumGroupDetail.getForumGroupName());
             
-            return new EntityNames(EntityNamesConstants.Target_ForumGroup, names);
+            return new EntityNames(Targets.ForumGroup.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.Forum.name(), (final EntityInstance entityInstance) -> {
@@ -129,9 +128,9 @@ public class EntityNamesUtils {
                     new ForumPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ForumName, forumDetail.getForumName());
+            names.put(Names.ForumName.toString(), forumDetail.getForumName());
             
-            return new EntityNames(EntityNamesConstants.Target_Forum, names);
+            return new EntityNames(Targets.Forum.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.ForumMessage.name(), (final EntityInstance entityInstance) -> {
@@ -139,9 +138,9 @@ public class EntityNamesUtils {
                     new ForumMessagePK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ForumMessageName, forumMessageDetail.getForumMessageName());
+            names.put(Names.ForumMessageName.toString(), forumMessageDetail.getForumMessageName());
             
-            return new EntityNames(EntityNamesConstants.Target_ForumMessage, names);
+            return new EntityNames(Targets.ForumMessage.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.ForumThread.name(), (final EntityInstance entityInstance) -> {
@@ -149,9 +148,9 @@ public class EntityNamesUtils {
                     new ForumThreadPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ForumThreadName, forumThreadDetail.getForumThreadName());
+            names.put(Names.ForumThreadName.toString(), forumThreadDetail.getForumThreadName());
             
-            return new EntityNames(EntityNamesConstants.Target_ForumThread, names);
+            return new EntityNames(Targets.ForumThread.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.TrainingClass.name(), (final EntityInstance entityInstance) -> {
@@ -159,9 +158,9 @@ public class EntityNamesUtils {
                     new TrainingClassPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_TrainingClassName, trainingClassDetail.getTrainingClassName());
+            names.put(Names.TrainingClassName.toString(), trainingClassDetail.getTrainingClassName());
             
-            return new EntityNames(EntityNamesConstants.Target_TrainingClass, names);
+            return new EntityNames(Targets.TrainingClass.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.PartyTrainingClass.name(), (final EntityInstance entityInstance) -> {
@@ -169,9 +168,9 @@ public class EntityNamesUtils {
                     new PartyTrainingClassPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_PartyTrainingClassName, partyTrainingClassDetail.getPartyTrainingClassName());
+            names.put(Names.PartyTrainingClassName.toString(), partyTrainingClassDetail.getPartyTrainingClassName());
             
-            return new EntityNames(EntityNamesConstants.Target_PartyTrainingClass, names);
+            return new EntityNames(Targets.PartyTrainingClass.toString(), names);
         });
         
         nameTranslators.put(EntityTypes.CommunicationEvent.name(), (final EntityInstance entityInstance) -> {
@@ -179,9 +178,9 @@ public class EntityNamesUtils {
                     new CommunicationEventPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_CommunicationEventName, communicationEventDetail.getCommunicationEventName());
+            names.put(Names.CommunicationEventName.toString(), communicationEventDetail.getCommunicationEventName());
             
-            return new EntityNames(EntityNamesConstants.Target_CommunicationEvent, names);
+            return new EntityNames(Targets.CommunicationEvent.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.VendorItem.name(), (final EntityInstance entityInstance) -> {
@@ -189,10 +188,10 @@ public class EntityNamesUtils {
                     new VendorItemPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(2);
             
-            names.put(EntityNamesConstants.Name_VendorItemName, vendorItemDetail.getVendorItemName());
-            names.put(EntityNamesConstants.Name_PartyName, vendorItemDetail.getVendorParty().getLastDetail().getPartyName());
+            names.put(Names.VendorItemName.toString(), vendorItemDetail.getVendorItemName());
+            names.put(Names.PartyName.toString(), vendorItemDetail.getVendorParty().getLastDetail().getPartyName());
             
-            return new EntityNames(EntityNamesConstants.Target_VendorItem, names);
+            return new EntityNames(Targets.VendorItem.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.PartyContactList.name(), (final EntityInstance entityInstance) -> {
@@ -200,10 +199,10 @@ public class EntityNamesUtils {
                     new PartyContactListPK(entityInstance.getEntityUniqueId())).getLastDetail();
             var names = new MapWrapper<String>(2);
             
-            names.put(EntityNamesConstants.Name_PartyName, partyContactListDetail.getParty().getLastDetail().getPartyName());
-            names.put(EntityNamesConstants.Name_ContactListName, partyContactListDetail.getContactList().getLastDetail().getContactListName());
+            names.put(Names.PartyName.toString(), partyContactListDetail.getParty().getLastDetail().getPartyName());
+            names.put(Names.ContactListName.toString(), partyContactListDetail.getContactList().getLastDetail().getContactListName());
             
-            return new EntityNames(EntityNamesConstants.Target_PartyContactList, names);
+            return new EntityNames(Targets.PartyContactList.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.Subscription.name(), (final EntityInstance entityInstance) -> {
@@ -211,9 +210,9 @@ public class EntityNamesUtils {
                     new SubscriptionPK(entityInstance.getEntityUniqueId()));
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_SubscriptionName, subscription.getLastDetail().getSubscriptionName());
+            names.put(Names.SubscriptionName.toString(), subscription.getLastDetail().getSubscriptionName());
             
-            return new EntityNames(EntityNamesConstants.Target_Subscription, names);
+            return new EntityNames(Targets.Subscription.toString(), names);
         });
 
         nameTranslators.put(EntityTypes.MimeType.name(), (final EntityInstance entityInstance) -> {
@@ -221,9 +220,9 @@ public class EntityNamesUtils {
                     new MimeTypePK(entityInstance.getEntityUniqueId()));
             var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_MimeTypeName, mimeType.getLastDetail().getMimeTypeName());
+            names.put(Names.MimeTypeName.toString(), mimeType.getLastDetail().getMimeTypeName());
             
-            return new EntityNames(EntityNamesConstants.Target_MimeType, names);
+            return new EntityNames(Targets.MimeType.toString(), names);
         });
 
         nameTranslators = Collections.unmodifiableMap(nameTranslators);

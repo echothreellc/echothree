@@ -23,13 +23,12 @@ import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderPK;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderDetail;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.factory.OrderFactory;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.EntityNames;
-import com.echothree.util.common.persistence.EntityNamesConstants;
+import com.echothree.util.common.persistence.Names;
+import com.echothree.util.common.persistence.Targets;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -47,9 +46,9 @@ public class OrderNameTranslator
     static {
         var targetMap = new HashMap<String, String>();
         
-        targetMap.put(OrderConstants.OrderType_PURCHASE_ORDER, EntityNamesConstants.Target_PurchaseOrder);
-        targetMap.put(OrderConstants.OrderType_SALES_ORDER, EntityNamesConstants.Target_SalesOrder);
-        targetMap.put(OrderConstants.OrderType_WISHLIST, EntityNamesConstants.Target_Wishlist);
+        targetMap.put(OrderConstants.OrderType_PURCHASE_ORDER, Targets.PurchaseOrder.toString());
+        targetMap.put(OrderConstants.OrderType_SALES_ORDER, Targets.SalesOrder.toString());
+        targetMap.put(OrderConstants.OrderType_WISHLIST, Targets.Wishlist.toString());
 
         orderTypesToTargets = Collections.unmodifiableMap(targetMap);
         
@@ -63,9 +62,9 @@ public class OrderNameTranslator
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_ORDER, EntityNamesConstants.Target_PurchaseOrder);
-        targetMap.put(SequenceConstants.SequenceType_SALES_ORDER, EntityNamesConstants.Target_SalesOrder);
-        targetMap.put(SequenceConstants.SequenceType_WISHLIST, EntityNamesConstants.Target_Wishlist);
+        targetMap.put(SequenceConstants.SequenceType_PURCHASE_ORDER, Targets.PurchaseOrder.toString());
+        targetMap.put(SequenceConstants.SequenceType_SALES_ORDER, Targets.SalesOrder.toString());
+        targetMap.put(SequenceConstants.SequenceType_WISHLIST, Targets.Wishlist.toString());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }
@@ -77,7 +76,7 @@ public class OrderNameTranslator
         if(target != null) {
             MapWrapper<String> names = new MapWrapper<>(1);
 
-            names.put(EntityNamesConstants.Name_OrderName, orderDetail.getOrderName());
+            names.put(Names.OrderName.toString(), orderDetail.getOrderName());
 
             result = new EntityNames(target, names);
         }

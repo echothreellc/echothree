@@ -29,7 +29,8 @@ import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.invoice.server.factory.InvoiceFactory;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.EntityNames;
-import com.echothree.util.common.persistence.EntityNamesConstants;
+import com.echothree.util.common.persistence.Names;
+import com.echothree.util.common.persistence.Targets;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -47,8 +48,8 @@ public class InvoiceNameTranslator
     static {
         var targetMap = new HashMap<String, String>();
         
-        targetMap.put(InvoiceConstants.InvoiceType_PURCHASE_INVOICE, EntityNamesConstants.Target_PurchaseInvoice);
-        targetMap.put(InvoiceConstants.InvoiceType_SALES_INVOICE, EntityNamesConstants.Target_SalesInvoice);
+        targetMap.put(InvoiceConstants.InvoiceType_PURCHASE_INVOICE, Targets.PurchaseInvoice.toString());
+        targetMap.put(InvoiceConstants.InvoiceType_SALES_INVOICE, Targets.SalesInvoice.toString());
 
         invoiceTypesToTargets = Collections.unmodifiableMap(targetMap);
         
@@ -61,8 +62,8 @@ public class InvoiceNameTranslator
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_INVOICE, EntityNamesConstants.Target_PurchaseInvoice);
-        targetMap.put(SequenceConstants.SequenceType_SALES_INVOICE, EntityNamesConstants.Target_SalesInvoice);
+        targetMap.put(SequenceConstants.SequenceType_PURCHASE_INVOICE, Targets.PurchaseInvoice.toString());
+        targetMap.put(SequenceConstants.SequenceType_SALES_INVOICE, Targets.SalesInvoice.toString());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }
@@ -74,7 +75,7 @@ public class InvoiceNameTranslator
         if(target != null) {
             MapWrapper<String> names = new MapWrapper<>(1);
 
-            names.put(EntityNamesConstants.Name_InvoiceName, invoiceDetail.getInvoiceName());
+            names.put(Names.InvoiceName.toString(), invoiceDetail.getInvoiceName());
 
             result = new EntityNames(target, names);
         }

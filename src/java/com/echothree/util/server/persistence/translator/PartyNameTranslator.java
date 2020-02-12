@@ -30,7 +30,8 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDetail;
 import com.echothree.model.data.party.server.factory.PartyFactory;
 import com.echothree.util.common.persistence.EntityNames;
-import com.echothree.util.common.persistence.EntityNamesConstants;
+import com.echothree.util.common.persistence.Names;
+import com.echothree.util.common.persistence.Targets;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -47,21 +48,21 @@ public class PartyNameTranslator
     static {
         var targetMap = new HashMap<String, String>();
         
-        targetMap.put(PartyConstants.PartyType_EMPLOYEE, EntityNamesConstants.Target_Employee);
-        targetMap.put(PartyConstants.PartyType_CUSTOMER, EntityNamesConstants.Target_Customer);
-        targetMap.put(PartyConstants.PartyType_COMPANY, EntityNamesConstants.Target_Company);
-        targetMap.put(PartyConstants.PartyType_DIVISION, EntityNamesConstants.Target_Division);
-        targetMap.put(PartyConstants.PartyType_DEPARTMENT, EntityNamesConstants.Target_Department);
-        targetMap.put(PartyConstants.PartyType_VENDOR, EntityNamesConstants.Target_Vendor);
-        targetMap.put(PartyConstants.PartyType_CARRIER, EntityNamesConstants.Target_Carrier);
-        targetMap.put(PartyConstants.PartyType_WAREHOUSE, EntityNamesConstants.Target_Warehouse);
+        targetMap.put(PartyConstants.PartyType_EMPLOYEE, Targets.Employee.toString());
+        targetMap.put(PartyConstants.PartyType_CUSTOMER, Targets.Customer.toString());
+        targetMap.put(PartyConstants.PartyType_COMPANY, Targets.Company.toString());
+        targetMap.put(PartyConstants.PartyType_DIVISION, Targets.Division.toString());
+        targetMap.put(PartyConstants.PartyType_DEPARTMENT, Targets.Department.toString());
+        targetMap.put(PartyConstants.PartyType_VENDOR, Targets.Vendor.toString());
+        targetMap.put(PartyConstants.PartyType_CARRIER, Targets.Carrier.toString());
+        targetMap.put(PartyConstants.PartyType_WAREHOUSE, Targets.Warehouse.toString());
 
         partyTypesToTargets = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceConstants.SequenceType_CUSTOMER, EntityNamesConstants.Target_Customer);
-        targetMap.put(SequenceConstants.SequenceType_EMPLOYEE, EntityNamesConstants.Target_Employee);
+        targetMap.put(SequenceConstants.SequenceType_CUSTOMER, Targets.Customer.toString());
+        targetMap.put(SequenceConstants.SequenceType_EMPLOYEE, Targets.Employee.toString());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }
@@ -73,7 +74,7 @@ public class PartyNameTranslator
         if(target != null) {
             var names = new MapWrapper<String>(1);
 
-            names.put(EntityNamesConstants.Name_PartyName, partyDetail.getPartyName());
+            names.put(Names.PartyName.toString(), partyDetail.getPartyName());
 
             result = new EntityNames(target, names);
         }
@@ -97,7 +98,7 @@ public class PartyNameTranslator
         var target = sequenceTypesToTargets.get(sequenceTypeName);
         Party party = null;
         
-        if(target.equals(EntityNamesConstants.Target_Customer) &&
+        if(target.equals(Targets.Customer.toString()) &&
                 SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
                         SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
@@ -106,7 +107,7 @@ public class PartyNameTranslator
             if(customer != null) {
                 party = customer.getParty();
             }
-        } else if(target.equals(EntityNamesConstants.Target_Employee) &&
+        } else if(target.equals(Targets.Employee.toString()) &&
                 SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
                         SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
             var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
