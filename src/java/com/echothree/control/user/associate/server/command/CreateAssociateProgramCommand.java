@@ -18,7 +18,7 @@ package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.CreateAssociateProgramForm;
 import com.echothree.model.control.associate.server.AssociateControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -71,12 +71,12 @@ public class CreateAssociateProgramCommand
             Sequence associateSequence = null;
             
             if(associateSequenceName != null) {
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE);
+                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE.toString());
                 
                 if(sequenceType != null) {
                     associateSequence = sequenceControl.getSequenceByName(sequenceType, associateSequenceName);
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE);
+                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE.toString());
                 }
             }
             
@@ -85,12 +85,12 @@ public class CreateAssociateProgramCommand
                 Sequence associatePartyContactMechanismSequence = null;
                 
                 if(associatePartyContactMechanismSequenceName != null) {
-                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE_PARTY_CONTACT_MECHANISM);
+                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.toString());
                     
                     if(sequenceType != null) {
                         associatePartyContactMechanismSequence = sequenceControl.getSequenceByName(sequenceType, associatePartyContactMechanismSequenceName);
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE_PARTY_CONTACT_MECHANISM);
+                        addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.toString());
                     }
                 }
                 
@@ -99,12 +99,12 @@ public class CreateAssociateProgramCommand
                     Sequence associateReferralSequence = null;
                     
                     if(associateReferralSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE_REFERRAL);
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_REFERRAL.toString());
                         
                         if(sequenceType != null) {
                             associateReferralSequence = sequenceControl.getSequenceByName(sequenceType, associateReferralSequenceName);
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE_REFERRAL);
+                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE_REFERRAL.toString());
                         }
                     }
                     

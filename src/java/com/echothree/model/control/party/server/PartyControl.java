@@ -94,7 +94,7 @@ import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.security.server.SecurityControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.training.server.TrainingControl;
@@ -1853,7 +1853,7 @@ public class PartyControl
         
         if(partyName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_PARTY);
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY.toString());
             if(sequenceType != null) {
                 Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
                 

@@ -19,7 +19,7 @@ package com.echothree.control.user.comment.server.command;
 import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
 import com.echothree.model.control.comment.server.CommentControl;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
@@ -92,12 +92,12 @@ public class CreateCommentTypeCommand
                         
                         if(commentSequenceName != null) {
                             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_COMMENT);
+                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.toString());
                             
                             if(sequenceType != null) {
                                 commentSequence = sequenceControl.getSequenceByName(sequenceType, commentSequenceName);
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_COMMENT);
+                                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.COMMENT.toString());
                             }
                         }
                         

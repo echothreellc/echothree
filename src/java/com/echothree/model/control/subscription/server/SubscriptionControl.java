@@ -18,8 +18,8 @@ package com.echothree.model.control.subscription.server;
 
 import com.echothree.model.control.club.server.ClubControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.subscription.common.SubscriptionConstants;
 import com.echothree.model.control.subscription.common.choice.SubscriptionKindChoicesBean;
 import com.echothree.model.control.subscription.common.choice.SubscriptionTypeChoicesBean;
@@ -1207,7 +1207,7 @@ public class SubscriptionControl
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         
         if(sequence == null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_SUBSCRIPTION);
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.toString());
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
         

@@ -52,7 +52,7 @@ import com.echothree.model.control.inventory.common.choice.AllocationPriorityCho
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.model.control.term.common.choice.TermChoicesBean;
 import com.echothree.util.common.command.CommandResult;
@@ -106,7 +106,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                form.setSequenceTypeName(SequenceConstants.SequenceType_CUSTOMER);
+                form.setSequenceTypeName(SequenceTypes.CUSTOMER.toString());
                 form.setDefaultSequenceChoice(customerSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

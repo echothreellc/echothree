@@ -19,7 +19,7 @@ package com.echothree.ui.web.main.action.associate.associateprogram;
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -62,7 +62,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceConstants.SequenceType_ASSOCIATE);
+                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE.toString());
                 commandForm.setDefaultSequenceChoice(associateSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -104,7 +104,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceConstants.SequenceType_ASSOCIATE_PARTY_CONTACT_MECHANISM);
+                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.toString());
                 commandForm.setDefaultSequenceChoice(associatePartyContactMechanismSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -146,7 +146,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceConstants.SequenceType_ASSOCIATE_REFERRAL);
+                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_REFERRAL.toString());
                 commandForm.setDefaultSequenceChoice(associateReferralSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 

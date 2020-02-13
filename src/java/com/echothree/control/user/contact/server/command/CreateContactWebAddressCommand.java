@@ -27,7 +27,7 @@ import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
@@ -99,7 +99,7 @@ public class CreateContactWebAddressCommand
             BasePK createdBy = getPartyPK();
             String url = form.getUrl();
             String description = form.getDescription();
-            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_CONTACT_MECHANISM);
+            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.toString());
 
             ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.WEB_ADDRESS.name());
             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,

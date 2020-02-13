@@ -21,7 +21,7 @@ import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainKind;
@@ -93,7 +93,7 @@ public class CreateChainCommand
 
                     if(chainInstanceSequenceName != null) {
                         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_CHAIN_INSTANCE);
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.toString());
 
                         chainInstanceSequence = sequenceControl.getSequenceByName(sequenceType, chainInstanceSequenceName);
                     }

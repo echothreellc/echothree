@@ -25,7 +25,7 @@ import com.echothree.control.user.workeffort.common.spec.WorkEffortScopeSpec;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
@@ -196,12 +196,12 @@ public class EditWorkEffortScopeCommand
 
             if(workEffortSequenceName != null) {
                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_WORK_EFFORT);
+                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.toString());
 
                 if(sequenceType != null) {
                     workEffortSequence = sequenceControl.getSequenceByName(sequenceType, workEffortSequenceName);
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_WORK_EFFORT);
+                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.WORK_EFFORT.toString());
                 }
             }
 

@@ -23,7 +23,7 @@ import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
@@ -61,8 +61,8 @@ public class PartyNameTranslator
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceConstants.SequenceType_CUSTOMER, Targets.Customer.toString());
-        targetMap.put(SequenceConstants.SequenceType_EMPLOYEE, Targets.Employee.toString());
+        targetMap.put(SequenceTypes.CUSTOMER.toString(), Targets.Customer.toString());
+        targetMap.put(SequenceTypes.EMPLOYEE.toString(), Targets.Employee.toString());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }

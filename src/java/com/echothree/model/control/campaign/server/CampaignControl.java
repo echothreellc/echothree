@@ -50,7 +50,7 @@ import com.echothree.model.control.campaign.server.transfer.CampaignTransferCach
 import com.echothree.model.control.campaign.server.transfer.CampaignTransferCaches;
 import com.echothree.model.control.campaign.server.transfer.UserVisitCampaignTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignContentStatusConstants;
@@ -157,7 +157,7 @@ public class CampaignControl
 
     public Campaign createCampaign(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.toString());
         String campaignName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaign(campaignName, value, isDefault, sortOrder, createdBy);
@@ -675,7 +675,7 @@ public class CampaignControl
 
     public CampaignSource createCampaignSource(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN_SOURCE);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.toString());
         String campaignSourceName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaignSource(campaignSourceName, value, isDefault, sortOrder, createdBy);
@@ -1193,7 +1193,7 @@ public class CampaignControl
 
     public CampaignMedium createCampaignMedium(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN_MEDIUM);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.toString());
         String campaignMediumName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaignMedium(campaignMediumName, value, isDefault, sortOrder, createdBy);
@@ -1711,7 +1711,7 @@ public class CampaignControl
 
     public CampaignTerm createCampaignTerm(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN_TERM);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.toString());
         String campaignTermName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaignTerm(campaignTermName, value, isDefault, sortOrder, createdBy);
@@ -2229,7 +2229,7 @@ public class CampaignControl
 
     public CampaignContent createCampaignContent(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_CAMPAIGN_CONTENT);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.toString());
         String campaignContentName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaignContent(campaignContentName, value, isDefault, sortOrder, createdBy);

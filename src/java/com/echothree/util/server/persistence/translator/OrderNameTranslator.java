@@ -20,7 +20,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.order.common.OrderConstants;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderPK;
 import com.echothree.model.data.order.server.entity.OrderDetail;
@@ -54,17 +54,17 @@ public class OrderNameTranslator
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_ORDER, OrderConstants.OrderType_PURCHASE_ORDER);
-        targetMap.put(SequenceConstants.SequenceType_SALES_ORDER, OrderConstants.OrderType_SALES_ORDER);
-        targetMap.put(SequenceConstants.SequenceType_WISHLIST, OrderConstants.OrderType_WISHLIST);
+        targetMap.put(SequenceTypes.PURCHASE_ORDER.toString(), OrderConstants.OrderType_PURCHASE_ORDER);
+        targetMap.put(SequenceTypes.SALES_ORDER.toString(), OrderConstants.OrderType_SALES_ORDER);
+        targetMap.put(SequenceTypes.WISHLIST.toString(), OrderConstants.OrderType_WISHLIST);
         
         sequenceTypesToOrderTypes = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_ORDER, Targets.PurchaseOrder.toString());
-        targetMap.put(SequenceConstants.SequenceType_SALES_ORDER, Targets.SalesOrder.toString());
-        targetMap.put(SequenceConstants.SequenceType_WISHLIST, Targets.Wishlist.toString());
+        targetMap.put(SequenceTypes.PURCHASE_ORDER.toString(), Targets.PurchaseOrder.toString());
+        targetMap.put(SequenceTypes.SALES_ORDER.toString(), Targets.SalesOrder.toString());
+        targetMap.put(SequenceTypes.WISHLIST.toString(), Targets.Wishlist.toString());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }

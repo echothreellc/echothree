@@ -20,8 +20,7 @@ import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.common.choice.RecoveryQuestionChoicesBean;
@@ -37,14 +36,13 @@ import com.echothree.model.control.user.common.transfer.UserLoginTransfer;
 import com.echothree.model.control.user.common.transfer.UserSessionTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
+import static com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants.WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE;
+import static com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS;
 import com.echothree.model.control.user.server.transfer.RecoveryQuestionDescriptionTransferCache;
 import com.echothree.model.control.user.server.transfer.RecoveryQuestionTransferCache;
 import com.echothree.model.control.user.server.transfer.UserLoginPasswordTransferCache;
 import com.echothree.model.control.user.server.transfer.UserTransferCaches;
 import com.echothree.model.control.user.server.transfer.UserVisitGroupTransferCache;
-import static com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants.WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE;
-import static com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.core.server.entity.Command;
@@ -457,7 +455,7 @@ public class UserControl
             WorkflowEntrance workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
             
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
-                Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_USER_VISIT_GROUP);
+                Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.USER_VISIT_GROUP.toString());
                 String userVisitGroupName = sequenceControl.getNextSequenceValue(sequence);
                 
                 userVisitGroup = createUserVisitGroup(userVisitGroupName, createdBy);

@@ -22,7 +22,7 @@ import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -77,7 +77,7 @@ public class CreateTagScopeCommand
         
         if(tagScopeName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_TAG_SCOPE);
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.toString());
             
             tagScopeName = sequenceControl.getNextSequenceValue(sequence);
         }

@@ -33,7 +33,7 @@ import com.echothree.model.control.customer.server.transfer.CustomerTypeShipping
 import com.echothree.model.control.customer.server.transfer.CustomerTypeTransferCache;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
@@ -604,7 +604,7 @@ public class CustomerControl
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
         if(sequence == null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_CUSTOMER);
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.toString());
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
 

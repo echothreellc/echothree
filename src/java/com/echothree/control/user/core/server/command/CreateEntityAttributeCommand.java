@@ -26,7 +26,7 @@ import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
@@ -277,7 +277,7 @@ public class CreateEntityAttributeCommand
                     Sequence entityListItemSequence = null;
 
                     if(entityListItemSequenceName != null) {
-                        SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceConstants.SequenceType_ENTITY_LIST_ITEM);
+                        SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.toString());
 
                         if(!hasExecutionErrors()) {
                             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);

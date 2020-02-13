@@ -24,7 +24,7 @@ import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
@@ -85,7 +85,7 @@ public class CreateAppearanceCommand
         
         if(appearanceName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_APPEARANCE);
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.APPEARANCE.toString());
             
             appearanceName = sequenceControl.getNextSequenceValue(sequence);
         }

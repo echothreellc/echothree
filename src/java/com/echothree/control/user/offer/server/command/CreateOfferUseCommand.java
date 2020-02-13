@@ -21,7 +21,7 @@ import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -89,12 +89,12 @@ public class CreateOfferUseCommand
                     
                     if(salesOrderSequenceName != null) {
                         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_SALES_ORDER);
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.toString());
                         
                         if(sequenceType != null) {
                             salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_SALES_ORDER);
+                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.SALES_ORDER.toString());
                         }
                     }
                     

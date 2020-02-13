@@ -30,7 +30,7 @@ import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
@@ -125,7 +125,7 @@ public class CreateCustomerTypeCommand
             
             if(customerSequenceName != null) {
                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_CUSTOMER);
+                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.toString());
                 
                 if(sequenceType != null) {
                     customerSequence = sequenceControl.getSequenceByName(sequenceType, customerSequenceName);

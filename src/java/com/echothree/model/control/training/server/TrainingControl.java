@@ -21,10 +21,11 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.training.common.choice.PartyTrainingClassStatusChoicesBean;
 import com.echothree.model.control.training.common.choice.TrainingClassChoicesBean;
+import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionAnswerTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionPageTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionQuestionTransfer;
@@ -58,7 +59,6 @@ import com.echothree.model.control.training.server.transfer.TrainingClassSection
 import com.echothree.model.control.training.server.transfer.TrainingClassTransferCache;
 import com.echothree.model.control.training.server.transfer.TrainingClassTranslationTransferCache;
 import com.echothree.model.control.training.server.transfer.TrainingTransferCaches;
-import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -1907,7 +1907,7 @@ public class TrainingControl
     
     public PartyTrainingClass createPartyTrainingClass(Party party, TrainingClass trainingClass, Long completedTime, Long validUntilTime, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_PARTY_TRAINING_CLASS);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.PARTY_TRAINING_CLASS.toString());
         String partyTrainingClassName = sequenceControl.getNextSequenceValue(sequence);
         
         return createPartyTrainingClass(partyTrainingClassName, party, trainingClass, completedTime, validUntilTime, createdBy);

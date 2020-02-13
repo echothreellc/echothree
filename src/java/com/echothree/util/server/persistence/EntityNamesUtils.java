@@ -18,7 +18,7 @@ package com.echothree.util.server.persistence;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
 import com.echothree.model.data.communication.server.factory.CommunicationEventFactory;
@@ -255,13 +255,13 @@ public class EntityNamesUtils {
     static {
         var translators = new HashMap<String, SequenceTypeTranslator>(7);
         
-        translators.put(SequenceConstants.SequenceType_PURCHASE_INVOICE, new InvoiceNameTranslator());
-        translators.put(SequenceConstants.SequenceType_SALES_INVOICE, new InvoiceNameTranslator());
-        translators.put(SequenceConstants.SequenceType_PURCHASE_ORDER, new OrderNameTranslator());
-        translators.put(SequenceConstants.SequenceType_SALES_ORDER, new OrderNameTranslator());
-        translators.put(SequenceConstants.SequenceType_WISHLIST, new OrderNameTranslator());
-        translators.put(SequenceConstants.SequenceType_CUSTOMER, new PartyNameTranslator());
-        translators.put(SequenceConstants.SequenceType_EMPLOYEE, new PartyNameTranslator());
+        translators.put(SequenceTypes.PURCHASE_INVOICE.toString(), new InvoiceNameTranslator());
+        translators.put(SequenceTypes.SALES_INVOICE.toString(), new InvoiceNameTranslator());
+        translators.put(SequenceTypes.PURCHASE_ORDER.toString(), new OrderNameTranslator());
+        translators.put(SequenceTypes.SALES_ORDER.toString(), new OrderNameTranslator());
+        translators.put(SequenceTypes.WISHLIST.toString(), new OrderNameTranslator());
+        translators.put(SequenceTypes.CUSTOMER.toString(), new PartyNameTranslator());
+        translators.put(SequenceTypes.EMPLOYEE.toString(), new PartyNameTranslator());
         
         sequenceTypeTranslators = Collections.unmodifiableMap(translators);
     }

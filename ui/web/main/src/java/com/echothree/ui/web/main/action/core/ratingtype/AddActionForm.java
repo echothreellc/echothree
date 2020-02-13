@@ -20,7 +20,7 @@ package com.echothree.ui.web.main.action.core.ratingtype;
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -48,7 +48,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                form.setSequenceTypeName(SequenceConstants.SequenceType_RATING);
+                form.setSequenceTypeName(SequenceTypes.RATING.toString());
                 form.setDefaultSequenceChoice(ratingSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

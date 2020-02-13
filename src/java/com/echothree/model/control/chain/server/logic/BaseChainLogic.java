@@ -22,7 +22,7 @@ import com.echothree.model.control.chain.common.exception.UnknownChainTypeNameEx
 import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
@@ -147,7 +147,7 @@ public class BaseChainLogic
             Sequence sequence = chain.getLastDetail().getChainInstanceSequence();
 
             if(sequence == null) {
-                sequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceConstants.SequenceType_CHAIN_INSTANCE);
+                sequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.CHAIN_INSTANCE.toString());
             }
 
             if(!hasExecutionErrors(eea)) {

@@ -24,7 +24,7 @@ import com.echothree.model.control.geo.server.GeoControl;
 import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
@@ -120,7 +120,7 @@ public class CreateCountyCommand
         GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countyName);
         
         if(geoCodeAlias == null) {
-            String geoCodeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_GEO_CODE);
+            String geoCodeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.toString());
             String countyNumber = form.getCountyNumber();
             Boolean isDefault = Boolean.valueOf(form.getIsDefault());
             Integer sortOrder = Integer.valueOf(form.getSortOrder());

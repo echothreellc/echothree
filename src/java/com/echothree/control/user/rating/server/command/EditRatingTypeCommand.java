@@ -24,7 +24,7 @@ import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.control.user.rating.common.spec.RatingTypeSpec;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.rating.server.RatingControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -130,12 +130,12 @@ public class EditRatingTypeCommand
                             
                             if(ratingSequenceName != null) {
                                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_RATING);
+                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.toString());
                                 
                                 if(sequenceType != null) {
                                     ratingSequence = sequenceControl.getSequenceByName(sequenceType, ratingSequenceName);
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_RATING);
+                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.RATING.toString());
                                 }
                             }
                             

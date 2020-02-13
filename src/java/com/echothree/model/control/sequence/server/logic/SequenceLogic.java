@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sequence.server.logic;
 
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.DuplicateSequenceNameException;
 import com.echothree.model.control.sequence.common.exception.InvalidValueLengthException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
@@ -65,7 +65,7 @@ public class SequenceLogic
         Sequence sequence = null;
         
         if(sequenceName == null) {
-            sequenceName = getNextSequenceValue(eea, SequenceConstants.SequenceType_SEQUENCE);
+            sequenceName = getNextSequenceValue(eea, SequenceTypes.SEQUENCE.toString());
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {

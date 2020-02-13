@@ -18,11 +18,11 @@ package com.echothree.model.control.sequence.server;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.common.choice.SequenceChecksumTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceEncoderTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceTypeChoicesBean;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.transfer.SequenceDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
@@ -1110,7 +1110,7 @@ public class SequenceControl
         SequenceDetail sequenceDetail = sequence.getLastDetailForUpdate();
         String sequenceTypeName = sequenceDetail.getSequenceType().getLastDetail().getSequenceTypeName();
         
-        if(SequenceConstants.SequenceType_SALES_ORDER.equals(sequenceTypeName)) {
+        if(SequenceTypes.SALES_ORDER.toString().equals(sequenceTypeName)) {
             var offerControl = (OfferControl)Session.getModelController(OfferControl.class);
             
             offerControl.deleteOfferUsesBySalesOrderSequence(sequence, deletedBy);

@@ -22,7 +22,7 @@ import com.echothree.model.control.contact.common.workflow.EmailAddressStatusCon
 import com.echothree.model.control.contact.common.workflow.EmailAddressVerificationConstants;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
@@ -55,7 +55,7 @@ public class ContactEmailAddressLogic
         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_CONTACT_MECHANISM);
+        String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.toString());
         ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.EMAIL_ADDRESS.name());
 
         ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,

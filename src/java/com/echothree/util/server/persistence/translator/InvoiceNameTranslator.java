@@ -20,7 +20,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.invoice.common.InvoiceConstants;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.invoice.common.pk.InvoicePK;
 import com.echothree.model.data.invoice.server.entity.Invoice;
@@ -55,15 +55,15 @@ public class InvoiceNameTranslator
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_INVOICE, InvoiceConstants.InvoiceType_PURCHASE_INVOICE);
-        targetMap.put(SequenceConstants.SequenceType_SALES_INVOICE, InvoiceConstants.InvoiceType_SALES_INVOICE);
+        targetMap.put(SequenceTypes.PURCHASE_INVOICE.toString(), InvoiceConstants.InvoiceType_PURCHASE_INVOICE);
+        targetMap.put(SequenceTypes.SALES_INVOICE.toString(), InvoiceConstants.InvoiceType_SALES_INVOICE);
         
         sequenceTypesToInvoiceTypes = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_INVOICE, Targets.PurchaseInvoice.toString());
-        targetMap.put(SequenceConstants.SequenceType_SALES_INVOICE, Targets.SalesInvoice.toString());
+        targetMap.put(SequenceTypes.PURCHASE_INVOICE.toString(), Targets.PurchaseInvoice.toString());
+        targetMap.put(SequenceTypes.SALES_INVOICE.toString(), Targets.SalesInvoice.toString());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }

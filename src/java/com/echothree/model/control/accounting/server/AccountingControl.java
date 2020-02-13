@@ -75,7 +75,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.financial.server.FinancialControl;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS;
@@ -4723,7 +4723,7 @@ public class AccountingControl
     
     public TransactionGroup createTransactionGroup(BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_TRANSACTION_GROUP);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION_GROUP.toString());
         String transactionGroupName = sequenceControl.getNextSequenceValue(sequence);
         
         TransactionGroup transactionGroup = createTransactionGroup(transactionGroupName, createdBy);
@@ -4888,7 +4888,7 @@ public class AccountingControl
     public Transaction createTransaction(Party groupParty, TransactionGroup transactionGroup, TransactionType transactionType, Long postingTime,
             BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_TRANSACTION);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.toString());
         String transactionName = sequenceControl.getNextSequenceValue(sequence);
         
         return createTransaction(transactionName, groupParty, transactionGroup, transactionType, postingTime, createdBy);

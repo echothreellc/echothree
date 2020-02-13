@@ -31,7 +31,7 @@ import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.SecurityControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.server.UserControl;
@@ -179,7 +179,7 @@ public class CreateEmployeeCommand
                                             NameSuffix nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
                                             String emailAddress = form.getEmailAddress();
                                             Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                            String partyEmployeeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_EMPLOYEE);
+                                            String partyEmployeeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.EMPLOYEE.toString());
                                             
                                             Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                                             partyControl.createPerson(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, createdBy);

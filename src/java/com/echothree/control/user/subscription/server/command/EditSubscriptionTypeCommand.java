@@ -22,7 +22,7 @@ import com.echothree.control.user.subscription.common.form.EditSubscriptionTypeF
 import com.echothree.control.user.subscription.common.result.EditSubscriptionTypeResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.control.user.subscription.common.spec.SubscriptionTypeSpec;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -124,7 +124,7 @@ public class EditSubscriptionTypeCommand
                         
                         if(subscriptionSequenceName != null) {
                             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_SUBSCRIPTION);
+                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.toString());
                             subscriptionSequence = sequenceControl.getSequenceByName(sequenceType, subscriptionSequenceName);
                         }
                         
