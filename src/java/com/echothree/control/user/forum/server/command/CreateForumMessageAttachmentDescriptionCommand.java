@@ -58,7 +58,6 @@ public class CreateForumMessageAttachmentDescriptionCommand
     @Override
     protected BaseResult execute() {
         var forumControl = (ForumControl)Session.getModelController(ForumControl.class);
-        GetForumMessageAttachmentDescriptionsResult result = ForumResultFactory.getGetForumMessageAttachmentDescriptionsResult();
         String forumMessageName = form.getForumMessageName();
         ForumMessage forumMessage = forumControl.getForumMessageByNameForUpdate(forumMessageName);
 

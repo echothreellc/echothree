@@ -57,7 +57,6 @@ public class ProcessQueuedEventsCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        long queuedEventsProcessed = 0;
         long remainingTime = (long) 2 * 60 * 1000; // 2 minutes
         List<QueuedEvent> queuedEvents = coreControl.getQueuedEventsForUpdate();
 
@@ -98,7 +97,6 @@ public class ProcessQueuedEventsCommand
 
                 coreControl.removeQueuedEvent(queuedEvent);
 
-                queuedEventsProcessed++;
                 remainingTime -= System.currentTimeMillis() - startTime;
                 if(remainingTime < 0) {
                     break;

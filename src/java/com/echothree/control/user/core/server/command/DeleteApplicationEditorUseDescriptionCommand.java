@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteApplicationEditorUseDescriptionForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetApplicationEditorUseDescriptionResult;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyConstants;
@@ -71,7 +70,6 @@ public class DeleteApplicationEditorUseDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        GetApplicationEditorUseDescriptionResult result = CoreResultFactory.getGetApplicationEditorUseDescriptionResult();
         String applicationName = form.getApplicationName();
         Application application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
 

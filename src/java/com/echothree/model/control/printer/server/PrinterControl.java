@@ -1944,7 +1944,7 @@ public class PrinterControl
     }
 
     private List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType, EntityPermission entityPermission) {
-        return PartyPrinterGroupUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPrinterGroupQueries,
+        return PartyPrinterGroupUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPrinterGroupUseTypeQueries,
                 printerGroupUseType, Session.MAX_TIME);
     }
 
