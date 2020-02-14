@@ -19,7 +19,8 @@ package com.echothree.model.control.order.server;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderRoleTypes;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.common.choice.OrderAdjustmentTypeChoicesBean;
 import com.echothree.model.control.order.common.choice.OrderAliasTypeChoicesBean;
 import com.echothree.model.control.order.common.choice.OrderLineAdjustmentTypeChoicesBean;
@@ -3357,7 +3358,7 @@ public class OrderControl
                 "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_reference = ? " +
                 "AND ord_orderid = ordr_ord_orderid AND ordr_thrutime = ? AND ordr_par_partyid = ? " +
                 "AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid AND ordrtyp_orderroletypename = ?",
-                reference, Session.MAX_TIME_LONG, billToParty, OrderConstants.OrderRoleType_BILL_TO);
+                reference, Session.MAX_TIME_LONG, billToParty, OrderRoleTypes.BILL_TO.toString());
     }
 
     public OrderTransfer getOrderTransfer(UserVisit userVisit, Order order) {
@@ -3410,7 +3411,7 @@ public class OrderControl
         
         OrderDetail orderDetail = order.getLastDetailForUpdate();
         String orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
-        if(orderTypeName.equals(OrderConstants.OrderType_WISHLIST)) {
+        if(orderTypeName.equals(OrderTypes.WISHLIST.toString())) {
             var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
             
             wishlistControl.deleteWishlistByOrder(order, deletedBy);

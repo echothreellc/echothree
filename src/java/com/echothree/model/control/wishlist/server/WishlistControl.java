@@ -17,7 +17,8 @@
 package com.echothree.model.control.wishlist.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderRoleTypes;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.wishlist.common.choice.WishlistTypeChoicesBean;
 import com.echothree.model.control.wishlist.common.choice.WishlistTypePriorityChoicesBean;
@@ -1308,15 +1309,15 @@ public class WishlistControl
             
             PreparedStatement ps = OrderFactory.getInstance().prepareStatement(query);
             
-            ps.setString(1, OrderConstants.OrderType_WISHLIST);
+            ps.setString(1, OrderTypes.WISHLIST.toString());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
             ps.setLong(3, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             ps.setLong(5, companyParty.getPrimaryKey().getEntityId());
-            ps.setString(6, OrderConstants.OrderRoleType_BILL_FROM);
+            ps.setString(6, OrderRoleTypes.BILL_FROM.toString());
             ps.setLong(7, Session.MAX_TIME);
             ps.setLong(8, party.getPrimaryKey().getEntityId());
-            ps.setString(9, OrderConstants.OrderRoleType_BILL_TO);
+            ps.setString(9, OrderRoleTypes.BILL_TO.toString());
             ps.setLong(10, Session.MAX_TIME);
             
             order = OrderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
@@ -1371,13 +1372,13 @@ public class WishlistControl
             
             PreparedStatement ps = OrderFactory.getInstance().prepareStatement(query);
             
-            ps.setString(1, OrderConstants.OrderType_WISHLIST);
+            ps.setString(1, OrderTypes.WISHLIST.toString());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, companyParty.getPrimaryKey().getEntityId());
-            ps.setString(4, OrderConstants.OrderRoleType_BILL_FROM);
+            ps.setString(4, OrderRoleTypes.BILL_FROM.toString());
             ps.setLong(5, Session.MAX_TIME);
             ps.setLong(6, party.getPrimaryKey().getEntityId());
-            ps.setString(7, OrderConstants.OrderRoleType_BILL_TO);
+            ps.setString(7, OrderRoleTypes.BILL_TO.toString());
             ps.setLong(8, Session.MAX_TIME);
             
             orders = OrderFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);

@@ -28,7 +28,8 @@ import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.common.exception.MissingDefaultSourceException;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderRoleTypes;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.common.exception.MissingDefaultOrderPriorityException;
 import com.echothree.model.control.order.common.exception.MissingRequiredBillToPartyException;
 import com.echothree.model.control.order.server.OrderControl;
@@ -211,9 +212,9 @@ public class SalesOrderLogic
             final Party billToParty, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
             Boolean allowCombiningShipments, final String reference, Term term, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        var orderType = getOrderTypeByName(eea, OrderConstants.OrderType_SALES_ORDER);
-        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderConstants.OrderRoleType_BILL_TO);
-        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderConstants.OrderRoleType_PLACING);
+        var orderType = getOrderTypeByName(eea, OrderTypes.SALES_ORDER.toString());
+        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.toString());
+        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.PLACING.toString());
         Order order = null;
 
         if(batch != null) {
@@ -249,7 +250,7 @@ public class SalesOrderLogic
                 orderPriority = orderControl.getDefaultOrderPriority(orderType);
 
                 if(orderPriority == null) {
-                    handleExecutionError(MissingDefaultOrderPriorityException.class, eea, ExecutionErrors.MissingDefaultOrderPriority.name(), OrderConstants.OrderType_SALES_ORDER);
+                    handleExecutionError(MissingDefaultOrderPriorityException.class, eea, ExecutionErrors.MissingDefaultOrderPriority.name(), OrderTypes.SALES_ORDER.toString());
                 }
             }
 
@@ -430,19 +431,19 @@ public class SalesOrderLogic
     }
 
     public Order getOrderByName(final ExecutionErrorAccumulator eea, final String orderName) {
-        return getOrderByName(eea, OrderConstants.OrderType_SALES_ORDER, orderName);
+        return getOrderByName(eea, OrderTypes.SALES_ORDER.toString(), orderName);
     }
 
     public Order getOrderByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderName) {
-        return getOrderByNameForUpdate(eea, OrderConstants.OrderType_SALES_ORDER, orderName);
+        return getOrderByNameForUpdate(eea, OrderTypes.SALES_ORDER.toString(), orderName);
     }
 
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByName(eea, OrderConstants.OrderType_SALES_ORDER, orderPriorityName);
+        return getOrderPriorityByName(eea, OrderTypes.SALES_ORDER.toString(), orderPriorityName);
     }
 
     public OrderPriority getOrderPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByNameForUpdate(eea, OrderConstants.OrderType_SALES_ORDER, orderPriorityName);
+        return getOrderPriorityByNameForUpdate(eea, OrderTypes.SALES_ORDER.toString(), orderPriorityName);
     }
 
     public SalesOrderStatusChoicesBean getSalesOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,
@@ -547,7 +548,7 @@ public class SalesOrderLogic
      */
     public Party getOrderBillToParty(final Order order) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderRole billToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderConstants.OrderRoleType_BILL_TO);
+        OrderRole billToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.toString());
         Party party = null;
         
         if(billToOrderRole != null) {
@@ -593,13 +594,13 @@ public class SalesOrderLogic
      */
     public Party getOrderShipToParty(final Order order, final boolean billToFallback, final BasePK createdBy) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderRole shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderConstants.OrderRoleType_SHIP_TO);
+        OrderRole shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.toString());
         
         if(shipToOrderRole == null && billToFallback) {
-            shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderConstants.OrderRoleType_BILL_TO);
+            shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.toString());
             
             if(shipToOrderRole != null) {
-                orderControl.createOrderRoleUsingNames(order, shipToOrderRole.getParty(), OrderConstants.OrderRoleType_SHIP_TO, createdBy);
+                orderControl.createOrderRoleUsingNames(order, shipToOrderRole.getParty(), OrderRoleTypes.SHIP_TO.toString(), createdBy);
             }
         }
         

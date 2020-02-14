@@ -20,16 +20,16 @@ import com.echothree.control.user.wishlist.common.form.GetWishlistLinesForm;
 import com.echothree.control.user.wishlist.common.result.GetWishlistLinesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -65,9 +65,9 @@ public class GetWishlistLinesCommand
             
             if(wishlistName != null) {
                 var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-                Order order = orderControl.getOrderByName(orderControl.getOrderTypeByName(OrderConstants.OrderType_WISHLIST), wishlistName);
+                Order order = orderControl.getOrderByName(orderControl.getOrderTypeByName(OrderTypes.WISHLIST.toString()), wishlistName);
                 
-                if(order != null && order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName().equals(OrderConstants.OrderType_WISHLIST)) {
+                if(order != null && order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName().equals(OrderTypes.WISHLIST.toString())) {
                     result.setWishlistLines(wishlistControl.getWishlistLineTransfersByOrder(getUserVisit(), order));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownWishlistName.name(), wishlistName);

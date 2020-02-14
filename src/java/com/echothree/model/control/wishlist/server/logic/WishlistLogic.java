@@ -18,7 +18,8 @@ package com.echothree.model.control.wishlist.server.logic;
 
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderRoleTypes;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.party.server.PartyControl;
@@ -105,7 +106,7 @@ public class WishlistLogic
             Order order = wishlistControl.getWishlist(companyParty, party, wishlistType, currency);
 
             if(order == null) {
-                OrderType orderType = orderLogic.getOrderTypeByName(ema, OrderConstants.OrderType_WISHLIST);
+                OrderType orderType = orderLogic.getOrderTypeByName(ema, OrderTypes.WISHLIST.toString());
 
                 if(!ema.hasExecutionErrors()) {
                     order = orderLogic.createOrder(ema, orderType, null, null, currency, null, null, null, null, null, null, null, null, null, null, createdBy);
@@ -113,8 +114,8 @@ public class WishlistLogic
                     if(!ema.hasExecutionErrors()) {
                         wishlistControl.createWishlist(order, getOrderOfferUse(userVisit, offerUse, companyParty), wishlistType, createdBy);
 
-                        orderControl.createOrderRoleUsingNames(order, companyParty, OrderConstants.OrderRoleType_BILL_FROM, createdBy);
-                        orderControl.createOrderRoleUsingNames(order, party, OrderConstants.OrderRoleType_BILL_TO, createdBy);
+                        orderControl.createOrderRoleUsingNames(order, companyParty, OrderRoleTypes.BILL_FROM.toString(), createdBy);
+                        orderControl.createOrderRoleUsingNames(order, party, OrderRoleTypes.BILL_TO.toString(), createdBy);
                     }
                 }
             }

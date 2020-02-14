@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.sales.server.search;
 
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.logic.OrderLogic;
-import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.control.order.server.search.OrderSearchEvaluator;
+import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -41,7 +41,7 @@ public class SalesOrderSearchEvaluator
     public SalesOrderSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection) {
         super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, OrderLogic.getInstance().getOrderTypeByName(null,
-                OrderConstants.OrderType_SALES_ORDER));
+                OrderTypes.SALES_ORDER.toString()));
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByOfferUse(OfferUse offerUse) {
