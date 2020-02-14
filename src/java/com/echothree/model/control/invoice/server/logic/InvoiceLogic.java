@@ -16,7 +16,9 @@
 
 package com.echothree.model.control.invoice.server.logic;
 
-import com.echothree.model.control.invoice.common.InvoiceConstants;
+import com.echothree.model.control.invoice.common.InvoiceLineUseTypes;
+import com.echothree.model.control.invoice.common.InvoiceRoleTypes;
+import com.echothree.model.control.invoice.common.InvoiceTimeTypes;
 import com.echothree.model.control.invoice.common.exception.UnknownInvoiceRoleTypeNameException;
 import com.echothree.model.control.invoice.common.exception.UnknownInvoiceSequenceException;
 import com.echothree.model.control.invoice.common.exception.UnknownInvoiceSequenceTypeException;
@@ -232,12 +234,12 @@ public class InvoiceLogic
                         paidTime = paidTime == null ? getPaidTime(session, termTypeName) : paidTime;
 
                         invoice = invoiceControl.createInvoice(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, createdBy);
-                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceConstants.InvoiceTimeType_INVOICED, invoicedTime, createdBy);
-                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceConstants.InvoiceTimeType_DUE, dueTime, createdBy);
-                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceConstants.InvoiceTimeType_PAID, paidTime, createdBy);
+                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.INVOICED.toString(), invoicedTime, createdBy);
+                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.DUE.toString(), dueTime, createdBy);
+                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.PAID.toString(), paidTime, createdBy);
 
-                        invoiceControl.createInvoiceRoleUsingNames(invoice, billFrom, billFromContactMechanism, InvoiceConstants.InvoiceRoleType_INVOICE_FROM, createdBy);
-                        invoiceControl.createInvoiceRoleUsingNames(invoice, billTo, billToContactMechanism, InvoiceConstants.InvoiceRoleType_INVOICE_TO, createdBy);
+                        invoiceControl.createInvoiceRoleUsingNames(invoice, billFrom, billFromContactMechanism, InvoiceRoleTypes.INVOICE_FROM.toString(), createdBy);
+                        invoiceControl.createInvoiceRoleUsingNames(invoice, billTo, billToContactMechanism, InvoiceRoleTypes.INVOICE_TO.toString(), createdBy);
                     }
                 }
             } else {
@@ -252,7 +254,7 @@ public class InvoiceLogic
             final Long amount, final InvoiceLineType invoiceLineType, GlAccount glAccount, final String description, final BasePK createdBy) {
         InvoiceLine invoiceLine = null;
         var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-        InvoiceLineUseType invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(InvoiceConstants.InvoiceLineUseType_GL_ACCOUNT);
+        InvoiceLineUseType invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(InvoiceLineUseTypes.GL_ACCOUNT.toString());
         
         if(glAccount == null) {
             glAccount = invoiceLineType.getLastDetail().getDefaultGlAccount();

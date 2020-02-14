@@ -17,7 +17,7 @@
 package com.echothree.util.server.persistence.translator;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.invoice.common.InvoiceConstants;
+import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
@@ -48,15 +48,15 @@ public class InvoiceNameTranslator
     static {
         var targetMap = new HashMap<String, String>();
         
-        targetMap.put(InvoiceConstants.InvoiceType_PURCHASE_INVOICE, Targets.PurchaseInvoice.toString());
-        targetMap.put(InvoiceConstants.InvoiceType_SALES_INVOICE, Targets.SalesInvoice.toString());
+        targetMap.put(InvoiceTypes.PURCHASE_INVOICE.toString(), Targets.PurchaseInvoice.toString());
+        targetMap.put(InvoiceTypes.SALES_INVOICE.toString(), Targets.SalesInvoice.toString());
 
         invoiceTypesToTargets = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceTypes.PURCHASE_INVOICE.toString(), InvoiceConstants.InvoiceType_PURCHASE_INVOICE);
-        targetMap.put(SequenceTypes.SALES_INVOICE.toString(), InvoiceConstants.InvoiceType_SALES_INVOICE);
+        targetMap.put(SequenceTypes.PURCHASE_INVOICE.toString(), InvoiceTypes.PURCHASE_INVOICE.toString());
+        targetMap.put(SequenceTypes.SALES_INVOICE.toString(), InvoiceTypes.SALES_INVOICE.toString());
         
         sequenceTypesToInvoiceTypes = Collections.unmodifiableMap(targetMap);
         
