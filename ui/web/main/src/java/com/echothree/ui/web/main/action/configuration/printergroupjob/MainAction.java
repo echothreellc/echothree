@@ -64,8 +64,8 @@ public class MainAction
             CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupJobs(getUserVisitPK(request), commandForm);
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetPrinterGroupJobsResult result = (GetPrinterGroupJobsResult)executionResult.getResult();
-            PrinterGroupTransfer printerGroupTransfer = result.getPrinterGroup();
             
+            request.setAttribute(AttributeConstants.PRINTER_GROUP, result.getPrinterGroup());
             request.setAttribute(AttributeConstants.PRINTER_GROUP_JOBS, result.getPrinterGroupJobs());
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {

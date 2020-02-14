@@ -56,7 +56,6 @@ public class DescriptionAction
         String forwardKey = null;
         
         try {
-            String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
             String printerName = request.getParameter(ParameterConstants.PRINTER_NAME);
             GetPrinterDescriptionsForm commandForm = PrinterUtil.getHome().getGetPrinterDescriptionsForm();
             

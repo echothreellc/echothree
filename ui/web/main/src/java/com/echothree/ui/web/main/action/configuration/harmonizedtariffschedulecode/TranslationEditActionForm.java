@@ -34,7 +34,6 @@ public class TranslationEditActionForm
         extends BaseActionForm {
     
     private MimeTypeChoicesBean overviewMimeTypeChoices;
-    private MimeTypeChoicesBean introductionMimeTypeChoices;
     
     private String countryName;
     private String harmonizedTariffScheduleCodeName;

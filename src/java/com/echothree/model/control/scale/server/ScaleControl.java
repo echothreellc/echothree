@@ -1598,7 +1598,7 @@ public class ScaleControl
     }
 
     private List<PartyScaleUse> getPartyScaleUsesByScaleUseType(ScaleUseType scaleUseType, EntityPermission entityPermission) {
-        return PartyScaleUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyScaleUsesByScaleQueries,
+        return PartyScaleUseFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyScaleUsesByScaleUseTypeQueries,
                 scaleUseType, Session.MAX_TIME);
     }
 

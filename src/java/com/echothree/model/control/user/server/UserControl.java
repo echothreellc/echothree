@@ -1797,15 +1797,12 @@ public class UserControl
     }
     
     public List<UserLoginPasswordEncoderType> getUserLoginPasswordEncoderTypes() {
-        List<UserLoginPasswordEncoderType> sequenceEncoderTypes = null;
         PreparedStatement ps = UserLoginPasswordEncoderTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM userloginpasswordencodertypes " +
                 "ORDER BY ulogpet_userloginpasswordencodertypename");
         
-        sequenceEncoderTypes = UserLoginPasswordEncoderTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return sequenceEncoderTypes;
+        return UserLoginPasswordEncoderTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public UserLoginPasswordEncoderType getUserLoginPasswordEncoderTypeByName(String sequenceEncoderTypeName) {
