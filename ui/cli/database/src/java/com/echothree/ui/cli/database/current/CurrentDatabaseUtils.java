@@ -50,7 +50,7 @@ public class CurrentDatabaseUtils {
             columns.add(ct.getColumn(columnName));
         });
         
-        System.out.println("---   Index name: " + indexName + ", " + columnNames +  ", " + unique);
+        log.info("---   Index name: " + indexName + ", " + columnNames +  ", " + unique);
         
         CurrentIndex ci = new CurrentIndex(ct, indexName, unique, columns);
         ct.addIndex(ci);
@@ -59,7 +59,7 @@ public class CurrentDatabaseUtils {
         });
     }
     
-    private void getIndexes(String catalog, DatabaseMetaData dmd, CurrentDatabase cd, CurrentTable ct)
+    private void getIndexes(String catalog, DatabaseMetaData dmd, CurrentTable ct)
             throws SQLException {
         String currentIndexName = null;
         List<String> currentColumnNames = new ArrayList<>();
@@ -92,7 +92,7 @@ public class CurrentDatabaseUtils {
             if(pkColumns.next()) {
                 String pkName = pkColumns.getString("PK_NAME");
                 
-                System.out.println("---   PK index name: " + pkName);
+                log.info("---   PK index name: " + pkName);
                 
                 CurrentIndex ci = ct.getIndex(pkName);
                 
@@ -101,7 +101,7 @@ public class CurrentDatabaseUtils {
         }
     }
     
-    private void getColumns(String catalog, DatabaseMetaData dmd, CurrentDatabase cd, CurrentTable ct)
+    private void getColumns(String catalog, DatabaseMetaData dmd, CurrentTable ct)
             throws SQLException {
         try(ResultSet c = dmd.getColumns(catalog, null, ct.getTableName(), null)) {
             while(c.next()) {
@@ -110,7 +110,7 @@ public class CurrentDatabaseUtils {
                 int columnSize = c.getInt("COLUMN_SIZE");
                 int nullable = c.getInt("NULLABLE");
                 
-                System.out.println("---   Column name: " + columnName + ", " + type +  ", " + columnSize +  ", " + nullable);
+                log.info("---   Column name: " + columnName + ", " + type +  ", " + columnSize +  ", " + nullable);
                 
                 ct.addColumn(new CurrentColumn(ct, columnName, type, columnSize, nullable != 0));
             }
@@ -124,11 +124,11 @@ public class CurrentDatabaseUtils {
                 String tableName = rs.getString("TABLE_NAME");
                 CurrentTable ct = new CurrentTable(tableName);
                 
-                System.out.println("--- Table: " + tableName);
+                log.info("--- Table: " + tableName);
                 
                 cd.addTable(ct);
-                getColumns(catalog, dmd, cd, ct);
-                getIndexes(catalog, dmd, cd, ct);
+                getColumns(catalog, dmd, ct);
+                getIndexes(catalog, dmd, ct);
             }
         }
     }
@@ -139,7 +139,7 @@ public class CurrentDatabaseUtils {
             String tableName = ct.getTableName();
             
             try(ResultSet ik = dmd.getImportedKeys(catalog, null, tableName)) {
-                System.out.println("--- Table: " + tableName);
+                log.info("--- Table: " + tableName);
                 
                 while(ik.next()) {
                     String importedKeyName = ik.getString("FK_NAME");
@@ -149,7 +149,7 @@ public class CurrentDatabaseUtils {
                     CurrentColumn column = ct.getColumn(fkColumnName);
                     CurrentColumn targetColumn = cd.getTable(pkTableName).getColumn(pkColumnName);
                     
-                    System.out.println("---   Foreign key: " + importedKeyName +  ", " + fkColumnName + ", " + pkTableName +  ", " + pkColumnName);
+                    log.info("---   Foreign key: " + importedKeyName +  ", " + fkColumnName + ", " + pkTableName +  ", " + pkColumnName);
                     
                     CurrentForeignKey cfk = new CurrentForeignKey(ct, importedKeyName, column, targetColumn);
                     ct.addForeignKey(cfk);
