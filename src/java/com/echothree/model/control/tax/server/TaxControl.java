@@ -741,7 +741,7 @@ public class TaxControl
         return getItemTaxClassificationTransfers(userVisit, getItemTaxClassificationsByTaxClassification(taxClassification));
     }
 
-    private void updateItemTaxClassificationFromValue(ItemTaxClassificationDetailValue itemTaxClassificationDetailValue, boolean checkDefault,
+    public void updateItemTaxClassificationFromValue(ItemTaxClassificationDetailValue itemTaxClassificationDetailValue,
             BasePK updatedBy) {
         if(itemTaxClassificationDetailValue.hasBeenModified()) {
             ItemTaxClassification itemTaxClassification = ItemTaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -764,10 +764,6 @@ public class TaxControl
 
             sendEventUsingNames(itemPK, EventTypes.MODIFY.name(), itemTaxClassificationPK, EventTypes.MODIFY.name(), updatedBy);
         }
-    }
-
-    public void updateItemTaxClassificationFromValue(ItemTaxClassificationDetailValue itemTaxClassificationDetailValue, BasePK updatedBy) {
-        updateItemTaxClassificationFromValue(itemTaxClassificationDetailValue, true, updatedBy);
     }
 
     public void deleteItemTaxClassification(ItemTaxClassification itemTaxClassification, BasePK deletedBy) {

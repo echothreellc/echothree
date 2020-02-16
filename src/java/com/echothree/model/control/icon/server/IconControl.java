@@ -101,7 +101,6 @@ public class IconControl
     }
     
     private List<Icon> getIcons(EntityPermission entityPermission) {
-        List<Icon> icons = null;
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -118,9 +117,7 @@ public class IconControl
         
         PreparedStatement ps = IconFactory.getInstance().prepareStatement(query);
         
-        icons = IconFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        
-        return icons;
+        return IconFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<Icon> getIcons() {
