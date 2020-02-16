@@ -239,7 +239,7 @@ public class Table {
     public int countColumnsWithDestinationTable(String destinationTable) {
         int totalColumns = 0;
         
-        totalColumns = columns.stream().filter((theColumn) -> (theColumn.getType() == ColumnType.columnForeignKey)).filter((theColumn) -> (theColumn.getDestinationTable().equals(destinationTable))).map((_item) -> 1).reduce(totalColumns, Integer::sum);
+        totalColumns = columns.stream().filter((theColumn) -> (theColumn.getType() == ColumnType.columnForeignKey)).filter((theColumn) -> theColumn.getDestinationTable().equals(destinationTable)).map((_item) -> 1).reduce(totalColumns, Integer::sum);
         
         return totalColumns;
     }

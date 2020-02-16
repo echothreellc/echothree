@@ -401,7 +401,6 @@ public class DatabaseUtilitiesForJava {
             columns.stream().forEach((column) -> {
                 int columnType = column.getType();
                 if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
-                    String variableName = column.getVariableName();
                     pw.println("            stringValue.append(\", " + column.getVariableName() + "=\").append(" + column.getGetFunctionName() + "());");
                 }
             });
