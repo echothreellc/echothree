@@ -283,15 +283,12 @@ public class PaymentControl
     }
     
     public List<PaymentMethodType> getPaymentMethodTypes() {
-        List<PaymentMethodType> paymentMethodTypes = null;
         PreparedStatement ps = PaymentMethodTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM paymentmethodtypes " +
                 "ORDER BY pmtyp_sortorder, pmtyp_paymentmethodtypename");
         
-        paymentMethodTypes = PaymentMethodTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return paymentMethodTypes;
+        return PaymentMethodTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public PaymentMethodType getPaymentMethodTypeByName(String paymentMethodTypeName) {
@@ -531,15 +528,12 @@ public class PaymentControl
     }
     
     public List<PaymentProcessorType> getPaymentProcessorTypes() {
-        List<PaymentProcessorType> paymentProcessorTypes = null;
         PreparedStatement ps = PaymentProcessorTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM paymentprocessortypes " +
                 "ORDER BY pprctyp_sortorder, pprctyp_paymentprocessortypename");
         
-        paymentProcessorTypes = PaymentProcessorTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return paymentProcessorTypes;
+        return PaymentProcessorTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public PaymentProcessorType getPaymentProcessorTypeByName(String paymentProcessorTypeName) {

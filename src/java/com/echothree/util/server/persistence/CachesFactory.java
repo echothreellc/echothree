@@ -16,12 +16,7 @@
 
 package com.echothree.util.server.persistence;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class CachesFactory {
-
-    private static Log log = LogFactory.getLog(CachesFactory.class);
 
     private static final CachesFactory instance = new CachesFactory();
 

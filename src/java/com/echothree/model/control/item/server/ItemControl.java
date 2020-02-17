@@ -11201,7 +11201,7 @@ public class ItemControl
         return getItemHarmonizedTariffScheduleCodeTransfers(userVisit, getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCode(harmonizedTariffScheduleCode));
     }
 
-    private void updateItemHarmonizedTariffScheduleCodeFromValue(ItemHarmonizedTariffScheduleCodeDetailValue itemHarmonizedTariffScheduleCodeDetailValue, boolean checkDefault,
+    public void updateItemHarmonizedTariffScheduleCodeFromValue(ItemHarmonizedTariffScheduleCodeDetailValue itemHarmonizedTariffScheduleCodeDetailValue,
             BasePK updatedBy) {
         if(itemHarmonizedTariffScheduleCodeDetailValue.hasBeenModified()) {
             ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -11225,10 +11225,6 @@ public class ItemControl
 
             sendEventUsingNames(itemPK, EventTypes.MODIFY.name(), itemHarmonizedTariffScheduleCodePK, EventTypes.MODIFY.name(), updatedBy);
         }
-    }
-
-    public void updateItemHarmonizedTariffScheduleCodeFromValue(ItemHarmonizedTariffScheduleCodeDetailValue itemHarmonizedTariffScheduleCodeDetailValue, BasePK updatedBy) {
-        updateItemHarmonizedTariffScheduleCodeFromValue(itemHarmonizedTariffScheduleCodeDetailValue, true, updatedBy);
     }
 
     public void deleteItemHarmonizedTariffScheduleCode(ItemHarmonizedTariffScheduleCode itemHarmonizedTariffScheduleCode, BasePK deletedBy) {

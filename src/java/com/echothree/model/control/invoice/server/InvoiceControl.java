@@ -192,7 +192,6 @@ public class InvoiceControl
     }
     
     public List<InvoiceLineUseType> getInvoiceLineUseTypes() {
-        List<InvoiceLineUseType> invoiceLineUseTypes = null;
         PreparedStatement ps = InvoiceLineUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM invoicelineusetypes " +
