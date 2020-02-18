@@ -23,7 +23,7 @@ import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.choice.BirthdayFormatChoicesBean;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
 import com.echothree.model.control.party.common.choice.DateTimeFormatChoicesBean;
@@ -2114,15 +2114,15 @@ public class PartyControl
             userControl.deleteUserLoginByParty(party, deletedBy);
         }
         
-        if(partyTypeName.equals(PartyConstants.PartyType_COMPANY) || partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)
-                || partyTypeName.equals(PartyConstants.PartyType_VENDOR)) {
+        if(partyTypeName.equals(PartyTypes.COMPANY.name()) || partyTypeName.equals(PartyTypes.CUSTOMER.name())
+                || partyTypeName.equals(PartyTypes.VENDOR.name())) {
             var carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
 
             carrierControl.deletePartyCarriersByParty(party, deletedBy);
             carrierControl.deletePartyCarrierAccountsByParty(party, deletedBy);
         }
 
-        if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER) || partyTypeName.equals(PartyConstants.PartyType_VENDOR)) {
+        if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
             var cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
             var returnPolicyControl = (ReturnPolicyControl)Session.getModelController(ReturnPolicyControl.class);
 
@@ -2130,13 +2130,13 @@ public class PartyControl
             returnPolicyControl.deletePartyReturnPoliciesByParty(party, deletedBy);
         }
 
-        if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
+        if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
             var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
             
             paymentControl.deletePartyPaymentMethodsByParty(party, deletedBy);
         }
         
-        if(partyTypeName.equals(PartyConstants.PartyType_EMPLOYEE)) {
+        if(partyTypeName.equals(PartyTypes.EMPLOYEE.name())) {
             var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
             var trainingControl = (TrainingControl)Session.getModelController(TrainingControl.class);
             var workRequirementControl = (WorkRequirementControl)Session.getModelController(WorkRequirementControl.class);
@@ -2191,7 +2191,7 @@ public class PartyControl
             String partyTypeName = partyType.getPartyTypeName();
             sb.append(getBestPartyTypeDescription(originalPartyType, language));
 
-            if(partyTypeName.equals(PartyConstants.PartyType_UTILITY)) {
+            if(partyTypeName.equals(PartyTypes.UTILITY.name())) {
                 // If its a UTILITY, description will be "partyTypeDescription.description, partyTypeName"
                 sb.append(", ").append(partyDetail.getPartyName());
             } else {
@@ -2204,7 +2204,7 @@ public class PartyControl
                 if((firstName != null || lastName != null || name != null)) {
                     sb.append(", ");
 
-                    if(partyTypeName.equals(PartyConstants.PartyType_PERSON)) {
+                    if(partyTypeName.equals(PartyTypes.PERSON.name())) {
                         // If its a PERSON, description will be "firstName lastName, name"
                         if(firstName != null) {
                             sb.append(firstName);
@@ -2224,7 +2224,7 @@ public class PartyControl
 
                             sb.append(name);
                         }
-                    } else if(partyTypeName.equals(PartyConstants.PartyType_GROUP) || partyTypeName.equals(PartyConstants.PartyType_FACILITY)) {
+                    } else if(partyTypeName.equals(PartyTypes.GROUP.name()) || partyTypeName.equals(PartyTypes.FACILITY.name())) {
                         // If its a GROUP or FACILITY, description will be "name, firstName lastName"
                         if(name != null) {
                             sb.append(name);

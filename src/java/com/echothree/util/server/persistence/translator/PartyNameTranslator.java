@@ -19,7 +19,7 @@ package com.echothree.util.server.persistence.translator;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
@@ -48,14 +48,14 @@ public class PartyNameTranslator
     static {
         var targetMap = new HashMap<String, String>();
         
-        targetMap.put(PartyConstants.PartyType_EMPLOYEE, Targets.Employee.toString());
-        targetMap.put(PartyConstants.PartyType_CUSTOMER, Targets.Customer.toString());
-        targetMap.put(PartyConstants.PartyType_COMPANY, Targets.Company.toString());
-        targetMap.put(PartyConstants.PartyType_DIVISION, Targets.Division.toString());
-        targetMap.put(PartyConstants.PartyType_DEPARTMENT, Targets.Department.toString());
-        targetMap.put(PartyConstants.PartyType_VENDOR, Targets.Vendor.toString());
-        targetMap.put(PartyConstants.PartyType_CARRIER, Targets.Carrier.toString());
-        targetMap.put(PartyConstants.PartyType_WAREHOUSE, Targets.Warehouse.toString());
+        targetMap.put(PartyTypes.EMPLOYEE.name(), Targets.Employee.toString());
+        targetMap.put(PartyTypes.CUSTOMER.name(), Targets.Customer.toString());
+        targetMap.put(PartyTypes.COMPANY.name(), Targets.Company.toString());
+        targetMap.put(PartyTypes.DIVISION.name(), Targets.Division.toString());
+        targetMap.put(PartyTypes.DEPARTMENT.name(), Targets.Department.toString());
+        targetMap.put(PartyTypes.VENDOR.name(), Targets.Vendor.toString());
+        targetMap.put(PartyTypes.CARRIER.name(), Targets.Carrier.toString());
+        targetMap.put(PartyTypes.WAREHOUSE.name(), Targets.Warehouse.toString());
 
         partyTypesToTargets = Collections.unmodifiableMap(targetMap);
         

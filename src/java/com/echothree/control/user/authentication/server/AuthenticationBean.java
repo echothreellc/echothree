@@ -19,7 +19,8 @@ package com.echothree.control.user.authentication.server;
 import com.echothree.control.user.authentication.common.AuthenticationRemote;
 import com.echothree.control.user.authentication.common.form.*;
 import com.echothree.control.user.authentication.server.command.*;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyNames;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
@@ -65,13 +66,13 @@ public class AuthenticationBean
             var userControl = (UserControl)Session.getModelController(UserControl.class);
             UserVisit userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-            Party party = partyControl.getPartyByName(PartyConstants.PartyName_DATA_LOADER);
+            Party party = partyControl.getPartyByName(PartyNames.DATA_LOADER.name());
             
             if(party == null) {
-                PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_UTILITY);
+                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.UTILITY.name());
                 
                 if(partyType != null) {
-                    party = partyControl.createParty(PartyConstants.PartyName_DATA_LOADER, partyType, null, null, null, null, null);
+                    party = partyControl.createParty(PartyNames.DATA_LOADER.name(), partyType, null, null, null, null, null);
                 }
             }
             

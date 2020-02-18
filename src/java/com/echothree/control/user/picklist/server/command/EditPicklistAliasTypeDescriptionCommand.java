@@ -22,7 +22,7 @@ import com.echothree.control.user.picklist.common.form.EditPicklistAliasTypeDesc
 import com.echothree.control.user.picklist.common.result.EditPicklistAliasTypeDescriptionResult;
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.control.user.picklist.common.spec.PicklistAliasTypeDescriptionSpec;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.picklist.server.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -55,8 +55,8 @@ public class EditPicklistAliasTypeDescriptionCommand
 
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.PicklistAliasType.name(), SecurityRoles.Description.name())
                         )))
                 )));

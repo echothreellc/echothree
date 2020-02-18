@@ -17,7 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.Event;
@@ -45,7 +45,7 @@ public class ProcessQueuedEventsCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null)
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
                 )));
     }
     

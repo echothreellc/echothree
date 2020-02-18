@@ -1314,10 +1314,10 @@ public class WishlistControl
             ps.setLong(3, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             ps.setLong(5, companyParty.getPrimaryKey().getEntityId());
-            ps.setString(6, OrderRoleTypes.BILL_FROM.toString());
+            ps.setString(6, OrderRoleTypes.BILL_FROM.name());
             ps.setLong(7, Session.MAX_TIME);
             ps.setLong(8, party.getPrimaryKey().getEntityId());
-            ps.setString(9, OrderRoleTypes.BILL_TO.toString());
+            ps.setString(9, OrderRoleTypes.BILL_TO.name());
             ps.setLong(10, Session.MAX_TIME);
             
             order = OrderFactory.getInstance().getEntityFromQuery(entityPermission, ps);
@@ -1375,10 +1375,10 @@ public class WishlistControl
             ps.setString(1, OrderTypes.WISHLIST.toString());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, companyParty.getPrimaryKey().getEntityId());
-            ps.setString(4, OrderRoleTypes.BILL_FROM.toString());
+            ps.setString(4, OrderRoleTypes.BILL_FROM.name());
             ps.setLong(5, Session.MAX_TIME);
             ps.setLong(6, party.getPrimaryKey().getEntityId());
-            ps.setString(7, OrderRoleTypes.BILL_TO.toString());
+            ps.setString(7, OrderRoleTypes.BILL_TO.name());
             ps.setLong(8, Session.MAX_TIME);
             
             orders = OrderFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);

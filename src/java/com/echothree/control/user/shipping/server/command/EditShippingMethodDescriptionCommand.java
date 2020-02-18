@@ -22,7 +22,7 @@ import com.echothree.control.user.shipping.common.form.EditShippingMethodDescrip
 import com.echothree.control.user.shipping.common.result.EditShippingMethodDescriptionResult;
 import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
 import com.echothree.control.user.shipping.common.spec.ShippingMethodDescriptionSpec;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -54,8 +54,8 @@ public class EditShippingMethodDescriptionCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.ShippingMethod.name(), SecurityRoles.Description.name())
                         )))
                 )));

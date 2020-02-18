@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.CreateLotAliasForm;
 import com.echothree.control.user.inventory.server.command.util.LotAliasUtil;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -59,8 +59,8 @@ public class CreateLotAliasCommand
     /** Creates a new instance of CreateLotAliasCommand */
     public CreateLotAliasCommand(UserVisitPK userVisitPK, CreateLotAliasForm form) {
         super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(LotAliasUtil.getInstance().getSecurityRoleGroupNameByLotTypeSpec(form), SecurityRoles.Create.name())
                         )))
                 ))), FORM_FIELD_DEFINITIONS, false);

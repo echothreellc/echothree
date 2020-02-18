@@ -21,7 +21,7 @@ import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
 import com.echothree.control.user.authentication.common.form.GetCustomerLoginDefaultsForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.control.user.authentication.common.result.GetCustomerLoginDefaultsResult;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -60,7 +60,7 @@ public class GetCustomerLoginDefaultsCommand
             Party party = userSession.getParty();
             
             if(party != null) {
-                if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyConstants.PartyType_CUSTOMER)) {
+                if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.CUSTOMER.name())) {
                     UserLogin userLogin = userControl.getUserLogin(party);
                     
                     username = userLogin.getUsername();

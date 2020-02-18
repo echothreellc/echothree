@@ -19,7 +19,7 @@ package com.echothree.control.user.sequence.server.command;
 import com.echothree.control.user.sequence.common.form.GetSequenceTypeDescriptionsForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceTypeDescriptionsResult;
 import com.echothree.control.user.sequence.common.result.SequenceResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.SequenceControl;
@@ -46,8 +46,8 @@ public class GetSequenceTypeDescriptionsCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                     new SecurityRoleDefinition(SecurityRoleGroups.SequenceType.name(), SecurityRoles.Description.name())
                     )))
                 )));

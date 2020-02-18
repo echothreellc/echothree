@@ -22,7 +22,7 @@ import com.echothree.control.user.printer.common.form.EditPrinterGroupUseTypeFor
 import com.echothree.control.user.printer.common.result.EditPrinterGroupUseTypeResult;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.control.user.printer.common.spec.PrinterGroupUseTypeSpec;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -55,8 +55,8 @@ public class EditPrinterGroupUseTypeCommand
 
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.PrinterGroupUseType.name(), SecurityRoles.Edit.name())
                         )))
                 )));

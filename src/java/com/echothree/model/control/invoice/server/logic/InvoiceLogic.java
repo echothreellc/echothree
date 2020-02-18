@@ -238,8 +238,8 @@ public class InvoiceLogic
                         invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.DUE.toString(), dueTime, createdBy);
                         invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.PAID.toString(), paidTime, createdBy);
 
-                        invoiceControl.createInvoiceRoleUsingNames(invoice, billFrom, billFromContactMechanism, InvoiceRoleTypes.INVOICE_FROM.toString(), createdBy);
-                        invoiceControl.createInvoiceRoleUsingNames(invoice, billTo, billToContactMechanism, InvoiceRoleTypes.INVOICE_TO.toString(), createdBy);
+                        invoiceControl.createInvoiceRoleUsingNames(invoice, billFrom, billFromContactMechanism, InvoiceRoleTypes.INVOICE_FROM.name(), createdBy);
+                        invoiceControl.createInvoiceRoleUsingNames(invoice, billTo, billToContactMechanism, InvoiceRoleTypes.INVOICE_TO.name(), createdBy);
                     }
                 }
             } else {

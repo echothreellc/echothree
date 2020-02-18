@@ -21,7 +21,7 @@ import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
 import com.echothree.control.user.authentication.common.form.GetEmployeeLoginDefaultsForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.control.user.authentication.common.result.GetEmployeeLoginDefaultsResult;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
@@ -65,7 +65,7 @@ public class GetEmployeeLoginDefaultsCommand
             Party party = userSession.getParty();
             
             if(party != null) {
-                if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyConstants.PartyType_EMPLOYEE)) {
+                if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.EMPLOYEE.name())) {
                     UserLogin userLogin = userControl.getUserLogin(party);
                     PartyRelationship partyRelationship = userSession.getPartyRelationship();
                     

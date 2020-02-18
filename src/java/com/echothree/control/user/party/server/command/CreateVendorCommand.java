@@ -29,7 +29,7 @@ import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
@@ -82,8 +82,8 @@ public class CreateVendorCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Create.name())
                         )))
                 )));
@@ -199,7 +199,7 @@ public class CreateVendorCommand
                                                         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
                                                         VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
                                                         Soundex soundex = new Soundex();
-                                                        PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_VENDOR);
+                                                        PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
                                                         BasePK createdBy = getPartyPK();
                                                         String personalTitleId = form.getPersonalTitleId();
                                                         PersonalTitle personalTitle = personalTitleId == null ? null : partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_ONLY);

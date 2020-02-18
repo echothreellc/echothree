@@ -17,7 +17,7 @@
 package com.echothree.model.control.vendor.server.logic;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
@@ -79,7 +79,7 @@ public class VendorLogic
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyConstants.PartyType_VENDOR);
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.VENDOR.name());
 
                     vendor = vendorControl.getVendor(party);
                 } else {

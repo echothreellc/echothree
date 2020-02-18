@@ -18,7 +18,7 @@ package com.echothree.control.user.invoice.server.command;
 
 import com.echothree.control.user.invoice.common.form.SetDefaultInvoiceTimeTypeForm;
 import com.echothree.model.control.invoice.server.InvoiceControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
@@ -45,7 +45,7 @@ public class SetDefaultInvoiceTimeTypeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                     new SecurityRoleDefinition(SecurityRoleGroups.InvoiceTimeType.name(), SecurityRoles.Edit.name())
                     )))
                 )));

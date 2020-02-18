@@ -33,7 +33,7 @@ import com.echothree.model.control.item.server.indexer.ItemIndexer;
 import com.echothree.model.control.offer.server.indexer.OfferIndexer;
 import com.echothree.model.control.offer.server.indexer.UseIndexer;
 import com.echothree.model.control.offer.server.indexer.UseTypeIndexer;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.queue.common.QueueConstants;
 import com.echothree.model.control.queue.server.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
@@ -70,7 +70,7 @@ public class UpdateIndexesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null)
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
                 )));
     }
     

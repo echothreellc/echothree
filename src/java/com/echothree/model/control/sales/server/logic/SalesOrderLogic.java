@@ -34,7 +34,7 @@ import com.echothree.model.control.order.common.exception.MissingDefaultOrderPri
 import com.echothree.model.control.order.common.exception.MissingRequiredBillToPartyException;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
@@ -213,8 +213,8 @@ public class SalesOrderLogic
             Boolean allowCombiningShipments, final String reference, Term term, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
         var orderType = getOrderTypeByName(eea, OrderTypes.SALES_ORDER.toString());
-        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.toString());
-        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.PLACING.toString());
+        var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.name());
+        var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.PLACING.name());
         Order order = null;
 
         if(batch != null) {
@@ -271,7 +271,7 @@ public class SalesOrderLogic
             }
 
             if(billToParty != null) {
-                PartyLogic.getInstance().checkPartyType(eea, billToParty, PartyConstants.PartyType_CUSTOMER);
+                PartyLogic.getInstance().checkPartyType(eea, billToParty, PartyTypes.CUSTOMER.name());
             }
 
             if(eea == null || !eea.hasExecutionErrors()) {
@@ -399,7 +399,7 @@ public class SalesOrderLogic
             final String workflowEntranceName, final Party createdByParty) {
         var batch = batchName == null ? null : SalesOrderBatchLogic.getInstance().getBatchByName(eea, batchName);
         var source = sourceName == null ? null : SourceLogic.getInstance().getSourceByName(eea, sourceName);
-        var billToParty = billToPartyName == null ? null : PartyLogic.getInstance().getPartyByName(eea, billToPartyName, PartyConstants.PartyType_CUSTOMER);
+        var billToParty = billToPartyName == null ? null : PartyLogic.getInstance().getPartyByName(eea, billToPartyName, PartyTypes.CUSTOMER.name());
         var orderPriority = orderPriorityName == null ? null : SalesOrderLogic.getInstance().getOrderPriorityByName(eea, orderPriorityName);
         var currency = currencyIsoName == null ? null : CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
         var term = termName == null ? null : TermLogic.getInstance().getTermByName(eea, termName);
@@ -548,7 +548,7 @@ public class SalesOrderLogic
      */
     public Party getOrderBillToParty(final Order order) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderRole billToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.toString());
+        OrderRole billToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
         Party party = null;
         
         if(billToOrderRole != null) {
@@ -594,13 +594,13 @@ public class SalesOrderLogic
      */
     public Party getOrderShipToParty(final Order order, final boolean billToFallback, final BasePK createdBy) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        OrderRole shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.toString());
+        OrderRole shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.SHIP_TO.name());
         
         if(shipToOrderRole == null && billToFallback) {
-            shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.toString());
+            shipToOrderRole = orderControl.getOrderRoleByOrderAndOrderRoleTypeUsingNames(order, OrderRoleTypes.BILL_TO.name());
             
             if(shipToOrderRole != null) {
-                orderControl.createOrderRoleUsingNames(order, shipToOrderRole.getParty(), OrderRoleTypes.SHIP_TO.toString(), createdBy);
+                orderControl.createOrderRoleUsingNames(order, shipToOrderRole.getParty(), OrderRoleTypes.SHIP_TO.name(), createdBy);
             }
         }
         

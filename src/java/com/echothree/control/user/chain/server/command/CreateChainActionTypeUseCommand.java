@@ -19,7 +19,7 @@ package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.CreateChainActionTypeUseForm;
 import com.echothree.model.control.chain.server.ChainControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeUse;
 import com.echothree.model.data.chain.server.entity.ChainKind;
@@ -44,7 +44,7 @@ public class CreateChainActionTypeUseCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null)
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(

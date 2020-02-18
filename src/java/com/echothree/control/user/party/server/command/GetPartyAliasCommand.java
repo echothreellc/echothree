@@ -20,7 +20,7 @@ import com.echothree.control.user.party.common.form.GetPartyAliasForm;
 import com.echothree.control.user.party.common.result.GetPartyAliasResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.server.command.util.PartyAliasUtil;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -57,8 +57,8 @@ public class GetPartyAliasCommand
     /** Creates a new instance of GetPartyAliasCommand */
     public GetPartyAliasCommand(UserVisitPK userVisitPK, GetPartyAliasForm form) {
         super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameByPartySpec(form), SecurityRoles.Review.name())
                         )))
                 ))), FORM_FIELD_DEFINITIONS, false);

@@ -19,7 +19,7 @@ package com.echothree.model.control.index.server.analysis;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -96,17 +96,17 @@ public class BasicAnalyzer
         if(language != null) {
             String languageIsoName = language.getLanguageIsoName();
             
-            if(languageIsoName.equals(PartyConstants.Language_en)) {
+            if(languageIsoName.equals(Languages.en.name())) {
                 selectedAnalyzer = new EnglishAnalyzer();
-            } else if(languageIsoName.equals(PartyConstants.Language_de)) {
+            } else if(languageIsoName.equals(Languages.de.name())) {
                 selectedAnalyzer = new GermanAnalyzer();
-            } else if(languageIsoName.equals(PartyConstants.Language_es)) {
+            } else if(languageIsoName.equals(Languages.es.name())) {
                 selectedAnalyzer = new SpanishAnalyzer();
-            } else if(languageIsoName.equals(PartyConstants.Language_fr)) {
+            } else if(languageIsoName.equals(Languages.fr.name())) {
                 selectedAnalyzer = new FrenchAnalyzer();
-            } else if(languageIsoName.equals(PartyConstants.Language_jp)) {
+            } else if(languageIsoName.equals(Languages.jp.name())) {
                 selectedAnalyzer = new JapaneseAnalyzer();
-            } else if(languageIsoName.equals(PartyConstants.Language_ko) || languageIsoName.equals(PartyConstants.Language_zh)) {
+            } else if(languageIsoName.equals(Languages.ko.name()) || languageIsoName.equals(Languages.zh.name())) {
                 selectedAnalyzer = new CJKAnalyzer();
             }
         }

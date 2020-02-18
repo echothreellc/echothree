@@ -2550,7 +2550,7 @@ public class InvoiceControl
     
     private List<Invoice> getInvoicesByInvoiceFrom(Party invoiceFrom, EntityPermission entityPermission) {
         return InvoiceFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoicesByInvoiceFromQueries,
-                invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.toString(), Session.MAX_TIME);
+                invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.name(), Session.MAX_TIME);
     }
     
     public List<Invoice> getInvoicesByInvoiceFrom(Party invoiceFrom) {
@@ -2568,7 +2568,7 @@ public class InvoiceControl
                 "WHERE invc_activedetailid = invcdt_invoicedetailid " +
                 "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ? " +
                 "AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?",
-                invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.toString(), Session.MAX_TIME);
+                invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.name(), Session.MAX_TIME);
     }
     
     private static final Map<EntityPermission, String> getInvoicesByInvoiceToQueries;
@@ -2596,7 +2596,7 @@ public class InvoiceControl
     
     private List<Invoice> getInvoicesByInvoiceTo(Party invoiceTo, EntityPermission entityPermission) {
         return InvoiceFactory.getInstance().getEntitiesFromQuery(entityPermission, getInvoicesByInvoiceToQueries,
-                invoiceTo, InvoiceRoleTypes.INVOICE_TO.toString(), Session.MAX_TIME);
+                invoiceTo, InvoiceRoleTypes.INVOICE_TO.name(), Session.MAX_TIME);
     }
     
     public List<Invoice> getInvoicesByInvoiceTo(Party invoiceTo) {
@@ -2614,7 +2614,7 @@ public class InvoiceControl
                 "WHERE invc_activedetailid = invcdt_invoicedetailid " +
                 "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_par_partyid = ? AND invcrtyp_invoiceroletypename = ? " +
                 "AND invcrtyp_invoiceroletypeid = invcr_invcrtyp_invoiceroletypeid AND invcr_thrutime = ?",
-                invoiceTo, InvoiceRoleTypes.INVOICE_TO.toString(), Session.MAX_TIME);
+                invoiceTo, InvoiceRoleTypes.INVOICE_TO.name(), Session.MAX_TIME);
     }
     
     private static final Map<EntityPermission, String> getInvoiceByNameQueries;
@@ -2668,7 +2668,7 @@ public class InvoiceControl
                 "WHERE invc_activedetailid = invcdt_invoicedetailid AND invcdt_reference = ? " +
                 "AND invc_invoiceid = invcr_invc_invoiceid AND invcr_thrutime = ? AND invcr_par_partyid = ? " +
                 "AND invcr_invcrtyp_invoiceroletypeid = invcrtyp_invoiceroletypeid AND invcrtyp_invoiceroletypename = ?",
-                reference, Session.MAX_TIME_LONG, invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.toString());
+                reference, Session.MAX_TIME_LONG, invoiceFrom, InvoiceRoleTypes.INVOICE_FROM.name());
     }
     
     public InvoiceTransfer getInvoiceTransfer(UserVisit userVisit, Invoice invoice) {

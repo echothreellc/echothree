@@ -18,7 +18,7 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.CreateShipmentAliasForm;
 import com.echothree.control.user.shipment.server.command.util.ShipmentAliasUtil;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.ShipmentControl;
@@ -59,8 +59,8 @@ public class CreateShipmentAliasCommand
     /** Creates a new instance of CreateShipmentAliasCommand */
     public CreateShipmentAliasCommand(UserVisitPK userVisitPK, CreateShipmentAliasForm form) {
         super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(ShipmentAliasUtil.getInstance().getSecurityRoleGroupNameByShipmentTypeSpec(form), SecurityRoles.Create.name())
                         )))
                 ))), FORM_FIELD_DEFINITIONS, false);

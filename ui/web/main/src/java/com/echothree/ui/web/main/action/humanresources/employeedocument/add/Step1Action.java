@@ -19,7 +19,7 @@ package com.echothree.ui.web.main.action.humanresources.employeedocument.add;
 import com.echothree.control.user.document.common.DocumentUtil;
 import com.echothree.control.user.document.common.form.GetPartyTypeDocumentTypeUsageTypesForm;
 import com.echothree.control.user.document.common.result.GetPartyTypeDocumentTypeUsageTypesResult;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.ui.web.main.action.humanresources.employeedocument.BaseEmployeeDocumentAction;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -53,7 +53,7 @@ public class Step1Action
             throws Exception {
         GetPartyTypeDocumentTypeUsageTypesForm commandForm = DocumentUtil.getHome().getGetPartyTypeDocumentTypeUsageTypesForm();
 
-        commandForm.setPartyTypeName(PartyConstants.PartyType_EMPLOYEE);
+        commandForm.setPartyTypeName(PartyTypes.EMPLOYEE.name());
 
         CommandResult commandResult = DocumentUtil.getHome().getPartyTypeDocumentTypeUsageTypes(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();

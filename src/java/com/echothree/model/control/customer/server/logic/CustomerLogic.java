@@ -21,14 +21,14 @@ import com.echothree.model.control.customer.common.exception.CannotSpecifyCustom
 import com.echothree.model.control.customer.common.exception.MustSpecifyCustomerNameOrPartyNameException;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerNameException;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerStatusChoiceException;
+import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
-import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -79,7 +79,7 @@ public class CustomerLogic
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyConstants.PartyType_CUSTOMER);
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
 
                     customer = customerControl.getCustomer(party);
                 } else {

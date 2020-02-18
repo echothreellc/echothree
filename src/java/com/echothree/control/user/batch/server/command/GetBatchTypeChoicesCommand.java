@@ -20,7 +20,7 @@ import com.echothree.control.user.batch.common.form.GetBatchTypeChoicesForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.control.user.batch.common.result.GetBatchTypeChoicesResult;
 import com.echothree.model.control.batch.server.BatchControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -44,7 +44,7 @@ public class GetBatchTypeChoicesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.BatchType.name(), SecurityRoles.Choices.name())
                         )))
                 )));

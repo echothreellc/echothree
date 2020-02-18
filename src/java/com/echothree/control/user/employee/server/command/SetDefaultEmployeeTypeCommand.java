@@ -18,7 +18,7 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.SetDefaultEmployeeTypeForm;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.value.EmployeeTypeDetailValue;
@@ -44,7 +44,7 @@ public class SetDefaultEmployeeTypeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                     new SecurityRoleDefinition(SecurityRoleGroups.EmployeeType.name(), SecurityRoles.Edit.name())
                     )))
                 )));

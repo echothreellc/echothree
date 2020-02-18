@@ -26,7 +26,7 @@ import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.IconControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.icon.server.entity.Icon;
@@ -104,7 +104,7 @@ public class EditProfileCommand
     protected List<FieldDefinition> getEditFieldDefinitions() {
         String partyTypeName = getPartyTypeName();
         
-        return partyTypeName == null || partyTypeName.equals(PartyConstants.PartyType_CUSTOMER) ? customerEditFieldDefinitions : otherEditFieldDefinitions;
+        return partyTypeName == null || partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? customerEditFieldDefinitions : otherEditFieldDefinitions;
     }
     
     @Override
@@ -122,7 +122,7 @@ public class EditProfileCommand
         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         Profile profile = null;
         String partyTypeName = getPartyTypeName();
-        String partyName = partyTypeName.equals(PartyConstants.PartyType_CUSTOMER) ? null : spec.getPartyName();
+        String partyName = partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? null : spec.getPartyName();
         Party party = partyName == null ? null : partyControl.getPartyByName(partyName);
 
         if(partyName == null || party != null) {

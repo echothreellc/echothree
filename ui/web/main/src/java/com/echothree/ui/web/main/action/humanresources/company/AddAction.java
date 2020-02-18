@@ -20,7 +20,7 @@ import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.AddEmployeeToCompanyForm;
 import com.echothree.control.user.party.common.form.AddEmployeeToDepartmentForm;
 import com.echothree.control.user.party.common.form.AddEmployeeToDivisionForm;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -64,11 +64,11 @@ public class AddAction
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), actionForm.getPartyName(), null));
 
         if(actionForm.getCompanyName() == null) {
-            partyTypeName = PartyConstants.PartyType_COMPANY;
+            partyTypeName = PartyTypes.COMPANY.name();
         } else if(actionForm.getDivisionName() == null) {
-            partyTypeName = PartyConstants.PartyType_DIVISION;
+            partyTypeName = PartyTypes.DIVISION.name();
         } else {
-            partyTypeName = PartyConstants.PartyType_DEPARTMENT;
+            partyTypeName = PartyTypes.DEPARTMENT.name();
         }
 
         request.setAttribute(AttributeConstants.PARTY_TYPE_NAME, partyTypeName);

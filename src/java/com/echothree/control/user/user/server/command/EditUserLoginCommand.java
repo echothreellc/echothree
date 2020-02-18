@@ -25,17 +25,17 @@ import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.party.common.PartyConstants;
-import static com.echothree.model.control.party.common.PartyConstants.PartyType_CUSTOMER;
-import static com.echothree.model.control.party.common.PartyConstants.PartyType_EMPLOYEE;
-import static com.echothree.model.control.party.common.PartyConstants.PartyType_VENDOR;
+import com.echothree.model.control.party.common.PartyTypes;
+import static com.echothree.model.control.party.common.PartyTypes.CUSTOMER;
+import static com.echothree.model.control.party.common.PartyTypes.EMPLOYEE;
+import static com.echothree.model.control.party.common.PartyTypes.VENDOR;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Customer;
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Employee;
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Vendor;
+import com.echothree.model.control.security.common.SecurityRoles;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.UserControl;
@@ -45,11 +45,11 @@ import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.value.UserLoginValue;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,8 +68,8 @@ public class EditUserLoginCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.UserLogin.name()),
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.UserLogin.name())
@@ -128,17 +128,14 @@ public class EditUserLoginCommand
             if(!hasExecutionErrors()) {
                 PartyType partyType = party.getLastDetail().getPartyType();
                 String securityRoleGroupName = null;
+                var partyTypeName = partyType.getPartyTypeName();
 
-                switch(partyType.getPartyTypeName()) {
-                    case PartyType_CUSTOMER:
-                        securityRoleGroupName = Customer.name();
-                        break;
-                    case PartyType_EMPLOYEE:
-                        securityRoleGroupName = Employee.name();
-                        break;
-                    case PartyType_VENDOR:
-                        securityRoleGroupName = Vendor.name();
-                        break;
+                if(partyTypeName.equals(CUSTOMER.name())) {
+                    securityRoleGroupName = Customer.name();
+                } else if(partyTypeName.equals(EMPLOYEE.name())) {
+                    securityRoleGroupName = Employee.name();
+                } else if(partyTypeName.equals(VENDOR.name())) {
+                    securityRoleGroupName = Vendor.name();
                 }
 
                 if(securityRoleGroupName != null 

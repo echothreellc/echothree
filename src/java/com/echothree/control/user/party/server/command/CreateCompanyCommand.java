@@ -20,7 +20,7 @@ import com.echothree.control.user.party.common.form.CreateCompanyForm;
 import com.echothree.control.user.party.common.result.CreateCompanyResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -95,7 +95,7 @@ public class CreateCompanyCommand
                         }
                         
                         if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                            PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_COMPANY);
+                            PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.COMPANY.name());
                             BasePK createdBy = getPartyPK();
                             String name = form.getName();
                             Boolean isDefault = Boolean.valueOf(form.getIsDefault());

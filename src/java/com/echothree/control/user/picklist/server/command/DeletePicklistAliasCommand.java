@@ -18,7 +18,7 @@ package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.DeletePicklistAliasForm;
 import com.echothree.control.user.picklist.server.command.util.PicklistAliasUtil;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -56,8 +56,8 @@ public class DeletePicklistAliasCommand
     /** Creates a new instance of DeletePicklistAliasCommand */
     public DeletePicklistAliasCommand(UserVisitPK userVisitPK, DeletePicklistAliasForm form) {
         super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(PicklistAliasUtil.getInstance().getSecurityRoleGroupNameByPicklistTypeSpec(form), SecurityRoles.Delete.name())
                         )))
                 ))), FORM_FIELD_DEFINITIONS, false);

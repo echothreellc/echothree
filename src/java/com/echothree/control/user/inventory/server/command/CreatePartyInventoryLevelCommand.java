@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.CreatePartyInventoryLevelForm;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
@@ -75,7 +75,7 @@ public class CreatePartyInventoryLevelCommand
             if(item != null) {
                 String partyTypeName = getPartyTypeName(party);
                 
-                if(partyTypeName.equals(PartyConstants.PartyType_COMPANY)) {
+                if(partyTypeName.equals(PartyTypes.COMPANY.name())) {
                     if(!party.equals(item.getLastDetail().getCompanyParty())) {
                         addExecutionError(ExecutionErrors.InvalidCompany.name());
                     }

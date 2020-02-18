@@ -18,7 +18,7 @@ package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.control.user.payment.common.edit.PartyPaymentMethodEdit;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
 import com.echothree.model.control.payment.common.exception.UnknownPartyPaymentMethodNameException;
@@ -106,7 +106,7 @@ public class PartyPaymentMethodLogic
     public void checkPartyType(final ExecutionErrorAccumulator ema, final Party party) {
         String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
-        if(!partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
+        if(!partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
             ema.addExecutionError(ExecutionErrors.InvalidPartyType.name(), partyTypeName);
         }
     }

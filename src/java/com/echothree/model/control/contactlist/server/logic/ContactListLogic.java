@@ -18,12 +18,12 @@ package com.echothree.model.control.contactlist.server.logic;
 
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListContactMechanismPurposeException;
 import com.echothree.model.control.contactlist.common.exception.UnknownContactListNameException;
+import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.contactlist.server.ContactListControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
@@ -135,7 +135,7 @@ public class ContactListLogic
             contactLists.addAll(contactListControl.getContactListsByContactListGroup(partyTypeContactListGroup.getContactListGroup()));
         });
 
-        if(PartyLogic.getInstance().isPartyType(party, PartyConstants.PartyType_CUSTOMER)) {
+        if(PartyLogic.getInstance().isPartyType(party, PartyTypes.CUSTOMER.name())) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
             CustomerType customerType = customerControl.getCustomer(party).getCustomerType();
 

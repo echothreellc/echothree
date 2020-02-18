@@ -3358,7 +3358,7 @@ public class OrderControl
                 "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_reference = ? " +
                 "AND ord_orderid = ordr_ord_orderid AND ordr_thrutime = ? AND ordr_par_partyid = ? " +
                 "AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid AND ordrtyp_orderroletypename = ?",
-                reference, Session.MAX_TIME_LONG, billToParty, OrderRoleTypes.BILL_TO.toString());
+                reference, Session.MAX_TIME_LONG, billToParty, OrderRoleTypes.BILL_TO.name());
     }
 
     public OrderTransfer getOrderTransfer(UserVisit userVisit, Order order) {

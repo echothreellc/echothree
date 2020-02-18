@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.spec.PartyInventoryLevelSpec;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Party;
@@ -53,8 +53,8 @@ public abstract class BasePartyInventoryLevelCommand<F
                 if(party != null) {
                     String partyTypeName = getPartyTypeName(party);
                     
-                    if(!partyTypeName.equals(PartyConstants.PartyType_COMPANY)
-                    && !partyTypeName.equals(PartyConstants.PartyType_WAREHOUSE)) {
+                    if(!partyTypeName.equals(PartyTypes.COMPANY.name())
+                    && !partyTypeName.equals(PartyTypes.WAREHOUSE.name())) {
                         party = null;
                         addExecutionError(ExecutionErrors.InvalidPartyType.name());
                     }

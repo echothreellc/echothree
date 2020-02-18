@@ -21,7 +21,7 @@ import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.control.user.carrier.common.result.GetCarrierResult;
 import com.echothree.model.control.carrier.server.CarrierControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -50,8 +50,8 @@ public class GetCarrierCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.Carrier.name(), SecurityRoles.Review.name())
                         )))
                 )));
@@ -89,7 +89,7 @@ public class GetCarrierCommand
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_CARRIER);
+                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CARRIER.name());
                     
                     if(party.getLastDetail().getPartyType().equals(partyType)) {
                         carrier = carrierControl.getCarrier(party);

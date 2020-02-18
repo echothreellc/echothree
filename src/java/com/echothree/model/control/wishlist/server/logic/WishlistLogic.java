@@ -114,8 +114,8 @@ public class WishlistLogic
                     if(!ema.hasExecutionErrors()) {
                         wishlistControl.createWishlist(order, getOrderOfferUse(userVisit, offerUse, companyParty), wishlistType, createdBy);
 
-                        orderControl.createOrderRoleUsingNames(order, companyParty, OrderRoleTypes.BILL_FROM.toString(), createdBy);
-                        orderControl.createOrderRoleUsingNames(order, party, OrderRoleTypes.BILL_TO.toString(), createdBy);
+                        orderControl.createOrderRoleUsingNames(order, companyParty, OrderRoleTypes.BILL_FROM.name(), createdBy);
+                        orderControl.createOrderRoleUsingNames(order, party, OrderRoleTypes.BILL_TO.name(), createdBy);
                     }
                 }
             }

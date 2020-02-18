@@ -22,7 +22,7 @@ import com.echothree.control.user.term.common.form.EditPartyTermForm;
 import com.echothree.control.user.term.common.result.EditPartyTermResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.control.user.term.common.spec.PartyTermSpec;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.control.term.server.TermControl;
@@ -116,7 +116,7 @@ public class EditPartyTermCommand
                                     
                                     termControl.updatePartyTermFromValue(partyTermValue, updatedBy);
                                     
-                                    if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
+                                    if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
                                         // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
                                         PartyChainLogic.getInstance().createPartyTermChangedChainInstance(null, party, updatedBy);
                                     }

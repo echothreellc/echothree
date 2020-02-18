@@ -28,7 +28,7 @@ import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.server.OfferControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
@@ -165,7 +165,7 @@ public class CreateCustomerWithLoginCommand
     @Override
     protected ValidationResult validate() {
         String partyTypeName = getPartyTypeName();
-        List<FieldDefinition> FORM_FIELD_DEFINITIONS = partyTypeName == null || partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)? customerFormFieldDefinitions: otherFormFieldDefinitions;
+        List<FieldDefinition> FORM_FIELD_DEFINITIONS = partyTypeName == null || partyTypeName.equals(PartyTypes.CUSTOMER.name())? customerFormFieldDefinitions: otherFormFieldDefinitions;
         Validator validator = new Validator(this);
         ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
@@ -187,7 +187,7 @@ public class CreateCustomerWithLoginCommand
 
             if(password1.equals(password2)) {
                 var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_CUSTOMER);
+                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
                 PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
                         getUserVisit(), this, partyType, null, null, password1);
 

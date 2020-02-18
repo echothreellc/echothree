@@ -19,7 +19,7 @@ package com.echothree.control.user.order.server.command;
 import com.echothree.control.user.order.common.form.CreateOrderAliasForm;
 import com.echothree.control.user.order.server.command.util.OrderAliasUtil;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.Order;
@@ -59,8 +59,8 @@ public class CreateOrderAliasCommand
     /** Creates a new instance of CreateOrderAliasCommand */
     public CreateOrderAliasCommand(UserVisitPK userVisitPK, CreateOrderAliasForm form) {
         super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(OrderAliasUtil.getInstance().getSecurityRoleGroupNameByOrderTypeSpec(form), SecurityRoles.Create.name())
                         )))
                 ))), FORM_FIELD_DEFINITIONS, false);

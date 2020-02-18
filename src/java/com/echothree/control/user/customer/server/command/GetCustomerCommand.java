@@ -21,7 +21,7 @@ import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.wishlist.server.WishlistControl;
 import com.echothree.model.data.customer.server.entity.Customer;
@@ -81,7 +81,7 @@ public class GetCustomerCommand
                 party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyConstants.PartyType_CUSTOMER)) {
+                    if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.CUSTOMER.name())) {
                     customer = customerControl.getCustomer(party);
                     } else {
                         addExecutionError(ExecutionErrors.InvalidPartyType.name());

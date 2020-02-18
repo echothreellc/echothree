@@ -20,7 +20,7 @@ import com.echothree.control.user.warehouse.common.form.GetWarehouseForm;
 import com.echothree.control.user.warehouse.common.result.GetWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.warehouse.server.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Party;
@@ -76,7 +76,7 @@ public class GetWarehouseCommand
                 Party party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_WAREHOUSE);
+                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.WAREHOUSE.name());
                     
                     if(party.getLastDetail().getPartyType().equals(partyType)) {
                         warehouse = warehouseControl.getWarehouse(party);
