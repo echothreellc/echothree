@@ -38,8 +38,6 @@ public class BillingAccountTransferCache
         extends BasePaymentTransferCache<BillingAccount, BillingAccountTransfer> {
 
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
-    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     boolean includeRoles;
 
     /** Creates a new instance of BillingAccountTransferCache */
@@ -66,7 +64,7 @@ public class BillingAccountTransferCache
             String description = billingAccountDetail.getDescription();
             String creditLimit = null;
             String potentialCreditLimit = null;
-            BillingAccountStatus billingAccountStatus = paymentControl.getBillingAccountStatus(billingAccount);
+//            BillingAccountStatus billingAccountStatus = paymentControl.getBillingAccountStatus(billingAccount);
 //            Integer rawCreditLimit = billingAccountStatus.getCreditLimit();
 //            Integer rawPotentialCreditLimit = billingAccountStatus.getPotentialCreditLimit();
 //

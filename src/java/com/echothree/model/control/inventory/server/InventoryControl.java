@@ -1491,15 +1491,12 @@ public class InventoryControl
     }
     
     public List<InventoryConditionUseType> getInventoryConditionUseTypes() {
-        List<InventoryConditionUseType>inventoryConditionUseTypes = null;
         PreparedStatement ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM inventoryconditionusetypes " +
                 "ORDER BY invconut_inventoryconditionusetypename");
         
-        inventoryConditionUseTypes = InventoryConditionUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return inventoryConditionUseTypes;
+        return InventoryConditionUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public InventoryConditionUseType getInventoryConditionUseTypeByName(String inventoryConditionUseTypeName) {

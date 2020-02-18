@@ -81,13 +81,7 @@ public class DatabaseDefinitionParser
     
     /** Default dynamic validation support (false). */
     protected static final boolean DEFAULT_DYNAMIC_VALIDATION = false;
-    
-    /** Default memory usage report (false). */
-    protected static final boolean DEFAULT_MEMORY_USAGE = true;
-    
-    /** Default "tagginess" report (false). */
-    protected static final boolean DEFAULT_TAGGINESS = true;
-    
+
     //
     // Data
     //
@@ -106,18 +100,6 @@ public class DatabaseDefinitionParser
     //
     // ContentHandler methods
     //
-    
-    /** Start document. */
-    @Override
-    public void startDocument() throws SAXException {
-        //System.out.println("startDocument");
-    } // startDocument()
-    
-    /** End document. */
-    @Override
-    public void endDocument() throws SAXException {
-        //System.out.println("endDocument");
-    } // startDocument()
     
     static final int cStateNowhere = 0;
     static final int cStateInDatabase = 1;
@@ -310,7 +292,6 @@ public class DatabaseDefinitionParser
     }
     
     void startElementInTable(String localName, Attributes attrs) throws SAXException {
-        //System.out.println("startElementInTable " + localName);
         if(localName.equals("columns")) {
             currentState = cStateInColumns;
         } else if(localName.equals("indexes")) {
@@ -564,7 +545,6 @@ public class DatabaseDefinitionParser
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
     throws SAXException {
-        //System.out.println("  endElement: localName=\"" + localName + "\"");
         switch(currentState) {
             case cStateNowhere:
                 break;
@@ -601,84 +581,36 @@ public class DatabaseDefinitionParser
         }
     }
     
-    /** Strings. */
-    @Override
-    public void characters(char ch[], int start, int length)
-    throws SAXException {
-        //String theString = new String(ch, start, length);
-        //System.out.println("  characters=\"" + theString + "\"");
-    } // characters(char[],int,int);
-    
-    /** Ignorable whitespace. */
-    @Override
-    public void ignorableWhitespace(char ch[], int start, int length)
-    throws SAXException {
-    } // ignorableWhitespace(char[],int,int);
-    
-    /** Processing instruction. */
-    @Override
-    public void processingInstruction(String target, String data)
-    throws SAXException {
-    } // processingInstruction(String,String)
-    
     //
     // ErrorHandler methods
     //
     
     /** Warning. */
     @Override
-    public void warning(SAXParseException ex) throws SAXException {
-        printError("Warning", ex);
+    public void warning(SAXParseException ex)
+            throws SAXParseException {
+        throw ex;
     } // warning(SAXParseException)
     
     /** Error. */
     @Override
-    public void error(SAXParseException ex) throws SAXException {
-        printError("Error", ex);
+    public void error(SAXParseException ex)
+            throws SAXParseException {
+        throw ex;
     } // error(SAXParseException)
     
     /** Fatal error. */
     @Override
-    public void fatalError(SAXParseException ex) throws SAXException {
-        printError("Fatal Error", ex);
-        //throw ex;
+    public void fatalError(SAXParseException ex)
+            throws SAXParseException {
+        throw ex;
     } // fatalError(SAXParseException)
-    
-    //
-    // Protected methods
-    //
-    
-    /** Prints the error message. */
-    protected void printError(String type, SAXParseException ex) {
-        System.err.print("[");
-        System.err.print(type);
-        System.err.print("] ");
-        if (ex== null) {
-            System.out.println("!!!");
-        }
-        String systemId = ex.getSystemId();
-        if (systemId != null) {
-            int index = systemId.lastIndexOf('/');
-            if (index != -1)
-                systemId = systemId.substring(index + 1);
-            System.err.print(systemId);
-        }
-        System.err.print(':');
-        System.err.print(ex.getLineNumber());
-        System.err.print(':');
-        System.err.print(ex.getColumnNumber());
-        System.err.print(": ");
-        System.err.print(ex.getMessage());
-        System.err.println();
-        System.err.flush();
-    }
     
     //
     // Constructors
     //
     /** Creates a new instance of DatabaseDefinitionParser */
-    public DatabaseDefinitionParser(Databases theDatabases)
-    throws Exception {
+    public DatabaseDefinitionParser(Databases theDatabases) {
         // variables
         myFiles = new ArrayList<>();
         myDatabases = theDatabases;
@@ -688,16 +620,13 @@ public class DatabaseDefinitionParser
     public void parse(String arg)
     throws Exception {
         XMLReader parser = null;
-        int repetition = DEFAULT_REPETITION;
         boolean namespaces = DEFAULT_NAMESPACES;
         boolean namespacePrefixes = DEFAULT_NAMESPACE_PREFIXES;
         boolean validation = DEFAULT_VALIDATION;
         boolean schemaValidation = DEFAULT_SCHEMA_VALIDATION;
         boolean schemaFullChecking = DEFAULT_SCHEMA_FULL_CHECKING;
         boolean dynamicValidation = DEFAULT_DYNAMIC_VALIDATION;
-        boolean memoryUsage = DEFAULT_MEMORY_USAGE;
-        boolean tagginess = DEFAULT_TAGGINESS;
-        
+
         // create parser
         try {
             parser = XMLReaderFactory.createXMLReader(DEFAULT_PARSER_NAME);
@@ -751,21 +680,12 @@ public class DatabaseDefinitionParser
         // parse file
         parser.setContentHandler(this);
         parser.setErrorHandler(this);
-        
-        long timeBefore = System.currentTimeMillis();
-        long memoryBefore = Runtime.getRuntime().freeMemory();
-        
+
         parser.parse(arg);
         
         for(String i: myFiles) {
             parser.parse(i);
         }
-        
-        long memoryAfter = Runtime.getRuntime().freeMemory();
-        long timeAfter = System.currentTimeMillis();
-        
-        long time = timeAfter - timeBefore;
-        long memory = memoryUsage? memoryBefore - memoryAfter : Long.MIN_VALUE;
     }
     
 }

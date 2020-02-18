@@ -617,15 +617,12 @@ public class SequenceControl
     }
     
     public List<SequenceChecksumType> getSequenceChecksumTypes() {
-        List<SequenceChecksumType> sequenceChecksumTypes = null;
         PreparedStatement ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM sequencechecksumtypes " +
                 "ORDER BY sqct_sortorder, sqct_sequencechecksumtypename");
         
-        sequenceChecksumTypes = SequenceChecksumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return sequenceChecksumTypes;
+        return SequenceChecksumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public SequenceChecksumType getSequenceChecksumTypeByName(String sequenceChecksumTypeName) {
@@ -732,15 +729,12 @@ public class SequenceControl
     }
     
     public List<SequenceEncoderType> getSequenceEncoderTypes() {
-        List<SequenceEncoderType> sequenceEncoderTypes = null;
         PreparedStatement ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM sequenceencodertypes " +
                 "ORDER BY sqet_sortorder, sqet_sequenceencodertypename");
         
-        sequenceEncoderTypes = SequenceEncoderTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return sequenceEncoderTypes;
+        return SequenceEncoderTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public SequenceEncoderType getSequenceEncoderTypeByName(String sequenceEncoderTypeName) {

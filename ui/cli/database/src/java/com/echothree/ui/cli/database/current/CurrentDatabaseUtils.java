@@ -24,13 +24,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class CurrentDatabaseUtils {
 
-    private final Log log = LogFactory.getLog(this.getClass());
-    
     private CurrentDatabaseUtils() {
         super();
     }
@@ -51,57 +47,57 @@ public class CurrentDatabaseUtils {
         });
         
         System.out.println("---   Index name: " + indexName + ", " + columnNames +  ", " + unique);
-        
+
         CurrentIndex ci = new CurrentIndex(ct, indexName, unique, columns);
         ct.addIndex(ci);
         columns.stream().forEach((cc) -> {
             cc.addIndex(ci);
         });
     }
-    
-    private void getIndexes(String catalog, DatabaseMetaData dmd, CurrentDatabase cd, CurrentTable ct)
+
+    private void getIndexes(String catalog, DatabaseMetaData dmd, CurrentTable ct)
             throws SQLException {
         String currentIndexName = null;
         List<String> currentColumnNames = new ArrayList<>();
         boolean currentUnique = false;
-        
+
         try(ResultSet ii = dmd.getIndexInfo(catalog, null, ct.getTableName(), false, true)) {
             while(ii.next()) {
                 String indexName = ii.getString("INDEX_NAME");
                 String columnName = ii.getString("COLUMN_NAME");
                 boolean unique = !ii.getBoolean("NON_UNIQUE");
-                
+
                 if(currentIndexName != null && !currentIndexName.equals(indexName)) {
                     handleIndex(ct, currentIndexName, currentColumnNames, currentUnique);
-                    
+
                     currentColumnNames = new ArrayList<>();
                 }
-                
+
                 currentIndexName = indexName;
                 currentColumnNames.add(columnName);
                 currentUnique = unique;
             }
         }
-        
+
         if(currentIndexName != null) {
             handleIndex(ct, currentIndexName, currentColumnNames, currentUnique);
         }
-        
+
         // Determine the name of the primary key index by getting one component of it, and marking the index as such.
         try(ResultSet pkColumns = dmd.getPrimaryKeys(catalog, null, ct.getTableName())) {
             if(pkColumns.next()) {
                 String pkName = pkColumns.getString("PK_NAME");
-                
+
                 System.out.println("---   PK index name: " + pkName);
-                
+
                 CurrentIndex ci = ct.getIndex(pkName);
-                
+
                 ci.setPrimaryKey(true);
             }
         }
     }
-    
-    private void getColumns(String catalog, DatabaseMetaData dmd, CurrentDatabase cd, CurrentTable ct)
+
+    private void getColumns(String catalog, DatabaseMetaData dmd, CurrentTable ct)
             throws SQLException {
         try(ResultSet c = dmd.getColumns(catalog, null, ct.getTableName(), null)) {
             while(c.next()) {
@@ -109,26 +105,26 @@ public class CurrentDatabaseUtils {
                 int type = c.getInt("DATA_TYPE");
                 int columnSize = c.getInt("COLUMN_SIZE");
                 int nullable = c.getInt("NULLABLE");
-                
+
                 System.out.println("---   Column name: " + columnName + ", " + type +  ", " + columnSize +  ", " + nullable);
-                
+
                 ct.addColumn(new CurrentColumn(ct, columnName, type, columnSize, nullable != 0));
             }
         }
     }
-    
+
     public void getTables(String catalog, DatabaseMetaData dmd, CurrentDatabase cd)
             throws SQLException {
         try(ResultSet rs = dmd.getTables(catalog, null, null, new String[]{"TABLE"})) {
             while(rs.next()) {
                 String tableName = rs.getString("TABLE_NAME");
                 CurrentTable ct = new CurrentTable(tableName);
-                
+
                 System.out.println("--- Table: " + tableName);
-                
+
                 cd.addTable(ct);
-                getColumns(catalog, dmd, cd, ct);
-                getIndexes(catalog, dmd, cd, ct);
+                getColumns(catalog, dmd, ct);
+                getIndexes(catalog, dmd, ct);
             }
         }
     }
@@ -137,10 +133,10 @@ public class CurrentDatabaseUtils {
             throws SQLException {
         for(CurrentTable ct: cd.getTables().values()) {
             String tableName = ct.getTableName();
-            
+
             try(ResultSet ik = dmd.getImportedKeys(catalog, null, tableName)) {
                 System.out.println("--- Table: " + tableName);
-                
+
                 while(ik.next()) {
                     String importedKeyName = ik.getString("FK_NAME");
                     String fkColumnName = ik.getString("FKCOLUMN_NAME");
@@ -148,7 +144,7 @@ public class CurrentDatabaseUtils {
                     String pkColumnName = ik.getString("PKCOLUMN_NAME");
                     CurrentColumn column = ct.getColumn(fkColumnName);
                     CurrentColumn targetColumn = cd.getTable(pkTableName).getColumn(pkColumnName);
-                    
+
                     System.out.println("---   Foreign key: " + importedKeyName +  ", " + fkColumnName + ", " + pkTableName +  ", " + pkColumnName);
                     
                     CurrentForeignKey cfk = new CurrentForeignKey(ct, importedKeyName, column, targetColumn);

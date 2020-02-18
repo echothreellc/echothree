@@ -87,9 +87,8 @@ public class DatabaseViewUtilities {
     
     Column getTablePrimaryKey(Table table)
             throws Exception {
-        Index primaryKeyIndex = table.primaryKey;
         Set<Column> primaryKeyColumns = table.getPrimaryKey().getIndexColumns();
-        Column result = null;
+        Column result;
         
         if(primaryKeyColumns.size() == 1) {
             result = primaryKeyColumns.iterator().next();

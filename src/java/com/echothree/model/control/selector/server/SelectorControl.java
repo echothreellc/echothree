@@ -1168,15 +1168,12 @@ public class SelectorControl
     }
     
     public List<SelectorComparisonType> getSelectorComparisonTypes() {
-        List<SelectorComparisonType> selectorComparisonTypes = null;
         PreparedStatement ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectorcomparisontypes " +
                 "ORDER BY slct_sortorder, slct_selectorcomparisontypename");
         
-        selectorComparisonTypes = SelectorComparisonTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return selectorComparisonTypes;
+        return SelectorComparisonTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public SelectorComparisonType getSelectorComparisonTypeByName(String selectorComparisonTypeName) {
@@ -1463,15 +1460,12 @@ public class SelectorControl
     }
     
     public List<SelectorTextSearchType> getSelectorTextSearchTypes() {
-        List<SelectorTextSearchType> selectorTextSearchTypes = null;
         PreparedStatement ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectortextsearchtypes " +
                 "ORDER BY sltst_sortorder, sltst_selectortextsearchtypename");
         
-        selectorTextSearchTypes = SelectorTextSearchTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        
-        return selectorTextSearchTypes;
+        return SelectorTextSearchTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public SelectorTextSearchType getSelectorTextSearchTypeByName(String selectorTextSearchTypeName) {
@@ -2290,8 +2284,6 @@ public class SelectorControl
         }
         
         for(SelectorNode selectorNode: selectorNodes) {
-            SelectorNodeDetail selectorNodeDetail = selectorNode.getLastDetail();
-            
             String label = getBestSelectorNodeDescription(selectorNode, language);
             String value = selectorNode.getLastDetail().getSelectorNodeName();
             

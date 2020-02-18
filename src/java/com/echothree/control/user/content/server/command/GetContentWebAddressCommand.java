@@ -52,7 +52,6 @@ public class GetContentWebAddressCommand
     @Override
     protected ContentWebAddress getEntity() {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        GetContentWebAddressResult result = ContentResultFactory.getGetContentWebAddressResult();
         String contentWebAddressName = form.getContentWebAddressName();
         ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         

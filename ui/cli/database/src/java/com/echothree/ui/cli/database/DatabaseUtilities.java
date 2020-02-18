@@ -275,7 +275,6 @@ public abstract class DatabaseUtilities {
     
     /** Returns the SQL needed for a column of type EID
      * @return Text to use as part of the SQL query for this column
-     * @param columnPrefix Upper case text to use as a column name prefix
      * @param theColumn Column that is the SQL is being generated for
      */
     String getEIDDefinition(String columnName, Column theColumn, Column theFKColumn)
@@ -290,7 +289,6 @@ public abstract class DatabaseUtilities {
     
     /** Returns the SQL needed for a column of type Integer
      * @return Text to use as part of the SQL query for this column
-     * @param columnPrefix Upper case text to use as a column name prefix
      * @param theColumn Column that is the SQL is being generated for
      */
     String getIntegerDefinition(String columnName, Column theColumn, Column theFKColumn) {
@@ -299,7 +297,6 @@ public abstract class DatabaseUtilities {
     
     /** Returns the SQL needed for a column of type Long
      * @return Text to use as part of the SQL query for this column
-     * @param columnPrefix Upper case text to use as a column name prefix
      * @param theColumn Column that is the SQL is being generated for
      */
     String getLongDefinition(String columnName, Column theColumn, Column theFKColumn) {
@@ -308,7 +305,6 @@ public abstract class DatabaseUtilities {
     
     /** Returns the SQL needed for a column of type String
      * @return Text to use as part of the SQL query for this column
-     * @param columnPrefix Upper case text to use as a column name prefix
      * @param theColumn Column that is the SQL is being generated for
      */
     String getStringDefinition(String columnName, Column theColumn, Column theFKColumn) {
@@ -326,7 +322,6 @@ public abstract class DatabaseUtilities {
     
     /** Returns the SQL needed for a column of type Boolean
      * @return Text to use as part of the SQL query for this column
-     * @param columnPrefix Upper case text to use as a column name prefix
      * @param theColumn Column that is the SQL is being generated for
      */
     String getBooleanDefinition(String columnName, Column theColumn, Column theFKColumn) {
@@ -335,7 +330,6 @@ public abstract class DatabaseUtilities {
     
     /** Returns the SQL needed for a column of type Date
      * @return Text to use as part of the SQL query for this column
-     * @param columnPrefix Upper case text to use as a column name prefix
      * @param theColumn Column that is the SQL is being generated for
      */
     String getDateDefinition(String columnName, Column theColumn, Column theFKColumn) {
@@ -345,7 +339,6 @@ public abstract class DatabaseUtilities {
     /** Returns the SQL needed for a column of type Time, which maps to
      * standard unix time measured in seconds
      * @return Text to use as part of the SQL query for this column
-     * @param columnPrefix Upper case text to use as a column name prefix
      * @param theColumn Column that is the SQL is being generated for
      */
     String getTimeDefinition(String columnName, Column theColumn, Column theFKColumn) {
@@ -529,7 +522,6 @@ public abstract class DatabaseUtilities {
     }
     
     /** Create a table that is completely missing from the database
-     * @param tableName Name of the table that is missing
      * @throws Exception Thrown when a database error occurs
      */
     void createMissingTable(Table theTable) throws Exception {
@@ -705,7 +697,6 @@ public abstract class DatabaseUtilities {
     
     /** Compare a table that already exists in the database to the XML configuration and
      * make any needed alterations
-     * @param tableName Name of the able that is going to be examined
      * @throws Exception Thrown when a database error occurs
      */
     void checkExistingTable(CurrentTable ct, Table theTable, DatabaseUpdateTasks neededUpdates)
@@ -738,7 +729,7 @@ public abstract class DatabaseUtilities {
         }
         
         // Check for extra tables.
-        tables.values().stream().filter((ct) -> (!xmlTables.contains(ct.getTableName()))).forEach((ct) -> {
+        tables.values().stream().filter((ct) -> !xmlTables.contains(ct.getTableName())).forEach((ct) -> {
             neededUpdates.addExtraTable(ct);
         });
     }

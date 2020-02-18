@@ -44,7 +44,7 @@ public class TermLogic
     
     public Term getTermByName(final ExecutionErrorAccumulator eea, final String termName) {
         var termControl = (TermControl)Session.getModelController(TermControl.class);
-        Term term = termControl.getTermByName(termName);
+        var term = termControl.getTermByName(termName);
 
         if(term == null) {
             handleExecutionError(UnknownTermNameException.class, eea, ExecutionErrors.UnknownTermName.name(), termName);
@@ -55,9 +55,7 @@ public class TermLogic
     
     public PartyTerm getPartyTerm(final ExecutionErrorAccumulator eea, final Party party) {
         var termControl = (TermControl)Session.getModelController(TermControl.class);
-        PartyTerm partyTerm = null;
-
-        partyTerm = termControl.getPartyTerm(party);
+        var partyTerm = termControl.getPartyTerm(party);
 
         if(partyTerm == null) {
             handleExecutionError(UnknownPartyTermException.class, eea, ExecutionErrors.UnknownPartyTerm.name(), party.getLastDetail().getPartyName());
