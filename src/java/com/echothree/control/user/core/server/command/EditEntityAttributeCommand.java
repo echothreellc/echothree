@@ -262,7 +262,7 @@ public class EditEntityAttributeCommand
                     edit.getEntityListItemSequenceName() : null;
 
             if(entityListItemSequenceName != null) {
-                SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.toString());
+                SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, SequenceTypes.ENTITY_LIST_ITEM.name());
 
                 if(!hasExecutionErrors()) {
                     var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);

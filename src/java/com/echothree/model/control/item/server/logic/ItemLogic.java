@@ -153,14 +153,14 @@ public class ItemLogic
         var itemSequence = itemCategory.getLastDetail().getItemSequence();
         
         if(itemSequence == null) {
-            itemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ITEM.toString());
+            itemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ITEM.name());
         }
         
         if(!hasExecutionErrors(eea)) {
             itemName = SequenceLogic.getInstance().getNextSequenceValue(eea, itemSequence);
         } else {
             handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
-                    SequenceTypes.ITEM.toString());
+                    SequenceTypes.ITEM.name());
         }
         
         return itemName;

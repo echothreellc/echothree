@@ -62,7 +62,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE.toString());
+                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE.name());
                 commandForm.setDefaultSequenceChoice(associateSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -104,7 +104,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.toString());
+                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
                 commandForm.setDefaultSequenceChoice(associatePartyContactMechanismSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -146,7 +146,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_REFERRAL.toString());
+                commandForm.setSequenceTypeName(SequenceTypes.ASSOCIATE_REFERRAL.name());
                 commandForm.setDefaultSequenceChoice(associateReferralSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 

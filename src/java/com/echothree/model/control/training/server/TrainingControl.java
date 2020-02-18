@@ -1907,7 +1907,7 @@ public class TrainingControl
     
     public PartyTrainingClass createPartyTrainingClass(Party party, TrainingClass trainingClass, Long completedTime, Long validUntilTime, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.PARTY_TRAINING_CLASS.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.PARTY_TRAINING_CLASS.name());
         String partyTrainingClassName = sequenceControl.getNextSequenceValue(sequence);
         
         return createPartyTrainingClass(partyTrainingClassName, party, trainingClass, completedTime, validUntilTime, createdBy);

@@ -455,7 +455,7 @@ public class UserControl
             WorkflowEntrance workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
             
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
-                Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.USER_VISIT_GROUP.toString());
+                Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.USER_VISIT_GROUP.name());
                 String userVisitGroupName = sequenceControl.getNextSequenceValue(sequence);
                 
                 userVisitGroup = createUserVisitGroup(userVisitGroupName, createdBy);

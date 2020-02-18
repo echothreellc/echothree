@@ -41,7 +41,7 @@ public class SalesOrderSearchEvaluator
     public SalesOrderSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection) {
         super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, OrderLogic.getInstance().getOrderTypeByName(null,
-                OrderTypes.SALES_ORDER.toString()));
+                OrderTypes.SALES_ORDER.name()));
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByOfferUse(OfferUse offerUse) {

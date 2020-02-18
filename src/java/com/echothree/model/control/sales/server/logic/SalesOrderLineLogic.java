@@ -396,11 +396,11 @@ public class SalesOrderLineLogic
     }
 
     public OrderLine getOrderLineByName(final ExecutionErrorAccumulator eea, final String orderName, final String orderLineSequence) {
-        return getOrderLineByName(eea, OrderTypes.SALES_ORDER.toString(), orderName, orderLineSequence);
+        return getOrderLineByName(eea, OrderTypes.SALES_ORDER.name(), orderName, orderLineSequence);
     }
 
     public OrderLine getOrderLineByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderName, final String orderLineSequence) {
-        return getOrderLineByNameForUpdate(eea, OrderTypes.SALES_ORDER.toString(), orderName, orderLineSequence);
+        return getOrderLineByNameForUpdate(eea, OrderTypes.SALES_ORDER.name(), orderName, orderLineSequence);
     }
 
 }

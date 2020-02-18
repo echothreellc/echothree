@@ -44,7 +44,7 @@ public class EditActionForm
             try {
                 GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                form.setSequenceTypeName(SequenceTypes.SALES_ORDER.toString());
+                form.setSequenceTypeName(SequenceTypes.SALES_ORDER.name());
                 form.setDefaultSequenceChoice(salesOrderSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

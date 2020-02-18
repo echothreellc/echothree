@@ -101,12 +101,12 @@ public class CreateOfferCommand
             
             if(salesOrderSequenceName != null) {
                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.toString());
+                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
                 
                 if(sequenceType != null) {
                     salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.SALES_ORDER.toString());
+                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.SALES_ORDER.name());
                 }
             }
             

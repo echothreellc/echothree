@@ -130,12 +130,12 @@ public class EditRatingTypeCommand
                             
                             if(ratingSequenceName != null) {
                                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.toString());
+                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
                                 
                                 if(sequenceType != null) {
                                     ratingSequence = sequenceControl.getSequenceByName(sequenceType, ratingSequenceName);
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.RATING.toString());
+                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.RATING.name());
                                 }
                             }
                             

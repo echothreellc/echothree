@@ -37,7 +37,7 @@ public class OrderTrigger
         OrderTypeTrigger result = null;
         String orderTypeName = order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName();
         
-        if(orderTypeName.equals(OrderTypes.SALES_ORDER.toString())) {
+        if(orderTypeName.equals(OrderTypes.SALES_ORDER.name())) {
             result = new SalesOrderTrigger();
         }
         

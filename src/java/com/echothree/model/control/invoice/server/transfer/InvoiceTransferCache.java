@@ -115,7 +115,7 @@ public class InvoiceTransferCache
             
             String invoiceTypeName = invoiceType.getInvoiceTypeName();
             EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(invoice.getPrimaryKey());
-            if(invoiceTypeName.equals(InvoiceTypes.PURCHASE_INVOICE.toString())) {
+            if(invoiceTypeName.equals(InvoiceTypes.PURCHASE_INVOICE.name())) {
                 invoiceStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit, PurchaseInvoiceStatusConstants.Workflow_PURCHASE_INVOICE_STATUS, entityInstance);
             }
             

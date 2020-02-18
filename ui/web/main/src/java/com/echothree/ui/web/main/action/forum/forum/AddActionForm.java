@@ -107,7 +107,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceTypes.FORUM_THREAD.toString());
+                commandForm.setSequenceTypeName(SequenceTypes.FORUM_THREAD.name());
                 commandForm.setDefaultSequenceChoice(forumThreadSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -130,7 +130,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceTypes.FORUM_MESSAGE.toString());
+                commandForm.setSequenceTypeName(SequenceTypes.FORUM_MESSAGE.name());
                 commandForm.setDefaultSequenceChoice(forumMessageSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 

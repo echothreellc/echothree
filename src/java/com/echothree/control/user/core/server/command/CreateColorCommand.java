@@ -80,7 +80,7 @@ public class CreateColorCommand
         
         if(colorName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COLOR.toString());
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COLOR.name());
             
             colorName = sequenceControl.getNextSequenceValue(sequence);
         }

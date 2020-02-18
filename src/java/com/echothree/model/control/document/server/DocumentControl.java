@@ -1342,7 +1342,7 @@ public class DocumentControl
     
     public Document createDocument(DocumentType documentType, MimeType mimeType, Integer pages, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.DOCUMENT.toString()));
+        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.DOCUMENT.name()));
         String documentName = sequenceControl.getNextSequenceValue(sequence);
         
         return createDocument(documentName, documentType, mimeType, pages, createdBy);

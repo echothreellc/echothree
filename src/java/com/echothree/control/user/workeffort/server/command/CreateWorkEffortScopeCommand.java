@@ -86,12 +86,12 @@ public class CreateWorkEffortScopeCommand
                 
                 if(workEffortSequenceName != null) {
                     var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.toString());
+                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
                     
                     if(sequenceType != null) {
                         workEffortSequence = sequenceControl.getSequenceByName(sequenceType, workEffortSequenceName);
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.WORK_EFFORT.toString());
+                        addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.WORK_EFFORT.name());
                     }
                 }
                 

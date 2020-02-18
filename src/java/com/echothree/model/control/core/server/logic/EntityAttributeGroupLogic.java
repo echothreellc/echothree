@@ -50,7 +50,7 @@ public class EntityAttributeGroupLogic
         
         if(entityAttributeGroupName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE_GROUP.toString());
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE_GROUP.name());
             
             entityAttributeGroupName = sequenceControl.getNextSequenceValue(sequence);
         }

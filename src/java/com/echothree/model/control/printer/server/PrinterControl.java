@@ -1001,7 +1001,7 @@ public class PrinterControl
 
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.toString()));
+        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
         String printerGroupJobName = sequenceControl.getNextSequenceValue(sequence);
 
         return createPrinterGroupJob(printerGroupJobName, printerGroup, document, copies, priority, createdBy);

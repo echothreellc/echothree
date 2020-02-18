@@ -80,7 +80,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceTypes.ENTITY_LIST_ITEM.toString());
+                commandForm.setSequenceTypeName(SequenceTypes.ENTITY_LIST_ITEM.name());
                 commandForm.setDefaultSequenceChoice(entityListItemSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 

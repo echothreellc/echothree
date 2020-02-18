@@ -159,7 +159,7 @@ public class EditForumCommand
                     sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
                     if(forumThreadSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.toString());
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
                         forumThreadSequence = sequenceControl.getSequenceByName(sequenceType, forumThreadSequenceName);
                     }
                 }
@@ -167,7 +167,7 @@ public class EditForumCommand
                 if(forumThreadSequenceName == null || forumThreadSequence != null) {
 
                     if(forumMessageSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_MESSAGE.toString());
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_MESSAGE.name());
                         forumMessageSequence = sequenceControl.getSequenceByName(sequenceType, forumMessageSequenceName);
                     }
 

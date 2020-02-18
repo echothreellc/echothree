@@ -187,7 +187,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         userLoginStatus.setLastLoginTime(session.START_TIME_LONG);
         
         if(partyContactMechanism == null) {
-            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.toString());
+            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
             ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName,
                     contactMechanismType, Boolean.FALSE, partyPK);

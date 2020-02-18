@@ -46,25 +46,25 @@ public class OrderNameTranslator
     static {
         var targetMap = new HashMap<String, String>();
         
-        targetMap.put(OrderTypes.PURCHASE_ORDER.toString(), Targets.PurchaseOrder.toString());
-        targetMap.put(OrderTypes.SALES_ORDER.toString(), Targets.SalesOrder.toString());
-        targetMap.put(OrderTypes.WISHLIST.toString(), Targets.Wishlist.toString());
+        targetMap.put(OrderTypes.PURCHASE_ORDER.name(), Targets.PurchaseOrder.name());
+        targetMap.put(OrderTypes.SALES_ORDER.name(), Targets.SalesOrder.name());
+        targetMap.put(OrderTypes.WISHLIST.name(), Targets.Wishlist.name());
 
         orderTypesToTargets = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceTypes.PURCHASE_ORDER.toString(), OrderTypes.PURCHASE_ORDER.toString());
-        targetMap.put(SequenceTypes.SALES_ORDER.toString(), OrderTypes.SALES_ORDER.toString());
-        targetMap.put(SequenceTypes.WISHLIST.toString(), OrderTypes.WISHLIST.toString());
+        targetMap.put(SequenceTypes.PURCHASE_ORDER.name(), OrderTypes.PURCHASE_ORDER.name());
+        targetMap.put(SequenceTypes.SALES_ORDER.name(), OrderTypes.SALES_ORDER.name());
+        targetMap.put(SequenceTypes.WISHLIST.name(), OrderTypes.WISHLIST.name());
         
         sequenceTypesToOrderTypes = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceTypes.PURCHASE_ORDER.toString(), Targets.PurchaseOrder.toString());
-        targetMap.put(SequenceTypes.SALES_ORDER.toString(), Targets.SalesOrder.toString());
-        targetMap.put(SequenceTypes.WISHLIST.toString(), Targets.Wishlist.toString());
+        targetMap.put(SequenceTypes.PURCHASE_ORDER.name(), Targets.PurchaseOrder.name());
+        targetMap.put(SequenceTypes.SALES_ORDER.name(), Targets.SalesOrder.name());
+        targetMap.put(SequenceTypes.WISHLIST.name(), Targets.Wishlist.name());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }
@@ -76,7 +76,7 @@ public class OrderNameTranslator
         if(target != null) {
             MapWrapper<String> names = new MapWrapper<>(1);
 
-            names.put(Names.OrderName.toString(), orderDetail.getOrderName());
+            names.put(Names.OrderName.name(), orderDetail.getOrderName());
 
             result = new EntityNames(target, names);
         }

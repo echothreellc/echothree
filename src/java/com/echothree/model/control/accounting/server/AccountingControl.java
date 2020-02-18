@@ -4723,7 +4723,7 @@ public class AccountingControl
     
     public TransactionGroup createTransactionGroup(BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION_GROUP.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION_GROUP.name());
         String transactionGroupName = sequenceControl.getNextSequenceValue(sequence);
         
         TransactionGroup transactionGroup = createTransactionGroup(transactionGroupName, createdBy);
@@ -4888,7 +4888,7 @@ public class AccountingControl
     public Transaction createTransaction(Party groupParty, TransactionGroup transactionGroup, TransactionType transactionType, Long postingTime,
             BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.name());
         String transactionName = sequenceControl.getNextSequenceValue(sequence);
         
         return createTransaction(transactionName, groupParty, transactionGroup, transactionType, postingTime, createdBy);

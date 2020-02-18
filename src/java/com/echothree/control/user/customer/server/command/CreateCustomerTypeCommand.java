@@ -125,7 +125,7 @@ public class CreateCustomerTypeCommand
             
             if(customerSequenceName != null) {
                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.toString());
+                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
                 
                 if(sequenceType != null) {
                     customerSequence = sequenceControl.getSequenceByName(sequenceType, customerSequenceName);

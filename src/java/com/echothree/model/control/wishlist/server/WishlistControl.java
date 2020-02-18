@@ -1309,7 +1309,7 @@ public class WishlistControl
             
             PreparedStatement ps = OrderFactory.getInstance().prepareStatement(query);
             
-            ps.setString(1, OrderTypes.WISHLIST.toString());
+            ps.setString(1, OrderTypes.WISHLIST.name());
             ps.setLong(2, currency.getPrimaryKey().getEntityId());
             ps.setLong(3, wishlistType.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
@@ -1372,7 +1372,7 @@ public class WishlistControl
             
             PreparedStatement ps = OrderFactory.getInstance().prepareStatement(query);
             
-            ps.setString(1, OrderTypes.WISHLIST.toString());
+            ps.setString(1, OrderTypes.WISHLIST.name());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, companyParty.getPrimaryKey().getEntityId());
             ps.setString(4, OrderRoleTypes.BILL_FROM.name());

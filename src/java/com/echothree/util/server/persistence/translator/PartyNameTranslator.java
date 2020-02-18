@@ -48,21 +48,21 @@ public class PartyNameTranslator
     static {
         var targetMap = new HashMap<String, String>();
         
-        targetMap.put(PartyTypes.EMPLOYEE.name(), Targets.Employee.toString());
-        targetMap.put(PartyTypes.CUSTOMER.name(), Targets.Customer.toString());
-        targetMap.put(PartyTypes.COMPANY.name(), Targets.Company.toString());
-        targetMap.put(PartyTypes.DIVISION.name(), Targets.Division.toString());
-        targetMap.put(PartyTypes.DEPARTMENT.name(), Targets.Department.toString());
-        targetMap.put(PartyTypes.VENDOR.name(), Targets.Vendor.toString());
-        targetMap.put(PartyTypes.CARRIER.name(), Targets.Carrier.toString());
-        targetMap.put(PartyTypes.WAREHOUSE.name(), Targets.Warehouse.toString());
+        targetMap.put(PartyTypes.EMPLOYEE.name(), Targets.Employee.name());
+        targetMap.put(PartyTypes.CUSTOMER.name(), Targets.Customer.name());
+        targetMap.put(PartyTypes.COMPANY.name(), Targets.Company.name());
+        targetMap.put(PartyTypes.DIVISION.name(), Targets.Division.name());
+        targetMap.put(PartyTypes.DEPARTMENT.name(), Targets.Department.name());
+        targetMap.put(PartyTypes.VENDOR.name(), Targets.Vendor.name());
+        targetMap.put(PartyTypes.CARRIER.name(), Targets.Carrier.name());
+        targetMap.put(PartyTypes.WAREHOUSE.name(), Targets.Warehouse.name());
 
         partyTypesToTargets = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceTypes.CUSTOMER.toString(), Targets.Customer.toString());
-        targetMap.put(SequenceTypes.EMPLOYEE.toString(), Targets.Employee.toString());
+        targetMap.put(SequenceTypes.CUSTOMER.name(), Targets.Customer.name());
+        targetMap.put(SequenceTypes.EMPLOYEE.name(), Targets.Employee.name());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }
@@ -74,7 +74,7 @@ public class PartyNameTranslator
         if(target != null) {
             var names = new MapWrapper<String>(1);
 
-            names.put(Names.PartyName.toString(), partyDetail.getPartyName());
+            names.put(Names.PartyName.name(), partyDetail.getPartyName());
 
             result = new EntityNames(target, names);
         }
@@ -98,7 +98,7 @@ public class PartyNameTranslator
         var target = sequenceTypesToTargets.get(sequenceTypeName);
         Party party = null;
         
-        if(target.equals(Targets.Customer.toString()) &&
+        if(target.equals(Targets.Customer.name()) &&
                 SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
                         SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
@@ -107,7 +107,7 @@ public class PartyNameTranslator
             if(customer != null) {
                 party = customer.getParty();
             }
-        } else if(target.equals(Targets.Employee.toString()) &&
+        } else if(target.equals(Targets.Employee.name()) &&
                 SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
                         SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
             var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);

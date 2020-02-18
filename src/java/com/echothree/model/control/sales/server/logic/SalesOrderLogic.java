@@ -212,7 +212,7 @@ public class SalesOrderLogic
             final Party billToParty, OrderPriority orderPriority, Currency currency, Boolean holdUntilComplete, Boolean allowBackorders, Boolean allowSubstitutions,
             Boolean allowCombiningShipments, final String reference, Term term, Boolean taxable, final String workflowEntranceName, final Party createdByParty) {
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        var orderType = getOrderTypeByName(eea, OrderTypes.SALES_ORDER.toString());
+        var orderType = getOrderTypeByName(eea, OrderTypes.SALES_ORDER.name());
         var billToOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.BILL_TO.name());
         var placingOrderRoleType = getOrderRoleTypeByName(eea, OrderRoleTypes.PLACING.name());
         Order order = null;
@@ -250,7 +250,7 @@ public class SalesOrderLogic
                 orderPriority = orderControl.getDefaultOrderPriority(orderType);
 
                 if(orderPriority == null) {
-                    handleExecutionError(MissingDefaultOrderPriorityException.class, eea, ExecutionErrors.MissingDefaultOrderPriority.name(), OrderTypes.SALES_ORDER.toString());
+                    handleExecutionError(MissingDefaultOrderPriorityException.class, eea, ExecutionErrors.MissingDefaultOrderPriority.name(), OrderTypes.SALES_ORDER.name());
                 }
             }
 
@@ -431,19 +431,19 @@ public class SalesOrderLogic
     }
 
     public Order getOrderByName(final ExecutionErrorAccumulator eea, final String orderName) {
-        return getOrderByName(eea, OrderTypes.SALES_ORDER.toString(), orderName);
+        return getOrderByName(eea, OrderTypes.SALES_ORDER.name(), orderName);
     }
 
     public Order getOrderByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderName) {
-        return getOrderByNameForUpdate(eea, OrderTypes.SALES_ORDER.toString(), orderName);
+        return getOrderByNameForUpdate(eea, OrderTypes.SALES_ORDER.name(), orderName);
     }
 
     public OrderPriority getOrderPriorityByName(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByName(eea, OrderTypes.SALES_ORDER.toString(), orderPriorityName);
+        return getOrderPriorityByName(eea, OrderTypes.SALES_ORDER.name(), orderPriorityName);
     }
 
     public OrderPriority getOrderPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderPriorityName) {
-        return getOrderPriorityByNameForUpdate(eea, OrderTypes.SALES_ORDER.toString(), orderPriorityName);
+        return getOrderPriorityByNameForUpdate(eea, OrderTypes.SALES_ORDER.name(), orderPriorityName);
     }
 
     public SalesOrderStatusChoicesBean getSalesOrderStatusChoices(final String defaultOrderStatusChoice, final Language language, final boolean allowNullChoice,

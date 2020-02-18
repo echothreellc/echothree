@@ -604,7 +604,7 @@ public class CustomerControl
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
         if(sequence == null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.toString());
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CUSTOMER.name());
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
 

@@ -86,7 +86,7 @@ public class SearchSalesOrdersCommand
 
                 if(salesOrderStatusChoice == null || salesOrderStatusChoice != null) {
                     OrderLogic orderLogic = OrderLogic.getInstance();
-                    OrderType orderType = orderLogic.getOrderTypeByName(this, OrderTypes.SALES_ORDER.toString());
+                    OrderType orderType = orderLogic.getOrderTypeByName(this, OrderTypes.SALES_ORDER.name());
 
                     if(!hasExecutionErrors()) {
                         String orderAliasTypeName = form.getOrderAliasTypeName();

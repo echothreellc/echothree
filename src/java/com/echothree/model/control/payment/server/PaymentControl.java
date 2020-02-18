@@ -1810,7 +1810,7 @@ public class PaymentControl
     public PartyPaymentMethod createPartyPaymentMethod(Party party, String description, PaymentMethod paymentMethod,
             Boolean deleteWhenUnused, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY_PAYMENT_METHOD.toString());
+        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY_PAYMENT_METHOD.name());
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
         String partyPaymentMethodName = sequenceControl.getNextSequenceValue(sequence);
 

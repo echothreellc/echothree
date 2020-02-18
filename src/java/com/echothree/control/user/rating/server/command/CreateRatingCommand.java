@@ -105,7 +105,7 @@ public class CreateRatingCommand
                             Sequence ratingSequence = ratingType.getLastDetail().getRatingSequence();
                             
                             if(ratingSequence == null) {
-                                ratingSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.RATING.toString());
+                                ratingSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.RATING.name());
                             }
                             
                             ratingName = sequenceControl.getNextSequenceValue(ratingSequence);

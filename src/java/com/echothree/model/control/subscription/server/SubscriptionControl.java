@@ -1207,7 +1207,7 @@ public class SubscriptionControl
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         
         if(sequence == null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.toString());
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
         

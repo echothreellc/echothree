@@ -177,7 +177,7 @@ public class EditChainCommand
             addExecutionError(ExecutionErrors.DuplicateChainName.name(), chainTypeDetail.getChainTypeName(), chainName);
         } else {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.toString());
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.name());
             String chainInstanceSequenceName = edit.getChainInstanceSequenceName();
 
             chainInstanceSequence = sequenceControl.getSequenceByName(sequenceType, chainInstanceSequenceName);

@@ -157,7 +157,7 @@ public class CampaignControl
 
     public Campaign createCampaign(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.name());
         String campaignName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaign(campaignName, value, isDefault, sortOrder, createdBy);
@@ -675,7 +675,7 @@ public class CampaignControl
 
     public CampaignSource createCampaignSource(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.name());
         String campaignSourceName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaignSource(campaignSourceName, value, isDefault, sortOrder, createdBy);
@@ -1193,7 +1193,7 @@ public class CampaignControl
 
     public CampaignMedium createCampaignMedium(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.name());
         String campaignMediumName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaignMedium(campaignMediumName, value, isDefault, sortOrder, createdBy);
@@ -1711,7 +1711,7 @@ public class CampaignControl
 
     public CampaignTerm createCampaignTerm(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.name());
         String campaignTermName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaignTerm(campaignTermName, value, isDefault, sortOrder, createdBy);
@@ -2229,7 +2229,7 @@ public class CampaignControl
 
     public CampaignContent createCampaignContent(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.name());
         String campaignContentName = sequenceControl.getNextSequenceValue(sequence);
         
         return createCampaignContent(campaignContentName, value, isDefault, sortOrder, createdBy);

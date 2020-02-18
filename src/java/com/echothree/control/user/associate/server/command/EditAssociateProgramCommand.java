@@ -129,12 +129,12 @@ public class EditAssociateProgramCommand
                     Sequence associateSequence = null;
                     
                     if(associateSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE.toString());
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE.name());
                         
                         if(sequenceType != null) {
                             associateSequence = sequenceControl.getSequenceByName(sequenceType, associateSequenceName);
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE.toString());
+                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE.name());
                         }
                     }
                     
@@ -143,12 +143,12 @@ public class EditAssociateProgramCommand
                         Sequence associatePartyContactMechanismSequence = null;
                         
                         if(associatePartyContactMechanismSequenceName != null) {
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.toString());
+                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
                             
                             if(sequenceType != null) {
                                 associatePartyContactMechanismSequence = sequenceControl.getSequenceByName(sequenceType, associatePartyContactMechanismSequenceName);
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.toString());
+                                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
                             }
                         }
                         
@@ -157,12 +157,12 @@ public class EditAssociateProgramCommand
                             Sequence associateReferralSequence = null;
                             
                             if(associateReferralSequenceName != null) {
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_REFERRAL.toString());
+                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_REFERRAL.name());
                                 
                                 if(sequenceType != null) {
                                     associateReferralSequence = sequenceControl.getSequenceByName(sequenceType, associateReferralSequenceName);
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE_REFERRAL.toString());
+                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE_REFERRAL.name());
                                 }
                             }
                             

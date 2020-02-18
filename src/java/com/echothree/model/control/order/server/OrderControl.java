@@ -3411,7 +3411,7 @@ public class OrderControl
         
         OrderDetail orderDetail = order.getLastDetailForUpdate();
         String orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
-        if(orderTypeName.equals(OrderTypes.WISHLIST.toString())) {
+        if(orderTypeName.equals(OrderTypes.WISHLIST.name())) {
             var wishlistControl = (WishlistControl)Session.getModelController(WishlistControl.class);
             
             wishlistControl.deleteWishlistByOrder(order, deletedBy);

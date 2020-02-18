@@ -55,7 +55,7 @@ public class ContactEmailAddressLogic
         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         var workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
-        String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.toString());
+        String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
         ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.EMAIL_ADDRESS.name());
 
         ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,

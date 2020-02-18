@@ -62,9 +62,9 @@ public class InvoiceLineTransferCache
             put(invoiceLine, invoiceLineTransfer);
             
             String invoiceLineUseTypeName = invoiceLineUseTypeTransfer.getInvoiceLineUseTypeName();
-            if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.ITEM.toString())) {
+            if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.ITEM.name())) {
                 invoiceLineTransfer.setInvoiceLineItem(invoiceControl.getInvoiceLineItemTransfer(userVisit, invoiceControl.getInvoiceLineItem(invoiceLine)));
-            } else if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.GL_ACCOUNT.toString())) {
+            } else if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.GL_ACCOUNT.name())) {
                 invoiceLineTransfer.setInvoiceLineGlAccount(invoiceControl.getInvoiceLineGlAccountTransfer(userVisit, invoiceControl.getInvoiceLineGlAccount(invoiceLine)));
             }
         }

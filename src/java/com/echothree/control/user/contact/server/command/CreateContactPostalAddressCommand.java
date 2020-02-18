@@ -237,7 +237,7 @@ public class CreateContactPostalAddressCommand
                                             Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
                                             Boolean isCommercial = Boolean.valueOf(form.getIsCommercial());
                                             String description = form.getDescription();
-                                            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.toString());
+                                            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
                                             
                                             String firstNameSdx;
                                             try {

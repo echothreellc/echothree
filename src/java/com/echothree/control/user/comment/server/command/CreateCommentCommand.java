@@ -113,7 +113,7 @@ public class CreateCommentCommand
             Sequence commentSequence = commentType.getLastDetail().getCommentSequence();
             
             if(commentSequence == null) {
-                commentSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COMMENT.toString());
+                commentSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COMMENT.name());
             }
             
             commentName = sequenceControl.getNextSequenceValue(commentSequence);

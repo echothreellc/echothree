@@ -1898,7 +1898,7 @@ public class EmployeeControl
     public Leave createLeave(Party party, Party companyParty, LeaveType leaveType, LeaveReason leaveReason, Long startTime, Long endTime, Long totalTime,
             BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.LEAVE.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.LEAVE.name());
         String leaveName = sequenceControl.getNextSequenceValue(sequence);
 
         return createLeave(leaveName, party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
@@ -3100,7 +3100,7 @@ public class EmployeeControl
     public Employment createEmployment(Party party, Party companyParty, Long startTime, Long endTime, TerminationType terminationType,
             TerminationReason terminationReason, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EMPLOYMENT.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EMPLOYMENT.name());
         String employmentName = sequenceControl.getNextSequenceValue(sequence);
 
         return createEmployment(employmentName, party, companyParty, startTime, endTime, terminationType, terminationReason, createdBy);

@@ -94,7 +94,7 @@ public class CreatePurchaseInvoiceLineCommand
         CreatePurchaseInvoiceLineResult result = PurchaseResultFactory.getCreatePurchaseInvoiceLineResult();
         InvoiceLine invoiceLine = null;
         String invoiceName = form.getInvoiceName();
-        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(InvoiceTypes.PURCHASE_INVOICE.toString());
+        InvoiceType invoiceType = invoiceControl.getInvoiceTypeByName(InvoiceTypes.PURCHASE_INVOICE.name());
         Invoice invoice = invoiceControl.getInvoiceByName(invoiceType, invoiceName);
         
         if(invoice != null) {
@@ -128,7 +128,7 @@ public class CreatePurchaseInvoiceLineCommand
                         addExecutionError(ExecutionErrors.UnknownGlAccountName.name(), glAccountName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownInvoiceLineTypeName.name(), InvoiceTypes.PURCHASE_INVOICE.toString(), invoiceTypeName);
+                    addExecutionError(ExecutionErrors.UnknownInvoiceLineTypeName.name(), InvoiceTypes.PURCHASE_INVOICE.name(), invoiceTypeName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownParentInvoiceLine.name(), invoiceName, rawParentInvoiceLine);

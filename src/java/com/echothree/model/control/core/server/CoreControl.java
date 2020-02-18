@@ -3387,7 +3387,7 @@ public class CoreControl
             WorkflowEntrance workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);
             
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
-                Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EVENT_GROUP.toString());
+                Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EVENT_GROUP.name());
                 String eventGroupName = sequenceControl.getNextSequenceValue(sequence);
                 
                 eventGroup = createEventGroup(eventGroupName, createdBy);
@@ -12346,7 +12346,7 @@ public class CoreControl
         
         if(!eea.hasExecutionErrors()) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.BASE_ENCRYPTION_KEY.toString());
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.BASE_ENCRYPTION_KEY.name());
             String baseEncryptionKeyName = sequenceControl.getNextSequenceValue(sequence);
             String sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
             baseEncryptionKey = createBaseEncryptionKey(baseEncryptionKeyName, sha1Hash, createdBy);
@@ -12643,7 +12643,7 @@ public class CoreControl
     public EventSubscriber createEventSubscriber(EntityInstance entityInstance, String description, Integer sortOrder,
             BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.toString());
+        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
         String eventSubscriberName = sequenceControl.getNextSequenceValue(sequence);
         

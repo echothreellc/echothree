@@ -65,7 +65,7 @@ public class SequenceLogic
         Sequence sequence = null;
         
         if(sequenceName == null) {
-            sequenceName = getNextSequenceValue(eea, SequenceTypes.SEQUENCE.toString());
+            sequenceName = getNextSequenceValue(eea, SequenceTypes.SEQUENCE.name());
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {

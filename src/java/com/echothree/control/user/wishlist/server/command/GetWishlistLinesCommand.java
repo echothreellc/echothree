@@ -65,9 +65,9 @@ public class GetWishlistLinesCommand
             
             if(wishlistName != null) {
                 var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-                Order order = orderControl.getOrderByName(orderControl.getOrderTypeByName(OrderTypes.WISHLIST.toString()), wishlistName);
+                Order order = orderControl.getOrderByName(orderControl.getOrderTypeByName(OrderTypes.WISHLIST.name()), wishlistName);
                 
-                if(order != null && order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName().equals(OrderTypes.WISHLIST.toString())) {
+                if(order != null && order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName().equals(OrderTypes.WISHLIST.name())) {
                     result.setWishlistLines(wishlistControl.getWishlistLineTransfersByOrder(getUserVisit(), order));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownWishlistName.name(), wishlistName);

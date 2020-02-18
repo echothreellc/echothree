@@ -147,7 +147,7 @@ public class BaseChainLogic
             Sequence sequence = chain.getLastDetail().getChainInstanceSequence();
 
             if(sequence == null) {
-                sequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.CHAIN_INSTANCE.toString());
+                sequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.CHAIN_INSTANCE.name());
             }
 
             if(!hasExecutionErrors(eea)) {

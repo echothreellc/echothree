@@ -92,12 +92,12 @@ public class CreateCommentTypeCommand
                         
                         if(commentSequenceName != null) {
                             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.toString());
+                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.name());
                             
                             if(sequenceType != null) {
                                 commentSequence = sequenceControl.getSequenceByName(sequenceType, commentSequenceName);
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.COMMENT.toString());
+                                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.COMMENT.name());
                             }
                         }
                         

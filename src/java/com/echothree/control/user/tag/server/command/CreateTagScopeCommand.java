@@ -77,7 +77,7 @@ public class CreateTagScopeCommand
         
         if(tagScopeName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.toString());
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.name());
             
             tagScopeName = sequenceControl.getNextSequenceValue(sequence);
         }

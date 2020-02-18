@@ -200,7 +200,7 @@ public class EntityAttributeLogic
         
         if(entityAttributeName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE.toString());
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE.name());
 
             entityAttributeName = sequenceControl.getNextSequenceValue(sequence);
         }
@@ -499,14 +499,14 @@ public class EntityAttributeLogic
                 Sequence entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
 
                 if(entityListItemSequence == null) {
-                    entityListItemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ENTITY_LIST_ITEM.toString());
+                    entityListItemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ENTITY_LIST_ITEM.name());
                 }
 
                 if(eea != null && !hasExecutionErrors(eea)) {
                     entityListItemName = SequenceLogic.getInstance().getNextSequenceValue(eea, entityListItemSequence);
                 } else {
                     handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
-                            SequenceTypes.ENTITY_LIST_ITEM.toString());
+                            SequenceTypes.ENTITY_LIST_ITEM.name());
                 }
             }
             

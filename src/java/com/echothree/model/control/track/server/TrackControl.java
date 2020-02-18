@@ -92,7 +92,7 @@ public class TrackControl
 
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.toString());
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
         String trackName = sequenceControl.getNextSequenceValue(sequence);
         
         return createTrack(trackName, value, isDefault, sortOrder, createdBy);

@@ -48,7 +48,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                form.setSequenceTypeName(SequenceTypes.RATING.toString());
+                form.setSequenceTypeName(SequenceTypes.RATING.name());
                 form.setDefaultSequenceChoice(ratingSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

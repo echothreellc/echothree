@@ -1853,7 +1853,7 @@ public class PartyControl
         
         if(partyName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY.toString());
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY.name());
             if(sequenceType != null) {
                 Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
                 

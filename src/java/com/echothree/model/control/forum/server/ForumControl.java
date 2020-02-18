@@ -2594,7 +2594,7 @@ public class ForumControl
         Sequence sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
         
         if(sequence == null) {
-            sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_THREAD.toString());
+            sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_THREAD.name());
         }
         
         return createForumThread(sequenceControl.getNextSequenceValue(sequence), icon, postedTime, sortOrder, createdBy);
@@ -2821,7 +2821,7 @@ public class ForumControl
         Sequence sequence = forum == null? null: forum.getLastDetail().getForumThreadSequence();
         
         if(sequence == null) {
-            sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_MESSAGE.toString());
+            sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_MESSAGE.name());
         }
         
         return createForumMessage(sequenceControl.getNextSequenceValue(sequence), forumThread, forumMessageType, parentForumMessage,

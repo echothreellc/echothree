@@ -106,7 +106,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                form.setSequenceTypeName(SequenceTypes.CUSTOMER.toString());
+                form.setSequenceTypeName(SequenceTypes.CUSTOMER.name());
                 form.setDefaultSequenceChoice(customerSequenceChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

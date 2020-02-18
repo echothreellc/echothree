@@ -40,7 +40,7 @@ public class OrderAliasUtil {
 
     static {
         securityRoleGroupNameByOrderTypeName = new HashMap<>();
-        securityRoleGroupNameByOrderTypeName.put(OrderTypes.SALES_ORDER.toString(), SecurityRoleGroups.SalesOrderAlias.name());
+        securityRoleGroupNameByOrderTypeName.put(OrderTypes.SALES_ORDER.name(), SecurityRoleGroups.SalesOrderAlias.name());
     }
 
     public String getSecurityRoleGroupNameByOrderTypeName(String orderTypeName) {

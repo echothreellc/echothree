@@ -93,7 +93,7 @@ public class CreateChainCommand
 
                     if(chainInstanceSequenceName != null) {
                         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.toString());
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.CHAIN_INSTANCE.name());
 
                         chainInstanceSequence = sequenceControl.getSequenceByName(sequenceType, chainInstanceSequenceName);
                     }

@@ -129,7 +129,7 @@ public class CreateContactTelephoneCommand
                             String telephoneExtension = form.getTelephoneExtension();
                             Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
                             String description = form.getDescription();
-                            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.toString());
+                            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
                             
                             ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.TELECOM_ADDRESS.name());
                             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName,

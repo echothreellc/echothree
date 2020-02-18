@@ -120,7 +120,7 @@ public class CreateCountyCommand
         GeoCodeAlias geoCodeAlias = geoControl.getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, countyName);
         
         if(geoCodeAlias == null) {
-            String geoCodeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.toString());
+            String geoCodeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
             String countyNumber = form.getCountyNumber();
             Boolean isDefault = Boolean.valueOf(form.getIsDefault());
             Integer sortOrder = Integer.valueOf(form.getSortOrder());

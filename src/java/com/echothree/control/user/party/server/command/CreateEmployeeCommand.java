@@ -179,7 +179,7 @@ public class CreateEmployeeCommand
                                             NameSuffix nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
                                             String emailAddress = form.getEmailAddress();
                                             Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                            String partyEmployeeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.EMPLOYEE.toString());
+                                            String partyEmployeeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.EMPLOYEE.name());
                                             
                                             Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                                             partyControl.createPerson(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, createdBy);

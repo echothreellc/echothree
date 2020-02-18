@@ -206,12 +206,12 @@ public class CreateWorkRequirementTypeCommand
         Sequence workRequirementSequence = null;
         
         if(workRequirementSequenceName != null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_REQUIREMENT.toString());
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_REQUIREMENT.name());
             
             if(sequenceType != null) {
                 workRequirementSequence = sequenceControl.getSequenceByName(sequenceType, workRequirementSequenceName);
             } else {
-                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.WORK_REQUIREMENT.toString());
+                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.WORK_REQUIREMENT.name());
             }
         }
         

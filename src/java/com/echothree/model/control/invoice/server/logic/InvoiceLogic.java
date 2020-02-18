@@ -234,9 +234,9 @@ public class InvoiceLogic
                         paidTime = paidTime == null ? getPaidTime(session, termTypeName) : paidTime;
 
                         invoice = invoiceControl.createInvoice(invoiceType, invoiceName, billingAccount, glAccount, term, reference, description, createdBy);
-                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.INVOICED.toString(), invoicedTime, createdBy);
-                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.DUE.toString(), dueTime, createdBy);
-                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.PAID.toString(), paidTime, createdBy);
+                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.INVOICED.name(), invoicedTime, createdBy);
+                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.DUE.name(), dueTime, createdBy);
+                        invoicedTimeLogic.createOrUpdateInvoiceTimeIfNotNull(null, invoice, InvoiceTimeTypes.PAID.name(), paidTime, createdBy);
 
                         invoiceControl.createInvoiceRoleUsingNames(invoice, billFrom, billFromContactMechanism, InvoiceRoleTypes.INVOICE_FROM.name(), createdBy);
                         invoiceControl.createInvoiceRoleUsingNames(invoice, billTo, billToContactMechanism, InvoiceRoleTypes.INVOICE_TO.name(), createdBy);
@@ -254,7 +254,7 @@ public class InvoiceLogic
             final Long amount, final InvoiceLineType invoiceLineType, GlAccount glAccount, final String description, final BasePK createdBy) {
         InvoiceLine invoiceLine = null;
         var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-        InvoiceLineUseType invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(InvoiceLineUseTypes.GL_ACCOUNT.toString());
+        InvoiceLineUseType invoiceLineUseType = invoiceControl.getInvoiceLineUseTypeByName(InvoiceLineUseTypes.GL_ACCOUNT.name());
         
         if(glAccount == null) {
             glAccount = invoiceLineType.getLastDetail().getDefaultGlAccount();

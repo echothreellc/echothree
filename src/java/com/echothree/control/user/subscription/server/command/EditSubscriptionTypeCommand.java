@@ -124,7 +124,7 @@ public class EditSubscriptionTypeCommand
                         
                         if(subscriptionSequenceName != null) {
                             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.toString());
+                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
                             subscriptionSequence = sequenceControl.getSequenceByName(sequenceType, subscriptionSequenceName);
                         }
                         

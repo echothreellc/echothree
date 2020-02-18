@@ -99,7 +99,7 @@ public class CreateContactWebAddressCommand
             BasePK createdBy = getPartyPK();
             String url = form.getUrl();
             String description = form.getDescription();
-            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.toString());
+            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
 
             ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.WEB_ADDRESS.name());
             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType,

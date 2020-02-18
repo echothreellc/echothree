@@ -48,22 +48,22 @@ public class InvoiceNameTranslator
     static {
         var targetMap = new HashMap<String, String>();
         
-        targetMap.put(InvoiceTypes.PURCHASE_INVOICE.toString(), Targets.PurchaseInvoice.toString());
-        targetMap.put(InvoiceTypes.SALES_INVOICE.toString(), Targets.SalesInvoice.toString());
+        targetMap.put(InvoiceTypes.PURCHASE_INVOICE.name(), Targets.PurchaseInvoice.name());
+        targetMap.put(InvoiceTypes.SALES_INVOICE.name(), Targets.SalesInvoice.name());
 
         invoiceTypesToTargets = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceTypes.PURCHASE_INVOICE.toString(), InvoiceTypes.PURCHASE_INVOICE.toString());
-        targetMap.put(SequenceTypes.SALES_INVOICE.toString(), InvoiceTypes.SALES_INVOICE.toString());
+        targetMap.put(SequenceTypes.PURCHASE_INVOICE.name(), InvoiceTypes.PURCHASE_INVOICE.name());
+        targetMap.put(SequenceTypes.SALES_INVOICE.name(), InvoiceTypes.SALES_INVOICE.name());
         
         sequenceTypesToInvoiceTypes = Collections.unmodifiableMap(targetMap);
         
         targetMap = new HashMap<>();
         
-        targetMap.put(SequenceTypes.PURCHASE_INVOICE.toString(), Targets.PurchaseInvoice.toString());
-        targetMap.put(SequenceTypes.SALES_INVOICE.toString(), Targets.SalesInvoice.toString());
+        targetMap.put(SequenceTypes.PURCHASE_INVOICE.name(), Targets.PurchaseInvoice.name());
+        targetMap.put(SequenceTypes.SALES_INVOICE.name(), Targets.SalesInvoice.name());
         
         sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
     }
@@ -75,7 +75,7 @@ public class InvoiceNameTranslator
         if(target != null) {
             MapWrapper<String> names = new MapWrapper<>(1);
 
-            names.put(Names.InvoiceName.toString(), invoiceDetail.getInvoiceName());
+            names.put(Names.InvoiceName.name(), invoiceDetail.getInvoiceName());
 
             result = new EntityNames(target, names);
         }

@@ -50,7 +50,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceTypes.CHAIN_INSTANCE.toString());
+                commandForm.setSequenceTypeName(SequenceTypes.CHAIN_INSTANCE.name());
                 commandForm.setDefaultSequenceChoice(chainInstanceSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 

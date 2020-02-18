@@ -88,7 +88,7 @@ public class WorkRequirementLogic {
             workRequirementSequence = workRequirementTypeDetail.getWorkRequirementSequence();
 
             if(workRequirementSequence == null) {
-                workRequirementSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.WORK_REQUIREMENT.toString());
+                workRequirementSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.WORK_REQUIREMENT.name());
             }
         }
 

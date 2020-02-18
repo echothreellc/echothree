@@ -139,7 +139,7 @@ public class WorkEffortLogic {
             if(workEffortSequence == null) {
                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                 
-                workEffortSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.WORK_EFFORT.toString());
+                workEffortSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.WORK_EFFORT.name());
             }
         }
 
@@ -197,7 +197,7 @@ public class WorkEffortLogic {
                         workEffortScopeDetail.getWorkEffortScopeName());
             }
         } else {
-            ema.addExecutionError(ExecutionErrors.MissingDefaultSequence.name(), SequenceTypes.WORK_EFFORT.toString());
+            ema.addExecutionError(ExecutionErrors.MissingDefaultSequence.name(), SequenceTypes.WORK_EFFORT.name());
         }
 
         return preparedWorkEffort;
