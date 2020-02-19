@@ -20,7 +20,7 @@ import com.echothree.model.data.party.server.entity.Party;
 
 public interface SequenceTypeTranslator {
 
-    EntityInstanceAndNames getNames(final Party requestingParty, final String sequenceTypeName, final String value,
+    EntityInstanceAndNames getNames(final String sequenceTypeName, final String value,
             final boolean includeEntityInstance);
 
 }

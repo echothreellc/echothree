@@ -93,7 +93,7 @@ public class InvoiceNameTranslator
     }
 
     @Override
-    public EntityInstanceAndNames getNames(final Party requestingParty, final String sequenceTypeName, final String invoiceName,
+    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String invoiceName,
             final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
         var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);

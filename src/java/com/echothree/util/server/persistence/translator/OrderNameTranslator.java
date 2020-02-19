@@ -94,7 +94,7 @@ public class OrderNameTranslator
     }
 
     @Override
-    public EntityInstanceAndNames getNames(final Party requestingParty, final String sequenceTypeName, final String orderName,
+    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String orderName,
             final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
         var orderControl = (OrderControl)Session.getModelController(OrderControl.class);

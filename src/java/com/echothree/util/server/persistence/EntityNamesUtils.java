@@ -269,13 +269,13 @@ public class EntityNamesUtils {
         sequenceTypeTranslators = Collections.unmodifiableMap(sequenceTypeTranslatorsMap);
     }
     
-    private EntityInstanceAndNames getEntityNames(final Party requestingParty, final String sequenceTypeName, final String value,
+    private EntityInstanceAndNames getEntityNames(final String sequenceTypeName, final String value,
             final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
         var sequenceTypeTranslator = sequenceTypeTranslators.get(sequenceTypeName);
         
         if(sequenceTypeTranslator != null) {
-            result = sequenceTypeTranslator.getNames(requestingParty, sequenceTypeName, value, includeEntityInstance);
+            result = sequenceTypeTranslator.getNames(sequenceTypeName, value, includeEntityInstance);
         }
         
         return result;
@@ -320,7 +320,7 @@ public class EntityNamesUtils {
                 hasAccess = true;
             }
 
-            result = hasAccess ? getEntityNames(requestingParty, sequenceTypeName, value, includeEntityInstance) : null;
+            result = hasAccess ? getEntityNames(sequenceTypeName, value, includeEntityInstance) : null;
         }
         
         return result;
