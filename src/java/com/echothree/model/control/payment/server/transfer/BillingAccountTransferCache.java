@@ -69,10 +69,10 @@ public class BillingAccountTransferCache
 //            Integer rawPotentialCreditLimit = billingAccountStatus.getPotentialCreditLimit();
 //
 //            String partyTypeName = fromParty.getLastDetail().getPartyType().getPartyTypeName();
-//            if(PartyConstants.PartyType_CUSTOMER.equals(partyTypeName)) {
+//            if(PartyTypes.CUSTOMER.name().equals(partyTypeName)) {
 //                creditLimit = rawCreditLimit == null? null: AmountUtils.getInstance().formatPriceLine(currency, rawCreditLimit);
 //                potentialCreditLimit = rawPotentialCreditLimit == null? null: AmountUtils.getInstance().formatPriceLine(currency, rawPotentialCreditLimit);
-//            } else if(PartyConstants.PartyType_COMPANY.equals(partyTypeName)) {
+//            } else if(PartyTypes.COMPANY.name().equals(partyTypeName)) {
 //                creditLimit = rawCreditLimit == null? null: AmountUtils.getInstance().formatCostLine(currency, rawCreditLimit);
 //                potentialCreditLimit = rawPotentialCreditLimit == null? null: AmountUtils.getInstance().formatCostLine(currency, rawPotentialCreditLimit);
 //            }

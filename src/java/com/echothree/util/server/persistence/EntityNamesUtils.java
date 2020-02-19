@@ -18,53 +18,43 @@ package com.echothree.util.server.persistence;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
-import com.echothree.model.data.communication.server.entity.CommunicationEventDetail;
 import com.echothree.model.data.communication.server.factory.CommunicationEventFactory;
 import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
-import com.echothree.model.data.contactlist.server.entity.PartyContactListDetail;
 import com.echothree.model.data.contactlist.server.factory.PartyContactListFactory;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.factory.MimeTypeFactory;
 import com.echothree.model.data.forum.common.pk.ForumGroupPK;
 import com.echothree.model.data.forum.common.pk.ForumMessagePK;
 import com.echothree.model.data.forum.common.pk.ForumPK;
 import com.echothree.model.data.forum.common.pk.ForumThreadPK;
-import com.echothree.model.data.forum.server.entity.ForumDetail;
-import com.echothree.model.data.forum.server.entity.ForumGroupDetail;
-import com.echothree.model.data.forum.server.entity.ForumMessageDetail;
-import com.echothree.model.data.forum.server.entity.ForumThreadDetail;
 import com.echothree.model.data.forum.server.factory.ForumFactory;
 import com.echothree.model.data.forum.server.factory.ForumGroupFactory;
 import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
 import com.echothree.model.data.forum.server.factory.ForumThreadFactory;
 import com.echothree.model.data.item.common.pk.ItemDescriptionPK;
 import com.echothree.model.data.item.common.pk.ItemPK;
-import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
-import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.item.server.factory.ItemDescriptionFactory;
 import com.echothree.model.data.item.server.factory.ItemFactory;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.subscription.common.pk.SubscriptionPK;
-import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.subscription.server.factory.SubscriptionFactory;
 import com.echothree.model.data.training.common.pk.PartyTrainingClassPK;
 import com.echothree.model.data.training.common.pk.TrainingClassPK;
-import com.echothree.model.data.training.server.entity.PartyTrainingClassDetail;
-import com.echothree.model.data.training.server.entity.TrainingClassDetail;
 import com.echothree.model.data.training.server.factory.PartyTrainingClassFactory;
 import com.echothree.model.data.training.server.factory.TrainingClassFactory;
 import com.echothree.model.data.vendor.common.pk.VendorItemPK;
-import com.echothree.model.data.vendor.server.entity.VendorItemDetail;
 import com.echothree.model.data.vendor.server.factory.VendorItemFactory;
 import com.echothree.util.common.persistence.EntityNames;
-import com.echothree.util.common.persistence.EntityNamesConstants;
+import com.echothree.util.common.persistence.Names;
+import com.echothree.util.common.persistence.Targets;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.translator.ComponentVendorTranslator;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
@@ -104,138 +94,138 @@ public class EntityNamesUtils {
         nameTranslators.put(EntityTypes.Order.name(), new OrderNameTranslator());
         nameTranslators.put(EntityTypes.Party.name(), new PartyNameTranslator());
 
-        nameTranslators.put(EntityTypes.Item.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            ItemDetail itemDetail = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.Item.name(), (final EntityInstance entityInstance) -> {
+            var itemDetail = ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new ItemPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ItemName, itemDetail.getItemName());
+            names.put(Names.ItemName.name(), itemDetail.getItemName());
             
-            return new EntityNames(EntityNamesConstants.Target_Item, names);
+            return new EntityNames(Targets.Item.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.ItemDescription.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            ItemDescriptionDetail itemDescriptionDetail = ItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.ItemDescription.name(), (final EntityInstance entityInstance) -> {
+            var itemDescriptionDetail = ItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new ItemDescriptionPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(3);
+            var names = new MapWrapper<String>(3);
             
-            names.put(EntityNamesConstants.Name_ItemDescriptionTypeName, itemDescriptionDetail.getItemDescriptionType().getLastDetail().getItemDescriptionTypeName());
-            names.put(EntityNamesConstants.Name_ItemName, itemDescriptionDetail.getItem().getLastDetail().getItemName());
-            names.put(EntityNamesConstants.Name_LanguageIsoName, itemDescriptionDetail.getLanguage().getLanguageIsoName());
+            names.put(Names.ItemDescriptionTypeName.name(), itemDescriptionDetail.getItemDescriptionType().getLastDetail().getItemDescriptionTypeName());
+            names.put(Names.ItemName.name(), itemDescriptionDetail.getItem().getLastDetail().getItemName());
+            names.put(Names.LanguageIsoName.name(), itemDescriptionDetail.getLanguage().getLanguageIsoName());
             
-            return new EntityNames(EntityNamesConstants.Target_ItemDescription, names);
+            return new EntityNames(Targets.ItemDescription.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.ForumGroup.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            ForumGroupDetail forumGroupDetail = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.ForumGroup.name(), (final EntityInstance entityInstance) -> {
+            var forumGroupDetail = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new ForumGroupPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ForumGroupName, forumGroupDetail.getForumGroupName());
+            names.put(Names.ForumGroupName.name(), forumGroupDetail.getForumGroupName());
             
-            return new EntityNames(EntityNamesConstants.Target_ForumGroup, names);
+            return new EntityNames(Targets.ForumGroup.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.Forum.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            ForumDetail forumDetail = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.Forum.name(), (final EntityInstance entityInstance) -> {
+            var forumDetail = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new ForumPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ForumName, forumDetail.getForumName());
+            names.put(Names.ForumName.name(), forumDetail.getForumName());
             
-            return new EntityNames(EntityNamesConstants.Target_Forum, names);
+            return new EntityNames(Targets.Forum.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.ForumMessage.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            ForumMessageDetail forumMessageDetail = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.ForumMessage.name(), (final EntityInstance entityInstance) -> {
+            var forumMessageDetail = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new ForumMessagePK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ForumMessageName, forumMessageDetail.getForumMessageName());
+            names.put(Names.ForumMessageName.name(), forumMessageDetail.getForumMessageName());
             
-            return new EntityNames(EntityNamesConstants.Target_ForumMessage, names);
+            return new EntityNames(Targets.ForumMessage.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.ForumThread.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            ForumThreadDetail forumThreadDetail = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.ForumThread.name(), (final EntityInstance entityInstance) -> {
+            var forumThreadDetail = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new ForumThreadPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_ForumThreadName, forumThreadDetail.getForumThreadName());
+            names.put(Names.ForumThreadName.name(), forumThreadDetail.getForumThreadName());
             
-            return new EntityNames(EntityNamesConstants.Target_ForumThread, names);
+            return new EntityNames(Targets.ForumThread.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.TrainingClass.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            TrainingClassDetail trainingClassDetail = TrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.TrainingClass.name(), (final EntityInstance entityInstance) -> {
+            var trainingClassDetail = TrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new TrainingClassPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_TrainingClassName, trainingClassDetail.getTrainingClassName());
+            names.put(Names.TrainingClassName.name(), trainingClassDetail.getTrainingClassName());
             
-            return new EntityNames(EntityNamesConstants.Target_TrainingClass, names);
+            return new EntityNames(Targets.TrainingClass.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.PartyTrainingClass.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            PartyTrainingClassDetail partyTrainingClassDetail = PartyTrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.PartyTrainingClass.name(), (final EntityInstance entityInstance) -> {
+            var partyTrainingClassDetail = PartyTrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new PartyTrainingClassPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_PartyTrainingClassName, partyTrainingClassDetail.getPartyTrainingClassName());
+            names.put(Names.PartyTrainingClassName.name(), partyTrainingClassDetail.getPartyTrainingClassName());
             
-            return new EntityNames(EntityNamesConstants.Target_PartyTrainingClass, names);
+            return new EntityNames(Targets.PartyTrainingClass.name(), names);
         });
         
-        nameTranslators.put(EntityTypes.CommunicationEvent.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            CommunicationEventDetail communicationEventDetail = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.CommunicationEvent.name(), (final EntityInstance entityInstance) -> {
+            var communicationEventDetail = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new CommunicationEventPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_CommunicationEventName, communicationEventDetail.getCommunicationEventName());
+            names.put(Names.CommunicationEventName.name(), communicationEventDetail.getCommunicationEventName());
             
-            return new EntityNames(EntityNamesConstants.Target_CommunicationEvent, names);
+            return new EntityNames(Targets.CommunicationEvent.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.VendorItem.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            VendorItemDetail vendorItemDetail = VendorItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.VendorItem.name(), (final EntityInstance entityInstance) -> {
+            var vendorItemDetail = VendorItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new VendorItemPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(2);
+            var names = new MapWrapper<String>(2);
             
-            names.put(EntityNamesConstants.Name_VendorItemName, vendorItemDetail.getVendorItemName());
-            names.put(EntityNamesConstants.Name_PartyName, vendorItemDetail.getVendorParty().getLastDetail().getPartyName());
+            names.put(Names.VendorItemName.name(), vendorItemDetail.getVendorItemName());
+            names.put(Names.PartyName.name(), vendorItemDetail.getVendorParty().getLastDetail().getPartyName());
             
-            return new EntityNames(EntityNamesConstants.Target_VendorItem, names);
+            return new EntityNames(Targets.VendorItem.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.PartyContactList.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            PartyContactListDetail partyContactListDetail = PartyContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.PartyContactList.name(), (final EntityInstance entityInstance) -> {
+            var partyContactListDetail = PartyContactListFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new PartyContactListPK(entityInstance.getEntityUniqueId())).getLastDetail();
-            MapWrapper<String> names = new MapWrapper<>(2);
+            var names = new MapWrapper<String>(2);
             
-            names.put(EntityNamesConstants.Name_PartyName, partyContactListDetail.getParty().getLastDetail().getPartyName());
-            names.put(EntityNamesConstants.Name_ContactListName, partyContactListDetail.getContactList().getLastDetail().getContactListName());
+            names.put(Names.PartyName.name(), partyContactListDetail.getParty().getLastDetail().getPartyName());
+            names.put(Names.ContactListName.name(), partyContactListDetail.getContactList().getLastDetail().getContactListName());
             
-            return new EntityNames(EntityNamesConstants.Target_PartyContactList, names);
+            return new EntityNames(Targets.PartyContactList.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.Subscription.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            Subscription subscription = SubscriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.Subscription.name(), (final EntityInstance entityInstance) -> {
+            var subscription = SubscriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new SubscriptionPK(entityInstance.getEntityUniqueId()));
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_SubscriptionName, subscription.getLastDetail().getSubscriptionName());
+            names.put(Names.SubscriptionName.name(), subscription.getLastDetail().getSubscriptionName());
             
-            return new EntityNames(EntityNamesConstants.Target_Subscription, names);
+            return new EntityNames(Targets.Subscription.name(), names);
         });
 
-        nameTranslators.put(EntityTypes.MimeType.name(), (EntityInstanceTranslator) (final EntityInstance entityInstance) -> {
-            MimeType mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        nameTranslators.put(EntityTypes.MimeType.name(), (final EntityInstance entityInstance) -> {
+            var mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new MimeTypePK(entityInstance.getEntityUniqueId()));
-            MapWrapper<String> names = new MapWrapper<>(1);
+            var names = new MapWrapper<String>(1);
             
-            names.put(EntityNamesConstants.Name_MimeTypeName, mimeType.getLastDetail().getMimeTypeName());
+            names.put(Names.MimeTypeName.name(), mimeType.getLastDetail().getMimeTypeName());
             
-            return new EntityNames(EntityNamesConstants.Target_MimeType, names);
+            return new EntityNames(Targets.MimeType.name(), names);
         });
 
         nameTranslators = Collections.unmodifiableMap(nameTranslators);
@@ -243,11 +233,12 @@ public class EntityNamesUtils {
         addComponentVendorTranslator(ComponentVendors.ECHOTHREE.name(), new ComponentVendorTranslator(nameTranslators));
     }
 
+    // Entry point from the Identify UC. Permissions have already been checked at this point.
     public EntityInstanceAndNames getEntityNames(final EntityInstance entityInstance) {
         EntityNames result = null;
-        EntityType entityType = entityInstance.getEntityType();
-        ComponentVendor componentVendor = entityType.getLastDetail().getComponentVendor();
-        String componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
+        var entityType = entityInstance.getEntityType();
+        var componentVendor = entityType.getLastDetail().getComponentVendor();
+        var componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
 
         ComponentVendorTranslator componentVendorTranslator = componentVendorTranslators.get(componentVendorName);
 
@@ -262,26 +253,26 @@ public class EntityNamesUtils {
         return result == null ? null : new EntityInstanceAndNames(entityInstance, result);
     }
     
-    private static Map<String, SequenceTypeTranslator> sequenceTypeTranslators = new HashMap<>();
+    private static Map<String, SequenceTypeTranslator> sequenceTypeTranslators;
     
     static {
-        Map<String, SequenceTypeTranslator> translators = new HashMap<>(7);
+        var sequenceTypeTranslatorsMap = new HashMap<String, SequenceTypeTranslator>(7);
+
+        sequenceTypeTranslatorsMap.put(SequenceTypes.PURCHASE_INVOICE.name(), new InvoiceNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.SALES_INVOICE.name(), new InvoiceNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.PURCHASE_ORDER.name(), new OrderNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.SALES_ORDER.name(), new OrderNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.WISHLIST.name(), new OrderNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.CUSTOMER.name(), new PartyNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.EMPLOYEE.name(), new PartyNameTranslator());
         
-        translators.put(SequenceConstants.SequenceType_PURCHASE_INVOICE, new InvoiceNameTranslator());
-        translators.put(SequenceConstants.SequenceType_SALES_INVOICE, new InvoiceNameTranslator());
-        translators.put(SequenceConstants.SequenceType_PURCHASE_ORDER, new OrderNameTranslator());
-        translators.put(SequenceConstants.SequenceType_SALES_ORDER, new OrderNameTranslator());
-        translators.put(SequenceConstants.SequenceType_WISHLIST, new OrderNameTranslator());
-        translators.put(SequenceConstants.SequenceType_CUSTOMER, new PartyNameTranslator());
-        translators.put(SequenceConstants.SequenceType_EMPLOYEE, new PartyNameTranslator());
-        
-        sequenceTypeTranslators = Collections.unmodifiableMap(translators);
+        sequenceTypeTranslators = Collections.unmodifiableMap(sequenceTypeTranslatorsMap);
     }
     
-    public EntityInstanceAndNames getEntityNames(final SequenceType sequenceType, final String value, final boolean includeEntityInstance) {
+    private EntityInstanceAndNames getEntityNames(final String sequenceTypeName, final String value,
+            final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
-        String sequenceTypeName = sequenceType.getLastDetail().getSequenceTypeName();
-        SequenceTypeTranslator sequenceTypeTranslator = sequenceTypeTranslators.get(sequenceTypeName);
+        var sequenceTypeTranslator = sequenceTypeTranslators.get(sequenceTypeName);
         
         if(sequenceTypeTranslator != null) {
             result = sequenceTypeTranslator.getNames(sequenceTypeName, value, includeEntityInstance);
@@ -289,11 +280,50 @@ public class EntityNamesUtils {
         
         return result;
     }
-    
-    public EntityInstanceAndNames getEntityNames(final String value, final boolean includeEntityInstance) {
-        SequenceType sequenceType = SequenceTypeLogic.getInstance().identifySequenceType(value);
+
+    // Entry point from the Identify UC. Permissions have NOT been checked at this point.
+    public EntityInstanceAndNames getEntityNames(final Party requestingParty, final String value, final boolean includeEntityInstance) {
+        EntityInstanceAndNames result = null;
+        var sequenceType = SequenceTypeLogic.getInstance().identifySequenceType(value);
+
+        if(sequenceType != null) {
+            var sequenceTypeName = sequenceType.getLastDetail().getSequenceTypeName();
+            boolean hasAccess = false;
+
+            if(sequenceTypeName.equals(SequenceTypes.PURCHASE_INVOICE.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.PurchaseInvoice.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.SALES_INVOICE.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.SalesOrder.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.PURCHASE_ORDER.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.PurchaseOrder.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.SALES_ORDER.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.SalesOrder.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.WISHLIST.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.Wishlist.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.CUSTOMER.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.EMPLOYEE.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            }
+
+            result = hasAccess ? getEntityNames(sequenceTypeName, value, includeEntityInstance) : null;
+        }
         
-        return sequenceType == null ? null : getEntityNames(sequenceType, value, includeEntityInstance);
+        return result;
     }
     
 }

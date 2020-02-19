@@ -19,7 +19,7 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.form.GetDivisionChoicesForm;
 import com.echothree.control.user.party.common.result.GetDivisionChoicesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
@@ -77,7 +77,7 @@ public class GetDivisionChoicesCommand
                 party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_COMPANY);
+                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.COMPANY.name());
                     
                     if(!party.getLastDetail().getPartyType().equals(partyType)) {
                         addExecutionError(ExecutionErrors.InvalidPartyType.name());

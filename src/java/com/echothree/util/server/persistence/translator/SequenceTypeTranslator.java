@@ -16,8 +16,11 @@
 
 package com.echothree.util.server.persistence.translator;
 
+import com.echothree.model.data.party.server.entity.Party;
+
 public interface SequenceTypeTranslator {
 
-    EntityInstanceAndNames getNames(final String sequenceTypeName, final String value, final boolean includeEntityInstance);
+    EntityInstanceAndNames getNames(final String sequenceTypeName, final String value,
+            final boolean includeEntityInstance);
 
 }

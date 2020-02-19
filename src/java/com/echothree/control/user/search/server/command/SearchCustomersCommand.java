@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.geo.server.GeoControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.SearchControl;
@@ -65,8 +65,8 @@ public class SearchCustomersCommand
 
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())
                         )))
                 )));
@@ -142,16 +142,16 @@ public class SearchCustomersCommand
                     
                     if(partyAliasTypeName != null) {
                         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                        PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_CUSTOMER);
+                        PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
                         
                         if(partyType != null) {
                             partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
                             if(partyAliasType == null) {
-                                addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyConstants.PartyType_CUSTOMER, partyAliasTypeName);
+                                addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyTypes.CUSTOMER.name(), partyAliasTypeName);
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyConstants.PartyType_CUSTOMER);
+                            addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyTypes.CUSTOMER.name());
                         }
                     }
                     

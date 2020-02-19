@@ -18,7 +18,7 @@ package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -44,7 +44,7 @@ public class EmployeeSelectorEvaluator
     public EmployeeSelectorEvaluator(Session session, BasePK evaluatedBy) {
         super(session, evaluatedBy, EmployeeSelectorEvaluator.class);
         
-        partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_EMPLOYEE);
+        partyType = partyControl.getPartyTypeByName(PartyTypes.EMPLOYEE.name());
     }
     
     Long addPartyEntitiesToSelector(CachedSelectorWithTime cachedSelectorWithTime, List<EntityTime> entityTimes, long remainingTime) {

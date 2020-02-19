@@ -17,7 +17,7 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.CreateSubscriptionTypeForm;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -73,7 +73,7 @@ public class CreateSubscriptionTypeCommand
                 
                 if(subscriptionSequenceName != null) {
                     var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_SUBSCRIPTION);
+                    SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
                     subscriptionSequence = sequenceControl.getSequenceByName(sequenceType, subscriptionSequenceName);
                 }
                 

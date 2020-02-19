@@ -16,8 +16,8 @@
 
 package com.echothree.ui.cli.mailtransfer.blogentry;
 
-import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;
+import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.edit.BlogEntryEdit;
 import com.echothree.control.user.forum.common.form.CreateBlogEntryForm;
@@ -29,16 +29,16 @@ import com.echothree.control.user.forum.common.result.CreateBlogEntryResult;
 import com.echothree.control.user.forum.common.result.EditBlogEntryResult;
 import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
 import com.echothree.model.control.core.common.MimeTypes;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.cli.mailtransfer.blogentry.BlogEntryTransfer.CollectedParts.CapturedMessageAttachment;
-import com.echothree.util.common.cyberneko.HtmlWriter;
-import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.common.string.XmlUtils;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.cyberneko.HtmlWriter;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.common.string.StringUtils;
+import com.echothree.util.common.string.XmlUtils;
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.html.HtmlEscapers;
@@ -283,7 +283,7 @@ public class BlogEntryTransfer {
 
         createBlogEntryForm.setUsername(username);
         createBlogEntryForm.setForumName(forumNames.get(0));
-        createBlogEntryForm.setLanguageIsoName(PartyConstants.Language_en);
+        createBlogEntryForm.setLanguageIsoName(Languages.en.name());
         createBlogEntryForm.setSortOrder("1");
         createBlogEntryForm.setTitle(title);
         createBlogEntryForm.setContentMimeTypeName(MimeTypes.TEXT_HTML.mimeTypeName());
@@ -325,7 +325,7 @@ public class BlogEntryTransfer {
 
                     createForumMessageAttachmentDescriptionForm.setForumMessageName(forumMessageName);
                     createForumMessageAttachmentDescriptionForm.setForumMessageAttachmentSequence(capturedMessageAttachment.forumMessageAttachmentSequence.toString());
-                    createForumMessageAttachmentDescriptionForm.setLanguageIsoName(PartyConstants.Language_en);
+                    createForumMessageAttachmentDescriptionForm.setLanguageIsoName(Languages.en.name());
                     createForumMessageAttachmentDescriptionForm.setDescription(description);
 
                     commandResult = ForumUtil.getHome().createForumMessageAttachmentDescription(getUserVisit(), createForumMessageAttachmentDescriptionForm);

@@ -20,7 +20,7 @@ import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.core.common.CommandMessageTypes;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
@@ -41,15 +41,15 @@ import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.entity.UserVisitStatus;
 import com.echothree.model.data.user.server.factory.UserVisitFactory;
-import com.echothree.util.common.exception.BaseException;
-import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.command.SecurityResult;
+import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionWarningAccumulator;
@@ -62,9 +62,9 @@ import com.echothree.util.server.persistence.ThreadUtils;
 import com.google.common.base.Charsets;
 import java.util.List;
 import java.util.concurrent.Future;
+import javax.ejb.AsyncResult;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import javax.ejb.AsyncResult;
 
 public abstract class BaseCommand
         implements ExecutionWarningAccumulator, ExecutionErrorAccumulator, SecurityMessageAccumulator {
@@ -608,13 +608,10 @@ public abstract class BaseCommand
         var hasInsufficientSecurity = false;
         var partyTypeName = getPartyType().getPartyTypeName();
 
-        switch(partyTypeName) {
-            case PartyConstants.PartyType_CUSTOMER:
-            case PartyConstants.PartyType_VENDOR:
-                if(spec.getPartyName() != null) {
-                    hasInsufficientSecurity = true;;
-                }
-            break;
+        if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
+            if(spec.getPartyName() != null) {
+                hasInsufficientSecurity = true;
+            }
         }
 
         return hasInsufficientSecurity ? getInsufficientSecurityResult() : null;

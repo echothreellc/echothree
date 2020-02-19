@@ -14,21 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.invoice.common;
+package com.echothree.model.control.party.common;
 
-public interface InvoiceConstants {
+public enum RoleTypes {
     
-    String InvoiceType_PURCHASE_INVOICE = "PURCHASE_INVOICE";
-    String InvoiceType_SALES_INVOICE    = "SALES_INVOICE";
-
-    String InvoiceTimeType_INVOICED = "INVOICED";
-    String InvoiceTimeType_DUE = "DUE";
-    String InvoiceTimeType_PAID = "PAID";
-    
-    String InvoiceRoleType_INVOICE_FROM = "INVOICE_FROM";
-    String InvoiceRoleType_INVOICE_TO   = "INVOICE_TO";
-    
-    String InvoiceLineUseType_ITEM       = "ITEM";
-    String InvoiceLineUseType_GL_ACCOUNT = "GL_ACCOUNT";
+    CONSUMER,
+    EMPLOYEE,
+    EMPLOYER,
+    SUPPLIER,
 
 }

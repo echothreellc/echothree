@@ -17,18 +17,20 @@
 package com.echothree.util.server.persistence.translator;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.invoice.common.InvoiceConstants;
+import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.invoice.server.logic.InvoiceLogic;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.invoice.common.pk.InvoicePK;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceDetail;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.invoice.server.factory.InvoiceFactory;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.EntityNames;
-import com.echothree.util.common.persistence.EntityNamesConstants;
+import com.echothree.util.common.persistence.Names;
+import com.echothree.util.common.persistence.Targets;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -44,36 +46,36 @@ public class InvoiceNameTranslator
     private final static Map<String, String> sequenceTypesToTargets;
 
     static {
-        Map<String, String> targetMap = new HashMap<>();
-        
-        targetMap.put(InvoiceConstants.InvoiceType_PURCHASE_INVOICE, EntityNamesConstants.Target_PurchaseInvoice);
-        targetMap.put(InvoiceConstants.InvoiceType_SALES_INVOICE, EntityNamesConstants.Target_SalesInvoice);
+        var invoiceTypesToTargetsMap = new HashMap<String, String>();
 
-        invoiceTypesToTargets = Collections.unmodifiableMap(targetMap);
+        invoiceTypesToTargetsMap.put(InvoiceTypes.PURCHASE_INVOICE.name(), Targets.PurchaseInvoice.name());
+        invoiceTypesToTargetsMap.put(InvoiceTypes.SALES_INVOICE.name(), Targets.SalesInvoice.name());
+
+        invoiceTypesToTargets = Collections.unmodifiableMap(invoiceTypesToTargetsMap);
+
+        var sequenceTypesToInvoiceTypesMap = new HashMap<String, String>();
+
+        sequenceTypesToInvoiceTypesMap.put(SequenceTypes.PURCHASE_INVOICE.name(), InvoiceTypes.PURCHASE_INVOICE.name());
+        sequenceTypesToInvoiceTypesMap.put(SequenceTypes.SALES_INVOICE.name(), InvoiceTypes.SALES_INVOICE.name());
         
-        targetMap = new HashMap<>();
+        sequenceTypesToInvoiceTypes = Collections.unmodifiableMap(sequenceTypesToInvoiceTypesMap);
+
+        var sequenceTypesToTargetsMap = new HashMap<String, String>();
+
+        sequenceTypesToTargetsMap.put(SequenceTypes.PURCHASE_INVOICE.name(), Targets.PurchaseInvoice.name());
+        sequenceTypesToTargetsMap.put(SequenceTypes.SALES_INVOICE.name(), Targets.SalesInvoice.name());
         
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_INVOICE, InvoiceConstants.InvoiceType_PURCHASE_INVOICE);
-        targetMap.put(SequenceConstants.SequenceType_SALES_INVOICE, InvoiceConstants.InvoiceType_SALES_INVOICE);
-        
-        sequenceTypesToInvoiceTypes = Collections.unmodifiableMap(targetMap);
-        
-        targetMap = new HashMap<>();
-        
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_INVOICE, EntityNamesConstants.Target_PurchaseInvoice);
-        targetMap.put(SequenceConstants.SequenceType_SALES_INVOICE, EntityNamesConstants.Target_SalesInvoice);
-        
-        sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
+        sequenceTypesToTargets = Collections.unmodifiableMap(sequenceTypesToTargetsMap);
     }
 
     private EntityNames getNames(final Map<String, String> targetMap, final String key, final InvoiceDetail invoiceDetail) {
-        String target = targetMap.get(key);
         EntityNames result = null;
+        var target = targetMap.get(key);
 
         if(target != null) {
             MapWrapper<String> names = new MapWrapper<>(1);
 
-            names.put(EntityNamesConstants.Name_InvoiceName, invoiceDetail.getInvoiceName());
+            names.put(Names.InvoiceName.name(), invoiceDetail.getInvoiceName());
 
             result = new EntityNames(target, names);
         }
@@ -85,17 +87,18 @@ public class InvoiceNameTranslator
     public EntityNames getNames(final EntityInstance entityInstance) {
         InvoiceDetail invoiceDetail = InvoiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                 new InvoicePK(entityInstance.getEntityUniqueId())).getLastDetail();
-        String invoiceTypeName = invoiceDetail.getInvoiceType().getLastDetail().getInvoiceTypeName();
+        var invoiceTypeName = invoiceDetail.getInvoiceType().getLastDetail().getInvoiceTypeName();
         
         return getNames(invoiceTypesToTargets, invoiceTypeName, invoiceDetail);
     }
 
     @Override
-    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String invoiceName, final boolean includeEntityInstance) {
-        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
-        String invoiceTypeName = sequenceTypesToInvoiceTypes.get(sequenceTypeName);
+    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String invoiceName,
+            final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
-        
+        var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
+        var invoiceTypeName = sequenceTypesToInvoiceTypes.get(sequenceTypeName);
+
         if(invoiceTypeName != null) {
             InvoiceType invoiceType = InvoiceLogic.getInstance().getInvoiceTypeByName(null, invoiceTypeName);
             Invoice invoice = invoiceControl.getInvoiceByName(invoiceType, invoiceName);

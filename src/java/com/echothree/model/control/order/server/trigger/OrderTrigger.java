@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.order.server.trigger;
 
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.sales.server.trigger.SalesOrderTrigger;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
@@ -37,7 +37,7 @@ public class OrderTrigger
         OrderTypeTrigger result = null;
         String orderTypeName = order.getLastDetail().getOrderType().getLastDetail().getOrderTypeName();
         
-        if(orderTypeName.equals(OrderConstants.OrderType_SALES_ORDER)) {
+        if(orderTypeName.equals(OrderTypes.SALES_ORDER.name())) {
             result = new SalesOrderTrigger();
         }
         

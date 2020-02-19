@@ -20,7 +20,7 @@ import com.echothree.control.user.payment.common.form.GetPartyPaymentMethodForm;
 import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -48,9 +48,9 @@ public class GetPartyPaymentMethodCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Review.name())
                         )))
                 )));
@@ -78,7 +78,7 @@ public class GetPartyPaymentMethodCommand
 
             // If the executing Party is a CUSTOMER, and the PartyPaymentMethod isn't for the executing Party,
             // return a UnknownPartyPaymentMethodName error.
-            if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
+            if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
                 if(!partyPaymentMethod.getLastDetail().getParty().equals(party)) {
                     partyPaymentMethod = null;
                 }

@@ -19,7 +19,8 @@ package com.echothree.ui.web.main.action.humanresources.company;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.GetPartyRelationshipsForm;
 import com.echothree.control.user.party.common.result.GetPartyRelationshipsResult;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyRelationshipTypes;
+import com.echothree.model.control.party.common.RoleTypes;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -27,7 +28,6 @@ import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
-import static com.echothree.view.client.web.struts.BaseAction.getUserVisitPK;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -57,9 +57,9 @@ public class MainAction
         String toPartyName = request.getParameter(ParameterConstants.PARTY_NAME);
         GetPartyRelationshipsForm commandForm = PartyUtil.getHome().getGetPartyRelationshipsForm();
 
-        commandForm.setPartyRelationshipTypeName(PartyConstants.PartyRelationshipType_EMPLOYMENT);
+        commandForm.setPartyRelationshipTypeName(PartyRelationshipTypes.EMPLOYMENT.name());
         commandForm.setToPartyName(toPartyName);
-        commandForm.setToRoleTypeName(PartyConstants.RoleType_EMPLOYEE);
+        commandForm.setToRoleTypeName(RoleTypes.EMPLOYEE.name());
 
         CommandResult commandResult = PartyUtil.getHome().getPartyRelationships(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();

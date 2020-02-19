@@ -21,10 +21,10 @@ import com.echothree.control.user.geo.common.result.CreateStateResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.GeoControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
@@ -54,8 +54,8 @@ public class CreateStateCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.State.name(), SecurityRoles.Create.name())
                         )))
                 )));
@@ -99,7 +99,7 @@ public class CreateStateCommand
             
             if(geoCodeAlias == null) {
                 BasePK createdBy = getPartyPK();
-                String geoCodeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_GEO_CODE);
+                String geoCodeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
                 String stateName = form.getStateName();
                 Boolean isDefault = Boolean.valueOf(form.getIsDefault());
                 Integer sortOrder = Integer.valueOf(form.getSortOrder());

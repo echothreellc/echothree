@@ -24,7 +24,7 @@ import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.control.user.forum.common.spec.ForumSpec;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.icon.server.IconControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumDescription;
@@ -159,7 +159,7 @@ public class EditForumCommand
                     sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
 
                     if(forumThreadSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_FORUM_THREAD);
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
                         forumThreadSequence = sequenceControl.getSequenceByName(sequenceType, forumThreadSequenceName);
                     }
                 }
@@ -167,7 +167,7 @@ public class EditForumCommand
                 if(forumThreadSequenceName == null || forumThreadSequence != null) {
 
                     if(forumMessageSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_FORUM_MESSAGE);
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_MESSAGE.name());
                         forumMessageSequence = sequenceControl.getSequenceByName(sequenceType, forumMessageSequenceName);
                     }
 

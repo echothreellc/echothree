@@ -21,7 +21,7 @@ import com.echothree.control.user.rating.common.result.CreateRatingResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.rating.server.RatingControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -105,7 +105,7 @@ public class CreateRatingCommand
                             Sequence ratingSequence = ratingType.getLastDetail().getRatingSequence();
                             
                             if(ratingSequence == null) {
-                                ratingSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_RATING);
+                                ratingSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.RATING.name());
                             }
                             
                             ratingName = sequenceControl.getNextSequenceValue(ratingSequence);

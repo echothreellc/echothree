@@ -19,11 +19,11 @@ package com.echothree.model.control.invoice.server.logic;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.logic.GlAccountLogic;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.invoice.common.InvoiceConstants;
+import com.echothree.model.control.invoice.common.InvoiceTypes;
 import com.echothree.model.control.invoice.common.choice.PurchaseInvoiceStatusChoicesBean;
+import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -61,7 +61,7 @@ public class PurchaseInvoiceLogic {
     public Invoice getInvoiceByName(String invoiceName) {
         var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         
-        return invoiceControl.getInvoiceByNameUsingNames(InvoiceConstants.InvoiceType_PURCHASE_INVOICE, invoiceName);
+        return invoiceControl.getInvoiceByNameUsingNames(InvoiceTypes.PURCHASE_INVOICE.name(), invoiceName);
     }
     
     protected void validateReference(final ExecutionErrorAccumulator eea, final Party billFrom, final String reference, final Vendor vendor) {
@@ -105,7 +105,7 @@ public class PurchaseInvoiceLogic {
         validateReference(eea, billFrom, reference, vendor);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            invoice = InvoiceLogic.getInstance().createInvoice(session, eea, InvoiceConstants.InvoiceType_PURCHASE_INVOICE, billFrom,
+            invoice = InvoiceLogic.getInstance().createInvoice(session, eea, InvoiceTypes.PURCHASE_INVOICE.name(), billFrom,
                     billFromPartyContactMechanism, billTo, billToPartyContactMechanism, currency, glAccount, term, reference, description, invoicedTime,
                     dueTime, paidTime, createdBy);
 

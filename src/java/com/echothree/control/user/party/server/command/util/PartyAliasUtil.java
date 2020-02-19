@@ -17,10 +17,9 @@
 package com.echothree.control.user.party.server.command.util;
 
 import com.echothree.control.user.party.common.spec.PartySpec;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
@@ -44,7 +43,7 @@ public class PartyAliasUtil {
 
     static {
         securityRoleGroupNameByPartyTypeName = new HashMap<>();
-        securityRoleGroupNameByPartyTypeName.put(PartyConstants.PartyType_CUSTOMER, SecurityRoleGroups.CustomerAlias.name());
+        securityRoleGroupNameByPartyTypeName.put(PartyTypes.CUSTOMER.name(), SecurityRoleGroups.CustomerAlias.name());
     }
 
     public String getSecurityRoleGroupNameByPartyTypeName(String partyTypeName) {

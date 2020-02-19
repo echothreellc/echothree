@@ -23,7 +23,7 @@ import com.echothree.control.user.term.common.result.EditPartyCreditLimitResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.control.user.term.common.spec.PartyCreditLimitSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
 import com.echothree.model.control.term.server.TermControl;
@@ -132,7 +132,7 @@ public class EditPartyCreditLimitCommand
                                     
                                     termControl.updatePartyCreditLimitFromValue(partyCreditLimitValue, updatedBy);
                                     
-                                    if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
+                                    if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
                                         // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
                                         PartyChainLogic.getInstance().createPartyCreditLimitChangedChainInstance(null, party, updatedBy);
                                     }

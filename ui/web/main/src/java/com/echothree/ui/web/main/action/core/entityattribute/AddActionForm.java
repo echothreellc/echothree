@@ -23,7 +23,7 @@ import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.core.common.choice.EntityAttributeTypeChoicesBean;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
@@ -80,7 +80,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceConstants.SequenceType_ENTITY_LIST_ITEM);
+                commandForm.setSequenceTypeName(SequenceTypes.ENTITY_LIST_ITEM.name());
                 commandForm.setDefaultSequenceChoice(entityListItemSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 

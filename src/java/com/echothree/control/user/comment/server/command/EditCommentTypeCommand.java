@@ -24,7 +24,7 @@ import com.echothree.control.user.comment.common.result.EditCommentTypeResult;
 import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
 import com.echothree.model.control.comment.server.CommentControl;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.comment.server.entity.CommentTypeDescription;
@@ -130,12 +130,12 @@ public class EditCommentTypeCommand
                             
                             if(commentSequenceName != null) {
                                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_COMMENT);
+                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.name());
                                 
                                 if(sequenceType != null) {
                                     commentSequence = sequenceControl.getSequenceByName(sequenceType, commentSequenceName);
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_RATING);
+                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.RATING.name());
                                 }
                             }
                             

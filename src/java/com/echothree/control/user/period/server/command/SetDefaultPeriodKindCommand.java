@@ -17,7 +17,7 @@
 package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.SetDefaultPeriodKindForm;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -44,7 +44,7 @@ public class SetDefaultPeriodKindCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                     new SecurityRoleDefinition(SecurityRoleGroups.PeriodKind.name(), SecurityRoles.Edit.name())
                     )))
                 )));

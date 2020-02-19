@@ -17,18 +17,18 @@
 package com.echothree.util.server.persistence.translator;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.order.server.logic.OrderLogic;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderPK;
-import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderDetail;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.factory.OrderFactory;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.EntityNames;
-import com.echothree.util.common.persistence.EntityNamesConstants;
+import com.echothree.util.common.persistence.Names;
+import com.echothree.util.common.persistence.Targets;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -44,39 +44,39 @@ public class OrderNameTranslator
     private final static Map<String, String> sequenceTypesToTargets;
 
     static {
-        Map<String, String> targetMap = new HashMap<>();
-        
-        targetMap.put(OrderConstants.OrderType_PURCHASE_ORDER, EntityNamesConstants.Target_PurchaseOrder);
-        targetMap.put(OrderConstants.OrderType_SALES_ORDER, EntityNamesConstants.Target_SalesOrder);
-        targetMap.put(OrderConstants.OrderType_WISHLIST, EntityNamesConstants.Target_Wishlist);
+        var orderTypesToTargetsMap = new HashMap<String, String>();
 
-        orderTypesToTargets = Collections.unmodifiableMap(targetMap);
+        orderTypesToTargetsMap.put(OrderTypes.PURCHASE_ORDER.name(), Targets.PurchaseOrder.name());
+        orderTypesToTargetsMap.put(OrderTypes.SALES_ORDER.name(), Targets.SalesOrder.name());
+        orderTypesToTargetsMap.put(OrderTypes.WISHLIST.name(), Targets.Wishlist.name());
+
+        orderTypesToTargets = Collections.unmodifiableMap(orderTypesToTargetsMap);
+
+        var sequenceTypesToOrderTypesMap = new HashMap<String, String>();
+
+        sequenceTypesToOrderTypesMap.put(SequenceTypes.PURCHASE_ORDER.name(), OrderTypes.PURCHASE_ORDER.name());
+        sequenceTypesToOrderTypesMap.put(SequenceTypes.SALES_ORDER.name(), OrderTypes.SALES_ORDER.name());
+        sequenceTypesToOrderTypesMap.put(SequenceTypes.WISHLIST.name(), OrderTypes.WISHLIST.name());
         
-        targetMap = new HashMap<>();
+        sequenceTypesToOrderTypes = Collections.unmodifiableMap(sequenceTypesToOrderTypesMap);
+
+        var sequenceTypesToTargetsMap = new HashMap<String, String>();
+
+        sequenceTypesToTargetsMap.put(SequenceTypes.PURCHASE_ORDER.name(), Targets.PurchaseOrder.name());
+        sequenceTypesToTargetsMap.put(SequenceTypes.SALES_ORDER.name(), Targets.SalesOrder.name());
+        sequenceTypesToTargetsMap.put(SequenceTypes.WISHLIST.name(), Targets.Wishlist.name());
         
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_ORDER, OrderConstants.OrderType_PURCHASE_ORDER);
-        targetMap.put(SequenceConstants.SequenceType_SALES_ORDER, OrderConstants.OrderType_SALES_ORDER);
-        targetMap.put(SequenceConstants.SequenceType_WISHLIST, OrderConstants.OrderType_WISHLIST);
-        
-        sequenceTypesToOrderTypes = Collections.unmodifiableMap(targetMap);
-        
-        targetMap = new HashMap<>();
-        
-        targetMap.put(SequenceConstants.SequenceType_PURCHASE_ORDER, EntityNamesConstants.Target_PurchaseOrder);
-        targetMap.put(SequenceConstants.SequenceType_SALES_ORDER, EntityNamesConstants.Target_SalesOrder);
-        targetMap.put(SequenceConstants.SequenceType_WISHLIST, EntityNamesConstants.Target_Wishlist);
-        
-        sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
+        sequenceTypesToTargets = Collections.unmodifiableMap(sequenceTypesToTargetsMap);
     }
     
-    public EntityNames getNames(final Map<String, String> targetMap, final String key, final OrderDetail orderDetail) {
+    private EntityNames getNames(final Map<String, String> targetMap, final String key, final OrderDetail orderDetail) {
         String target = targetMap.get(key);
         EntityNames result = null;
 
         if(target != null) {
             MapWrapper<String> names = new MapWrapper<>(1);
 
-            names.put(EntityNamesConstants.Name_OrderName, orderDetail.getOrderName());
+            names.put(Names.OrderName.name(), orderDetail.getOrderName());
 
             result = new EntityNames(target, names);
         }
@@ -86,22 +86,23 @@ public class OrderNameTranslator
 
     @Override
     public EntityNames getNames(final EntityInstance entityInstance) {
-        OrderDetail orderDetail = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+        var orderDetail = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                 new OrderPK(entityInstance.getEntityUniqueId())).getLastDetail();
-        String orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
+        var orderTypeName = orderDetail.getOrderType().getLastDetail().getOrderTypeName();
         
         return getNames(orderTypesToTargets, orderTypeName, orderDetail);
     }
 
     @Override
-    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String orderName, final boolean includeEntityInstance) {
-        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
-        String orderTypeName = sequenceTypesToOrderTypes.get(sequenceTypeName);
+    public EntityInstanceAndNames getNames(final String sequenceTypeName, final String orderName,
+            final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
-        
+        var orderControl = (OrderControl)Session.getModelController(OrderControl.class);
+        var orderTypeName = sequenceTypesToOrderTypes.get(sequenceTypeName);
+
         if(orderTypeName != null) {
-            OrderType orderType = OrderLogic.getInstance().getOrderTypeByName(null, orderTypeName);
-            Order order = orderControl.getOrderByName(orderType, orderName);
+            var orderType = OrderLogic.getInstance().getOrderTypeByName(null, orderTypeName);
+            var order = orderControl.getOrderByName(orderType, orderName);
 
             if(order != null) {
                 var coreControl = (CoreControl)Session.getModelController(CoreControl.class);

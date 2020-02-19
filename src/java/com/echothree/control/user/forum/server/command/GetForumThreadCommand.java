@@ -26,7 +26,7 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.forum.server.entity.ForumThread;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -87,7 +87,7 @@ public class GetForumThreadCommand
 
             if(!hasExecutionErrors()) {
                 if(forumThread.getLastDetail().getPostedTime() <= session.START_TIME
-                        || (getParty() == null ? false : getPartyTypeName().equals(PartyConstants.PartyType_EMPLOYEE))) {
+                        || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
                     if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forumThread, getParty(), ForumConstants.ForumRoleType_READER)) {
                         result.setForumThread(forumControl.getForumThreadTransfer(getUserVisit(), forumThread));
                         sendEventUsingNames(forumThread.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());

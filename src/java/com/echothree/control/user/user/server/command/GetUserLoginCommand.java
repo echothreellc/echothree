@@ -22,9 +22,9 @@ import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import static com.echothree.model.control.party.common.PartyConstants.PartyType_CUSTOMER;
-import static com.echothree.model.control.party.common.PartyConstants.PartyType_EMPLOYEE;
-import static com.echothree.model.control.party.common.PartyConstants.PartyType_VENDOR;
+import static com.echothree.model.control.party.common.PartyTypes.CUSTOMER;
+import static com.echothree.model.control.party.common.PartyTypes.EMPLOYEE;
+import static com.echothree.model.control.party.common.PartyTypes.VENDOR;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import static com.echothree.model.control.security.common.SecurityRoleGroups.Customer;
@@ -39,11 +39,11 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -105,17 +105,14 @@ public class GetUserLoginCommand
             if(!hasExecutionErrors()) {
                 PartyType partyType = party.getLastDetail().getPartyType();
                 String securityRoleGroupName = null;
+                var partyTypeName = partyType.getPartyTypeName();
 
-                switch(partyType.getPartyTypeName()) {
-                    case PartyType_CUSTOMER:
-                        securityRoleGroupName = Customer.name();
-                        break;
-                    case PartyType_EMPLOYEE:
-                        securityRoleGroupName = Employee.name();
-                        break;
-                    case PartyType_VENDOR:
-                        securityRoleGroupName = Vendor.name();
-                        break;
+                if(partyTypeName.equals(CUSTOMER.name())) {
+                    securityRoleGroupName = Customer.name();
+                } else if(partyTypeName.equals(EMPLOYEE.name())) {
+                    securityRoleGroupName = Employee.name();
+                } else if(partyTypeName.equals(VENDOR.name())) {
+                    securityRoleGroupName = Vendor.name();
                 }
 
                 if(securityRoleGroupName != null 

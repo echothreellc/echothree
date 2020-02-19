@@ -21,7 +21,7 @@ import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.control.user.batch.common.result.GetBatchAliasesResult;
 import com.echothree.control.user.batch.server.command.util.BatchAliasUtil;
 import com.echothree.model.control.batch.server.BatchControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.batch.server.entity.Batch;
@@ -56,8 +56,8 @@ public class GetBatchAliasesCommand
     /** Creates a new instance of GetBatchAliasesCommand */
     public GetBatchAliasesCommand(UserVisitPK userVisitPK, GetBatchAliasesForm form) {
         super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(BatchAliasUtil.getInstance().getSecurityRoleGroupNameByBatchTypeSpec(form), SecurityRoles.List.name())
                         )))
                 ))), FORM_FIELD_DEFINITIONS, false);

@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.customer.server.search;
 
-import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.index.common.IndexConstants;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.customer.server.entity.Customer;
@@ -41,7 +41,7 @@ public class CustomerSearchEvaluator
     /** Creates a new instance of CustomerSearchEvaluator */
     public CustomerSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyConstants.PartyType_CUSTOMER, IndexConstants.Index_CUSTOMER);
+        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.CUSTOMER.name(), IndexConstants.Index_CUSTOMER);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByCustomerType(CustomerType customerType) {
@@ -52,7 +52,7 @@ public class CustomerSearchEvaluator
                 "AND ptyp_partytypename = ? AND ptyp_partytypeid = pardt_ptyp_partytypeid " +
                 "AND par_partyid = cu_par_partyid AND cu_cuty_customertypeid = ? AND cu_thrutime = ? " +
                 "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                PartyConstants.PartyType_CUSTOMER, customerType, Session.MAX_TIME, entityType);
+                PartyTypes.CUSTOMER.name(), customerType, Session.MAX_TIME, entityType);
     }
     
     public CustomerType getCustomerType() {

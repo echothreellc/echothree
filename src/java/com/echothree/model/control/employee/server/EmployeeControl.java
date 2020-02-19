@@ -66,7 +66,7 @@ import com.echothree.model.control.employee.server.transfer.TerminationReasonDes
 import com.echothree.model.control.employee.server.transfer.TerminationReasonTransferCache;
 import com.echothree.model.control.employee.server.transfer.TerminationTypeDescriptionTransferCache;
 import com.echothree.model.control.employee.server.transfer.TerminationTypeTransferCache;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
@@ -1898,7 +1898,7 @@ public class EmployeeControl
     public Leave createLeave(Party party, Party companyParty, LeaveType leaveType, LeaveReason leaveReason, Long startTime, Long endTime, Long totalTime,
             BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_LEAVE);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.LEAVE.name());
         String leaveName = sequenceControl.getNextSequenceValue(sequence);
 
         return createLeave(leaveName, party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
@@ -3100,7 +3100,7 @@ public class EmployeeControl
     public Employment createEmployment(Party party, Party companyParty, Long startTime, Long endTime, TerminationType terminationType,
             TerminationReason terminationReason, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_EMPLOYMENT);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EMPLOYMENT.name());
         String employmentName = sequenceControl.getNextSequenceValue(sequence);
 
         return createEmployment(employmentName, party, companyParty, startTime, endTime, terminationType, terminationReason, createdBy);

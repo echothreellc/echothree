@@ -23,7 +23,7 @@ import com.echothree.control.user.associate.common.result.AssociateResultFactory
 import com.echothree.control.user.associate.common.result.EditAssociateProgramResult;
 import com.echothree.control.user.associate.common.spec.AssociateProgramSpec;
 import com.echothree.model.control.associate.server.AssociateControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.associate.server.entity.AssociateProgramDescription;
@@ -34,11 +34,11 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
@@ -129,12 +129,12 @@ public class EditAssociateProgramCommand
                     Sequence associateSequence = null;
                     
                     if(associateSequenceName != null) {
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE);
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE.name());
                         
                         if(sequenceType != null) {
                             associateSequence = sequenceControl.getSequenceByName(sequenceType, associateSequenceName);
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE);
+                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE.name());
                         }
                     }
                     
@@ -143,12 +143,12 @@ public class EditAssociateProgramCommand
                         Sequence associatePartyContactMechanismSequence = null;
                         
                         if(associatePartyContactMechanismSequenceName != null) {
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE_PARTY_CONTACT_MECHANISM);
+                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
                             
                             if(sequenceType != null) {
                                 associatePartyContactMechanismSequence = sequenceControl.getSequenceByName(sequenceType, associatePartyContactMechanismSequenceName);
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE_PARTY_CONTACT_MECHANISM);
+                                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE_PARTY_CONTACT_MECHANISM.name());
                             }
                         }
                         
@@ -157,12 +157,12 @@ public class EditAssociateProgramCommand
                             Sequence associateReferralSequence = null;
                             
                             if(associateReferralSequenceName != null) {
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_ASSOCIATE_REFERRAL);
+                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.ASSOCIATE_REFERRAL.name());
                                 
                                 if(sequenceType != null) {
                                     associateReferralSequence = sequenceControl.getSequenceByName(sequenceType, associateReferralSequenceName);
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_ASSOCIATE_REFERRAL);
+                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.ASSOCIATE_REFERRAL.name());
                                 }
                             }
                             

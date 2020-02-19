@@ -17,7 +17,7 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.DeletePartyPaymentMethodForm;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -45,9 +45,9 @@ public class DeletePartyPaymentMethodCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Delete.name())
                         )))
                 )));
@@ -74,7 +74,7 @@ public class DeletePartyPaymentMethodCommand
 
             // If the executing Party is a CUSTOMER, and the PartyPaymentMethod isn't for the executing Party,
             // return a UnknownPartyPaymentMethodName error.
-            if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
+            if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
                 if(!partyPaymentMethod.getLastDetail().getParty().equals(party)) {
                     partyPaymentMethod = null;
                 }

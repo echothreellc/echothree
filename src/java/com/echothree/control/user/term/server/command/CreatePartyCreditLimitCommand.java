@@ -18,7 +18,7 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.CreatePartyCreditLimitForm;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -63,7 +63,7 @@ public class CreatePartyCreditLimitCommand
         if(party != null) {
             String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
             
-            if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER) || partyTypeName.equals(PartyConstants.PartyType_VENDOR)) {
+            if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
                 var accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
                 String currencyIsoName = form.getCurrencyIsoName();
                 Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);

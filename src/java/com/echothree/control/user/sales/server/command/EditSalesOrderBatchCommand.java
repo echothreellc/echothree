@@ -24,7 +24,7 @@ import com.echothree.control.user.sales.common.result.SalesResultFactory;
 import com.echothree.control.user.sales.common.spec.SalesOrderBatchSpec;
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
@@ -62,8 +62,8 @@ public class EditSalesOrderBatchCommand
 
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderBatch.name(), SecurityRoles.Edit.name())
                         )))
                 )));

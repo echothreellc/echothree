@@ -18,7 +18,7 @@ package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowDestinationPartyTypeForm;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -43,8 +43,8 @@ public class GetWorkflowDestinationPartyTypeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowDestination.name(), SecurityRoles.PartyType.name())
                         ))
                 ));

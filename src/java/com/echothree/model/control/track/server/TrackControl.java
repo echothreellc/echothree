@@ -17,20 +17,19 @@
 package com.echothree.model.control.track.server;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.track.common.choice.TrackChoicesBean;
 import com.echothree.model.control.track.common.choice.TrackStatusChoicesBean;
 import com.echothree.model.control.track.common.transfer.TrackDescriptionTransfer;
 import com.echothree.model.control.track.common.transfer.TrackTransfer;
 import com.echothree.model.control.track.common.transfer.UserVisitTrackTransfer;
+import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
 import com.echothree.model.control.track.server.transfer.TrackDescriptionTransferCache;
 import com.echothree.model.control.track.server.transfer.TrackTransferCache;
 import com.echothree.model.control.track.server.transfer.TrackTransferCaches;
 import com.echothree.model.control.track.server.transfer.UserVisitTrackTransferCache;
 import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -93,7 +92,7 @@ public class TrackControl
 
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_TRACK);
+        Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
         String trackName = sequenceControl.getNextSequenceValue(sequence);
         
         return createTrack(trackName, value, isDefault, sortOrder, createdBy);

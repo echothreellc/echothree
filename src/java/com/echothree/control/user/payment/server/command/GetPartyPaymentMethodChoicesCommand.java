@@ -19,7 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.GetPartyPaymentMethodChoicesForm;
 import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodChoicesResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -47,8 +47,8 @@ public class GetPartyPaymentMethodChoicesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Choices.name())
                         )))
                 )));
@@ -73,7 +73,7 @@ public class GetPartyPaymentMethodChoicesCommand
 
         // If the caller is a CUSTOMER, then they're the Party. If they're not, the PartyName parameter is
         // required, and we'll look them up.
-        if(!partyTypeName.equals(PartyConstants.PartyType_CUSTOMER)) {
+        if(!partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
             String partyName = form.getPartyName();
 
             if(partyName == null) {

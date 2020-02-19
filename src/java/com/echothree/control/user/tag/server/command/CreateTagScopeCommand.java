@@ -19,10 +19,10 @@ package com.echothree.control.user.tag.server.command;
 import com.echothree.control.user.tag.common.form.CreateTagScopeForm;
 import com.echothree.control.user.tag.common.result.CreateTagScopeResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -50,8 +50,8 @@ public class CreateTagScopeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.TagScope.name(), SecurityRoles.Create.name())
                         )))
                 )));
@@ -77,7 +77,7 @@ public class CreateTagScopeCommand
         
         if(tagScopeName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_TAG_SCOPE);
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TAG_SCOPE.name());
             
             tagScopeName = sequenceControl.getNextSequenceValue(sequence);
         }

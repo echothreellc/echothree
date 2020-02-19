@@ -43,8 +43,8 @@ import com.echothree.model.control.printer.server.transfer.PrinterGroupUseTypeDe
 import com.echothree.model.control.printer.server.transfer.PrinterGroupUseTypeTransferCache;
 import com.echothree.model.control.printer.server.transfer.PrinterTransferCache;
 import com.echothree.model.control.printer.server.transfer.PrinterTransferCaches;
-import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
@@ -1001,7 +1001,7 @@ public class PrinterControl
 
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_PRINTER_GROUP_JOB));
+        Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
         String printerGroupJobName = sequenceControl.getNextSequenceValue(sequence);
 
         return createPrinterGroupJob(printerGroupJobName, printerGroup, document, copies, priority, createdBy);

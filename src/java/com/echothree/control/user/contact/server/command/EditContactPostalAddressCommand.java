@@ -25,7 +25,7 @@ import com.echothree.control.user.contact.common.spec.PartyContactMechanismSpec;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.geo.server.GeoControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -60,10 +60,10 @@ public class EditContactPostalAddressCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Edit.name())
                         )))
                 )));
@@ -123,7 +123,7 @@ public class EditContactPostalAddressCommand
         
         var partyTypeName = getPartyTypeName();
         List<FieldDefinition> EDIT_FIELD_DEFINITIONS =
-                partyTypeName.equals(PartyConstants.PartyType_CUSTOMER) ? editCustomerFieldDefinitions : editOtherFieldDefinitions;
+                partyTypeName.equals(PartyTypes.CUSTOMER.name()) ? editCustomerFieldDefinitions : editOtherFieldDefinitions;
         
         setEditFieldDefinitions(EDIT_FIELD_DEFINITIONS);
     }

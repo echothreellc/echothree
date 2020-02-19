@@ -19,7 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetSearchDefaultOperatorChoicesForm;
 import com.echothree.control.user.search.common.result.GetSearchDefaultOperatorChoicesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -50,7 +50,7 @@ public class GetSearchDefaultOperatorChoicesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchDefaultOperator.name(), SecurityRoles.Choices.name())
                         )))
                 )));

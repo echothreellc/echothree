@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.logic;
 
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.party.server.entity.Language;
@@ -50,7 +50,7 @@ public class EntityAttributeGroupLogic
         
         if(entityAttributeGroupName == null) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_ENTITY_ATTRIBUTE_GROUP);
+            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE_GROUP.name());
             
             entityAttributeGroupName = sequenceControl.getNextSequenceValue(sequence);
         }

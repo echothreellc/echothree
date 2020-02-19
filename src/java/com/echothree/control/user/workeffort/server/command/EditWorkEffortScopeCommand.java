@@ -22,10 +22,10 @@ import com.echothree.control.user.workeffort.common.form.EditWorkEffortScopeForm
 import com.echothree.control.user.workeffort.common.result.EditWorkEffortScopeResult;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.control.user.workeffort.common.spec.WorkEffortScopeSpec;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
@@ -63,8 +63,8 @@ public class EditWorkEffortScopeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkEffortScope.name(), SecurityRoles.Edit.name())
                         )))
                 )));
@@ -196,12 +196,12 @@ public class EditWorkEffortScopeCommand
 
             if(workEffortSequenceName != null) {
                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_WORK_EFFORT);
+                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
 
                 if(sequenceType != null) {
                     workEffortSequence = sequenceControl.getSequenceByName(sequenceType, workEffortSequenceName);
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_WORK_EFFORT);
+                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.WORK_EFFORT.name());
                 }
             }
 

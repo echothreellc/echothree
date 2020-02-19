@@ -19,7 +19,7 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.DeleteContactMechanismForm;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.contact.server.logic.ContactMechanismLogic;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -44,10 +44,10 @@ public class DeleteContactMechanismCommand
 
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_CUSTOMER, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_VENDOR, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Delete.name())
                         )))
                 )));
@@ -71,7 +71,7 @@ public class DeleteContactMechanismCommand
 
             // If the executing Party's PartyType is CUSTOMER or VENDOR, then the specified ContactMechanism
             // MUST belong to the executing Party.
-            if(partyTypeName.equals(PartyConstants.PartyType_CUSTOMER) || partyTypeName.equals(PartyConstants.PartyType_VENDOR)) {
+            if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
                 var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                 var contactMechanismName = form.getContactMechanismName();
                 var contactMechanism = contactControl.getContactMechanismByNameForUpdate(contactMechanismName);

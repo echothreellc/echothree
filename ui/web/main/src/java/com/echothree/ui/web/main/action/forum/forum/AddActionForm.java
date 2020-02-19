@@ -28,7 +28,7 @@ import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResul
 import com.echothree.model.control.forum.common.choice.ForumTypeChoicesBean;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -107,7 +107,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceConstants.SequenceType_FORUM_THREAD);
+                commandForm.setSequenceTypeName(SequenceTypes.FORUM_THREAD.name());
                 commandForm.setDefaultSequenceChoice(forumThreadSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -130,7 +130,7 @@ public class AddActionForm
             try {
                 GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
                 
-                commandForm.setSequenceTypeName(SequenceConstants.SequenceType_FORUM_MESSAGE);
+                commandForm.setSequenceTypeName(SequenceTypes.FORUM_MESSAGE.name());
                 commandForm.setDefaultSequenceChoice(forumMessageSequenceChoice);
                 commandForm.setAllowNullChoice(Boolean.TRUE.toString());
                 

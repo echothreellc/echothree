@@ -17,7 +17,7 @@
 package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.control.user.authentication.common.form.VendorLoginForm;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LockoutPolicyLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.user.server.UserControl;
@@ -62,7 +62,7 @@ public class VendorLoginCommand
         if(!hasExecutionErrors()) {
             Party party = userLogin.getParty();
             PartyDetail partyDetail = party.getLastDetail();
-            PartyLogic.getInstance().checkPartyType(this, party, PartyConstants.PartyType_VENDOR);
+            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.VENDOR.name());
 
             if(!hasExecutionErrors()) {
                 UserControl userControl = getUserControl();

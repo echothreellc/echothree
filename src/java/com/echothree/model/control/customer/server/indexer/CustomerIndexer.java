@@ -18,8 +18,8 @@ package com.echothree.model.control.customer.server.indexer;
 
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
-import com.echothree.model.control.party.common.PartyConstants;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -32,7 +32,7 @@ public class CustomerIndexer
     
     /** Creates a new instance of CustomerIndexer */
     public CustomerIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index, PartyConstants.PartyType_CUSTOMER, IndexConstants.IndexField_CustomerName);
+        super(eea, index, PartyTypes.CUSTOMER.name(), IndexConstants.IndexField_CustomerName);
     }
     
     @Override

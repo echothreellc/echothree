@@ -50,8 +50,8 @@ import com.echothree.model.control.payment.server.transfer.PaymentProcessorDescr
 import com.echothree.model.control.payment.server.transfer.PaymentProcessorTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
-import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
@@ -1810,7 +1810,7 @@ public class PaymentControl
     public PartyPaymentMethod createPartyPaymentMethod(Party party, String description, PaymentMethod paymentMethod,
             Boolean deleteWhenUnused, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_PARTY_PAYMENT_METHOD);
+        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY_PAYMENT_METHOD.name());
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
         String partyPaymentMethodName = sequenceControl.getNextSequenceValue(sequence);
 

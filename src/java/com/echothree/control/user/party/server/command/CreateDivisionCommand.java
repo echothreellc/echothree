@@ -20,7 +20,7 @@ import com.echothree.control.user.party.common.form.CreateDivisionForm;
 import com.echothree.control.user.party.common.result.CreateDivisionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -102,7 +102,7 @@ public class CreateDivisionCommand
                             }
                             
                             if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_DIVISION);
+                                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.DIVISION.name());
                                 BasePK createdBy = getPartyPK();
                                 String name = form.getName();
                                 Boolean isDefault = Boolean.valueOf(form.getIsDefault());

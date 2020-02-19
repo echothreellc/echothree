@@ -25,13 +25,13 @@ import com.echothree.model.control.contact.server.logic.ContactEmailAddressLogic
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PasswordStringPolicyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.SecurityControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.server.UserControl;
@@ -80,8 +80,8 @@ public class CreateEmployeeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Create.name())
                         )))
                 )));
@@ -126,7 +126,7 @@ public class CreateEmployeeCommand
             
             if(password1.equals(password2)) {
                 var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_EMPLOYEE);
+                PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.EMPLOYEE.name());
                 PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = PasswordStringPolicyLogic.getInstance().checkStringPassword(session,
                         getUserVisit(), this, partyType, null, null, password1);
                 
@@ -179,7 +179,7 @@ public class CreateEmployeeCommand
                                             NameSuffix nameSuffix = nameSuffixId == null? null: partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_ONLY);
                                             String emailAddress = form.getEmailAddress();
                                             Boolean allowSolicitation = Boolean.valueOf(form.getAllowSolicitation());
-                                            String partyEmployeeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceConstants.SequenceType_EMPLOYEE);
+                                            String partyEmployeeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.EMPLOYEE.name());
                                             
                                             Party party = partyControl.createParty(null, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, createdBy);
                                             partyControl.createPerson(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, createdBy);

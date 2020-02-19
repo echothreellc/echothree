@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.CannotSpecifyDivisionNameAndPartyNameException;
 import com.echothree.model.control.party.common.exception.MustSpecifyDivisionNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownDivisionNameException;
@@ -51,7 +51,7 @@ public class DivisionLogic
         PartyDivision partyDivision = null;
 
         if(companyParty != null) {
-            PartyLogic.getInstance().checkPartyType(eea, companyParty, PartyConstants.PartyType_COMPANY);
+            PartyLogic.getInstance().checkPartyType(eea, companyParty, PartyTypes.COMPANY.name());
         }
 
         if(!hasExecutionErrors(eea)) {
@@ -72,7 +72,7 @@ public class DivisionLogic
                     Party party = partyControl.getPartyByName(partyName);
 
                     if(party != null) {
-                        PartyLogic.getInstance().checkPartyType(eea, party, PartyConstants.PartyType_DIVISION);
+                        PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.DIVISION.name());
 
                         partyDivision = partyControl.getPartyDivision(party);
                     } else {

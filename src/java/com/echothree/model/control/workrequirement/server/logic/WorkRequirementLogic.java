@@ -17,8 +17,8 @@
 package com.echothree.model.control.workrequirement.server.logic;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
@@ -88,7 +88,7 @@ public class WorkRequirementLogic {
             workRequirementSequence = workRequirementTypeDetail.getWorkRequirementSequence();
 
             if(workRequirementSequence == null) {
-                workRequirementSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceConstants.SequenceType_WORK_REQUIREMENT);
+                workRequirementSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.WORK_REQUIREMENT.name());
             }
         }
 

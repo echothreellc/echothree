@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.CannotSpecifyDepartmentNameAndPartyNameException;
 import com.echothree.model.control.party.common.exception.MustSpecifyDepartmentNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownDepartmentNameException;
@@ -51,7 +51,7 @@ public class DepartmentLogic
         PartyDepartment partyDepartment = null;
 
         if(divisionParty != null) {
-            PartyLogic.getInstance().checkPartyType(eea, divisionParty, PartyConstants.PartyType_DIVISION);
+            PartyLogic.getInstance().checkPartyType(eea, divisionParty, PartyTypes.DIVISION.name());
         }
 
         if(!hasExecutionErrors(eea)) {
@@ -72,7 +72,7 @@ public class DepartmentLogic
                     Party party = partyControl.getPartyByName(partyName);
 
                     if(party != null) {
-                        PartyLogic.getInstance().checkPartyType(eea, party, PartyConstants.PartyType_DEPARTMENT);
+                        PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.DEPARTMENT.name());
 
                         partyDepartment = partyControl.getPartyDepartment(party);
                     } else {

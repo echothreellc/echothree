@@ -19,7 +19,7 @@ package com.echothree.control.user.picklist.server.command;
 import com.echothree.control.user.picklist.common.form.GetPicklistTimeTypeDescriptionsForm;
 import com.echothree.control.user.picklist.common.result.GetPicklistTimeTypeDescriptionsResult;
 import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -47,8 +47,8 @@ public class GetPicklistTimeTypeDescriptionsCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.PicklistTimeType.name(), SecurityRoles.Description.name())
                         )))
                 )));

@@ -19,7 +19,7 @@ package com.echothree.control.user.scale.server.command;
 import com.echothree.control.user.scale.common.form.GetScaleTypeForm;
 import com.echothree.control.user.scale.common.result.GetScaleTypeResult;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -46,8 +46,8 @@ public class GetScaleTypeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.ScaleType.name(), SecurityRoles.Review.name())
                         )))
                 )));

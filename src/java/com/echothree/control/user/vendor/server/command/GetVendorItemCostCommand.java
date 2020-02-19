@@ -21,7 +21,7 @@ import com.echothree.control.user.vendor.common.result.GetVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.inventory.common.InventoryConstants;
 import com.echothree.model.control.inventory.server.InventoryControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -58,8 +58,8 @@ public class GetVendorItemCostCommand
 
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.VendorItemCost.name(), SecurityRoles.Review.name())
                         )))
                 )));
@@ -100,7 +100,7 @@ public class GetVendorItemCostCommand
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyConstants.PartyType_VENDOR)) {
+                    if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.VENDOR.name())) {
                         vendor = vendorControl.getVendor(party);
                     } else {
                         addExecutionError(ExecutionErrors.InvalidPartyType.name());

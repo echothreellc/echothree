@@ -20,7 +20,7 @@ import com.echothree.control.user.party.common.form.CreateDepartmentForm;
 import com.echothree.control.user.party.common.result.CreateDepartmentResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -109,7 +109,7 @@ public class CreateDepartmentCommand
                                 }
                                 
                                 if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                    PartyType partyType = partyControl.getPartyTypeByName(PartyConstants.PartyType_DEPARTMENT);
+                                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.DEPARTMENT.name());
                                     BasePK createdBy = getPartyPK();
                                     String name = form.getName();
                                     Boolean isDefault = Boolean.valueOf(form.getIsDefault());

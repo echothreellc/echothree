@@ -20,7 +20,7 @@ import com.echothree.control.user.carrier.common.form.GetCarrierChoicesForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.control.user.carrier.common.result.GetCarrierChoicesResult;
 import com.echothree.model.control.carrier.server.CarrierControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -44,7 +44,7 @@ public class GetCarrierChoicesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.Carrier.name(), SecurityRoles.Choices.name())
                         )))
                 )));

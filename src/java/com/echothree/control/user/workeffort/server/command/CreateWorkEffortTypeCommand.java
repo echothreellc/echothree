@@ -18,7 +18,7 @@ package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.form.CreateWorkEffortTypeForm;
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
@@ -91,12 +91,12 @@ public class CreateWorkEffortTypeCommand
 
                     if(workEffortSequenceName != null) {
                         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_WORK_EFFORT);
+                        SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_EFFORT.name());
 
                         if(sequenceType != null) {
                             workEffortSequence = sequenceControl.getSequenceByName(sequenceType, workEffortSequenceName);
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_WORK_EFFORT);
+                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.WORK_EFFORT.name());
                         }
                     }
 

@@ -17,7 +17,7 @@
 package com.echothree.control.user.workrequirement.server.command;
 
 import com.echothree.control.user.workrequirement.common.form.CreateWorkRequirementTypeForm;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
@@ -206,12 +206,12 @@ public class CreateWorkRequirementTypeCommand
         Sequence workRequirementSequence = null;
         
         if(workRequirementSequenceName != null) {
-            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_WORK_REQUIREMENT);
+            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.WORK_REQUIREMENT.name());
             
             if(sequenceType != null) {
                 workRequirementSequence = sequenceControl.getSequenceByName(sequenceType, workRequirementSequenceName);
             } else {
-                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceConstants.SequenceType_WORK_REQUIREMENT);
+                addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.WORK_REQUIREMENT.name());
             }
         }
         

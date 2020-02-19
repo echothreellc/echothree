@@ -31,7 +31,7 @@ import com.echothree.model.control.offer.common.exception.UnknownOfferItemPriceE
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
-import com.echothree.model.control.order.common.OrderConstants;
+import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.logic.OrderLineLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
@@ -396,11 +396,11 @@ public class SalesOrderLineLogic
     }
 
     public OrderLine getOrderLineByName(final ExecutionErrorAccumulator eea, final String orderName, final String orderLineSequence) {
-        return getOrderLineByName(eea, OrderConstants.OrderType_SALES_ORDER, orderName, orderLineSequence);
+        return getOrderLineByName(eea, OrderTypes.SALES_ORDER.name(), orderName, orderLineSequence);
     }
 
     public OrderLine getOrderLineByNameForUpdate(final ExecutionErrorAccumulator eea, final String orderName, final String orderLineSequence) {
-        return getOrderLineByNameForUpdate(eea, OrderConstants.OrderType_SALES_ORDER, orderName, orderLineSequence);
+        return getOrderLineByNameForUpdate(eea, OrderTypes.SALES_ORDER.name(), orderName, orderLineSequence);
     }
 
 }

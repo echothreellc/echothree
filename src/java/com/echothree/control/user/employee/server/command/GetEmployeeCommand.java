@@ -21,7 +21,7 @@ import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.employee.server.EmployeeControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -50,8 +50,8 @@ public class GetEmployeeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Review.name())
                         )))
                 )));
@@ -99,7 +99,7 @@ public class GetEmployeeCommand
             }
             
             if(!hasExecutionErrors()) {
-                PartyLogic.getInstance().checkPartyType(this, party, PartyConstants.PartyType_EMPLOYEE);
+                PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.EMPLOYEE.name());
                 
                 if(!hasExecutionErrors()) {
                     result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), party));

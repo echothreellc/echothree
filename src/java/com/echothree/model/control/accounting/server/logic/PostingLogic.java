@@ -17,7 +17,7 @@
 package com.echothree.model.control.accounting.server.logic;
 
 import com.echothree.model.control.accounting.server.AccountingControl;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.period.common.PeriodConstants;
 import com.echothree.model.control.period.server.PeriodControl;
@@ -67,11 +67,11 @@ public class PostingLogic {
             
             updateGlAccountSummary(accountingControl, glAccount, groupParty, period, amount);
             
-            if(partyTypeName.equals(PartyConstants.PartyType_COMPANY)) {
+            if(partyTypeName.equals(PartyTypes.COMPANY.name())) {
                 break;
-            } else if(partyTypeName.equals(PartyConstants.PartyType_DIVISION)) {
+            } else if(partyTypeName.equals(PartyTypes.DIVISION.name())) {
                 groupParty = partyControl.getPartyDivision(groupParty).getCompanyParty();
-            } else if(partyTypeName.equals(PartyConstants.PartyType_DEPARTMENT)) {
+            } else if(partyTypeName.equals(PartyTypes.DEPARTMENT.name())) {
                 groupParty = partyControl.getPartyDepartment(groupParty).getDivisionParty();
             }
         }

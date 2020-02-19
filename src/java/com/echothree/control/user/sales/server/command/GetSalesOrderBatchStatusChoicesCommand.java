@@ -19,7 +19,7 @@ package com.echothree.control.user.sales.server.command;
 import com.echothree.control.user.sales.common.form.GetSalesOrderBatchStatusChoicesForm;
 import com.echothree.control.user.sales.common.result.GetSalesOrderBatchStatusChoicesResult;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.sales.server.logic.SalesOrderBatchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -44,7 +44,7 @@ public class GetSalesOrderBatchStatusChoicesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                     new SecurityRoleDefinition(SecurityRoleGroups.SalesOrderBatchStatus.name(), SecurityRoles.Choices.name())
                     )))
                 )));

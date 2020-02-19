@@ -24,7 +24,7 @@ import com.echothree.control.user.inventory.common.result.EditInventoryCondition
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -55,8 +55,8 @@ public class EditInventoryConditionCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_UTILITY, null),
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.InventoryCondition.name(), SecurityRoles.Edit.name())
                         )))
                 )));

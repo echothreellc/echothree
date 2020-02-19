@@ -20,7 +20,7 @@ import com.echothree.control.user.forum.common.form.CreateForumForm;
 import com.echothree.model.control.forum.server.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.IconControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumType;
@@ -98,7 +98,7 @@ public class CreateForumCommand
                             sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
                             
                             if(forumThreadSequenceName != null) {
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_FORUM_THREAD);
+                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_THREAD.name());
                                 forumThreadSequence = sequenceControl.getSequenceByName(sequenceType, forumThreadSequenceName);
                             }
                         }
@@ -107,7 +107,7 @@ public class CreateForumCommand
                             Sequence forumMessageSequence = null;
                             
                             if(forumMessageSequenceName != null) {
-                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceConstants.SequenceType_FORUM_MESSAGE);
+                                SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.FORUM_MESSAGE.name());
                                 forumMessageSequence = sequenceControl.getSequenceByName(sequenceType, forumMessageSequenceName);
                             }
                             

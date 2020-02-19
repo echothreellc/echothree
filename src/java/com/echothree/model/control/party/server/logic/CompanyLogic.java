@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.CannotSpecifyCompanyNameAndPartyNameException;
 import com.echothree.model.control.party.common.exception.MustSpecifyCompanyNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownCompanyNameException;
@@ -61,7 +61,7 @@ public class CompanyLogic
                 Party party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyConstants.PartyType_COMPANY);
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.COMPANY.name());
 
                     partyCompany = partyControl.getPartyCompany(party);
                 } else {

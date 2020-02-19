@@ -19,7 +19,7 @@ package com.echothree.control.user.returnpolicy.server.command;
 import com.echothree.control.user.returnpolicy.common.form.GetReturnTypeChoicesForm;
 import com.echothree.control.user.returnpolicy.common.result.GetReturnTypeChoicesResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
-import com.echothree.model.control.party.common.PartyConstants;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -46,7 +46,7 @@ public class GetReturnTypeChoicesCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyConstants.PartyType_EMPLOYEE, Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                     new SecurityRoleDefinition(SecurityRoleGroups.ReturnType.name(), SecurityRoles.Choices.name())
                     )))
                 )));

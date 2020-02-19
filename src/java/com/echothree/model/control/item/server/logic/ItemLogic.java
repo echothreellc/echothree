@@ -25,7 +25,7 @@ import com.echothree.model.control.item.common.exception.UnknownItemTypeNameExce
 import com.echothree.model.control.item.common.exception.UnknownItemUseTypeNameException;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.ItemControl;
-import com.echothree.model.control.sequence.common.SequenceConstants;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -153,14 +153,14 @@ public class ItemLogic
         var itemSequence = itemCategory.getLastDetail().getItemSequence();
         
         if(itemSequence == null) {
-            itemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceConstants.SequenceType_ITEM);
+            itemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ITEM.name());
         }
         
         if(!hasExecutionErrors(eea)) {
             itemName = SequenceLogic.getInstance().getNextSequenceValue(eea, itemSequence);
         } else {
             handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
-                    SequenceConstants.SequenceType_ITEM);
+                    SequenceTypes.ITEM.name());
         }
         
         return itemName;
