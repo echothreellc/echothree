@@ -268,7 +268,6 @@ public class EditPartyInventoryLevelCommand
     @Override
     public void doUpdate(PartyInventoryLevel partyInventoryLevel) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
         PartyInventoryLevelValue partyInventoryLevelValue = inventoryControl.getPartyInventoryLevelValue(partyInventoryLevel);
 
         partyInventoryLevelValue.setMinimumInventory(minimumInventory);

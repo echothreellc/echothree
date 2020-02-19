@@ -120,7 +120,6 @@ public class EditSourceCommand
 
     @Override
     public void doLock(SourceEdit edit, Source source) {
-        var geoControl = (OfferControl)Session.getModelController(OfferControl.class);
         SourceDetail sourceDetail = source.getLastDetail();
 
         edit.setSourceName(sourceDetail.getSourceName());

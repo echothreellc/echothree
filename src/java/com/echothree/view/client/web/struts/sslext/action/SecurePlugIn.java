@@ -101,11 +101,6 @@ public class SecurePlugIn implements SecurePlugInInterface {
     private Log sLog = LogFactory.getLog(SecurePlugIn.class);
     
     /**
-     * The application configuration for our owning sub-application.
-     */
-    private ModuleConfig config = null;
-    
-    /**
      * The {@link ActionServlet} owning this application.
      */
     private ActionServlet servlet = null;
@@ -155,7 +150,6 @@ public class SecurePlugIn implements SecurePlugInInterface {
     @Override
     public void init(ActionServlet servlet, ModuleConfig config)
     throws ServletException {
-        this.config = config;
         this.servlet = servlet;
         
         initMappings();

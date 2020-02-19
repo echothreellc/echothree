@@ -83,7 +83,6 @@ public class GetOfferItemPricesCommand
         
         if(offer != null) {
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
-            UserVisit userVisit = getUserVisit();
             String itemName = form.getItemName();
            
             item = itemControl.getItemByName(itemName);

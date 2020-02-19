@@ -58,7 +58,6 @@ public class GetContentPageLayoutAreasCommand
     @Override
     protected Collection<ContentPageLayoutArea> getEntities() {
         var contentControl = (ContentControl)Session.getModelController(ContentControl.class);
-        GetContentPageLayoutAreasResult result = ContentResultFactory.getGetContentPageLayoutAreasResult();
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         Collection<ContentPageLayoutArea> contentPageLayoutAreas = null;

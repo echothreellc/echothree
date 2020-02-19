@@ -494,8 +494,7 @@ public class WarehouseControl
         List<String> labels = new ArrayList<>(size);
         List<String> values = new ArrayList<>(size);
         String defaultValue = null;
-        Iterator iter = locationUseTypes.iterator();
-        
+
         if(allowNullChoice) {
             labels.add("");
             values.add("");
