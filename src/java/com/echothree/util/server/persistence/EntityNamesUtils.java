@@ -253,17 +253,17 @@ public class EntityNamesUtils {
     private static Map<String, SequenceTypeTranslator> sequenceTypeTranslators;
     
     static {
-        var translators = new HashMap<String, SequenceTypeTranslator>(7);
+        var sequenceTypeTranslatorsMap = new HashMap<String, SequenceTypeTranslator>(7);
+
+        sequenceTypeTranslatorsMap.put(SequenceTypes.PURCHASE_INVOICE.name(), new InvoiceNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.SALES_INVOICE.name(), new InvoiceNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.PURCHASE_ORDER.name(), new OrderNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.SALES_ORDER.name(), new OrderNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.WISHLIST.name(), new OrderNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.CUSTOMER.name(), new PartyNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.EMPLOYEE.name(), new PartyNameTranslator());
         
-        translators.put(SequenceTypes.PURCHASE_INVOICE.name(), new InvoiceNameTranslator());
-        translators.put(SequenceTypes.SALES_INVOICE.name(), new InvoiceNameTranslator());
-        translators.put(SequenceTypes.PURCHASE_ORDER.name(), new OrderNameTranslator());
-        translators.put(SequenceTypes.SALES_ORDER.name(), new OrderNameTranslator());
-        translators.put(SequenceTypes.WISHLIST.name(), new OrderNameTranslator());
-        translators.put(SequenceTypes.CUSTOMER.name(), new PartyNameTranslator());
-        translators.put(SequenceTypes.EMPLOYEE.name(), new PartyNameTranslator());
-        
-        sequenceTypeTranslators = Collections.unmodifiableMap(translators);
+        sequenceTypeTranslators = Collections.unmodifiableMap(sequenceTypeTranslatorsMap);
     }
     
     private EntityInstanceAndNames getEntityNames(final Party requestingParty, final SequenceType sequenceType, final String value,
