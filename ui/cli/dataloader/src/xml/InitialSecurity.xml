@@ -1599,6 +1599,9 @@
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Sales Order List" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sales Order Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SalesOrderStatus" parentSecurityRoleGroupName="SaleComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Sales Order Status" />
@@ -1625,6 +1628,21 @@
             </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Sales Order Line List" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PurchaseComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Purchase Component" />
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PurchaseOrder" parentSecurityRoleGroupName="PurchaseComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Purchase Order" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Purchase Order Create" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Purchase Order List" />
+            </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Purchase Order Search" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SelectorComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -2165,6 +2183,9 @@
             <securityRoleGroupDescription languageIsoName="en" description="Wishlist" />
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Wishlist List" />
+            </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Search" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ConfigComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -3815,6 +3836,9 @@
             </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Purchase Invoice List" />
+            </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Purchase Invoice" />
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Purchase Invoice Review" />
@@ -7289,12 +7313,16 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderBatchStatus" securityRoleName="Complete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrder" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrder" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrder" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderStatus" securityRoleName="Entry" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderPaymentPreference" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderPaymentPreference" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderLine" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SalesOrderLine" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseOrder" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyResponsibility" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartySecurityRoleTemplate" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartySkill" securityRoleName="List" />
@@ -7617,6 +7645,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Delete" />
@@ -7862,6 +7891,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseInvoice" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseInvoice" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseInvoice" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseInvoice" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseInvoice" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseInvoiceStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseInvoiceStatus" securityRoleName="EntryToCodingApproval" />
