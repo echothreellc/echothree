@@ -717,26 +717,13 @@ public class TrackControl
         return getUserVisitTracksByTrack(track, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getUserVisitTracksByTrackSourceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM uservisittracks " +
-                "WHERE uvistrk_trksrc_tracksourceid = ? AND uvistrk_thrutime = ? " +
-                "FOR UPDATE");
-        getUserVisitTracksByTrackSourceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisit userVisit, UserVisitTrack userVisitTrack) {
         return getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisitTrack);
     }
 
     public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, List<UserVisitTrack> userVisitTracks) {
-        List<UserVisitTrackTransfer> userVisitTrackTransfers = new ArrayList<>(userVisitTracks.size());
-        UserVisitTrackTransferCache userVisitTrackTransferCache = getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache();
+        var userVisitTrackTransfers = new ArrayList<UserVisitTrackTransfer>(userVisitTracks.size());
+        var userVisitTrackTransferCache = getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache();
 
         userVisitTracks.stream().forEach((userVisitTrack) -> {
             userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisitTrack));
