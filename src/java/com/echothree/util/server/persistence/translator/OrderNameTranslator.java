@@ -69,7 +69,7 @@ public class OrderNameTranslator
         sequenceTypesToTargets = Collections.unmodifiableMap(sequenceTypesToTargetsMap);
     }
     
-    public EntityNames getNames(final Map<String, String> targetMap, final String key, final OrderDetail orderDetail) {
+    private EntityNames getNames(final Map<String, String> targetMap, final String key, final OrderDetail orderDetail) {
         String target = targetMap.get(key);
         EntityNames result = null;
 
