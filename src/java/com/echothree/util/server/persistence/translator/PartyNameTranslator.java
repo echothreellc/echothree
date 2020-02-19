@@ -98,18 +98,14 @@ public class PartyNameTranslator
         var target = sequenceTypesToTargets.get(sequenceTypeName);
         Party party = null;
         
-        if(target.equals(Targets.Customer.name()) &&
-                SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
-                        SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
+        if(target.equals(Targets.Customer.name())) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
             var customer = customerControl.getCustomerByName(value);
             
             if(customer != null) {
                 party = customer.getParty();
             }
-        } else if(target.equals(Targets.Employee.name()) &&
-                SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
-                        SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
+        } else if(target.equals(Targets.Employee.name())) {
             var employeeControl = (EmployeeControl)Session.getModelController(EmployeeControl.class);
             var partyEmployee = employeeControl.getPartyEmployeeByName(value);
             
