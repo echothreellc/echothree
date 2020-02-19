@@ -119,8 +119,6 @@ public class EditItemCountryOfOriginCommand
 
     @Override
     public void doLock(ItemCountryOfOriginEdit edit, ItemCountryOfOrigin itemCountryOfOrigin) {
-        var uomControl = (UomControl)Session.getModelController(UomControl.class);
-
         edit.setPercent(PercentUtils.getInstance().formatFractionalPercent(itemCountryOfOrigin.getPercent()));
     }
 

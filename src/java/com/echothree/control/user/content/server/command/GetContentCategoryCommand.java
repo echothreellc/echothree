@@ -63,7 +63,6 @@ public class GetContentCategoryCommand
     
     @Override
     protected ContentCategory getEntity() {
-        GetContentCategoryResult result = ContentResultFactory.getGetContentCategoryResult();
         String contentWebAddressName = form.getContentWebAddressName();
         String contentCollectionName = form.getContentCollectionName();
         int parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);

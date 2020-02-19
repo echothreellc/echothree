@@ -393,10 +393,8 @@ public class IndexControl
     }
 
     private void deleteIndexType(IndexType indexType, boolean checkDefault, BasePK deletedBy) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         IndexTypeDetail indexTypeDetail = indexType.getLastDetailForUpdate();
 
-        searchControl.deleteSearchKindsByIndexType(indexType, deletedBy);
         deleteIndexFieldsByIndexType(indexType, deletedBy);
         deleteIndexesByIndexType(indexType, deletedBy);
         deleteIndexTypeDescriptionsByIndexType(indexType, deletedBy);

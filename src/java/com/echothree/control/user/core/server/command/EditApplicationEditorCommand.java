@@ -129,7 +129,6 @@ public class EditApplicationEditorCommand
 
     @Override
     public void doLock(ApplicationEditorEdit edit, ApplicationEditor applicationEditor) {
-        var coreControl = getCoreControl();
         ApplicationEditorDetail applicationEditorDetail = applicationEditor.getLastDetail();
 
         edit.setIsDefault(applicationEditorDetail.getIsDefault().toString());

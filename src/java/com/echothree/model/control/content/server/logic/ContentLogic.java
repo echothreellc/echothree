@@ -421,10 +421,7 @@ public class ContentLogic
                     }
                 }
             }
-
-            contentCategoriesToCheck = null;
         }
-
     }
 
 }

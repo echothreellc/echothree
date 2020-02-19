@@ -2603,36 +2603,6 @@ public class SearchControl
         return getSearchKinds(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getSearchKindsByIndexTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM searchkinds, searchkinddetails "
-                + "WHERE srchk_activedetailid = srchkdt_searchkinddetailid "
-                + "ORDER BY srchkdt_sortorder, srchkdt_searchkindname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM searchkinds, searchkinddetails "
-                + "WHERE srchk_activedetailid = srchkdt_searchkinddetailid "
-                + "FOR UPDATE");
-        getSearchKindsByIndexTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<SearchKind> getSearchKindsByIndexType(IndexType indexType, EntityPermission entityPermission) {
-        return SearchKindFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchKindsByIndexTypeQueries);
-    }
-
-    public List<SearchKind> getSearchKindsByIndexType(IndexType indexType) {
-        return getSearchKindsByIndexType(indexType, EntityPermission.READ_ONLY);
-    }
-
-    public List<SearchKind> getSearchKindsByIndexTypeForUpdate(IndexType indexType) {
-        return getSearchKindsByIndexType(indexType, EntityPermission.READ_WRITE);
-    }
-
     public SearchKindChoicesBean getSearchKindChoices(String defaultSearchKindChoice, Language language, boolean allowNullChoice) {
         List<SearchKind> searchKinds = getSearchKinds();
         int size = searchKinds.size();
@@ -2772,10 +2742,6 @@ public class SearchControl
         deleteSearchKinds(searchKinds, true, deletedBy);
     }
 
-    public void deleteSearchKindsByIndexType(IndexType indexType, BasePK deletedBy) {
-        deleteSearchKinds(getSearchKindsByIndexTypeForUpdate(indexType), deletedBy);
-    }
-    
     // --------------------------------------------------------------------------------
     //   Search Kind Descriptions
     // --------------------------------------------------------------------------------

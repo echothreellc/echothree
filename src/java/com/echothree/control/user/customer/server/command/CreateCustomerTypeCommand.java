@@ -238,7 +238,6 @@ public class CreateCustomerTypeCommand
                                                 AllocationPriority allocationPriority = allocationPriorityName == null ? null : AllocationPriorityLogic.getInstance().getAllocationPriorityByName(this, allocationPriorityName);
                                                 
                                                 if(!hasExecutionErrors()) {
-                                                    var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
                                                     PartyPK partyPK = getPartyPK();
                                                     Boolean defaultHoldUntilComplete = Boolean.valueOf(form.getDefaultHoldUntilComplete());
                                                     Boolean defaultAllowBackorders = Boolean.valueOf(form.getDefaultAllowBackorders());
