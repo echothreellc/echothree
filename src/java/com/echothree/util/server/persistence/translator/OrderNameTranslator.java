@@ -44,29 +44,29 @@ public class OrderNameTranslator
     private final static Map<String, String> sequenceTypesToTargets;
 
     static {
-        var targetMap = new HashMap<String, String>();
-        
-        targetMap.put(OrderTypes.PURCHASE_ORDER.name(), Targets.PurchaseOrder.name());
-        targetMap.put(OrderTypes.SALES_ORDER.name(), Targets.SalesOrder.name());
-        targetMap.put(OrderTypes.WISHLIST.name(), Targets.Wishlist.name());
+        var orderTypesToTargetsMap = new HashMap<String, String>();
 
-        orderTypesToTargets = Collections.unmodifiableMap(targetMap);
+        orderTypesToTargetsMap.put(OrderTypes.PURCHASE_ORDER.name(), Targets.PurchaseOrder.name());
+        orderTypesToTargetsMap.put(OrderTypes.SALES_ORDER.name(), Targets.SalesOrder.name());
+        orderTypesToTargetsMap.put(OrderTypes.WISHLIST.name(), Targets.Wishlist.name());
+
+        orderTypesToTargets = Collections.unmodifiableMap(orderTypesToTargetsMap);
+
+        var sequenceTypesToOrderTypesMap = new HashMap<String, String>();
+
+        sequenceTypesToOrderTypesMap.put(SequenceTypes.PURCHASE_ORDER.name(), OrderTypes.PURCHASE_ORDER.name());
+        sequenceTypesToOrderTypesMap.put(SequenceTypes.SALES_ORDER.name(), OrderTypes.SALES_ORDER.name());
+        sequenceTypesToOrderTypesMap.put(SequenceTypes.WISHLIST.name(), OrderTypes.WISHLIST.name());
         
-        targetMap = new HashMap<>();
+        sequenceTypesToOrderTypes = Collections.unmodifiableMap(sequenceTypesToOrderTypesMap);
+
+        var sequenceTypesToTargetsMap = new HashMap<String, String>();
+
+        sequenceTypesToTargetsMap.put(SequenceTypes.PURCHASE_ORDER.name(), Targets.PurchaseOrder.name());
+        sequenceTypesToTargetsMap.put(SequenceTypes.SALES_ORDER.name(), Targets.SalesOrder.name());
+        sequenceTypesToTargetsMap.put(SequenceTypes.WISHLIST.name(), Targets.Wishlist.name());
         
-        targetMap.put(SequenceTypes.PURCHASE_ORDER.name(), OrderTypes.PURCHASE_ORDER.name());
-        targetMap.put(SequenceTypes.SALES_ORDER.name(), OrderTypes.SALES_ORDER.name());
-        targetMap.put(SequenceTypes.WISHLIST.name(), OrderTypes.WISHLIST.name());
-        
-        sequenceTypesToOrderTypes = Collections.unmodifiableMap(targetMap);
-        
-        targetMap = new HashMap<>();
-        
-        targetMap.put(SequenceTypes.PURCHASE_ORDER.name(), Targets.PurchaseOrder.name());
-        targetMap.put(SequenceTypes.SALES_ORDER.name(), Targets.SalesOrder.name());
-        targetMap.put(SequenceTypes.WISHLIST.name(), Targets.Wishlist.name());
-        
-        sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
+        sequenceTypesToTargets = Collections.unmodifiableMap(sequenceTypesToTargetsMap);
     }
     
     public EntityNames getNames(final Map<String, String> targetMap, final String key, final OrderDetail orderDetail) {

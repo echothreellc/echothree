@@ -46,26 +46,26 @@ public class InvoiceNameTranslator
     private final static Map<String, String> sequenceTypesToTargets;
 
     static {
-        var targetMap = new HashMap<String, String>();
-        
-        targetMap.put(InvoiceTypes.PURCHASE_INVOICE.name(), Targets.PurchaseInvoice.name());
-        targetMap.put(InvoiceTypes.SALES_INVOICE.name(), Targets.SalesInvoice.name());
+        var invoiceTypesToTargetsMap = new HashMap<String, String>();
 
-        invoiceTypesToTargets = Collections.unmodifiableMap(targetMap);
+        invoiceTypesToTargetsMap.put(InvoiceTypes.PURCHASE_INVOICE.name(), Targets.PurchaseInvoice.name());
+        invoiceTypesToTargetsMap.put(InvoiceTypes.SALES_INVOICE.name(), Targets.SalesInvoice.name());
+
+        invoiceTypesToTargets = Collections.unmodifiableMap(invoiceTypesToTargetsMap);
+
+        var sequenceTypesToInvoiceTypesMap = new HashMap<String, String>();
+
+        sequenceTypesToInvoiceTypesMap.put(SequenceTypes.PURCHASE_INVOICE.name(), InvoiceTypes.PURCHASE_INVOICE.name());
+        sequenceTypesToInvoiceTypesMap.put(SequenceTypes.SALES_INVOICE.name(), InvoiceTypes.SALES_INVOICE.name());
         
-        targetMap = new HashMap<>();
+        sequenceTypesToInvoiceTypes = Collections.unmodifiableMap(sequenceTypesToInvoiceTypesMap);
+
+        var sequenceTypesToTargetsMap = new HashMap<String, String>();
+
+        sequenceTypesToTargetsMap.put(SequenceTypes.PURCHASE_INVOICE.name(), Targets.PurchaseInvoice.name());
+        sequenceTypesToTargetsMap.put(SequenceTypes.SALES_INVOICE.name(), Targets.SalesInvoice.name());
         
-        targetMap.put(SequenceTypes.PURCHASE_INVOICE.name(), InvoiceTypes.PURCHASE_INVOICE.name());
-        targetMap.put(SequenceTypes.SALES_INVOICE.name(), InvoiceTypes.SALES_INVOICE.name());
-        
-        sequenceTypesToInvoiceTypes = Collections.unmodifiableMap(targetMap);
-        
-        targetMap = new HashMap<>();
-        
-        targetMap.put(SequenceTypes.PURCHASE_INVOICE.name(), Targets.PurchaseInvoice.name());
-        targetMap.put(SequenceTypes.SALES_INVOICE.name(), Targets.SalesInvoice.name());
-        
-        sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
+        sequenceTypesToTargets = Collections.unmodifiableMap(sequenceTypesToTargetsMap);
     }
 
     private EntityNames getNames(final Map<String, String> targetMap, final String key, final InvoiceDetail invoiceDetail) {

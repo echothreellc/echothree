@@ -46,25 +46,25 @@ public class PartyNameTranslator
     private final static Map<String, String> sequenceTypesToTargets;
 
     static {
-        var targetMap = new HashMap<String, String>();
-        
-        targetMap.put(PartyTypes.EMPLOYEE.name(), Targets.Employee.name());
-        targetMap.put(PartyTypes.CUSTOMER.name(), Targets.Customer.name());
-        targetMap.put(PartyTypes.COMPANY.name(), Targets.Company.name());
-        targetMap.put(PartyTypes.DIVISION.name(), Targets.Division.name());
-        targetMap.put(PartyTypes.DEPARTMENT.name(), Targets.Department.name());
-        targetMap.put(PartyTypes.VENDOR.name(), Targets.Vendor.name());
-        targetMap.put(PartyTypes.CARRIER.name(), Targets.Carrier.name());
-        targetMap.put(PartyTypes.WAREHOUSE.name(), Targets.Warehouse.name());
+        var partyTypesToTargetsMap = new HashMap<String, String>();
 
-        partyTypesToTargets = Collections.unmodifiableMap(targetMap);
+        partyTypesToTargetsMap.put(PartyTypes.EMPLOYEE.name(), Targets.Employee.name());
+        partyTypesToTargetsMap.put(PartyTypes.CUSTOMER.name(), Targets.Customer.name());
+        partyTypesToTargetsMap.put(PartyTypes.COMPANY.name(), Targets.Company.name());
+        partyTypesToTargetsMap.put(PartyTypes.DIVISION.name(), Targets.Division.name());
+        partyTypesToTargetsMap.put(PartyTypes.DEPARTMENT.name(), Targets.Department.name());
+        partyTypesToTargetsMap.put(PartyTypes.VENDOR.name(), Targets.Vendor.name());
+        partyTypesToTargetsMap.put(PartyTypes.CARRIER.name(), Targets.Carrier.name());
+        partyTypesToTargetsMap.put(PartyTypes.WAREHOUSE.name(), Targets.Warehouse.name());
+
+        partyTypesToTargets = Collections.unmodifiableMap(partyTypesToTargetsMap);
         
-        targetMap = new HashMap<>();
+        var sequenceTypesToTargetsMap = new HashMap<String, String>();
+
+        sequenceTypesToTargetsMap.put(SequenceTypes.CUSTOMER.name(), Targets.Customer.name());
+        sequenceTypesToTargetsMap.put(SequenceTypes.EMPLOYEE.name(), Targets.Employee.name());
         
-        targetMap.put(SequenceTypes.CUSTOMER.name(), Targets.Customer.name());
-        targetMap.put(SequenceTypes.EMPLOYEE.name(), Targets.Employee.name());
-        
-        sequenceTypesToTargets = Collections.unmodifiableMap(targetMap);
+        sequenceTypesToTargets = Collections.unmodifiableMap(sequenceTypesToTargetsMap);
     }
     
     private EntityNames getNames(final Map<String, String> targetMap, final String key, final PartyDetail partyDetail) {
