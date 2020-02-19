@@ -18,6 +18,9 @@ package com.echothree.util.server.persistence;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
@@ -266,10 +269,9 @@ public class EntityNamesUtils {
         sequenceTypeTranslators = Collections.unmodifiableMap(sequenceTypeTranslatorsMap);
     }
     
-    private EntityInstanceAndNames getEntityNames(final Party requestingParty, final SequenceType sequenceType, final String value,
+    private EntityInstanceAndNames getEntityNames(final Party requestingParty, final String sequenceTypeName, final String value,
             final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
-        var sequenceTypeName = sequenceType.getLastDetail().getSequenceTypeName();
         var sequenceTypeTranslator = sequenceTypeTranslators.get(sequenceTypeName);
         
         if(sequenceTypeTranslator != null) {
@@ -281,9 +283,47 @@ public class EntityNamesUtils {
 
     // Entry point from the Identify UC. Permissions have NOT been checked at this point.
     public EntityInstanceAndNames getEntityNames(final Party requestingParty, final String value, final boolean includeEntityInstance) {
+        EntityInstanceAndNames result = null;
         var sequenceType = SequenceTypeLogic.getInstance().identifySequenceType(value);
+
+        if(sequenceType != null) {
+            var sequenceTypeName = sequenceType.getLastDetail().getSequenceTypeName();
+            boolean hasAccess = false;
+
+            if(sequenceTypeName.equals(SequenceTypes.PURCHASE_INVOICE.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.PurchaseInvoice.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.SALES_INVOICE.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.SalesOrder.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.PURCHASE_ORDER.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.PurchaseOrder.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.SALES_ORDER.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.SalesOrder.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.WISHLIST.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.Wishlist.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.CUSTOMER.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            } else if(sequenceTypeName.equals(SequenceTypes.EMPLOYEE.name())
+                    && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, requestingParty,
+                    SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())) {
+                hasAccess = true;
+            }
+
+            result = hasAccess ? getEntityNames(requestingParty, sequenceTypeName, value, includeEntityInstance) : null;
+        }
         
-        return sequenceType == null ? null : getEntityNames(requestingParty, sequenceType, value, includeEntityInstance);
+        return result;
     }
     
 }
