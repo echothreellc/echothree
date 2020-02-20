@@ -16,17 +16,9 @@
 
 package com.echothree.ui.cli.dataloader.data.handler;
 
-import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.client.helper.BaseKeysHelper;
 import com.echothree.control.user.core.common.CoreService;
-import com.echothree.control.user.core.common.form.ChangeBaseKeysForm;
-import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.GetBaseEncryptionKeyForm;
-import com.echothree.control.user.core.common.form.LoadBaseKeysForm;
-import com.echothree.control.user.core.common.result.ChangeBaseKeysResult;
-import com.echothree.control.user.core.common.result.GenerateBaseKeysResult;
-import com.echothree.control.user.core.common.result.GetBaseEncryptionKeyResult;
-import com.echothree.model.control.core.common.transfer.BaseEncryptionKeyTransfer;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.accounting.CurrenciesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.accounting.GlAccountCategoriesHandler;
@@ -208,22 +200,7 @@ import com.echothree.ui.cli.dataloader.data.handler.workeffort.WorkEffortTypesHa
 import com.echothree.ui.cli.dataloader.data.handler.workflow.WorkflowStepTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.workflow.WorkflowTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.workflow.WorkflowsHandler;
-import com.echothree.util.common.persistence.EncryptionConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
-import com.echothree.util.common.persistence.BaseKey;
-import com.echothree.util.common.persistence.BaseKeys;
-import com.google.common.io.BaseEncoding;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -618,168 +595,34 @@ public class InitialDataHandler
             handleChangeBaseKeys();
         }
     }
-    
-    private void storeBaseKeyToProperties(String baseEncryptionKeyName, BaseKey baseKey, String which)
+
+    public void handleGenerateBaseKeys()
             throws SAXException {
-        BaseEncoding baseEncoding = BaseEncoding.base64();
-        Properties keyProperties = new Properties();
-        
-        keyProperties.setProperty("key", baseEncoding.encode(baseKey.getKey().getEncoded()));
-        keyProperties.setProperty("iv", baseEncoding.encode(baseKey.getIv()));
-        keyProperties.setProperty("which", which);
-        
         try {
-            String hostName = InetAddress.getLocalHost().getHostName();
-            StringBuilder propertiesPath = new StringBuilder(System.getProperty("user.home"))
-                    .append(File.separator).append("keys/media").append(which)
-                    .append(File.separator).append(hostName)
-                    .append(File.separator).append(baseEncryptionKeyName);
-            
-            if(new File(propertiesPath.toString()).mkdirs()) {
-                String fileName = propertiesPath.append(File.separator).append("key.xml").toString();
-                
-                keyProperties.storeToXML(new FileOutputStream(propertiesPath.toString()), null);
-                getLog().info("Key #" + which + " stored to " + fileName);
-            } else {
-                // Save key into current user's home directory, and let them sort it out.
-                getLog().error("Storage of key #" + which + " failed!");
-                keyProperties.storeToXML(new FileOutputStream(System.getProperty("user.home") + File.separator + "key" + which + ".xml"), null);
-            }
-        } catch (IOException ioe) {
-            throw new SAXException(ioe);
+            BaseKeysHelper.getInstance().handleGenerateBaseKeys(initialDataParser.getUserVisit());
+        } catch (IOException | NamingException ex) {
+            throw new SAXException(ex);
         }
     }
-    
-    private void writeBaseKeysToFiles(BaseKeys baseKeys)
-            throws SAXException {
-        String baseEncryptionKeyName = baseKeys.getBaseEncryptionKeyName();
 
-        storeBaseKeyToProperties(baseEncryptionKeyName, baseKeys.getBaseKey1(), "1");
-        storeBaseKeyToProperties(baseEncryptionKeyName, baseKeys.getBaseKey2(), "2");
-        storeBaseKeyToProperties(baseEncryptionKeyName, baseKeys.getBaseKey3(), "3");
-    }
-    
-    private void handleGenerateBaseKeys()
+    public void handleLoadBaseKeys()
             throws SAXException {
-        UserVisitPK userVisitPK = initialDataParser.getUserVisit();
-        
-        if(userVisitPK != null) {
-            CommandResult commandResult = coreService.generateBaseKeys(userVisitPK);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GenerateBaseKeysResult result = (GenerateBaseKeysResult)executionResult.getResult();
-            BaseKeys baseKeys = result.getBaseKeys();
-            
-            if(baseKeys != null) {
-                writeBaseKeysToFiles(baseKeys);
-            }
-        }
-    }
-    
-    private String getActiveBaseEncryptionKeyName()
-            throws SAXException {
-        UserVisitPK userVisitPK = initialDataParser.getUserVisit();
-        BaseEncryptionKeyTransfer baseEncryptionKey = null;
-        
-        if(userVisitPK != null) {
-            try {
-                GetBaseEncryptionKeyForm commandForm = CoreFormFactory.getGetBaseEncryptionKeyForm();
-                CommandResult commandResult = CoreUtil.getHome().getBaseEncryptionKey(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetBaseEncryptionKeyResult result = (GetBaseEncryptionKeyResult)executionResult.getResult();
-                
-                baseEncryptionKey = result.getBaseEncryptionKey();
-            } catch (NamingException ne) {
-                throw new SAXException(ne);
-            }
-        }
-        
-        return baseEncryptionKey == null? null: baseEncryptionKey.getBaseEncryptionKeyName();
-    }
-    
-    private void loadBaseKeyFromProperties(Map<String, BaseKey> baseKeyMap, String baseEncryptionKeyName, String whichMedia) {
         try {
-            BaseEncoding baseEncoding = BaseEncoding.base64();
-            Properties keyProperties = new Properties();
-            String hostName = InetAddress.getLocalHost().getHostName();
-            StringBuilder propertiesPath = new StringBuilder(System.getProperty("user.home"))
-                    .append(File.separator).append("keys/media").append(whichMedia)
-                    .append(File.separator).append(hostName)
-                    .append(File.separator).append(baseEncryptionKeyName);
-            String fileName = propertiesPath.append(File.separator).append("key.xml").toString();
-            
-            keyProperties.loadFromXML(new FileInputStream(fileName));
-            
-            SecretKey secretKey1 = new SecretKeySpec(baseEncoding.decode(keyProperties.getProperty("key")), EncryptionConstants.algorithm);
-            byte[] iv1 = baseEncoding.decode(keyProperties.getProperty("iv"));
-            
-            BaseKey baseKey = new BaseKey(secretKey1, iv1);
-            String which = keyProperties.getProperty("which");
-            baseKeyMap.put(which, baseKey);
-                getLog().info("Key #" + which + " restored from " + fileName);
-        } catch (IOException ioe) {
-            getLog().error(ioe.getMessage());
+            BaseKeysHelper.getInstance().handleLoadBaseKeys(initialDataParser.getUserVisit());
+        } catch (IOException | NamingException ex) {
+            throw new SAXException(ex);
         }
     }
-    
-    private BaseKeys getBaseKeysFromFiles()
-            throws SAXException {
-        Map<String, BaseKey> baseKeyMap = new HashMap<>();
-        String baseEncryptionKeyName = getActiveBaseEncryptionKeyName();
 
-        loadBaseKeyFromProperties(baseKeyMap, baseEncryptionKeyName, "1");
-        loadBaseKeyFromProperties(baseKeyMap, baseEncryptionKeyName, "2");
-        loadBaseKeyFromProperties(baseKeyMap, baseEncryptionKeyName, "3");
+    public void handleChangeBaseKeys()
+            throws SAXException {
+        try {
+            BaseKeysHelper.getInstance().handleChangeBaseKeys(initialDataParser.getUserVisit());
+        } catch (IOException | NamingException ex) {
+            throw new SAXException(ex);
+        }
+    }
 
-        BaseKey baseKey1 = baseKeyMap.get("1");
-        BaseKey baseKey2 = baseKeyMap.get("2");
-        BaseKey baseKey3 = baseKeyMap.get("3");
-        return new BaseKeys(baseKey1, baseKey2, baseKey3);
-    }
-    
-    private void handleLoadBaseKeys()
-            throws SAXException {
-        UserVisitPK userVisitPK = initialDataParser.getUserVisit();
-        
-        if(userVisitPK != null) {
-            BaseKeys baseKeys = getBaseKeysFromFiles();
-            
-            if(baseKeys.getBaseKeyCount() > 1) {
-                getLog().info("Two or more Base Encryption Keys found, loading keys.");
-                LoadBaseKeysForm commandForm = CoreFormFactory.getLoadBaseKeysForm();
-                
-                commandForm.setBaseKeys(baseKeys);
-                
-                coreService.loadBaseKeys(userVisitPK, commandForm);
-            } else {
-                getLog().error("A minimum of two Base Encryption Keys are required, not loading key.");
-            }
-        }
-    }
-    
-    private void handleChangeBaseKeys()
-            throws SAXException {
-        UserVisitPK userVisitPK = initialDataParser.getUserVisit();
-        
-        if(userVisitPK != null) {
-            BaseKeys baseKeys = getBaseKeysFromFiles();
-            
-            if(baseKeys.getBaseKeyCount() == 3) {
-                getLog().info("Three Base Encryption Keys found, changing keys.");
-                ChangeBaseKeysForm commandForm = CoreFormFactory.getChangeBaseKeysForm();
-                
-                commandForm.setBaseKeys(baseKeys);
-                
-                CommandResult commandResult = coreService.changeBaseKeys(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                ChangeBaseKeysResult result = (ChangeBaseKeysResult)executionResult.getResult();
-                
-                writeBaseKeysToFiles(result.getBaseKeys());
-            } else {
-                getLog().error("Three Base Encryption Keys are required, not changing keys.");
-            }
-        }
-    }
-    
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
