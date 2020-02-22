@@ -23,7 +23,10 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
@@ -130,6 +133,37 @@ public class IdentifyCommand
             });
         }
     }
+
+    private void executeCustomerSearch(final String firstName, final String middleName, final String lastName, final String q) {
+        var searchLogic = SearchLogic.getInstance();
+        var searchKind = SearchLogic.getInstance().getSearchKindByName(null, SearchConstants.SearchKind_CUSTOMER);
+        var searchType = SearchLogic.getInstance().getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+        var userVisit = getUserVisit();
+
+        var customerSearchEvaluator = new CustomerSearchEvaluator(userVisit, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null));
+
+        customerSearchEvaluator.setFirstName(firstName);
+        customerSearchEvaluator.setFirstNameSoundex(false);
+        customerSearchEvaluator.setMiddleName(middleName);
+        customerSearchEvaluator.setMiddleNameSoundex(false);
+        customerSearchEvaluator.setLastName(lastName);
+        customerSearchEvaluator.setLastNameSoundex(false);
+        customerSearchEvaluator.setQ(null, q);
+
+        customerSearchEvaluator.execute(this);
+    }
+
+    private void searchCustomers(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
+            // TODO: Name Parsing
+            executeCustomerSearch("Test", null, "Customer", null);
+            // TODO: Add in results
+            // TODO: Search by q
+        }
+    }
     
     @Override
     protected BaseResult execute() {
@@ -143,6 +177,8 @@ public class IdentifyCommand
         checkItems(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
+
+        searchCustomers(party, entityInstances, target);
         
         result.setEntityInstances(entityInstances);
         
