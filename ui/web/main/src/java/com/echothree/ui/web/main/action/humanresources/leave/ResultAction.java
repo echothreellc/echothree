@@ -65,7 +65,7 @@ public class ResultAction
         GetLeaveResultsForm commandForm = SearchUtil.getHome().getGetLeaveResultsForm();
         String results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTAINENCE);
+        commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTENANCE);
 
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.LeaveResultIncludeLeave);

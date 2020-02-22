@@ -124,8 +124,8 @@
             <searchType searchTypeName="CUSTOMER" isDefault="true" sortOrder="1">
                 <searchTypeDescription languageIsoName="en" description="Customer" />
             </searchType>
-            <searchType searchTypeName="ITEM_MAINTAINENCE" isDefault="false" sortOrder="1">
-                <searchTypeDescription languageIsoName="en" description="Item Maintainence" />
+            <searchType searchTypeName="ITEM_MAINTENANCE" isDefault="false" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Item Maintenance" />
             </searchType>
             <searchType searchTypeName="ORDER_ENTRY" isDefault="false" sortOrder="1">
                 <searchTypeDescription languageIsoName="en" description="Order Entry" />
@@ -169,8 +169,8 @@
         </searchKind>
         <searchKind searchKindName="SALES_ORDER" isDefault="false" sortOrder="1">
             <searchKindDescription languageIsoName="en" description="Sales Order" />
-            <searchType searchTypeName="SALES_ORDER_MAINTAINENCE" isDefault="true" sortOrder="1">
-                <searchTypeDescription languageIsoName="en" description="Sales Order Maintainence" />
+            <searchType searchTypeName="SALES_ORDER_MAINTENANCE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Sales Order Maintenance" />
             </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />
@@ -181,8 +181,8 @@
         </searchKind>
         <searchKind searchKindName="SALES_ORDER_BATCH" isDefault="false" sortOrder="1">
             <searchKindDescription languageIsoName="en" description="Sales Order Batch" />
-            <searchType searchTypeName="SALES_ORDER_BATCH_MAINTAINENCE" isDefault="true" sortOrder="1">
-                <searchTypeDescription languageIsoName="en" description="Sales Order Batch Maintainence" />
+            <searchType searchTypeName="SALES_ORDER_BATCH_MAINTENANCE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Sales Order Batch Maintenance" />
             </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />
@@ -193,8 +193,8 @@
         </searchKind>
         <searchKind searchKindName="LEAVE" isDefault="false" sortOrder="1">
             <searchKindDescription languageIsoName="en" description="Leave" />
-            <searchType searchTypeName="LEAVE_MAINTAINENCE" isDefault="true" sortOrder="1">
-                <searchTypeDescription languageIsoName="en" description="Leave Maintainence" />
+            <searchType searchTypeName="LEAVE_MAINTENANCE" isDefault="true" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Leave Maintenance" />
             </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />

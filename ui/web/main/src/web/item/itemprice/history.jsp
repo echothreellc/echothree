@@ -51,7 +51,7 @@
                     </c:otherwise>
                 </c:choose>
                 &gt;&gt;
-                <et:countItemResults searchTypeName="ITEM_MAINTAINENCE" countVar="itemResultsCount" commandResultVar="countItemResultsCommandResult" logErrors="false" />
+                <et:countItemResults searchTypeName="ITEM_MAINTENANCE" countVar="itemResultsCount" commandResultVar="countItemResultsCommandResult" logErrors="false" />
                 <c:if test="${itemResultsCount > 0}">
                     <a href="<c:url value="/action/Item/Item/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
                 </c:if>
