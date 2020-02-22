@@ -669,21 +669,34 @@ public abstract class BaseCommand
     // --------------------------------------------------------------------------------
     //   Option Utilities
     // --------------------------------------------------------------------------------
-    
-    /** This should only be called an override of setupSession(). After that, TransferCaches may have cached knowledge
-     * that specific options were unset.
-     * @param option The option to add.
-     */
-    protected void addOption(String option) {
-        session.getOptions(true).add(option);
-    }
-    
+
     /** This should only be called an override of setupSession(). After that, TransferCaches may have cached knowledge
      * that specific options were set.
      * @param option The option to remove.
      */
     protected void removeOption(String option) {
         session.getOptions(true).remove(option);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Transfer Property Utilities
+    // --------------------------------------------------------------------------------
+
+    /** This should only be called an override of setupSession(). After that, TransferCaches may have cached knowledge
+     * that specific properties were filtered.
+     * @param clazz The Class whose properties should be examined.
+     * @param property The property to remove.
+     */
+    protected void removeFilteredTransferProperty(Class clazz, String property) {
+        var transferProperties = session.getTransferProperties();
+
+        if(transferProperties != null) {
+            var properties = transferProperties.getProperties(clazz);
+
+            if(properties != null) {
+                properties.remove(property);
+            }
+        }
     }
     
 }
