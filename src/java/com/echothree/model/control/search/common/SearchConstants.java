@@ -83,8 +83,8 @@ public interface SearchConstants {
     String SearchSortOrder_POSTED_TIME = "POSTED_TIME";
     String SearchSortOrder_SALES_ORDER_NAME = "SALES_ORDER_NAME";
     String SearchSortOrder_SALES_ORDER_BATCH_NAME = "SALES_ORDER_BATCH_NAME";
-    String SearchSortOrder_SECRUITY_ROLE_GROUP_NAME = "SECRUITY_ROLE_GROUP_NAME";
-    String SearchSortOrder_SECRUITY_ROLE_NAME = "SECRUITY_ROLE_NAME";
+    String SearchSortOrder_SECURITY_ROLE_GROUP_NAME = "SECURITY_ROLE_GROUP_NAME";
+    String SearchSortOrder_SECURITY_ROLE_NAME = "SECURITY_ROLE_NAME";
     String SearchSortOrder_SCORE = "SCORE";
     String SearchSortOrder_TITLE = "TITLE";
     String SearchSortOrder_USE_NAME = "USE_NAME";

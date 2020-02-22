@@ -58,7 +58,7 @@ public class SecurityRoleSearchEvaluator
             };
         } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_DESCRIPTION)) {
             sortFields = new SortField[]{new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_SECRUITY_ROLE_NAME)) {
+        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_SECURITY_ROLE_NAME)) {
             sortFields = new SortField[]{
                 new SortField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse),
                 new SortField(IndexConstants.IndexField_SecurityRoleName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
