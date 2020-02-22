@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/SalesOrder/Main" />">Sales Orders</a> &gt;&gt;
                 Sales Order Batches &gt;&gt;
                 <a href="<c:url value="/action/SalesOrder/SalesOrderBatch/Main" />">Search</a> &gt;&gt;
-                <et:countSalesOrderBatchResults searchTypeName="SALES_ORDER_BATCH_MAINTAINENCE" countVar="salesOrderBatchResultsCount" commandResultVar="countSalesOrderBatchResultsCommandResult" logErrors="false" />
+                <et:countSalesOrderBatchResults searchTypeName="SALES_ORDER_BATCH_MAINTENANCE" countVar="salesOrderBatchResultsCount" commandResultVar="countSalesOrderBatchResultsCommandResult" logErrors="false" />
                 <c:if test="${salesOrderBatchResultsCount > 0}">
                     <a href="<c:url value="/action/SalesOrder/SalesOrderBatch/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
                 </c:if>

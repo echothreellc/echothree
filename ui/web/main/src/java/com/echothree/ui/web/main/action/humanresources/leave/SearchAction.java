@@ -64,7 +64,7 @@ public class SearchAction
         GetLeaveResultsForm commandForm = SearchUtil.getHome().getGetLeaveResultsForm();
         String leaveName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTAINENCE);
+        commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTENANCE);
         
         CommandResult commandResult = SearchUtil.getHome().getLeaveResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -87,7 +87,7 @@ public class SearchAction
         if(wasPost(request)) {
             SearchLeavesForm commandForm = SearchUtil.getHome().getSearchLeavesForm();
 
-            commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTAINENCE);
+            commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTENANCE);
             commandForm.setLeaveName(actionForm.getLeaveName());
             commandForm.setLeaveTypeName(actionForm.getLeaveTypeChoice());
             commandForm.setLeaveReasonName(actionForm.getLeaveReasonChoice());
