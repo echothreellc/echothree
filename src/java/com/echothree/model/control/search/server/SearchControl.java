@@ -102,6 +102,7 @@ import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.content.server.factory.ContentCategoryFactory;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.common.pk.EntityListItemPK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -4942,7 +4943,7 @@ public class SearchControl
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
-                Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(2)));
 
                 customerResultTransfers.add(new CustomerResultTransfer(party.getLastDetail().getPartyName(),
                         includeCustomer ? customerControl.getCustomerTransfer(userVisit, party) : null));
@@ -4953,30 +4954,48 @@ public class SearchControl
         
         return customerResultTransfers;
     }
-    
+
     public List<CustomerResultObject> getCustomerResultObjects(UserVisitSearch userVisitSearch) {
         var customerResultObjects = new ArrayList<CustomerResultObject>();
-        
+
         try (var rs = getCustomerResults(userVisitSearch)) {
             while(rs.next()) {
-                Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(2)));
 
                 customerResultObjects.add(new CustomerResultObject(party));
             }
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return customerResultObjects;
     }
-    
+
+    // TODO: Nothing Customer search-specific about this.
+    public List<EntityInstance> getCustomerResultEntityInstances(UserVisitSearch userVisitSearch) {
+        var entityInstances = new ArrayList<EntityInstance>();
+
+        try (var rs = getCustomerResults(userVisitSearch)) {
+            while(rs.next()) {
+                var entityInstance = getCoreControl().getEntityInstanceByPK(new EntityInstancePK(rs.getLong(1)));
+
+                entityInstances.add(entityInstance);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityInstances;
+    }
+
+    // TODO: Nothing Customer search-specific about this.
     private ResultSet getCustomerResults(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         ResultSet rs;
         
         try {
             var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
+                    "SELECT eni_entityinstanceid, eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
                     "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
