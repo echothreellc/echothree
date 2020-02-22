@@ -17,32 +17,31 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.IdentifyForm;
-import com.echothree.control.user.search.common.result.IdentifyResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.CoreOptions;
+import com.echothree.model.control.core.common.CoreProperties;
+import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class IdentifyCommand
         extends BaseSimpleCommand<IdentifyForm> {
@@ -66,6 +65,12 @@ public class IdentifyCommand
 
         // Names are always included in the JumpResult, assembly of them is a little weird, so always disallow this option.
         removeOption(CoreOptions.EntityInstanceIncludeNames);
+
+        // Ensure we're able to compare instances of and generate a HashCode for the EntityInstanceTransfers
+        removeFilteredTransferProperty(EntityInstanceTransfer.class, CoreProperties.ENTITY_TYPE);
+        removeFilteredTransferProperty(EntityTypeTransfer.class, CoreProperties.COMPONENT_VENDOR);
+        removeFilteredTransferProperty(EntityTypeTransfer.class, CoreProperties.ENTITY_TYPE_NAME);
+        removeFilteredTransferProperty(ComponentVendorTransfer.class, CoreProperties.COMPONENT_VENDOR_NAME);
     }
     
     private EntityInstanceTransfer fillInEntityInstance(EntityInstanceAndNames entityInstanceAndNames) {
@@ -76,7 +81,7 @@ public class IdentifyCommand
         return entityInstance;
     }
     
-    private void checkSequenceTypes(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+    private void checkSequenceTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(party, target, true);
         
         if(entityInstanceAndNames != null) {
@@ -84,7 +89,7 @@ public class IdentifyCommand
         }
     }
     
-    private void checkItems(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+    private void checkItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
@@ -99,7 +104,7 @@ public class IdentifyCommand
         }
     }
     
-    private void checkVendors(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+    private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
@@ -114,7 +119,7 @@ public class IdentifyCommand
         }
     }
     
-    private void checkVendorItems(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+    private void checkVendorItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
@@ -129,7 +134,7 @@ public class IdentifyCommand
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getIdentifyResult();
-        var entityInstances = new ArrayList<EntityInstanceTransfer>();
+        var entityInstances = new HashSet<EntityInstanceTransfer>();
         var target = form.getTarget();
         var party = getParty();
         
