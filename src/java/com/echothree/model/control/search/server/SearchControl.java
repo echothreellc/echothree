@@ -4930,15 +4930,15 @@ public class SearchControl
     // --------------------------------------------------------------------------------
     
     public List<CustomerResultTransfer> getCustomerResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        List<CustomerResultTransfer> customerResultTransfers = new ArrayList<>();
-        boolean includeCustomer = false;
+        var customerResultTransfers = new ArrayList<CustomerResultTransfer>();
+        var includeCustomer = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeCustomer = options.contains(SearchOptions.CustomerResultIncludeCustomer);
         }
         
-        try (ResultSet rs = getCustomerResults(userVisit, userVisitSearch)) {
+        try (ResultSet rs = getCustomerResults(userVisitSearch)) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
@@ -4954,10 +4954,10 @@ public class SearchControl
         return customerResultTransfers;
     }
     
-    public List<CustomerResultObject> getCustomerResultObjects(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        List<CustomerResultObject> customerResultObjects = new ArrayList<>();
+    public List<CustomerResultObject> getCustomerResultObjects(UserVisitSearch userVisitSearch) {
+        var customerResultObjects = new ArrayList<CustomerResultObject>();
         
-        try (ResultSet rs = getCustomerResults(userVisit, userVisitSearch)) {
+        try (var rs = getCustomerResults(userVisitSearch)) {
             while(rs.next()) {
                 Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
 
@@ -4970,12 +4970,12 @@ public class SearchControl
         return customerResultObjects;
     }
     
-    public ResultSet getCustomerResults(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        ResultSet rs = null;
+    private ResultSet getCustomerResults(UserVisitSearch userVisitSearch) {
+        var search = userVisitSearch.getSearch();
+        ResultSet rs;
         
         try {
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
+            var ps = SearchResultFactory.getInstance().prepareStatement(
                     "SELECT eni_entityuniqueid " +
                     "FROM searchresults, entityinstances " +
                     "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
