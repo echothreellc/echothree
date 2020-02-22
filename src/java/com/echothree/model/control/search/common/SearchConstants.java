@@ -49,7 +49,7 @@ public interface SearchConstants {
     String SearchKind_OFFER = "OFFER";
     String SearchKind_SALES_ORDER = "SALES_ORDER";
     String SearchKind_SALES_ORDER_BATCH = "SALES_ORDER_BATCH";
-    String SearchKind_SECURITY_ROLE = "ECURITY_ROLE";
+    String SearchKind_SECURITY_ROLE = "SECURITY_ROLE";
     String SearchKind_SECURITY_ROLE_GROUP = "SECURITY_ROLE_GROUP";
     String SearchKind_USE = "USE";
     String SearchKind_USE_TYPE = "USE_TYPE";
