@@ -26,12 +26,14 @@ import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -160,6 +162,17 @@ public class IdentifyCommand
                 SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
             // TODO: Name Parsing
             executeCustomerSearch("Test", null, "Customer", null);
+
+            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+            var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(null, getUserVisit(), SearchConstants.SearchKind_CUSTOMER, SearchConstants.SearchType_IDENTIFY);
+            var customerResultEntityInstances = searchControl.getCustomerResultEntityInstances(userVisitSearch);
+
+            for(var customerResultEntityInstance : customerResultEntityInstances) {
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(customerResultEntityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+
             // TODO: Add in results
             // TODO: Search by q
         }
