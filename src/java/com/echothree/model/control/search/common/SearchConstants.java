@@ -49,7 +49,7 @@ public interface SearchConstants {
     String SearchKind_OFFER = "OFFER";
     String SearchKind_SALES_ORDER = "SALES_ORDER";
     String SearchKind_SALES_ORDER_BATCH = "SALES_ORDER_BATCH";
-    String SearchKind_SECURITY_ROLE = "ECURITY_ROLE";
+    String SearchKind_SECURITY_ROLE = "SECURITY_ROLE";
     String SearchKind_SECURITY_ROLE_GROUP = "SECURITY_ROLE_GROUP";
     String SearchKind_USE = "USE";
     String SearchKind_USE_TYPE = "USE_TYPE";
@@ -59,10 +59,10 @@ public interface SearchConstants {
     String SearchType_EMPLOYEE = "EMPLOYEE";
     String SearchType_HUMAN_RESOURCES = "HUMAN_RESOURCES";
     String SearchType_IDENTIFY = "IDENTIFY";
-    String SearchType_ITEM_MAINTAINENCE = "ITEM_MAINTAINENCE";
-    String SearchType_LEAVE_MAINTAINENCE = "LEAVE_MAINTAINENCE";
+    String SearchType_ITEM_MAINTENANCE = "ITEM_MAINTENANCE";
+    String SearchType_LEAVE_MAINTENANCE = "LEAVE_MAINTENANCE";
     String SearchType_ORDER_ENTRY = "ORDER_ENTRY";
-    String SearchType_SALES_ORDER_BATCH_MAINTAINENCE = "SALES_ORDER_BATCH_MAINTAINENCE";
+    String SearchType_SALES_ORDER_BATCH_MAINTENANCE = "SALES_ORDER_BATCH_MAINTENANCE";
     String SearchType_VENDOR_REVIEW = "VENDOR_REVIEW";
     
     String SearchSortOrder_CONTACT_MECHANISM_NAME = "CONTACT_MECHANISM_NAME";
@@ -84,8 +84,8 @@ public interface SearchConstants {
     String SearchSortOrder_POSTED_TIME = "POSTED_TIME";
     String SearchSortOrder_SALES_ORDER_NAME = "SALES_ORDER_NAME";
     String SearchSortOrder_SALES_ORDER_BATCH_NAME = "SALES_ORDER_BATCH_NAME";
-    String SearchSortOrder_SECRUITY_ROLE_GROUP_NAME = "SECRUITY_ROLE_GROUP_NAME";
-    String SearchSortOrder_SECRUITY_ROLE_NAME = "SECRUITY_ROLE_NAME";
+    String SearchSortOrder_SECURITY_ROLE_GROUP_NAME = "SECURITY_ROLE_GROUP_NAME";
+    String SearchSortOrder_SECURITY_ROLE_NAME = "SECURITY_ROLE_NAME";
     String SearchSortOrder_SCORE = "SCORE";
     String SearchSortOrder_TITLE = "TITLE";
     String SearchSortOrder_USE_NAME = "USE_NAME";

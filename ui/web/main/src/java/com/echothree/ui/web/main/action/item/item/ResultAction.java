@@ -66,7 +66,7 @@ public class ResultAction
         GetItemResultsForm commandForm = SearchUtil.getHome().getGetItemResultsForm();
         String results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTAINENCE);
+        commandForm.setSearchTypeName(SearchConstants.SearchType_ITEM_MAINTENANCE);
 
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.ItemResultIncludeItem);
