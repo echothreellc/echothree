@@ -90,7 +90,6 @@ import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.search.server.graphql.CustomerResultObject;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
@@ -111,6 +110,7 @@ import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemDetail;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
+import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.employee.common.pk.LeavePK;
@@ -121,7 +121,6 @@ import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexField;
-import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodePK;
 import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
@@ -4925,11 +4924,56 @@ public class SearchControl
     public void deleteSearchResultActionsByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
         deleteSearchResultActions(getSearchResultActionsByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Common Search Result Utils
+    // --------------------------------------------------------------------------------
+
+    private final int ENI_ENTITYINSTANCEID_COLUMN_INDEX = 1;
+    private final int ENI_ENTITYUNIQUEID_COLUMN_INDEX = 2;
+
+    private ResultSet getUserVisitSearchResultSet(UserVisitSearch userVisitSearch) {
+        ResultSet rs;
+
+        try {
+            var ps = SearchResultFactory.getInstance().prepareStatement(
+                    "SELECT eni_entityinstanceid, eni_entityuniqueid " +
+                            "FROM searchresults, entityinstances " +
+                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
+                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
+                            "_LIMIT_");
+
+            ps.setLong(1, userVisitSearch.getSearch().getPrimaryKey().getEntityId());
+
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return rs;
+    }
+
+    public List<EntityInstance> getUserVisitSearchEntityInstances(UserVisitSearch userVisitSearch) {
+        var entityInstances = new ArrayList<EntityInstance>();
+        var coreControl = getCoreControl();
+
+        try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var entityInstance = coreControl.getEntityInstanceByPK(new EntityInstancePK(rs.getLong(ENI_ENTITYINSTANCEID_COLUMN_INDEX)));
+
+                entityInstances.add(entityInstance);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityInstances;
+    }
+
     // --------------------------------------------------------------------------------
     //   Customer Searches
     // --------------------------------------------------------------------------------
-    
+
     public List<CustomerResultTransfer> getCustomerResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
         var customerResultTransfers = new ArrayList<CustomerResultTransfer>();
         var includeCustomer = false;
@@ -4939,11 +4983,11 @@ public class SearchControl
             includeCustomer = options.contains(SearchOptions.CustomerResultIncludeCustomer);
         }
         
-        try (ResultSet rs = getCustomerResults(userVisitSearch)) {
+        try (ResultSet rs = getUserVisitSearchResultSet(userVisitSearch)) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(2)));
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 customerResultTransfers.add(new CustomerResultTransfer(party.getLastDetail().getPartyName(),
                         includeCustomer ? customerControl.getCustomerTransfer(userVisit, party) : null));
@@ -4958,9 +5002,9 @@ public class SearchControl
     public List<CustomerResultObject> getCustomerResultObjects(UserVisitSearch userVisitSearch) {
         var customerResultObjects = new ArrayList<CustomerResultObject>();
 
-        try (var rs = getCustomerResults(userVisitSearch)) {
+        try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(2)));
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 customerResultObjects.add(new CustomerResultObject(party));
             }
@@ -4971,46 +5015,6 @@ public class SearchControl
         return customerResultObjects;
     }
 
-    // TODO: Nothing Customer search-specific about this.
-    public List<EntityInstance> getCustomerResultEntityInstances(UserVisitSearch userVisitSearch) {
-        var entityInstances = new ArrayList<EntityInstance>();
-
-        try (var rs = getCustomerResults(userVisitSearch)) {
-            while(rs.next()) {
-                var entityInstance = getCoreControl().getEntityInstanceByPK(new EntityInstancePK(rs.getLong(1)));
-
-                entityInstances.add(entityInstance);
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return entityInstances;
-    }
-
-    // TODO: Nothing Customer search-specific about this.
-    private ResultSet getCustomerResults(UserVisitSearch userVisitSearch) {
-        var search = userVisitSearch.getSearch();
-        ResultSet rs;
-        
-        try {
-            var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityinstanceid, eni_entityuniqueid " +
-                    "FROM searchresults, entityinstances " +
-                    "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                    "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                    "_LIMIT_");
-            
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
-            
-            rs = ps.executeQuery();
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return rs;
-    }
-    
     // --------------------------------------------------------------------------------
     //   Employee Searches
     // --------------------------------------------------------------------------------

@@ -33,8 +33,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.entity.SearchKind;
+import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -136,14 +138,12 @@ public class IdentifyCommand
         }
     }
 
-    private void executeCustomerSearch(final String firstName, final String middleName, final String lastName, final String q) {
-        var searchLogic = SearchLogic.getInstance();
-        var searchKind = SearchLogic.getInstance().getSearchKindByName(null, SearchConstants.SearchKind_CUSTOMER);
-        var searchType = SearchLogic.getInstance().getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
-        var userVisit = getUserVisit();
-
+    private void executeCustomerSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
+            final String firstName, final String middleName, final String lastName, final String q) {
         var customerSearchEvaluator = new CustomerSearchEvaluator(userVisit, searchType,
-                searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
                 searchLogic.getDefaultSearchSortDirection(null));
 
         customerSearchEvaluator.setFirstName(firstName);
@@ -155,26 +155,37 @@ public class IdentifyCommand
         customerSearchEvaluator.setQ(null, q);
 
         customerSearchEvaluator.execute(this);
+
+        addCustomerSearchResults(userVisit, searchType, entityInstances);
+    }
+
+    private void addCustomerSearchResults(final UserVisit userVisit, final SearchType searchType,
+            final Set<EntityInstanceTransfer> entityInstances) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearch(null, userVisit, searchType);
+        var customerResultEntityInstances = searchControl.getUserVisitSearchEntityInstances(userVisitSearch);
+
+        // TODO: getUserVisitSearch(...) throwing Exception if q was invalid
+        // q being invalid for one thing may not make it invalid for all, though.
+        // Temporary eea instead of being null up above, so it could be saved and discarded on the parse?
+
+        for(var customerResultEntityInstance : customerResultEntityInstances) {
+            var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(customerResultEntityInstance);
+
+            entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+        }
     }
 
     private void searchCustomers(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
-            // TODO: Name Parsing
-            executeCustomerSearch("Test", null, "Customer", null);
+            var userVisit = getUserVisit();
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_CUSTOMER);
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
 
-            var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-            var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(null, getUserVisit(), SearchConstants.SearchKind_CUSTOMER, SearchConstants.SearchType_IDENTIFY);
-            var customerResultEntityInstances = searchControl.getCustomerResultEntityInstances(userVisitSearch);
-
-            for(var customerResultEntityInstance : customerResultEntityInstances) {
-                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(customerResultEntityInstance);
-
-                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
-            }
-
-            // TODO: Add in results
-            // TODO: Search by q
+            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, "Test", null, "Customer", null);
+            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, null, null, null, target);
         }
     }
     
