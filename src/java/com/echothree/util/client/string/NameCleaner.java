@@ -18,14 +18,11 @@ package com.echothree.util.client.string;
 
 import com.echothree.control.user.party.client.helper.NameSuffixesHelper;
 import com.echothree.control.user.party.client.helper.PersonalTitlesHelper;
-import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
-import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.string.StringUtils;
 import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -92,7 +89,7 @@ public final class NameCleaner {
         }
 
         public String getFormattedName() {
-            StringBuilder formattedName = new StringBuilder();
+            var formattedName = new StringBuilder();
 
             if(firstName != null) {
                 formattedName.append(firstName);
@@ -142,17 +139,17 @@ public final class NameCleaner {
 
     protected final void loadPersonalTitles(UserVisitPK userVisitPK)
             throws NamingException {
-        PersonalTitleChoicesBean personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.FALSE);
-        Iterator<String> valueIter = personalTitleChoices.getValues().iterator();
-        Iterator<String> labelIter = personalTitleChoices.getLabels().iterator();
+        var personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.FALSE);
+        var valueIter = personalTitleChoices.getValues().iterator();
+        var labelIter = personalTitleChoices.getLabels().iterator();
 
         personalTitles = new HashMap<>(personalTitleChoices.getLabels().size());
         personalTitlesOriginal = new HashMap<>(personalTitleChoices.getLabels().size());
         while(valueIter.hasNext()) {
-            String originalLabel = labelIter.next();
-            String label = cleanStringForTitleOrSuffix(originalLabel);
-            String value = valueIter.next();
-            int spaceCount = stringUtils.countSpaces(label);
+            var originalLabel = labelIter.next();
+            var label = cleanStringForTitleOrSuffix(originalLabel);
+            var value = valueIter.next();
+            var spaceCount = stringUtils.countSpaces(label);
 
             personalTitles.put(label, value);
             personalTitlesOriginal.put(value, originalLabel);
@@ -177,17 +174,17 @@ public final class NameCleaner {
 
     protected void loadNameSuffixes(UserVisitPK userVisitPK)
             throws NamingException {
-        NameSuffixChoicesBean nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.FALSE);
-        Iterator<String> valueIter = nameSuffixChoices.getValues().iterator();
-        Iterator<String> labelIter = nameSuffixChoices.getLabels().iterator();
+        var nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.FALSE);
+        var valueIter = nameSuffixChoices.getValues().iterator();
+        var labelIter = nameSuffixChoices.getLabels().iterator();
 
         nameSuffixes = new HashMap<>(nameSuffixChoices.getLabels().size());
         nameSuffixesOriginal = new HashMap<>(nameSuffixChoices.getLabels().size());
         while(valueIter.hasNext()) {
-            String originalLabel = labelIter.next();
-            String label = cleanStringForTitleOrSuffix(originalLabel);
-            String value = valueIter.next();
-            int spaceCount = stringUtils.countSpaces(label);
+            var originalLabel = labelIter.next();
+            var label = cleanStringForTitleOrSuffix(originalLabel);
+            var value = valueIter.next();
+            var spaceCount = stringUtils.countSpaces(label);
 
             nameSuffixes.put(label, value);
             nameSuffixesOriginal.put(value, originalLabel);
@@ -207,7 +204,7 @@ public final class NameCleaner {
     }
 
     protected List<String> iterableToList(Iterable<String> pieces) {
-        List<String> list = new ArrayList<>();
+        var list = new ArrayList<String>();
 
         for(String str : pieces) {
             list.add(str);
@@ -225,23 +222,23 @@ public final class NameCleaner {
     protected static int MaximumLastNameLength = 20;
 
     public NameResult getCleansedName(final String str) {
-        String personalTitleChoice = null;
+        var personalTitleChoice = null;
         int personalTitlePieces;
-        String firstName = null;
-        String middleName = null;
-        String lastName = null;
-        String nameSuffixChoice = null;
+        var firstName = null;
+        var middleName = null;
+        var lastName = null;
+        var nameSuffixChoice = null;
         int nameSuffixPieces;
 
         // 1) Break apart str into a List at any space character.
-        List<String> pieces = iterableToList(SpaceSplitter.split(str));
-        int piecesSize = pieces.size();
-        int startingIndex = 0;
-        int endingIndex = piecesSize - 1;
+        var pieces = iterableToList(SpaceSplitter.split(str));
+        var piecesSize = pieces.size();
+        var startingIndex = 0;
+        var endingIndex = piecesSize - 1;
 
         // 2) Find the longest (in words) personal title.
-        for(int i = Math.min(maxPersonalTitleSpaces, endingIndex - startingIndex) ; i >= startingIndex ; i--) {
-            StringBuilder personalTitle = new StringBuilder();
+        for(var i = Math.min(maxPersonalTitleSpaces, endingIndex - startingIndex) ; i >= startingIndex ; i--) {
+            var personalTitle = new StringBuilder();
 
             for(int j = 0 ; j <= i ; j++) {
                 if(j > 0) {
@@ -262,8 +259,8 @@ public final class NameCleaner {
 
         // 3) Find the longest (in words) name suffix.
         if(startingIndex <= endingIndex) {
-            for(int i = Math.min(endingIndex == 0 ? 0 : endingIndex - maxNameSuffixSpaces, endingIndex - startingIndex) ; i <= endingIndex ; i++) {
-                StringBuilder nameSuffix = new StringBuilder();
+            for(var i = Math.min(endingIndex == 0 ? 0 : endingIndex - maxNameSuffixSpaces, endingIndex - startingIndex) ; i <= endingIndex ; i++) {
+                var nameSuffix = new StringBuilder();
 
                 for(int j = i ; j <= endingIndex ; j++) {
                     if(j > i) {
@@ -285,11 +282,11 @@ public final class NameCleaner {
 
         // 4) Deal with commas and flipped names ("Harms, Richard").
         if(startingIndex <= endingIndex) {
-            String firstPiece = pieces.get(startingIndex);
+            var firstPiece = pieces.get(startingIndex);
 
             if(firstPiece.endsWith(",") && firstPiece.length() > 1) {
                 // If the first piece ends with a comma, assume they put their last name first, and flip things around.
-                for(int i = startingIndex + 1 ; i <= endingIndex ; i++) {
+                for(var i = startingIndex + 1 ; i <= endingIndex ; i++) {
                     pieces.set(i - 1, pieces.get(i));
                 }
 
@@ -297,8 +294,8 @@ public final class NameCleaner {
             }
 
             // Trim all trailing commas, and remove any new empty elements.
-            for(int i = startingIndex ; i <= endingIndex ; i++) {
-                String element = pieces.get(i);
+            for(var i = startingIndex ; i <= endingIndex ; i++) {
+                var element = pieces.get(i);
 
                 if(element.endsWith(",")) {
                     element = element.substring(0, element.length() - 1);
@@ -321,7 +318,7 @@ public final class NameCleaner {
 
         // 5) Pick out bits of a name.
         if(startingIndex <= endingIndex) {
-            boolean done = false;
+            var done = false;
 
             if(personalTitleChoice != null && startingIndex - endingIndex == 0) {
                 // Mr. Harms
