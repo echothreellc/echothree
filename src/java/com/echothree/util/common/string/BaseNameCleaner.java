@@ -16,6 +16,8 @@
 
 package com.echothree.util.common.string;
 
+import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
+import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
 import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +26,11 @@ import java.util.Map;
 
 public class BaseNameCleaner {
 
-    protected StringUtils stringUtils = StringUtils.getInstance();
+    private StringUtils stringUtils = StringUtils.getInstance();
 
-    protected final Map<String, String> personalTitles = new HashMap<>();
-    protected final Map<String, String> personalTitlesOriginal = new HashMap<>();
-    protected int maxPersonalTitleSpaces = 0;
+    private final Map<String, String> personalTitles = new HashMap<>();
+    private final Map<String, String> personalTitlesOriginal = new HashMap<>();
+    private int maxPersonalTitleSpaces = 0;
 
     protected String cleanStringForTitleOrSuffix(String str) {
         return stringUtils.cleanString(str, true, true, true).toLowerCase();
@@ -42,9 +44,9 @@ public class BaseNameCleaner {
         return personalTitlesOriginal;
     }
 
-    protected final Map<String, String> nameSuffixes = new HashMap<>();
-    protected final Map<String, String> nameSuffixesOriginal = new HashMap<>();
-    protected int maxNameSuffixSpaces = 0;
+    private final Map<String, String> nameSuffixes = new HashMap<>();
+    private final Map<String, String> nameSuffixesOriginal = new HashMap<>();
+    private int maxNameSuffixSpaces = 0;
 
     public Map<String, String> getNameSuffixes() {
         return nameSuffixes;
@@ -54,7 +56,45 @@ public class BaseNameCleaner {
         return nameSuffixesOriginal;
     }
 
-    protected List<String> iterableToList(Iterable<String> pieces) {
+    protected void setupPersonalTitles(PersonalTitleChoicesBean personalTitleChoices) {
+        var valueIter = personalTitleChoices.getValues().iterator();
+        var labelIter = personalTitleChoices.getLabels().iterator();
+
+        while(valueIter.hasNext()) {
+            var originalLabel = labelIter.next();
+            var label = cleanStringForTitleOrSuffix(originalLabel);
+            var value = valueIter.next();
+            var spaceCount = stringUtils.countSpaces(label);
+
+            personalTitles.put(label, value);
+            personalTitlesOriginal.put(value, originalLabel);
+
+            if(spaceCount > maxPersonalTitleSpaces) {
+                maxPersonalTitleSpaces = spaceCount;
+            }
+        }
+    }
+
+    protected void setupNameSuffixes(NameSuffixChoicesBean nameSuffixChoices) {
+        var valueIter = nameSuffixChoices.getValues().iterator();
+        var labelIter = nameSuffixChoices.getLabels().iterator();
+
+        while(valueIter.hasNext()) {
+            var originalLabel = labelIter.next();
+            var label = cleanStringForTitleOrSuffix(originalLabel);
+            var value = valueIter.next();
+            var spaceCount = stringUtils.countSpaces(label);
+
+            nameSuffixes.put(label, value);
+            nameSuffixesOriginal.put(value, originalLabel);
+
+            if(spaceCount > maxNameSuffixSpaces) {
+                maxNameSuffixSpaces = spaceCount;
+            }
+        }
+    }
+
+    private List<String> iterableToList(Iterable<String> pieces) {
         var list = new ArrayList<String>();
 
         for(String str : pieces) {
@@ -64,13 +104,13 @@ public class BaseNameCleaner {
         return list;
     }
 
-    protected static final Splitter SpaceSplitter = Splitter.on(' ')
+    private static final Splitter SpaceSplitter = Splitter.on(' ')
             .trimResults()
             .omitEmptyStrings();
 
-    protected static int MaximumFirstNameLength = 20;
-    protected static int MaximumMiddleNameLength = 20;
-    protected static int MaximumLastNameLength = 20;
+    private static final int MaximumFirstNameLength = 20;
+    private static final int MaximumMiddleNameLength = 20;
+    private static final int MaximumLastNameLength = 20;
 
     public NameResult getCleansedName(final String str) {
         String personalTitleChoice = null;

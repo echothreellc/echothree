@@ -34,44 +34,12 @@ public final class NameCleaner
 
     protected final void loadPersonalTitles(UserVisitPK userVisitPK)
             throws NamingException {
-        var personalTitleChoices = PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.FALSE);
-        var valueIter = personalTitleChoices.getValues().iterator();
-        var labelIter = personalTitleChoices.getLabels().iterator();
-
-        while(valueIter.hasNext()) {
-            var originalLabel = labelIter.next();
-            var label = cleanStringForTitleOrSuffix(originalLabel);
-            var value = valueIter.next();
-            var spaceCount = stringUtils.countSpaces(label);
-
-            personalTitles.put(label, value);
-            personalTitlesOriginal.put(value, originalLabel);
-
-            if(spaceCount > maxPersonalTitleSpaces) {
-                maxPersonalTitleSpaces = spaceCount;
-            }
-        }
+        setupPersonalTitles(PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.FALSE));
     }
 
     protected void loadNameSuffixes(UserVisitPK userVisitPK)
             throws NamingException {
-        var nameSuffixChoices = NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.FALSE);
-        var valueIter = nameSuffixChoices.getValues().iterator();
-        var labelIter = nameSuffixChoices.getLabels().iterator();
-
-        while(valueIter.hasNext()) {
-            var originalLabel = labelIter.next();
-            var label = cleanStringForTitleOrSuffix(originalLabel);
-            var value = valueIter.next();
-            var spaceCount = stringUtils.countSpaces(label);
-
-            nameSuffixes.put(label, value);
-            nameSuffixesOriginal.put(value, originalLabel);
-
-            if(spaceCount > maxNameSuffixSpaces) {
-                maxNameSuffixSpaces = spaceCount;
-            }
-        }
+        setupNameSuffixes(NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.FALSE));
     }
 
 }
