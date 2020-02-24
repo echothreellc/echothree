@@ -90,7 +90,6 @@ import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.search.server.graphql.CustomerResultObject;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
@@ -102,6 +101,7 @@ import com.echothree.model.data.content.server.entity.ContentCatalogDetail;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryDetail;
 import com.echothree.model.data.content.server.factory.ContentCategoryFactory;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.common.pk.EntityListItemPK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -110,6 +110,7 @@ import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemDetail;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
+import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.employee.common.pk.LeavePK;
@@ -120,7 +121,6 @@ import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexField;
-import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodePK;
 import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
@@ -4924,25 +4924,70 @@ public class SearchControl
     public void deleteSearchResultActionsByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
         deleteSearchResultActions(getSearchResultActionsByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Common Search Result Utils
+    // --------------------------------------------------------------------------------
+
+    private final int ENI_ENTITYINSTANCEID_COLUMN_INDEX = 1;
+    private final int ENI_ENTITYUNIQUEID_COLUMN_INDEX = 2;
+
+    private ResultSet getUserVisitSearchResultSet(UserVisitSearch userVisitSearch) {
+        ResultSet rs;
+
+        try {
+            var ps = SearchResultFactory.getInstance().prepareStatement(
+                    "SELECT eni_entityinstanceid, eni_entityuniqueid " +
+                            "FROM searchresults, entityinstances " +
+                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
+                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
+                            "_LIMIT_");
+
+            ps.setLong(1, userVisitSearch.getSearch().getPrimaryKey().getEntityId());
+
+            rs = ps.executeQuery();
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return rs;
+    }
+
+    public List<EntityInstance> getUserVisitSearchEntityInstances(UserVisitSearch userVisitSearch) {
+        var entityInstances = new ArrayList<EntityInstance>();
+        var coreControl = getCoreControl();
+
+        try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var entityInstance = coreControl.getEntityInstanceByPK(new EntityInstancePK(rs.getLong(ENI_ENTITYINSTANCEID_COLUMN_INDEX)));
+
+                entityInstances.add(entityInstance);
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityInstances;
+    }
+
     // --------------------------------------------------------------------------------
     //   Customer Searches
     // --------------------------------------------------------------------------------
-    
+
     public List<CustomerResultTransfer> getCustomerResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        List<CustomerResultTransfer> customerResultTransfers = new ArrayList<>();
-        boolean includeCustomer = false;
+        var customerResultTransfers = new ArrayList<CustomerResultTransfer>();
+        var includeCustomer = false;
         
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             includeCustomer = options.contains(SearchOptions.CustomerResultIncludeCustomer);
         }
         
-        try (ResultSet rs = getCustomerResults(userVisit, userVisitSearch)) {
+        try (ResultSet rs = getUserVisitSearchResultSet(userVisitSearch)) {
             var customerControl = (CustomerControl)Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
-                Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 customerResultTransfers.add(new CustomerResultTransfer(party.getLastDetail().getPartyName(),
                         includeCustomer ? customerControl.getCustomerTransfer(userVisit, party) : null));
@@ -4953,45 +4998,23 @@ public class SearchControl
         
         return customerResultTransfers;
     }
-    
-    public List<CustomerResultObject> getCustomerResultObjects(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        List<CustomerResultObject> customerResultObjects = new ArrayList<>();
-        
-        try (ResultSet rs = getCustomerResults(userVisit, userVisitSearch)) {
+
+    public List<CustomerResultObject> getCustomerResultObjects(UserVisitSearch userVisitSearch) {
+        var customerResultObjects = new ArrayList<CustomerResultObject>();
+
+        try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 customerResultObjects.add(new CustomerResultObject(party));
             }
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return customerResultObjects;
     }
-    
-    public ResultSet getCustomerResults(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        ResultSet rs = null;
-        
-        try {
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                    "FROM searchresults, entityinstances " +
-                    "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                    "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                    "_LIMIT_");
-            
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
-            
-            rs = ps.executeQuery();
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return rs;
-    }
-    
+
     // --------------------------------------------------------------------------------
     //   Employee Searches
     // --------------------------------------------------------------------------------

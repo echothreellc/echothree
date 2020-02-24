@@ -18,10 +18,11 @@ package com.echothree.model.control.core.common.transfer;
 
 import com.echothree.util.common.persistence.EntityNames;
 import com.echothree.util.common.transfer.BaseTransfer;
+import java.util.Objects;
 
-public class EntityInstanceTransfer
+public final class EntityInstanceTransfer
         extends BaseTransfer {
-    
+
     private EntityTypeTransfer entityType;
     private Long entityUniqueId;
     private String key;
@@ -134,5 +135,25 @@ public class EntityInstanceTransfer
     public void setEntityNames(EntityNames entityNames) {
         this.entityNames = entityNames;
     }
-    
+
+    /** entityType and entityUniqueId must be present.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EntityInstanceTransfer that = (EntityInstanceTransfer) o;
+        return entityType.equals(that.entityType) && entityUniqueId.equals(that.entityUniqueId);
+    }
+
+    /** entityType and entityUniqueId must be present.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(entityType, entityUniqueId);
+    }
 }

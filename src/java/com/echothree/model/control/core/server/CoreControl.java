@@ -227,6 +227,7 @@ import com.echothree.model.data.core.common.pk.EditorPK;
 import com.echothree.model.data.core.common.pk.EntityAttributeGroupPK;
 import com.echothree.model.data.core.common.pk.EntityAttributePK;
 import com.echothree.model.data.core.common.pk.EntityAttributeTypePK;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.common.pk.EntityIntegerRangePK;
 import com.echothree.model.data.core.common.pk.EntityListItemPK;
 import com.echothree.model.data.core.common.pk.EntityLongRangePK;
@@ -577,6 +578,7 @@ import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.factory.PartyFactory;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
@@ -2807,7 +2809,11 @@ public class CoreControl
     public EntityInstance getEntityInstanceByEntityRefForUpdate(String entityRef) {
         return getEntityInstanceByEntityRef(entityRef, EntityPermission.READ_WRITE);
     }
-    
+
+    public EntityInstance getEntityInstanceByPK(EntityInstancePK entityInstancePK) {
+        return EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, entityInstancePK);
+    }
+
     /** This function is a little odd. It doesn't actually delete the Entity Instance, rather, it cleans up all the
      * entities scattered through several components that depend on them.
      */

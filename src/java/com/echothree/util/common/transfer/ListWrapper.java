@@ -16,6 +16,7 @@
 
 package com.echothree.util.common.transfer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,12 +24,17 @@ public class ListWrapper<E>
         implements BaseWrapper<E> {
     
     private List<E> list;
-    
-    /** Creates a new instance of ListWrapper */
+
+    /** Creates a new instance of ListWrapper from a List */
     public ListWrapper(List<E> list) {
         this.list = list;
     }
-    
+
+    /** Creates a new instance of ListWrapper from a Collection */
+    public ListWrapper(Collection<E> set) {
+        this.list = new ArrayList<>(set);
+    }
+
     @Override
     public List<E> getList() {
         return list;

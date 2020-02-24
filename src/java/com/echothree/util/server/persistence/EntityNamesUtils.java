@@ -43,7 +43,6 @@ import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.factory.ItemDescriptionFactory;
 import com.echothree.model.data.item.server.factory.ItemFactory;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.subscription.common.pk.SubscriptionPK;
 import com.echothree.model.data.subscription.server.factory.SubscriptionFactory;
 import com.echothree.model.data.training.common.pk.PartyTrainingClassPK;
@@ -81,7 +80,7 @@ public class EntityNamesUtils {
         return EntityNamesUtilsHolder.instance;
     }
 
-    private static Map<String, ComponentVendorTranslator> componentVendorTranslators = new HashMap<>();
+    private final static Map<String, ComponentVendorTranslator> componentVendorTranslators = new HashMap<>();
 
     public static void addComponentVendorTranslator(String componentVendorName, ComponentVendorTranslator componentVendorTranslator) {
         componentVendorTranslators.put(componentVendorName, componentVendorTranslator);
@@ -253,18 +252,22 @@ public class EntityNamesUtils {
         return result == null ? null : new EntityInstanceAndNames(entityInstance, result);
     }
     
-    private static Map<String, SequenceTypeTranslator> sequenceTypeTranslators;
-    
+    private final static Map<String, SequenceTypeTranslator> sequenceTypeTranslators;
+
+    private final static InvoiceNameTranslator INVOICE_NAME_TRANSLATOR = new InvoiceNameTranslator();
+    private final static OrderNameTranslator ORDER_NAME_TRANSLATOR = new OrderNameTranslator();
+    private final static PartyNameTranslator PARTY_NAME_TRANSLATOR = new PartyNameTranslator();
+
     static {
         var sequenceTypeTranslatorsMap = new HashMap<String, SequenceTypeTranslator>(7);
 
-        sequenceTypeTranslatorsMap.put(SequenceTypes.PURCHASE_INVOICE.name(), new InvoiceNameTranslator());
-        sequenceTypeTranslatorsMap.put(SequenceTypes.SALES_INVOICE.name(), new InvoiceNameTranslator());
-        sequenceTypeTranslatorsMap.put(SequenceTypes.PURCHASE_ORDER.name(), new OrderNameTranslator());
-        sequenceTypeTranslatorsMap.put(SequenceTypes.SALES_ORDER.name(), new OrderNameTranslator());
-        sequenceTypeTranslatorsMap.put(SequenceTypes.WISHLIST.name(), new OrderNameTranslator());
-        sequenceTypeTranslatorsMap.put(SequenceTypes.CUSTOMER.name(), new PartyNameTranslator());
-        sequenceTypeTranslatorsMap.put(SequenceTypes.EMPLOYEE.name(), new PartyNameTranslator());
+        sequenceTypeTranslatorsMap.put(SequenceTypes.PURCHASE_INVOICE.name(), INVOICE_NAME_TRANSLATOR);
+        sequenceTypeTranslatorsMap.put(SequenceTypes.SALES_INVOICE.name(), INVOICE_NAME_TRANSLATOR);
+        sequenceTypeTranslatorsMap.put(SequenceTypes.PURCHASE_ORDER.name(), ORDER_NAME_TRANSLATOR);
+        sequenceTypeTranslatorsMap.put(SequenceTypes.SALES_ORDER.name(), ORDER_NAME_TRANSLATOR);
+        sequenceTypeTranslatorsMap.put(SequenceTypes.WISHLIST.name(), ORDER_NAME_TRANSLATOR);
+        sequenceTypeTranslatorsMap.put(SequenceTypes.CUSTOMER.name(), PARTY_NAME_TRANSLATOR);
+        sequenceTypeTranslatorsMap.put(SequenceTypes.EMPLOYEE.name(), PARTY_NAME_TRANSLATOR);
         
         sequenceTypeTranslators = Collections.unmodifiableMap(sequenceTypeTranslatorsMap);
     }

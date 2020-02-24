@@ -19,8 +19,9 @@ package com.echothree.model.control.core.common.transfer;
 import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
+import java.util.Objects;
 
-public class EntityTypeTransfer
+public final class EntityTypeTransfer
         extends BaseTransfer {
     
     private ComponentVendorTransfer componentVendor;
@@ -152,6 +153,27 @@ public class EntityTypeTransfer
      */
     public void setIndexTypes(ListWrapper<IndexTypeTransfer> indexTypes) {
         this.indexTypes = indexTypes;
+    }
+
+    /** componentVendor and entityTypeName must be present.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EntityTypeTransfer that = (EntityTypeTransfer) o;
+        return componentVendor.equals(that.componentVendor) && entityTypeName.equals(that.entityTypeName);
+    }
+
+    /** componentVendor and entityTypeName must be present.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(componentVendor, entityTypeName);
     }
 
 }

@@ -17,32 +17,41 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.IdentifyForm;
-import com.echothree.control.user.search.common.result.IdentifyResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.CoreOptions;
+import com.echothree.model.control.core.common.CoreProperties;
+import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.server.SearchControl;
+import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.search.server.entity.SearchKind;
+import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
+import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.string.NameResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
-import java.util.ArrayList;
+import com.echothree.util.server.string.NameCleaner;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class IdentifyCommand
         extends BaseSimpleCommand<IdentifyForm> {
@@ -66,6 +75,12 @@ public class IdentifyCommand
 
         // Names are always included in the JumpResult, assembly of them is a little weird, so always disallow this option.
         removeOption(CoreOptions.EntityInstanceIncludeNames);
+
+        // Ensure we're able to compare instances of and generate a HashCode for the EntityInstanceTransfers
+        removeFilteredTransferProperty(EntityInstanceTransfer.class, CoreProperties.ENTITY_TYPE);
+        removeFilteredTransferProperty(EntityTypeTransfer.class, CoreProperties.COMPONENT_VENDOR);
+        removeFilteredTransferProperty(EntityTypeTransfer.class, CoreProperties.ENTITY_TYPE_NAME);
+        removeFilteredTransferProperty(ComponentVendorTransfer.class, CoreProperties.COMPONENT_VENDOR_NAME);
     }
     
     private EntityInstanceTransfer fillInEntityInstance(EntityInstanceAndNames entityInstanceAndNames) {
@@ -76,7 +91,7 @@ public class IdentifyCommand
         return entityInstance;
     }
     
-    private void checkSequenceTypes(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+    private void checkSequenceTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(party, target, true);
         
         if(entityInstanceAndNames != null) {
@@ -84,7 +99,7 @@ public class IdentifyCommand
         }
     }
     
-    private void checkItems(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+    private void checkItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
             var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
@@ -99,7 +114,7 @@ public class IdentifyCommand
         }
     }
     
-    private void checkVendors(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+    private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
@@ -114,7 +129,7 @@ public class IdentifyCommand
         }
     }
     
-    private void checkVendorItems(final Party party, final List<EntityInstanceTransfer> entityInstances, final String target) {
+    private void checkVendorItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
@@ -125,11 +140,66 @@ public class IdentifyCommand
             });
         }
     }
+
+    private void executeCustomerSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
+            final String firstName, final String middleName, final String lastName, final String q) {
+        var customerSearchEvaluator = new CustomerSearchEvaluator(userVisit, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null));
+
+        customerSearchEvaluator.setFirstName(firstName);
+        customerSearchEvaluator.setFirstNameSoundex(false);
+        customerSearchEvaluator.setMiddleName(middleName);
+        customerSearchEvaluator.setMiddleNameSoundex(false);
+        customerSearchEvaluator.setLastName(lastName);
+        customerSearchEvaluator.setLastNameSoundex(false);
+        customerSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        customerSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addCustomerSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void addCustomerSearchResults(final UserVisit userVisit, final SearchType searchType,
+            final Set<EntityInstanceTransfer> entityInstances) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearch(null, userVisit, searchType);
+        var customerResultEntityInstances = searchControl.getUserVisitSearchEntityInstances(userVisitSearch);
+
+        for(var customerResultEntityInstance : customerResultEntityInstances) {
+            var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(customerResultEntityInstance);
+
+            entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+        }
+    }
+
+    private void searchCustomers(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target,
+            final NameResult nameResult) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
+            var userVisit = getUserVisit();
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_CUSTOMER);
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+
+            // First attempt using a first and/or last name isolated from target.
+            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, nameResult.getFirstName(), null, nameResult.getLastName(), null);
+            // Then attempt searching for target using it as a query string.
+            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, null, null, null, target);
+        }
+    }
     
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getIdentifyResult();
-        var entityInstances = new ArrayList<EntityInstanceTransfer>();
+        var entityInstances = new HashSet<EntityInstanceTransfer>();
         var target = form.getTarget();
         var party = getParty();
         
@@ -138,6 +208,9 @@ public class IdentifyCommand
         checkItems(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
+
+        var nameResult = new NameCleaner().getCleansedName(target);
+        searchCustomers(party, entityInstances, target, nameResult);
         
         result.setEntityInstances(entityInstances);
         

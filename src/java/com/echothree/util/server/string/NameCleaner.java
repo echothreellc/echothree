@@ -14,32 +14,29 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.util.client.string;
+package com.echothree.util.server.string;
 
-import com.echothree.control.user.party.client.helper.NameSuffixesHelper;
-import com.echothree.control.user.party.client.helper.PersonalTitlesHelper;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.util.common.string.BaseNameCleaner;
-import javax.naming.NamingException;
+import com.echothree.util.server.persistence.Session;
 
 public final class NameCleaner
         extends BaseNameCleaner {
 
     /** Creates a new instance of NameCleaner */
-    public NameCleaner(UserVisitPK userVisitPK)
-            throws NamingException {
-        loadPersonalTitles(userVisitPK);
-        loadNameSuffixes(userVisitPK);
+    public NameCleaner() {
+        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+
+        loadPersonalTitles(partyControl);
+        loadNameSuffixes(partyControl);
     }
 
-    protected final void loadPersonalTitles(UserVisitPK userVisitPK)
-            throws NamingException {
-        setupPersonalTitles(PersonalTitlesHelper.getInstance().getPersonalTitleChoices(userVisitPK, Boolean.FALSE));
+    protected final void loadPersonalTitles(PartyControl partyControl) {
+        setupPersonalTitles(partyControl.getPersonalTitleChoices(null, false));
     }
 
-    protected void loadNameSuffixes(UserVisitPK userVisitPK)
-            throws NamingException {
-        setupNameSuffixes(NameSuffixesHelper.getInstance().getNameSuffixChoices(userVisitPK, Boolean.FALSE));
+    protected void loadNameSuffixes(PartyControl partyControl) {
+        setupNameSuffixes(partyControl.getNameSuffixChoices(null, false));
     }
 
 }

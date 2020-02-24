@@ -58,6 +58,7 @@ public interface SearchConstants {
     String SearchType_CUSTOMER = "CUSTOMER";
     String SearchType_EMPLOYEE = "EMPLOYEE";
     String SearchType_HUMAN_RESOURCES = "HUMAN_RESOURCES";
+    String SearchType_IDENTIFY = "IDENTIFY";
     String SearchType_ITEM_MAINTENANCE = "ITEM_MAINTENANCE";
     String SearchType_LEAVE_MAINTENANCE = "LEAVE_MAINTENANCE";
     String SearchType_ORDER_ENTRY = "ORDER_ENTRY";
