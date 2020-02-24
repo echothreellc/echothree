@@ -222,12 +222,12 @@ public final class NameCleaner {
     protected static int MaximumLastNameLength = 20;
 
     public NameResult getCleansedName(final String str) {
-        var personalTitleChoice = null;
+        String personalTitleChoice = null;
         int personalTitlePieces;
-        var firstName = null;
-        var middleName = null;
-        var lastName = null;
-        var nameSuffixChoice = null;
+        String firstName = null;
+        String middleName = null;
+        String lastName = null;
+        String nameSuffixChoice = null;
         int nameSuffixPieces;
 
         // 1) Break apart str into a List at any space character.
