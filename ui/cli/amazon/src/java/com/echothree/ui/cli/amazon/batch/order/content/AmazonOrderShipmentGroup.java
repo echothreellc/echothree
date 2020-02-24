@@ -16,7 +16,7 @@
 
 package com.echothree.ui.cli.amazon.batch.order.content;
 
-import com.echothree.util.client.string.NameCleaner.NameResult;
+import com.echothree.util.common.string.NameResult;
 import com.echothree.util.common.string.StringUtils;
 import java.util.HashMap;
 import java.util.Map;

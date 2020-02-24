@@ -17,8 +17,8 @@
 package com.echothree.util.client.string.test;
 
 import com.echothree.util.client.string.NameCleaner;
-import com.echothree.util.client.string.NameCleaner.NameResult;
 import com.echothree.util.client.test.UserVisitTestCase;
+import com.echothree.util.common.string.NameResult;
 import javax.naming.NamingException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
