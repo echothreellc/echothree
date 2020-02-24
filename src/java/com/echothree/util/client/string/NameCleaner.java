@@ -19,6 +19,7 @@ package com.echothree.util.client.string;
 import com.echothree.control.user.party.client.helper.NameSuffixesHelper;
 import com.echothree.control.user.party.client.helper.PersonalTitlesHelper;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.string.NameResult;
 import com.echothree.util.common.string.StringUtils;
 import com.google.common.base.Splitter;
 import java.util.ArrayList;
@@ -28,97 +29,6 @@ import java.util.Map;
 import javax.naming.NamingException;
 
 public final class NameCleaner {
-
-    public static class NameResult {
-
-        private String personalTitleChoice;
-        private String firstName;
-        private String middleName;
-        private String lastName;
-        private String nameSuffixChoice;
-
-        public NameResult(final String personalTitleChoice, final String firstName, final String middleName, final String lastName, final String nameSuffixChoice) {
-            this.personalTitleChoice = personalTitleChoice;
-            this.firstName = firstName;
-            this.middleName = middleName;
-            this.lastName = lastName;
-            this.nameSuffixChoice = nameSuffixChoice;
-        }
-
-        /**
-         * @return the personalTitleChoice
-         */
-        public String getPersonalTitleChoice() {
-            return personalTitleChoice;
-        }
-
-        /**
-         * @return the firstName
-         */
-        public String getFirstName() {
-            return firstName;
-        }
-
-        /**
-         * @return the middleName
-         */
-        public String getMiddleName() {
-            return middleName;
-        }
-
-        /**
-         * @return the lastName
-         */
-        public String getLastName() {
-            return lastName;
-        }
-
-        /**
-         * @return the nameSuffixChoice
-         */
-        public String getNameSuffixChoice() {
-            return nameSuffixChoice;
-        }
-
-        public void print() {
-            System.out.println("personalTitleChoice.: " + personalTitleChoice);
-            System.out.println("firstName...........: " + firstName);
-            System.out.println("middleName..........: " + middleName);
-            System.out.println("lastName............: " + lastName);
-            System.out.println("nameSuffixChoice....: " + nameSuffixChoice);
-        }
-
-        public String getFormattedName() {
-            var formattedName = new StringBuilder();
-
-            if(firstName != null) {
-                formattedName.append(firstName);
-            }
-
-            if(middleName != null) {
-                if(formattedName.length() > 0) {
-                    formattedName.append(' ');
-                }
-
-                formattedName.append(middleName);
-                
-                if(middleName.length() == 1) {
-                    formattedName.append('.');
-                }
-            }
-
-            if(lastName != null) {
-                if(formattedName.length() > 0) {
-                    formattedName.append(' ');
-                }
-
-                formattedName.append(lastName);
-            }
-
-            return formattedName.toString();
-        }
-
-    }
 
     StringUtils stringUtils = StringUtils.getInstance();
 
