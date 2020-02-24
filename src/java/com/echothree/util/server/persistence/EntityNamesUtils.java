@@ -254,9 +254,9 @@ public class EntityNamesUtils {
     
     private final static Map<String, SequenceTypeTranslator> sequenceTypeTranslators;
 
-    public final static InvoiceNameTranslator INVOICE_NAME_TRANSLATOR = new InvoiceNameTranslator();
-    public final static OrderNameTranslator ORDER_NAME_TRANSLATOR = new OrderNameTranslator();
-    public final static PartyNameTranslator PARTY_NAME_TRANSLATOR = new PartyNameTranslator();
+    private final static InvoiceNameTranslator INVOICE_NAME_TRANSLATOR = new InvoiceNameTranslator();
+    private final static OrderNameTranslator ORDER_NAME_TRANSLATOR = new OrderNameTranslator();
+    private final static PartyNameTranslator PARTY_NAME_TRANSLATOR = new PartyNameTranslator();
 
     static {
         var sequenceTypeTranslatorsMap = new HashMap<String, SequenceTypeTranslator>(7);
