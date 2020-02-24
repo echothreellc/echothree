@@ -41,6 +41,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
@@ -154,9 +155,14 @@ public class IdentifyCommand
         customerSearchEvaluator.setLastNameSoundex(false);
         customerSearchEvaluator.setQ(null, q);
 
-        customerSearchEvaluator.execute(this);
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        customerSearchEvaluator.execute(dummyExecutionErrorAccumulator);
 
-        addCustomerSearchResults(userVisit, searchType, entityInstances);
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addCustomerSearchResults(userVisit, searchType, entityInstances);
+        }
     }
 
     private void addCustomerSearchResults(final UserVisit userVisit, final SearchType searchType,
@@ -164,10 +170,6 @@ public class IdentifyCommand
         var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
         var userVisitSearch = SearchLogic.getInstance().getUserVisitSearch(null, userVisit, searchType);
         var customerResultEntityInstances = searchControl.getUserVisitSearchEntityInstances(userVisitSearch);
-
-        // TODO: getUserVisitSearch(...) throwing Exception if q was invalid
-        // q being invalid for one thing may not make it invalid for all, though.
-        // Temporary eea instead of being null up above, so it could be saved and discarded on the parse?
 
         for(var customerResultEntityInstance : customerResultEntityInstances) {
             var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(customerResultEntityInstance);
