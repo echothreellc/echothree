@@ -34,11 +34,11 @@ public final class NameCleaner {
 
     public static class NameResult {
 
-        private String personalTitleChoice = null;
-        private String firstName = null;
-        private String middleName = null;
-        private String lastName = null;
-        private String nameSuffixChoice = null;
+        private String personalTitleChoice;
+        private String firstName;
+        private String middleName;
+        private String lastName;
+        private String nameSuffixChoice;
 
         public NameResult(final String personalTitleChoice, final String firstName, final String middleName, final String lastName, final String nameSuffixChoice) {
             this.personalTitleChoice = personalTitleChoice;
@@ -132,8 +132,8 @@ public final class NameCleaner {
         loadNameSuffixes(userVisitPK);
     }
 
-    protected Map<String, String> personalTitles = null;
-    protected Map<String, String> personalTitlesOriginal = null;
+    protected Map<String, String> personalTitles;
+    protected Map<String, String> personalTitlesOriginal;
     protected int maxPersonalTitleSpaces = 0;
 
     protected String cleanStringForTitleOrSuffix(String str) {
@@ -171,8 +171,8 @@ public final class NameCleaner {
         return personalTitlesOriginal;
     }
 
-    protected Map<String, String> nameSuffixes = null;
-    protected Map<String, String> nameSuffixesOriginal = null;
+    protected Map<String, String> nameSuffixes;
+    protected Map<String, String> nameSuffixesOriginal;
     protected int maxNameSuffixSpaces = 0;
 
     protected void loadNameSuffixes(UserVisitPK userVisitPK)
