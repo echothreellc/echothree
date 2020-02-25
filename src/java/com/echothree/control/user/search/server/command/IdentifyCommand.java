@@ -25,6 +25,7 @@ import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.item.server.ItemControl;
+import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -163,20 +164,7 @@ public class IdentifyCommand
         customerSearchEvaluator.execute(dummyExecutionErrorAccumulator);
 
         if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
-            addCustomerSearchResults(userVisit, searchType, entityInstances);
-        }
-    }
-
-    private void addCustomerSearchResults(final UserVisit userVisit, final SearchType searchType,
-            final Set<EntityInstanceTransfer> entityInstances) {
-        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
-        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearch(null, userVisit, searchType);
-        var customerResultEntityInstances = searchControl.getUserVisitSearchEntityInstances(userVisitSearch);
-
-        for(var customerResultEntityInstance : customerResultEntityInstances) {
-            var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(customerResultEntityInstance);
-
-            entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            addSearchResults(userVisit, searchType, entityInstances);
         }
     }
 
@@ -195,7 +183,54 @@ public class IdentifyCommand
             executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, null, null, null, target);
         }
     }
-    
+
+    private void executeItemSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
+            final String q) {
+        var itemSearchEvaluator = new ItemSearchEvaluator(userVisit, null, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null),
+                null);
+
+        itemSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        itemSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void searchItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
+            var userVisit = getUserVisit();
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_ITEM);
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+
+            executeItemSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, target);
+        }
+    }
+
+    // Add results from any of the BaseSearchEvaluators to the entityInstances.
+    private void addSearchResults(final UserVisit userVisit, final SearchType searchType,
+            final Set<EntityInstanceTransfer> entityInstances) {
+        var searchControl = (SearchControl)Session.getModelController(SearchControl.class);
+        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearch(null, userVisit, searchType);
+        var resultEntityInstances = searchControl.getUserVisitSearchEntityInstances(userVisitSearch);
+
+        for(var resultEntityInstance : resultEntityInstances) {
+            var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(resultEntityInstance);
+
+            entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+        }
+    }
+
     @Override
     protected BaseResult execute() {
         var result = SearchResultFactory.getIdentifyResult();
@@ -211,7 +246,8 @@ public class IdentifyCommand
 
         var nameResult = new NameCleaner().getCleansedName(target);
         searchCustomers(party, entityInstances, target, nameResult);
-        
+        searchItems(party, entityInstances, target);
+
         result.setEntityInstances(entityInstances);
         
         return result;
