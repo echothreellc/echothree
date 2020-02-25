@@ -179,9 +179,11 @@ public class IdentifyCommand
             var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
 
             // First attempt using a first and/or last name isolated from target.
-            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, nameResult.getFirstName(), null, nameResult.getLastName(), null);
+            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
             // Then attempt searching for target using it as a query string.
-            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, null, null, null, target);
+            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    null, null, null, target);
         }
     }
 
@@ -221,9 +223,11 @@ public class IdentifyCommand
             var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
 
             // First attempt using a first and/or last name isolated from target.
-            executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, nameResult.getFirstName(), null, nameResult.getLastName(), null);
+            executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
             // Then attempt searching for target using it as a query string.
-            executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, null, null, null, target);
+            executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    null, null, null, target);
         }
     }
 
