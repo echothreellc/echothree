@@ -72,6 +72,7 @@ import com.echothree.model.control.search.common.transfer.UseResultTransfer;
 import com.echothree.model.control.search.common.transfer.UseTypeResultTransfer;
 import com.echothree.model.control.search.common.transfer.VendorResultTransfer;
 import com.echothree.model.control.search.server.graphql.CustomerResultObject;
+import com.echothree.model.control.search.server.graphql.ItemResultObject;
 import com.echothree.model.control.search.server.graphql.VendorResultObject;
 import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeDescriptionTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeTransferCache;
@@ -5172,6 +5173,24 @@ public class SearchControl
         }
 
         return itemResultTransfers;
+    }
+
+    public List<ItemResultObject> getItemResultObjects(UserVisitSearch userVisitSearch) {
+        var itemResultObjects = new ArrayList<ItemResultObject>();
+
+        try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
+            var itemControl = (ItemControl)Session.getModelController(ItemControl.class);
+
+            while(rs.next()) {
+                var item = itemControl.getItemByPK(new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                itemResultObjects.add(new ItemResultObject(item));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemResultObjects;
     }
     
     // --------------------------------------------------------------------------------
