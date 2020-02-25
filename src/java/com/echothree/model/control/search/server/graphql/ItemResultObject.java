@@ -16,12 +16,16 @@
 
 package com.echothree.model.control.search.server.graphql;
 
+import com.echothree.control.user.item.server.command.GetItemCommand;
+import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("item result object")
 @GraphQLName("ItemResult")
@@ -32,12 +36,27 @@ public class ItemResultObject {
     public ItemResultObject(Item item) {
         this.item = item;
     }
-    
+
+    private Boolean hasItemAccess;
+
+    private boolean getHasItemAccess(final DataFetchingEnvironment env) {
+        if(hasItemAccess == null) {
+            GraphQlContext context = env.getContext();
+            BaseSingleEntityCommand baseSingleEntityCommand = new GetItemCommand(context.getUserVisitPK(), null);
+
+            baseSingleEntityCommand.security();
+
+            hasItemAccess = !baseSingleEntityCommand.hasSecurityMessages();
+        }
+
+        return hasItemAccess;
+    }
+
     @GraphQLField
     @GraphQLDescription("item")
     @GraphQLNonNull
-    public ItemObject getItem() {
-        return new ItemObject(item);
+    public ItemObject getItem(final DataFetchingEnvironment env) {
+        return getHasItemAccess(env) ? new ItemObject(item) : null;
     }
     
 }
