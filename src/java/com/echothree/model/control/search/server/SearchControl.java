@@ -72,6 +72,7 @@ import com.echothree.model.control.search.common.transfer.UseResultTransfer;
 import com.echothree.model.control.search.common.transfer.UseTypeResultTransfer;
 import com.echothree.model.control.search.common.transfer.VendorResultTransfer;
 import com.echothree.model.control.search.server.graphql.CustomerResultObject;
+import com.echothree.model.control.search.server.graphql.VendorResultObject;
 import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeDescriptionTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchDefaultOperatorDescriptionTransferCache;
@@ -5178,41 +5179,44 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     public List<VendorResultTransfer> getVendorResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        Search search = userVisitSearch.getSearch();
-        List<VendorResultTransfer> vendorResultTransfers = new ArrayList<>();
-        boolean includeVendor = false;
-        
-        Set<String> options = session.getOptions();
+        var vendorResultTransfers = new ArrayList<VendorResultTransfer>();
+        var includeVendor = false;
+
+        var options = session.getOptions();
         if(options != null) {
             includeVendor = options.contains(SearchOptions.VendorResultIncludeVendor);
         }
 
-        try {
+        try (ResultSet rs = getUserVisitSearchResultSet(userVisitSearch)) {
             var vendorControl = (VendorControl)Session.getModelController(VendorControl.class);
-            PreparedStatement ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                    "FROM searchresults, entityinstances " +
-                    "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                    "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                    "_LIMIT_");
 
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while(rs.next()) {
-                    Party party = getPartyControl().getPartyByPK(new PartyPK(Long.valueOf(rs.getLong(1))));
-
-                    vendorResultTransfers.add(new VendorResultTransfer(party.getLastDetail().getPartyName(),
-                            includeVendor ? vendorControl.getVendorTransfer(userVisit, party) : null));
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
+                vendorResultTransfers.add(new VendorResultTransfer(party.getLastDetail().getPartyName(),
+                        includeVendor ? vendorControl.getVendorTransfer(userVisit, party) : null));
             }
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
         return vendorResultTransfers;
+    }
+
+    public List<VendorResultObject> getVendorResultObjects(UserVisitSearch userVisitSearch) {
+        var vendorResultObjects = new ArrayList<VendorResultObject>();
+
+        try (var rs = getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                vendorResultObjects.add(new VendorResultObject(party));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return vendorResultObjects;
     }
 
     // --------------------------------------------------------------------------------
