@@ -33,6 +33,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.VendorControl;
+import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
@@ -178,9 +179,55 @@ public class IdentifyCommand
             var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
 
             // First attempt using a first and/or last name isolated from target.
-            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, nameResult.getFirstName(), null, nameResult.getLastName(), null);
+            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
             // Then attempt searching for target using it as a query string.
-            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, null, null, null, target);
+            executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    null, null, null, target);
+        }
+    }
+
+    private void executeVendorSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
+            final String firstName, final String middleName, final String lastName, final String q) {
+        var vendorSearchEvaluator = new VendorSearchEvaluator(userVisit, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null));
+
+        vendorSearchEvaluator.setFirstName(firstName);
+        vendorSearchEvaluator.setFirstNameSoundex(false);
+        vendorSearchEvaluator.setMiddleName(middleName);
+        vendorSearchEvaluator.setMiddleNameSoundex(false);
+        vendorSearchEvaluator.setLastName(lastName);
+        vendorSearchEvaluator.setLastNameSoundex(false);
+        vendorSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        vendorSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void searchVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target,
+            final NameResult nameResult) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
+            var userVisit = getUserVisit();
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_VENDOR);
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+
+            // First attempt using a first and/or last name isolated from target.
+            executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    nameResult.getFirstName(), nameResult.getMiddleName(), nameResult.getLastName(), null);
+            // Then attempt searching for target using it as a query string.
+            executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    null, null, null, target);
         }
     }
 
@@ -246,6 +293,7 @@ public class IdentifyCommand
 
         var nameResult = new NameCleaner().getCleansedName(target);
         searchCustomers(party, entityInstances, target, nameResult);
+        searchVendors(party, entityInstances, target, nameResult);
         searchItems(party, entityInstances, target);
 
         result.setEntityInstances(entityInstances);
