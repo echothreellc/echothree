@@ -47,17 +47,6 @@ public class MimeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("mimeType")) {
-            String mimeTypeName = null;
-            String entityAttributeTypeName = null;
-            
-            int count = attrs.getLength();
-            for(int i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("mimeTypeName"))
-                    mimeTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("entityAttributeTypeName"))
-                    entityAttributeTypeName = attrs.getValue(i);
-            }
-            
             try {
                 CreateMimeTypeForm commandForm = CoreFormFactory.getCreateMimeTypeForm();
                 

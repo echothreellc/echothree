@@ -28,17 +28,19 @@ import org.xml.sax.SAXException;
 
 public class PartyResponsibilitiesHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String partyName;
     
     /** Creates a new instance of PartyResponsibilitiesHandler */
-    public PartyResponsibilitiesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName) {
+    public PartyResponsibilitiesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
         try {
             employeeService = EmployeeUtil.getHome();
         } catch (NamingException ne) {
-            // TODO: Handle Exception
+            throw new SAXException(ne);
         }
         
         this.partyName = partyName;
@@ -46,16 +48,13 @@ public class PartyResponsibilitiesHandler
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-    throws SAXException {
+            throws SAXException {
         if(localName.equals("partyResponsibility")) {
-            String description = null;
             String responsibilityTypeName = null;
             
             int attrCount = attrs.getLength();
             for(int i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("responsibilityTypeName"))
+                if(attrs.getQName(i).equals("responsibilityTypeName"))
                     responsibilityTypeName = attrs.getValue(i);
             }
             
@@ -74,7 +73,7 @@ public class PartyResponsibilitiesHandler
     
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
-    throws SAXException {
+            throws SAXException {
         if(localName.equals("partyResponsibilities")) {
             initialDataParser.popHandler();
         }
