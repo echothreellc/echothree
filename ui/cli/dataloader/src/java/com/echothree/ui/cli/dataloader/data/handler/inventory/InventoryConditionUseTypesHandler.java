@@ -46,7 +46,6 @@ public class InventoryConditionUseTypesHandler
     throws SAXException {
         if(localName.equals("inventoryConditionUseType")) {
             String inventoryConditionUseTypeName = null;
-            String allowMultiple = null;
             String isDefault = null;
             String sortOrder = null;
             

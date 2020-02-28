@@ -22,8 +22,6 @@ import org.apache.commons.logging.LogFactory;
 
 public class HtsUnitedStatesCode {
 
-    private static Log log = LogFactory.getLog(HtsUnitedStatesCode.class);
-    
     private String commodity;
     private String descrip1;
     private String quantity1;
