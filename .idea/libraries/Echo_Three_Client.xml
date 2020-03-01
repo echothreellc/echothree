@@ -2,6 +2,8 @@
   <library name="Echo Three Client">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/build/jars/echothree-client.jar!/" />
+      <root url="file://$PROJECT_DIR$/src/metadata/client/taglib/echothree.tld" />
+      <root url="file://$PROJECT_DIR$/src/metadata/client/taglib/sslext.tld" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
