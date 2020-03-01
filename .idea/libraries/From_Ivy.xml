@@ -224,6 +224,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/textile4j-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/guava-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/graphql-java-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jstl-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
