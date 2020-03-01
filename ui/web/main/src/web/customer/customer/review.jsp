@@ -18,13 +18,17 @@
 
 <%@ include file="../../include/taglibs.jsp" %>
 
-<html:html xhtml="true">
+<html>
     <head>
-        <title>Review (<c:out value="${customer.customerName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.customer">
+                <fmt:param value="${customer.customerName}" />
+            </fmt:message>
+        </title>
         <html:base/>
-        <%@ include file="../../include/environment.jsp" %>
+        <%@ include file="../../include/environment-b.jsp" %>
     </head>
-    <body>
+    <%@ include file="../../include/body-start-b.jsp" %>
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
@@ -564,7 +568,5 @@
             <jsp:include page="../../include/entityAttributeGroups.jsp" />
             <jsp:include page="../../include/entityInstance.jsp" />
         </div>
-        <jsp:include page="../../include/userSession.jsp" />
-        <jsp:include page="../../include/copyright.jsp" />
-    </body>
-</html:html>
+    <%@ include file="../../include/body-end-b.jsp" %>
+</html>

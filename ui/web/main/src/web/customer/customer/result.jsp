@@ -18,13 +18,13 @@
 
 <%@ include file="../../include/taglibs.jsp" %>
 
-<html:html xhtml="true">
+<html>
     <head>
-        <title>Customer Results</title>
+        <title><fmt:message key="pageTitle.customerResults" /></title>
         <html:base/>
-        <%@ include file="../../include/environment.jsp" %>
+        <%@ include file="../../include/environment-b.jsp" %>
     </head>
-    <body>
+    <%@ include file="../../include/body-start-b.jsp" %>
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
@@ -235,7 +235,5 @@
                 </c:otherwise>
             </c:choose>
         </div>
-        <jsp:include page="../../include/userSession.jsp" />
-        <jsp:include page="../../include/copyright.jsp" />
-    </body>
-</html:html>
+    <%@ include file="../../include/body-end-b.jsp" %>
+</html>
