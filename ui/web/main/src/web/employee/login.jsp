@@ -27,7 +27,7 @@
     <body>
         <header>
             <nav class="navbar navbar-dark bg-dark fixed-top">
-                <a class="navbar-brand" href="#">Echo Three</a>
+                <a class="navbar-brand">Echo Three</a>
             </nav>
         </header>
         <main role="main" class="container">
