@@ -9,7 +9,7 @@
 </c:choose>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#"><c:out value="${userSession.partyRelationship.fromParty.partyGroup.name}" /></a>
+        <a class="navbar-brand" href="<c:url value="/action/Portal" />"><c:out value="${userSession.partyRelationship.fromParty.partyGroup.name}" /></a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item dropdown active">
