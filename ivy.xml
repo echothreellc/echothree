@@ -121,7 +121,6 @@
         <dependency org="javax.ejb" name="javax.ejb-api" rev="3.2.2" conf="javadoc->javadoc" />
         <dependency org="javax.enterprise" name="cdi-api" rev="2.0.SP1" conf="javadoc->javadoc" />
         <dependency org="javax.servlet" name="javax.servlet-api" rev="3.1.0" conf="javadoc->javadoc" />
-        <dependency org="javax.servlet" name="jstl" rev="1.2" conf="javadoc->javadoc" />
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="javadoc->javadoc" />
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" conf="javadoc->javadoc" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="javadoc->javadoc" />
