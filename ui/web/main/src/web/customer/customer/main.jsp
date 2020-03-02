@@ -24,14 +24,18 @@
         <html:base/>
         <%@ include file="../../include/environment-b.jsp" %>
     </head>
-    <%@ include file="../../include/body-start-b.jsp" %>
-        <div id="Header">
-            <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Customer/Main" />">Customers</a> &gt;&gt;
-                Search
-            </h2>
-        </div>
+        <%@ include file="../../include/body-start-b.jsp" %>
+        <%@ include file="../../include/breadcrumb/breadcrumbs-start.jsp" %>
+            <jsp:include page="../../include/breadcrumb/portal.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customers.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customers-search.jsp">
+                <jsp:param name="showAsLink" value="false"/>
+            </jsp:include>
+        <%@ include file="../../include/breadcrumb/breadcrumbs-end.jsp" %>
         <div id="Content">
             <p><a href="<c:url value="/action/Customer/Customer/Add" />">Add Customer.</a></p>
             <et:executionErrors id="errorMessage">
