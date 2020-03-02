@@ -29,18 +29,23 @@
         <%@ include file="../../include/environment-b.jsp" %>
     </head>
     <%@ include file="../../include/body-start-b.jsp" %>
-        <div id="Header">
-            <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Customer/Main" />">Customers</a> &gt;&gt;
-                <a href="<c:url value="/action/Customer/Customer/Main" />">Search</a> &gt;&gt;
-                <et:countCustomerResults searchTypeName="ORDER_ENTRY" countVar="customerResultsCount" commandResultVar="countCustomerResultsCommandResult" logErrors="false" />
-                <c:if test="${customerResultsCount > 0}">
-                    <a href="<c:url value="/action/Customer/Customer/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
-                </c:if>
-                Review (<c:out value="${customer.customerName}" />)
-            </h2>
-        </div>
+        <%@ include file="../../include/breadcrumb/breadcrumbs-start.jsp" %>
+            <jsp:include page="../../include/breadcrumb/portal.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customers.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customers-search.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customers-results.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customer.jsp">
+                <jsp:param name="showAsLink" value="false"/>
+            </jsp:include>
+        <%@ include file="../../include/breadcrumb/breadcrumbs-end.jsp" %>
         <div id="Content">
             <et:checkSecurityRoles securityRoles="CustomerStatus.Choices:CancellationPolicy.Review:ReturnPolicy.Review:WorkflowStep.Review:Event.List" />
             <et:hasSecurityRole securityRole="CancellationPolicy.Review" var="includeCancellationPolicyUrl" />
