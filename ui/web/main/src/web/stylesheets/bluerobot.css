@@ -241,6 +241,7 @@ table.displaytag th a:hover {
 
 table.displaytag th.sorted a, th.sortable a {
     background-position: right;
+    background-repeat: no-repeat;
     display: block;
 }
 
