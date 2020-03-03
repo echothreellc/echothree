@@ -2,7 +2,7 @@
 
 <et:country options="CountryIncludeAliases" var="defaultCountry" />
 
-<h2>Contact Mechanisms</h2>
+<h3>Contact Mechanisms</h3>
 <c:url var="addContactMechanismUrl" value="/action/${commonUrl}/ContactMechanismAdd/Step1">
     <c:param name="PartyName" value="${party.partyName}" />
 </c:url>

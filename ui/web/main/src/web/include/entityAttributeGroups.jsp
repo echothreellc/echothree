@@ -8,7 +8,7 @@
         <et:hasSecurityRole securityRole="EntityListItem.Review" var="includeEntityListItemReviewUrl" />
         <c:set var="entityAttributeGroupComplete" value="true"/>
     </c:if>
-    <h2>Attributes</h2>
+    <h3>Attributes</h3>
     <table>
         <c:forEach items="${entityAttributeGroups.list}" var="entityAttributeGroup">
             <tr>

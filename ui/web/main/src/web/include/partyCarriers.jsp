@@ -1,6 +1,6 @@
 <%@ include file="taglibs.jsp" %>
 
-<h2>Carriers</h2>
+<h3>Carriers</h3>
 <c:url var="addCarrierUrl" value="/action/${commonUrl}/Add">
     <c:param name="PartyName" value="${party.partyName}" />
 </c:url>

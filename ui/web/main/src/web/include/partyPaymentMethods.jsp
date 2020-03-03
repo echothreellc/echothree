@@ -1,6 +1,6 @@
 <%@ include file="taglibs.jsp" %>
 
-<h2>Payment Methods</h2>
+<h3>Payment Methods</h3>
 <c:url var="addUrl" value="/action/${commonUrl}/Add/Step1">
     <c:param name="PartyName" value="${party.partyName}" />
 </c:url>
