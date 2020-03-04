@@ -24,7 +24,7 @@
         <html:base/>
         <%@ include file="../../include/environment-b.jsp" %>
     </head>
-        <%@ include file="../../include/body-start-b.jsp" %>
+    <%@ include file="../../include/body-start-b.jsp" %>
         <%@ include file="../../include/breadcrumb/breadcrumbs-start.jsp" %>
             <jsp:include page="../../include/breadcrumb/portal.jsp">
                 <jsp:param name="showAsLink" value="true"/>
@@ -41,6 +41,17 @@
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
+
+            <html:form action="/Customer/Customer/Main" method="POST" focus="firstName">
+                <%@ include file="../../include/field/customerTypeChoice-b.jsp" %>
+                <%@ include file="../../include/field/firstName-b.jsp" %> <!-- TODO: Soundex -->
+                <%@ include file="../../include/field/middleName-b.jsp" %> <!-- TODO: Soundex -->
+                <%@ include file="../../include/field/lastName-b.jsp" %> <!-- TODO: Soundex -->
+
+
+                <%@ include file="../../include/field/submit-b.jsp" %>
+            </html:form>
+
             <html:form action="/Customer/Customer/Main" method="POST" focus="firstName">
                 <table>
                     <tr>
