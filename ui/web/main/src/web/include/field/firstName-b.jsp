@@ -2,7 +2,7 @@
     <label for="firstName" class="col-sm-2 col-form-label col-form-label-sm" style="text-align: right;"><fmt:message key="label.firstName" />:</label>
     <div class="col-sm-5">
         <html:text styleClass="form-control form-control-sm" styleId="firstName" property="firstName" size="20" maxlength="20" />
-        <et:validationErrors id="errorMessage" property="Username">
+        <et:validationErrors id="errorMessage" property="FirstName">
             <br/>
             <div class="alert alert-danger" role="alert">
                 <c:out value="${errorMessage}" />

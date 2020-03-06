@@ -4,7 +4,7 @@
         <html:select styleClass="form-control form-control-sm" styleId="customerTypeChoice" property="customerTypeChoice">
             <html:optionsCollection property="customerTypeChoices" />
         </html:select>
-        <et:validationErrors id="errorMessage" property="CompanyName">
+        <et:validationErrors id="errorMessage" property="CustomerTypeName">
             <br/>
             <div class="alert alert-danger" role="alert">
                 <c:out value="${errorMessage}" />
