@@ -47,8 +47,15 @@
                 <%@ include file="../../include/field/firstName-b.jsp" %> <!-- TODO: Soundex -->
                 <%@ include file="../../include/field/middleName-b.jsp" %> <!-- TODO: Soundex -->
                 <%@ include file="../../include/field/lastName-b.jsp" %> <!-- TODO: Soundex -->
+                <%@ include file="../../include/field/name-b.jsp" %>
+                <%@ include file="../../include/field/customerName-b.jsp" %>
+                <%@ include file="../../include/field/emailAddress-b.jsp" %>
+                <%@ include file="../../include/field/countryChoice-b.jsp" %>
 
-
+                <%@ include file="../../include/field/customerAliasTypeChoice-b.jsp" %>
+                <%@ include file="../../include/field/alias-b.jsp" %>
+                <%@ include file="../../include/field/createdSince-b.jsp" %>
+                <%@ include file="../../include/field/modifiedSince-b.jsp" %>
                 <%@ include file="../../include/field/submit-b.jsp" %>
             </html:form>
 
