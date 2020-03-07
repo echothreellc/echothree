@@ -28,6 +28,19 @@ import javax.naming.NamingException;
 
 public class CustomerEmailAddress implements En {
 
+    public CustomerEmailAddress() {
+        When("^the customer ([^\"]*) deletes the last email address added$",
+                (String persona) -> {
+                    var contactService = ContactUtil.getHome();
+                    var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    deleteContactEmailAddressForm.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
+
+                    LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactEmailAddressForm);
+                });
+    }
+
 //    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
 //    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
 //            throws NamingException {
@@ -98,17 +111,5 @@ public class CustomerEmailAddress implements En {
 
         LastCommandResult.commandResult = commandResult;
     }
-
-//    @When("^the customer ([^\"]*) deletes the last email address added$")
-//    public void theCustomerDeletesTheLastEmailAddress(String persona)
-//            throws NamingException {
-//        var contactService = ContactUtil.getHome();
-//        var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
-//        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-//
-//        deleteContactEmailAddressForm.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
-//
-//        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactEmailAddressForm);
-//    }
 
 }

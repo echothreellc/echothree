@@ -28,6 +28,19 @@ import javax.naming.NamingException;
 
 public class CustomerWebAddress implements En {
 
+    public CustomerWebAddress() {
+        When("^the customer ([^\"]*) deletes the last web address added$",
+                (String persona) -> {
+                    var contactService = ContactUtil.getHome();
+                    var deleteContactWebAddressForm = contactService.getDeleteContactMechanismForm();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    deleteContactWebAddressForm.setContactMechanismName(customerPersona.lastWebAddressContactMechanismName);
+
+                    LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactWebAddressForm);
+                });
+    }
+
 //    @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\" with the description \"([^\"]*)\"$")
 //    public void theCustomerAddsTheWebAddress(String persona, String url, String description)
 //            throws NamingException {
@@ -95,17 +108,5 @@ public class CustomerWebAddress implements En {
 
         LastCommandResult.commandResult = commandResult;
     }
-
-//    @When("^the customer ([^\"]*) deletes the last web address added$")
-//    public void theCustomerDeletesTheLastWebAddress(String persona)
-//            throws NamingException {
-//        var contactService = ContactUtil.getHome();
-//        var deleteContactWebAddressForm = contactService.getDeleteContactMechanismForm();
-//        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-//
-//        deleteContactWebAddressForm.setContactMechanismName(customerPersona.lastWebAddressContactMechanismName);
-//
-//        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactWebAddressForm);
-//    }
 
 }

@@ -28,6 +28,19 @@ import javax.naming.NamingException;
 
 public class CustomerTelephone implements En {
 
+    public CustomerTelephone() {
+        When("^the customer ([^\"]*) deletes the last telephone added$",
+                (String persona) -> {
+                    var contactService = ContactUtil.getHome();
+                    var deleteContactTelephoneForm = contactService.getDeleteContactMechanismForm();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    deleteContactTelephoneForm.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
+
+                    LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
+                });
+    }
+
 //    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
 //    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
 //            String extension, String description, String allowSolicitation)
@@ -112,17 +125,5 @@ public class CustomerTelephone implements En {
 
         LastCommandResult.commandResult = commandResult;
     }
-
-//    @When("^the customer ([^\"]*) deletes the last telephone added$")
-//    public void theCustomerDeletesTheLastTelephone(String persona)
-//            throws NamingException {
-//        var contactService = ContactUtil.getHome();
-//        var deleteContactTelephoneForm = contactService.getDeleteContactMechanismForm();
-//        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-//
-//        deleteContactTelephoneForm.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
-//
-//        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
-//    }
 
 }

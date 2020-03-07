@@ -28,6 +28,19 @@ import javax.naming.NamingException;
 
 public class CustomerPostalAddress implements En {
 
+    public CustomerPostalAddress() {
+        When("^the customer ([^\"]*) deletes the last postal address added$",
+                (String persona) -> {
+                    var contactService = ContactUtil.getHome();
+                    var deleteContactPostalAddressForm = contactService.getDeleteContactMechanismForm();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    deleteContactPostalAddressForm.setContactMechanismName(customerPersona.lastPostalAddressContactMechanismName);
+
+                    LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactPostalAddressForm);
+                });
+    }
+
 //    @When("^the customer ([^\"]*) adds the postal address with the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
 //    public void theCustomerAddsThePostalAddress(String persona, String firstName, String lastName, String address1,
 //            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
@@ -125,17 +138,5 @@ public class CustomerPostalAddress implements En {
 
         LastCommandResult.commandResult = commandResult;
     }
-
-//    @When("^the customer ([^\"]*) deletes the last postal address added$")
-//    public void theCustomerDeletesTheLastPostalAddress(String persona)
-//            throws NamingException {
-//        var contactService = ContactUtil.getHome();
-//        var deleteContactPostalAddressForm = contactService.getDeleteContactMechanismForm();
-//        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-//
-//        deleteContactPostalAddressForm.setContactMechanismName(customerPersona.lastPostalAddressContactMechanismName);
-//
-//        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactPostalAddressForm);
-//    }
 
 }
