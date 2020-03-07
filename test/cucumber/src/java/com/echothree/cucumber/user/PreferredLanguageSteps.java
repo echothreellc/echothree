@@ -22,21 +22,22 @@ import com.echothree.control.user.user.common.form.SetUserVisitPreferredLanguage
 import com.echothree.cucumber.CustomerPersona;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
-import javax.naming.NamingException;
+import io.cucumber.java8.En;
 
-public class PreferredLanguageSteps {
+public class PreferredLanguageSteps implements En {
 
-    @When("^the customer ([^\"]*) sets their preferred language to \"([^\"]*)\"$")
-    public void theCustomerSetsTheirPreferredLanguageTo(String persona, String languageIsoName)
-            throws NamingException {
-        UserService userService = UserUtil.getHome();
-        SetUserVisitPreferredLanguageForm userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
-        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+    public PreferredLanguageSteps() {
+        When("^the customer ([^\"]*) sets their preferred language to \"([^\"]*)\"$",
+                (String persona, String languageIsoName) -> {
+                    UserService userService = UserUtil.getHome();
+                    SetUserVisitPreferredLanguageForm userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
+                    CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        userVisitPreferredLanguageForm.setLanguageIsoName(languageIsoName);
+                    userVisitPreferredLanguageForm.setLanguageIsoName(languageIsoName);
 
-        LastCommandResult.commandResult = userService.setUserVisitPreferredLanguage(customerPersona.userVisitPK,
-                userVisitPreferredLanguageForm);
+                    LastCommandResult.commandResult = userService.setUserVisitPreferredLanguage(customerPersona.userVisitPK,
+                            userVisitPreferredLanguageForm);
+                });
     }
+
 }

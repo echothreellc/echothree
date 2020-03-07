@@ -23,22 +23,22 @@ import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class CustomerWebAddress {
+public class CustomerWebAddress implements En {
 
-    @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\" with the description \"([^\"]*)\"$")
-    public void theCustomerAddsTheWebAddress(String persona, String url, String description)
-            throws NamingException {
-        createContactWebAddress(persona, url, description);
-    }
-
-    @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\"$")
-    public void theCustomerAddsTheWebAddress(String persona, String url)
-            throws NamingException {
-        createContactWebAddress(persona, url, null);
-    }
+//    @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\" with the description \"([^\"]*)\"$")
+//    public void theCustomerAddsTheWebAddress(String persona, String url, String description)
+//            throws NamingException {
+//        createContactWebAddress(persona, url, description);
+//    }
+//
+//    @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\"$")
+//    public void theCustomerAddsTheWebAddress(String persona, String url)
+//            throws NamingException {
+//        createContactWebAddress(persona, url, null);
+//    }
 
     private void createContactWebAddress(String persona, String url, String description)
             throws NamingException {
@@ -57,11 +57,11 @@ public class CustomerWebAddress {
         customerPersona.lastWebAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
 
-    @When("^the customer ([^\"]*) modifies the last web address added to \"([^\"]*)\" with the description \"([^\"]*)\"$")
-    public void theCustomerModifiesTheWebAddress(String persona, String webAddress, String description)
-            throws NamingException {
-        editContactWebAddress(persona, webAddress, description);
-    }
+//    @When("^the customer ([^\"]*) modifies the last web address added to \"([^\"]*)\" with the description \"([^\"]*)\"$")
+//    public void theCustomerModifiesTheWebAddress(String persona, String webAddress, String description)
+//            throws NamingException {
+//        editContactWebAddress(persona, webAddress, description);
+//    }
 
     private void editContactWebAddress(String persona, String webAddress, String description)
             throws NamingException {
@@ -96,16 +96,16 @@ public class CustomerWebAddress {
         LastCommandResult.commandResult = commandResult;
     }
 
-    @When("^the customer ([^\"]*) deletes the last web address added$")
-    public void theCustomerDeletesTheLastWebAddress(String persona)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var deleteContactWebAddressForm = contactService.getDeleteContactMechanismForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-        deleteContactWebAddressForm.setContactMechanismName(customerPersona.lastWebAddressContactMechanismName);
-
-        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactWebAddressForm);
-    }
+//    @When("^the customer ([^\"]*) deletes the last web address added$")
+//    public void theCustomerDeletesTheLastWebAddress(String persona)
+//            throws NamingException {
+//        var contactService = ContactUtil.getHome();
+//        var deleteContactWebAddressForm = contactService.getDeleteContactMechanismForm();
+//        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+//
+//        deleteContactWebAddressForm.setContactMechanismName(customerPersona.lastWebAddressContactMechanismName);
+//
+//        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactWebAddressForm);
+//    }
 
 }

@@ -19,29 +19,28 @@ package com.echothree.cucumber.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
 import com.echothree.control.user.contact.common.result.EditContactTelephoneResult;
-import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class CustomerTelephone {
+public class CustomerTelephone implements En {
 
-    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-            String extension, String description, String allowSolicitation)
-            throws NamingException {
-        createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
-    }
-
-    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\" and telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-            String extension, String allowSolicitation)
-            throws NamingException {
-        createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, null, allowSolicitation);
-    }
+//    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
+//            String extension, String description, String allowSolicitation)
+//            throws NamingException {
+//        createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
+//    }
+//
+//    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\" and telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
+//            String extension, String allowSolicitation)
+//            throws NamingException {
+//        createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, null, allowSolicitation);
+//    }
 
     private void createContactTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
             String extension, String description, String allowSolicitation)
@@ -65,12 +64,12 @@ public class CustomerTelephone {
         customerPersona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
 
-    @When("^the customer ([^\"]*) modifies the last telephone added to the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerModifiesTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-            String extension, String description, String allowSolicitation)
-            throws NamingException {
-        editContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
-    }
+//    @When("^the customer ([^\"]*) modifies the last telephone added to the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerModifiesTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
+//            String extension, String description, String allowSolicitation)
+//            throws NamingException {
+//        editContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
+//    }
 
     private void editContactTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
             String extension, String description, String allowSolicitation)
@@ -114,16 +113,16 @@ public class CustomerTelephone {
         LastCommandResult.commandResult = commandResult;
     }
 
-    @When("^the customer ([^\"]*) deletes the last telephone added$")
-    public void theCustomerDeletesTheLastTelephone(String persona)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var deleteContactTelephoneForm = contactService.getDeleteContactMechanismForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-        deleteContactTelephoneForm.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
-
-        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
-    }
+//    @When("^the customer ([^\"]*) deletes the last telephone added$")
+//    public void theCustomerDeletesTheLastTelephone(String persona)
+//            throws NamingException {
+//        var contactService = ContactUtil.getHome();
+//        var deleteContactTelephoneForm = contactService.getDeleteContactMechanismForm();
+//        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+//
+//        deleteContactTelephoneForm.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
+//
+//        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
+//    }
 
 }

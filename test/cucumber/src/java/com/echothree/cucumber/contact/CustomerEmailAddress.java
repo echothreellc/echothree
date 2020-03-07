@@ -23,22 +23,22 @@ import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class CustomerEmailAddress {
+public class CustomerEmailAddress implements En {
 
-    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
-            throws NamingException {
-        createContactEmailAddress(persona, emailAddress, description, allowSolicitation);
-    }
-
-    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String allowSolicitation)
-            throws NamingException {
-        createContactEmailAddress(persona, emailAddress, null, allowSolicitation);
-    }
+//    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
+//            throws NamingException {
+//        createContactEmailAddress(persona, emailAddress, description, allowSolicitation);
+//    }
+//
+//    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String allowSolicitation)
+//            throws NamingException {
+//        createContactEmailAddress(persona, emailAddress, null, allowSolicitation);
+//    }
 
     private void createContactEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
             throws NamingException {
@@ -58,11 +58,11 @@ public class CustomerEmailAddress {
         customerPersona.lastEmailAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
 
-    @When("^the customer ([^\"]*) modifies the last email address added to \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerModifiesTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
-            throws NamingException {
-        editContactEmailAddress(persona, emailAddress, description, allowSolicitation);
-    }
+//    @When("^the customer ([^\"]*) modifies the last email address added to \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerModifiesTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
+//            throws NamingException {
+//        editContactEmailAddress(persona, emailAddress, description, allowSolicitation);
+//    }
 
     private void editContactEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
             throws NamingException {
@@ -99,16 +99,16 @@ public class CustomerEmailAddress {
         LastCommandResult.commandResult = commandResult;
     }
 
-    @When("^the customer ([^\"]*) deletes the last email address added$")
-    public void theCustomerDeletesTheLastEmailAddress(String persona)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-        deleteContactEmailAddressForm.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
-
-        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactEmailAddressForm);
-    }
+//    @When("^the customer ([^\"]*) deletes the last email address added$")
+//    public void theCustomerDeletesTheLastEmailAddress(String persona)
+//            throws NamingException {
+//        var contactService = ContactUtil.getHome();
+//        var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
+//        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+//
+//        deleteContactEmailAddressForm.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
+//
+//        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactEmailAddressForm);
+//    }
 
 }

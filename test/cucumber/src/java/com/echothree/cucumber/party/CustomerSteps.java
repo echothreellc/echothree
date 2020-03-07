@@ -24,10 +24,36 @@ import com.echothree.cucumber.AnonymousPersonas;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class CustomerSteps {
+public class CustomerSteps implements En {
+
+    public CustomerSteps() {
+        When("^the anonymous user ([^\"]*) adds a new customer with the first name \"([^\"]*)\" and the last name \"([^\"]*)\" " +
+                        "and the email address \"([^\"]*)\" and (does|does not) allow solicitations to it and the username \"([^\"]*)\" " +
+                        "and the password \"([^\"]*)\" and the recovery question ([^\"]*) " +
+                        "and the answer \"([^\"]*)\"$",
+                (String persona, String firstName, String lastName, String emailAddress, String allowSolicitation,
+                        String username, String password, String recoveryQuestionName, String answer) -> {
+                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+
+                    createCustomerWithLogin(anonymousPersona, null, null,
+                            null, null, null, null,
+                            null, null, firstName, null, lastName,
+                            null, null, null, null,
+                            null, null, emailAddress,
+                            allowSolicitation, username, password, password, recoveryQuestionName,
+                            answer, null, null);
+                });
+
+        When("^the employee ([^\"]*) sets the status of the last customer added to ([^\"]*)$",
+                (String persona, String customerStatusChoice) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    setCustomerStatus(employeePersona, employeePersona.lastCustomerName, customerStatusChoice);
+                });
+    }
 
     private void createCustomerWithLogin(BasePersona persona, String customerTypeName, String cancellationPolicyName,
             String returnPolicyName, String arGlAccountName, String initialOfferName, String initialUseName,
@@ -132,33 +158,6 @@ public class CustomerSteps {
         var commandResult = customerService.setCustomerStatus(persona.userVisitPK, setCustomerStatusForm);
 
         LastCommandResult.commandResult = commandResult;
-    }
-
-    @When("^the anonymous user ([^\"]*) adds a new customer with the first name \"([^\"]*)\" and the last name \"([^\"]*)\" " +
-            "and the email address \"([^\"]*)\" and (does|does not) allow solicitations to it and the username \"([^\"]*)\" " +
-            "and the first password \"([^\"]*)\" and the second password \"([^\"]*)\" and the recovery question ([^\"]*) " +
-            "and the answer \"([^\"]*)\"$")
-    public void anonymousAddsANewCustomerWithLogin(String persona, String firstName, String lastName, String emailAddress,
-            String allowSolicitation, String username, String password1, String password2, String recoveryQuestionName,
-            String answer)
-            throws NamingException {
-        var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
-
-        createCustomerWithLogin(anonymousPersona, null, null,
-                null, null, null, null,
-                null, null, firstName, null, lastName,
-                null, null, null, null,
-                null, null, emailAddress,
-                allowSolicitation, username, password1, password2, recoveryQuestionName,
-                answer, null, null);
-    }
-
-    @When("^the employee ([^\"]*) sets the status of the last customer added to ([^\"]*)$")
-    public void theEmployeeSetsTheStatusOfTheLastCustomerAdded(String persona, String customerStatusChoice)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-        setCustomerStatus(employeePersona, employeePersona.lastCustomerName, customerStatusChoice);
     }
 
 }

@@ -18,62 +18,58 @@ package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
 import com.echothree.cucumber.EmployeePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
-import cucumber.api.java.After;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import java.util.Map;
-import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EmployeeLoginSteps {
+public class EmployeeLoginSteps implements En {
 
-    @After
-    public void ensureAllEmployeesLoggedOut()
-            throws NamingException {
-        for(Map.Entry<String, EmployeePersona> employeePersona : EmployeePersonas.getEmployeePersonas()) {
-            employeeIsNotCurrentlyLoggedIn(employeePersona.getKey());
-        }
-    }
+    public EmployeeLoginSteps() {
+        After(() -> {
+                    for(Map.Entry<String, EmployeePersona> employeePersona : EmployeePersonas.getEmployeePersonas()) {
+                        AuthenticationService authenticationService = AuthenticationUtil.getHome();
+                        CommandResult commandResult = authenticationService.logout(employeePersona.getValue().userVisitPK);
 
-    @Given("^the employee ([^\"]*) is currently logged in")
-    public void employeeIsCurrentlyLoggedIn(String persona)
-            throws NamingException {
-        EmployeePersona employeePersona = EmployeePersonas.getEmployeePersona(persona);
+                        assertThat(commandResult.hasErrors()).isFalse();
+                    }
+                });
 
-        assertThat(employeePersona).isNotNull();
-    }
+        Given("^the employee ([^\"]*) is currently logged in",
+                (String persona) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-    @Given("^the employee ([^\"]*) is not currently logged in")
-    public void employeeIsNotCurrentlyLoggedIn(String persona)
-            throws NamingException {
-        EmployeePersona employeePersona = EmployeePersonas.getEmployeePersona(persona);
+                    assertThat(employeePersona).isNotNull();
+                });
 
-        if(employeePersona != null) {
-            AuthenticationService authenticationService = AuthenticationUtil.getHome();
-            CommandResult commandResult = authenticationService.logout(employeePersona.userVisitPK);
+        Given("^the employee ([^\"]*) is not currently logged in",
+                (String persona) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-            assertThat(commandResult.hasErrors()).isFalse();
-        }
-    }
+                    if(employeePersona != null) {
+                        AuthenticationService authenticationService = AuthenticationUtil.getHome();
+                        CommandResult commandResult = authenticationService.logout(employeePersona.userVisitPK);
 
-    @When("^the employee ([^\"]*) logs in with the username \"([^\"]*)\" and password \"([^\"]*)\" and company \"([^\"]*)\"$")
-    public void theEmployeeLogsInWithTheUsernameAndPasswordAndCompany(String persona, String username, String password, String companyName)
-            throws NamingException {
-        AuthenticationService authenticationService = AuthenticationUtil.getHome();
-        EmployeeLoginForm employeeLoginForm = authenticationService.getEmployeeLoginForm();
-        EmployeePersona employeePersona = EmployeePersonas.getEmployeePersona(persona);
+                        assertThat(commandResult.hasErrors()).isFalse();
+                    }
+                });
 
-        employeeLoginForm.setUsername(username);
-        employeeLoginForm.setPassword(password);
-        employeeLoginForm.setCompanyName(companyName);
-        employeeLoginForm.setRemoteInet4Address("0.0.0.0");
+        When("^the employee ([^\"]*) logs in with the username \"([^\"]*)\" and password \"([^\"]*)\" and company \"([^\"]*)\"$",
+                (String persona, String username, String password, String companyName) -> {
+                    var authenticationService = AuthenticationUtil.getHome();
+                    var employeeLoginForm = authenticationService.getEmployeeLoginForm();
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-        LastCommandResult.commandResult = authenticationService.employeeLogin(employeePersona.userVisitPK, employeeLoginForm);
+                    employeeLoginForm.setUsername(username);
+                    employeeLoginForm.setPassword(password);
+                    employeeLoginForm.setCompanyName(companyName);
+                    employeeLoginForm.setRemoteInet4Address("0.0.0.0");
+
+                    LastCommandResult.commandResult = authenticationService.employeeLogin(employeePersona.userVisitPK, employeeLoginForm);
+                });
     }
 
 }

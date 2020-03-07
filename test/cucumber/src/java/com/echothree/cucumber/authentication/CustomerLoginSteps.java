@@ -16,63 +16,57 @@
 
 package com.echothree.cucumber.authentication;
 
-import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
 import com.echothree.cucumber.CustomerPersona;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import com.echothree.util.common.command.CommandResult;
-import cucumber.api.java.After;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import java.util.Map;
-import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CustomerLoginSteps {
+public class CustomerLoginSteps implements En {
 
-    @After
-    public void ensureAllCustomersLoggedOut()
-            throws NamingException {
-        for(Map.Entry<String, CustomerPersona> customerPersona : CustomerPersonas.getCustomerPersonas()) {
-            customerIsNotCurrentlyLoggedIn(customerPersona.getKey());
-        }
-    }
+    public CustomerLoginSteps() {
+        After(() -> {
+                    for(Map.Entry<String, CustomerPersona> customerPersona : CustomerPersonas.getCustomerPersonas()) {
+                        var authenticationService = AuthenticationUtil.getHome();
+                        var commandResult = authenticationService.logout(customerPersona.getValue().userVisitPK);
 
-    @Given("^the customer ([^\"]*) is currently logged in")
-    public void customerIsCurrentlyLoggedIn(String persona)
-            throws NamingException {
-        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                        assertThat(commandResult.hasErrors()).isFalse();
+                    }
+                });
 
-        assertThat(customerPersona).isNotNull();
-    }
+        Given("^the customer ([^\"]*) is currently logged in",
+                (String persona) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-    @Given("^the customer ([^\"]*) is not currently logged in")
-    public void customerIsNotCurrentlyLoggedIn(String persona)
-            throws NamingException {
-        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    assertThat(customerPersona).isNotNull();
+                });
 
-        if(customerPersona != null) {
-            AuthenticationService authenticationService = AuthenticationUtil.getHome();
-            CommandResult commandResult = authenticationService.logout(customerPersona.userVisitPK);
+        Given("^the customer ([^\"]*) is not currently logged in",
+                (String persona) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-            assertThat(commandResult.hasErrors()).isFalse();
-        }
-    }
+                    if(customerPersona != null) {
+                        var authenticationService = AuthenticationUtil.getHome();
+                        var commandResult = authenticationService.logout(customerPersona.userVisitPK);
 
-    @When("^the customer ([^\"]*) logs in with the username \"([^\"]*)\" and password \"([^\"]*)\"$")
-    public void theCustomerLogsInWithTheUsernameAndPassword(String persona, String username, String password)
-            throws NamingException {
-        AuthenticationService authenticationService = AuthenticationUtil.getHome();
-        CustomerLoginForm customerLoginForm = authenticationService.getCustomerLoginForm();
-        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                        assertThat(commandResult.hasErrors()).isFalse();
+                    }
+                });
 
-        customerLoginForm.setUsername(username);
-        customerLoginForm.setPassword(password);
-        customerLoginForm.setRemoteInet4Address("0.0.0.0");
+        When("^the customer ([^\"]*) logs in with the username \"([^\"]*)\" and password \"([^\"]*)\"$",
+                (String persona, String username, String password) -> {
+                    var authenticationService = AuthenticationUtil.getHome();
+                    var customerLoginForm = authenticationService.getCustomerLoginForm();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        LastCommandResult.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
+                    customerLoginForm.setUsername(username);
+                    customerLoginForm.setPassword(password);
+                    customerLoginForm.setRemoteInet4Address("0.0.0.0");
+
+                    LastCommandResult.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
+                });
     }
 
 }

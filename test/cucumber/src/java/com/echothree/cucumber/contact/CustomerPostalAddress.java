@@ -23,26 +23,26 @@ import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class CustomerPostalAddress {
+public class CustomerPostalAddress implements En {
 
-    @When("^the customer ([^\"]*) adds the postal address with the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsThePostalAddress(String persona, String firstName, String lastName, String address1,
-            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
-            throws NamingException {
-        createContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
-                description, allowSolicitation);
-    }
-
-    @When("^the customer ([^\"]*) adds the postal address with the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsThePostalAddress(String persona, String firstName, String lastName, String address1,
-            String city, String state, String postalCode, String countryName, String allowSolicitation)
-            throws NamingException {
-        createContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
-                null, allowSolicitation);
-    }
+//    @When("^the customer ([^\"]*) adds the postal address with the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerAddsThePostalAddress(String persona, String firstName, String lastName, String address1,
+//            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
+//            throws NamingException {
+//        createContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
+//                description, allowSolicitation);
+//    }
+//
+//    @When("^the customer ([^\"]*) adds the postal address with the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerAddsThePostalAddress(String persona, String firstName, String lastName, String address1,
+//            String city, String state, String postalCode, String countryName, String allowSolicitation)
+//            throws NamingException {
+//        createContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
+//                null, allowSolicitation);
+//    }
 
     private void createContactPostalAddress(String persona, String firstName, String lastName, String address1, String city,
             String state, String postalCode, String countryName, String description, String allowSolicitation)
@@ -70,13 +70,13 @@ public class CustomerPostalAddress {
         customerPersona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
 
-    @When("^the customer ([^\"]*) modifies the last postal address added to the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerModifiesThePostalAddress(String persona, String firstName, String lastName, String address1,
-            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
-            throws NamingException {
-        editContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
-                description, allowSolicitation);
-    }
+//    @When("^the customer ([^\"]*) modifies the last postal address added to the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
+//    public void theCustomerModifiesThePostalAddress(String persona, String firstName, String lastName, String address1,
+//            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
+//            throws NamingException {
+//        editContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
+//                description, allowSolicitation);
+//    }
 
     private void editContactPostalAddress(String persona, String firstName, String lastName, String address1,
             String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
@@ -126,16 +126,16 @@ public class CustomerPostalAddress {
         LastCommandResult.commandResult = commandResult;
     }
 
-    @When("^the customer ([^\"]*) deletes the last postal address added$")
-    public void theCustomerDeletesTheLastPostalAddress(String persona)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var deleteContactPostalAddressForm = contactService.getDeleteContactMechanismForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-        deleteContactPostalAddressForm.setContactMechanismName(customerPersona.lastPostalAddressContactMechanismName);
-
-        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactPostalAddressForm);
-    }
+//    @When("^the customer ([^\"]*) deletes the last postal address added$")
+//    public void theCustomerDeletesTheLastPostalAddress(String persona)
+//            throws NamingException {
+//        var contactService = ContactUtil.getHome();
+//        var deleteContactPostalAddressForm = contactService.getDeleteContactMechanismForm();
+//        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+//
+//        deleteContactPostalAddressForm.setContactMechanismName(customerPersona.lastPostalAddressContactMechanismName);
+//
+//        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactPostalAddressForm);
+//    }
 
 }

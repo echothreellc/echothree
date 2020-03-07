@@ -22,21 +22,22 @@ import com.echothree.control.user.user.common.form.SetUserVisitPreferredCurrency
 import com.echothree.cucumber.CustomerPersona;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
-import javax.naming.NamingException;
+import io.cucumber.java8.En;
 
-public class PreferredCurrencySteps {
+public class PreferredCurrencySteps implements En {
 
-    @When("^the customer ([^\"]*) sets their preferred currency to \"([^\"]*)\"$")
-    public void theCustomerSetsTheirPreferredCurrencyTo(String persona, String currencyIsoName)
-            throws NamingException {
-        UserService userService = UserUtil.getHome();
-        SetUserVisitPreferredCurrencyForm userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();
-        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+    public PreferredCurrencySteps() {
+        When("^the customer ([^\"]*) sets their preferred currency to \"([^\"]*)\"$",
+                (String persona, String currencyIsoName) -> {
+                    UserService userService = UserUtil.getHome();
+                    SetUserVisitPreferredCurrencyForm userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();
+                    CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        userVisitPreferredCurrencyForm.setCurrencyIsoName(currencyIsoName);
+                    userVisitPreferredCurrencyForm.setCurrencyIsoName(currencyIsoName);
 
-        LastCommandResult.commandResult = userService.setUserVisitPreferredCurrency(customerPersona.userVisitPK,
-                userVisitPreferredCurrencyForm);
+                    LastCommandResult.commandResult = userService.setUserVisitPreferredCurrency(customerPersona.userVisitPK,
+                            userVisitPreferredCurrencyForm);
+                });
     }
+
 }

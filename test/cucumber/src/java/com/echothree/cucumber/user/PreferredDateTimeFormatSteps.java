@@ -22,21 +22,22 @@ import com.echothree.control.user.user.common.form.SetUserVisitPreferredDateTime
 import com.echothree.cucumber.CustomerPersona;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
-import javax.naming.NamingException;
+import io.cucumber.java8.En;
 
-public class PreferredDateTimeFormatSteps {
+public class PreferredDateTimeFormatSteps implements En {
 
-    @When("^the customer ([^\"]*) sets their preferred date time format to \"([^\"]*)\"$")
-    public void theCustomerSetsTheirPreferredDateTimeFormatTo(String persona, String dateTimeFormatName)
-            throws NamingException {
-        UserService userService = UserUtil.getHome();
-        SetUserVisitPreferredDateTimeFormatForm userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();
-        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+    public PreferredDateTimeFormatSteps() {
+        When("^the customer ([^\"]*) sets their preferred date time format to \"([^\"]*)\"$",
+                (String persona, String dateTimeFormatName) -> {
+                    UserService userService = UserUtil.getHome();
+                    SetUserVisitPreferredDateTimeFormatForm userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();
+                    CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        userVisitPreferredDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);
+                    userVisitPreferredDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);
 
-        LastCommandResult.commandResult = userService.setUserVisitPreferredDateTimeFormat(customerPersona.userVisitPK,
-                userVisitPreferredDateTimeFormatForm);
+                    LastCommandResult.commandResult = userService.setUserVisitPreferredDateTimeFormat(customerPersona.userVisitPK,
+                            userVisitPreferredDateTimeFormatForm);
+                });
     }
+
 }

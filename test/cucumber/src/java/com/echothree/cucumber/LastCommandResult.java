@@ -17,24 +17,22 @@
 package com.echothree.cucumber;
 
 import com.echothree.util.common.command.CommandResult;
-import cucumber.api.Scenario;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Then;
+import io.cucumber.java8.En;
+import io.cucumber.java8.Scenario;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class LastCommandResult {
+public class LastCommandResult implements En {
 
     private Scenario scenario;
     public static CommandResult commandResult;
 
-    @Before
-    public void before(Scenario scenario) {
-        this.scenario = scenario;
-    }
+    public LastCommandResult () {
+        Before((Scenario scenario) ->
+                this.scenario = scenario
+        );
 
-    @Then("^no error should occur$")
-    public void noErrorShouldOccur() {
-        assertThat(commandResult).isNotNull();
+        Then("^no error should occur$", () -> {
+            assertThat(commandResult).isNotNull();
 
 //        if(commandResult.hasErrors()) {
 //            var executionResult = commandResult.getExecutionResult();
@@ -47,49 +45,43 @@ public class LastCommandResult {
 //            }
 //        }
 
-        assertThat(commandResult.hasErrors()).isFalse();
-    }
+            assertThat(commandResult.hasErrors()).isFalse();
+        });
 
-    @Then("^an error should occur$")
-    public void anErrorShouldOccur() {
-        assertThat(commandResult).isNotNull();
-        assertThat(commandResult.hasErrors()).isTrue();
-    }
+        Then("^an error should occur$", () -> {
+            assertThat(commandResult).isNotNull();
+            assertThat(commandResult.hasErrors()).isTrue();
+        });
 
-    @Then("^no validation error should occur$")
-    public void noValidationErrorShouldOccur() {
-        assertThat(commandResult).isNotNull();
-        assertThat(commandResult.hasValidationErrors()).isFalse();
-    }
+        Then("^no validation error should occur$", () -> {
+            assertThat(commandResult).isNotNull();
+            assertThat(commandResult.hasValidationErrors()).isFalse();
+        });
 
-    @Then("^a validation error should occur$")
-    public void aValidationErrorShouldOccur() {
-        assertThat(commandResult).isNotNull();
-        assertThat(commandResult.hasValidationErrors()).isTrue();
-    }
+        Then("^a validation error should occur$", () -> {
+            assertThat(commandResult).isNotNull();
+            assertThat(commandResult.hasValidationErrors()).isTrue();
+        });
 
-    @Then("^no execution warning should occur$")
-    public void noExecutionWarningShouldOccur() {
-        assertThat(commandResult).isNotNull();
-        assertThat(commandResult.hasExecutionWarnings()).isFalse();
-    }
+        Then("^no execution warning should occur$", () -> {
+            assertThat(commandResult).isNotNull();
+            assertThat(commandResult.hasExecutionWarnings()).isFalse();
+        });
 
-    @Then("^an execution warning should occur$")
-    public void anExecutionWarningShouldOccur() {
-        assertThat(commandResult).isNotNull();
-        assertThat(commandResult.hasExecutionWarnings()).isTrue();
-    }
+        Then("^an execution warning should occur$", () -> {
+            assertThat(commandResult).isNotNull();
+            assertThat(commandResult.hasExecutionWarnings()).isTrue();
+        });
 
-    @Then("^no execution error should occur$")
-    public void noExecutionErrorShouldOccur() {
-        assertThat(commandResult).isNotNull();
-        assertThat(commandResult.hasExecutionErrors()).isFalse();
-    }
+        Then("^no execution error should occur$", () -> {
+            assertThat(commandResult).isNotNull();
+            assertThat(commandResult.hasExecutionErrors()).isFalse();
+        });
 
-    @Then("^an execution error should occur$")
-    public void anExecutionErrorShouldOccur() {
-        assertThat(commandResult).isNotNull();
-        assertThat(commandResult.hasExecutionErrors()).isTrue();
+        Then("^an execution error should occur$", () -> {
+            assertThat(commandResult).isNotNull();
+            assertThat(commandResult.hasExecutionErrors()).isTrue();
+        });
     }
 
 }

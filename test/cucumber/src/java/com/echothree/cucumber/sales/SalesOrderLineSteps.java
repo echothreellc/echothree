@@ -21,10 +21,26 @@ import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class SalesOrderLineSteps {
+public class SalesOrderLineSteps implements En {
+
+    public SalesOrderLineSteps() {
+        When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to the sales order$",
+                (String persona, String quantity, String itemName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    createSalesOrderLine(employeePersona, employeePersona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null);
+                });
+
+        When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to a new sales order$",
+                (String persona, String quantity, String itemName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    createSalesOrderLine(employeePersona, null, null, itemName, null, null, quantity, null, null, null, null, null, null);
+                });
+    }
 
     private void createSalesOrderLine(BasePersona persona, String salesOrderName, String orderLineSequence, String itemName,
             String inventoryConditionName, String unitOfMeasureTypeName, String quantity, String unitAmount, String taxable,
@@ -53,22 +69,6 @@ public class SalesOrderLineSteps {
 
         persona.lastSalesOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
         persona.lastSalesOrderLineSequence = commandResult.getHasErrors() ? null : result.getOrderLineSequence();
-    }
-
-    @When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to the sales order$")
-    public void theEmployeeAddsToTheSalesOrder(String persona, String quantity, String itemName)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-        createSalesOrderLine(employeePersona, employeePersona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null);
-    }
-
-    @When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to a new sales order$")
-    public void theEmployeeAddsToANewSalesOrder(String persona, String quantity, String itemName)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-        createSalesOrderLine(employeePersona, null, null, itemName, null, null, quantity, null, null, null, null, null, null);
     }
 
 }

@@ -21,10 +21,10 @@ import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class ItemSteps {
+public class ItemSteps implements En {
 
     private void createItem(BasePersona persona, String itemName, String itemTypeName, String itemUseTypeName, String itemCategoryName,
             String itemAccountingCategoryName, String itemPurchasingCategoryName, String companyName, String itemDeliveryTypeName,
@@ -83,33 +83,33 @@ public class ItemSteps {
         LastCommandResult.commandResult = commandResult;
     }
 
-    @When("^the employee ([^\"]*) adds a new item with type ([^\"]*) and use type ([^\"]*) and category ([^\"]*) " +
-            "and accounting category ([^\"]*) and purchasing category ([^\"]*) and company ([^\"]*) and delivery type ([^\"]*) " +
-            "and inventory type ([^\"]*) and (has|does not have) serialized inventory and (is|is not) exempt from shipping and " +
-            "(does|does not) allow club discounts and (does|does not) allow coupon discounts and (does|does not) allow associate payments " +
-            "and has a status of ([^\"]*) and an unit of measure kind of ([^\"]*) and a price type of ([^\"]*)$")
-    public void theEmployeeAddsANewItem(String persona, String itemTypeName, String itemUseTypeName, String itemCategoryName,
-            String itemAccountingCategoryName, String itemPurchasingCategoryName, String companyName, String itemDeliveryTypeName,
-            String itemInventoryTypeName, String inventorySerialized, String shippingChargeExempt, String allowClubDiscounts,
-            String allowCouponDiscounts, String allowAssociatePayments, String itemStatus, String unitOfMeasureKindName,
-            String itemPriceTypeName)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+//    @When("^the employee ([^\"]*) adds a new item with type ([^\"]*) and use type ([^\"]*) and category ([^\"]*) " +
+//            "and accounting category ([^\"]*) and purchasing category ([^\"]*) and company ([^\"]*) and delivery type ([^\"]*) " +
+//            "and inventory type ([^\"]*) and (has|does not have) serialized inventory and (is|is not) exempt from shipping and " +
+//            "(does|does not) allow club discounts and (does|does not) allow coupon discounts and (does|does not) allow associate payments " +
+//            "and has a status of ([^\"]*) and an unit of measure kind of ([^\"]*) and a price type of ([^\"]*)$")
+//    public void theEmployeeAddsANewItem(String persona, String itemTypeName, String itemUseTypeName, String itemCategoryName,
+//            String itemAccountingCategoryName, String itemPurchasingCategoryName, String companyName, String itemDeliveryTypeName,
+//            String itemInventoryTypeName, String inventorySerialized, String shippingChargeExempt, String allowClubDiscounts,
+//            String allowCouponDiscounts, String allowAssociatePayments, String itemStatus, String unitOfMeasureKindName,
+//            String itemPriceTypeName)
+//            throws NamingException {
+//        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+//
+//        createItem(employeePersona, null, itemTypeName, itemUseTypeName, itemCategoryName,
+//            itemAccountingCategoryName, itemPurchasingCategoryName, companyName, itemDeliveryTypeName,
+//            itemInventoryTypeName, inventorySerialized, shippingChargeExempt, null,
+//            null, null, null, null,
+//            null, allowClubDiscounts, allowCouponDiscounts, allowAssociatePayments,
+//            itemStatus, unitOfMeasureKindName, itemPriceTypeName, null, null);
+//    }
 
-        createItem(employeePersona, null, itemTypeName, itemUseTypeName, itemCategoryName,
-            itemAccountingCategoryName, itemPurchasingCategoryName, companyName, itemDeliveryTypeName,
-            itemInventoryTypeName, inventorySerialized, shippingChargeExempt, null,
-            null, null, null, null,
-            null, allowClubDiscounts, allowCouponDiscounts, allowAssociatePayments,
-            itemStatus, unitOfMeasureKindName, itemPriceTypeName, null, null);
-    }
-
-    @When("^the employee ([^\"]*) sets the status of the last item added to ([^\"]*)$")
-    public void theEmployeeSetsTheStatusOfTheLastItemAdded(String persona, String itemStatusChoice)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-        setItemStatus(employeePersona, employeePersona.lastItemName, itemStatusChoice);
-    }
+//    @When("^the employee ([^\"]*) sets the status of the last item added to ([^\"]*)$")
+//    public void theEmployeeSetsTheStatusOfTheLastItemAdded(String persona, String itemStatusChoice)
+//            throws NamingException {
+//        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+//
+//        setItemStatus(employeePersona, employeePersona.lastItemName, itemStatusChoice);
+//    }
 
 }
