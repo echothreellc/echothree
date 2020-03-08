@@ -39,21 +39,25 @@ public class CustomerTelephone implements En {
 
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
                 });
-    }
 
-//    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-//    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-//            String extension, String description, String allowSolicitation)
-//            throws NamingException {
-//        createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
-//    }
-//
-//    @When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\" and telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-//    public void theCustomerAddsTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-//            String extension, String allowSolicitation)
-//            throws NamingException {
-//        createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, null, allowSolicitation);
-//    }
+        When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$",
+                (String persona, String countryName, String areaCode, String telephoneNumber,
+                        String extension, String description, String allowSolicitation) -> {
+                    createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
+                });
+
+        When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\" and telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" and (does|does not) allow solicitations to it$",
+                (String persona, String countryName, String areaCode, String telephoneNumber,
+                        String extension, String allowSolicitation) -> {
+                    createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, null, allowSolicitation);
+                });
+
+        When("^the customer ([^\"]*) modifies the last telephone added to the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$",
+                (String persona, String countryName, String areaCode, String telephoneNumber,
+                        String extension, String description, String allowSolicitation) -> {
+                    editContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
+                });
+    }
 
     private void createContactTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
             String extension, String description, String allowSolicitation)
@@ -76,13 +80,6 @@ public class CustomerTelephone implements En {
 
         customerPersona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
-
-//    @When("^the customer ([^\"]*) modifies the last telephone added to the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-//    public void theCustomerModifiesTheTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-//            String extension, String description, String allowSolicitation)
-//            throws NamingException {
-//        editContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
-//    }
 
     private void editContactTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
             String extension, String description, String allowSolicitation)
