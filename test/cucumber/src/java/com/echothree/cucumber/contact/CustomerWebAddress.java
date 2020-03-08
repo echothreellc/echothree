@@ -39,19 +39,22 @@ public class CustomerWebAddress implements En {
 
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactWebAddressForm);
                 });
-    }
 
-//    @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\" with the description \"([^\"]*)\"$")
-//    public void theCustomerAddsTheWebAddress(String persona, String url, String description)
-//            throws NamingException {
-//        createContactWebAddress(persona, url, description);
-//    }
-//
-//    @When("^the customer ([^\"]*) adds the web address \"([^\"]*)\"$")
-//    public void theCustomerAddsTheWebAddress(String persona, String url)
-//            throws NamingException {
-//        createContactWebAddress(persona, url, null);
-//    }
+        When("^the customer ([^\"]*) adds the web address \"([^\"]*)\" with the description \"([^\"]*)\"$",
+                (String persona, String url, String description) -> {
+                    createContactWebAddress(persona, url, description);
+                });
+
+        When("^the customer ([^\"]*) adds the web address \"([^\"]*)\"$",
+                (String persona, String url) -> {
+                    createContactWebAddress(persona, url, null);
+                });
+
+        When("^the customer ([^\"]*) modifies the last web address added to \"([^\"]*)\" with the description \"([^\"]*)\"$",
+                (String persona, String webAddress, String description) -> {
+                    editContactWebAddress(persona, webAddress, description);
+                });
+    }
 
     private void createContactWebAddress(String persona, String url, String description)
             throws NamingException {
@@ -69,12 +72,6 @@ public class CustomerWebAddress implements En {
 
         customerPersona.lastWebAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
     }
-
-//    @When("^the customer ([^\"]*) modifies the last web address added to \"([^\"]*)\" with the description \"([^\"]*)\"$")
-//    public void theCustomerModifiesTheWebAddress(String persona, String webAddress, String description)
-//            throws NamingException {
-//        editContactWebAddress(persona, webAddress, description);
-//    }
 
     private void editContactWebAddress(String persona, String webAddress, String description)
             throws NamingException {
