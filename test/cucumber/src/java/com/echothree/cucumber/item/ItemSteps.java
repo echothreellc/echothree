@@ -26,6 +26,15 @@ import javax.naming.NamingException;
 
 public class ItemSteps implements En {
 
+    public ItemSteps() {
+        When("^the employee ([^\"]*) sets the status of the last item added to ([^\"]*)$",
+                (String persona, String itemStatusChoice) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    setItemStatus(employeePersona, employeePersona.lastItemName, itemStatusChoice);
+                });
+    }
+
     private void createItem(BasePersona persona, String itemName, String itemTypeName, String itemUseTypeName, String itemCategoryName,
             String itemAccountingCategoryName, String itemPurchasingCategoryName, String companyName, String itemDeliveryTypeName,
             String itemInventoryTypeName, String inventorySerialized, String shippingChargeExempt, String shippingStartTime,
@@ -102,14 +111,6 @@ public class ItemSteps implements En {
 //            null, null, null, null,
 //            null, allowClubDiscounts, allowCouponDiscounts, allowAssociatePayments,
 //            itemStatus, unitOfMeasureKindName, itemPriceTypeName, null, null);
-//    }
-
-//    @When("^the employee ([^\"]*) sets the status of the last item added to ([^\"]*)$")
-//    public void theEmployeeSetsTheStatusOfTheLastItemAdded(String persona, String itemStatusChoice)
-//            throws NamingException {
-//        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-//
-//        setItemStatus(employeePersona, employeePersona.lastItemName, itemStatusChoice);
 //    }
 
 }
