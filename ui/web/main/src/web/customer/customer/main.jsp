@@ -41,7 +41,6 @@
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
-
             <html:form action="/Customer/Customer/Main" method="POST" focus="firstName">
                 <%@ include file="../../include/field/customerTypeChoice-b.jsp" %>
                 <c:set var="showSoundex" value="true"/>
