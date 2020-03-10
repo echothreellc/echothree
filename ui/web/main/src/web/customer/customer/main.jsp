@@ -52,7 +52,7 @@
                 <%@ include file="../../include/field/customerName-b.jsp" %>
                 <%@ include file="../../include/field/emailAddress-b.jsp" %>
                 <%@ include file="../../include/field/countryChoice-b.jsp" %>
-
+                <%@ include file="../../include/field/telephone-b.jsp" %>
                 <%@ include file="../../include/field/customerAliasTypeChoice-b.jsp" %>
                 <%@ include file="../../include/field/alias-b.jsp" %>
                 <%@ include file="../../include/field/createdSince-b.jsp" %>
