@@ -2,7 +2,7 @@
     <label for="middleName" class="col-sm-2 col-form-label col-form-label-sm" style="text-align: right;">
         <fmt:message key="label.middleName" />:
     </label>
-    <div class="col-sm-5">
+    <div class="col-sm-3">
         <html:text styleClass="form-control form-control-sm" styleId="middleName" property="middleName" size="20" maxlength="20" />
         <c:if test="${showSoundex == 'true'}">
             <label for="middleNameSoundex" class="col-form-label col-form-label-sm" style="text-align: right;">

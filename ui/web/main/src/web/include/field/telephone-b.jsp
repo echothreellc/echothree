@@ -11,7 +11,7 @@
             </div>
         </et:validationErrors>
     </div>
-    <div class="col-sm-2">
+    <div class="col-sm-3">
         <html:text styleClass="form-control form-control-sm" styleId="telephoneNumber" property="telephoneNumber" size="15" maxlength="25" />
         <label for="telephoneNumber" class="col-form-label col-form-label-sm"><fmt:message key="label.telephoneNumber" /></label>
         <et:validationErrors id="errorMessage" property="TelephoneNumber">
@@ -21,7 +21,7 @@
             </div>
         </et:validationErrors>
     </div>
-    <div class="col-sm-1">
+    <div class="col-sm-2">
         <html:text styleClass="form-control form-control-sm" styleId="telephoneExtension" property="telephoneExtension" size="10" maxlength="10" />
         <label for="telephoneExtension" class="col-form-label col-form-label-sm"><fmt:message key="label.telephoneExtension" /></label>
         <et:validationErrors id="errorMessage" property="TelephoneExtension">

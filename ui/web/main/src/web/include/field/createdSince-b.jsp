@@ -2,7 +2,7 @@
     <label for="createdSince" class="col-sm-2 col-form-label col-form-label-sm" style="text-align: right;">
         <fmt:message key="label.createdSince" />:</label>
 
-    <div class="col-sm-5">
+    <div class="col-sm-4">
         <html:text styleClass="form-control form-control-sm" styleId="createdSince" property="createdSince" size="60" maxlength="30" />
         <et:validationErrors id="errorMessage" property="CreatedSince">
             <br/>
