@@ -2,7 +2,7 @@
 
 <et:checkSecurityRoles securityRoles="${securityRoleGroupNamePrefix}Alias.Create:${securityRoleGroupNamePrefix}Alias.List:${securityRoleGroupNamePrefix}Alias.Edit:${securityRoleGroupNamePrefix}Alias.Delete:PartyAliasType.Review" />
 
-<h2>Aliases</h2>
+<h3>Aliases</h3>
 <et:hasSecurityRole securityRole="${securityRoleGroupNamePrefix}Alias.Create">
     <c:url var="addPartyAliasUrl" value="/action/${commonUrl}/Add">
         <c:param name="PartyName" value="${party.partyName}" />

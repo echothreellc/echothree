@@ -1,6 +1,6 @@
 <%@ include file="taglibs.jsp" %>
 
-<h2><c:out value="${comments.commentType.description}" /> Comments</h2>
+<h3><c:out value="${comments.commentType.description}" /> Comments</h3>
 <c:url var="addUrl" value="/action/${commonUrl}/CommentAdd">
     <c:param name="PartyName" value="${party.partyName}" />
     <c:param name="CommentTypeName" value="${comments.commentType.commentTypeName}" />

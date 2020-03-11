@@ -1,6 +1,6 @@
 <%@ include file="taglibs.jsp" %>
 
-<h2>Contact Lists</h2>
+<h3>Contact Lists</h3>
 <c:url var="addUrl" value="/action/${commonUrl}/Add">
     <c:param name="PartyName" value="${party.partyName}" />
 </c:url>

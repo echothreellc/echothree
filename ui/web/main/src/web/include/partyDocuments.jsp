@@ -1,6 +1,6 @@
 <%@ include file="taglibs.jsp" %>
 
-<h2>Documents</h2>
+<h3>Documents</h3>
 <c:url var="addDocumentUrl" value="/action/${commonUrl}/Add/Step1">
     <c:param name="PartyName" value="${party.partyName}" />
 </c:url>

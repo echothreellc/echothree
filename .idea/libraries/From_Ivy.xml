@@ -105,6 +105,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/xalan.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/guava.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/graphql-java.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jstl.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -223,6 +224,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/textile4j-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/guava-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/graphql-java-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jstl-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

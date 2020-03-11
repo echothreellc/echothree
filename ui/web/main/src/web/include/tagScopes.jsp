@@ -9,7 +9,7 @@
         <et:hasSecurityRole securityRole="EntityTag.Create" var="includeEntityTagCreateUrl" />
         <c:set var="tagScopesSetupComplete" value="true"/>
     </c:if>
-    <h2>Tags</h2>
+    <h3>Tags</h3>
     <table>
         <c:forEach items="${tagScopes.list}" var="tagScope">
             <tr>

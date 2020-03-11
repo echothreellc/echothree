@@ -27,7 +27,7 @@
     <body>
         <header>
             <nav class="navbar navbar-dark bg-dark fixed-top">
-                <a class="navbar-brand" href="#">Echo Three</a>
+                <a class="navbar-brand">Echo Three</a>
             </nav>
         </header>
         <main role="main" class="container">
@@ -51,12 +51,7 @@
                         <%@ include file="../include/field/username-b.jsp" %>
                         <%@ include file="../include/field/password-b.jsp" %>
                         <%@ include file="../include/field/companyChoice-b.jsp" %>
-                        <div class="form-group form-row">
-                            <div class="col-sm-2"></div>
-                            <div class="col-sm">
-                                <html:submit onclick="onSubmitDisable(this);" styleClass="btn btn-sm btn-primary" /><input type="hidden" name="submitButton" />
-                            </div>
-                        </div>
+                        <%@ include file="../include/field/submit-b.jsp" %>
                         <html:hidden property="returnUrl" />
                     </html:form>
                     <script type="text/javascript" language="JavaScript">

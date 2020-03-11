@@ -18,25 +18,34 @@
 
 <%@ include file="../../include/taglibs.jsp" %>
 
-<html:html xhtml="true">
+<html>
     <head>
-        <title>Review (<c:out value="${customer.customerName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.customer">
+                <fmt:param value="${customer.customerName}" />
+            </fmt:message>
+        </title>
         <html:base/>
-        <%@ include file="../../include/environment.jsp" %>
+        <%@ include file="../../include/environment-b.jsp" %>
     </head>
-    <body>
-        <div id="Header">
-            <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Customer/Main" />">Customers</a> &gt;&gt;
-                <a href="<c:url value="/action/Customer/Customer/Main" />">Search</a> &gt;&gt;
-                <et:countCustomerResults searchTypeName="ORDER_ENTRY" countVar="customerResultsCount" commandResultVar="countCustomerResultsCommandResult" logErrors="false" />
-                <c:if test="${customerResultsCount > 0}">
-                    <a href="<c:url value="/action/Customer/Customer/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
-                </c:if>
-                Review (<c:out value="${customer.customerName}" />)
-            </h2>
-        </div>
+    <%@ include file="../../include/body-start-b.jsp" %>
+        <%@ include file="../../include/breadcrumb/breadcrumbs-start.jsp" %>
+            <jsp:include page="../../include/breadcrumb/portal.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customers.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customers-search.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customers-results.jsp">
+                <jsp:param name="showAsLink" value="true"/>
+            </jsp:include>
+            <jsp:include page="../../include/breadcrumb/customer.jsp">
+                <jsp:param name="showAsLink" value="false"/>
+            </jsp:include>
+        <%@ include file="../../include/breadcrumb/breadcrumbs-end.jsp" %>
         <div id="Content">
             <et:checkSecurityRoles securityRoles="CustomerStatus.Choices:CancellationPolicy.Review:ReturnPolicy.Review:WorkflowStep.Review:Event.List" />
             <et:hasSecurityRole securityRole="CancellationPolicy.Review" var="includeCancellationPolicyUrl" />
@@ -44,14 +53,13 @@
             <et:hasSecurityRole securityRole="WorkflowStep.Review" var="includeWorkflowStepUrl" />
             <c:set var="party" scope="request" value="${customer}" />
             <c:if test='${customer.person.firstName != null || customer.person.middleName != null || customer.person.lastName != null}'>
-                <p><font size="+2"><b><et:appearance appearance="${customer.entityInstance.entityAppearance.appearance}"><c:out value="${customer.person.personalTitle.description}" /> <c:out value="${customer.person.firstName}" />
+                <h1><et:appearance appearance="${customer.entityInstance.entityAppearance.appearance}"><c:out value="${customer.person.personalTitle.description}" /> <c:out value="${customer.person.firstName}" />
                 <c:out value="${customer.person.middleName}" /> <c:out value="${customer.person.lastName}" />
-                <c:out value="${customer.person.nameSuffix.description}" /></et:appearance></b></font></p>
+                <c:out value="${customer.person.nameSuffix.description}" /></et:appearance></h1>
             </c:if>
             <c:if test='${customer.partyGroup.name != null}'>
-                <p><font size="+1"><et:appearance appearance="${customer.entityInstance.entityAppearance.appearance}"><c:out value="${customer.partyGroup.name}" /></et:appearance></font></p>
+                <h2><et:appearance appearance="${customer.entityInstance.entityAppearance.appearance}"><c:out value="${customer.partyGroup.name}" /></et:appearance></h2>
             </c:if>
-            <br />
             Customer Name: <et:appearance appearance="${customer.entityInstance.entityAppearance.appearance}">${customer.customerName}</et:appearance><br />
             Customer Type:
             <c:url var="customerTypeUrl" value="/action/Customer/CustomerType/Review">
@@ -204,7 +212,7 @@
             <br />
             <br />
             <br />
-            <h2>Credit Limits</h2>
+            <h3>Credit Limits</h3>
             <c:url var="addUrl" value="/action/Customer/Customer/PartyCreditLimitAdd">
                 <c:param name="CustomerName" value="${customer.customerName}" />
                 <c:param name="PartyName" value="${customer.partyName}" />
@@ -248,7 +256,7 @@
             <br />
 
             <c:if test='${customer.billingAccounts.size > 0}'>
-                <h2>Billing Accounts</h2>
+                <h3>Billing Accounts</h3>
                 <display:table name="customer.billingAccounts.list" id="billingAccount" class="displaytag">
                     <display:column titleKey="columnTitle.name">
                         <c:out value="${billingAccount.billingAccountName}" />
@@ -269,10 +277,11 @@
                 <br />
             </c:if>
 
-            <h2>Accounts Receivable Invoices</h2>
+            <h3>Accounts Receivable Invoices</h3>
             <c:choose>
                 <c:when test="${customer.invoicesTo.size == 0}">
                     No AR invoices were found.<br />
+                    <br />
                 </c:when>
                 <c:otherwise>
                     <display:table name="customer.invoicesTo.list" id="invoice" class="displaytag">
@@ -313,7 +322,7 @@
             <jsp:include page="../../include/partyPaymentMethods.jsp" />
 
             <c:if test='${customer.subscriptions.size > 0}'>
-                <h2>Subscriptions</h2>
+                <h3>Subscriptions</h3>
                 <c:url var="addUrl" value="/action/Customer/SubscriptionAdd">
                     <c:param name="PartyName" value="${customer.partyName}" />
                 </c:url>
@@ -378,7 +387,7 @@
             <jsp:include page="../../include/partyDocuments.jsp" />
             
             <c:if test='${customer.communicationEvents.size > 0}'>
-                <h2>Communication Events</h2>
+                <h3>Communication Events</h3>
                 <display:table name="customer.communicationEvents.list" id="communicationEvent" class="displaytag">
                     <display:column titleKey="columnTitle.name">
                         <c:url var="reviewUrl" value="/action/Communication/CommunicationEvent/Review">
@@ -416,10 +425,11 @@
                 <br />
             </c:if>
 
-            <h2>Cancellation Policies</h2>
+            <h3>Cancellation Policies</h3>
             <c:choose>
                 <c:when test="${customer.partyCancellationPolicies.size == 0}">
                     No cancellation policies were found.<br />
+                    <br />
                 </c:when>
                 <c:otherwise>
                     <display:table name="customer.partyCancellationPolicies.list" id="partyCancellationPolicy" class="displaytag">
@@ -456,10 +466,11 @@
             </c:choose>
             <br />
 
-            <h2>Return Policies</h2>
+            <h3>Return Policies</h3>
             <c:choose>
                 <c:when test="${customer.partyReturnPolicies.size == 0}">
                     No return policies were found.<br />
+                    <br />
                 </c:when>
                 <c:otherwise>
                     <display:table name="customer.partyReturnPolicies.list" id="partyReturnPolicy" class="displaytag">
@@ -497,7 +508,7 @@
             <br />
 
             <c:if test='${wishlists != null}'>
-                <h2>Wishlists</h2>
+                <h3>Wishlists</h3>
                 <display:table name="wishlists" id="wishlist" class="displaytag">
                     <display:column titleKey="columnTitle.name">
                         <c:url var="reviewUrl" value="/action/Customer/Customer/WishlistReview">
@@ -564,7 +575,5 @@
             <jsp:include page="../../include/entityAttributeGroups.jsp" />
             <jsp:include page="../../include/entityInstance.jsp" />
         </div>
-        <jsp:include page="../../include/userSession.jsp" />
-        <jsp:include page="../../include/copyright.jsp" />
-    </body>
-</html:html>
+    <%@ include file="../../include/body-end-b.jsp" %>
+</html>
