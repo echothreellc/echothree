@@ -43,17 +43,23 @@
             </et:executionErrors>
             <html:form action="/Customer/Customer/Main" method="POST" focus="firstName">
                 <%@ include file="../../include/field/customerTypeChoice-b.jsp" %>
+                <%@ include file="../../include/field/separator-b.jsp" %>
                 <c:set var="showSoundex" value="true"/>
                 <%@ include file="../../include/field/firstName-b.jsp" %>
                 <%@ include file="../../include/field/middleName-b.jsp" %>
                 <%@ include file="../../include/field/lastName-b.jsp" %>
+                <%@ include file="../../include/field/separator-b.jsp" %>
                 <%@ include file="../../include/field/name-b.jsp" %>
+                <%@ include file="../../include/field/separator-b.jsp" %>
                 <%@ include file="../../include/field/customerName-b.jsp" %>
+                <%@ include file="../../include/field/separator-b.jsp" %>
                 <%@ include file="../../include/field/emailAddress-b.jsp" %>
                 <%@ include file="../../include/field/countryChoice-b.jsp" %>
                 <%@ include file="../../include/field/telephone-b.jsp" %>
+                <%@ include file="../../include/field/separator-b.jsp" %>
                 <%@ include file="../../include/field/customerAliasTypeChoice-b.jsp" %>
                 <%@ include file="../../include/field/alias-b.jsp" %>
+                <%@ include file="../../include/field/separator-b.jsp" %>
                 <%@ include file="../../include/field/createdSince-b.jsp" %>
                 <%@ include file="../../include/field/modifiedSince-b.jsp" %>
                 <%@ include file="../../include/field/submit-b.jsp" %>
