@@ -25,6 +25,7 @@ import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomerPostalAddress implements En {
 
@@ -38,6 +39,53 @@ public class CustomerPostalAddress implements En {
                     deleteContactPostalAddressForm.setContactMechanismName(customerPersona.lastPostalAddressContactMechanismName);
 
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactPostalAddressForm);
+                });
+
+        When("^the customer ([^\"]*) begins entering a new postal address",
+                (String persona) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNull();
+
+                    customerPersona.contactPostalAddressEdit = ContactUtil.getHome().getContactPostalAddressEdit();
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's first name to \"([^\"]*)\"",
+                (String persona, String firstName) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setFirstName(firstName);
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's last name to \"([^\"]*)\"",
+                (String persona, String lastName) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setLastName(lastName);
+                });
+
+        When("^the customer ([^\"]*) adds the new postal address",
+                (String persona) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    var contactService = ContactUtil.getHome();
+                    var createContactPostalAddressForm = contactService.getCreateContactPostalAddressForm();
+
+                    createContactPostalAddressForm.set(customerPersona.contactPostalAddressEdit.get());
+
+                    var commandResult = contactService.createContactPostalAddress(customerPersona.userVisitPK, createContactPostalAddressForm);
+
+                    LastCommandResult.commandResult = commandResult;
+                    var result = (CreateContactPostalAddressResult)commandResult.getExecutionResult().getResult();
+
+                    customerPersona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
+                    customerPersona.contactPostalAddressEdit = null;
                 });
     }
 

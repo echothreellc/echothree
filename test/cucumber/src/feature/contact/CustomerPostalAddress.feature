@@ -8,6 +8,10 @@ Feature: Customer postal address
 
   Scenario: Existing customer adds and then deletes an postal address without a description and does not allow solicitations
     Given the customer Test is currently logged in
+    And the customer Test begins entering a new postal address
+    And the customer Test sets the postal address's first name to "Test"
+    And the customer Test sets the postal address's last name to "Customer"
+    And the customer Test adds the new postal address
     And the customer Test adds the postal address with the first name "Test", last name "Customer", address line 1 "256 N Test Street", city "Des Moines", state "IA", postal code "50310" and country "US" and does not allow solicitations to it
     Then no error should occur
     And the customer Test deletes the last postal address added
