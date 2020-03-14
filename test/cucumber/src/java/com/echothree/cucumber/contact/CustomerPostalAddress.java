@@ -21,10 +21,8 @@ import com.echothree.control.user.contact.common.result.CreateContactPostalAddre
 import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
-import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomerPostalAddress implements En {
@@ -177,62 +175,49 @@ public class CustomerPostalAddress implements En {
                     customerPersona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
                     customerPersona.contactPostalAddressEdit = null;
                 });
-    }
 
-//    @When("^the customer ([^\"]*) modifies the last postal address added to the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-//    public void theCustomerModifiesThePostalAddress(String persona, String firstName, String lastName, String address1,
-//            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
-//            throws NamingException {
-//        editContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
-//                description, allowSolicitation);
-//    }
+        When("^the customer ([^\"]*) begins editing the last postal address added",
+                (String persona) -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-    private void editContactPostalAddress(String persona, String firstName, String lastName, String address1,
-            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
-            throws NamingException {
-        var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    assertThat(customerPersona.contactPostalAddressEdit).isNull();
 
-        spec.setContactMechanismName(customerPersona.lastPostalAddressContactMechanismName);
+                    spec.setContactMechanismName(customerPersona.lastPostalAddressContactMechanismName);
 
-        var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
+                    var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
 
-        commandForm.setSpec(spec);
-        commandForm.setEditMode(EditMode.LOCK);
+                    commandForm.setSpec(spec);
+                    commandForm.setEditMode(EditMode.LOCK);
 
-        CommandResult commandResult = ContactUtil.getHome().editContactPostalAddress(customerPersona.userVisitPK, commandForm);
+                    var commandResult = ContactUtil.getHome().editContactPostalAddress(customerPersona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
 
-        if(!commandResult.hasErrors()) {
-            var executionResult = commandResult.getExecutionResult();
-            var result = (EditContactPostalAddressResult)executionResult.getResult();
-            var edit = result.getEdit();
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditContactPostalAddressResult)executionResult.getResult();
 
-            if(firstName != null)
-                edit.setFirstName(firstName);
-            if(lastName != null)
-                edit.setLastName(lastName);
-            if(address1 != null)
-                edit.setAddress1(address1);
-            if(city != null)
-                edit.setCity(city);
-            if(state != null)
-                edit.setState(state);
-            if(postalCode != null)
-                edit.setPostalCode(postalCode);
-            if(countryName != null)
-                edit.setCountryName(countryName);
-            if(description != null)
-                edit.setDescription(description);
-            if(allowSolicitation != null)
-                edit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
+                    customerPersona.contactPostalAddressEdit = result.getEdit();
+                });
 
-            commandForm.setEdit(edit);
-            commandForm.setEditMode(EditMode.UPDATE);
+        When("^the customer ([^\"]*) finishes editing the postal address",
+                (String persona) -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    var edit = customerPersona.contactPostalAddressEdit;
 
-            commandResult = ContactUtil.getHome().editContactPostalAddress(customerPersona.userVisitPK, commandForm);
-        }
+                    assertThat(edit).isNotNull();
 
-        LastCommandResult.commandResult = commandResult;
+                    spec.setContactMechanismName(customerPersona.lastPostalAddressContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactPostalAddressForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEdit(edit);
+                    commandForm.setEditMode(EditMode.UPDATE);
+
+                    var commandResult = ContactUtil.getHome().editContactPostalAddress(customerPersona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+                });
     }
 
 }
