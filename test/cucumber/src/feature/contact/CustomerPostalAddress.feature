@@ -11,8 +11,15 @@ Feature: Customer postal address
     And the customer Test begins entering a new postal address
     And the customer Test sets the postal address's first name to "Test"
     And the customer Test sets the postal address's last name to "Customer"
+    And the customer Test sets the postal address's line 1 to "256 N Test Street"
+    And the customer Test sets the postal address's city to "Des Moines"
+    And the customer Test sets the postal address's state to "IA"
+    And the customer Test sets the postal address's postal code to "50310"
+    And the customer Test sets the postal address's country to "US"
+    And the customer Test sets the postal address's last name to "Customer"
+    And the customer Test's postal address is not a commercial location
+    And the customer Test does not allow solicitations to the postal address
     And the customer Test adds the new postal address
-    And the customer Test adds the postal address with the first name "Test", last name "Customer", address line 1 "256 N Test Street", city "Des Moines", state "IA", postal code "50310" and country "US" and does not allow solicitations to it
     Then no error should occur
     And the customer Test deletes the last postal address added
     Then no error should occur

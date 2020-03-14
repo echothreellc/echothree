@@ -68,6 +68,96 @@ public class CustomerPostalAddress implements En {
                     customerPersona.contactPostalAddressEdit.setLastName(lastName);
                 });
 
+        When("^the customer ([^\"]*) sets the postal address's line 1 to \"([^\"]*)\"",
+                (String persona, String address1) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setAddress1(address1);
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's line 2 to \"([^\"]*)\"",
+                (String persona, String address2) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setAddress2(address2);
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's line 3 to \"([^\"]*)\"",
+                (String persona, String address3) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setAddress3(address3);
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's city to \"([^\"]*)\"",
+                (String persona, String city) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setCity(city);
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's state to \"([^\"]*)\"",
+                (String persona, String state) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setState(state);
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's postal code to \"([^\"]*)\"",
+                (String persona, String postalCode) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setPostalCode(postalCode);
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's country to \"([^\"]*)\"",
+                (String persona, String country) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setCountryName(country);
+                });
+
+        When("^the customer ([^\"]*)'s postal address (is|is not) a commercial location",
+                (String persona, String isCommercial) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setIsCommercial(Boolean.valueOf(isCommercial.equals("is")).toString());
+                });
+
+        When("^the customer ([^\"]*) (does|does not) allow solicitations to the postal address",
+                (String persona, String allowSolicitation) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
+                });
+
+        When("^the customer ([^\"]*) sets the postal address's description to \"([^\"]*)\"",
+                (String persona, String description) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactPostalAddressEdit).isNotNull();
+
+                    customerPersona.contactPostalAddressEdit.setDescription(description);
+                });
+
         When("^the customer ([^\"]*) adds the new postal address",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
