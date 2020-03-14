@@ -178,49 +178,7 @@ public class CustomerPostalAddress implements En {
                     customerPersona.contactPostalAddressEdit = null;
                 });
     }
-
-//    @When("^the customer ([^\"]*) adds the postal address with the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-//    public void theCustomerAddsThePostalAddress(String persona, String firstName, String lastName, String address1,
-//            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
-//            throws NamingException {
-//        createContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
-//                description, allowSolicitation);
-//    }
-//
-//    @When("^the customer ([^\"]*) adds the postal address with the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-//    public void theCustomerAddsThePostalAddress(String persona, String firstName, String lastName, String address1,
-//            String city, String state, String postalCode, String countryName, String allowSolicitation)
-//            throws NamingException {
-//        createContactPostalAddress(persona, firstName, lastName, address1, city, state, postalCode, countryName,
-//                null, allowSolicitation);
-//    }
-
-    private void createContactPostalAddress(String persona, String firstName, String lastName, String address1, String city,
-            String state, String postalCode, String countryName, String description, String allowSolicitation)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var createContactPostalAddressForm = contactService.getCreateContactPostalAddressForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-        createContactPostalAddressForm.setFirstName(firstName);
-        createContactPostalAddressForm.setLastName(lastName);
-        createContactPostalAddressForm.setAddress1(address1);
-        createContactPostalAddressForm.setCity(city);
-        createContactPostalAddressForm.setState(state);
-        createContactPostalAddressForm.setPostalCode(postalCode);
-        createContactPostalAddressForm.setCountryName(countryName);
-        createContactPostalAddressForm.setIsCommercial(Boolean.FALSE.toString());
-        createContactPostalAddressForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
-        createContactPostalAddressForm.setDescription(description);
-
-        var commandResult = contactService.createContactPostalAddress(customerPersona.userVisitPK, createContactPostalAddressForm);
-
-        LastCommandResult.commandResult = commandResult;
-        var result = (CreateContactPostalAddressResult)commandResult.getExecutionResult().getResult();
-
-        customerPersona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
-    }
-
+    
 //    @When("^the customer ([^\"]*) modifies the last postal address added to the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
 //    public void theCustomerModifiesThePostalAddress(String persona, String firstName, String lastName, String address1,
 //            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
