@@ -178,7 +178,7 @@ public class CustomerPostalAddress implements En {
                     customerPersona.contactPostalAddressEdit = null;
                 });
     }
-    
+
 //    @When("^the customer ([^\"]*) modifies the last postal address added to the first name \"([^\"]*)\", last name \"([^\"]*)\", address line 1 \"([^\"]*)\", city \"([^\"]*)\", state \"([^\"]*)\", postal code \"([^\"]*)\" and country \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
 //    public void theCustomerModifiesThePostalAddress(String persona, String firstName, String lastName, String address1,
 //            String city, String state, String postalCode, String countryName, String description, String allowSolicitation)
