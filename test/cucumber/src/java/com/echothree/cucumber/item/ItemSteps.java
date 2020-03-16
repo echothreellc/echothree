@@ -18,20 +18,104 @@ package com.echothree.cucumber.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemResult;
+import com.echothree.control.user.item.common.result.EditItemResult;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
+import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ItemSteps implements En {
 
     public ItemSteps() {
+        When("^the employee ([^\"]*) begins entering a new item",
+                (String persona) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.itemEdit).isNull();
+
+                    employeePersona.itemEdit = ItemUtil.getHome().getItemEdit();
+                });
+
+//        When("^the employee ([^\"]*) sets the item's type to ([^\"]*)",
+//                (String persona, String itemTypeName) -> {
+//                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+//
+//                    assertThat(employeePersona.itemEdit).isNotNull();
+//
+//                    employeePersona.itemEdit.setItemTypeName(itemTypeName);
+//                });
+
+        When("^the employee ([^\"]*) adds the new item",
+                (String persona) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.itemEdit).isNotNull();
+
+                    var itemService = ItemUtil.getHome();
+                    var createItemForm = itemService.getCreateItemForm();
+
+                    createItemForm.set(employeePersona.itemEdit.get());
+
+                    var commandResult = itemService.createItem(employeePersona.userVisitPK, createItemForm);
+
+                    LastCommandResult.commandResult = commandResult;
+                    var result = (CreateItemResult)commandResult.getExecutionResult().getResult();
+
+                    employeePersona.lastItemName = commandResult.getHasErrors() ? null : result.getItemName();
+                    employeePersona.itemEdit = null;
+                });
+
         When("^the employee ([^\"]*) sets the status of the last item added to ([^\"]*)$",
                 (String persona, String itemStatusChoice) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
                     setItemStatus(employeePersona, employeePersona.lastItemName, itemStatusChoice);
+                });
+
+        When("^the employee ([^\"]*) begins editing the last item added",
+                (String persona) -> {
+                    var spec = ItemUtil.getHome().getItemSpec();
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.itemEdit).isNull();
+
+                    spec.setItemName(employeePersona.lastItemName);
+
+                    var commandForm = ItemUtil.getHome().getEditItemForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEditMode(EditMode.LOCK);
+
+                    var commandResult = ItemUtil.getHome().editItem(employeePersona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditItemResult)executionResult.getResult();
+
+                    employeePersona.itemEdit = result.getEdit();
+                });
+
+        When("^the employee ([^\"]*) finishes editing the item",
+                (String persona) -> {
+                    var spec = ItemUtil.getHome().getItemSpec();
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+                    var edit = employeePersona.itemEdit;
+
+                    assertThat(edit).isNotNull();
+
+                    spec.setItemName(employeePersona.lastItemName);
+
+                    var commandForm = ItemUtil.getHome().getEditItemForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEdit(edit);
+                    commandForm.setEditMode(EditMode.UPDATE);
+
+                    var commandResult = ItemUtil.getHome().editItem(employeePersona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
                 });
     }
 
@@ -91,26 +175,5 @@ public class ItemSteps implements En {
 
         LastCommandResult.commandResult = commandResult;
     }
-
-//    @When("^the employee ([^\"]*) adds a new item with type ([^\"]*) and use type ([^\"]*) and category ([^\"]*) " +
-//            "and accounting category ([^\"]*) and purchasing category ([^\"]*) and company ([^\"]*) and delivery type ([^\"]*) " +
-//            "and inventory type ([^\"]*) and (has|does not have) serialized inventory and (is|is not) exempt from shipping and " +
-//            "(does|does not) allow club discounts and (does|does not) allow coupon discounts and (does|does not) allow associate payments " +
-//            "and has a status of ([^\"]*) and an unit of measure kind of ([^\"]*) and a price type of ([^\"]*)$")
-//    public void theEmployeeAddsANewItem(String persona, String itemTypeName, String itemUseTypeName, String itemCategoryName,
-//            String itemAccountingCategoryName, String itemPurchasingCategoryName, String companyName, String itemDeliveryTypeName,
-//            String itemInventoryTypeName, String inventorySerialized, String shippingChargeExempt, String allowClubDiscounts,
-//            String allowCouponDiscounts, String allowAssociatePayments, String itemStatus, String unitOfMeasureKindName,
-//            String itemPriceTypeName)
-//            throws NamingException {
-//        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-//
-//        createItem(employeePersona, null, itemTypeName, itemUseTypeName, itemCategoryName,
-//            itemAccountingCategoryName, itemPurchasingCategoryName, companyName, itemDeliveryTypeName,
-//            itemInventoryTypeName, inventorySerialized, shippingChargeExempt, null,
-//            null, null, null, null,
-//            null, allowClubDiscounts, allowCouponDiscounts, allowAssociatePayments,
-//            itemStatus, unitOfMeasureKindName, itemPriceTypeName, null, null);
-//    }
 
 }

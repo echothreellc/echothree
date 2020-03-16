@@ -8,19 +8,70 @@ Feature: Employee item
 
   Scenario: Existing employee adds an active item and discontinues it
     Given the employee Test is currently logged in
-    And the employee Test adds a new item with type REGULAR and use type REGULAR and category DEFAULT and accounting category DEFAULT and purchasing category DEFAULT and company TEST_COMPANY and delivery type PHYSICAL and inventory type INVENTORY and does not have serialized inventory and is not exempt from shipping and does allow club discounts and does allow coupon discounts and does allow associate payments and has a status of NEW_ACTIVE and an unit of measure kind of BASIC and a price type of FIXED
+    And the employee Test begins entering a new item
+    And the employee Test sets the item's type to REGULAR
+    And the employee Test sets the item's use type to REGULAR
+    And the employee Test sets the item's category to DEFAULT
+    And the employee Test sets the item's accounting category to DEFAULT
+    And the employee Test sets the item's purchasing category to DEFAULT
+    And the employee Test sets the item's company to TEST_COMPANY
+    And the employee Test sets the item's delivery type to PHYSICAL
+    And the employee Test sets the item's inventory type to INVENTORY
+    And the employee Test's item does not have serialized inventory
+    And the employee Test's item is not exempt from shipping
+    And the employee Test's item does allow club discounts
+    And the employee Test's item does allow coupon discounts
+    And the employee Test's item does allow associate payments
+    And the employee Test sets the item's status to NEW_ACTIVE
+    And the employee Test sets the item's unit of measure kind to BASIC
+    And the employee Test sets the item's price type to FIXED
+    And the employee Test adds the new item
     Then no error should occur
     And the employee Test sets the status of the last item added to ACTIVE_TO_DISCONTINUED
     Then no error should occur
 
   Scenario: Existing employee adds a cancel if not in stock item and discontinues it
     Given the employee Test is currently logged in
-    And the employee Test adds a new item with type REGULAR and use type REGULAR and category DEFAULT and accounting category DEFAULT and purchasing category DEFAULT and company TEST_COMPANY and delivery type PHYSICAL and inventory type INVENTORY and does not have serialized inventory and is not exempt from shipping and does allow club discounts and does allow coupon discounts and does allow associate payments and has a status of NEW_CANCEL_IF_NOT_IN_STOCK and an unit of measure kind of BASIC and a price type of FIXED
+    And the employee Test begins entering a new item
+    And the employee Test sets the item's type to REGULAR
+    And the employee Test sets the item's use type to REGULAR
+    And the employee Test sets the item's category to DEFAULT
+    And the employee Test sets the item's accounting category to DEFAULT
+    And the employee Test sets the item's purchasing category to DEFAULT
+    And the employee Test sets the item's company to TEST_COMPANY
+    And the employee Test sets the item's delivery type to PHYSICAL
+    And the employee Test sets the item's inventory type to INVENTORY
+    And the employee Test's item does not have serialized inventory
+    And the employee Test's item is not exempt from shipping
+    And the employee Test's item does allow club discounts
+    And the employee Test's item does allow coupon discounts
+    And the employee Test's item does allow associate payments
+    And the employee Test sets the item's status to NEW_CANCEL_IF_NOT_IN_STOCK
+    And the employee Test sets the item's unit of measure kind to BASIC
+    And the employee Test sets the item's price type to FIXED
+    And the employee Test adds the new item
     Then no error should occur
     And the employee Test sets the status of the last item added to CANCEL_IF_NOT_IN_STOCK_TO_DISCONTINUED
     Then no error should occur
 
   Scenario: Existing employee adds a discontinued item
     Given the employee Test is currently logged in
-    And the employee Test adds a new item with type REGULAR and use type REGULAR and category DEFAULT and accounting category DEFAULT and purchasing category DEFAULT and company TEST_COMPANY and delivery type PHYSICAL and inventory type INVENTORY and does not have serialized inventory and is not exempt from shipping and does allow club discounts and does allow coupon discounts and does allow associate payments and has a status of NEW_DISCONTINUED and an unit of measure kind of BASIC and a price type of FIXED
+    And the employee Test begins entering a new item
+    And the employee Test sets the item's type to REGULAR
+    And the employee Test sets the item's use type to REGULAR
+    And the employee Test sets the item's category to DEFAULT
+    And the employee Test sets the item's accounting category to DEFAULT
+    And the employee Test sets the item's purchasing category to DEFAULT
+    And the employee Test sets the item's company to TEST_COMPANY
+    And the employee Test sets the item's delivery type to PHYSICAL
+    And the employee Test sets the item's inventory type to INVENTORY
+    And the employee Test's item does not have serialized inventory
+    And the employee Test's item is not exempt from shipping
+    And the employee Test's item does allow club discounts
+    And the employee Test's item does allow coupon discounts
+    And the employee Test's item does allow associate payments
+    And the employee Test sets the item's status to NEW_DISCONTINUED
+    And the employee Test sets the item's unit of measure kind to BASIC
+    And the employee Test sets the item's price type to FIXED
+    And the employee Test adds the new item
     Then no error should occur
