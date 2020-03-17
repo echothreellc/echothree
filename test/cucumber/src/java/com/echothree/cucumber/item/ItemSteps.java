@@ -30,34 +30,169 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemSteps implements En {
 
     public ItemSteps() {
-        When("^the employee ([^\"]*) begins entering a new item",
+        When("^the employee ([^\"]*) begins entering a new item$",
                 (String persona) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-                    assertThat(employeePersona.itemEdit).isNull();
+                    assertThat(employeePersona.createItemForm).isNull();
 
-                    employeePersona.itemEdit = ItemUtil.getHome().getItemEdit();
+                    employeePersona.createItemForm = ItemUtil.getHome().getCreateItemForm();
                 });
 
-//        When("^the employee ([^\"]*) sets the item's type to ([^\"]*)",
-//                (String persona, String itemTypeName) -> {
-//                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-//
-//                    assertThat(employeePersona.itemEdit).isNotNull();
-//
-//                    employeePersona.itemEdit.setItemTypeName(itemTypeName);
-//                });
+        When("^the employee ([^\"]*) sets the item's type to ([^\"]*)$",
+                (String persona, String itemTypeName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemTypeName(itemTypeName);
+                });
+
+        When("^the employee ([^\"]*) sets the item's use type to ([^\"]*)$",
+                (String persona, String itemUseTypeName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemUseTypeName(itemUseTypeName);
+                });
+
+        When("^the employee ([^\"]*) sets the item's category to ([^\"]*)",
+                (String persona, String itemCategoryName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemCategoryName(itemCategoryName);
+                });
+
+        When("^the employee ([^\"]*) sets the item's accounting category to ([^\"]*)",
+                (String persona, String itemAccountingCategoryName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemAccountingCategoryName(itemAccountingCategoryName);
+                });
+
+        When("^the employee ([^\"]*) sets the item's purchasing category to ([^\"]*)",
+                (String persona, String itemPurchasingCategoryName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
+                });
+
+        When("^the employee ([^\"]*) sets the item's company to ([^\"]*)",
+                (String persona, String companyName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setCompanyName(companyName);
+                });
+
+        When("^the employee ([^\"]*) sets the item's delivery type to ([^\"]*)",
+                (String persona, String itemDeliveryTypeName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemDeliveryTypeName(itemDeliveryTypeName);
+                });
+
+        When("^the employee ([^\"]*) sets the item's inventory type to ([^\"]*)",
+                (String persona, String itemInventoryTypeName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemInventoryTypeName(itemInventoryTypeName);
+                });
+
+        When("^the employee ([^\"]*)'s item (has|does not have) serialized inventory",
+                (String persona, String inventorySerialized) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setInventorySerialized(Boolean.valueOf(inventorySerialized.equals("has")).toString());
+                });
+
+        When("^the employee ([^\"]*)'s item (is|is not) exempt from shipping",
+                (String persona, String shippingChargeExempt) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setShippingChargeExempt(Boolean.valueOf(shippingChargeExempt.equals("is")).toString());
+                });
+
+        When("^the employee ([^\"]*)'s item (does|does not) allow club discounts",
+                (String persona, String allowClubDiscounts) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setAllowClubDiscounts(Boolean.valueOf(allowClubDiscounts.equals("does")).toString());
+                });
+
+        When("^the employee ([^\"]*)'s item (does|does not) allow coupon discounts",
+                (String persona, String allowCouponDiscounts) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setAllowCouponDiscounts(Boolean.valueOf(allowCouponDiscounts.equals("does")).toString());
+                });
+
+        When("^the employee ([^\"]*)'s item (does|does not) allow associate payments",
+                (String persona, String allowAssociatePayments) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setAllowAssociatePayments(Boolean.valueOf(allowAssociatePayments.equals("does")).toString());
+                });
+
+        When("^the employee ([^\"]*) sets the item's status to ([^\"]*)",
+                (String persona, String itemStatus) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemStatus(itemStatus);
+                });
+
+        When("^the employee ([^\"]*) sets the item's unit of measure kind to ([^\"]*)",
+                (String persona, String unitOfMeasureKindName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
+                });
+
+        When("^the employee ([^\"]*) sets the item's price type to ([^\"]*)",
+                (String persona, String itemPriceTypeName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    assertThat(employeePersona.createItemForm).isNotNull();
+
+                    employeePersona.createItemForm.setItemPriceTypeName(itemPriceTypeName);
+                });
 
         When("^the employee ([^\"]*) adds the new item",
                 (String persona) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-                    assertThat(employeePersona.itemEdit).isNotNull();
+                    assertThat(employeePersona.createItemForm).isNotNull();
 
                     var itemService = ItemUtil.getHome();
                     var createItemForm = itemService.getCreateItemForm();
 
-                    createItemForm.set(employeePersona.itemEdit.get());
+                    createItemForm.set(employeePersona.createItemForm.get());
 
                     var commandResult = itemService.createItem(employeePersona.userVisitPK, createItemForm);
 
@@ -65,7 +200,7 @@ public class ItemSteps implements En {
                     var result = (CreateItemResult)commandResult.getExecutionResult().getResult();
 
                     employeePersona.lastItemName = commandResult.getHasErrors() ? null : result.getItemName();
-                    employeePersona.itemEdit = null;
+                    employeePersona.createItemForm = null;
                 });
 
         When("^the employee ([^\"]*) sets the status of the last item added to ([^\"]*)$",
@@ -80,7 +215,7 @@ public class ItemSteps implements En {
                     var spec = ItemUtil.getHome().getItemSpec();
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
-                    assertThat(employeePersona.itemEdit).isNull();
+                    assertThat(employeePersona.createItemForm).isNull();
 
                     spec.setItemName(employeePersona.lastItemName);
 
@@ -95,14 +230,15 @@ public class ItemSteps implements En {
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditItemResult)executionResult.getResult();
 
-                    employeePersona.itemEdit = result.getEdit();
+                    employeePersona.createItemForm = ItemUtil.getHome().getCreateItemForm();
+                    employeePersona.createItemForm.set(result.getEdit().get());
                 });
 
         When("^the employee ([^\"]*) finishes editing the item",
                 (String persona) -> {
                     var spec = ItemUtil.getHome().getItemSpec();
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-                    var edit = employeePersona.itemEdit;
+                    var edit = employeePersona.createItemForm;
 
                     assertThat(edit).isNotNull();
 
@@ -117,50 +253,6 @@ public class ItemSteps implements En {
                     var commandResult = ItemUtil.getHome().editItem(employeePersona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
                 });
-    }
-
-    private void createItem(BasePersona persona, String itemName, String itemTypeName, String itemUseTypeName, String itemCategoryName,
-            String itemAccountingCategoryName, String itemPurchasingCategoryName, String companyName, String itemDeliveryTypeName,
-            String itemInventoryTypeName, String inventorySerialized, String shippingChargeExempt, String shippingStartTime,
-            String shippingEndTime, String salesOrderStartTime, String salesOrderEndTime, String purchaseOrderStartTime,
-            String purchaseOrderEndTime, String allowClubDiscounts, String allowCouponDiscounts, String allowAssociatePayments,
-            String itemStatus, String unitOfMeasureKindName, String itemPriceTypeName, String cancellationPolicyName, String returnPolicyName)
-            throws NamingException {
-        var itemService = ItemUtil.getHome();
-        var createItemForm = itemService.getCreateItemForm();
-
-        createItemForm.setItemName(itemName);
-        createItemForm.setItemTypeName(itemTypeName);
-        createItemForm.setItemUseTypeName(itemUseTypeName);
-        createItemForm.setItemCategoryName(itemCategoryName);
-        createItemForm.setItemAccountingCategoryName(itemAccountingCategoryName);
-        createItemForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
-        createItemForm.setCompanyName(companyName);
-        createItemForm.setItemDeliveryTypeName(itemDeliveryTypeName);
-        createItemForm.setItemInventoryTypeName(itemInventoryTypeName);
-        createItemForm.setInventorySerialized(Boolean.valueOf(inventorySerialized.equals("has")).toString());
-        createItemForm.setShippingChargeExempt(Boolean.valueOf(shippingChargeExempt.equals("is")).toString());
-        createItemForm.setShippingStartTime(shippingStartTime);
-        createItemForm.setShippingEndTime(shippingEndTime);
-        createItemForm.setSalesOrderStartTime(salesOrderStartTime);
-        createItemForm.setSalesOrderEndTime(salesOrderEndTime);
-        createItemForm.setPurchaseOrderStartTime(purchaseOrderStartTime);
-        createItemForm.setPurchaseOrderEndTime(purchaseOrderEndTime);
-        createItemForm.setAllowClubDiscounts(Boolean.valueOf(allowClubDiscounts.equals("does")).toString());
-        createItemForm.setAllowCouponDiscounts(Boolean.valueOf(allowCouponDiscounts.equals("does")).toString());
-        createItemForm.setAllowAssociatePayments(Boolean.valueOf(allowAssociatePayments.equals("does")).toString());
-        createItemForm.setItemStatus(itemStatus);
-        createItemForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-        createItemForm.setItemPriceTypeName(itemPriceTypeName);
-        createItemForm.setCancellationPolicyName(cancellationPolicyName);
-        createItemForm.setReturnPolicyName(returnPolicyName);
-
-        var commandResult = itemService.createItem(persona.userVisitPK, createItemForm);
-
-        LastCommandResult.commandResult = commandResult;
-        var result = (CreateItemResult)commandResult.getExecutionResult().getResult();
-
-        persona.lastItemName = commandResult.getHasErrors() ? null : result.getItemName();
     }
 
     private void setItemStatus(BasePersona persona, String itemName, String itemStatusChoice)

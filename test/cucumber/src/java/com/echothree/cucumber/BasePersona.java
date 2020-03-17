@@ -21,6 +21,7 @@ import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
 import com.echothree.control.user.contact.common.edit.ContactWebAddressEdit;
 import com.echothree.control.user.item.common.edit.ItemEdit;
+import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 
 public class BasePersona {
@@ -46,7 +47,7 @@ public class BasePersona {
     public String lastCustomerName;
 
     // Item
-    public ItemEdit itemEdit;
+    public CreateItemForm createItemForm;
 
     public String lastItemName;
 
