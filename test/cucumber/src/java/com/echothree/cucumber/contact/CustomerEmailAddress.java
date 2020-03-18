@@ -39,7 +39,7 @@ public class CustomerEmailAddress implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactEmailAddressForm);
                 });
 
-        When("^the customer ([^\"]*) begins entering a new email address",
+        When("^the customer ([^\"]*) begins entering a new email address$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -48,7 +48,7 @@ public class CustomerEmailAddress implements En {
                     customerPersona.contactEmailAddressEdit = ContactUtil.getHome().getContactEmailAddressEdit();
                 });
 
-        When("^the customer ([^\"]*) (does|does not) allow solicitations to the email address",
+        When("^the customer ([^\"]*) (does|does not) allow solicitations to the email address$",
                 (String persona, String allowSolicitation) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -57,7 +57,7 @@ public class CustomerEmailAddress implements En {
                     customerPersona.contactEmailAddressEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
                 });
 
-        When("^the customer ([^\"]*) sets the email address's description to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the email address's description to \"([^\"]*)\"$",
                 (String persona, String description) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -66,7 +66,7 @@ public class CustomerEmailAddress implements En {
                     customerPersona.contactEmailAddressEdit.setDescription(description);
                 });
 
-        When("^the customer ([^\"]*) sets the email address's email address to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the email address's email address to \"([^\"]*)\"$",
                 (String persona, String emailAddress) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -75,7 +75,7 @@ public class CustomerEmailAddress implements En {
                     customerPersona.contactEmailAddressEdit.setEmailAddress(emailAddress);
                 });
 
-        When("^the customer ([^\"]*) adds the new email address",
+        When("^the customer ([^\"]*) adds the new email address$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -95,7 +95,7 @@ public class CustomerEmailAddress implements En {
                     customerPersona.contactEmailAddressEdit = null;
                 });
 
-        When("^the customer ([^\"]*) begins editing the last email address added",
+        When("^the customer ([^\"]*) begins editing the last email address added$",
                 (String persona) -> {
                     var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
@@ -120,7 +120,7 @@ public class CustomerEmailAddress implements En {
                     }
                 });
 
-        When("^the customer ([^\"]*) finishes editing the email address",
+        When("^the customer ([^\"]*) finishes editing the email address$",
                 (String persona) -> {
                     var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);

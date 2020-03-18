@@ -57,7 +57,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setItemUseTypeName(itemUseTypeName);
                 });
 
-        When("^the employee ([^\"]*) sets the item's category to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's category to ([^\"]*)$",
                 (String persona, String itemCategoryName) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -66,7 +66,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setItemCategoryName(itemCategoryName);
                 });
 
-        When("^the employee ([^\"]*) sets the item's accounting category to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's accounting category to ([^\"]*)$",
                 (String persona, String itemAccountingCategoryName) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -75,7 +75,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setItemAccountingCategoryName(itemAccountingCategoryName);
                 });
 
-        When("^the employee ([^\"]*) sets the item's purchasing category to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's purchasing category to ([^\"]*)$",
                 (String persona, String itemPurchasingCategoryName) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -84,7 +84,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
                 });
 
-        When("^the employee ([^\"]*) sets the item's company to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's company to ([^\"]*)$",
                 (String persona, String companyName) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -93,7 +93,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setCompanyName(companyName);
                 });
 
-        When("^the employee ([^\"]*) sets the item's delivery type to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's delivery type to ([^\"]*)$",
                 (String persona, String itemDeliveryTypeName) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -102,7 +102,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setItemDeliveryTypeName(itemDeliveryTypeName);
                 });
 
-        When("^the employee ([^\"]*) sets the item's inventory type to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's inventory type to ([^\"]*)$",
                 (String persona, String itemInventoryTypeName) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -111,7 +111,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setItemInventoryTypeName(itemInventoryTypeName);
                 });
 
-        When("^the employee ([^\"]*)'s item (has|does not have) serialized inventory",
+        When("^the employee ([^\"]*)'s item (has|does not have) serialized inventory$",
                 (String persona, String inventorySerialized) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -120,7 +120,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setInventorySerialized(Boolean.valueOf(inventorySerialized.equals("has")).toString());
                 });
 
-        When("^the employee ([^\"]*)'s item (is|is not) exempt from shipping",
+        When("^the employee ([^\"]*)'s item (is|is not) exempt from shipping$",
                 (String persona, String shippingChargeExempt) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -129,7 +129,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setShippingChargeExempt(Boolean.valueOf(shippingChargeExempt.equals("is")).toString());
                 });
 
-        When("^the employee ([^\"]*)'s item (does|does not) allow club discounts",
+        When("^the employee ([^\"]*)'s item (does|does not) allow club discounts$",
                 (String persona, String allowClubDiscounts) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -138,7 +138,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setAllowClubDiscounts(Boolean.valueOf(allowClubDiscounts.equals("does")).toString());
                 });
 
-        When("^the employee ([^\"]*)'s item (does|does not) allow coupon discounts",
+        When("^the employee ([^\"]*)'s item (does|does not) allow coupon discounts$",
                 (String persona, String allowCouponDiscounts) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -147,7 +147,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setAllowCouponDiscounts(Boolean.valueOf(allowCouponDiscounts.equals("does")).toString());
                 });
 
-        When("^the employee ([^\"]*)'s item (does|does not) allow associate payments",
+        When("^the employee ([^\"]*)'s item (does|does not) allow associate payments$",
                 (String persona, String allowAssociatePayments) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -156,7 +156,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setAllowAssociatePayments(Boolean.valueOf(allowAssociatePayments.equals("does")).toString());
                 });
 
-        When("^the employee ([^\"]*) sets the item's status to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's status to ([^\"]*)$",
                 (String persona, String itemStatus) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -165,7 +165,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setItemStatus(itemStatus);
                 });
 
-        When("^the employee ([^\"]*) sets the item's unit of measure kind to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's unit of measure kind to ([^\"]*)$",
                 (String persona, String unitOfMeasureKindName) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -174,7 +174,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
                 });
 
-        When("^the employee ([^\"]*) sets the item's price type to ([^\"]*)",
+        When("^the employee ([^\"]*) sets the item's price type to ([^\"]*)$",
                 (String persona, String itemPriceTypeName) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -183,7 +183,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.setItemPriceTypeName(itemPriceTypeName);
                 });
 
-        When("^the employee ([^\"]*) adds the new item",
+        When("^the employee ([^\"]*) adds the new item$",
                 (String persona) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
@@ -210,7 +210,7 @@ public class ItemSteps implements En {
                     setItemStatus(employeePersona, employeePersona.lastItemName, itemStatusChoice);
                 });
 
-        When("^the employee ([^\"]*) begins editing the last item added",
+        When("^the employee ([^\"]*) begins editing the last item added$",
                 (String persona) -> {
                     var spec = ItemUtil.getHome().getItemSpec();
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
@@ -234,7 +234,7 @@ public class ItemSteps implements En {
                     employeePersona.createItemForm.set(result.getEdit().get());
                 });
 
-        When("^the employee ([^\"]*) finishes editing the item",
+        When("^the employee ([^\"]*) finishes editing the item$",
                 (String persona) -> {
                     var spec = ItemUtil.getHome().getItemSpec();
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);

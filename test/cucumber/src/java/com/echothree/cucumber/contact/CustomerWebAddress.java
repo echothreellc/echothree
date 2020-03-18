@@ -39,7 +39,7 @@ public class CustomerWebAddress implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactWebAddressForm);
                 });
 
-        When("^the customer ([^\"]*) begins entering a new web address",
+        When("^the customer ([^\"]*) begins entering a new web address$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -48,7 +48,7 @@ public class CustomerWebAddress implements En {
                     customerPersona.contactWebAddressEdit = ContactUtil.getHome().getContactWebAddressEdit();
                 });
 
-        When("^the customer ([^\"]*) sets the web address's description to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the web address's description to \"([^\"]*)\"$",
                 (String persona, String description) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -57,7 +57,7 @@ public class CustomerWebAddress implements En {
                     customerPersona.contactWebAddressEdit.setDescription(description);
                 });
 
-        When("^the customer ([^\"]*) sets the web address's url to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the web address's url to \"([^\"]*)\"$",
                 (String persona, String url) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -66,7 +66,7 @@ public class CustomerWebAddress implements En {
                     customerPersona.contactWebAddressEdit.setUrl(url);
                 });
 
-        When("^the customer ([^\"]*) adds the new web address",
+        When("^the customer ([^\"]*) adds the new web address$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -86,7 +86,7 @@ public class CustomerWebAddress implements En {
                     customerPersona.contactWebAddressEdit = null;
                 });
 
-        When("^the customer ([^\"]*) begins editing the last web address added",
+        When("^the customer ([^\"]*) begins editing the last web address added$",
                 (String persona) -> {
                     var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
@@ -111,7 +111,7 @@ public class CustomerWebAddress implements En {
                     }
                 });
 
-        When("^the customer ([^\"]*) finishes editing the web address",
+        When("^the customer ([^\"]*) finishes editing the web address$",
                 (String persona) -> {
                     var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);

@@ -38,14 +38,14 @@ public class EmployeeLoginSteps implements En {
                     }
                 });
 
-        Given("^the employee ([^\"]*) is currently logged in",
+        Given("^the employee ([^\"]*) is currently logged in$",
                 (String persona) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
                     assertThat(employeePersona).isNotNull();
                 });
 
-        Given("^the employee ([^\"]*) is not currently logged in",
+        Given("^the employee ([^\"]*) is not currently logged in$",
                 (String persona) -> {
                     var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 

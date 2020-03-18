@@ -36,14 +36,14 @@ public class CustomerLoginSteps implements En {
                     }
                 });
 
-        Given("^the customer ([^\"]*) is currently logged in",
+        Given("^the customer ([^\"]*) is currently logged in$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
                     assertThat(customerPersona).isNotNull();
                 });
 
-        Given("^the customer ([^\"]*) is not currently logged in",
+        Given("^the customer ([^\"]*) is not currently logged in$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 

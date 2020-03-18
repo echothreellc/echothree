@@ -39,7 +39,7 @@ public class CustomerTelephone implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
                 });
 
-        When("^the customer ([^\"]*) begins entering a new telephone number",
+        When("^the customer ([^\"]*) begins entering a new telephone number$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -48,7 +48,7 @@ public class CustomerTelephone implements En {
                     customerPersona.contactTelephoneEdit = ContactUtil.getHome().getContactTelephoneEdit();
                 });
 
-        When("^the customer ([^\"]*) (does|does not) allow solicitations to the telephone number",
+        When("^the customer ([^\"]*) (does|does not) allow solicitations to the telephone number$",
                 (String persona, String allowSolicitation) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -57,7 +57,7 @@ public class CustomerTelephone implements En {
                     customerPersona.contactTelephoneEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
                 });
 
-        When("^the customer ([^\"]*) sets the telephone number's description to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the telephone number's description to \"([^\"]*)\"$",
                 (String persona, String description) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -66,7 +66,7 @@ public class CustomerTelephone implements En {
                     customerPersona.contactTelephoneEdit.setDescription(description);
                 });
 
-        When("^the customer ([^\"]*) sets the telephone number's country to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the telephone number's country to \"([^\"]*)\"$",
                 (String persona, String countryName) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -75,7 +75,7 @@ public class CustomerTelephone implements En {
                     customerPersona.contactTelephoneEdit.setCountryName(countryName);
                 });
 
-        When("^the customer ([^\"]*) sets the telephone number's area code to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the telephone number's area code to \"([^\"]*)\"$",
                 (String persona, String areaCode) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -84,7 +84,7 @@ public class CustomerTelephone implements En {
                     customerPersona.contactTelephoneEdit.setAreaCode(areaCode);
                 });
 
-        When("^the customer ([^\"]*) sets the telephone number's number to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the telephone number's number to \"([^\"]*)\"$",
                 (String persona, String telephoneNumber) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -93,7 +93,7 @@ public class CustomerTelephone implements En {
                     customerPersona.contactTelephoneEdit.setTelephoneNumber(telephoneNumber);
                 });
 
-        When("^the customer ([^\"]*) sets the telephone number's extension to \"([^\"]*)\"",
+        When("^the customer ([^\"]*) sets the telephone number's extension to \"([^\"]*)\"$",
                 (String persona, String extension) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -102,7 +102,7 @@ public class CustomerTelephone implements En {
                     customerPersona.contactTelephoneEdit.setTelephoneExtension(extension);
                 });
 
-        When("^the customer ([^\"]*) adds the new telephone number",
+        When("^the customer ([^\"]*) adds the new telephone number$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
@@ -122,7 +122,7 @@ public class CustomerTelephone implements En {
                     customerPersona.contactTelephoneEdit = null;
                 });
 
-        When("^the customer ([^\"]*) begins editing the last telephone number added",
+        When("^the customer ([^\"]*) begins editing the last telephone number added$",
                 (String persona) -> {
                     var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
@@ -147,7 +147,7 @@ public class CustomerTelephone implements En {
                     }
                 });
 
-        When("^the customer ([^\"]*) finishes editing the telephone number",
+        When("^the customer ([^\"]*) finishes editing the telephone number$",
                 (String persona) -> {
                     var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
