@@ -18,15 +18,11 @@ package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
-import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
 import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
-import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
-import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomerEmailAddress implements En {
