@@ -18,14 +18,29 @@ package com.echothree.cucumber.sales;
 
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class SalesOrderBatchSteps {
+public class SalesOrderBatchSteps implements En {
+
+    public SalesOrderBatchSteps() {
+        When("^the employee ([^\"]*) adds a new sales order batch with the currency ([^\"]*) and payment method ([^\"]*)$",
+                (String persona, String currencyIsoName, String paymentMethodName) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    createSalesOrderBatch(employeePersona, currencyIsoName, paymentMethodName, null, null);
+                });
+
+        When("^the employee ([^\"]*) deletes the last sales order batch added$",
+                (String persona) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    deleteSalesOrderBatch(employeePersona, employeePersona.lastSalesOrderBatchName);
+                });
+    }
 
     private void createSalesOrderBatch(BasePersona persona, String currencyIsoName, String paymentMethodName, String count, String amount)
             throws NamingException {
@@ -55,22 +70,6 @@ public class SalesOrderBatchSteps {
         var commandResult = salesService.deleteSalesOrderBatch(persona.userVisitPK, deleteSalesOrderBatchForm);
 
         LastCommandResult.commandResult = commandResult;
-    }
-
-    @When("^the employee ([^\"]*) adds a new sales order batch with the currency ([^\"]*) and payment method ([^\"]*)$")
-    public void theEmployeeAddsANewSalesOrderBatch(String persona, String currencyIsoName, String paymentMethodName)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-        createSalesOrderBatch(employeePersona, currencyIsoName, paymentMethodName, null, null);
-    }
-
-    @When("^the employee ([^\"]*) deletes the last sales order batch added$")
-    public void theEmployeeDeletesTheLastSalesOrderBatchAdded(String persona)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-        deleteSalesOrderBatch(employeePersona, employeePersona.lastSalesOrderBatchName);
     }
 
 }

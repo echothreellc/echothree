@@ -22,21 +22,22 @@ import com.echothree.control.user.user.common.form.SetUserVisitPreferredTimeZone
 import com.echothree.cucumber.CustomerPersona;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
-import javax.naming.NamingException;
+import io.cucumber.java8.En;
 
-public class PreferredTimeZoneFormatSteps {
+public class PreferredTimeZoneFormatSteps implements En {
 
-    @When("^the customer ([^\"]*) sets their preferred time zone to \"([^\"]*)\"$")
-    public void theCustomerSetsTheirPreferredTimeZoneTo(String persona, String javaTimeZoneName)
-            throws NamingException {
-        UserService userService = UserUtil.getHome();
-        SetUserVisitPreferredTimeZoneForm userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
-        CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+    public PreferredTimeZoneFormatSteps() {
+        When("^the customer ([^\"]*) sets their preferred time zone to \"([^\"]*)\"$",
+                (String persona, String javaTimeZoneName) -> {
+                    UserService userService = UserUtil.getHome();
+                    SetUserVisitPreferredTimeZoneForm userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
+                    CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
+                    userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
 
-        LastCommandResult.commandResult = userService.setUserVisitPreferredTimeZone(customerPersona.userVisitPK,
-                userVisitPreferredTimeZoneForm);
+                    LastCommandResult.commandResult = userService.setUserVisitPreferredTimeZone(customerPersona.userVisitPK,
+                            userVisitPreferredTimeZoneForm);
+                });
     }
+
 }

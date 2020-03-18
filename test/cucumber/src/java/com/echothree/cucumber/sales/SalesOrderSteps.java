@@ -21,11 +21,19 @@ import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
-import com.echothree.util.common.validation.FieldType;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class SalesOrderSteps {
+public class SalesOrderSteps implements En {
+
+    public SalesOrderSteps() {
+        When("^the employee ([^\"]*) adds a new sales order$",
+                (String persona) -> {
+                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+
+                    createSalesOrder(employeePersona, null, null, null, null, null, null,null, null, null, null, null, null, null);
+                });
+    }
 
     private void createSalesOrder(BasePersona persona, String batchName, String sourceName, String currencyIsoName, String termName,
             String billToPartyName, String orderPriorityName, String holdUntilComplete, String allowBackorders, String allowSubstitutions,
@@ -54,14 +62,6 @@ public class SalesOrderSteps {
         var result = (CreateSalesOrderResult)commandResult.getExecutionResult().getResult();
 
         persona.lastSalesOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
-    }
-
-    @When("^the employee ([^\"]*) adds a new sales order$")
-    public void theEmployeeAddsANewSalesOrder(String persona)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-        createSalesOrder(employeePersona, null, null, null, null, null, null,null, null, null, null, null, null, null);
     }
 
 }

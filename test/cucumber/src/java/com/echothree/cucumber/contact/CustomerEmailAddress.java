@@ -21,94 +21,124 @@ import com.echothree.control.user.contact.common.result.CreateContactEmailAddres
 import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import cucumber.api.java.en.When;
-import javax.naming.NamingException;
+import io.cucumber.java8.En;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class CustomerEmailAddress {
+public class CustomerEmailAddress implements En {
 
-    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
-            throws NamingException {
-        createContactEmailAddress(persona, emailAddress, description, allowSolicitation);
-    }
+    public CustomerEmailAddress() {
+        When("^the customer ([^\"]*) deletes the last email address added$",
+                (String persona) -> {
+                    var contactService = ContactUtil.getHome();
+                    var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-    @When("^the customer ([^\"]*) adds the email address \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerAddsTheEmailAddress(String persona, String emailAddress, String allowSolicitation)
-            throws NamingException {
-        createContactEmailAddress(persona, emailAddress, null, allowSolicitation);
-    }
+                    deleteContactEmailAddressForm.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
 
-    private void createContactEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var createContactEmailAddressForm = contactService.getCreateContactEmailAddressForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactEmailAddressForm);
+                });
 
-        createContactEmailAddressForm.setEmailAddress(emailAddress);
-        createContactEmailAddressForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
-        createContactEmailAddressForm.setDescription(description);
+        When("^the customer ([^\"]*) begins entering a new email address$",
+                (String persona) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        var commandResult = contactService.createContactEmailAddress(customerPersona.userVisitPK, createContactEmailAddressForm);
+                    assertThat(customerPersona.contactEmailAddressEdit).isNull();
 
-        LastCommandResult.commandResult = commandResult;
-        var result = (CreateContactEmailAddressResult)commandResult.getExecutionResult().getResult();
+                    customerPersona.contactEmailAddressEdit = ContactUtil.getHome().getContactEmailAddressEdit();
+                });
 
-        customerPersona.lastEmailAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
-    }
+        When("^the customer ([^\"]*) (does|does not) allow solicitations to the email address$",
+                (String persona, String allowSolicitation) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-    @When("^the customer ([^\"]*) modifies the last email address added to \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$")
-    public void theCustomerModifiesTheEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
-            throws NamingException {
-        editContactEmailAddress(persona, emailAddress, description, allowSolicitation);
-    }
+                    assertThat(customerPersona.contactEmailAddressEdit).isNotNull();
 
-    private void editContactEmailAddress(String persona, String emailAddress, String description, String allowSolicitation)
-            throws NamingException {
-        var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    customerPersona.contactEmailAddressEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
+                });
 
-        spec.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
+        When("^the customer ([^\"]*) sets the email address's description to \"([^\"]*)\"$",
+                (String persona, String description) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        var commandForm = ContactUtil.getHome().getEditContactEmailAddressForm();
+                    assertThat(customerPersona.contactEmailAddressEdit).isNotNull();
 
-        commandForm.setSpec(spec);
-        commandForm.setEditMode(EditMode.LOCK);
+                    customerPersona.contactEmailAddressEdit.setDescription(description);
+                });
 
-        CommandResult commandResult = ContactUtil.getHome().editContactEmailAddress(customerPersona.userVisitPK, commandForm);
+        When("^the customer ([^\"]*) sets the email address's email address to \"([^\"]*)\"$",
+                (String persona, String emailAddress) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        if(!commandResult.hasErrors()) {
-            var executionResult = commandResult.getExecutionResult();
-            var result = (EditContactEmailAddressResult)executionResult.getResult();
-            var edit = result.getEdit();
+                    assertThat(customerPersona.contactEmailAddressEdit).isNotNull();
 
-            if(emailAddress != null)
-                edit.setEmailAddress(emailAddress);
-            if(description != null)
-                edit.setDescription(description);
-            if(allowSolicitation != null)
-                edit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
+                    customerPersona.contactEmailAddressEdit.setEmailAddress(emailAddress);
+                });
 
-            commandForm.setEdit(edit);
-            commandForm.setEditMode(EditMode.UPDATE);
+        When("^the customer ([^\"]*) adds the new email address$",
+                (String persona) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-            commandResult = ContactUtil.getHome().editContactEmailAddress(customerPersona.userVisitPK, commandForm);
-        }
+                    assertThat(customerPersona.contactEmailAddressEdit).isNotNull();
 
-        LastCommandResult.commandResult = commandResult;
-    }
+                    var contactService = ContactUtil.getHome();
+                    var createContactEmailAddressForm = contactService.getCreateContactEmailAddressForm();
 
-    @When("^the customer ([^\"]*) deletes the last email address added$")
-    public void theCustomerDeletesTheLastEmailAddress(String persona)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    createContactEmailAddressForm.set(customerPersona.contactEmailAddressEdit.get());
 
-        deleteContactEmailAddressForm.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
+                    var commandResult = contactService.createContactEmailAddress(customerPersona.userVisitPK, createContactEmailAddressForm);
 
-        LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactEmailAddressForm);
+                    LastCommandResult.commandResult = commandResult;
+                    var result = (CreateContactEmailAddressResult)commandResult.getExecutionResult().getResult();
+
+                    customerPersona.lastEmailAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
+                    customerPersona.contactEmailAddressEdit = null;
+                });
+
+        When("^the customer ([^\"]*) begins editing the last email address added$",
+                (String persona) -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactEmailAddressEdit).isNull();
+
+                    spec.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactEmailAddressForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEditMode(EditMode.LOCK);
+
+                    var commandResult = ContactUtil.getHome().editContactEmailAddress(customerPersona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditContactEmailAddressResult)executionResult.getResult();
+
+                    if(!executionResult.getHasErrors()) {
+                        customerPersona.contactEmailAddressEdit = result.getEdit();
+                    }
+                });
+
+        When("^the customer ([^\"]*) finishes editing the email address$",
+                (String persona) -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    var edit = customerPersona.contactEmailAddressEdit;
+
+                    assertThat(edit).isNotNull();
+
+                    spec.setContactMechanismName(customerPersona.lastEmailAddressContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactEmailAddressForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEdit(edit);
+                    commandForm.setEditMode(EditMode.UPDATE);
+
+                    var commandResult = ContactUtil.getHome().editContactEmailAddress(customerPersona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+                });
     }
 
 }

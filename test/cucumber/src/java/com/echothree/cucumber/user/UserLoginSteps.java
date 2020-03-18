@@ -21,10 +21,20 @@ import com.echothree.cucumber.AnonymousPersonas;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
-import cucumber.api.java.en.When;
+import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
-public class UserLoginSteps {
+public class UserLoginSteps implements En {
+
+    public UserLoginSteps() {
+        When("^the employee ([^\"]*) deletes the user login added by the anonymous user ([^\"]*)$",
+                (String persona, String anonymous) -> {
+            var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+            var anonymousPersona = AnonymousPersonas.getAnonymousPersona(anonymous);
+
+            deleteUserLogin(employeePersona, anonymousPersona.lastPartyName);
+        });
+    }
 
     private void deleteUserLogin(BasePersona persona, String partyNsame)
             throws NamingException {
@@ -38,12 +48,4 @@ public class UserLoginSteps {
         LastCommandResult.commandResult = commandResult;
     }
     
-    @When("^the employee ([^\"]*) deletes the user login added by the anonymous user ([^\"]*)$")
-    public void theEmployeeDeletesTheUserLogin(String persona, String anonymous)
-            throws NamingException {
-        var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-        var anonymousPersona = AnonymousPersonas.getAnonymousPersona(anonymous);
-
-        deleteUserLogin(employeePersona, anonymousPersona.lastPartyName);
-    }
 }

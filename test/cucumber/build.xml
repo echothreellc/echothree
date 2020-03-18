@@ -69,7 +69,7 @@
         <mkdir dir="${test.cucumber.results.html.dir}" />
         <mkdir dir="${test.cucumber.results.junit.dir}" />
         
-        <java classname="cucumber.api.cli.Main" fork="true" failonerror="false" resultproperty="cucumber.exitstatus">
+        <java classname="io.cucumber.core.cli.Main" fork="true" failonerror="false" resultproperty="cucumber.exitstatus">
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
@@ -98,6 +98,7 @@
                 <pathelement path="${test.cucumber.pathelement.10}" />
                 <pathelement path="${test.cucumber.component.src.metadata}" />
             </classpath>
+            <arg value="--strict"/>
             <arg value="--plugin"/>
             <arg value="junit:${test.cucumber.results.junit.dir}/allcukes.xml"/>
             <arg value="--plugin"/>
