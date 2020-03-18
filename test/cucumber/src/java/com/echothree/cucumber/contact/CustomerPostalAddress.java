@@ -196,7 +196,9 @@ public class CustomerPostalAddress implements En {
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditContactPostalAddressResult)executionResult.getResult();
 
-                    customerPersona.contactPostalAddressEdit = result.getEdit();
+                    if(!executionResult.getHasErrors()) {
+                        customerPersona.contactPostalAddressEdit = result.getEdit();
+                    }
                 });
 
         When("^the customer ([^\"]*) finishes editing the postal address",
