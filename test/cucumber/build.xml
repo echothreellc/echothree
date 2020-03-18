@@ -98,6 +98,7 @@
                 <pathelement path="${test.cucumber.pathelement.10}" />
                 <pathelement path="${test.cucumber.component.src.metadata}" />
             </classpath>
+            <arg value="--strict"/>
             <arg value="--plugin"/>
             <arg value="junit:${test.cucumber.results.junit.dir}/allcukes.xml"/>
             <arg value="--plugin"/>
