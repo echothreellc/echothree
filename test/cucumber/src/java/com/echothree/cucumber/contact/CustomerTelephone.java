@@ -21,15 +21,14 @@ import com.echothree.control.user.contact.common.result.CreateContactTelephoneRe
 import com.echothree.control.user.contact.common.result.EditContactTelephoneResult;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
-import javax.naming.NamingException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CustomerTelephone implements En {
 
     public CustomerTelephone() {
-        When("^the customer ([^\"]*) deletes the last telephone added$",
+        When("^the customer ([^\"]*) deletes the last telephone number added$",
                 (String persona) -> {
                     var contactService = ContactUtil.getHome();
                     var deleteContactTelephoneForm = contactService.getDeleteContactMechanismForm();
@@ -40,87 +39,133 @@ public class CustomerTelephone implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(customerPersona.userVisitPK, deleteContactTelephoneForm);
                 });
 
-        When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$",
-                (String persona, String countryName, String areaCode, String telephoneNumber,
-                        String extension, String description, String allowSolicitation) -> {
-                    createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
+        When("^the customer ([^\"]*) begins entering a new telephone number",
+                (String persona) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactTelephoneEdit).isNull();
+
+                    customerPersona.contactTelephoneEdit = ContactUtil.getHome().getContactTelephoneEdit();
                 });
 
-        When("^the customer ([^\"]*) adds the telephone in the country \"([^\"]*)\" with the area code \"([^\"]*)\" and telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" and (does|does not) allow solicitations to it$",
-                (String persona, String countryName, String areaCode, String telephoneNumber,
-                        String extension, String allowSolicitation) -> {
-                    createContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, null, allowSolicitation);
+        When("^the customer ([^\"]*) (does|does not) allow solicitations to the telephone number",
+                (String persona, String allowSolicitation) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactTelephoneEdit).isNotNull();
+
+                    customerPersona.contactTelephoneEdit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
                 });
 
-        When("^the customer ([^\"]*) modifies the last telephone added to the country \"([^\"]*)\" with the area code \"([^\"]*)\", telephone number \"([^\"]*)\" and the extension \"([^\"]*)\" with the description \"([^\"]*)\" and (does|does not) allow solicitations to it$",
-                (String persona, String countryName, String areaCode, String telephoneNumber,
-                        String extension, String description, String allowSolicitation) -> {
-                    editContactTelephone(persona, countryName, areaCode, telephoneNumber, extension, description, allowSolicitation);
+        When("^the customer ([^\"]*) sets the telephone number's description to \"([^\"]*)\"",
+                (String persona, String description) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactTelephoneEdit).isNotNull();
+
+                    customerPersona.contactTelephoneEdit.setDescription(description);
                 });
-    }
 
-    private void createContactTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-            String extension, String description, String allowSolicitation)
-            throws NamingException {
-        var contactService = ContactUtil.getHome();
-        var createContactTelephoneForm = contactService.getCreateContactTelephoneForm();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+        When("^the customer ([^\"]*) sets the telephone number's country to \"([^\"]*)\"",
+                (String persona, String countryName) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        createContactTelephoneForm.setCountryName(countryName);
-        createContactTelephoneForm.setAreaCode(areaCode);
-        createContactTelephoneForm.setTelephoneNumber(telephoneNumber);
-        createContactTelephoneForm.setTelephoneExtension(extension);
-        createContactTelephoneForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
-        createContactTelephoneForm.setDescription(description);
+                    assertThat(customerPersona.contactTelephoneEdit).isNotNull();
 
-        var commandResult = contactService.createContactTelephone(customerPersona.userVisitPK, createContactTelephoneForm);
+                    customerPersona.contactTelephoneEdit.setCountryName(countryName);
+                });
 
-        LastCommandResult.commandResult = commandResult;
-        var result = (CreateContactTelephoneResult) commandResult.getExecutionResult().getResult();
+        When("^the customer ([^\"]*) sets the telephone number's area code to \"([^\"]*)\"",
+                (String persona, String areaCode) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        customerPersona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
-    }
+                    assertThat(customerPersona.contactTelephoneEdit).isNotNull();
 
-    private void editContactTelephone(String persona, String countryName, String areaCode, String telephoneNumber,
-            String extension, String description, String allowSolicitation)
-            throws NamingException {
-        var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
-        var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    customerPersona.contactTelephoneEdit.setAreaCode(areaCode);
+                });
 
-        spec.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
+        When("^the customer ([^\"]*) sets the telephone number's number to \"([^\"]*)\"",
+                (String persona, String telephoneNumber) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
+                    assertThat(customerPersona.contactTelephoneEdit).isNotNull();
 
-        commandForm.setSpec(spec);
-        commandForm.setEditMode(EditMode.LOCK);
+                    customerPersona.contactTelephoneEdit.setTelephoneNumber(telephoneNumber);
+                });
 
-        CommandResult commandResult = ContactUtil.getHome().editContactTelephone(customerPersona.userVisitPK, commandForm);
+        When("^the customer ([^\"]*) sets the telephone number's extension to \"([^\"]*)\"",
+                (String persona, String extension) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-        if(!commandResult.hasErrors()) {
-            var executionResult = commandResult.getExecutionResult();
-            var result = (EditContactTelephoneResult)executionResult.getResult();
-            var edit = result.getEdit();
+                    assertThat(customerPersona.contactTelephoneEdit).isNotNull();
 
-            if(countryName != null)
-                edit.setCountryName(countryName);
-            if(areaCode != null)
-                edit.setAreaCode(areaCode);
-            if(telephoneNumber != null)
-                edit.setTelephoneNumber(telephoneNumber);
-            if(extension != null)
-                edit.setTelephoneExtension(extension);
-            if(extension != null)
-                edit.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
-            if(extension != null)
-                edit.setDescription(description);
+                    customerPersona.contactTelephoneEdit.setTelephoneExtension(extension);
+                });
 
-            commandForm.setEdit(edit);
-            commandForm.setEditMode(EditMode.UPDATE);
+        When("^the customer ([^\"]*) adds the new telephone number",
+                (String persona) -> {
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
-            commandResult = ContactUtil.getHome().editContactTelephone(customerPersona.userVisitPK, commandForm);
-        }
+                    assertThat(customerPersona.contactTelephoneEdit).isNotNull();
 
-        LastCommandResult.commandResult = commandResult;
+                    var contactService = ContactUtil.getHome();
+                    var createContactTelephoneForm = contactService.getCreateContactTelephoneForm();
+
+                    createContactTelephoneForm.set(customerPersona.contactTelephoneEdit.get());
+
+                    var commandResult = contactService.createContactTelephone(customerPersona.userVisitPK, createContactTelephoneForm);
+
+                    LastCommandResult.commandResult = commandResult;
+                    var result = (CreateContactTelephoneResult)commandResult.getExecutionResult().getResult();
+
+                    customerPersona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
+                    customerPersona.contactTelephoneEdit = null;
+                });
+
+        When("^the customer ([^\"]*) begins editing the last telephone number added",
+                (String persona) -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+
+                    assertThat(customerPersona.contactTelephoneEdit).isNull();
+
+                    spec.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEditMode(EditMode.LOCK);
+
+                    var commandResult = ContactUtil.getHome().editContactTelephone(customerPersona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditContactTelephoneResult)executionResult.getResult();
+
+                    if(!executionResult.getHasErrors()) {
+                        customerPersona.contactTelephoneEdit = result.getEdit();
+                    }
+                });
+
+        When("^the customer ([^\"]*) finishes editing the telephone number",
+                (String persona) -> {
+                    var spec = ContactUtil.getHome().getPartyContactMechanismSpec();
+                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    var edit = customerPersona.contactTelephoneEdit;
+
+                    assertThat(edit).isNotNull();
+
+                    spec.setContactMechanismName(customerPersona.lastTelephoneContactMechanismName);
+
+                    var commandForm = ContactUtil.getHome().getEditContactTelephoneForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEdit(edit);
+                    commandForm.setEditMode(EditMode.UPDATE);
+
+                    var commandResult = ContactUtil.getHome().editContactTelephone(customerPersona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+                });
     }
 
 }
