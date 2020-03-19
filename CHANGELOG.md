@@ -1,5 +1,32 @@
 # Changelog
 
+## 2020-03-19-01
+
+* Identify UC Should Include Security Checks Against Invoking Party (search) [1962](https://www.echothree.com/bugzilla/show_bug.cgi?id=1962)
+* GraphQL Object Additions for componentVendors and componentVendor (core) [2249](https://www.echothree.com/bugzilla/show_bug.cgi?id=2249)
+* GraphQL Object Additions for entityTypes and entityType (core) [2250](https://www.echothree.com/bugzilla/show_bug.cgi?id=2250)
+* GraphQL Object Addition for entityInstance (core) [2260](https://www.echothree.com/bugzilla/show_bug.cgi?id=2260)
+* Handle Customers in Universal Search (search) [2510](https://www.echothree.com/bugzilla/show_bug.cgi?id=2510)
+* Handle Vendors in Universal Search (search) [2511](https://www.echothree.com/bugzilla/show_bug.cgi?id=2511)
+* Handle Item Descriptions in Universal Search (search) [2512](https://www.echothree.com/bugzilla/show_bug.cgi?id=2512)
+* jOOQ 3.12.4 Upgrade (miscellaneous) [2543](https://www.echothree.com/bugzilla/show_bug.cgi?id=2543)
+* Add Security to Employee Search UCs (search) [2544](https://www.echothree.com/bugzilla/show_bug.cgi?id=2544)
+* jOOQ 3.13.0 Upgrade (miscellaneous) [2545](https://www.echothree.com/bugzilla/show_bug.cgi?id=2545)
+* Move Functions for Managing Base Keys to Client Library (core) [2547](https://www.echothree.com/bugzilla/show_bug.cgi?id=2547)
+* Apache Lucene 8.4.1 Upgrade (index) [2548](https://www.echothree.com/bugzilla/show_bug.cgi?id=2548)
+* Correct Spelling of Maintenance (search) [2549](https://www.echothree.com/bugzilla/show_bug.cgi?id=2549)
+* Contributor Covenant Code of Conduct 2.0 Upgrade (miscellaneous) [2550](https://www.echothree.com/bugzilla/show_bug.cgi?id=2550)
+* Bootstrap 4.4.1 / Popper.js 1.16.1 / jQuery 3.4.1 Upgrade (miscellaneous) [2551](https://www.echothree.com/bugzilla/show_bug.cgi?id=2551)
+* Update Customer Search and Review Appearance (ui-main) [2554](https://www.echothree.com/bugzilla/show_bug.cgi?id=2554)
+* graphql-java 14.0 / graphql-java-annotations 8.0 Upgrades (graphql) [2555](https://www.echothree.com/bugzilla/show_bug.cgi?id=2555)
+* Cucumber 5.4.2 Upgrade (miscellaneous) [2556](https://www.echothree.com/bugzilla/show_bug.cgi?id=2556)
+* WildFly 19.0.0 Upgrade (miscellaneous) [2557](https://www.echothree.com/bugzilla/show_bug.cgi?id=2557)
+* ICU4J 66.1 Upgrade (miscellaneous) [2558](https://www.echothree.com/bugzilla/show_bug.cgi?id=2558)
+* jOOQ 3.13.1 Upgrade (miscellaneous) [2559](https://www.echothree.com/bugzilla/show_bug.cgi?id=2559)
+* MySQL Connector/J 8.0.19 Upgrade (miscellaneous) [2560](https://www.echothree.com/bugzilla/show_bug.cgi?id=2560)
+* ClassGraph 4.8.65 Upgrade (miscellaneous) [2561](https://www.echothree.com/bugzilla/show_bug.cgi?id=2561)
+* Cucumber 5.5.0 Upgrade (miscellaneous) [2562](https://www.echothree.com/bugzilla/show_bug.cgi?id=2562)
+
 ## 2020-01-15-01
 
 * Relax Security for Geo Component (geo) [2509](https://www.echothree.com/bugzilla/show_bug.cgi?id=2509)
