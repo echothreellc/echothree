@@ -19,6 +19,12 @@ package com.echothree.control.user.test.common.graphql;
 import com.echothree.util.common.string.GraphQlUtils;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
@@ -26,25 +32,19 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public abstract class GraphQlTestCase {
 
@@ -105,9 +105,10 @@ public abstract class GraphQlTestCase {
     public static void beforeClass()
             throws Exception {
         sslSocketFactory = new SSLConnectionSocketFactory(
-                new SSLContextBuilder()
+                SSLContexts.custom()
                         .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                        .build());
+                        .build(),
+                NoopHostnameVerifier.INSTANCE);
     }
     
     @AfterClass
@@ -179,7 +180,7 @@ public abstract class GraphQlTestCase {
         try(CloseableHttpResponse closeableHttpResponse = execute) {
             int statusCode = closeableHttpResponse.getStatusLine().getStatusCode();
 
-            Assert.assertTrue(statusCode == 200);
+            Assert.assertEquals(200, statusCode);
 
             HttpEntity responseEntity = closeableHttpResponse.getEntity();
             if(responseEntity != null) {
