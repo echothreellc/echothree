@@ -10,7 +10,7 @@
 * Apache Ivy 2.5.0 Upgrade (miscellaneous) [2518](https://www.echothree.com/bugzilla/show_bug.cgi?id=2518)
 * MySQL Connector/J 8.0.18 Upgrade (miscellaneous) [2519](https://www.echothree.com/bugzilla/show_bug.cgi?id=2519)
 * Add CODEOWNERS for GitLab (miscellaneous) [2520](https://www.echothree.com/bugzilla/show_bug.cgi?id=2520)
-* WildFly 18.0.1 Upgrade (miscellaneous) [2521](https://www.echothree.com/bugzilla/show_bug.cgi?id=2521)
+* WildFly 19.0.0 Upgrade (miscellaneous) [2521](https://www.echothree.com/bugzilla/show_bug.cgi?id=2521)
 * GraphQL Mutations Resulting in IllegalStateException (graphql) [2522](https://www.echothree.com/bugzilla/show_bug.cgi?id=2522)
 * 2020 Copyright Update (miscellaneous) [2523](https://www.echothree.com/bugzilla/show_bug.cgi?id=2523)
 * Lucene 8.4.0 Upgrade (index) [2524](https://www.echothree.com/bugzilla/show_bug.cgi?id=2524)
