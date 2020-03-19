@@ -106,6 +106,11 @@
       <root url="jar://$PROJECT_DIR$/build/lib/guava.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/graphql-java.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jstl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/fluent-hc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/httpclient-cache.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/httpclient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/httpcore.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/httpmime.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
