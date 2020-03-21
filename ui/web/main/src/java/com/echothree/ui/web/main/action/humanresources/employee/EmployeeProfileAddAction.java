@@ -53,7 +53,7 @@ public class EmployeeProfileAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, EmployeeProfileAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
         

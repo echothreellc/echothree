@@ -52,29 +52,26 @@ public class AddActionForm
     private String description;
     private String parentContentCategoryName;
     
-    private void setupDefaultSourceChoices() {
+    private void setupDefaultSourceChoices()
+            throws NamingException {
         if(defaultSourceChoices == null) {
-            try {
-                GetSourceChoicesForm form = OfferUtil.getHome().getGetSourceChoicesForm();
-                
-                form.setDefaultSourceChoice(getDefaultSourceChoice());
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSourceChoicesResult result = (GetSourceChoicesResult)executionResult.getResult();
-                defaultSourceChoices = result.getSourceChoices();
-                
-                if(getDefaultSourceChoice() == null)
-                    setDefaultSourceChoice(defaultSourceChoices.getDefaultValue());
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, sourceChoices remains null, no default
-            }
+            GetSourceChoicesForm form = OfferUtil.getHome().getGetSourceChoicesForm();
+
+            form.setDefaultSourceChoice(getDefaultSourceChoice());
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSourceChoicesResult result = (GetSourceChoicesResult)executionResult.getResult();
+            defaultSourceChoices = result.getSourceChoices();
+
+            if(getDefaultSourceChoice() == null)
+                setDefaultSourceChoice(defaultSourceChoices.getDefaultValue());
         }
     }
     
-    public List<LabelValueBean> getDefaultSourceChoices() {
+    public List<LabelValueBean> getDefaultSourceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultSourceChoices();
@@ -84,31 +81,28 @@ public class AddActionForm
         return choices;
     }
     
-    private void setupContentCategoryItemSelectorChoices() {
+    private void setupContentCategoryItemSelectorChoices()
+            throws NamingException {
         if(contentCategoryContentCategoryItemSelectorChoices == null) {
-            try {
-                GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
-                
-                form.setSelectorKindName(SelectorConstants.SelectorKind_ITEM);
-                form.setSelectorTypeName(SelectorConstants.SelectorType_CONTENT_CATEGORY);
-                form.setDefaultSelectorChoice(getContentCategoryItemSelectorChoice());
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
-                contentCategoryContentCategoryItemSelectorChoices = result.getSelectorChoices();
-                
-                if(getContentCategoryItemSelectorChoice() == null)
-                    setContentCategoryItemSelectorChoice(contentCategoryContentCategoryItemSelectorChoices.getDefaultValue());
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, contentCategoryContentCategoryItemSelectorChoices remains null, no default
-            }
+            GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+
+            form.setSelectorKindName(SelectorConstants.SelectorKind_ITEM);
+            form.setSelectorTypeName(SelectorConstants.SelectorType_CONTENT_CATEGORY);
+            form.setDefaultSelectorChoice(getContentCategoryItemSelectorChoice());
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+            contentCategoryContentCategoryItemSelectorChoices = result.getSelectorChoices();
+
+            if(getContentCategoryItemSelectorChoice() == null)
+                setContentCategoryItemSelectorChoice(contentCategoryContentCategoryItemSelectorChoices.getDefaultValue());
         }
     }
     
-    public List<LabelValueBean> getContentCategoryItemSelectorChoices() {
+    public List<LabelValueBean> getContentCategoryItemSelectorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupContentCategoryItemSelectorChoices();

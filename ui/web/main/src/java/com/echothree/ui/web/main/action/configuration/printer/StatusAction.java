@@ -55,7 +55,7 @@ public class StatusAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String printerGroupName = request.getParameter(ParameterConstants.PRINTER_GROUP_NAME);
         
         try {

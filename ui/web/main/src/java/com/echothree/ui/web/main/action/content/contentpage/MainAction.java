@@ -53,14 +53,13 @@ public class MainAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
             GetContentPagesForm getContentPagesForm = ContentUtil.getHome().getGetContentPagesForm();
             String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
             String contentSectionName = request.getParameter(ParameterConstants.CONTENT_SECTION_NAME);
-            String parentContentSectionName = request.getParameter(ParameterConstants.PARENT_CONTENT_SECTION_NAME);
-            
+
             getContentPagesForm.setContentCollectionName(contentCollectionName);
             getContentPagesForm.setContentSectionName(contentSectionName);
             

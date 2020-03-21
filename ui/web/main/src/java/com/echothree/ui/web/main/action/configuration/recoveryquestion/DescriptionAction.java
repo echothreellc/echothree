@@ -53,7 +53,7 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
             String recoveryQuestionName = request.getParameter(ParameterConstants.RECOVERY_QUESTION_NAME);

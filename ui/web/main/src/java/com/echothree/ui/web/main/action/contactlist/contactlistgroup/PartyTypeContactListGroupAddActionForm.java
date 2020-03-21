@@ -40,25 +40,21 @@ public class PartyTypeContactListGroupAddActionForm
     private String partyTypeChoice;
     private Boolean addWhenCreated;
     
-    private void setupPartyTypeChoices() {
+    private void setupPartyTypeChoices()
+            throws NamingException {
         if(partyTypeChoices == null) {
-            try {
-                GetPartyTypeChoicesForm form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
+            GetPartyTypeChoicesForm form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
 
-                form.setDefaultPartyTypeChoice(partyTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultPartyTypeChoice(partyTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyTypeChoicesResult getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
-                partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
+            CommandResult commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPartyTypeChoicesResult getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
+            partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
 
-                if(partyTypeChoice == null) {
-                    partyTypeChoice = partyTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, partyTypeChoices remains null, no default
+            if(partyTypeChoice == null) {
+                partyTypeChoice = partyTypeChoices.getDefaultValue();
             }
         }
     }
@@ -71,7 +67,8 @@ public class PartyTypeContactListGroupAddActionForm
         return contactListGroupName;
     }
     
-    public String getPartyTypeChoice() {
+    public String getPartyTypeChoice()
+            throws NamingException {
         setupPartyTypeChoices();
 
         return partyTypeChoice;
@@ -81,7 +78,8 @@ public class PartyTypeContactListGroupAddActionForm
         this.partyTypeChoice = partyTypeChoice;
     }
 
-    public List<LabelValueBean> getPartyTypeChoices() {
+    public List<LabelValueBean> getPartyTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupPartyTypeChoices();

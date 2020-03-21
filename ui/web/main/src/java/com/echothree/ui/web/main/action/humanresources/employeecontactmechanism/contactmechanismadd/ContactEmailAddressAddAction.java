@@ -52,7 +52,7 @@ public class ContactEmailAddressAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ContactEmailAddressAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         CreateContactEmailAddressForm commandForm = ContactUtil.getHome().getCreateContactEmailAddressForm();
 

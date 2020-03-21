@@ -54,19 +54,18 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
             String contentCollectionName = request.getParameter(ParameterConstants.CONTENT_COLLECTION_NAME);
             String contentCatalogName = request.getParameter(ParameterConstants.CONTENT_CATALOG_NAME);
             String contentCategoryName = request.getParameter(ParameterConstants.CONTENT_CATEGORY_NAME);
-            String parentContentCategoryName = request.getParameter(ParameterConstants.PARENT_CONTENT_CATEGORY_NAME);
             GetContentCategoryDescriptionsForm commandForm = ContentUtil.getHome().getGetContentCategoryDescriptionsForm();
             
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
             commandForm.setContentCategoryName(contentCategoryName);
-            
+
             CommandResult commandResult = ContentUtil.getHome().getContentCategoryDescriptions(getUserVisitPK(request), commandForm);
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetContentCategoryDescriptionsResult result = (GetContentCategoryDescriptionsResult)executionResult.getResult();

@@ -52,7 +52,7 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String appearanceName = request.getParameter(ParameterConstants.APPEARANCE_NAME);
         GetAppearanceDescriptionsForm commandForm = CoreUtil.getHome().getGetAppearanceDescriptionsForm();
 

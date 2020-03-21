@@ -51,7 +51,7 @@ public class PartyContactMechanismPurposeAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, PartyContactMechanismPurposeAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         CreatePartyContactMechanismPurposeForm commandForm = ContactUtil.getHome().getCreatePartyContactMechanismPurposeForm();
         String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);

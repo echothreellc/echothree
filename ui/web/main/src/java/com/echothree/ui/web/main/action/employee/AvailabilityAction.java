@@ -48,7 +48,7 @@ public class AvailabilityAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         AvailabilityActionForm actionForm = (AvailabilityActionForm)form;
 
         if(wasPost(request)) {

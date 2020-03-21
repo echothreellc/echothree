@@ -57,7 +57,7 @@ public class ContactTelephoneEditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ContactTelephoneEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
         EditContactTelephoneForm commandForm = ContactUtil.getHome().getEditContactTelephoneForm();

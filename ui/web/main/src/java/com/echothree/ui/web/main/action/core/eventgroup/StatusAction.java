@@ -54,7 +54,7 @@ public class StatusAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         StatusActionForm actionForm = (StatusActionForm)form;
-        String forwardKey = null;
+        String forwardKey;
         String eventGroupName = request.getParameter(ParameterConstants.EVENT_GROUP_NAME);
         
         try {

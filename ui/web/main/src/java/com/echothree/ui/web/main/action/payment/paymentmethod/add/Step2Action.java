@@ -71,7 +71,7 @@ public class Step2Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         PaymentMethodTypeTransfer paymentMethodType = null;
         UserVisitPK userVisitPK = getUserVisitPK(request);
         Step2ActionForm actionForm = (Step2ActionForm)form;

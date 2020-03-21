@@ -52,7 +52,7 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String securityRoleGroupName = request.getParameter(ParameterConstants.SECURITY_ROLE_GROUP_NAME);
         GetSecurityRoleGroupDescriptionsForm commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupDescriptionsForm();
 

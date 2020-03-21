@@ -68,7 +68,7 @@ public class CustomerStatusAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         CustomerStatusActionForm actionForm = (CustomerStatusActionForm)form;
         String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);

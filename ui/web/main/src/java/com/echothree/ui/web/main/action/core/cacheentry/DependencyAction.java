@@ -54,7 +54,7 @@ public class DependencyAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         GetCacheEntryDependenciesForm commandForm = CoreUtil.getHome().getGetCacheEntryDependenciesForm();
 
         commandForm.setCacheEntryKey(request.getParameter(ParameterConstants.CACHE_ENTRY_KEY));

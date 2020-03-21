@@ -51,7 +51,7 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String vendorName = request.getParameter(ParameterConstants.VENDOR_NAME);
         String vendorItemName = request.getParameter(ParameterConstants.VENDOR_ITEM_NAME);
         

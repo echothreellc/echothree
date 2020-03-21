@@ -81,7 +81,7 @@ public class SearchAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, SearchActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String leaveName = null;
 
         if(wasPost(request)) {

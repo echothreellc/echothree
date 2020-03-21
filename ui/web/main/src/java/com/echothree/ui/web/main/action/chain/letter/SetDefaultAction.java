@@ -50,7 +50,6 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
         String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
         String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
         String letterName = request.getParameter(ParameterConstants.LETTER_NAME);
@@ -61,8 +60,6 @@ public class SetDefaultAction
         commandForm.setLetterName(letterName);
         
         LetterUtil.getHome().setDefaultLetter(getUserVisitPK(request), commandForm);
-        
-        forwardKey = ForwardConstants.DISPLAY;
         
         CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(ForwardConstants.DISPLAY));
         Map<String, String> parameters = new HashMap<>(2);

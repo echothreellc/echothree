@@ -52,7 +52,7 @@ public class ContactTelephoneAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ContactTelephoneAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
         CreateContactTelephoneForm commandForm = ContactUtil.getHome().getCreateContactTelephoneForm();

@@ -53,7 +53,7 @@ public class CustomerProfileAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, CustomerProfileAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         String customerName = request.getParameter(ParameterConstants.CUSTOMER_NAME);
         

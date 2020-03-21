@@ -51,7 +51,7 @@ public class StatusAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, StatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String userVisitGroupName = request.getParameter(ParameterConstants.USER_VISIT_GROUP_NAME);
         SetUserVisitGroupStatusForm commandForm = UserUtil.getHome().getSetUserVisitGroupStatusForm();
 

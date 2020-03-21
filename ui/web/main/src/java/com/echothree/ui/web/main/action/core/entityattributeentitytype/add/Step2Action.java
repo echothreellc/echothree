@@ -69,7 +69,7 @@ public class Step2Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
         String entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
         String entityAttributeName = request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME);

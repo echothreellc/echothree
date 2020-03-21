@@ -43,25 +43,21 @@ public class EditActionForm
     private String priority;
     private String description;
     
-    private void setupPrinterGroupChoices() {
+    private void setupPrinterGroupChoices()
+            throws NamingException {
         if(printerGroupChoices == null) {
-            try {
-                GetPrinterGroupChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
-                
-                form.setDefaultPrinterGroupChoice(printerGroupChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupChoicesResult getPrinterGroupChoicesResult = (GetPrinterGroupChoicesResult)executionResult.getResult();
-                printerGroupChoices = getPrinterGroupChoicesResult.getPrinterGroupChoices();
-                
-                if(printerGroupChoice == null)
-                    printerGroupChoice = printerGroupChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, printerGroupChoices remains null, no default
-            }
+            GetPrinterGroupChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupChoicesForm();
+
+            form.setDefaultPrinterGroupChoice(printerGroupChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPrinterGroupChoicesResult getPrinterGroupChoicesResult = (GetPrinterGroupChoicesResult)executionResult.getResult();
+            printerGroupChoices = getPrinterGroupChoicesResult.getPrinterGroupChoices();
+
+            if(printerGroupChoice == null)
+                printerGroupChoice = printerGroupChoices.getDefaultValue();
         }
     }
     
@@ -97,7 +93,8 @@ public class EditActionForm
         this.printerGroupChoice = printerGroupChoice;
     }
     
-    public List<LabelValueBean> getPrinterGroupChoices() {
+    public List<LabelValueBean> getPrinterGroupChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPrinterGroupChoices();

@@ -26,6 +26,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +51,7 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         final String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
         
         try {
@@ -69,11 +70,12 @@ public class DeleteAction
         
         CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
-            customActionForward.setParameters(new HashMap<String, String>(1) {{
-                put(ParameterConstants.WORKFLOW_NAME, workflowName);
-            }});
+            customActionForward.setParameters(ImmutableMap.<String, String>builder()
+                    .put(ParameterConstants.WORKFLOW_NAME, workflowName)
+                    .build());
         }
-        
+
+
         return customActionForward;
     }
     

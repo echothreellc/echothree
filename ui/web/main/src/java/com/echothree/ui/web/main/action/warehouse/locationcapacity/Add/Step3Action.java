@@ -52,7 +52,7 @@ public class Step3Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
         String locationName = request.getParameter(ParameterConstants.LOCATION_NAME);
         String unitOfMeasureKindName = request.getParameter(ParameterConstants.UNIT_OF_MEASURE_KIND_NAME);

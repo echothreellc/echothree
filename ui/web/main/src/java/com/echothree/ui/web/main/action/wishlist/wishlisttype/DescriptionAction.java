@@ -53,7 +53,7 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
             String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);

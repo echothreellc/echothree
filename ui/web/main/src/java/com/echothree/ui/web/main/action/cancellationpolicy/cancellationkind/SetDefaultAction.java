@@ -48,7 +48,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
             SetDefaultCancellationKindForm commandForm = CancellationPolicyUtil.getHome().getSetDefaultCancellationKindForm();

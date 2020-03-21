@@ -51,7 +51,7 @@ public class Step1Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
             GetDivisionsForm commandForm = PartyUtil.getHome().getGetDivisionsForm();

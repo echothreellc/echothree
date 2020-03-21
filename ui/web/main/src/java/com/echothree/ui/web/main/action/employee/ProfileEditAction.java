@@ -52,7 +52,7 @@ public class ProfileEditAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ProfileEditActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         EditProfileForm commandForm = PartyUtil.getHome().getEditProfileForm();
         
