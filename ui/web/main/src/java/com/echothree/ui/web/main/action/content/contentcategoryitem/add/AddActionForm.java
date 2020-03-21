@@ -57,33 +57,29 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
 
-    private void setupInventoryConditionChoices() {
+    private void setupInventoryConditionChoices()
+            throws NamingException {
         if(inventoryConditionChoices == null) {
-            try {
-                GetInventoryConditionChoicesForm form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
+            GetInventoryConditionChoicesForm form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
 
-                form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
-                form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
+            form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetInventoryConditionChoicesResult getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
-                inventoryConditionChoices = getInventoryConditionChoicesResult.getInventoryConditionChoices();
+            CommandResult commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetInventoryConditionChoicesResult getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
+            inventoryConditionChoices = getInventoryConditionChoicesResult.getInventoryConditionChoices();
 
-                if(inventoryConditionChoice == null) {
-                    inventoryConditionChoice = inventoryConditionChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, inventoryConditionChoices remains null, no default
+            if(inventoryConditionChoice == null) {
+                inventoryConditionChoice = inventoryConditionChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupUnitOfMeasureTypeChoices() {
+    private void setupUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(unitOfMeasureTypeChoices == null) {
-            try {
                 GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
                 form.setItemName(itemName);
@@ -98,16 +94,12 @@ public class AddActionForm
                 if(unitOfMeasureTypeChoice == null) {
                     unitOfMeasureTypeChoice = unitOfMeasureTypeChoices.getDefaultValue();
                 }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
-            }
         }
     }
 
-    public void setupCurrencyChoices() {
+    public void setupCurrencyChoices()
+            throws NamingException {
         if(currencyChoices == null) {
-            try {
                 GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
 
                 form.setDefaultCurrencyChoice(currencyChoice);
@@ -121,10 +113,6 @@ public class AddActionForm
                 if(currencyChoice == null) {
                     currencyChoice = currencyChoices.getDefaultValue();
                 }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, currencyChoices remains null, no default
-            }
         }
     }
 
@@ -160,7 +148,8 @@ public class AddActionForm
         this.itemName = itemName;
     }
 
-    public List<LabelValueBean> getInventoryConditionChoices() {
+    public List<LabelValueBean> getInventoryConditionChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupInventoryConditionChoices();
@@ -170,7 +159,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getInventoryConditionChoice() {
+    public String getInventoryConditionChoice()
+            throws NamingException {
         setupInventoryConditionChoices();
         
         return inventoryConditionChoice;
@@ -180,7 +170,8 @@ public class AddActionForm
         this.inventoryConditionChoice = inventoryConditionChoice;
     }
 
-    public String getCurrencyChoice() {
+    public String getCurrencyChoice()
+            throws NamingException {
         setupCurrencyChoices();
 
         return currencyChoice;
@@ -190,7 +181,8 @@ public class AddActionForm
         this.currencyChoice = currencyChoice;
     }
 
-    public List<LabelValueBean> getCurrencyChoices() {
+    public List<LabelValueBean> getCurrencyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupCurrencyChoices();
@@ -200,7 +192,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getUnitOfMeasureTypeChoice() {
+    public String getUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupUnitOfMeasureTypeChoices();
 
         return unitOfMeasureTypeChoice;
@@ -210,7 +203,8 @@ public class AddActionForm
         this.unitOfMeasureTypeChoice = unitOfMeasureTypeChoice;
     }
 
-    public List<LabelValueBean> getUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupUnitOfMeasureTypeChoices();

@@ -43,29 +43,26 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupDefaultSourceChoices() {
+    private void setupDefaultSourceChoices()
+            throws NamingException {
         if(defaultSourceChoices == null) {
-            try {
-                GetSourceChoicesForm getSourceChoicesForm = OfferUtil.getHome().getGetSourceChoicesForm();
-                
-                getSourceChoicesForm.setDefaultSourceChoice(getDefaultSourceChoice());
-                getSourceChoicesForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, getSourceChoicesForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSourceChoicesResult getSourceChoicesResult = (GetSourceChoicesResult)executionResult.getResult();
-                defaultSourceChoices = getSourceChoicesResult.getSourceChoices();
-                
-                if(getDefaultSourceChoice() == null)
-                    setDefaultSourceChoice(defaultSourceChoices.getDefaultValue());
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, sourceChoices remains null, no default
-            }
+            GetSourceChoicesForm getSourceChoicesForm = OfferUtil.getHome().getGetSourceChoicesForm();
+
+            getSourceChoicesForm.setDefaultSourceChoice(getDefaultSourceChoice());
+            getSourceChoicesForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, getSourceChoicesForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSourceChoicesResult getSourceChoicesResult = (GetSourceChoicesResult)executionResult.getResult();
+            defaultSourceChoices = getSourceChoicesResult.getSourceChoices();
+
+            if(getDefaultSourceChoice() == null)
+                setDefaultSourceChoice(defaultSourceChoices.getDefaultValue());
         }
     }
     
-    public List<LabelValueBean> getDefaultSourceChoices() {
+    public List<LabelValueBean> getDefaultSourceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultSourceChoices();

@@ -36,27 +36,23 @@ public class EditActionForm
     protected String originalContentCategoryName = null;
     protected String parentContentCategoryChoice = null;
     
-    private void setupParentContentCategoryChoices() {
+    private void setupParentContentCategoryChoices()
+            throws NamingException {
         if(parentContentCategoryChoices == null) {
-            try {
-                GetContentCategoryChoicesForm form = ContentUtil.getHome().getGetContentCategoryChoicesForm();
-                
-                form.setContentCollectionName(contentCollectionName);
-                form.setContentCatalogName(contentCatalogName);
-                form.setDefaultContentCategoryChoice(parentContentCategoryChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCategoryChoicesResult getContentCategoryChoicesResult = (GetContentCategoryChoicesResult)executionResult.getResult();
-                parentContentCategoryChoices = getContentCategoryChoicesResult.getContentCategoryChoices();
-                
-                if(parentContentCategoryChoice == null) {
-                    parentContentCategoryChoice = parentContentCategoryChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentContentCategoryChoices remains null, no default
+            GetContentCategoryChoicesForm form = ContentUtil.getHome().getGetContentCategoryChoicesForm();
+
+            form.setContentCollectionName(contentCollectionName);
+            form.setContentCatalogName(contentCatalogName);
+            form.setDefaultContentCategoryChoice(parentContentCategoryChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetContentCategoryChoicesResult getContentCategoryChoicesResult = (GetContentCategoryChoicesResult)executionResult.getResult();
+            parentContentCategoryChoices = getContentCategoryChoicesResult.getContentCategoryChoices();
+
+            if(parentContentCategoryChoice == null) {
+                parentContentCategoryChoice = parentContentCategoryChoices.getDefaultValue();
             }
         }
     }
@@ -77,7 +73,8 @@ public class EditActionForm
         this.parentContentCategoryChoice = parentContentCategoryChoice;
     }
     
-    public List<LabelValueBean> getParentContentCategoryChoices() {
+    public List<LabelValueBean> getParentContentCategoryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupParentContentCategoryChoices();
