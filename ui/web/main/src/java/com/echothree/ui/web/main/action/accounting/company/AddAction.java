@@ -50,7 +50,7 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         if(wasPost(request)) {
             CreateCompanyForm commandForm = PartyUtil.getHome().getCreateCompanyForm();
@@ -70,9 +70,6 @@ public class AddAction
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateCompanyResult result = (CreateCompanyResult)executionResult.getResult();
-                
                 forwardKey = ForwardConstants.DISPLAY;
             }
         } else {

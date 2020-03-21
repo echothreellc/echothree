@@ -33,7 +33,6 @@ import org.apache.struts.util.LabelValueBean;
 public class AddActionForm
         extends BaseActionForm {
     
-    private LetterSourceChoicesBean letterSourceChoices;
     private ContactMechanismPurposeChoicesBean contactMechanismPurposeChoices;
     
     private String chainKindName;

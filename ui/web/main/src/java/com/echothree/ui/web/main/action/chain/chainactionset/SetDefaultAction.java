@@ -59,7 +59,7 @@ public class SetDefaultAction
         commandForm.setChainKindName(chainKindName);
         commandForm.setChainTypeName(chainTypeName);
         commandForm.setChainName(chainName);
-        commandForm.setChainActionSetName(request.getParameter(ParameterConstants.CHAIN_ACTION_SET_NAME));
+        commandForm.setChainActionSetName(chainActionSetName);
 
         ChainUtil.getHome().setDefaultChainActionSet(getUserVisitPK(request), commandForm);
 

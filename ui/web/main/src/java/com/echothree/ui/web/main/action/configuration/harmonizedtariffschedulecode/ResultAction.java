@@ -91,7 +91,7 @@ public class ResultAction
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter((new ParamEncoder(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT).encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+            String offsetParameter = request.getParameter(new ParamEncoder(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT).encodeParameterName(TableTagParameters.PARAMETER_PAGE));
             Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * pageSize;
 
             Map<String, Limit> limits = new HashMap<>();

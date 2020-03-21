@@ -73,7 +73,7 @@ public class SearchAction
         List<HarmonizedTariffScheduleCodeResultTransfer> harmonizedTariffScheduleCodeResults = result.getHarmonizedTariffScheduleCodeResults();
         Iterator<HarmonizedTariffScheduleCodeResultTransfer> iter = harmonizedTariffScheduleCodeResults.iterator();
         if(iter.hasNext()) {
-            harmonizedTariffScheduleCodeName = (iter.next()).getHarmonizedTariffScheduleCodeName();
+            harmonizedTariffScheduleCodeName = iter.next().getHarmonizedTariffScheduleCodeName();
         }
         
         return harmonizedTariffScheduleCodeName;

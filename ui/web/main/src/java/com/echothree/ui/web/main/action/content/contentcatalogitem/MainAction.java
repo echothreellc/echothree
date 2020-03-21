@@ -73,7 +73,7 @@ public class MainAction
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter((new ParamEncoder("contentCatalogItem").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+            String offsetParameter = request.getParameter(new ParamEncoder("contentCatalogItem").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
             Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();

@@ -55,7 +55,7 @@ public class AddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String companyName = request.getParameter(ParameterConstants.COMPANY_NAME);
         String divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
         
@@ -84,9 +84,6 @@ public class AddAction
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                CreateDepartmentResult result = (CreateDepartmentResult)executionResult.getResult();
-                
                 forwardKey = ForwardConstants.DISPLAY;
             }
         } else {

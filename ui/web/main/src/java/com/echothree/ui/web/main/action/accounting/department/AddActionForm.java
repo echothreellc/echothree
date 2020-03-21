@@ -29,7 +29,6 @@ public class AddActionForm
     private String divisionName;
     private String departmentName;
     private String name;
-    private String fein;
     private Boolean isDefault;
     private String sortOrder;
     
