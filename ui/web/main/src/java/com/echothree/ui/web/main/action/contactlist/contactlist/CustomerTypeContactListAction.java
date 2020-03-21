@@ -52,7 +52,7 @@ public class CustomerTypeContactListAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String contactListName = request.getParameter(ParameterConstants.CONTACT_LIST_NAME);
         GetCustomerTypeContactListsForm commandForm = ContactListUtil.getHome().getGetCustomerTypeContactListsForm();
 

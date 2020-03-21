@@ -52,7 +52,7 @@ public class TranslationReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         GetTrainingClassQuestionTranslationForm commandForm = TrainingUtil.getHome().getGetTrainingClassQuestionTranslationForm();
 
         commandForm.setTrainingClassName(request.getParameter(ParameterConstants.TRAINING_CLASS_NAME));

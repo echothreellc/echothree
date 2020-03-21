@@ -63,7 +63,7 @@ public class SearchAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         GetEntityTagsForm commandForm = TagUtil.getHome().getGetEntityTagsForm();
 
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));

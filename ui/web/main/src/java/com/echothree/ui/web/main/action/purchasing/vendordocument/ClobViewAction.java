@@ -47,7 +47,7 @@ public class ClobViewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
 
         Set<String> options = new HashSet<>();
         options.add(DocumentOptions.DocumentIncludeClob);

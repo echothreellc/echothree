@@ -68,7 +68,7 @@ public class AvailabilityAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, AvailabilityActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
         String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
 

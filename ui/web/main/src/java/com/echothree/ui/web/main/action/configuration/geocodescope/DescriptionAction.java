@@ -52,7 +52,7 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String geoCodeScopeName = request.getParameter(ParameterConstants.GEO_CODE_SCOPE_NAME);
         GetGeoCodeScopeDescriptionsForm commandForm = GeoUtil.getHome().getGetGeoCodeScopeDescriptionsForm();
 

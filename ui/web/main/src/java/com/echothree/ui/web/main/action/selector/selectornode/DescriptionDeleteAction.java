@@ -51,7 +51,7 @@ public class DescriptionDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);
         String selectorTypeName = request.getParameter(ParameterConstants.SELECTOR_TYPE_NAME);
         String selectorName = request.getParameter(ParameterConstants.SELECTOR_NAME);

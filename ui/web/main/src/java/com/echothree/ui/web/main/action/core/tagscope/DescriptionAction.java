@@ -52,7 +52,7 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String tagScopeName = request.getParameter(ParameterConstants.TAG_SCOPE_NAME);
         GetTagScopeDescriptionsForm commandForm = TagUtil.getHome().getGetTagScopeDescriptionsForm();
 

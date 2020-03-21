@@ -51,7 +51,7 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         try {
             String selectorKindName = request.getParameter(ParameterConstants.SELECTOR_KIND_NAME);

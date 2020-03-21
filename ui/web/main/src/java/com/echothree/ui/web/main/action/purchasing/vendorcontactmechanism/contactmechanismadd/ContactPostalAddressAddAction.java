@@ -52,7 +52,7 @@ public class ContactPostalAddressAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ContactPostalAddressAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         String countryName = request.getParameter(ParameterConstants.COUNTRY_NAME);
         CreateContactPostalAddressForm commandForm = ContactUtil.getHome().getCreateContactPostalAddressForm();

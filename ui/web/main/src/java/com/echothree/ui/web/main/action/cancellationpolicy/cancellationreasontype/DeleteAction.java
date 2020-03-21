@@ -51,7 +51,7 @@ public class DeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String cancellationKindName = request.getParameter(ParameterConstants.CANCELLATION_KIND_NAME);
         String cancellationReasonName = request.getParameter(ParameterConstants.CANCELLATION_REASON_NAME);
         

@@ -76,7 +76,7 @@ public class CustomerRecoveryAnswerReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         GetRecoveryAnswerForm commandForm = UserUtil.getHome().getGetRecoveryAnswerForm();
         String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
 

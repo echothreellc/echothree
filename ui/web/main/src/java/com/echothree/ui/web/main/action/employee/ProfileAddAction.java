@@ -47,7 +47,7 @@ public class ProfileAddAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ProfileAddActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         
         if(wasPost(request)) {
             CreateProfileForm commandForm = PartyUtil.getHome().getCreateProfileForm();

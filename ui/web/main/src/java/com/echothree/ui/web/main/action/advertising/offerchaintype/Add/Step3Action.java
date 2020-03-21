@@ -53,7 +53,7 @@ public class Step3Action
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String offerName = request.getParameter(ParameterConstants.OFFER_NAME);
         String chainKindName = request.getParameter(ParameterConstants.CHAIN_KIND_NAME);
         String chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);

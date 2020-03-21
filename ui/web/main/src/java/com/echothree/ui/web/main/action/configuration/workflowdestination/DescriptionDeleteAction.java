@@ -51,7 +51,7 @@ public class DescriptionDeleteAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String workflowName = request.getParameter(ParameterConstants.WORKFLOW_NAME);
         String workflowStepName = request.getParameter(ParameterConstants.WORKFLOW_STEP_NAME);
         String workflowDestinationName = request.getParameter(ParameterConstants.WORKFLOW_DESTINATION_NAME);

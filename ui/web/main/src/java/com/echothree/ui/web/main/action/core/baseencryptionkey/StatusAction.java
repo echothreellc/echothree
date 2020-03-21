@@ -51,7 +51,7 @@ public class StatusAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, StatusActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String baseEncryptionKeyName = request.getParameter(ParameterConstants.BASE_ENCRYPTION_KEY_NAME);
         SetBaseEncryptionKeyStatusForm commandForm = CoreUtil.getHome().getSetBaseEncryptionKeyStatusForm();
 

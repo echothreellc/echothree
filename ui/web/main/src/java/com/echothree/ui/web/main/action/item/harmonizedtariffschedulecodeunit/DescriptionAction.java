@@ -52,7 +52,7 @@ public class DescriptionAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String harmonizedTariffScheduleCodeUnitName = request.getParameter(ParameterConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNIT_NAME);
         GetHarmonizedTariffScheduleCodeUnitDescriptionsForm commandForm = ItemUtil.getHome().getGetHarmonizedTariffScheduleCodeUnitDescriptionsForm();
 

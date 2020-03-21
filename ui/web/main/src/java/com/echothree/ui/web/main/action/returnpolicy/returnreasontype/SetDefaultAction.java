@@ -51,7 +51,7 @@ public class SetDefaultAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     throws Exception {
-        String forwardKey = null;
+        String forwardKey;
         String returnKindName = request.getParameter(ParameterConstants.RETURN_KIND_NAME);
         String returnReasonName = request.getParameter(ParameterConstants.RETURN_REASON_NAME);
         
