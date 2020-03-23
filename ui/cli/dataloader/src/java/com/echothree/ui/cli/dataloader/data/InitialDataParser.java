@@ -88,13 +88,7 @@ public class InitialDataParser
     
     /** Default dynamic validation support (false). */
     protected static final boolean DEFAULT_DYNAMIC_VALIDATION = false;
-    
-    /** Default memory usage report (false). */
-    protected static final boolean DEFAULT_MEMORY_USAGE = true;
-    
-    /** Default "tagginess" report (false). */
-    protected static final boolean DEFAULT_TAGGINESS = true;
-    
+
     //
     // ContentHandler methods
     //

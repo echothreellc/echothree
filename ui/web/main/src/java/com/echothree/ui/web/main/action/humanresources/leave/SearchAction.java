@@ -72,7 +72,7 @@ public class SearchAction
         List<LeaveResultTransfer> leaveResults = result.getLeaveResults();
         Iterator<LeaveResultTransfer> iter = leaveResults.iterator();
         if(iter.hasNext()) {
-            leaveName = (iter.next()).getLeaveName();
+            leaveName = iter.next().getLeaveName();
         }
         
         return leaveName;

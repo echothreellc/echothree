@@ -44,25 +44,25 @@ public abstract class BaseHandler {
     }
     
     public abstract void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-    throws SAXException;
+            throws SAXException;
     
     public abstract void endElement(String namespaceURI, String localName, String qName)
-    throws SAXException;
+            throws SAXException;
     
     public void characters(char ch[], int start, int length)
-    throws SAXException {
+            throws SAXException {
         // Ignored
     }
     
     /** Ignorable whitespace. */
     public void ignorableWhitespace(char ch[], int start, int length)
-    throws SAXException {
+            throws SAXException {
         // Ignored
     }
     
     /** Processing instruction. */
     public void processingInstruction(String target, String data)
-    throws SAXException {
+            throws SAXException {
         // Ignored
     }
     
@@ -85,16 +85,8 @@ public abstract class BaseHandler {
         }
     }
     
-    public static boolean isDoErrors() {
-        return doErrors;
-    }
-    
     public static void setDoErrors(boolean aDoErrors) {
         doErrors = aDoErrors;
-    }
-    
-    public static boolean isDoVerbose() {
-        return doVerbose;
     }
     
     public static void setDoVerbose(boolean aDoVerbose) {

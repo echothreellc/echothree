@@ -51,7 +51,6 @@ public class JumpAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, JumpActionForm actionForm, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey;
         IdentifyForm commandForm = SearchUtil.getHome().getIdentifyForm();
         
         commandForm.setTarget(actionForm.getTarget());

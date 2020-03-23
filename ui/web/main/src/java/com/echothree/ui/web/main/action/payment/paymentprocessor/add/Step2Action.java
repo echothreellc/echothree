@@ -72,7 +72,7 @@ public class Step2Action
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         String forwardKey;
-        PaymentProcessorTypeTransfer paymentProcessorType = null;
+        PaymentProcessorTypeTransfer paymentProcessorType;
         UserVisitPK userVisitPK = getUserVisitPK(request);
         Step2ActionForm actionForm = (Step2ActionForm)form;
         String paymentProcessorTypeName = request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_TYPE_NAME);

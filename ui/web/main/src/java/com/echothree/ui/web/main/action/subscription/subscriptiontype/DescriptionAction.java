@@ -57,7 +57,6 @@ public class DescriptionAction
         try {
             String subscriptionKindName = request.getParameter(ParameterConstants.SUBSCRIPTION_KIND_NAME);
             String subscriptionTypeName = request.getParameter(ParameterConstants.SUBSCRIPTION_TYPE_NAME);
-            String subscriptionName = request.getParameter(ParameterConstants.SUBSCRIPTION_NAME);
             GetSubscriptionTypeDescriptionsForm commandForm = SubscriptionUtil.getHome().getGetSubscriptionTypeDescriptionsForm();
             
             commandForm.setSubscriptionKindName(subscriptionKindName);

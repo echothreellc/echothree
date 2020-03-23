@@ -62,8 +62,7 @@ public class PartyCreditLimitAddAction
             PartyCreditLimitAddActionForm actionForm = (PartyCreditLimitAddActionForm)form;
             CreatePartyCreditLimitForm commandForm = TermUtil.getHome().getCreatePartyCreditLimitForm();
             String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-            String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
-            
+
             if(customerName == null)
                 customerName = actionForm.getCustomerName();
             if(partyName == null)

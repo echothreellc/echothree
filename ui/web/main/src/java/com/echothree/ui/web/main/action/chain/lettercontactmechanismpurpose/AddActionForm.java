@@ -41,25 +41,21 @@ public class AddActionForm
     private String priority;
     private String contactMechanismPurposeChoice;
     
-    private void setupContactMechanismPurposeChoices() {
+    private void setupContactMechanismPurposeChoices()
+            throws NamingException {
         if(contactMechanismPurposeChoices == null) {
-            try {
-                GetContactMechanismPurposeChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
-                
-                commandForm.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismPurposeChoicesResult result = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
-                contactMechanismPurposeChoices = result.getContactMechanismPurposeChoices();
-                
-                if(contactMechanismPurposeChoice == null) {
-                    contactMechanismPurposeChoice = contactMechanismPurposeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, contactMechanismPurposeChoices remains null, no default
+            GetContactMechanismPurposeChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+
+            commandForm.setDefaultContactMechanismPurposeChoice(contactMechanismPurposeChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetContactMechanismPurposeChoicesResult result = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            contactMechanismPurposeChoices = result.getContactMechanismPurposeChoices();
+
+            if(contactMechanismPurposeChoice == null) {
+                contactMechanismPurposeChoice = contactMechanismPurposeChoices.getDefaultValue();
             }
         }
     }
@@ -96,7 +92,8 @@ public class AddActionForm
         this.priority = priority;
     }
     
-    public List<LabelValueBean> getContactMechanismPurposeChoices() {
+    public List<LabelValueBean> getContactMechanismPurposeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupContactMechanismPurposeChoices();
@@ -111,7 +108,8 @@ public class AddActionForm
         this.contactMechanismPurposeChoice = contactMechanismPurposeChoice;
     }
     
-    public String getContactMechanismPurposeChoice() {
+    public String getContactMechanismPurposeChoice()
+            throws NamingException {
         setupContactMechanismPurposeChoices();
         
         return contactMechanismPurposeChoice;
