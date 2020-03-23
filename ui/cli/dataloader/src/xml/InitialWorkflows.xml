@@ -1044,6 +1044,9 @@
                 <workflowDestinationDescription languageIsoName="en" description="Base Encryption Key is Inactive" />
                 <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
                 <workflowDestinationPartyType partyTypeName="UTILITY" />
+                <workflowDestinationPartyType partyTypeName="EMPLOYEE">
+                    <workflowDestinationSecurityRole securityRoleName="Change" />
+                </workflowDestinationPartyType>
             </workflowDestination>
             <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_DESTROYED" isDefault="true" sortOrder="0">
                 <workflowDestinationDescription languageIsoName="en" description="Base Encryption Key has been Destroyed" />
