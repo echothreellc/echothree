@@ -20,6 +20,7 @@ public enum SecurityRoles {
     
     AppearanceTextDecoration,
     AppearanceTextTransformation,
+    Change,
     Choices,
     ContactListContactMechanismPurpose,
     Create,
@@ -34,6 +35,7 @@ public enum SecurityRoles {
     HarmonizedTariffScheduleCodeUse,
     History,
     List,
+    Load,
     PartyType,
     PartyTypeContactList,
     PartyTypeContactListGroup,

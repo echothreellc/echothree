@@ -3888,6 +3888,12 @@
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Base Encryption Key Review" />
             </securityRole>
+            <securityRole securityRoleName="Change" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Base Encryption Key Change" />
+            </securityRole>
+            <securityRole securityRoleName="Load" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Base Encryption Key Load" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="BaseEncryptionKeyStatus" parentSecurityRoleGroupName="BaseEncryptionKey" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Base Encryption Key Status" />
@@ -7905,6 +7911,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PurchaseInvoiceLine" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKey" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKey" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKey" securityRoleName="Change" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKey" securityRoleName="Load" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKeyStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKeyStatus" securityRoleName="Destroyed" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Forum" securityRoleName="Create" />
