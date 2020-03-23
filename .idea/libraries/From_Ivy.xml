@@ -111,6 +111,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/httpclient.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/httpcore.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/httpmime.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/infinispan-core.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
