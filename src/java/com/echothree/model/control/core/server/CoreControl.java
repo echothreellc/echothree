@@ -12347,7 +12347,7 @@ public class CoreControl
         BaseEncryptionKey baseEncryptionKey = null;
         
         if(activeBaseEncryptionKey != null) {
-            setBaseEncryptionKeyStatus(eea, activeBaseEncryptionKey,  WorkflowDestination_BASE_ENCRYPTION_KEY_STATUS_ACTIVE_TO_INACTIVE, createdBy);
+            setBaseEncryptionKeyStatus(eea, activeBaseEncryptionKey, WorkflowDestination_BASE_ENCRYPTION_KEY_STATUS_ACTIVE_TO_INACTIVE, createdBy);
         }
         
         if(!eea.hasExecutionErrors()) {
