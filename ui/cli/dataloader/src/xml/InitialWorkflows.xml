@@ -1045,19 +1045,23 @@
                 <workflowDestinationStep destinationWorkflowStepName="INACTIVE" />
                 <workflowDestinationPartyType partyTypeName="UTILITY" />
                 <workflowDestinationPartyType partyTypeName="EMPLOYEE">
-                    <workflowDestinationSecurityRole securityRoleName="Change" />
+                    <workflowDestinationSecurityRole securityRoleName="ActiveToInactive" />
                 </workflowDestinationPartyType>
             </workflowDestination>
             <workflowDestination workflowStepName="INACTIVE" workflowDestinationName="INACTIVE_TO_DESTROYED" isDefault="true" sortOrder="0">
                 <workflowDestinationDescription languageIsoName="en" description="Base Encryption Key has been Destroyed" />
                 <workflowDestinationStep destinationWorkflowStepName="DESTROYED" />
                 <workflowDestinationPartyType partyTypeName="EMPLOYEE">
-                    <workflowDestinationSecurityRole securityRoleName="Destroyed" />
+                    <workflowDestinationSecurityRole securityRoleName="InactiveToDestroyed" />
                 </workflowDestinationPartyType>
             </workflowDestination>
             <workflowEntrance workflowEntranceName="NEW_ACTIVE" isDefault="true" sortOrder="0">
                 <workflowEntranceDescription languageIsoName="en" description="New Base Encryption Key" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
+                <workflowEntrancePartyType partyTypeName="UTILITY" />
+                <workflowEntrancePartyType partyTypeName="EMPLOYEE">
+                    <workflowEntranceSecurityRole securityRoleName="NewActive" />
+                </workflowEntrancePartyType>
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="BaseEncryptionKey" />
         </workflow>

@@ -3900,8 +3900,14 @@
             <securityRole securityRoleName="Choices" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Base Encryption Key Status Choices" />
             </securityRole>
-            <securityRole securityRoleName="Destroyed" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Destroy Base Encryption Key" />
+            <securityRole securityRoleName="ActiveToInactive" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Active to Inactive Base Encryption Key" />
+            </securityRole>
+            <securityRole securityRoleName="InactiveToDestroyed" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inactive to Destroyed Base Encryption Key" />
+            </securityRole>
+            <securityRole securityRoleName="NewActive" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="New Active Base Encryption Key" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ForumComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -7914,7 +7920,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKey" securityRoleName="Change" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKey" securityRoleName="Load" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKeyStatus" securityRoleName="Choices" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKeyStatus" securityRoleName="Destroyed" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKeyStatus" securityRoleName="ActiveToInactive" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKeyStatus" securityRoleName="InactiveToDestroyed" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="BaseEncryptionKeyStatus" securityRoleName="NewActive" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Forum" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Forum" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Forum" securityRoleName="Delete" />
