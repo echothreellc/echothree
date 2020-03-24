@@ -42,24 +42,20 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupEntityAttributeTypeChoices() {
+    private void setupEntityAttributeTypeChoices()
+            throws NamingException {
         if(entityAttributeTypeChoices == null) {
-            try {
-                GetEntityAttributeTypeChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
+            GetEntityAttributeTypeChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
 
-                commandForm.setDefaultEntityAttributeTypeChoice(entityAttributeTypeChoice);
+            commandForm.setDefaultEntityAttributeTypeChoice(entityAttributeTypeChoice);
 
-                CommandResult commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEntityAttributeTypeChoicesResult getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
-                entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
+            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetEntityAttributeTypeChoicesResult getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
+            entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
 
-                if(entityAttributeTypeChoice == null)
-                    entityAttributeTypeChoice = entityAttributeTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, entityAttributeTypeChoices remains null, no default
-            }
+            if(entityAttributeTypeChoice == null)
+                entityAttributeTypeChoice = entityAttributeTypeChoices.getDefaultValue();
         }
     }
 
@@ -71,7 +67,8 @@ public class AddActionForm
         return mimeTypeName;
     }
     
-    public List<LabelValueBean> getEntityAttributeTypeChoices() {
+    public List<LabelValueBean> getEntityAttributeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupEntityAttributeTypeChoices();
@@ -85,7 +82,8 @@ public class AddActionForm
         this.entityAttributeTypeChoice = entityAttributeTypeChoice;
     }
 
-    public String getEntityAttributeTypeChoice() {
+    public String getEntityAttributeTypeChoice()
+            throws NamingException {
         setupEntityAttributeTypeChoices();
         return entityAttributeTypeChoice;
     }

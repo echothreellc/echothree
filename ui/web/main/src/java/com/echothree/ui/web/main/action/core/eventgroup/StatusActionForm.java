@@ -37,26 +37,22 @@ public class StatusActionForm
     private String eventGroupName;
     private String eventGroupStatusChoice;
     
-    public void setupEventGroupStatusChoices() {
+    public void setupEventGroupStatusChoices()
+            throws NamingException {
         if(eventGroupStatusChoices == null) {
-            try {
-                GetEventGroupStatusChoicesForm form = CoreUtil.getHome().getGetEventGroupStatusChoicesForm();
-                
-                form.setEventGroupName(eventGroupName);
-                form.setDefaultEventGroupStatusChoice(eventGroupStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getEventGroupStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEventGroupStatusChoicesResult result = (GetEventGroupStatusChoicesResult)executionResult.getResult();
-                eventGroupStatusChoices = result.getEventGroupStatusChoices();
-                
-                if(eventGroupStatusChoice == null) {
-                    eventGroupStatusChoice = eventGroupStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, eventGroupStatusChoices remains null, no default
+            GetEventGroupStatusChoicesForm form = CoreUtil.getHome().getGetEventGroupStatusChoicesForm();
+
+            form.setEventGroupName(eventGroupName);
+            form.setDefaultEventGroupStatusChoice(eventGroupStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getEventGroupStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetEventGroupStatusChoicesResult result = (GetEventGroupStatusChoicesResult)executionResult.getResult();
+            eventGroupStatusChoices = result.getEventGroupStatusChoices();
+
+            if(eventGroupStatusChoice == null) {
+                eventGroupStatusChoice = eventGroupStatusChoices.getDefaultValue();
             }
         }
     }
@@ -77,7 +73,8 @@ public class StatusActionForm
         this.eventGroupStatusChoice = eventGroupStatusChoice;
     }
     
-    public List<LabelValueBean> getEventGroupStatusChoices() {
+    public List<LabelValueBean> getEventGroupStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEventGroupStatusChoices();

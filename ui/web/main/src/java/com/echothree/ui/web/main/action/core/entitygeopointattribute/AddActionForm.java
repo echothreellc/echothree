@@ -46,50 +46,42 @@ public class AddActionForm
     private String altitude;
     private String altitudeUnitOfMeasureTypeChoice;
     
-    private void setupElevationUnitOfMeasureTypeChoices() {
+    private void setupElevationUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(elevationUnitOfMeasureTypeChoices == null) {
-            try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(elevationUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                elevationUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(elevationUnitOfMeasureTypeChoice == null) {
-                    elevationUnitOfMeasureTypeChoice = elevationUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+
+            form.setDefaultUnitOfMeasureTypeChoice(elevationUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
+
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            elevationUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(elevationUnitOfMeasureTypeChoice == null) {
+                elevationUnitOfMeasureTypeChoice = elevationUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupAltitudeUnitOfMeasureTypeChoices() {
+    private void setupAltitudeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(altitudeUnitOfMeasureTypeChoices == null) {
-            try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureTypeChoice(altitudeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                altitudeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
-                
-                if(altitudeUnitOfMeasureTypeChoice == null) {
-                    altitudeUnitOfMeasureTypeChoice = altitudeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+
+            form.setDefaultUnitOfMeasureTypeChoice(altitudeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
+
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            altitudeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+
+            if(altitudeUnitOfMeasureTypeChoice == null) {
+                altitudeUnitOfMeasureTypeChoice = altitudeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -142,7 +134,8 @@ public class AddActionForm
         this.elevation = elevation;
     }
     
-    public List<LabelValueBean> getElevationUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getElevationUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupElevationUnitOfMeasureTypeChoices();
@@ -153,7 +146,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getElevationUnitOfMeasureTypeChoice() {
+    public String getElevationUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupElevationUnitOfMeasureTypeChoices();
         return elevationUnitOfMeasureTypeChoice;
     }
@@ -170,7 +164,8 @@ public class AddActionForm
         this.altitude = altitude;
     }
     
-    public List<LabelValueBean> getAltitudeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getAltitudeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupAltitudeUnitOfMeasureTypeChoices();
@@ -181,7 +176,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getAltitudeUnitOfMeasureTypeChoice() {
+    public String getAltitudeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupAltitudeUnitOfMeasureTypeChoices();
         return altitudeUnitOfMeasureTypeChoice;
     }

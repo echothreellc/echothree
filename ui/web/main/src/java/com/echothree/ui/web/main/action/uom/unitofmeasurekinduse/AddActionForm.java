@@ -48,48 +48,40 @@ public class AddActionForm
     private String sortOrder;
     private String forwardParameter;
     
-    private void setupUnitOfMeasureKindChoices() {
+    private void setupUnitOfMeasureKindChoices()
+            throws NamingException {
         if(unitOfMeasureKindChoices == null) {
-            try {
-                GetUnitOfMeasureKindChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureKindChoicesForm();
-                
-                form.setDefaultUnitOfMeasureKindChoice(unitOfMeasureKindChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureKindChoicesResult getUnitOfMeasureKindChoicesResult = (GetUnitOfMeasureKindChoicesResult)executionResult.getResult();
-                unitOfMeasureKindChoices = getUnitOfMeasureKindChoicesResult.getUnitOfMeasureKindChoices();
-                
-                if(unitOfMeasureKindChoice == null) {
-                    unitOfMeasureKindChoice = unitOfMeasureKindChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationChoices remains null, no default
+            GetUnitOfMeasureKindChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureKindChoicesForm();
+
+            form.setDefaultUnitOfMeasureKindChoice(unitOfMeasureKindChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureKindChoicesResult getUnitOfMeasureKindChoicesResult = (GetUnitOfMeasureKindChoicesResult)executionResult.getResult();
+            unitOfMeasureKindChoices = getUnitOfMeasureKindChoicesResult.getUnitOfMeasureKindChoices();
+
+            if(unitOfMeasureKindChoice == null) {
+                unitOfMeasureKindChoice = unitOfMeasureKindChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupUnitOfMeasureKindUseTypeChoices() {
+    private void setupUnitOfMeasureKindUseTypeChoices()
+            throws NamingException {
         if(unitOfMeasureKindUseTypeChoices == null) {
-            try {
-                GetUnitOfMeasureKindUseTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeChoicesForm();
-                
-                form.setDefaultUnitOfMeasureKindUseTypeChoice(unitOfMeasureKindUseTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureKindUseTypeChoicesResult getUnitOfMeasureKindUseTypeChoicesResult = (GetUnitOfMeasureKindUseTypeChoicesResult)executionResult.getResult();
-                unitOfMeasureKindUseTypeChoices = getUnitOfMeasureKindUseTypeChoicesResult.getUnitOfMeasureKindUseTypeChoices();
-                
-                if(unitOfMeasureKindUseTypeChoice == null) {
-                    unitOfMeasureKindUseTypeChoice = unitOfMeasureKindUseTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationChoices remains null, no default
+            GetUnitOfMeasureKindUseTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeChoicesForm();
+
+            form.setDefaultUnitOfMeasureKindUseTypeChoice(unitOfMeasureKindUseTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureKindUseTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureKindUseTypeChoicesResult getUnitOfMeasureKindUseTypeChoicesResult = (GetUnitOfMeasureKindUseTypeChoicesResult)executionResult.getResult();
+            unitOfMeasureKindUseTypeChoices = getUnitOfMeasureKindUseTypeChoicesResult.getUnitOfMeasureKindUseTypeChoices();
+
+            if(unitOfMeasureKindUseTypeChoice == null) {
+                unitOfMeasureKindUseTypeChoice = unitOfMeasureKindUseTypeChoices.getDefaultValue();
             }
         }
     }
@@ -110,7 +102,8 @@ public class AddActionForm
         this.unitOfMeasureKindUseTypeName = unitOfMeasureKindUseTypeName;
     }
     
-    public List<LabelValueBean> getUnitOfMeasureKindChoices() {
+    public List<LabelValueBean> getUnitOfMeasureKindChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupUnitOfMeasureKindChoices();
@@ -121,7 +114,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getUnitOfMeasureKindChoice() {
+    public String getUnitOfMeasureKindChoice()
+            throws NamingException {
         setupUnitOfMeasureKindChoices();
         
         return unitOfMeasureKindChoice;
@@ -131,7 +125,8 @@ public class AddActionForm
         this.unitOfMeasureKindChoice = unitOfMeasureKindChoice;
     }
     
-    public List<LabelValueBean> getUnitOfMeasureKindUseTypeChoices() {
+    public List<LabelValueBean> getUnitOfMeasureKindUseTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupUnitOfMeasureKindUseTypeChoices();
@@ -142,7 +137,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getUnitOfMeasureKindUseTypeChoice() {
+    public String getUnitOfMeasureKindUseTypeChoice()
+            throws NamingException {
         setupUnitOfMeasureKindUseTypeChoices();
         
         return unitOfMeasureKindUseTypeChoice;

@@ -44,26 +44,22 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupKeepPrintedJobsTimeUnitOfMeasureTypeChoices() {
+    private void setupKeepPrintedJobsTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(keepPrintedJobsTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                form.setDefaultUnitOfMeasureTypeChoice(keepPrintedJobsTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            form.setDefaultUnitOfMeasureTypeChoice(keepPrintedJobsTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                keepPrintedJobsTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            keepPrintedJobsTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
-                if(keepPrintedJobsTimeUnitOfMeasureTypeChoice == null) {
-                    keepPrintedJobsTimeUnitOfMeasureTypeChoice = keepPrintedJobsTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            if(keepPrintedJobsTimeUnitOfMeasureTypeChoice == null) {
+                keepPrintedJobsTimeUnitOfMeasureTypeChoice = keepPrintedJobsTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -84,7 +80,8 @@ public class AddActionForm
         this.keepPrintedJobsTime = keepPrintedJobsTime;
     }
 
-    public List<LabelValueBean> getKeepPrintedJobsTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getKeepPrintedJobsTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupKeepPrintedJobsTimeUnitOfMeasureTypeChoices();
@@ -95,7 +92,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getKeepPrintedJobsTimeUnitOfMeasureTypeChoice() {
+    public String getKeepPrintedJobsTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupKeepPrintedJobsTimeUnitOfMeasureTypeChoices();
         return keepPrintedJobsTimeUnitOfMeasureTypeChoice;
     }

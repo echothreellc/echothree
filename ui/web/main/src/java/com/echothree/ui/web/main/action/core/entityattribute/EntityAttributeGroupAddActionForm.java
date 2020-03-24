@@ -40,25 +40,21 @@ public class EntityAttributeGroupAddActionForm
     private String entityAttributeGroupChoice;
     private String sortOrder;
     
-    private void setupEntityAttributeGroupChoices() {
+    private void setupEntityAttributeGroupChoices()
+            throws NamingException {
         if(entityAttributeGroupChoices == null) {
-            try {
-                GetEntityAttributeGroupChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupChoicesForm();
-                
-                commandForm.setDefaultEntityAttributeGroupChoice(entityAttributeGroupChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroupChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEntityAttributeGroupChoicesResult getEntityAttributeGroupChoicesResult = (GetEntityAttributeGroupChoicesResult)executionResult.getResult();
-                entityAttributeGroupChoices = getEntityAttributeGroupChoicesResult.getEntityAttributeGroupChoices();
-                
-                if(entityAttributeGroupChoice == null) {
-                    entityAttributeGroupChoice = entityAttributeGroupChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, entityAttributeGroupChoices remains null, no default
+            GetEntityAttributeGroupChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeGroupChoicesForm();
+
+            commandForm.setDefaultEntityAttributeGroupChoice(entityAttributeGroupChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeGroupChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetEntityAttributeGroupChoicesResult getEntityAttributeGroupChoicesResult = (GetEntityAttributeGroupChoicesResult)executionResult.getResult();
+            entityAttributeGroupChoices = getEntityAttributeGroupChoicesResult.getEntityAttributeGroupChoices();
+
+            if(entityAttributeGroupChoice == null) {
+                entityAttributeGroupChoice = entityAttributeGroupChoices.getDefaultValue();
             }
         }
     }
@@ -87,7 +83,8 @@ public class EntityAttributeGroupAddActionForm
         return entityAttributeName;
     }
     
-    public List<LabelValueBean> getEntityAttributeGroupChoices() {
+    public List<LabelValueBean> getEntityAttributeGroupChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEntityAttributeGroupChoices();
@@ -101,7 +98,8 @@ public class EntityAttributeGroupAddActionForm
         this.entityAttributeGroupChoice = entityAttributeGroupChoice;
     }
     
-    public String getEntityAttributeGroupChoice() {
+    public String getEntityAttributeGroupChoice()
+            throws NamingException {
         setupEntityAttributeGroupChoices();
         return entityAttributeGroupChoice;
     }

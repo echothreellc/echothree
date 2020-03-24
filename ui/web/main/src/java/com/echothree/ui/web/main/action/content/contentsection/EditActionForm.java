@@ -36,26 +36,22 @@ public class EditActionForm
     protected String originalContentSectionName = null;
     protected String parentContentSectionChoice = null;
     
-    private void setupParentContentSectionChoices() {
+    private void setupParentContentSectionChoices()
+            throws NamingException {
         if(parentContentSectionChoices == null) {
-            try {
-                GetContentSectionChoicesForm form = ContentUtil.getHome().getGetContentSectionChoicesForm();
-                
-                form.setContentCollectionName(contentCollectionName);
-                form.setDefaultContentSectionChoice(parentContentSectionChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ContentUtil.getHome().getContentSectionChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentSectionChoicesResult getContentSectionChoicesResult = (GetContentSectionChoicesResult)executionResult.getResult();
-                parentContentSectionChoices = getContentSectionChoicesResult.getContentSectionChoices();
-                
-                if(parentContentSectionChoice == null)
-                    parentContentSectionChoice = parentContentSectionChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, parentContentSectionChoices remains null, no default
-            }
+            GetContentSectionChoicesForm form = ContentUtil.getHome().getGetContentSectionChoicesForm();
+
+            form.setContentCollectionName(contentCollectionName);
+            form.setDefaultContentSectionChoice(parentContentSectionChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = ContentUtil.getHome().getContentSectionChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetContentSectionChoicesResult getContentSectionChoicesResult = (GetContentSectionChoicesResult)executionResult.getResult();
+            parentContentSectionChoices = getContentSectionChoicesResult.getContentSectionChoices();
+
+            if(parentContentSectionChoice == null)
+                parentContentSectionChoice = parentContentSectionChoices.getDefaultValue();
         }
     }
     
@@ -75,7 +71,8 @@ public class EditActionForm
         this.parentContentSectionChoice = parentContentSectionChoice;
     }
     
-    public List<LabelValueBean> getParentContentSectionChoices() {
+    public List<LabelValueBean> getParentContentSectionChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupParentContentSectionChoices();

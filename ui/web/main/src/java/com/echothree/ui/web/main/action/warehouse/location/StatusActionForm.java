@@ -40,26 +40,22 @@ public class StatusActionForm
     private String locationName;
     private String locationStatusChoice;
     
-    public void setupLocationStatusChoices() {
+    public void setupLocationStatusChoices()
+            throws NamingException {
         if(locationStatusChoices == null) {
-            try {
-                GetLocationStatusChoicesForm form = WarehouseUtil.getHome().getGetLocationStatusChoicesForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setLocationName(locationName);
-                form.setDefaultLocationStatusChoice(locationStatusChoice);
-                
-                CommandResult commandResult = WarehouseUtil.getHome().getLocationStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLocationStatusChoicesResult getLocationStatusChoicesResult = (GetLocationStatusChoicesResult)executionResult.getResult();
-                locationStatusChoices = getLocationStatusChoicesResult.getLocationStatusChoices();
-                
-                if(locationStatusChoice == null)
-                    locationStatusChoice = locationStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationStatusChoices remains null, no default
-            }
+            GetLocationStatusChoicesForm form = WarehouseUtil.getHome().getGetLocationStatusChoicesForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setLocationName(locationName);
+            form.setDefaultLocationStatusChoice(locationStatusChoice);
+
+            CommandResult commandResult = WarehouseUtil.getHome().getLocationStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetLocationStatusChoicesResult getLocationStatusChoicesResult = (GetLocationStatusChoicesResult)executionResult.getResult();
+            locationStatusChoices = getLocationStatusChoicesResult.getLocationStatusChoices();
+
+            if(locationStatusChoice == null)
+                locationStatusChoice = locationStatusChoices.getDefaultValue();
         }
     }
     
@@ -87,7 +83,8 @@ public class StatusActionForm
         this.locationStatusChoice = locationStatusChoice;
     }
     
-    public List<LabelValueBean> getLocationStatusChoices() {
+    public List<LabelValueBean> getLocationStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLocationStatusChoices();

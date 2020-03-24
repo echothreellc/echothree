@@ -40,24 +40,20 @@ public class AddActionForm
     private String contentCollectionChoice;
     private String description;
     
-    private void setupContentCollectionChoices() {
+    private void setupContentCollectionChoices()
+            throws NamingException {
         if(contentCollectionChoices == null) {
-            try {
-                GetContentCollectionChoicesForm getContentCollectionChoicesForm = ContentUtil.getHome().getGetContentCollectionChoicesForm();
-                
-                getContentCollectionChoicesForm.setDefaultContentCollectionChoice(contentCollectionChoice);
-                
-                CommandResult commandResult = ContentUtil.getHome().getContentCollectionChoices(userVisitPK, getContentCollectionChoicesForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentCollectionChoicesResult getContentCollectionChoicesResult = (GetContentCollectionChoicesResult)executionResult.getResult();
-                contentCollectionChoices = getContentCollectionChoicesResult.getContentCollectionChoices();
-                
-                if(contentCollectionChoice == null)
-                    contentCollectionChoice = contentCollectionChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, contentCollectionChoices remains null, no default
-            }
+            GetContentCollectionChoicesForm getContentCollectionChoicesForm = ContentUtil.getHome().getGetContentCollectionChoicesForm();
+
+            getContentCollectionChoicesForm.setDefaultContentCollectionChoice(contentCollectionChoice);
+
+            CommandResult commandResult = ContentUtil.getHome().getContentCollectionChoices(userVisitPK, getContentCollectionChoicesForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetContentCollectionChoicesResult getContentCollectionChoicesResult = (GetContentCollectionChoicesResult)executionResult.getResult();
+            contentCollectionChoices = getContentCollectionChoicesResult.getContentCollectionChoices();
+
+            if(contentCollectionChoice == null)
+                contentCollectionChoice = contentCollectionChoices.getDefaultValue();
         }
     }
     
@@ -69,7 +65,8 @@ public class AddActionForm
         return contentWebAddressName;
     }
     
-    public List<LabelValueBean> getContentCollectionChoices() {
+    public List<LabelValueBean> getContentCollectionChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupContentCollectionChoices();
@@ -83,7 +80,8 @@ public class AddActionForm
         this.contentCollectionChoice = contentCollectionChoice;
     }
     
-    public String getContentCollectionChoice() {
+    public String getContentCollectionChoice()
+            throws NamingException {
         setupContentCollectionChoices();
         return contentCollectionChoice;
     }

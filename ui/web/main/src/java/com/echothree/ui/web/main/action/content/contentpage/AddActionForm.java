@@ -45,28 +45,25 @@ public class AddActionForm
     private String description;
     private String parentContentSectionName;
     
-    private void setupContentPageLayoutChoices() {
+    private void setupContentPageLayoutChoices()
+            throws NamingException {
         if(contentPageLayoutChoices == null) {
-            try {
-                GetContentPageLayoutChoicesForm getContentPageLayoutChoicesForm = ContentUtil.getHome().getGetContentPageLayoutChoicesForm();
-                
-                getContentPageLayoutChoicesForm.setDefaultContentPageLayoutChoice(contentPageLayoutChoice);
-                
-                CommandResult commandResult = ContentUtil.getHome().getContentPageLayoutChoices(userVisitPK, getContentPageLayoutChoicesForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContentPageLayoutChoicesResult getContentPageLayoutChoicesResult = (GetContentPageLayoutChoicesResult)executionResult.getResult();
-                contentPageLayoutChoices = getContentPageLayoutChoicesResult.getContentPageLayoutChoices();
-                
-                if(contentPageLayoutChoice == null)
-                    contentPageLayoutChoice = contentPageLayoutChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, contentPageLayoutChoices remains null, no default
-            }
+            GetContentPageLayoutChoicesForm getContentPageLayoutChoicesForm = ContentUtil.getHome().getGetContentPageLayoutChoicesForm();
+
+            getContentPageLayoutChoicesForm.setDefaultContentPageLayoutChoice(contentPageLayoutChoice);
+
+            CommandResult commandResult = ContentUtil.getHome().getContentPageLayoutChoices(userVisitPK, getContentPageLayoutChoicesForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetContentPageLayoutChoicesResult getContentPageLayoutChoicesResult = (GetContentPageLayoutChoicesResult)executionResult.getResult();
+            contentPageLayoutChoices = getContentPageLayoutChoicesResult.getContentPageLayoutChoices();
+
+            if(contentPageLayoutChoice == null)
+                contentPageLayoutChoice = contentPageLayoutChoices.getDefaultValue();
         }
     }
     
-    public List<LabelValueBean> getContentPageLayoutChoices() {
+    public List<LabelValueBean> getContentPageLayoutChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupContentPageLayoutChoices();
@@ -104,7 +101,8 @@ public class AddActionForm
         this.contentPageLayoutChoice = contentPageLayoutChoice;
     }
     
-    public String getContentPageLayoutChoice() {
+    public String getContentPageLayoutChoice()
+            throws NamingException {
         setupContentPageLayoutChoices();
         return contentPageLayoutChoice;
     }

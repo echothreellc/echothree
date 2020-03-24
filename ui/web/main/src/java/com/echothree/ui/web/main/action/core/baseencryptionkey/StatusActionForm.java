@@ -37,26 +37,22 @@ public class StatusActionForm
     private String baseEncryptionKeyName;
     private String baseEncryptionKeyStatusChoice;
     
-    public void setupBaseEncryptionKeyStatusChoices() {
+    public void setupBaseEncryptionKeyStatusChoices()
+            throws NamingException {
         if(baseEncryptionKeyStatusChoices == null) {
-            try {
-                GetBaseEncryptionKeyStatusChoicesForm form = CoreUtil.getHome().getGetBaseEncryptionKeyStatusChoicesForm();
-                
-                form.setBaseEncryptionKeyName(baseEncryptionKeyName);
-                form.setDefaultBaseEncryptionKeyStatusChoice(baseEncryptionKeyStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getBaseEncryptionKeyStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetBaseEncryptionKeyStatusChoicesResult result = (GetBaseEncryptionKeyStatusChoicesResult)executionResult.getResult();
-                baseEncryptionKeyStatusChoices = result.getBaseEncryptionKeyStatusChoices();
-                
-                if(baseEncryptionKeyStatusChoice == null) {
-                    baseEncryptionKeyStatusChoice = baseEncryptionKeyStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, baseEncryptionKeyStatusChoices remains null, no default
+            GetBaseEncryptionKeyStatusChoicesForm form = CoreUtil.getHome().getGetBaseEncryptionKeyStatusChoicesForm();
+
+            form.setBaseEncryptionKeyName(baseEncryptionKeyName);
+            form.setDefaultBaseEncryptionKeyStatusChoice(baseEncryptionKeyStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getBaseEncryptionKeyStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetBaseEncryptionKeyStatusChoicesResult result = (GetBaseEncryptionKeyStatusChoicesResult)executionResult.getResult();
+            baseEncryptionKeyStatusChoices = result.getBaseEncryptionKeyStatusChoices();
+
+            if(baseEncryptionKeyStatusChoice == null) {
+                baseEncryptionKeyStatusChoice = baseEncryptionKeyStatusChoices.getDefaultValue();
             }
         }
     }
@@ -69,7 +65,8 @@ public class StatusActionForm
         this.baseEncryptionKeyName = baseEncryptionKeyName;
     }
     
-    public String getBaseEncryptionKeyStatusChoice() {
+    public String getBaseEncryptionKeyStatusChoice()
+            throws NamingException {
         setupBaseEncryptionKeyStatusChoices();
         
         return baseEncryptionKeyStatusChoice;
@@ -79,7 +76,8 @@ public class StatusActionForm
         this.baseEncryptionKeyStatusChoice = baseEncryptionKeyStatusChoice;
     }
     
-    public List<LabelValueBean> getBaseEncryptionKeyStatusChoices() {
+    public List<LabelValueBean> getBaseEncryptionKeyStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupBaseEncryptionKeyStatusChoices();

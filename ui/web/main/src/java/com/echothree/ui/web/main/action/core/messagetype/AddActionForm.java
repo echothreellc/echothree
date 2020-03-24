@@ -41,25 +41,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupMimeTypeUsageTypeChoices() {
+    public void setupMimeTypeUsageTypeChoices()
+            throws NamingException {
         if(mimeTypeUsageTypeChoices == null) {
-            try {
-                GetMimeTypeUsageTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
-                
-                form.setDefaultMimeTypeUsageTypeChoice(mimeTypeUsageTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeUsageTypeChoicesResult result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
-                mimeTypeUsageTypeChoices = result.getMimeTypeUsageTypeChoices();
-                
-                if(mimeTypeUsageTypeChoice == null)
-                    mimeTypeUsageTypeChoice = mimeTypeUsageTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, mimeTypeUsageTypeChoices remains null, no default
-            }
+            GetMimeTypeUsageTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
+
+            form.setDefaultMimeTypeUsageTypeChoice(mimeTypeUsageTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMimeTypeUsageTypeChoicesResult result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
+            mimeTypeUsageTypeChoices = result.getMimeTypeUsageTypeChoices();
+
+            if(mimeTypeUsageTypeChoice == null)
+                mimeTypeUsageTypeChoice = mimeTypeUsageTypeChoices.getDefaultValue();
         }
     }
     
@@ -87,7 +83,8 @@ public class AddActionForm
         return messageTypeName;
     }
     
-    public List<LabelValueBean> getMimeTypeUsageTypeChoices() {
+    public List<LabelValueBean> getMimeTypeUsageTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupMimeTypeUsageTypeChoices();
@@ -101,7 +98,8 @@ public class AddActionForm
         this.mimeTypeUsageTypeChoice = mimeTypeUsageTypeChoice;
     }
     
-    public String getMimeTypeUsageTypeChoice() {
+    public String getMimeTypeUsageTypeChoice()
+            throws NamingException {
         setupMimeTypeUsageTypeChoices();
         return mimeTypeUsageTypeChoice;
     }
