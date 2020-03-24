@@ -39,25 +39,21 @@ public class StatusActionForm
     private String printerGroupName;
     private String printerGroupStatusChoice;
     
-    public void setupPrinterGroupStatusChoices() {
+    public void setupPrinterGroupStatusChoices()
+            throws NamingException {
         if(printerGroupStatusChoices == null) {
-            try {
-                GetPrinterGroupStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupStatusChoicesForm();
-                
-                form.setPrinterGroupName(printerGroupName);
-                form.setDefaultPrinterGroupStatusChoice(printerGroupStatusChoice);
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterGroupStatusChoicesResult getPrinterGroupStatusChoicesResult = (GetPrinterGroupStatusChoicesResult)executionResult.getResult();
-                printerGroupStatusChoices = getPrinterGroupStatusChoicesResult.getPrinterGroupStatusChoices();
-                
-                if(printerGroupStatusChoice == null)
-                    printerGroupStatusChoice = printerGroupStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, printerGroupStatusChoices remains null, no default
-            }
+            GetPrinterGroupStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterGroupStatusChoicesForm();
+
+            form.setPrinterGroupName(printerGroupName);
+            form.setDefaultPrinterGroupStatusChoice(printerGroupStatusChoice);
+
+            CommandResult commandResult = PrinterUtil.getHome().getPrinterGroupStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPrinterGroupStatusChoicesResult getPrinterGroupStatusChoicesResult = (GetPrinterGroupStatusChoicesResult)executionResult.getResult();
+            printerGroupStatusChoices = getPrinterGroupStatusChoicesResult.getPrinterGroupStatusChoices();
+
+            if(printerGroupStatusChoice == null)
+                printerGroupStatusChoice = printerGroupStatusChoices.getDefaultValue();
         }
     }
     
@@ -77,7 +73,8 @@ public class StatusActionForm
         this.printerGroupStatusChoice = printerGroupStatusChoice;
     }
     
-    public List<LabelValueBean> getPrinterGroupStatusChoices() {
+    public List<LabelValueBean> getPrinterGroupStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPrinterGroupStatusChoices();

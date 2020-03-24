@@ -51,73 +51,61 @@ public class AddActionForm
     private String inventoryLocationGroupChoice;
     private String description;
     
-    public void setupLocationTypeChoices() {
+    public void setupLocationTypeChoices()
+            throws NamingException {
         if(locationTypeChoices == null) {
-            try {
-                GetLocationTypeChoicesForm form = WarehouseUtil.getHome().getGetLocationTypeChoicesForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setDefaultLocationTypeChoice(locationTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = WarehouseUtil.getHome().getLocationTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLocationTypeChoicesResult result = (GetLocationTypeChoicesResult)executionResult.getResult();
-                locationTypeChoices = result.getLocationTypeChoices();
-                
-                if(locationTypeChoice == null) {
-                    locationTypeChoice = locationTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationTypeChoices remains null, no default
+            GetLocationTypeChoicesForm form = WarehouseUtil.getHome().getGetLocationTypeChoicesForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setDefaultLocationTypeChoice(locationTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = WarehouseUtil.getHome().getLocationTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetLocationTypeChoicesResult result = (GetLocationTypeChoicesResult)executionResult.getResult();
+            locationTypeChoices = result.getLocationTypeChoices();
+
+            if(locationTypeChoice == null) {
+                locationTypeChoice = locationTypeChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupLocationUseTypeChoices() {
+    public void setupLocationUseTypeChoices()
+            throws NamingException {
         if(locationUseTypeChoices == null) {
-            try {
-                GetLocationUseTypeChoicesForm form = WarehouseUtil.getHome().getGetLocationUseTypeChoicesForm();
-                
-                form.setDefaultLocationUseTypeChoice(locationUseTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = WarehouseUtil.getHome().getLocationUseTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLocationUseTypeChoicesResult result = (GetLocationUseTypeChoicesResult)executionResult.getResult();
-                locationUseTypeChoices = result.getLocationUseTypeChoices();
-                
-                if(locationUseTypeChoice == null) {
-                    locationUseTypeChoice = locationUseTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, locationUseTypeChoices remains null, no default
+            GetLocationUseTypeChoicesForm form = WarehouseUtil.getHome().getGetLocationUseTypeChoicesForm();
+
+            form.setDefaultLocationUseTypeChoice(locationUseTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = WarehouseUtil.getHome().getLocationUseTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetLocationUseTypeChoicesResult result = (GetLocationUseTypeChoicesResult)executionResult.getResult();
+            locationUseTypeChoices = result.getLocationUseTypeChoices();
+
+            if(locationUseTypeChoice == null) {
+                locationUseTypeChoice = locationUseTypeChoices.getDefaultValue();
             }
         }
     }
     
-    public void setupInventoryLocationGroupChoices() {
+    public void setupInventoryLocationGroupChoices()
+            throws NamingException {
         if(inventoryLocationGroupChoices == null) {
-            try {
-                GetInventoryLocationGroupChoicesForm form = InventoryUtil.getHome().getGetInventoryLocationGroupChoicesForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setDefaultInventoryLocationGroupChoice(inventoryLocationGroupChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetInventoryLocationGroupChoicesResult result = (GetInventoryLocationGroupChoicesResult)executionResult.getResult();
-                inventoryLocationGroupChoices = result.getInventoryLocationGroupChoices();
-                
-                if(inventoryLocationGroupChoice == null) {
-                    inventoryLocationGroupChoice = inventoryLocationGroupChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, inventoryLocationGroupChoices remains null, no default
+            GetInventoryLocationGroupChoicesForm form = InventoryUtil.getHome().getGetInventoryLocationGroupChoicesForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setDefaultInventoryLocationGroupChoice(inventoryLocationGroupChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = InventoryUtil.getHome().getInventoryLocationGroupChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetInventoryLocationGroupChoicesResult result = (GetInventoryLocationGroupChoicesResult)executionResult.getResult();
+            inventoryLocationGroupChoices = result.getInventoryLocationGroupChoices();
+
+            if(inventoryLocationGroupChoice == null) {
+                inventoryLocationGroupChoice = inventoryLocationGroupChoices.getDefaultValue();
             }
         }
     }
@@ -146,7 +134,8 @@ public class AddActionForm
         this.locationTypeChoice = locationTypeChoice;
     }
     
-    public List<LabelValueBean> getLocationTypeChoices() {
+    public List<LabelValueBean> getLocationTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLocationTypeChoices();
@@ -165,7 +154,8 @@ public class AddActionForm
         this.locationUseTypeChoice = locationUseTypeChoice;
     }
     
-    public List<LabelValueBean> getLocationUseTypeChoices() {
+    public List<LabelValueBean> getLocationUseTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLocationUseTypeChoices();
@@ -192,7 +182,8 @@ public class AddActionForm
         this.inventoryLocationGroupChoice = inventoryLocationGroupChoice;
     }
     
-    public List<LabelValueBean> getInventoryLocationGroupChoices() {
+    public List<LabelValueBean> getInventoryLocationGroupChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupInventoryLocationGroupChoices();

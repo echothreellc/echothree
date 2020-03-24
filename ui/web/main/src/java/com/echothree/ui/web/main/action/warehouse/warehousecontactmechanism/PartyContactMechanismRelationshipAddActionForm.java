@@ -38,9 +38,9 @@ public class PartyContactMechanismRelationshipAddActionForm
     private String fromContactMechanismName;
     private String toContactMechanismChoice;
     
-    public void setupToContactMechanismChoices() {
+    public void setupToContactMechanismChoices()
+            throws NamingException {
         if(toContactMechanismChoices == null) {
-            try {
                 GetContactMechanismChoicesForm form = ContactUtil.getHome().getGetContactMechanismChoicesForm();
                 
                 form.setPartyName(partyName);
@@ -55,10 +55,6 @@ public class PartyContactMechanismRelationshipAddActionForm
                 if(toContactMechanismChoice == null) {
                     toContactMechanismChoice = toContactMechanismChoices.getDefaultValue();
                 }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, toContactMechanismChoices remains null, no default
-            }
         }
     }
     
@@ -78,7 +74,8 @@ public class PartyContactMechanismRelationshipAddActionForm
         this.fromContactMechanismName = fromContactMechanismName;
     }
     
-    public String getToContactMechanismChoice() {
+    public String getToContactMechanismChoice()
+            throws NamingException {
         setupToContactMechanismChoices();
         
         return toContactMechanismChoice;
@@ -88,7 +85,8 @@ public class PartyContactMechanismRelationshipAddActionForm
         this.toContactMechanismChoice = toContactMechanismChoice;
     }
     
-    public List<LabelValueBean> getToContactMechanismChoices() {
+    public List<LabelValueBean> getToContactMechanismChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupToContactMechanismChoices();

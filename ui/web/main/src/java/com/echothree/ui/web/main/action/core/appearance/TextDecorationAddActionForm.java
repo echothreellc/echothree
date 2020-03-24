@@ -37,25 +37,21 @@ public class TextDecorationAddActionForm
     private String appearanceName;
     private String textDecorationChoice;
     
-    private void setupTextDecorationChoices() {
+    private void setupTextDecorationChoices()
+            throws NamingException {
         if(textDecorationChoices == null) {
-            try {
-                GetTextDecorationChoicesForm commandForm = CoreUtil.getHome().getGetTextDecorationChoicesForm();
-                
-                commandForm.setDefaultTextDecorationChoice(textDecorationChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getTextDecorationChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTextDecorationChoicesResult getTextDecorationChoicesResult = (GetTextDecorationChoicesResult)executionResult.getResult();
-                textDecorationChoices = getTextDecorationChoicesResult.getTextDecorationChoices();
-                
-                if(textDecorationChoice == null) {
-                    textDecorationChoice = textDecorationChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, textDecorationChoices remains null, no default
+            GetTextDecorationChoicesForm commandForm = CoreUtil.getHome().getGetTextDecorationChoicesForm();
+
+            commandForm.setDefaultTextDecorationChoice(textDecorationChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getTextDecorationChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetTextDecorationChoicesResult getTextDecorationChoicesResult = (GetTextDecorationChoicesResult)executionResult.getResult();
+            textDecorationChoices = getTextDecorationChoicesResult.getTextDecorationChoices();
+
+            if(textDecorationChoice == null) {
+                textDecorationChoice = textDecorationChoices.getDefaultValue();
             }
         }
     }
@@ -68,7 +64,8 @@ public class TextDecorationAddActionForm
         return appearanceName;
     }
     
-    public List<LabelValueBean> getTextDecorationChoices() {
+    public List<LabelValueBean> getTextDecorationChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupTextDecorationChoices();
@@ -83,7 +80,8 @@ public class TextDecorationAddActionForm
         this.textDecorationChoice = textDecorationChoice;
     }
     
-    public String getTextDecorationChoice() {
+    public String getTextDecorationChoice()
+            throws NamingException {
         setupTextDecorationChoices();
         return textDecorationChoice;
     }

@@ -51,29 +51,27 @@ public class AddActionForm
     private String contentPageAreaUrl;
     private String parentContentSectionName;
     
-    private void setupLanguageChoices() {
+    private void setupLanguageChoices()
+            throws NamingException {
         if(languageChoices == null) {
-            try {
-                GetLanguageChoicesForm commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
-                
-                commandForm.setDefaultLanguageChoice(languageChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetLanguageChoicesResult getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
-                languageChoices = getLanguageChoicesResult.getLanguageChoices();
-                
-                if(languageChoice == null) {
-                    languageChoice = languageChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, languageChoices remains null, no default
+            GetLanguageChoicesForm commandForm = PartyUtil.getHome().getGetLanguageChoicesForm();
+
+            commandForm.setDefaultLanguageChoice(languageChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetLanguageChoicesResult getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+            languageChoices = getLanguageChoicesResult.getLanguageChoices();
+
+            if(languageChoice == null) {
+                languageChoice = languageChoices.getDefaultValue();
             }
         }
     }
     
-    public List<LabelValueBean> getLanguageChoices() {
+    public List<LabelValueBean> getLanguageChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupLanguageChoices();
@@ -84,31 +82,28 @@ public class AddActionForm
         return choices;
     }
     
-    private void setupMimeTypeChoices() {
+    private void setupMimeTypeChoices()
+            throws NamingException {
         if(mimeTypeChoices == null) {
-            try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult getMimeTypeChoicesResult = (GetMimeTypeChoicesResult)executionResult.getResult();
-                mimeTypeChoices = getMimeTypeChoicesResult.getMimeTypeChoices();
-                
-                if(mimeTypeChoice == null) {
-                    mimeTypeChoice = mimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, mimeTypeChoices remains null, no default
+            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+
+            commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+
+            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMimeTypeChoicesResult getMimeTypeChoicesResult = (GetMimeTypeChoicesResult)executionResult.getResult();
+            mimeTypeChoices = getMimeTypeChoicesResult.getMimeTypeChoices();
+
+            if(mimeTypeChoice == null) {
+                mimeTypeChoice = mimeTypeChoices.getDefaultValue();
             }
         }
     }
     
-    public List<LabelValueBean> getMimeTypeChoices() {
+    public List<LabelValueBean> getMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupMimeTypeChoices();
@@ -155,7 +150,8 @@ public class AddActionForm
         this.languageChoice = languageChoice;
     }
     
-    public String getLanguageChoice() {
+    public String getLanguageChoice()
+            throws NamingException {
         setupLanguageChoices();
         
         return languageChoice;
@@ -165,7 +161,8 @@ public class AddActionForm
         this.mimeTypeChoice = mimeTypeChoice;
     }
     
-    public String getMimeTypeChoice() {
+    public String getMimeTypeChoice()
+            throws NamingException {
         setupMimeTypeChoices();
         
         return mimeTypeChoice;

@@ -54,47 +54,39 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupEntityAttributeTypeChoices() {
+    private void setupEntityAttributeTypeChoices()
+            throws NamingException {
         if(entityAttributeTypeChoices == null) {
-            try {
-                GetEntityAttributeTypeChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
-                
-                commandForm.setDefaultEntityAttributeTypeChoice(entityAttributeTypeChoice);
-                
-                CommandResult commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEntityAttributeTypeChoicesResult getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
-                entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
-                
-                if(entityAttributeTypeChoice == null)
-                    entityAttributeTypeChoice = entityAttributeTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, entityAttributeTypeChoices remains null, no default
-            }
+            GetEntityAttributeTypeChoicesForm commandForm = CoreUtil.getHome().getGetEntityAttributeTypeChoicesForm();
+
+            commandForm.setDefaultEntityAttributeTypeChoice(entityAttributeTypeChoice);
+
+            CommandResult commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetEntityAttributeTypeChoicesResult getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
+            entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
+
+            if(entityAttributeTypeChoice == null)
+                entityAttributeTypeChoice = entityAttributeTypeChoices.getDefaultValue();
         }
     }
     
-    private void setupEntityListItemSequenceChoices() {
+    private void setupEntityListItemSequenceChoices()
+            throws NamingException {
         if(entityListItemSequenceChoices == null) {
-            try {
-                GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                commandForm.setSequenceTypeName(SequenceTypes.ENTITY_LIST_ITEM.name());
-                commandForm.setDefaultSequenceChoice(entityListItemSequenceChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult getSequenceChoicesResult = (GetSequenceChoicesResult)executionResult.getResult();
-                entityListItemSequenceChoices = getSequenceChoicesResult.getSequenceChoices();
-                
-                if(entityListItemSequenceChoice == null)
-                    entityListItemSequenceChoice = entityListItemSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, entityListItemSequenceChoices remains null, no default
-            }
+            GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+
+            commandForm.setSequenceTypeName(SequenceTypes.ENTITY_LIST_ITEM.name());
+            commandForm.setDefaultSequenceChoice(entityListItemSequenceChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSequenceChoicesResult getSequenceChoicesResult = (GetSequenceChoicesResult)executionResult.getResult();
+            entityListItemSequenceChoices = getSequenceChoicesResult.getSequenceChoices();
+
+            if(entityListItemSequenceChoice == null)
+                entityListItemSequenceChoice = entityListItemSequenceChoices.getDefaultValue();
         }
     }
     
@@ -122,7 +114,8 @@ public class AddActionForm
         return entityAttributeName;
     }
     
-    public List<LabelValueBean> getEntityAttributeTypeChoices() {
+    public List<LabelValueBean> getEntityAttributeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEntityAttributeTypeChoices();
@@ -136,7 +129,8 @@ public class AddActionForm
         this.entityAttributeTypeChoice = entityAttributeTypeChoice;
     }
     
-    public String getEntityAttributeTypeChoice() {
+    public String getEntityAttributeTypeChoice()
+            throws NamingException {
         setupEntityAttributeTypeChoices();
         return entityAttributeTypeChoice;
     }
@@ -165,7 +159,8 @@ public class AddActionForm
         this.validationPattern = validationPattern;
     }
     
-    public List<LabelValueBean> getEntityListItemSequenceChoices() {
+    public List<LabelValueBean> getEntityListItemSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEntityListItemSequenceChoices();
@@ -179,7 +174,8 @@ public class AddActionForm
         this.entityListItemSequenceChoice = entityListItemSequenceChoice;
     }
     
-    public String getEntityListItemSequenceChoice() {
+    public String getEntityListItemSequenceChoice()
+            throws NamingException {
         setupEntityListItemSequenceChoices();
         return entityListItemSequenceChoice;
     }

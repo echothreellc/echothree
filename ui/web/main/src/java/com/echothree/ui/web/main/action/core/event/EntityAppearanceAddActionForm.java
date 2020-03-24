@@ -37,9 +37,9 @@ public class EntityAppearanceAddActionForm
     private String entityRef;
     private String appearanceChoice;
     
-    private void setupAppearanceChoices() {
+    private void setupAppearanceChoices()
+            throws NamingException {
         if(appearanceChoices == null) {
-            try {
                 GetAppearanceChoicesForm commandForm = CoreUtil.getHome().getGetAppearanceChoicesForm();
                 
                 commandForm.setDefaultAppearanceChoice(appearanceChoice);
@@ -52,10 +52,6 @@ public class EntityAppearanceAddActionForm
                 
                 if(appearanceChoice == null)
                     appearanceChoice = appearanceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, appearanceChoices remains null, no default
-            }
         }
     }
     
@@ -67,7 +63,8 @@ public class EntityAppearanceAddActionForm
         this.entityRef = entityRef;
     }
     
-    public List<LabelValueBean> getAppearanceChoices() {
+    public List<LabelValueBean> getAppearanceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupAppearanceChoices();
@@ -82,7 +79,8 @@ public class EntityAppearanceAddActionForm
         this.appearanceChoice = appearanceChoice;
     }
     
-    public String getAppearanceChoice() {
+    public String getAppearanceChoice()
+            throws NamingException {
         setupAppearanceChoices();
         
         return appearanceChoice;

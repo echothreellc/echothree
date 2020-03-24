@@ -37,25 +37,21 @@ public class TextTransformationAddActionForm
     private String appearanceName;
     private String textTransformationChoice;
     
-    private void setupTextTransformationChoices() {
+    private void setupTextTransformationChoices()
+            throws NamingException {
         if(textTransformationChoices == null) {
-            try {
-                GetTextTransformationChoicesForm commandForm = CoreUtil.getHome().getGetTextTransformationChoicesForm();
-                
-                commandForm.setDefaultTextTransformationChoice(textTransformationChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getTextTransformationChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTextTransformationChoicesResult getTextTransformationChoicesResult = (GetTextTransformationChoicesResult)executionResult.getResult();
-                textTransformationChoices = getTextTransformationChoicesResult.getTextTransformationChoices();
-                
-                if(textTransformationChoice == null) {
-                    textTransformationChoice = textTransformationChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, textTransformationChoices remains null, no default
+            GetTextTransformationChoicesForm commandForm = CoreUtil.getHome().getGetTextTransformationChoicesForm();
+
+            commandForm.setDefaultTextTransformationChoice(textTransformationChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getTextTransformationChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetTextTransformationChoicesResult getTextTransformationChoicesResult = (GetTextTransformationChoicesResult)executionResult.getResult();
+            textTransformationChoices = getTextTransformationChoicesResult.getTextTransformationChoices();
+
+            if(textTransformationChoice == null) {
+                textTransformationChoice = textTransformationChoices.getDefaultValue();
             }
         }
     }
@@ -68,7 +64,8 @@ public class TextTransformationAddActionForm
         return appearanceName;
     }
     
-    public List<LabelValueBean> getTextTransformationChoices() {
+    public List<LabelValueBean> getTextTransformationChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupTextTransformationChoices();
@@ -83,7 +80,8 @@ public class TextTransformationAddActionForm
         this.textTransformationChoice = textTransformationChoice;
     }
     
-    public String getTextTransformationChoice() {
+    public String getTextTransformationChoice()
+            throws NamingException {
         setupTextTransformationChoices();
         return textTransformationChoice;
     }

@@ -54,94 +54,78 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupTextColorChoices() {
+    private void setupTextColorChoices()
+            throws NamingException {
         if(textColorChoices == null) {
-            try {
-                GetColorChoicesForm commandForm = CoreUtil.getHome().getGetColorChoicesForm();
-                
-                commandForm.setDefaultColorChoice(textColorChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetColorChoicesResult getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
-                textColorChoices = getColorChoicesResult.getColorChoices();
-                
-                if(textColorChoice == null) {
-                    textColorChoice = textColorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, textColorChoices remains null, no default
+            GetColorChoicesForm commandForm = CoreUtil.getHome().getGetColorChoicesForm();
+
+            commandForm.setDefaultColorChoice(textColorChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetColorChoicesResult getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
+            textColorChoices = getColorChoicesResult.getColorChoices();
+
+            if(textColorChoice == null) {
+                textColorChoice = textColorChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupBackgroundColorChoices() {
+    private void setupBackgroundColorChoices()
+            throws NamingException {
         if(backgroundColorChoices == null) {
-            try {
-                GetColorChoicesForm commandForm = CoreUtil.getHome().getGetColorChoicesForm();
-                
-                commandForm.setDefaultColorChoice(backgroundColorChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetColorChoicesResult getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
-                backgroundColorChoices = getColorChoicesResult.getColorChoices();
-                
-                if(backgroundColorChoice == null) {
-                    backgroundColorChoice = backgroundColorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, backgroundColorChoices remains null, no default
+            GetColorChoicesForm commandForm = CoreUtil.getHome().getGetColorChoicesForm();
+
+            commandForm.setDefaultColorChoice(backgroundColorChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetColorChoicesResult getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
+            backgroundColorChoices = getColorChoicesResult.getColorChoices();
+
+            if(backgroundColorChoice == null) {
+                backgroundColorChoice = backgroundColorChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupFontStyleChoices() {
+    private void setupFontStyleChoices()
+            throws NamingException {
         if(fontStyleChoices == null) {
-            try {
-                GetFontStyleChoicesForm commandForm = CoreUtil.getHome().getGetFontStyleChoicesForm();
-                
-                commandForm.setDefaultFontStyleChoice(fontStyleChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getFontStyleChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetFontStyleChoicesResult getFontStyleChoicesResult = (GetFontStyleChoicesResult)executionResult.getResult();
-                fontStyleChoices = getFontStyleChoicesResult.getFontStyleChoices();
-                
-                if(fontStyleChoice == null) {
-                    fontStyleChoice = fontStyleChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, fontStyleChoices remains null, no default
+            GetFontStyleChoicesForm commandForm = CoreUtil.getHome().getGetFontStyleChoicesForm();
+
+            commandForm.setDefaultFontStyleChoice(fontStyleChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getFontStyleChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetFontStyleChoicesResult getFontStyleChoicesResult = (GetFontStyleChoicesResult)executionResult.getResult();
+            fontStyleChoices = getFontStyleChoicesResult.getFontStyleChoices();
+
+            if(fontStyleChoice == null) {
+                fontStyleChoice = fontStyleChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupFontWeightChoices() {
+    private void setupFontWeightChoices()
+            throws NamingException {
         if(fontWeightChoices == null) {
-            try {
-                GetFontWeightChoicesForm commandForm = CoreUtil.getHome().getGetFontWeightChoicesForm();
-                
-                commandForm.setDefaultFontWeightChoice(fontWeightChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getFontWeightChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetFontWeightChoicesResult getFontWeightChoicesResult = (GetFontWeightChoicesResult)executionResult.getResult();
-                fontWeightChoices = getFontWeightChoicesResult.getFontWeightChoices();
-                
-                if(fontWeightChoice == null) {
-                    fontWeightChoice = fontWeightChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, fontWeightChoices remains null, no default
+            GetFontWeightChoicesForm commandForm = CoreUtil.getHome().getGetFontWeightChoicesForm();
+
+            commandForm.setDefaultFontWeightChoice(fontWeightChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getFontWeightChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetFontWeightChoicesResult getFontWeightChoicesResult = (GetFontWeightChoicesResult)executionResult.getResult();
+            fontWeightChoices = getFontWeightChoicesResult.getFontWeightChoices();
+
+            if(fontWeightChoice == null) {
+                fontWeightChoice = fontWeightChoices.getDefaultValue();
             }
         }
     }
@@ -154,7 +138,8 @@ public class AddActionForm
         return appearanceName;
     }
     
-    public List<LabelValueBean> getTextColorChoices() {
+    public List<LabelValueBean> getTextColorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupTextColorChoices();
@@ -169,12 +154,14 @@ public class AddActionForm
         this.textColorChoice = textColorChoice;
     }
     
-    public String getTextColorChoice() {
+    public String getTextColorChoice()
+            throws NamingException {
         setupTextColorChoices();
         return textColorChoice;
     }
     
-    public List<LabelValueBean> getBackgroundColorChoices() {
+    public List<LabelValueBean> getBackgroundColorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupBackgroundColorChoices();
@@ -189,12 +176,14 @@ public class AddActionForm
         this.backgroundColorChoice = backgroundColorChoice;
     }
     
-    public String getBackgroundColorChoice() {
+    public String getBackgroundColorChoice()
+            throws NamingException {
         setupBackgroundColorChoices();
         return backgroundColorChoice;
     }
     
-    public List<LabelValueBean> getFontStyleChoices() {
+    public List<LabelValueBean> getFontStyleChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupFontStyleChoices();
@@ -209,12 +198,14 @@ public class AddActionForm
         this.fontStyleChoice = fontStyleChoice;
     }
     
-    public String getFontStyleChoice() {
+    public String getFontStyleChoice()
+            throws NamingException {
         setupFontStyleChoices();
         return fontStyleChoice;
     }
     
-    public List<LabelValueBean> getFontWeightChoices() {
+    public List<LabelValueBean> getFontWeightChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupFontWeightChoices();
@@ -229,7 +220,8 @@ public class AddActionForm
         this.fontWeightChoice = fontWeightChoice;
     }
     
-    public String getFontWeightChoice() {
+    public String getFontWeightChoice()
+            throws NamingException {
         setupFontWeightChoices();
         return fontWeightChoice;
     }

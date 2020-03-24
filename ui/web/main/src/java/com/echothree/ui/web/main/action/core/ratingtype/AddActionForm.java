@@ -43,26 +43,22 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupRatingSequenceChoices() {
+    public void setupRatingSequenceChoices()
+            throws NamingException {
         if(ratingSequenceChoices == null) {
-            try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                form.setSequenceTypeName(SequenceTypes.RATING.name());
-                form.setDefaultSequenceChoice(ratingSequenceChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
-                ratingSequenceChoices = result.getSequenceChoices();
-                
-                if(ratingSequenceChoice == null)
-                    ratingSequenceChoice = ratingSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, ratingSequenceChoices remains null, no default
-            }
+            GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+
+            form.setSequenceTypeName(SequenceTypes.RATING.name());
+            form.setDefaultSequenceChoice(ratingSequenceChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            ratingSequenceChoices = result.getSequenceChoices();
+
+            if(ratingSequenceChoice == null)
+                ratingSequenceChoice = ratingSequenceChoices.getDefaultValue();
         }
     }
     
@@ -90,7 +86,8 @@ public class AddActionForm
         return ratingTypeName;
     }
     
-    public List<LabelValueBean> getRatingSequenceChoices() {
+    public List<LabelValueBean> getRatingSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupRatingSequenceChoices();
@@ -104,7 +101,8 @@ public class AddActionForm
         this.ratingSequenceChoice = ratingSequenceChoice;
     }
     
-    public String getRatingSequenceChoice() {
+    public String getRatingSequenceChoice()
+            throws NamingException {
         setupRatingSequenceChoices();
         return ratingSequenceChoice;
     }

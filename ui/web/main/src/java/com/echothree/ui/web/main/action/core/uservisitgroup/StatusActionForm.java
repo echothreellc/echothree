@@ -37,26 +37,22 @@ public class StatusActionForm
     private String userVisitGroupName;
     private String userVisitGroupStatusChoice;
     
-    public void setupUserVisitGroupStatusChoices() {
+    public void setupUserVisitGroupStatusChoices()
+            throws NamingException {
         if(userVisitGroupStatusChoices == null) {
-            try {
-                GetUserVisitGroupStatusChoicesForm form = UserUtil.getHome().getGetUserVisitGroupStatusChoicesForm();
-                
-                form.setUserVisitGroupName(userVisitGroupName);
-                form.setDefaultUserVisitGroupStatusChoice(userVisitGroupStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = UserUtil.getHome().getUserVisitGroupStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUserVisitGroupStatusChoicesResult result = (GetUserVisitGroupStatusChoicesResult)executionResult.getResult();
-                userVisitGroupStatusChoices = result.getUserVisitGroupStatusChoices();
-                
-                if(userVisitGroupStatusChoice == null) {
-                    userVisitGroupStatusChoice = userVisitGroupStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, userVisitGroupStatusChoices remains null, no default
+            GetUserVisitGroupStatusChoicesForm form = UserUtil.getHome().getGetUserVisitGroupStatusChoicesForm();
+
+            form.setUserVisitGroupName(userVisitGroupName);
+            form.setDefaultUserVisitGroupStatusChoice(userVisitGroupStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = UserUtil.getHome().getUserVisitGroupStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUserVisitGroupStatusChoicesResult result = (GetUserVisitGroupStatusChoicesResult)executionResult.getResult();
+            userVisitGroupStatusChoices = result.getUserVisitGroupStatusChoices();
+
+            if(userVisitGroupStatusChoice == null) {
+                userVisitGroupStatusChoice = userVisitGroupStatusChoices.getDefaultValue();
             }
         }
     }
@@ -77,7 +73,8 @@ public class StatusActionForm
         this.userVisitGroupStatusChoice = userVisitGroupStatusChoice;
     }
     
-    public List<LabelValueBean> getUserVisitGroupStatusChoices() {
+    public List<LabelValueBean> getUserVisitGroupStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupUserVisitGroupStatusChoices();

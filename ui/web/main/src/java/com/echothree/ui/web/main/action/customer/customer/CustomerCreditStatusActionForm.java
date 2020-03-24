@@ -37,26 +37,22 @@ public class CustomerCreditStatusActionForm
     private String customerName;
     private String customerCreditStatusChoice;
     
-    public void setupCustomerCreditStatusChoices() {
+    public void setupCustomerCreditStatusChoices()
+            throws NamingException {
         if(customerCreditStatusChoices == null) {
-            try {
-                GetCustomerCreditStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
-                
-                form.setCustomerName(customerName);
-                form.setDefaultCustomerCreditStatusChoice(customerCreditStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCustomerCreditStatusChoicesResult result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
-                customerCreditStatusChoices = result.getCustomerCreditStatusChoices();
-                
-                if(customerCreditStatusChoice == null)
-                    customerCreditStatusChoice = customerCreditStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, customerCreditStatusChoices remains null, no default
-            }
+            GetCustomerCreditStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
+
+            form.setCustomerName(customerName);
+            form.setDefaultCustomerCreditStatusChoice(customerCreditStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCustomerCreditStatusChoicesResult result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
+            customerCreditStatusChoices = result.getCustomerCreditStatusChoices();
+
+            if(customerCreditStatusChoice == null)
+                customerCreditStatusChoice = customerCreditStatusChoices.getDefaultValue();
         }
     }
     
@@ -76,7 +72,8 @@ public class CustomerCreditStatusActionForm
         this.customerCreditStatusChoice = customerCreditStatusChoice;
     }
     
-    public List<LabelValueBean> getCustomerCreditStatusChoices() {
+    public List<LabelValueBean> getCustomerCreditStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCustomerCreditStatusChoices();

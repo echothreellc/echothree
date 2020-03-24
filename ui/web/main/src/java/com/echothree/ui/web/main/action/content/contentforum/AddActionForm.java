@@ -40,29 +40,26 @@ public class AddActionForm
     private String forumChoice;
     private Boolean isDefault;
     
-    private void setupForumChoices() {
+    private void setupForumChoices()
+            throws NamingException {
         if(forumChoices == null) {
-            try {
-                GetForumChoicesForm form = ForumUtil.getHome().getGetForumChoicesForm();
-                
-                form.setDefaultForumChoice(getForumChoice());
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ForumUtil.getHome().getForumChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumChoicesResult result = (GetForumChoicesResult)executionResult.getResult();
-                forumChoices = result.getForumChoices();
-                
-                if(getForumChoice() == null)
-                    setForumChoice(forumChoices.getDefaultValue());
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, sourceChoices remains null, no default
-            }
+            GetForumChoicesForm form = ForumUtil.getHome().getGetForumChoicesForm();
+
+            form.setDefaultForumChoice(getForumChoice());
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ForumUtil.getHome().getForumChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetForumChoicesResult result = (GetForumChoicesResult)executionResult.getResult();
+            forumChoices = result.getForumChoices();
+
+            if(getForumChoice() == null)
+                setForumChoice(forumChoices.getDefaultValue());
         }
     }
     
-    public List<LabelValueBean> getForumChoices() {
+    public List<LabelValueBean> getForumChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupForumChoices();

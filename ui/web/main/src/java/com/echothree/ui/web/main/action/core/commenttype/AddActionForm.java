@@ -48,48 +48,40 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupCommentSequenceChoices() {
+    public void setupCommentSequenceChoices()
+            throws NamingException {
         if(commentSequenceChoices == null) {
-            try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                form.setSequenceTypeName(SequenceTypes.COMMENT.name());
-                form.setDefaultSequenceChoice(commentSequenceChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
-                commentSequenceChoices = result.getSequenceChoices();
-                
-                if(commentSequenceChoice == null)
-                    commentSequenceChoice = commentSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, commentSequenceChoices remains null, no default
-            }
+            GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+
+            form.setSequenceTypeName(SequenceTypes.COMMENT.name());
+            form.setDefaultSequenceChoice(commentSequenceChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            commentSequenceChoices = result.getSequenceChoices();
+
+            if(commentSequenceChoice == null)
+                commentSequenceChoice = commentSequenceChoices.getDefaultValue();
         }
     }
     
-    public void setupMimeTypeUsageTypeChoices() {
+    public void setupMimeTypeUsageTypeChoices()
+            throws NamingException {
         if(mimeTypeUsageTypeChoices == null) {
-            try {
-                GetMimeTypeUsageTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
-                
-                form.setDefaultMimeTypeUsageTypeChoice(mimeTypeUsageTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeUsageTypeChoicesResult result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
-                mimeTypeUsageTypeChoices = result.getMimeTypeUsageTypeChoices();
-                
-                if(mimeTypeUsageTypeChoice == null)
-                    mimeTypeUsageTypeChoice = mimeTypeUsageTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, mimeTypeUsageTypeChoices remains null, no default
-            }
+            GetMimeTypeUsageTypeChoicesForm form = CoreUtil.getHome().getGetMimeTypeUsageTypeChoicesForm();
+
+            form.setDefaultMimeTypeUsageTypeChoice(mimeTypeUsageTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMimeTypeUsageTypeChoicesResult result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
+            mimeTypeUsageTypeChoices = result.getMimeTypeUsageTypeChoices();
+
+            if(mimeTypeUsageTypeChoice == null)
+                mimeTypeUsageTypeChoice = mimeTypeUsageTypeChoices.getDefaultValue();
         }
     }
     
@@ -117,7 +109,8 @@ public class AddActionForm
         return commentTypeName;
     }
     
-    public List<LabelValueBean> getCommentSequenceChoices() {
+    public List<LabelValueBean> getCommentSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCommentSequenceChoices();
@@ -131,12 +124,14 @@ public class AddActionForm
         this.commentSequenceChoice = commentSequenceChoice;
     }
     
-    public String getCommentSequenceChoice() {
+    public String getCommentSequenceChoice()
+            throws NamingException {
         setupCommentSequenceChoices();
         return commentSequenceChoice;
     }
     
-    public List<LabelValueBean> getMimeTypeUsageTypeChoices() {
+    public List<LabelValueBean> getMimeTypeUsageTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupMimeTypeUsageTypeChoices();
@@ -150,7 +145,8 @@ public class AddActionForm
         this.mimeTypeUsageTypeChoice = mimeTypeUsageTypeChoice;
     }
     
-    public String getMimeTypeUsageTypeChoice() {
+    public String getMimeTypeUsageTypeChoice()
+            throws NamingException {
         setupMimeTypeUsageTypeChoices();
         return mimeTypeUsageTypeChoice;
     }

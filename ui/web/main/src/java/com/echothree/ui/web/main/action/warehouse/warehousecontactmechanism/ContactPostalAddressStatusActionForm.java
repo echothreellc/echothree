@@ -38,26 +38,22 @@ public class ContactPostalAddressStatusActionForm
     private String contactMechanismName;
     private String postalAddressStatusChoice;
     
-    public void setupPostalAddressStatusChoices() {
+    public void setupPostalAddressStatusChoices()
+            throws NamingException {
         if(postalAddressStatusChoices == null) {
-            try {
-                GetPostalAddressStatusChoicesForm form = ContactUtil.getHome().getGetPostalAddressStatusChoicesForm();
-                
-                form.setContactMechanismName(contactMechanismName);
-                form.setDefaultPostalAddressStatusChoice(postalAddressStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getPostalAddressStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPostalAddressStatusChoicesResult result = (GetPostalAddressStatusChoicesResult)executionResult.getResult();
-                postalAddressStatusChoices = result.getPostalAddressStatusChoices();
-                
-                if(postalAddressStatusChoice == null) {
-                    postalAddressStatusChoice = postalAddressStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, postalAddressStatusChoices remains null, no default
+            GetPostalAddressStatusChoicesForm form = ContactUtil.getHome().getGetPostalAddressStatusChoicesForm();
+
+            form.setContactMechanismName(contactMechanismName);
+            form.setDefaultPostalAddressStatusChoice(postalAddressStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ContactUtil.getHome().getPostalAddressStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPostalAddressStatusChoicesResult result = (GetPostalAddressStatusChoicesResult)executionResult.getResult();
+            postalAddressStatusChoices = result.getPostalAddressStatusChoices();
+
+            if(postalAddressStatusChoice == null) {
+                postalAddressStatusChoice = postalAddressStatusChoices.getDefaultValue();
             }
         }
     }
@@ -86,7 +82,8 @@ public class ContactPostalAddressStatusActionForm
         this.postalAddressStatusChoice = postalAddressStatusChoice;
     }
     
-    public List<LabelValueBean> getPostalAddressStatusChoices() {
+    public List<LabelValueBean> getPostalAddressStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPostalAddressStatusChoices();

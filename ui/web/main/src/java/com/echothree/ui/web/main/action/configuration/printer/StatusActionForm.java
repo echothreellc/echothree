@@ -40,25 +40,21 @@ public class StatusActionForm
     private String printerName;
     private String printerStatusChoice;
     
-    public void setupPrinterStatusChoices() {
+    public void setupPrinterStatusChoices()
+            throws NamingException {
         if(printerStatusChoices == null) {
-            try {
-                GetPrinterStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterStatusChoicesForm();
-                
-                form.setPrinterName(printerName);
-                form.setDefaultPrinterStatusChoice(printerStatusChoice);
-                
-                CommandResult commandResult = PrinterUtil.getHome().getPrinterStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPrinterStatusChoicesResult getPrinterStatusChoicesResult = (GetPrinterStatusChoicesResult)executionResult.getResult();
-                printerStatusChoices = getPrinterStatusChoicesResult.getPrinterStatusChoices();
-                
-                if(printerStatusChoice == null)
-                    printerStatusChoice = printerStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, printerStatusChoices remains null, no default
-            }
+            GetPrinterStatusChoicesForm form = PrinterUtil.getHome().getGetPrinterStatusChoicesForm();
+
+            form.setPrinterName(printerName);
+            form.setDefaultPrinterStatusChoice(printerStatusChoice);
+
+            CommandResult commandResult = PrinterUtil.getHome().getPrinterStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPrinterStatusChoicesResult getPrinterStatusChoicesResult = (GetPrinterStatusChoicesResult)executionResult.getResult();
+            printerStatusChoices = getPrinterStatusChoicesResult.getPrinterStatusChoices();
+
+            if(printerStatusChoice == null)
+                printerStatusChoice = printerStatusChoices.getDefaultValue();
         }
     }
     
@@ -86,7 +82,8 @@ public class StatusActionForm
         this.printerStatusChoice = printerStatusChoice;
     }
     
-    public List<LabelValueBean> getPrinterStatusChoices() {
+    public List<LabelValueBean> getPrinterStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPrinterStatusChoices();

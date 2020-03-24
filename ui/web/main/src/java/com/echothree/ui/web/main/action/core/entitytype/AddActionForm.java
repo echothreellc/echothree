@@ -45,26 +45,22 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupLockTimeoutUnitOfMeasureTypeChoices() {
+    private void setupLockTimeoutUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(lockTimeoutUnitOfMeasureTypeChoices == null) {
-            try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                form.setDefaultUnitOfMeasureTypeChoice(lockTimeoutUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            form.setDefaultUnitOfMeasureTypeChoice(lockTimeoutUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                lockTimeoutUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            lockTimeoutUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
-                if(lockTimeoutUnitOfMeasureTypeChoice == null) {
-                    lockTimeoutUnitOfMeasureTypeChoice = lockTimeoutUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            if(lockTimeoutUnitOfMeasureTypeChoice == null) {
+                lockTimeoutUnitOfMeasureTypeChoice = lockTimeoutUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -101,7 +97,8 @@ public class AddActionForm
         this.lockTimeout = lockTimeout;
     }
 
-    public List<LabelValueBean> getLockTimeoutUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getLockTimeoutUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupLockTimeoutUnitOfMeasureTypeChoices();
@@ -112,7 +109,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getLockTimeoutUnitOfMeasureTypeChoice() {
+    public String getLockTimeoutUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupLockTimeoutUnitOfMeasureTypeChoices();
         return lockTimeoutUnitOfMeasureTypeChoice;
     }
