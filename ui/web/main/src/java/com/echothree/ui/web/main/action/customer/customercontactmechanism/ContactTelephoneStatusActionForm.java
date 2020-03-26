@@ -38,26 +38,22 @@ public class ContactTelephoneStatusActionForm
     private String contactMechanismName;
     private String telephoneStatusChoice;
     
-    public void setupTelephoneStatusChoices() {
+    public void setupTelephoneStatusChoices()
+            throws NamingException {
         if(telephoneStatusChoices == null) {
-            try {
-                GetTelephoneStatusChoicesForm form = ContactUtil.getHome().getGetTelephoneStatusChoicesForm();
-                
-                form.setContactMechanismName(contactMechanismName);
-                form.setDefaultTelephoneStatusChoice(telephoneStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getTelephoneStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTelephoneStatusChoicesResult result = (GetTelephoneStatusChoicesResult)executionResult.getResult();
-                telephoneStatusChoices = result.getTelephoneStatusChoices();
-                
-                if(telephoneStatusChoice == null) {
-                    telephoneStatusChoice = telephoneStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, telephoneStatusChoices remains null, no default
+            GetTelephoneStatusChoicesForm form = ContactUtil.getHome().getGetTelephoneStatusChoicesForm();
+
+            form.setContactMechanismName(contactMechanismName);
+            form.setDefaultTelephoneStatusChoice(telephoneStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ContactUtil.getHome().getTelephoneStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetTelephoneStatusChoicesResult result = (GetTelephoneStatusChoicesResult)executionResult.getResult();
+            telephoneStatusChoices = result.getTelephoneStatusChoices();
+
+            if(telephoneStatusChoice == null) {
+                telephoneStatusChoice = telephoneStatusChoices.getDefaultValue();
             }
         }
     }
@@ -86,7 +82,8 @@ public class ContactTelephoneStatusActionForm
         this.telephoneStatusChoice = telephoneStatusChoice;
     }
     
-    public List<LabelValueBean> getTelephoneStatusChoices() {
+    public List<LabelValueBean> getTelephoneStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupTelephoneStatusChoices();

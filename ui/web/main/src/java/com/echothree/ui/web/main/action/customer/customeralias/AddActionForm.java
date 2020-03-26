@@ -39,26 +39,22 @@ public class AddActionForm
     private String partyAliasTypeChoice;
     private String alias;
 
-    public void setupPartyAliasTypeChoices() {
+    public void setupPartyAliasTypeChoices()
+            throws NamingException {
         if(partyAliasTypeChoices == null) {
-            try {
-                GetPartyAliasTypeChoicesForm form = PartyUtil.getHome().getGetPartyAliasTypeChoicesForm();
+            GetPartyAliasTypeChoicesForm form = PartyUtil.getHome().getGetPartyAliasTypeChoicesForm();
 
-                form.setPartyTypeName(PartyTypes.CUSTOMER.name());
-                form.setDefaultPartyAliasTypeChoice(partyAliasTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyAliasTypeChoicesResult getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
-                partyAliasTypeChoices = getPartyAliasTypeChoicesResult.getPartyAliasTypeChoices();
-                
-                if(partyAliasTypeChoice == null) {
-                    partyAliasTypeChoice = partyAliasTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, partyAliasTypeChoices remains null, no default
+            form.setPartyTypeName(PartyTypes.CUSTOMER.name());
+            form.setDefaultPartyAliasTypeChoice(partyAliasTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPartyAliasTypeChoicesResult getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
+            partyAliasTypeChoices = getPartyAliasTypeChoicesResult.getPartyAliasTypeChoices();
+
+            if(partyAliasTypeChoice == null) {
+                partyAliasTypeChoice = partyAliasTypeChoices.getDefaultValue();
             }
         }
     }
@@ -77,7 +73,8 @@ public class AddActionForm
         this.partyName = partyName;
     }
 
-    public List<LabelValueBean> getPartyAliasTypeChoices() {
+    public List<LabelValueBean> getPartyAliasTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPartyAliasTypeChoices();
@@ -91,7 +88,8 @@ public class AddActionForm
         this.partyAliasTypeChoice = partyAliasTypeChoice;
     }
     
-    public String getPartyAliasTypeChoice() {
+    public String getPartyAliasTypeChoice()
+            throws NamingException {
         setupPartyAliasTypeChoices();
         return partyAliasTypeChoice;
     }

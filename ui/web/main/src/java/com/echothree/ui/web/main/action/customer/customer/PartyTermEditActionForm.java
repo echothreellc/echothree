@@ -41,25 +41,21 @@ public class PartyTermEditActionForm
     private String termChoice;
     private Boolean taxable;
     
-    public void setupTermChoices() {
+    public void setupTermChoices()
+            throws NamingException {
         if(termChoices == null) {
-            try {
-                GetTermChoicesForm form = TermUtil.getHome().getGetTermChoicesForm();
-                
-                form.setDefaultTermChoice(termChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTermChoicesResult getTermChoicesResult = (GetTermChoicesResult)executionResult.getResult();
-                termChoices = getTermChoicesResult.getTermChoices();
-                
-                if(termChoice == null)
-                    termChoice = termChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, termChoices remains null, no default
-            }
+            GetTermChoicesForm form = TermUtil.getHome().getGetTermChoicesForm();
+
+            form.setDefaultTermChoice(termChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetTermChoicesResult getTermChoicesResult = (GetTermChoicesResult)executionResult.getResult();
+            termChoices = getTermChoicesResult.getTermChoices();
+
+            if(termChoice == null)
+                termChoice = termChoices.getDefaultValue();
         }
     }
     
@@ -79,7 +75,8 @@ public class PartyTermEditActionForm
         this.customerName = customerName;
     }
     
-    public List<LabelValueBean> getTermChoices() {
+    public List<LabelValueBean> getTermChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupTermChoices();
@@ -93,7 +90,8 @@ public class PartyTermEditActionForm
         this.termChoice = termChoice;
     }
     
-    public String getTermChoice() {
+    public String getTermChoice()
+            throws NamingException {
         setupTermChoices();
         return termChoice;
     }

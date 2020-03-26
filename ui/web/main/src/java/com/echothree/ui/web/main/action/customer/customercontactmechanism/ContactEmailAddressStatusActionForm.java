@@ -38,26 +38,22 @@ public class ContactEmailAddressStatusActionForm
     private String contactMechanismName;
     private String emailAddressStatusChoice;
     
-    public void setupEmailAddressStatusChoices() {
+    public void setupEmailAddressStatusChoices()
+            throws NamingException {
         if(emailAddressStatusChoices == null) {
-            try {
-                GetEmailAddressStatusChoicesForm form = ContactUtil.getHome().getGetEmailAddressStatusChoicesForm();
-                
-                form.setContactMechanismName(contactMechanismName);
-                form.setDefaultEmailAddressStatusChoice(emailAddressStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getEmailAddressStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmailAddressStatusChoicesResult result = (GetEmailAddressStatusChoicesResult)executionResult.getResult();
-                emailAddressStatusChoices = result.getEmailAddressStatusChoices();
-                
-                if(emailAddressStatusChoice == null) {
-                    emailAddressStatusChoice = emailAddressStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, emailAddressStatusChoices remains null, no default
+            GetEmailAddressStatusChoicesForm form = ContactUtil.getHome().getGetEmailAddressStatusChoicesForm();
+
+            form.setContactMechanismName(contactMechanismName);
+            form.setDefaultEmailAddressStatusChoice(emailAddressStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ContactUtil.getHome().getEmailAddressStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetEmailAddressStatusChoicesResult result = (GetEmailAddressStatusChoicesResult)executionResult.getResult();
+            emailAddressStatusChoices = result.getEmailAddressStatusChoices();
+
+            if(emailAddressStatusChoice == null) {
+                emailAddressStatusChoice = emailAddressStatusChoices.getDefaultValue();
             }
         }
     }
@@ -86,7 +82,8 @@ public class ContactEmailAddressStatusActionForm
         this.emailAddressStatusChoice = emailAddressStatusChoice;
     }
     
-    public List<LabelValueBean> getEmailAddressStatusChoices() {
+    public List<LabelValueBean> getEmailAddressStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEmailAddressStatusChoices();

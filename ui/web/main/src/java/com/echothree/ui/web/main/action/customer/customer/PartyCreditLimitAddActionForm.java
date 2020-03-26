@@ -40,25 +40,21 @@ public class PartyCreditLimitAddActionForm
     private String creditLimit;
     private String potentialCreditLimit;
     
-    public void setupCurrencyChoices() {
+    public void setupCurrencyChoices()
+            throws NamingException {
         if(currencyChoices == null) {
-            try {
-                GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
-                
-                form.setDefaultCurrencyChoice(currencyChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
-                currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
-                
-                if(currencyChoice == null)
-                    currencyChoice = currencyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, currencyChoices remains null, no default
-            }
+            GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+
+            form.setDefaultCurrencyChoice(currencyChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
+
+            if(currencyChoice == null)
+                currencyChoice = currencyChoices.getDefaultValue();
         }
     }
     
@@ -78,7 +74,8 @@ public class PartyCreditLimitAddActionForm
         this.customerName = customerName;
     }
 
-    public List<LabelValueBean> getCurrencyChoices() {
+    public List<LabelValueBean> getCurrencyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCurrencyChoices();
@@ -92,7 +89,8 @@ public class PartyCreditLimitAddActionForm
         this.currencyChoice = currencyChoice;
     }
     
-    public String getCurrencyChoice() {
+    public String getCurrencyChoice()
+            throws NamingException {
         setupCurrencyChoices();
         return currencyChoice;
     }

@@ -68,96 +68,80 @@ public class Step2ActionForm
     private String issuerName;
     private String issuerContactMechanismChoice;
     
-    private void setupPersonalTitleChoices() {
+    private void setupPersonalTitleChoices()
+            throws NamingException {
         if(personalTitleChoices == null) {
-            try {
-                GetPersonalTitleChoicesForm commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
+            GetPersonalTitleChoicesForm commandForm = PartyUtil.getHome().getGetPersonalTitleChoicesForm();
 
-                commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setDefaultPersonalTitleChoice(personalTitleChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPersonalTitleChoicesResult result = (GetPersonalTitleChoicesResult)executionResult.getResult();
-                personalTitleChoices = result.getPersonalTitleChoices();
+            CommandResult commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPersonalTitleChoicesResult result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+            personalTitleChoices = result.getPersonalTitleChoices();
 
-                if(personalTitleChoice == null)
-                    personalTitleChoice = personalTitleChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, personalTitleChoices remains null, no default
-            }
+            if(personalTitleChoice == null)
+                personalTitleChoice = personalTitleChoices.getDefaultValue();
         }
     }
 
-    private void setupNameSuffixChoices() {
+    private void setupNameSuffixChoices()
+            throws NamingException {
         if(nameSuffixChoices == null) {
-            try {
-                GetNameSuffixChoicesForm commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
+            GetNameSuffixChoicesForm commandForm = PartyUtil.getHome().getGetNameSuffixChoicesForm();
 
-                commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setDefaultNameSuffixChoice(nameSuffixChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetNameSuffixChoicesResult result = (GetNameSuffixChoicesResult)executionResult.getResult();
-                nameSuffixChoices = result.getNameSuffixChoices();
+            CommandResult commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetNameSuffixChoicesResult result = (GetNameSuffixChoicesResult)executionResult.getResult();
+            nameSuffixChoices = result.getNameSuffixChoices();
 
-                if(nameSuffixChoice == null)
-                    nameSuffixChoice = nameSuffixChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, nameSuffixChoices remains null, no default
-            }
+            if(nameSuffixChoice == null)
+                nameSuffixChoice = nameSuffixChoices.getDefaultValue();
         }
     }
 
-    private void setupBillingContactMechanismChoices() {
+    private void setupBillingContactMechanismChoices()
+            throws NamingException {
         if(billingContactMechanismChoices == null) {
-            try {
-                GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+            GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
-                commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
-                commandForm.setDefaultContactMechanismChoice(billingContactMechanismChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setPartyName(partyName);
+            commandForm.setContactMechanismTypeName(ContactMechanismTypes.POSTAL_ADDRESS.name());
+            commandForm.setDefaultContactMechanismChoice(billingContactMechanismChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
-                billingContactMechanismChoices = result.getContactMechanismChoices();
+            CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            billingContactMechanismChoices = result.getContactMechanismChoices();
 
-                if(billingContactMechanismChoice == null) {
-                    billingContactMechanismChoice = billingContactMechanismChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, billingContactMechanismChoices remains null, no default
+            if(billingContactMechanismChoice == null) {
+                billingContactMechanismChoice = billingContactMechanismChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupIssuerContactMechanismChoices() {
+    private void setupIssuerContactMechanismChoices()
+            throws NamingException {
         if(issuerContactMechanismChoices == null) {
-            try {
-                GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
+            GetContactMechanismChoicesForm commandForm = ContactUtil.getHome().getGetContactMechanismChoicesForm();
 
-                commandForm.setPartyName(partyName);
-                commandForm.setContactMechanismTypeName(ContactMechanismTypes.TELECOM_ADDRESS.name());
-                commandForm.setDefaultContactMechanismChoice(issuerContactMechanismChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setPartyName(partyName);
+            commandForm.setContactMechanismTypeName(ContactMechanismTypes.TELECOM_ADDRESS.name());
+            commandForm.setDefaultContactMechanismChoice(issuerContactMechanismChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
-                issuerContactMechanismChoices = result.getContactMechanismChoices();
+            CommandResult commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetContactMechanismChoicesResult result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            issuerContactMechanismChoices = result.getContactMechanismChoices();
 
-                if(issuerContactMechanismChoice == null) {
-                    issuerContactMechanismChoice = issuerContactMechanismChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, issuerContactMechanismChoices remains null, no default
+            if(issuerContactMechanismChoice == null) {
+                issuerContactMechanismChoice = issuerContactMechanismChoices.getDefaultValue();
             }
         }
     }
@@ -216,7 +200,8 @@ public class Step2ActionForm
         this.sortOrder = sortOrder;
     }
 
-    public List<LabelValueBean> getPersonalTitleChoices() {
+    public List<LabelValueBean> getPersonalTitleChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupPersonalTitleChoices();
@@ -231,7 +216,8 @@ public class Step2ActionForm
         this.personalTitleChoice = personalTitleChoice;
     }
 
-    public String getPersonalTitleChoice() {
+    public String getPersonalTitleChoice()
+            throws NamingException {
         setupPersonalTitleChoices();
 
         return personalTitleChoice;
@@ -261,7 +247,8 @@ public class Step2ActionForm
         return lastName;
     }
 
-    public List<LabelValueBean> getNameSuffixChoices() {
+    public List<LabelValueBean> getNameSuffixChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupNameSuffixChoices();
@@ -276,7 +263,8 @@ public class Step2ActionForm
         this.nameSuffixChoice = nameSuffixChoice;
     }
 
-    public String getNameSuffixChoice() {
+    public String getNameSuffixChoice()
+            throws NamingException {
         setupNameSuffixChoices();
 
         return nameSuffixChoice;
@@ -352,7 +340,8 @@ public class Step2ActionForm
         this.expirationYear = expirationYear;
     }
 
-    public List<LabelValueBean> getBillingContactMechanismChoices() {
+    public List<LabelValueBean> getBillingContactMechanismChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupBillingContactMechanismChoices();
@@ -367,7 +356,8 @@ public class Step2ActionForm
         this.billingContactMechanismChoice = billingContactMechanismChoice;
     }
 
-    public String getBillingContactMechanismChoice() {
+    public String getBillingContactMechanismChoice()
+            throws NamingException {
         setupBillingContactMechanismChoices();
 
         return billingContactMechanismChoice;
@@ -387,7 +377,8 @@ public class Step2ActionForm
         this.issuerName = issuerName;
     }
 
-    public List<LabelValueBean> getIssuerContactMechanismChoices() {
+    public List<LabelValueBean> getIssuerContactMechanismChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupIssuerContactMechanismChoices();
@@ -402,7 +393,8 @@ public class Step2ActionForm
         this.issuerContactMechanismChoice = issuerContactMechanismChoice;
     }
 
-    public String getIssuerContactMechanismChoice() {
+    public String getIssuerContactMechanismChoice()
+            throws NamingException {
         setupIssuerContactMechanismChoices();
 
         return issuerContactMechanismChoice;

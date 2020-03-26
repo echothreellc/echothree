@@ -101,206 +101,170 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupCustomerSequenceChoices() {
+    public void setupCustomerSequenceChoices()
+            throws NamingException {
         if(customerSequenceChoices == null) {
-            try {
-                GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                form.setSequenceTypeName(SequenceTypes.CUSTOMER.name());
-                form.setDefaultSequenceChoice(customerSequenceChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
-                customerSequenceChoices = result.getSequenceChoices();
-                
-                if(customerSequenceChoice == null)
-                    customerSequenceChoice = customerSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, customerSequenceChoices remains null, no default
-            }
+            GetSequenceChoicesForm form = SequenceUtil.getHome().getGetSequenceChoicesForm();
+
+            form.setSequenceTypeName(SequenceTypes.CUSTOMER.name());
+            form.setDefaultSequenceChoice(customerSequenceChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            customerSequenceChoices = result.getSequenceChoices();
+
+            if(customerSequenceChoice == null)
+                customerSequenceChoice = customerSequenceChoices.getDefaultValue();
         }
     }
     
-    public void setupDefaultSourceChoices() {
+    public void setupDefaultSourceChoices()
+            throws NamingException {
         if(defaultSourceChoices == null) {
-            try {
-                GetSourceChoicesForm form = OfferUtil.getHome().getGetSourceChoicesForm();
-                
-                form.setDefaultSourceChoice(defaultSourceChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSourceChoicesResult result = (GetSourceChoicesResult)executionResult.getResult();
-                defaultSourceChoices = result.getSourceChoices();
-                
-                if(defaultSourceChoice == null)
-                    defaultSourceChoice = defaultSourceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultSourceChoices remains null, no default
-            }
+            GetSourceChoicesForm form = OfferUtil.getHome().getGetSourceChoicesForm();
+
+            form.setDefaultSourceChoice(defaultSourceChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSourceChoicesResult result = (GetSourceChoicesResult)executionResult.getResult();
+            defaultSourceChoices = result.getSourceChoices();
+
+            if(defaultSourceChoice == null)
+                defaultSourceChoice = defaultSourceChoices.getDefaultValue();
         }
     }
     
-    public void setupDefaultTermChoices() {
+    public void setupDefaultTermChoices()
+            throws NamingException {
         if(defaultTermChoices == null) {
-            try {
-                GetTermChoicesForm form = TermUtil.getHome().getGetTermChoicesForm();
-                
-                form.setDefaultTermChoice(defaultTermChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetTermChoicesResult result = (GetTermChoicesResult)executionResult.getResult();
-                defaultTermChoices = result.getTermChoices();
-                
-                if(defaultTermChoice == null)
-                    defaultTermChoice = defaultTermChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultTermChoices remains null, no default
-            }
+            GetTermChoicesForm form = TermUtil.getHome().getGetTermChoicesForm();
+
+            form.setDefaultTermChoice(defaultTermChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetTermChoicesResult result = (GetTermChoicesResult)executionResult.getResult();
+            defaultTermChoices = result.getTermChoices();
+
+            if(defaultTermChoice == null)
+                defaultTermChoice = defaultTermChoices.getDefaultValue();
         }
     }
     
-    public void setupDefaultCancellationPolicyChoices() {
+    public void setupDefaultCancellationPolicyChoices()
+            throws NamingException {
         if(defaultCancellationPolicyChoices == null) {
-            try {
-                GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
-                
-                form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
-                form.setDefaultCancellationPolicyChoice(defaultCancellationPolicyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
-                defaultCancellationPolicyChoices = result.getCancellationPolicyChoices();
-                
-                if(defaultCancellationPolicyChoice == null)
-                    defaultCancellationPolicyChoice = defaultCancellationPolicyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultCancellationPolicyChoices remains null, no default
-            }
+            GetCancellationPolicyChoicesForm form = CancellationPolicyUtil.getHome().getGetCancellationPolicyChoicesForm();
+
+            form.setCancellationKindName(CancellationPolicyConstants.CancellationKind_CUSTOMER_CANCELLATION);
+            form.setDefaultCancellationPolicyChoice(defaultCancellationPolicyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCancellationPolicyChoicesResult result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            defaultCancellationPolicyChoices = result.getCancellationPolicyChoices();
+
+            if(defaultCancellationPolicyChoice == null)
+                defaultCancellationPolicyChoice = defaultCancellationPolicyChoices.getDefaultValue();
         }
     }
     
-    public void setupDefaultReturnPolicyChoices() {
+    public void setupDefaultReturnPolicyChoices()
+            throws NamingException {
         if(defaultReturnPolicyChoices == null) {
-            try {
-                GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
-                
-                form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
-                form.setDefaultReturnPolicyChoice(defaultReturnPolicyChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
-                defaultReturnPolicyChoices = result.getReturnPolicyChoices();
-                
-                if(defaultReturnPolicyChoice == null)
-                    defaultReturnPolicyChoice = defaultReturnPolicyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultReturnPolicyChoices remains null, no default
-            }
+            GetReturnPolicyChoicesForm form = ReturnPolicyUtil.getHome().getGetReturnPolicyChoicesForm();
+
+            form.setReturnKindName(ReturnPolicyConstants.ReturnKind_CUSTOMER_RETURN);
+            form.setDefaultReturnPolicyChoice(defaultReturnPolicyChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetReturnPolicyChoicesResult result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            defaultReturnPolicyChoices = result.getReturnPolicyChoices();
+
+            if(defaultReturnPolicyChoice == null)
+                defaultReturnPolicyChoice = defaultReturnPolicyChoices.getDefaultValue();
         }
     }
     
-    public void setupDefaultCustomerStatusChoices() {
+    public void setupDefaultCustomerStatusChoices()
+            throws NamingException {
         if(defaultCustomerStatusChoices == null) {
-            try {
-                GetCustomerStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
-                
-                form.setDefaultCustomerStatusChoice(defaultCustomerStatusChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCustomerStatusChoicesResult result = (GetCustomerStatusChoicesResult)executionResult.getResult();
-                defaultCustomerStatusChoices = result.getCustomerStatusChoices();
-                
-                if(defaultCustomerStatusChoice == null)
-                    defaultCustomerStatusChoice = defaultCustomerStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultCustomerStatusChoices remains null, no default
-            }
+            GetCustomerStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
+
+            form.setDefaultCustomerStatusChoice(defaultCustomerStatusChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCustomerStatusChoicesResult result = (GetCustomerStatusChoicesResult)executionResult.getResult();
+            defaultCustomerStatusChoices = result.getCustomerStatusChoices();
+
+            if(defaultCustomerStatusChoice == null)
+                defaultCustomerStatusChoice = defaultCustomerStatusChoices.getDefaultValue();
         }
     }
     
-    public void setupDefaultCustomerCreditStatusChoices() {
+    public void setupDefaultCustomerCreditStatusChoices()
+            throws NamingException {
         if(defaultCustomerCreditStatusChoices == null) {
-            try {
-                GetCustomerCreditStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
-                
-                form.setDefaultCustomerCreditStatusChoice(defaultCustomerCreditStatusChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCustomerCreditStatusChoicesResult result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
-                defaultCustomerCreditStatusChoices = result.getCustomerCreditStatusChoices();
-                
-                if(defaultCustomerCreditStatusChoice == null)
-                    defaultCustomerCreditStatusChoice = defaultCustomerCreditStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultCustomerCreditStatusChoices remains null, no default
-            }
+            GetCustomerCreditStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerCreditStatusChoicesForm();
+
+            form.setDefaultCustomerCreditStatusChoice(defaultCustomerCreditStatusChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCustomerCreditStatusChoicesResult result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
+            defaultCustomerCreditStatusChoices = result.getCustomerCreditStatusChoices();
+
+            if(defaultCustomerCreditStatusChoice == null)
+                defaultCustomerCreditStatusChoice = defaultCustomerCreditStatusChoices.getDefaultValue();
         }
     }
     
-    private void setupDefaultArGlAccountChoices() {
+    private void setupDefaultArGlAccountChoices()
+            throws NamingException {
         if(defaultArGlAccountChoices == null) {
-            try {
-                GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
-                
-                form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
-                form.setDefaultGlAccountChoice(defaultArGlAccountChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
-                defaultArGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
-                
-                if(defaultArGlAccountChoice == null) {
-                    defaultArGlAccountChoice = defaultArGlAccountChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultArGlAccountChoices remains null, no default
+            GetGlAccountChoicesForm form = AccountingUtil.getHome().getGetGlAccountChoicesForm();
+
+            form.setGlAccountCategoryName(AccountingConstants.GlAccountCategory_ACCOUNTS_RECEIVABLE);
+            form.setDefaultGlAccountChoice(defaultArGlAccountChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetGlAccountChoicesResult getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            defaultArGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
+
+            if(defaultArGlAccountChoice == null) {
+                defaultArGlAccountChoice = defaultArGlAccountChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupAllocationPriorityChoices() {
+    private void setupAllocationPriorityChoices()
+            throws NamingException {
         if(allocationPriorityChoices == null) {
-            try {
-                GetAllocationPriorityChoicesForm form = InventoryUtil.getHome().getGetAllocationPriorityChoicesForm();
-                
-                form.setDefaultAllocationPriorityChoice(allocationPriorityChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = InventoryUtil.getHome().getAllocationPriorityChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetAllocationPriorityChoicesResult getAllocationPriorityChoicesResult = (GetAllocationPriorityChoicesResult)executionResult.getResult();
-                allocationPriorityChoices = getAllocationPriorityChoicesResult.getAllocationPriorityChoices();
-                
-                if(allocationPriorityChoice == null) {
-                    allocationPriorityChoice = allocationPriorityChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, defaultAllocationPriorityChoices remains null, no default
+            GetAllocationPriorityChoicesForm form = InventoryUtil.getHome().getGetAllocationPriorityChoicesForm();
+
+            form.setDefaultAllocationPriorityChoice(allocationPriorityChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = InventoryUtil.getHome().getAllocationPriorityChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetAllocationPriorityChoicesResult getAllocationPriorityChoicesResult = (GetAllocationPriorityChoicesResult)executionResult.getResult();
+            allocationPriorityChoices = getAllocationPriorityChoicesResult.getAllocationPriorityChoices();
+
+            if(allocationPriorityChoice == null) {
+                allocationPriorityChoice = allocationPriorityChoices.getDefaultValue();
             }
         }
     }
@@ -313,7 +277,8 @@ public class AddActionForm
         return customerTypeName;
     }
     
-    public List<LabelValueBean> getCustomerSequenceChoices() {
+    public List<LabelValueBean> getCustomerSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCustomerSequenceChoices();
@@ -327,13 +292,15 @@ public class AddActionForm
         this.customerSequenceChoice = customerSequenceChoice;
     }
     
-    public String getCustomerSequenceChoice() {
+    public String getCustomerSequenceChoice()
+            throws NamingException {
         setupCustomerSequenceChoices();
         
         return customerSequenceChoice;
     }
     
-    public List<LabelValueBean> getDefaultSourceChoices() {
+    public List<LabelValueBean> getDefaultSourceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultSourceChoices();
@@ -347,13 +314,15 @@ public class AddActionForm
         this.defaultSourceChoice = defaultSourceChoice;
     }
     
-    public String getDefaultSourceChoice() {
+    public String getDefaultSourceChoice()
+            throws NamingException {
         setupDefaultSourceChoices();
         
         return defaultSourceChoice;
     }
     
-    public List<LabelValueBean> getDefaultTermChoices() {
+    public List<LabelValueBean> getDefaultTermChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultTermChoices();
@@ -367,13 +336,15 @@ public class AddActionForm
         this.defaultTermChoice = defaultTermChoice;
     }
     
-    public String getDefaultTermChoice() {
+    public String getDefaultTermChoice()
+            throws NamingException {
         setupDefaultTermChoices();
         
         return defaultTermChoice;
     }
     
-    public List<LabelValueBean> getDefaultCancellationPolicyChoices() {
+    public List<LabelValueBean> getDefaultCancellationPolicyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultCancellationPolicyChoices();
@@ -387,13 +358,15 @@ public class AddActionForm
         this.defaultCancellationPolicyChoice = defaultCancellationPolicyChoice;
     }
     
-    public String getDefaultCancellationPolicyChoice() {
+    public String getDefaultCancellationPolicyChoice()
+            throws NamingException {
         setupDefaultCancellationPolicyChoices();
         
         return defaultCancellationPolicyChoice;
     }
     
-    public List<LabelValueBean> getDefaultReturnPolicyChoices() {
+    public List<LabelValueBean> getDefaultReturnPolicyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultReturnPolicyChoices();
@@ -407,7 +380,8 @@ public class AddActionForm
         this.defaultReturnPolicyChoice = defaultReturnPolicyChoice;
     }
     
-    public String getDefaultReturnPolicyChoice() {
+    public String getDefaultReturnPolicyChoice()
+            throws NamingException {
         setupDefaultReturnPolicyChoices();
         
         return defaultReturnPolicyChoice;
@@ -421,7 +395,8 @@ public class AddActionForm
         this.defaultCustomerStatusChoice = defaultCustomerStatusChoice;
     }
     
-    public List<LabelValueBean> getDefaultCustomerStatusChoices() {
+    public List<LabelValueBean> getDefaultCustomerStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultCustomerStatusChoices();
@@ -439,7 +414,8 @@ public class AddActionForm
         this.defaultCustomerCreditStatusChoice = defaultCustomerCreditStatusChoice;
     }
     
-    public List<LabelValueBean> getDefaultCustomerCreditStatusChoices() {
+    public List<LabelValueBean> getDefaultCustomerCreditStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultCustomerCreditStatusChoices();
@@ -449,7 +425,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getDefaultArGlAccountChoice() {
+    public String getDefaultArGlAccountChoice()
+            throws NamingException {
         setupDefaultArGlAccountChoices();
         
         return defaultArGlAccountChoice;
@@ -459,7 +436,8 @@ public class AddActionForm
         this.defaultArGlAccountChoice = defaultArGlAccountChoice;
     }
     
-    public List<LabelValueBean> getDefaultArGlAccountChoices() {
+    public List<LabelValueBean> getDefaultArGlAccountChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupDefaultArGlAccountChoices();
@@ -533,7 +511,8 @@ public class AddActionForm
         this.defaultTaxable = defaultTaxable;
     }
 
-    public List<LabelValueBean> getAllocationPriorityChoices() {
+    public List<LabelValueBean> getAllocationPriorityChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupAllocationPriorityChoices();
@@ -547,7 +526,8 @@ public class AddActionForm
         this.allocationPriorityChoice = allocationPriorityChoice;
     }
     
-    public String getAllocationPriorityChoice() {
+    public String getAllocationPriorityChoice()
+            throws NamingException {
         setupAllocationPriorityChoices();
         
         return allocationPriorityChoice;

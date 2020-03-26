@@ -38,26 +38,22 @@ public class ContactEmailAddressVerificationActionForm
     private String contactMechanismName;
     private String emailAddressVerificationChoice;
     
-    public void setupEmailAddressVerificationChoices() {
+    public void setupEmailAddressVerificationChoices()
+            throws NamingException {
         if(emailAddressVerificationChoices == null) {
-            try {
-                GetEmailAddressVerificationChoicesForm form = ContactUtil.getHome().getGetEmailAddressVerificationChoicesForm();
-                
-                form.setContactMechanismName(contactMechanismName);
-                form.setDefaultEmailAddressVerificationChoice(emailAddressVerificationChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getEmailAddressVerificationChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmailAddressVerificationChoicesResult result = (GetEmailAddressVerificationChoicesResult)executionResult.getResult();
-                emailAddressVerificationChoices = result.getEmailAddressVerificationChoices();
-                
-                if(emailAddressVerificationChoice == null) {
-                    emailAddressVerificationChoice = emailAddressVerificationChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, emailAddressVerificationChoices remains null, no default
+            GetEmailAddressVerificationChoicesForm form = ContactUtil.getHome().getGetEmailAddressVerificationChoicesForm();
+
+            form.setContactMechanismName(contactMechanismName);
+            form.setDefaultEmailAddressVerificationChoice(emailAddressVerificationChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ContactUtil.getHome().getEmailAddressVerificationChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetEmailAddressVerificationChoicesResult result = (GetEmailAddressVerificationChoicesResult)executionResult.getResult();
+            emailAddressVerificationChoices = result.getEmailAddressVerificationChoices();
+
+            if(emailAddressVerificationChoice == null) {
+                emailAddressVerificationChoice = emailAddressVerificationChoices.getDefaultValue();
             }
         }
     }
@@ -86,7 +82,8 @@ public class ContactEmailAddressVerificationActionForm
         this.emailAddressVerificationChoice = emailAddressVerificationChoice;
     }
     
-    public List<LabelValueBean> getEmailAddressVerificationChoices() {
+    public List<LabelValueBean> getEmailAddressVerificationChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEmailAddressVerificationChoices();

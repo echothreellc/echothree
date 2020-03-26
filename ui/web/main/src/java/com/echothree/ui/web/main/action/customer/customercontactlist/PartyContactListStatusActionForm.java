@@ -38,27 +38,23 @@ public class PartyContactListStatusActionForm
     private String contactListName;
     private String partyContactListStatusChoice;
     
-    public void setupPartyContactListStatusChoices() {
+    public void setupPartyContactListStatusChoices()
+            throws NamingException {
         if(partyContactListStatusChoices == null) {
-            try {
-                GetPartyContactListStatusChoicesForm form = ContactListUtil.getHome().getGetPartyContactListStatusChoicesForm();
-                
-                form.setPartyName(partyName);
-                form.setContactListName(contactListName);
-                form.setDefaultPartyContactListStatusChoice(partyContactListStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyContactListStatusChoicesResult result = (GetPartyContactListStatusChoicesResult)executionResult.getResult();
-                partyContactListStatusChoices = result.getPartyContactListStatusChoices();
-                
-                if(partyContactListStatusChoice == null) {
-                    partyContactListStatusChoice = partyContactListStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, partyContactListStatusChoices remains null, no default
+            GetPartyContactListStatusChoicesForm form = ContactListUtil.getHome().getGetPartyContactListStatusChoicesForm();
+
+            form.setPartyName(partyName);
+            form.setContactListName(contactListName);
+            form.setDefaultPartyContactListStatusChoice(partyContactListStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPartyContactListStatusChoicesResult result = (GetPartyContactListStatusChoicesResult)executionResult.getResult();
+            partyContactListStatusChoices = result.getPartyContactListStatusChoices();
+
+            if(partyContactListStatusChoice == null) {
+                partyContactListStatusChoice = partyContactListStatusChoices.getDefaultValue();
             }
         }
     }
@@ -91,7 +87,8 @@ public class PartyContactListStatusActionForm
         this.contactListName = contactListName;
     }
 
-    public String getPartyContactListStatusChoice() {
+    public String getPartyContactListStatusChoice()
+            throws NamingException {
         setupPartyContactListStatusChoices();
         return partyContactListStatusChoice;
     }
@@ -100,7 +97,8 @@ public class PartyContactListStatusActionForm
         this.partyContactListStatusChoice = partyContactListStatusChoice;
     }
     
-    public List<LabelValueBean> getPartyContactListStatusChoices() {
+    public List<LabelValueBean> getPartyContactListStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPartyContactListStatusChoices();
