@@ -38,26 +38,22 @@ public class EditActionForm
     private String contactListName;
     private String preferredContactMechanismPurposeChoice;
 
-    public void setupPreferredContactMechanismPurposeChoices() {
+    public void setupPreferredContactMechanismPurposeChoices()
+            throws NamingException {
         if(preferredContactMechanismPurposeChoices == null) {
-            try {
-                GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
+            GetContactMechanismPurposeChoicesForm form = ContactUtil.getHome().getGetContactMechanismPurposeChoicesForm();
 
-                form.setContactListName(contactListName);
-                form.setDefaultContactMechanismPurposeChoice(preferredContactMechanismPurposeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetContactMechanismPurposeChoicesResult getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
-                preferredContactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
-                
-                if(preferredContactMechanismPurposeChoice == null) {
-                    preferredContactMechanismPurposeChoice = preferredContactMechanismPurposeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, preferredContactMechanismPurposeChoices remains null, no default
+            form.setContactListName(contactListName);
+            form.setDefaultContactMechanismPurposeChoice(preferredContactMechanismPurposeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetContactMechanismPurposeChoicesResult getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            preferredContactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
+
+            if(preferredContactMechanismPurposeChoice == null) {
+                preferredContactMechanismPurposeChoice = preferredContactMechanismPurposeChoices.getDefaultValue();
             }
         }
     }
@@ -90,7 +86,8 @@ public class EditActionForm
         this.contactListName = contactListName;
     }
 
-    public List<LabelValueBean> getPreferredContactMechanismPurposeChoices() {
+    public List<LabelValueBean> getPreferredContactMechanismPurposeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPreferredContactMechanismPurposeChoices();
@@ -105,7 +102,8 @@ public class EditActionForm
         this.preferredContactMechanismPurposeChoice = preferredContactMechanismPurposeChoice;
     }
     
-    public String getPreferredContactMechanismPurposeChoice() {
+    public String getPreferredContactMechanismPurposeChoice()
+            throws NamingException {
         setupPreferredContactMechanismPurposeChoices();
         return preferredContactMechanismPurposeChoice;
     }

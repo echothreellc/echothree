@@ -38,26 +38,22 @@ public class ContactWebAddressStatusActionForm
     private String contactMechanismName;
     private String webAddressStatusChoice;
     
-    public void setupWebAddressStatusChoices() {
+    public void setupWebAddressStatusChoices()
+            throws NamingException {
         if(webAddressStatusChoices == null) {
-            try {
-                GetWebAddressStatusChoicesForm form = ContactUtil.getHome().getGetWebAddressStatusChoicesForm();
-                
-                form.setContactMechanismName(contactMechanismName);
-                form.setDefaultWebAddressStatusChoice(webAddressStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ContactUtil.getHome().getWebAddressStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWebAddressStatusChoicesResult result = (GetWebAddressStatusChoicesResult)executionResult.getResult();
-                webAddressStatusChoices = result.getWebAddressStatusChoices();
-                
-                if(webAddressStatusChoice == null) {
-                    webAddressStatusChoice = webAddressStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, webAddressStatusChoices remains null, no default
+            GetWebAddressStatusChoicesForm form = ContactUtil.getHome().getGetWebAddressStatusChoicesForm();
+
+            form.setContactMechanismName(contactMechanismName);
+            form.setDefaultWebAddressStatusChoice(webAddressStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ContactUtil.getHome().getWebAddressStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetWebAddressStatusChoicesResult result = (GetWebAddressStatusChoicesResult)executionResult.getResult();
+            webAddressStatusChoices = result.getWebAddressStatusChoices();
+
+            if(webAddressStatusChoice == null) {
+                webAddressStatusChoice = webAddressStatusChoices.getDefaultValue();
             }
         }
     }
@@ -86,7 +82,8 @@ public class ContactWebAddressStatusActionForm
         this.webAddressStatusChoice = webAddressStatusChoice;
     }
     
-    public List<LabelValueBean> getWebAddressStatusChoices() {
+    public List<LabelValueBean> getWebAddressStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupWebAddressStatusChoices();
