@@ -22,6 +22,7 @@ import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
 import com.echothree.control.user.contact.common.edit.ContactWebAddressEdit;
 import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
+import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 
 public class BasePersona {
@@ -55,6 +56,11 @@ public class BasePersona {
 
     // Party
     public String lastPartyName;
+
+    // Payment
+    public CreatePartyPaymentMethodForm createPartyPaymentMethodForm;
+
+    public String lastPartyPaymentMethodName;
 
     // Sales
     public String lastSalesOrderBatchName;
