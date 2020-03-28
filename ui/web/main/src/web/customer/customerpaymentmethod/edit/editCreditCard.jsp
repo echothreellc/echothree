@@ -122,7 +122,7 @@
             <html:select property="billingContactMechanismChoice">
                 <html:optionsCollection property="billingContactMechanismChoices" />
             </html:select>
-            <c:if test='${paymentMethod.requireBilling}'>
+            <c:if test='${partyPaymentMethod.paymentMethod.requireBilling}'>
                 (*)
             </c:if>
             <et:validationErrors id="errorMessage" property="BillingContactMechanismName">
