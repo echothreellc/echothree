@@ -115,7 +115,7 @@
         </td>
     </tr>
 </c:if>
-<c:if test='${paymentMethod.requestBilling}'>
+<c:if test='${partyPaymentMethod.paymentMethod.requestBilling}'>
     <tr>
         <td align=right><fmt:message key="label.billingContactMechanism" />:</td>
         <td>
