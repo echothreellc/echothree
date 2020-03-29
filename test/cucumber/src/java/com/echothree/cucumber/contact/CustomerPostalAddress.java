@@ -219,6 +219,8 @@ public class CustomerPostalAddress implements En {
 
                     var commandResult = ContactUtil.getHome().editContactPostalAddress(customerPersona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
+
+                    customerPersona.contactPostalAddressEdit = null;
                 });
     }
 
