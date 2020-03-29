@@ -14,7 +14,7 @@ Feature: Party payment methods
   Scenario: Existing customer adds and then deletes a credit card
     Given the customer Test is currently logged in
     And the customer Test begins entering a new payment method
-    And the customer Test sets the payment method to ASDF
+    And the customer Test sets the payment method to VISA
     And the customer Test sets the payment method's description to "My Card"
     And the customer Test sets the payment method to be deleted when unused
     And the customer Test sets the payment method to be the default
