@@ -173,7 +173,7 @@ public class CustomerPaymentMethod implements En {
                     customerPersona.createPartyPaymentMethodForm = null;
                 });
 
-        When("^the customer ([^\"]*) begins editing the last payment method$ added$",
+        When("^the customer ([^\"]*) begins editing the last payment method added$",
                 (String persona) -> {
                     var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
