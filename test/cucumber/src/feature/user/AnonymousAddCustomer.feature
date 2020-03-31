@@ -14,7 +14,8 @@ Feature: Anonymous user adds customer with login
     And the anonymous user Gerald sets the new customer's answer to "Mufasa"
     And the anonymous user Gerald adds the new customer
     Then no error should occur
-    And the employee Test is not currently logged in
-    And the employee Test logs in with the username "Test E" and password "password" and company "TEST_COMPANY"
+    And the employee Test begins using the application
+    And the user is not currently logged in
+    When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
     Then no error should occur
     And the employee Test deletes the user login added by the anonymous user Gerald

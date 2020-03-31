@@ -2,12 +2,13 @@ Feature: Customer telephone
   A customer wants to add, edit and delete telephones associated with their account
 
   Background:
-    Given the customer Test is not currently logged in
-    When the customer Test logs in with the username "TestC@echothree.com" and password "password"
+    Given the customer Test begins using the application
+    And the user is not currently logged in
+    When the user logs in as a customer with the username "TestC@echothree.com" and password "password"
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes a telephone without a description and does not allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new telephone number
     And the customer Test sets the telephone number's country to "US"
     And the customer Test sets the telephone number's area code to "515"
@@ -20,7 +21,7 @@ Feature: Customer telephone
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes a telephone without a description and does allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new telephone number
     And the customer Test sets the telephone number's country to "US"
     And the customer Test sets the telephone number's area code to "515"
@@ -33,7 +34,7 @@ Feature: Customer telephone
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes a telephone with a description and does not allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new telephone number
     And the customer Test sets the telephone number's country to "US"
     And the customer Test sets the telephone number's area code to "515"
@@ -47,7 +48,7 @@ Feature: Customer telephone
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes a telephone with a description and does allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new telephone number
     And the customer Test sets the telephone number's country to "US"
     And the customer Test sets the telephone number's area code to "515"
@@ -61,7 +62,7 @@ Feature: Customer telephone
     Then no error should occur
 
   Scenario: Existing customer adds, edits and then deletes a telephone with a description and does allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new telephone number
     And the customer Test sets the telephone number's country to "US"
     And the customer Test sets the telephone number's area code to "515"

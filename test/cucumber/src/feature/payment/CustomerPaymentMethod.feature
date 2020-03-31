@@ -2,17 +2,19 @@ Feature: Party payment methods
   A customer wants to maintain their credit cards
 
   Background:
-    Given the employee Test is not currently logged in
-    When the employee Test logs in with the username "Test E" and password "password" and company "TEST_COMPANY"
+    Given the employee Test begins using the application
+    And the user is not currently logged in
+    When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
     Then no error should occur
     And the employee Test loads the existing base encryption keys
     Then no error should occur
-    And the customer Test is not currently logged in
-    When the customer Test logs in with the username "TestC@echothree.com" and password "password"
+    And the customer Test begins using the application
+    And the user is not currently logged in
+    When the user logs in as a customer with the username "TestC@echothree.com" and password "password"
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes a credit card
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new payment method
     And the customer Test sets the payment method to VISA
     And the customer Test sets the payment method's description to "My Card"
@@ -46,7 +48,7 @@ Feature: Party payment methods
     Then no error should occur
 
   Scenario: Existing customer tries to add a credit card that has a bad number
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new payment method
     And the customer Test sets the payment method to VISA
     And the customer Test sets the payment method's description to "My Card"
@@ -78,7 +80,7 @@ Feature: Party payment methods
     Then no error should occur
 
   Scenario: Existing customer tries to add a credit card that is expired
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new payment method
     And the customer Test sets the payment method to VISA
     And the customer Test sets the payment method's description to "My Card"
@@ -110,7 +112,7 @@ Feature: Party payment methods
     Then no error should occur
 
   Scenario: Existing customer adds, edits and then deletes a credit card
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new payment method
     And the customer Test sets the payment method to VISA
     And the customer Test sets the payment method's description to "My Card"

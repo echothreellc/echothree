@@ -2,12 +2,13 @@ Feature: Customer postal address
   A customer wants to add, edit and delete postal addresses associated with their account
 
   Background:
-    Given the customer Test is not currently logged in
-    When the customer Test logs in with the username "TestC@echothree.com" and password "password"
+    Given the customer Test begins using the application
+    And the user is not currently logged in
+    When the user logs in as a customer with the username "TestC@echothree.com" and password "password"
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes an postal address without a description and does not allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new postal address
     And the customer Test sets the postal address's first name to "Test"
     And the customer Test sets the postal address's last name to "Customer"
@@ -24,7 +25,7 @@ Feature: Customer postal address
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes an postal address without a description and does allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new postal address
     And the customer Test sets the postal address's first name to "Test"
     And the customer Test sets the postal address's last name to "Customer"
@@ -41,7 +42,7 @@ Feature: Customer postal address
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes an postal address with a description and does not allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new postal address
     And the customer Test sets the postal address's first name to "Test"
     And the customer Test sets the postal address's last name to "Customer"
@@ -59,7 +60,7 @@ Feature: Customer postal address
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes an postal address with a description and does allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new postal address
     And the customer Test sets the postal address's first name to "Test"
     And the customer Test sets the postal address's last name to "Customer"
@@ -77,7 +78,7 @@ Feature: Customer postal address
     Then no error should occur
 
   Scenario: Existing customer adds, edits and then deletes an postal address with a description and does allow solicitations
-    Given the customer Test is currently logged in
+    Given the customer Test begins using the application
     And the customer Test begins entering a new postal address
     And the customer Test sets the postal address's first name to "Test"
     And the customer Test sets the postal address's last name to "Customer"

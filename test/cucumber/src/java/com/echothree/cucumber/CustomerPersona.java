@@ -16,6 +16,13 @@
 
 package com.echothree.cucumber;
 
+import javax.naming.NamingException;
+
 public class CustomerPersona extends BasePersona {
+
+    public CustomerPersona(String persona)
+            throws NamingException {
+        super(persona);
+    }
 
 }

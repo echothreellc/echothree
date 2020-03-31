@@ -2,12 +2,13 @@ Feature: Employee item
   An employee wants to add an item
 
   Background:
-    Given the employee Test is not currently logged in
-    When the employee Test logs in with the username "Test E" and password "password" and company "TEST_COMPANY"
+    Given the employee Test begins using the application
+    And the user is not currently logged in
+    When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
     Then no error should occur
 
   Scenario: Existing employee adds an active item and discontinues it
-    Given the employee Test is currently logged in
+    Given the employee Test begins using the application
     And the employee Test begins entering a new item
     And the employee Test sets the item's type to REGULAR
     And the employee Test sets the item's use type to REGULAR
@@ -31,7 +32,7 @@ Feature: Employee item
     Then no error should occur
 
   Scenario: Existing employee adds a cancel if not in stock item and discontinues it
-    Given the employee Test is currently logged in
+    Given the employee Test begins using the application
     And the employee Test begins entering a new item
     And the employee Test sets the item's type to REGULAR
     And the employee Test sets the item's use type to REGULAR
@@ -55,7 +56,7 @@ Feature: Employee item
     Then no error should occur
 
   Scenario: Existing employee adds a discontinued item
-    Given the employee Test is currently logged in
+    Given the employee Test begins using the application
     And the employee Test begins entering a new item
     And the employee Test sets the item's type to REGULAR
     And the employee Test sets the item's use type to REGULAR
