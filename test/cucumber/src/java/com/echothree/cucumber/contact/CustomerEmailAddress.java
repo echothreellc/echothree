@@ -138,6 +138,8 @@ public class CustomerEmailAddress implements En {
 
                     var commandResult = ContactUtil.getHome().editContactEmailAddress(customerPersona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
+
+                    customerPersona.contactEmailAddressEdit = null;
                 });
     }
 

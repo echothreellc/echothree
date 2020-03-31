@@ -3136,7 +3136,7 @@ public class ContactControl
                         "ORDER BY cmpr_contactmechanismpurposename";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
-                        "FROM partycontactmechanismpurposes, partycontactmechanismpurposedetails, contactmechanismpurposes " +
+                        "FROM partycontactmechanismpurposes, partycontactmechanismpurposedetails " +
                         "WHERE pcmp_activedetailid = pcmpdt_partycontactmechanismpurposedetailid AND pcmpdt_pcm_partycontactmechanismid = ? " +
                         "FOR UPDATE";
             }

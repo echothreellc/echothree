@@ -129,6 +129,8 @@ public class CustomerWebAddress implements En {
 
                     var commandResult = ContactUtil.getHome().editContactWebAddress(customerPersona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
+
+                    customerPersona.contactWebAddressEdit = null;
                 });
     }
 

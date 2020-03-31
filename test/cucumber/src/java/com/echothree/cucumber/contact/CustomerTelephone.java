@@ -165,6 +165,8 @@ public class CustomerTelephone implements En {
 
                     var commandResult = ContactUtil.getHome().editContactTelephone(customerPersona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
+
+                    customerPersona.contactTelephoneEdit = null;
                 });
     }
 
