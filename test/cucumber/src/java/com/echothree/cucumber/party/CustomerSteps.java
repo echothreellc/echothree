@@ -23,6 +23,7 @@ import com.echothree.cucumber.AnonymousPersonas;
 import com.echothree.cucumber.BasePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.user.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,122 +31,122 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CustomerSteps implements En {
 
     public CustomerSteps() {
-        When("^the anonymous user ([^\"]*) begins adding a new customer$",
-                (String persona) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user begins adding a new customer$",
+                () -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNull();
 
-                    anonymousPersona.createCustomerWithLoginForm = PartyUtil.getHome().getCreateCustomerWithLoginForm();
+                    persona.createCustomerWithLoginForm = PartyUtil.getHome().getCreateCustomerWithLoginForm();
                 });
 
 
-        When("^the anonymous user ([^\"]*) sets the new customer's first name to \"([^\"]*)\"$",
-                (String persona, String firstName) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user sets the new customer's first name to \"([^\"]*)\"$",
+                (String firstName) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setFirstName(firstName);
+                    persona.createCustomerWithLoginForm.setFirstName(firstName);
                 });
 
-        When("^the anonymous user ([^\"]*) sets the new customer's last name to \"([^\"]*)\"$",
-                (String persona, String lastName) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user sets the new customer's last name to \"([^\"]*)\"$",
+                (String lastName) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setLastName(lastName);
+                    persona.createCustomerWithLoginForm.setLastName(lastName);
                 });
 
-        When("^the anonymous user ([^\"]*) sets the new customer's email address to \"([^\"]*)\"$",
-                (String persona, String emailAddress) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user sets the new customer's email address to \"([^\"]*)\"$",
+                (String emailAddress) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setEmailAddress(emailAddress);
+                    persona.createCustomerWithLoginForm.setEmailAddress(emailAddress);
                 });
 
-        When("^the anonymous user ([^\"]*) (does|does not) allow solicitations to the new customer$",
-                (String persona, String allowSolicitation) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user (does|does not) allow solicitations to the new customer$",
+                (String allowSolicitation) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
+                    persona.createCustomerWithLoginForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
                 });
 
-        When("^the anonymous user ([^\"]*) sets the new customer's username to \"([^\"]*)\"$",
-                (String persona, String username) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user sets the new customer's username to \"([^\"]*)\"$",
+                (String username) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setUsername(username);
+                    persona.createCustomerWithLoginForm.setUsername(username);
                 });
 
-        When("^the anonymous user ([^\"]*) sets the new customer's first password to \"([^\"]*)\"$",
-                (String persona, String password1) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user sets the new customer's first password to \"([^\"]*)\"$",
+                (String password1) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setPassword1(password1);
+                    persona.createCustomerWithLoginForm.setPassword1(password1);
                 });
 
-        When("^the anonymous user ([^\"]*) sets the new customer's second password to \"([^\"]*)\"$",
-                (String persona, String password2) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user sets the new customer's second password to \"([^\"]*)\"$",
+                (String password2) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setPassword2(password2);
+                    persona.createCustomerWithLoginForm.setPassword2(password2);
                 });
 
-        When("^the anonymous user ([^\"]*) sets the new customer's recovery question to ([^\"]*)$",
-                (String persona, String recoveryQuestionName) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user sets the new customer's recovery question to ([^\"]*)$",
+                (String recoveryQuestionName) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setRecoveryQuestionName(recoveryQuestionName);
+                    persona.createCustomerWithLoginForm.setRecoveryQuestionName(recoveryQuestionName);
                 });
 
-        When("^the anonymous user ([^\"]*) sets the new customer's answer to \"([^\"]*)\"$",
-                (String persona, String answer) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user sets the new customer's answer to \"([^\"]*)\"$",
+                (String answer) -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
-                    anonymousPersona.createCustomerWithLoginForm.setAnswer(answer);
+                    persona.createCustomerWithLoginForm.setAnswer(answer);
                 });
 
-        When("^the anonymous user ([^\"]*) adds the new customer$",
-                (String persona) -> {
-                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(persona);
+        When("^the user adds the new customer$",
+                () -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(anonymousPersona.createCustomerWithLoginForm).isNotNull();
+                    assertThat(persona.createCustomerWithLoginForm).isNotNull();
 
                     var partyService = PartyUtil.getHome();
-                    var commandResult = partyService.createCustomerWithLogin(anonymousPersona.userVisitPK, anonymousPersona.createCustomerWithLoginForm);
+                    var commandResult = partyService.createCustomerWithLogin(persona.userVisitPK, persona.createCustomerWithLoginForm);
 
                     LastCommandResult.commandResult = commandResult;
                     var result = (CreateCustomerWithLoginResult)commandResult.getExecutionResult().getResult();
 
 
                     if(persona != null) {
-                        anonymousPersona.lastCustomerName = commandResult.getHasErrors() ? null : result.getCustomerName();
-                        anonymousPersona.lastPartyName = commandResult.getHasErrors() ? null : result.getPartyName();
-                        anonymousPersona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
+                        persona.lastCustomerName = commandResult.getHasErrors() ? null : result.getCustomerName();
+                        persona.lastPartyName = commandResult.getHasErrors() ? null : result.getPartyName();
+                        persona.lastEntityRef = commandResult.getHasErrors() ? null : result.getEntityRef();
                     }
                 });
 
-        When("^the employee ([^\"]*) sets the status of the last customer added to ([^\"]*)$",
-                (String persona, String customerStatusChoice) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+        When("^the user sets the status of the last customer added to ([^\"]*)$",
+                (String customerStatusChoice) -> {
+                    var persona = CurrentPersona.persona;
 
-                    setCustomerStatus(employeePersona, employeePersona.lastCustomerName, customerStatusChoice);
+                    setCustomerStatus(persona, persona.lastCustomerName, customerStatusChoice);
                 });
     }
 

@@ -17,27 +17,27 @@
 package com.echothree.cucumber.core;
 
 import com.echothree.control.user.core.client.helper.BaseKeysHelper;
-import com.echothree.cucumber.EmployeePersonas;
+import com.echothree.cucumber.user.CurrentPersona;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BaseEncryptionKeysSteps implements En {
 
     public BaseEncryptionKeysSteps() {
-        When("^the employee ([^\"]*) loads the existing base encryption keys$",
-                (String persona) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+        When("^the user loads the existing base encryption keys$",
+                () -> {
+                    var persona = CurrentPersona.persona;
 
-                    assertThat(employeePersona.createItemForm).isNull();
+                    assertThat(persona.createItemForm).isNull();
 
-                    BaseKeysHelper.getInstance().handleLoadBaseKeys(employeePersona.userVisitPK);
+                    BaseKeysHelper.getInstance().handleLoadBaseKeys(persona.userVisitPK);
                 });
 
-        When("^the employee ([^\"]*) changes the base encryption keys$",
-                (String persona) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+        When("^the user changes the base encryption keys$",
+                () -> {
+                    var persona = CurrentPersona.persona;
 
-                    BaseKeysHelper.getInstance().handleChangeBaseKeys(employeePersona.userVisitPK);
+                    BaseKeysHelper.getInstance().handleChangeBaseKeys(persona.userVisitPK);
                 });
     }
 

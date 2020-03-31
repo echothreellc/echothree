@@ -20,6 +20,7 @@ import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.cucumber.CustomerPersona;
 import com.echothree.cucumber.CustomerPersonas;
 import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.user.CurrentPersona;
 import io.cucumber.java8.En;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,36 +37,16 @@ public class CustomerLoginSteps implements En {
                     }
                 });
 
-        Given("^the customer ([^\"]*) is currently logged in$",
-                (String persona) -> {
-                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-                    assertThat(customerPersona).isNotNull();
-                });
-
-        Given("^the customer ([^\"]*) is not currently logged in$",
-                (String persona) -> {
-                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
-
-                    if(customerPersona != null) {
-                        var authenticationService = AuthenticationUtil.getHome();
-                        var commandResult = authenticationService.logout(customerPersona.userVisitPK);
-
-                        assertThat(commandResult.hasErrors()).isFalse();
-                    }
-                });
-
-        When("^the customer ([^\"]*) logs in with the username \"([^\"]*)\" and password \"([^\"]*)\"$",
-                (String persona, String username, String password) -> {
+        When("^the user logs in as a customer with the username \"([^\"]*)\" and password \"([^\"]*)\"$",
+                (String username, String password) -> {
                     var authenticationService = AuthenticationUtil.getHome();
                     var customerLoginForm = authenticationService.getCustomerLoginForm();
-                    var customerPersona = CustomerPersonas.getCustomerPersona(persona);
 
                     customerLoginForm.setUsername(username);
                     customerLoginForm.setPassword(password);
                     customerLoginForm.setRemoteInet4Address("0.0.0.0");
 
-                    LastCommandResult.commandResult = authenticationService.customerLogin(customerPersona.userVisitPK, customerLoginForm);
+                    LastCommandResult.commandResult = authenticationService.customerLogin(CurrentPersona.persona.userVisitPK, customerLoginForm);
                 });
     }
 

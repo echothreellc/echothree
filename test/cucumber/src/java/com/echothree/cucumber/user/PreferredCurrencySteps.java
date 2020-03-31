@@ -27,15 +27,15 @@ import io.cucumber.java8.En;
 public class PreferredCurrencySteps implements En {
 
     public PreferredCurrencySteps() {
-        When("^the customer ([^\"]*) sets their preferred currency to \"([^\"]*)\"$",
-                (String persona, String currencyIsoName) -> {
+        When("^the user sets their preferred currency to \"([^\"]*)\"$",
+                (String currencyIsoName) -> {
                     UserService userService = UserUtil.getHome();
                     SetUserVisitPreferredCurrencyForm userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();
-                    CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    var persona = CurrentPersona.persona;
 
                     userVisitPreferredCurrencyForm.setCurrencyIsoName(currencyIsoName);
 
-                    LastCommandResult.commandResult = userService.setUserVisitPreferredCurrency(customerPersona.userVisitPK,
+                    LastCommandResult.commandResult = userService.setUserVisitPreferredCurrency(persona.userVisitPK,
                             userVisitPreferredCurrencyForm);
                 });
     }

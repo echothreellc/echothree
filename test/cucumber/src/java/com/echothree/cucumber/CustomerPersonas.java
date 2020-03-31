@@ -16,7 +16,6 @@
 
 package com.echothree.cucumber;
 
-import com.echothree.cucumber.authentication.UserVisits;
 import javax.naming.NamingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +27,7 @@ public class CustomerPersonas {
     }
 
     private static Map<String, CustomerPersona> customerPersonas = new HashMap<>();
-    public static CustomerPersona lastCustomerPersona;
-    
+
     public static Set<Map.Entry<String, CustomerPersona>> getCustomerPersonas() {
         return customerPersonas.entrySet();
     }
@@ -39,14 +37,10 @@ public class CustomerPersonas {
         var customerPersona = customerPersonas.get(persona);
 
         if(customerPersona == null) {
-            customerPersona = new CustomerPersona();
-            customerPersona.persona = persona;
-            customerPersona.userVisitPK = UserVisits.getUserVisitPK();
+            customerPersona = new CustomerPersona(persona);
 
             customerPersonas.put(persona, customerPersona);
         }
-
-        lastCustomerPersona = customerPersona;
 
         return customerPersona;
     }

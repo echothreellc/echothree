@@ -27,15 +27,15 @@ import io.cucumber.java8.En;
 public class PreferredLanguageSteps implements En {
 
     public PreferredLanguageSteps() {
-        When("^the customer ([^\"]*) sets their preferred language to \"([^\"]*)\"$",
-                (String persona, String languageIsoName) -> {
+        When("^the user sets their preferred language to \"([^\"]*)\"$",
+                (String languageIsoName) -> {
                     UserService userService = UserUtil.getHome();
                     SetUserVisitPreferredLanguageForm userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();
-                    CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    var persona = CurrentPersona.persona;
 
                     userVisitPreferredLanguageForm.setLanguageIsoName(languageIsoName);
 
-                    LastCommandResult.commandResult = userService.setUserVisitPreferredLanguage(customerPersona.userVisitPK,
+                    LastCommandResult.commandResult = userService.setUserVisitPreferredLanguage(persona.userVisitPK,
                             userVisitPreferredLanguageForm);
                 });
     }

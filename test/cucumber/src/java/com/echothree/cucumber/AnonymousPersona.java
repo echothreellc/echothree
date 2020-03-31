@@ -16,6 +16,13 @@
 
 package com.echothree.cucumber;
 
+import javax.naming.NamingException;
+
 public class AnonymousPersona extends BasePersona {
+
+    public AnonymousPersona(String persona)
+            throws NamingException {
+        super(persona);
+    }
 
 }

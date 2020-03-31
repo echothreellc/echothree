@@ -27,13 +27,13 @@ import javax.naming.NamingException;
 public class UserLoginSteps implements En {
 
     public UserLoginSteps() {
-        When("^the employee ([^\"]*) deletes the user login added by the anonymous user ([^\"]*)$",
-                (String persona, String anonymous) -> {
-            var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-            var anonymousPersona = AnonymousPersonas.getAnonymousPersona(anonymous);
+        When("^the user deletes the user login added by the anonymous user ([^\"]*)$",
+                (String anonymous) -> {
+                    var persona = CurrentPersona.persona;
+                    var anonymousPersona = AnonymousPersonas.getAnonymousPersona(anonymous);
 
-            deleteUserLogin(employeePersona, anonymousPersona.lastPartyName);
-        });
+                    deleteUserLogin(persona, anonymousPersona.lastPartyName);
+                });
     }
 
     private void deleteUserLogin(BasePersona persona, String partyNsame)

@@ -16,7 +16,6 @@
 
 package com.echothree.cucumber;
 
-import com.echothree.cucumber.authentication.UserVisits;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -28,8 +27,7 @@ public class EmployeePersonas {
     }
 
     private static Map<String, EmployeePersona> employeePersonas = new HashMap<>();
-    public static EmployeePersona lastEmployeePersona;
-    
+
     public static Set<Map.Entry<String, EmployeePersona>> getEmployeePersonas() {
         return employeePersonas.entrySet();
     }
@@ -39,14 +37,10 @@ public class EmployeePersonas {
         var employeePersona = employeePersonas.get(persona);
 
         if(employeePersona == null) {
-            employeePersona = new EmployeePersona();
-            employeePersona.persona = persona;
-            employeePersona.userVisitPK = UserVisits.getUserVisitPK();
+            employeePersona = new EmployeePersona(persona);
 
             employeePersonas.put(persona, employeePersona);
         }
-
-        lastEmployeePersona = employeePersona;
 
         return employeePersona;
     }

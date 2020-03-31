@@ -21,6 +21,7 @@ import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.cucumber.EmployeePersona;
 import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.user.CurrentPersona;
 import com.echothree.util.common.command.CommandResult;
 import io.cucumber.java8.En;
 import java.util.Map;
@@ -38,37 +39,17 @@ public class EmployeeLoginSteps implements En {
                     }
                 });
 
-        Given("^the employee ([^\"]*) is currently logged in$",
-                (String persona) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-                    assertThat(employeePersona).isNotNull();
-                });
-
-        Given("^the employee ([^\"]*) is not currently logged in$",
-                (String persona) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
-
-                    if(employeePersona != null) {
-                        AuthenticationService authenticationService = AuthenticationUtil.getHome();
-                        CommandResult commandResult = authenticationService.logout(employeePersona.userVisitPK);
-
-                        assertThat(commandResult.hasErrors()).isFalse();
-                    }
-                });
-
-        When("^the employee ([^\"]*) logs in with the username \"([^\"]*)\" and password \"([^\"]*)\" and company \"([^\"]*)\"$",
-                (String persona, String username, String password, String companyName) -> {
+        When("^the user logs in as an employee with the username \"([^\"]*)\" and password \"([^\"]*)\" and company \"([^\"]*)\"$",
+                (String username, String password, String companyName) -> {
                     var authenticationService = AuthenticationUtil.getHome();
                     var employeeLoginForm = authenticationService.getEmployeeLoginForm();
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
 
                     employeeLoginForm.setUsername(username);
                     employeeLoginForm.setPassword(password);
                     employeeLoginForm.setCompanyName(companyName);
                     employeeLoginForm.setRemoteInet4Address("0.0.0.0");
 
-                    LastCommandResult.commandResult = authenticationService.employeeLogin(employeePersona.userVisitPK, employeeLoginForm);
+                    LastCommandResult.commandResult = authenticationService.employeeLogin(CurrentPersona.persona.userVisitPK, employeeLoginForm);
                 });
     }
 
