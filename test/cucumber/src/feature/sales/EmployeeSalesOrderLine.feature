@@ -9,12 +9,12 @@ Feature: Employee sales order line
 
   Scenario: Existing employee adds a sales order line to existing order with defaults
     Given the employee Test begins using the application
-    And the employee Test adds a new sales order
+    And the user adds a new sales order
     Then no error should occur
-    And the employee Test adds 1 minimal to the sales order
+    And the user adds 1 minimal to the sales order
     Then no error should occur
 
   Scenario: Existing employee adds a sales order line to new order with defaults
     Given the employee Test begins using the application
-    And the employee Test adds 1 minimal to a new sales order
+    And the user adds 1 minimal to a new sales order
     Then no error should occur

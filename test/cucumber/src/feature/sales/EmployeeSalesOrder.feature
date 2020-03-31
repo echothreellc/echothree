@@ -9,5 +9,5 @@ Feature: Employee sales order
 
   Scenario: Existing employee adds a sales order with defaults
     Given the employee Test begins using the application
-    And the employee Test adds a new sales order
+    And the user adds a new sales order
     Then no error should occur

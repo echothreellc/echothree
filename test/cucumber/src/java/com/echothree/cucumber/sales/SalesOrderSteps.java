@@ -19,19 +19,19 @@ package com.echothree.cucumber.sales;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.user.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
 public class SalesOrderSteps implements En {
 
     public SalesOrderSteps() {
-        When("^the employee ([^\"]*) adds a new sales order$",
-                (String persona) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+        When("^the user adds a new sales order$",
+                () -> {
+                    var persona = CurrentPersona.persona;
 
-                    createSalesOrder(employeePersona, null, null, null, null, null, null,null, null, null, null, null, null, null);
+                    createSalesOrder(persona, null, null, null, null, null, null,null, null, null, null, null, null, null);
                 });
     }
 

@@ -19,26 +19,26 @@ package com.echothree.cucumber.sales;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.user.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
 public class SalesOrderBatchSteps implements En {
 
     public SalesOrderBatchSteps() {
-        When("^the employee ([^\"]*) adds a new sales order batch with the currency ([^\"]*) and payment method ([^\"]*)$",
-                (String persona, String currencyIsoName, String paymentMethodName) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+        When("^the user adds a new sales order batch with the currency ([^\"]*) and payment method ([^\"]*)$",
+                (String currencyIsoName, String paymentMethodName) -> {
+                    var persona = CurrentPersona.persona;
 
-                    createSalesOrderBatch(employeePersona, currencyIsoName, paymentMethodName, null, null);
+                    createSalesOrderBatch(persona, currencyIsoName, paymentMethodName, null, null);
                 });
 
-        When("^the employee ([^\"]*) deletes the last sales order batch added$",
-                (String persona) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+        When("^the user deletes the last sales order batch added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
 
-                    deleteSalesOrderBatch(employeePersona, employeePersona.lastSalesOrderBatchName);
+                    deleteSalesOrderBatch(persona, persona.lastSalesOrderBatchName);
                 });
     }
 

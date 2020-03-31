@@ -6,7 +6,7 @@ Feature: Party payment methods
     And the user is not currently logged in
     When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
     Then no error should occur
-    And the employee Test loads the existing base encryption keys
+    And the user loads the existing base encryption keys
     Then no error should occur
     And the customer Test begins using the application
     And the user is not currently logged in
@@ -27,24 +27,24 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2030"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the customer Test begins entering a new postal address
-    And the customer Test sets the postal address's first name to "Test"
-    And the customer Test sets the postal address's last name to "Customer"
-    And the customer Test sets the postal address's line 1 to "256 N Test Street"
-    And the customer Test sets the postal address's city to "Des Moines"
-    And the customer Test sets the postal address's state to "IA"
-    And the customer Test sets the postal address's postal code to "50310"
-    And the customer Test sets the postal address's country to "US"
-    And the customer Test's postal address is not a commercial location
-    And the customer Test does not allow solicitations to the postal address
-    And the customer Test adds the new postal address
+    And the user begins entering a new postal address
+    And the user sets the postal address's first name to "Test"
+    And the user sets the postal address's last name to "Customer"
+    And the user sets the postal address's line 1 to "256 N Test Street"
+    And the user sets the postal address's city to "Des Moines"
+    And the user sets the postal address's state to "IA"
+    And the user sets the postal address's postal code to "50310"
+    And the user sets the postal address's country to "US"
+    And the user's postal address is not a commercial location
+    And the user does not allow solicitations to the postal address
+    And the user adds the new postal address
     Then no error should occur
     And the user sets the payment method's billing contact to the last postal address added
     And the user adds the new payment method
     Then no error should occur
     And the user deletes the last payment method added
     Then no error should occur
-    And the customer Test deletes the last postal address added
+    And the user deletes the last postal address added
     Then no error should occur
 
   Scenario: Existing customer tries to add a credit card that has a bad number
@@ -61,22 +61,22 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2030"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the customer Test begins entering a new postal address
-    And the customer Test sets the postal address's first name to "Test"
-    And the customer Test sets the postal address's last name to "Customer"
-    And the customer Test sets the postal address's line 1 to "256 N Test Street"
-    And the customer Test sets the postal address's city to "Des Moines"
-    And the customer Test sets the postal address's state to "IA"
-    And the customer Test sets the postal address's postal code to "50310"
-    And the customer Test sets the postal address's country to "US"
-    And the customer Test's postal address is not a commercial location
-    And the customer Test does not allow solicitations to the postal address
-    And the customer Test adds the new postal address
+    And the user begins entering a new postal address
+    And the user sets the postal address's first name to "Test"
+    And the user sets the postal address's last name to "Customer"
+    And the user sets the postal address's line 1 to "256 N Test Street"
+    And the user sets the postal address's city to "Des Moines"
+    And the user sets the postal address's state to "IA"
+    And the user sets the postal address's postal code to "50310"
+    And the user sets the postal address's country to "US"
+    And the user's postal address is not a commercial location
+    And the user does not allow solicitations to the postal address
+    And the user adds the new postal address
     Then no error should occur
     And the user sets the payment method's billing contact to the last postal address added
     And the user adds the new payment method
     Then an error should occur
-    And the customer Test deletes the last postal address added
+    And the user deletes the last postal address added
     Then no error should occur
 
   Scenario: Existing customer tries to add a credit card that is expired
@@ -93,22 +93,22 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2010"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the customer Test begins entering a new postal address
-    And the customer Test sets the postal address's first name to "Test"
-    And the customer Test sets the postal address's last name to "Customer"
-    And the customer Test sets the postal address's line 1 to "256 N Test Street"
-    And the customer Test sets the postal address's city to "Des Moines"
-    And the customer Test sets the postal address's state to "IA"
-    And the customer Test sets the postal address's postal code to "50310"
-    And the customer Test sets the postal address's country to "US"
-    And the customer Test's postal address is not a commercial location
-    And the customer Test does not allow solicitations to the postal address
-    And the customer Test adds the new postal address
+    And the user begins entering a new postal address
+    And the user sets the postal address's first name to "Test"
+    And the user sets the postal address's last name to "Customer"
+    And the user sets the postal address's line 1 to "256 N Test Street"
+    And the user sets the postal address's city to "Des Moines"
+    And the user sets the postal address's state to "IA"
+    And the user sets the postal address's postal code to "50310"
+    And the user sets the postal address's country to "US"
+    And the user's postal address is not a commercial location
+    And the user does not allow solicitations to the postal address
+    And the user adds the new postal address
     Then no error should occur
     And the user sets the payment method's billing contact to the last postal address added
     And the user adds the new payment method
     Then an error should occur
-    And the customer Test deletes the last postal address added
+    And the user deletes the last postal address added
     Then no error should occur
 
   Scenario: Existing customer adds, edits and then deletes a credit card
@@ -125,17 +125,17 @@ Feature: Party payment methods
     And the user sets the payment method's expiration year to "2030"
     And the user sets the payment method's first name to "Test"
     And the user sets the payment method's last name to "Customer"
-    And the customer Test begins entering a new postal address
-    And the customer Test sets the postal address's first name to "Test"
-    And the customer Test sets the postal address's last name to "Customer"
-    And the customer Test sets the postal address's line 1 to "256 N Test Street"
-    And the customer Test sets the postal address's city to "Des Moines"
-    And the customer Test sets the postal address's state to "IA"
-    And the customer Test sets the postal address's postal code to "50310"
-    And the customer Test sets the postal address's country to "US"
-    And the customer Test's postal address is not a commercial location
-    And the customer Test does not allow solicitations to the postal address
-    And the customer Test adds the new postal address
+    And the user begins entering a new postal address
+    And the user sets the postal address's first name to "Test"
+    And the user sets the postal address's last name to "Customer"
+    And the user sets the postal address's line 1 to "256 N Test Street"
+    And the user sets the postal address's city to "Des Moines"
+    And the user sets the postal address's state to "IA"
+    And the user sets the postal address's postal code to "50310"
+    And the user sets the postal address's country to "US"
+    And the user's postal address is not a commercial location
+    And the user does not allow solicitations to the postal address
+    And the user adds the new postal address
     Then no error should occur
     And the user sets the payment method's billing contact to the last postal address added
     And the user adds the new payment method
@@ -149,5 +149,5 @@ Feature: Party payment methods
     And the user finishes editing the payment method
     And the user deletes the last payment method added
     Then no error should occur
-    And the customer Test deletes the last postal address added
+    And the user deletes the last postal address added
     Then no error should occur

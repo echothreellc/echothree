@@ -9,12 +9,12 @@ Feature: Base encryption keys
 
   Scenario: Existing employee loads the existing base encryption keys
     Given the employee Test begins using the application
-    And the employee Test loads the existing base encryption keys
+    And the user loads the existing base encryption keys
     Then no error should occur
 
   Scenario: Existing employee changes the base encryption keys
     Given the employee Test begins using the application
-    And the employee Test loads the existing base encryption keys
+    And the user loads the existing base encryption keys
     Then no error should occur
-    And the employee Test changes the base encryption keys
+    And the user changes the base encryption keys
     Then no error should occur

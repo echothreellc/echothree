@@ -27,15 +27,15 @@ import io.cucumber.java8.En;
 public class PreferredDateTimeFormatSteps implements En {
 
     public PreferredDateTimeFormatSteps() {
-        When("^the customer ([^\"]*) sets their preferred date time format to \"([^\"]*)\"$",
-                (String persona, String dateTimeFormatName) -> {
+        When("^the user sets their preferred date time format to \"([^\"]*)\"$",
+                (String dateTimeFormatName) -> {
                     UserService userService = UserUtil.getHome();
                     SetUserVisitPreferredDateTimeFormatForm userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();
-                    CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    var persona = CurrentPersona.persona;
 
                     userVisitPreferredDateTimeFormatForm.setDateTimeFormatName(dateTimeFormatName);
 
-                    LastCommandResult.commandResult = userService.setUserVisitPreferredDateTimeFormat(customerPersona.userVisitPK,
+                    LastCommandResult.commandResult = userService.setUserVisitPreferredDateTimeFormat(persona.userVisitPK,
                             userVisitPreferredDateTimeFormatForm);
                 });
     }

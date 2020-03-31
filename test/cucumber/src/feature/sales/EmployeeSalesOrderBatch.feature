@@ -9,7 +9,7 @@ Feature: Employee sales order batch
 
   Scenario: Existing employee adds and delete a sales order batch
     Given the employee Test begins using the application
-    And the employee Test adds a new sales order batch with the currency USD and payment method VISA
+    And the user adds a new sales order batch with the currency USD and payment method VISA
     Then no error should occur
-    And the employee Test deletes the last sales order batch added
+    And the user deletes the last sales order batch added
     Then no error should occur

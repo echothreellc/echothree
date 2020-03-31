@@ -19,26 +19,26 @@ package com.echothree.cucumber.sales;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
 import com.echothree.cucumber.BasePersona;
-import com.echothree.cucumber.EmployeePersonas;
 import com.echothree.cucumber.LastCommandResult;
+import com.echothree.cucumber.user.CurrentPersona;
 import io.cucumber.java8.En;
 import javax.naming.NamingException;
 
 public class SalesOrderLineSteps implements En {
 
     public SalesOrderLineSteps() {
-        When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to the sales order$",
-                (String persona, String quantity, String itemName) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+        When("^the user adds ([^\"]*) ([^\"]*) to the sales order$",
+                (String quantity, String itemName) -> {
+                    var persona = CurrentPersona.persona;
 
-                    createSalesOrderLine(employeePersona, employeePersona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null);
+                    createSalesOrderLine(persona, persona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null);
                 });
 
-        When("^the employee ([^\"]*) adds ([^\"]*) ([^\"]*) to a new sales order$",
-                (String persona, String quantity, String itemName) -> {
-                    var employeePersona = EmployeePersonas.getEmployeePersona(persona);
+        When("^the user adds ([^\"]*) ([^\"]*) to a new sales order$",
+                (String quantity, String itemName) -> {
+                    var persona = CurrentPersona.persona;
 
-                    createSalesOrderLine(employeePersona, null, null, itemName, null, null, quantity, null, null, null, null, null, null);
+                    createSalesOrderLine(persona, null, null, itemName, null, null, quantity, null, null, null, null, null, null);
                 });
     }
 

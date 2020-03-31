@@ -27,15 +27,15 @@ import io.cucumber.java8.En;
 public class PreferredTimeZoneFormatSteps implements En {
 
     public PreferredTimeZoneFormatSteps() {
-        When("^the customer ([^\"]*) sets their preferred time zone to \"([^\"]*)\"$",
-                (String persona, String javaTimeZoneName) -> {
+        When("^the user sets their preferred time zone to \"([^\"]*)\"$",
+                (String javaTimeZoneName) -> {
                     UserService userService = UserUtil.getHome();
                     SetUserVisitPreferredTimeZoneForm userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();
-                    CustomerPersona customerPersona = CustomerPersonas.getCustomerPersona(persona);
+                    var persona = CurrentPersona.persona;
 
                     userVisitPreferredTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
 
-                    LastCommandResult.commandResult = userService.setUserVisitPreferredTimeZone(customerPersona.userVisitPK,
+                    LastCommandResult.commandResult = userService.setUserVisitPreferredTimeZone(persona.userVisitPK,
                             userVisitPreferredTimeZoneForm);
                 });
     }
