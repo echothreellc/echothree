@@ -2161,7 +2161,39 @@ public class PaymentControl
         
         return partyPaymentMethodCreditCard;
     }
-    
+
+    public long countPartyPaymentMethodCreditCardsByPersonalTitle(PersonalTitle personalTitle) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM partypaymentmethodcreditcards "
+                + "WHERE parpmcc_pert_personaltitleid = ? AND parpmcc_thrutime = ?",
+                personalTitle, Session.MAX_TIME);
+    }
+
+    public long countPartyPaymentMethodCreditCardsByNameSuffix(NameSuffix nameSuffix) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM partypaymentmethodcreditcards "
+                + "WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?",
+                nameSuffix, Session.MAX_TIME);
+    }
+
+    public long countPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM partypaymentmethodcreditcards "
+                + "WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?",
+                billingPartyContactMechanism, Session.MAX_TIME);
+    }
+
+    public long countPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(PartyContactMechanism issuerPartyContactMechanism) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM partypaymentmethodcreditcards "
+                + "WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ?",
+                issuerPartyContactMechanism, Session.MAX_TIME);
+    }
+
     private PartyPaymentMethodCreditCard getPartyPaymentMethodCreditCard(PartyPaymentMethod partyPaymentMethod,
             EntityPermission entityPermission) {
         PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = null;
