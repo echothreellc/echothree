@@ -363,7 +363,7 @@ public class PartyPaymentMethodLogic
     }
 
     public void deletePartyPaymentMethod(final ExecutionErrorAccumulator eea, final PartyPaymentMethod partyPaymentMethod,
-            PartyPK deletedBy) {
+            final PartyPK deletedBy) {
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
 
         // TODO: Check to see if this payment method is in use on any open orders,
@@ -373,7 +373,7 @@ public class PartyPaymentMethodLogic
     }
 
     public void deletePartyPaymentMethod(final ExecutionErrorAccumulator eea, final String partyPaymentMethodName,
-            PartyPK deletedBy) {
+            final PartyPK deletedBy) {
         var partyPaymentMethod = getPartyPaymentMethodByNameForUpdate(eea, partyPaymentMethodName);
 
         if(!eea.hasExecutionErrors()) {
