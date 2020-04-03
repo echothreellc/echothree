@@ -19,6 +19,7 @@ package com.echothree.model.control.contact.server.logic;
 import com.echothree.model.control.contact.common.exception.UnknownContactMechanismNameException;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -58,6 +59,22 @@ public class ContactMechanismLogic
 
     public ContactMechanism getContactMechanismByNameForUpdate(final ExecutionErrorAccumulator eea, final String contactMechanismName) {
         return getContactMechanismByName(eea, contactMechanismName, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteContactMechanism(final ExecutionErrorAccumulator eea, final ContactMechanism contactMechanism,
+            final PartyPK deletedBy) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+
+        contactControl.deleteContactMechanism(contactMechanism, deletedBy);
+    }
+
+    public void deleteContactMechanism(final ExecutionErrorAccumulator eea, final String contactMechanismName,
+            final PartyPK deletedBy) {
+        var contactMechanism = getContactMechanismByNameForUpdate(eea, contactMechanismName);
+
+        if(!eea.hasExecutionErrors()) {
+            deleteContactMechanism(eea, contactMechanism, deletedBy);
+        }
     }
 
 }
