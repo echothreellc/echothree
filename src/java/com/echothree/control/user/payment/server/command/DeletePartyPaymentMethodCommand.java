@@ -19,6 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.DeletePartyPaymentMethodForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
@@ -95,20 +96,10 @@ public class DeletePartyPaymentMethodCommand
 
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         var partyPaymentMethodName = form.getPartyPaymentMethodName();
-        var partyPaymentMethod = paymentControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
-        
-        if(partyPaymentMethod == null) {
-            addExecutionError(ExecutionErrors.UnknownPartyPaymentMethodName.name(), partyPaymentMethodName);
-        } else {
-            // TODO: Check to see if this paymemnt method is in use on any open orders,
-            // or orders that currently are allowing returns to be made against them.
-            // If that's the case, the PPM shouldn't be deleted.
 
-            paymentControl.deletePartyPaymentMethod(partyPaymentMethod, getPartyPK());
-        }
-        
+        PartyPaymentMethodLogic.getInstance().deletePartyPaymentMethod(this, partyPaymentMethodName, getPartyPK());
+
         return null;
     }
     
