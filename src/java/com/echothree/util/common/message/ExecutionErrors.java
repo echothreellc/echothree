@@ -2174,5 +2174,7 @@ public enum ExecutionErrors {
     DuplicateContentPageLayoutDescription,
     UnknownDefaultContentPageLayout,
     CannotDeleteContactMechanismInUse,
+    CannotDeletePersonalTitleInUse,
+    CannotDeleteNameSuffixInUse,
 
 }
