@@ -14,12 +14,12 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.common.exception;
+package com.echothree.model.control.contact.common.exception;
 
 import com.echothree.util.common.message.Message;
 
 public class CannotDeleteContactMechanismInUseException
-        extends BasePaymentException {
+        extends BaseContactException {
     
     /** Creates a new instance of CannotDeleteContactMechanismInUseException */
     public CannotDeleteContactMechanismInUseException() {
