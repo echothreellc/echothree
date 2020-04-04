@@ -2091,14 +2091,14 @@ public class PaymentControl
         
         orderControl.deleteOrderPaymentPreferencesByPartyPaymentMethod(partyPaymentMethod, deletedBy);
         
-        PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetailForUpdate();
+        var partyPaymentMethodDetail = partyPaymentMethod.getLastDetailForUpdate();
         partyPaymentMethodDetail.setThruTime(session.START_TIME_LONG);
         partyPaymentMethod.setActiveDetail(null);
         partyPaymentMethod.store();
 
-        String paymentMethodName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodName();
-        if(paymentMethodName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
-            PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
+        var paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getPaymentMethodTypeName();
+        if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+            var partyPaymentMethodCreditCardSecurityCode = getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
 
             deletePartyPaymentMethodCreditCard(getPartyPaymentMethodCreditCardForUpdate(partyPaymentMethod), deletedBy);
 
@@ -2108,17 +2108,17 @@ public class PaymentControl
         }
 
         // Check for default, and pick one if necessary
-        Party party = partyPaymentMethodDetail.getParty();
-        PartyPaymentMethod defaultPartyPaymentMethod = getDefaultPartyPaymentMethod(party);
+        var party = partyPaymentMethodDetail.getParty();
+        var defaultPartyPaymentMethod = getDefaultPartyPaymentMethod(party);
         if(defaultPartyPaymentMethod == null) {
-            List<PartyPaymentMethod> partyPaymentMethods = getPartyPaymentMethodsByPartyForUpdate(party);
+            var partyPaymentMethods = getPartyPaymentMethodsByPartyForUpdate(party);
 
             if(!partyPaymentMethods.isEmpty()) {
-                Iterator<PartyPaymentMethod> iter = partyPaymentMethods.iterator();
+                var iter = partyPaymentMethods.iterator();
                 if(iter.hasNext()) {
                     defaultPartyPaymentMethod = iter.next();
                 }
-                PartyPaymentMethodDetailValue partyPaymentMethodDetailValue = defaultPartyPaymentMethod.getLastDetailForUpdate().getPartyPaymentMethodDetailValue().clone();
+                var partyPaymentMethodDetailValue = defaultPartyPaymentMethod.getLastDetailForUpdate().getPartyPaymentMethodDetailValue().clone();
 
                 partyPaymentMethodDetailValue.setIsDefault(Boolean.TRUE);
                 updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, false, deletedBy);
