@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.exception.CannotDeletePersonalTitleInUseException;
 import com.echothree.model.control.party.common.exception.UnknownPersonalTitleIdException;
 import com.echothree.model.control.party.server.PartyControl;
@@ -64,16 +65,14 @@ public class PersonalTitleLogic
     }
 
     public void deletePersonalTitle(final ExecutionErrorAccumulator eea, final PersonalTitle personalTitle, final PartyPK deletedBy) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        boolean cannotDeletePersonalTitleInUse = false;
 
-        // Check if the PersonalTitle is in-use by any PartyPaymentMethodCreditCard.
-        if(paymentControl.countPartyPaymentMethodCreditCardsByPersonalTitle(personalTitle) != 0) {
-            cannotDeletePersonalTitleInUse = true;
-        }
-
-        if(cannotDeletePersonalTitleInUse) {
+        // Check if the PersonalTitle is in-use by any PartyPaymentMethodCreditCard, ContactPostalAddress or Person.
+        if(paymentControl.countPartyPaymentMethodCreditCardsByPersonalTitle(personalTitle) != 0
+                || contactControl.countContactPostalAddressesByPersonalTitle(personalTitle) != 0
+                || partyControl.countPeopleByPersonalTitle(personalTitle) != 0) {
             handleExecutionError(CannotDeletePersonalTitleInUseException.class, eea, ExecutionErrors.CannotDeletePersonalTitleInUse.name(),
                     personalTitle.getLastDetail().getPersonalTitlePK().getEntityId().toString());
         }

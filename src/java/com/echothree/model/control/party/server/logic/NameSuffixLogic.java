@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.exception.CannotDeleteNameSuffixInUseException;
 import com.echothree.model.control.party.common.exception.UnknownNameSuffixIdException;
 import com.echothree.model.control.party.server.PartyControl;
@@ -64,16 +65,14 @@ public class NameSuffixLogic
     }
 
     public void deleteNameSuffix(final ExecutionErrorAccumulator eea, final NameSuffix nameSuffix, final PartyPK deletedBy) {
+        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
         var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        boolean cannotDeleteNameSuffixInUse = false;
 
-        // Check if the NameSuffix is in-use by any PartyPaymentMethodCreditCard.
-        if(paymentControl.countPartyPaymentMethodCreditCardsByNameSuffix(nameSuffix) != 0) {
-            cannotDeleteNameSuffixInUse = true;
-        }
-
-        if(cannotDeleteNameSuffixInUse) {
+        // Check if the NameSuffix is in-use by any PartyPaymentMethodCreditCard, ContactPostalAddress or Person.
+        if(paymentControl.countPartyPaymentMethodCreditCardsByNameSuffix(nameSuffix) != 0
+                || contactControl.countContactPostalAddressesByNameSuffix(nameSuffix) != 0
+                || partyControl.countPeopleByNameSuffix(nameSuffix) != 0) {
             handleExecutionError(CannotDeleteNameSuffixInUseException.class, eea, ExecutionErrors.CannotDeleteNameSuffixInUse.name(),
                     nameSuffix.getLastDetail().getNameSuffixPK().getEntityId().toString());
         }

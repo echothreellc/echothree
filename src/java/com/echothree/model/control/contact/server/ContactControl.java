@@ -1776,7 +1776,23 @@ public class ContactControl
         
         return contactPostalAddress;
     }
-    
+
+    public long countContactPostalAddressesByPersonalTitle(PersonalTitle personalTitle) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contactpostaladdresses " +
+                "WHERE ctpa_pert_personaltitleid = ? AND ctpa_thrutime = ?",
+                personalTitle, Session.MAX_TIME_LONG);
+    }
+
+    public long countContactPostalAddressesByNameSuffix(NameSuffix nameSuffix) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM contactpostaladdresses " +
+                "WHERE ctpa_nsfx_namesuffixid = ? AND ctpa_thrutime = ?",
+                nameSuffix, Session.MAX_TIME_LONG);
+    }
+
     public long countContactPostalAddressesByCityGeoCode(GeoCode cityGeoCode) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +

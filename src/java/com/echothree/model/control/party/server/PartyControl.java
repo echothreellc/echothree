@@ -4076,7 +4076,23 @@ public class PartyControl
         
         return person;
     }
-    
+
+    public long countPeopleByPersonalTitle(PersonalTitle personalTitle) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM people " +
+                "WHERE peop_pert_personaltitleid = ? AND peop_thrutime = ?",
+                personalTitle, Session.MAX_TIME_LONG);
+    }
+
+    public long countPeopleByNameSuffix(NameSuffix nameSuffix) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM people " +
+                "WHERE peop_nsfx_namesuffixid = ? AND peop_thrutime = ?",
+                nameSuffix, Session.MAX_TIME_LONG);
+    }
+
     public Person getPerson(Party party, EntityPermission entityPermission) {
         Person person = null;
         
