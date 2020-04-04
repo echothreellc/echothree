@@ -69,7 +69,7 @@ public class ContactMechanismLogic
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         boolean cannotDeleteContactMechanismInUse = false;
 
-        // Check if the ContactMechanism is in-user by amy PartyPaymentMethodCreditCard.
+        // Check if the ContactMechanism is in-use by any PartyPaymentMethodCreditCard.
         var partyContactMechanisms = contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism);
         for(var partyContactMechanism : partyContactMechanisms) {
             if(paymentControl.countPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(partyContactMechanism) != 0
