@@ -2174,7 +2174,7 @@ public class PaymentControl
         return session.queryForLong(
                 "SELECT COUNT(*) "
                 + "FROM partypaymentmethodcreditcards "
-                + "WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?",
+                + "WHERE parpmcc_nsfx_namesuffixid = ? AND parpmcc_thrutime = ?",
                 nameSuffix, Session.MAX_TIME);
     }
 
