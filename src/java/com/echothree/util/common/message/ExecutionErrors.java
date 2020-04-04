@@ -2173,5 +2173,6 @@ public enum ExecutionErrors {
     DuplicateContentPageLayoutName,
     DuplicateContentPageLayoutDescription,
     UnknownDefaultContentPageLayout,
-    
+    CannotDeleteContactMechanismInUse,
+
 }

@@ -18,6 +18,8 @@ package com.echothree.model.control.contact.server.logic;
 
 import com.echothree.model.control.contact.common.exception.UnknownContactMechanismNameException;
 import com.echothree.model.control.contact.server.ContactControl;
+import com.echothree.model.control.payment.common.exception.CannotDeleteContactMechanismInUseException;
+import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -64,8 +66,27 @@ public class ContactMechanismLogic
     public void deleteContactMechanism(final ExecutionErrorAccumulator eea, final ContactMechanism contactMechanism,
             final PartyPK deletedBy) {
         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        boolean cannotDeleteContactMechanismInUse = false;
 
-        contactControl.deleteContactMechanism(contactMechanism, deletedBy);
+        // Check if the ContactMechanism is in-user by amy PartyPaymentMethodCreditCard.
+        var partyContactMechanisms = contactControl.getPartyContactMechanismsByContactMechanism(contactMechanism);
+        for(var partyContactMechanism : partyContactMechanisms) {
+            if(paymentControl.countPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(partyContactMechanism) != 0
+                    || paymentControl.countPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(partyContactMechanism) != 0) {
+                cannotDeleteContactMechanismInUse = true;
+                break;
+            }
+        }
+
+        if(cannotDeleteContactMechanismInUse) {
+            handleExecutionError(CannotDeleteContactMechanismInUseException.class, eea, ExecutionErrors.CannotDeleteContactMechanismInUse.name(),
+                    contactMechanism.getLastDetail().getContactMechanismName());
+        }
+
+        if(!eea.hasExecutionErrors()) {
+            contactControl.deleteContactMechanism(contactMechanism, deletedBy);
+        }
     }
 
     public void deleteContactMechanism(final ExecutionErrorAccumulator eea, final String contactMechanismName,
