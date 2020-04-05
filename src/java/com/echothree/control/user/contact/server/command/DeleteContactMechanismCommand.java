@@ -64,6 +64,7 @@ public class DeleteContactMechanismCommand
     
     @Override
     protected SecurityResult security() {
+        // Execute the standard security check using COMMAND_SECURITY_DEFINITION.
         var securityResult = super.security();
 
         if(securityResult == null) {
@@ -93,12 +94,9 @@ public class DeleteContactMechanismCommand
 
     @Override
     protected BaseResult execute() {
-        var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        var contactMechanism = ContactMechanismLogic.getInstance().getContactMechanismByNameForUpdate(this, form.getContactMechanismName());
-        
-        if(!hasExecutionErrors()) {
-            contactControl.deleteContactMechanism(contactMechanism, getPartyPK());
-        }
+        var contactMechanismName = form.getContactMechanismName();
+
+        ContactMechanismLogic.getInstance().deleteContactMechanism(this, contactMechanismName, getPartyPK());
         
         return null;
     }

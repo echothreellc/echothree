@@ -17,16 +17,12 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.DeletePersonalTitleForm;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
+import com.echothree.model.control.party.server.logic.PersonalTitleLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -38,8 +34,8 @@ public class DeletePersonalTitleCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("PersonalTitleId", FieldType.ID, true, null, null)
-        ));
+                new FieldDefinition("PersonalTitleId", FieldType.ID, true, null, null)
+                ));
     }
     
     /** Creates a new instance of DeletePersonalTitleCommand */
@@ -49,16 +45,10 @@ public class DeletePersonalTitleCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        String personalTitleId = form.getPersonalTitleId();
-        PersonalTitle personalTitle = partyControl.convertPersonalTitleIdToEntity(personalTitleId, EntityPermission.READ_WRITE);
-        
-        if(personalTitle != null) {
-            partyControl.deletePersonalTitle(personalTitle, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPersonalTitleId.name(), personalTitleId);
-        }
-        
+        var personalTitleId = form.getPersonalTitleId();
+
+        PersonalTitleLogic.getInstance().deletePersonalTitle(this, personalTitleId, getPartyPK());
+
         return null;
     }
     

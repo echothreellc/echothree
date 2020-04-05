@@ -17,16 +17,12 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.DeleteNameSuffixForm;
-import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.data.party.server.entity.NameSuffix;
+import com.echothree.model.control.party.server.logic.NameSuffixLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -38,8 +34,8 @@ public class DeleteNameSuffixCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("NameSuffixId", FieldType.ID, true, null, null)
-        ));
+                new FieldDefinition("NameSuffixId", FieldType.ID, true, null, null)
+                ));
     }
     
     /** Creates a new instance of DeleteNameSuffixCommand */
@@ -49,16 +45,10 @@ public class DeleteNameSuffixCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        String nameSuffixId = form.getNameSuffixId();
-        NameSuffix nameSuffix = partyControl.convertNameSuffixIdToEntity(nameSuffixId, EntityPermission.READ_WRITE);
-        
-        if(nameSuffix != null) {
-            partyControl.deleteNameSuffix(nameSuffix, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownNameSuffixId.name(), nameSuffixId);
-        }
-        
+        var nameSuffixId = form.getNameSuffixId();
+
+        NameSuffixLogic.getInstance().deleteNameSuffix(this, nameSuffixId, getPartyPK());
+
         return null;
     }
     

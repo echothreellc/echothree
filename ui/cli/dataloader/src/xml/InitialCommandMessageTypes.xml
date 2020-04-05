@@ -150,6 +150,15 @@
             <commandMessage commandMessageKey="UserVisitHasNoParty">
                 <commandMessageTranslation languageIsoName="en" translation="There is no authenticated user." />
             </commandMessage>
+            <commandMessage commandMessageKey="CannotDeleteContactMechanismInUse">
+                <commandMessageTranslation languageIsoName="en" translation="The contact mechanism ({0}) cannot be deleted as it is currently used elsewhere." />
+            </commandMessage>
+            <commandMessage commandMessageKey="CannotDeletePersonalTitleInUse">
+                <commandMessageTranslation languageIsoName="en" translation="The personal title ({0}) cannot be deleted as it is currently used elsewhere." />
+            </commandMessage>
+            <commandMessage commandMessageKey="CannotDeleteNameSuffixInUse">
+                <commandMessageTranslation languageIsoName="en" translation="The name suffix ({0}) cannot be deleted as it is currently used elsewhere." />
+            </commandMessage>
         </commandMessageType>
         <commandMessageType commandMessageTypeName="Validation" isDefault="false" sortOrder="1">
             <commandMessageTypeDescription languageIsoName="en" description="Validation" />

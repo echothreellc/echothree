@@ -19,11 +19,13 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.DeletePartyPaymentMethodForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -61,36 +63,43 @@ public class DeletePartyPaymentMethodCommand
     public DeletePartyPaymentMethodCommand(UserVisitPK userVisitPK, DeletePartyPaymentMethodForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
-    @Override
-    protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        String partyPaymentMethodName = form.getPartyPaymentMethodName();
-        PartyPaymentMethod partyPaymentMethod = paymentControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
-        
-        if(partyPaymentMethod != null) {
-            Party party = getParty();
-            String partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
-            // If the executing Party is a CUSTOMER, and the PartyPaymentMethod isn't for the executing Party,
-            // return a UnknownPartyPaymentMethodName error.
+    @Override
+    protected SecurityResult security() {
+        // Execute the standard security check using COMMAND_SECURITY_DEFINITION.
+        var securityResult = super.security();
+
+        // If that passed, continue checking the executing Party vs. the Party owning the
+        // PartyPaymentMethod.
+        if(securityResult == null) {
+            var party = getParty();
+            var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+
+            // If the executing Party is a CUSTOMER...
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-                if(!partyPaymentMethod.getLastDetail().getParty().equals(party)) {
-                    partyPaymentMethod = null;
+                var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+                var partyPaymentMethodName = form.getPartyPaymentMethodName();
+                var partyPaymentMethod = paymentControl.getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName);
+
+                if(partyPaymentMethod != null) {
+                    // ...and the PartyPaymentMethod isn't for the executing Party, return an
+                    // InsufficientSecurity error.
+                    if(!partyPaymentMethod.getLastDetail().getParty().equals(party)) {
+                        securityResult = getInsufficientSecurityResult();
+                    }
                 }
             }
         }
 
-        if(partyPaymentMethod == null) {
-            addExecutionError(ExecutionErrors.UnknownPartyPaymentMethodName.name(), partyPaymentMethodName);
-        } else {
-            // TODO: Check to see if this paymemnt method is in use on any open orders,
-            // or orders that currently are allowing returns to be made against them.
-            // If that's the case, the PPM shouldn't be deleted.
+        return securityResult;
+    }
 
-            paymentControl.deletePartyPaymentMethod(partyPaymentMethod, getPartyPK());
-        }
-        
+    @Override
+    protected BaseResult execute() {
+        var partyPaymentMethodName = form.getPartyPaymentMethodName();
+
+        PartyPaymentMethodLogic.getInstance().deletePartyPaymentMethod(this, partyPaymentMethodName, getPartyPK());
+
         return null;
     }
     

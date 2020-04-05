@@ -26,6 +26,7 @@ import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
+import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
@@ -342,9 +343,7 @@ public class PartyPaymentMethodLogic
     private PartyPaymentMethod getPartyPaymentMethodByName(final ExecutionErrorAccumulator eea, final String partyPaymentMethodName,
             final EntityPermission entityPermission) {
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        PartyPaymentMethod partyPaymentMethod = null;
-
-        partyPaymentMethod = paymentControl.getPartyPaymentMethodByName(partyPaymentMethodName, entityPermission);
+        var partyPaymentMethod = paymentControl.getPartyPaymentMethodByName(partyPaymentMethodName, entityPermission);
 
         if(partyPaymentMethod == null) {
             handleExecutionError(UnknownPartyPaymentMethodNameException.class, eea, ExecutionErrors.UnknownPartyPaymentMethodName.name(), partyPaymentMethodName);
@@ -353,13 +352,33 @@ public class PartyPaymentMethodLogic
         return partyPaymentMethod;
     }
 
-    public PartyPaymentMethod getPartyPaymentMethodByName(final ExecutionErrorAccumulator eea, final String partyPaymentMethodName) {
+    public PartyPaymentMethod getPartyPaymentMethodByName(final ExecutionErrorAccumulator eea,
+            final String partyPaymentMethodName) {
         return getPartyPaymentMethodByName(eea, partyPaymentMethodName, EntityPermission.READ_ONLY);
     }
 
-    public PartyPaymentMethod getPartyPaymentMethodByNameForUpdate(final ExecutionErrorAccumulator eea, final String partyPaymentMethodTypeName,
+    public PartyPaymentMethod getPartyPaymentMethodByNameForUpdate(final ExecutionErrorAccumulator eea,
             final String partyPaymentMethodName) {
         return getPartyPaymentMethodByName(eea, partyPaymentMethodName, EntityPermission.READ_WRITE);
     }
-    
+
+    public void deletePartyPaymentMethod(final ExecutionErrorAccumulator eea, final PartyPaymentMethod partyPaymentMethod,
+            final PartyPK deletedBy) {
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+
+        // TODO: Check to see if this payment method is in use on any open orders,
+        // or orders that currently are allowing returns to be made against them.
+        // If that's the case, the PPM shouldn't be deleted.
+        paymentControl.deletePartyPaymentMethod(partyPaymentMethod, deletedBy);
+    }
+
+    public void deletePartyPaymentMethod(final ExecutionErrorAccumulator eea, final String partyPaymentMethodName,
+            final PartyPK deletedBy) {
+        var partyPaymentMethod = getPartyPaymentMethodByNameForUpdate(eea, partyPaymentMethodName);
+
+        if(!eea.hasExecutionErrors()) {
+            deletePartyPaymentMethod(eea, partyPaymentMethod, deletedBy);
+        }
+    }
+
 }
