@@ -96,6 +96,8 @@ public class AddAction
                         case MULTIPLELISTITEM:
                             commandForm.setEntityListItemSequenceName(actionForm.getEntityListItemSequenceChoice());
                             break;
+                        default:
+                            break;
                     }
                     
                     CommandResult commandResult = CoreUtil.getHome().createEntityAttribute(getUserVisitPK(request), commandForm);

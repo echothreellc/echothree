@@ -65,8 +65,7 @@ public class PartyTermEditAction
         
         try {
             String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-            String currencyIsoName = request.getParameter(ParameterConstants.CURRENCY_ISO_NAME);
-            
+
             if(forwardKey == null) {
                 PartyTermEditActionForm actionForm = (PartyTermEditActionForm)form;
                 EditPartyTermForm commandForm = TermUtil.getHome().getEditPartyTermForm();

@@ -110,6 +110,8 @@ public class EditAction
                         case MULTIPLELISTITEM:
                             edit.setEntityListItemSequenceName(actionForm.getEntityListItemSequenceChoice());
                             break;
+                        default:
+                            break;
                     }
                     
                     CommandResult commandResult = CoreUtil.getHome().editEntityAttribute(getUserVisitPK(request), commandForm);
