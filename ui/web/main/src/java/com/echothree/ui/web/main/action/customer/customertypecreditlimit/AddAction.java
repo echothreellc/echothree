@@ -61,9 +61,7 @@ public class AddAction
         try {
             AddActionForm actionForm = (AddActionForm)form;
             CreateCustomerTypeCreditLimitForm commandForm = TermUtil.getHome().getCreateCustomerTypeCreditLimitForm();
-            String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
-            String contactMechanismName = request.getParameter(ParameterConstants.CONTACT_MECHANISM_NAME);
-            
+
             if(customerTypeName == null)
                 customerTypeName = actionForm.getCustomerTypeName();
             

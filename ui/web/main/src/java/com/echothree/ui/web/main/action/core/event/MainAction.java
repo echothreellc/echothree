@@ -80,7 +80,7 @@ public class MainAction
         options.add(CoreOptions.EntityInstanceIncludeUlidIfAvailable);
         commandForm.setOptions(options);
         
-        String offsetParameter = request.getParameter((new ParamEncoder("event").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+        String offsetParameter = request.getParameter(new ParamEncoder("event").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
         Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
         Map<String, Limit> limits = new HashMap<>();

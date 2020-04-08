@@ -58,7 +58,7 @@ public class MainAction
             throws Exception {
         GetCacheEntriesForm commandForm = CoreUtil.getHome().getGetCacheEntriesForm();
 
-        String offsetParameter = request.getParameter((new ParamEncoder("cacheEntry").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+        String offsetParameter = request.getParameter(new ParamEncoder("cacheEntry").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
         Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
         Map<String, Limit> limits = new HashMap<>();
