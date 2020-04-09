@@ -66,77 +66,66 @@ public class MainActionForm
     private String createdSince;
     private String modifiedSince;
     
-    private void setupCustomerTypeChoices() {
+    private void setupCustomerTypeChoices()
+            throws NamingException {
         if(customerTypeChoices == null) {
-            try {
-                GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
-                
-                form.setDefaultCustomerTypeChoice(customerTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCustomerTypeChoicesResult getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
-                customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
-                
-                if(customerTypeChoice == null) {
-                    customerTypeChoice = customerTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, customerTypeChoices remains null, no default
+            GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
+
+            form.setDefaultCustomerTypeChoice(customerTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCustomerTypeChoicesResult getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
+
+            if(customerTypeChoice == null) {
+                customerTypeChoice = customerTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupCountryChoices() {
+    private void setupCountryChoices()
+            throws NamingException {
         if(countryChoices == null) {
-            try {
-                GetCountryChoicesForm commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
+            GetCountryChoicesForm commandForm = GeoUtil.getHome().getGetCountryChoicesForm();
 
-                commandForm.setDefaultCountryChoice(countryChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setDefaultCountryChoice(countryChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCountryChoicesResult result = (GetCountryChoicesResult)executionResult.getResult();
-                countryChoices = result.getCountryChoices();
+            CommandResult commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCountryChoicesResult result = (GetCountryChoicesResult)executionResult.getResult();
+            countryChoices = result.getCountryChoices();
 
-                if(countryChoice == null) {
-                    countryChoice = countryChoices.getDefaultValue();
-                }
-            } catch(NamingException ne) {
-                ne.printStackTrace();
-                // failed, countryChoices remains null, no default
+            if(countryChoice == null) {
+                countryChoice = countryChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupPartyAliasTypeChoices() {
+    private void setupPartyAliasTypeChoices()
+            throws NamingException {
         if(partyAliasTypeChoices == null) {
-            try {
-                GetPartyAliasTypeChoicesForm form = PartyUtil.getHome().getGetPartyAliasTypeChoicesForm();
+            GetPartyAliasTypeChoicesForm form = PartyUtil.getHome().getGetPartyAliasTypeChoicesForm();
 
-                form.setPartyTypeName(PartyTypes.CUSTOMER.name());
-                form.setDefaultPartyAliasTypeChoice(partyAliasTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setPartyTypeName(PartyTypes.CUSTOMER.name());
+            form.setDefaultPartyAliasTypeChoice(partyAliasTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyAliasTypeChoicesResult getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
-                partyAliasTypeChoices = getPartyAliasTypeChoicesResult.getPartyAliasTypeChoices();
+            CommandResult commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPartyAliasTypeChoicesResult getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
+            partyAliasTypeChoices = getPartyAliasTypeChoicesResult.getPartyAliasTypeChoices();
 
-                if(partyAliasTypeChoice == null) {
-                    partyAliasTypeChoice = partyAliasTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, partyAliasTypeChoices remains null, no default
+            if(partyAliasTypeChoice == null) {
+                partyAliasTypeChoice = partyAliasTypeChoices.getDefaultValue();
             }
         }
     }
 
-    public String getCustomerTypeChoice() {
+    public String getCustomerTypeChoice()
+            throws NamingException {
         setupCustomerTypeChoices();
         return customerTypeChoice;
     }
@@ -145,7 +134,8 @@ public class MainActionForm
         this.customerTypeChoice = customerTypeChoice;
     }
     
-    public List<LabelValueBean> getCustomerTypeChoices() {
+    public List<LabelValueBean> getCustomerTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCustomerTypeChoices();
@@ -220,7 +210,8 @@ public class MainActionForm
         this.emailAddress = emailAddress;
     }
     
-    public List<LabelValueBean> getCountryChoices() {
+    public List<LabelValueBean> getCountryChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupCountryChoices();
@@ -235,7 +226,8 @@ public class MainActionForm
         this.countryChoice = countryChoice;
     }
 
-    public String getCountryChoice() {
+    public String getCountryChoice()
+            throws NamingException {
         setupCountryChoices();
 
         return countryChoice;
@@ -273,7 +265,8 @@ public class MainActionForm
         this.customerName = customerName;
     }
     
-    public String getPartyAliasTypeChoice() {
+    public String getPartyAliasTypeChoice()
+            throws NamingException {
         setupPartyAliasTypeChoices();
         return partyAliasTypeChoice;
     }
@@ -282,7 +275,8 @@ public class MainActionForm
         this.partyAliasTypeChoice = partyAliasTypeChoice;
     }
     
-    public List<LabelValueBean> getPartyAliasTypeChoices() {
+    public List<LabelValueBean> getPartyAliasTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPartyAliasTypeChoices();
