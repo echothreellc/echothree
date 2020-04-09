@@ -39,25 +39,21 @@ public class LoginActionForm
     private String companyChoice;
     private String returnUrl;
     
-    private void setupCompanyChoices() {
+    private void setupCompanyChoices()
+            throws NamingException {
         if(companyChoices == null) {
-            try {
-                GetCompanyChoicesForm commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
-                
-                commandForm.setDefaultCompanyChoice(companyChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
-                companyChoices = result.getCompanyChoices();
-                
-                if(companyChoice == null)
-                    companyChoice = companyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, companyChoices remains null, no default
-            }
+            GetCompanyChoicesForm commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
+
+            commandForm.setDefaultCompanyChoice(companyChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
+            companyChoices = result.getCompanyChoices();
+
+            if(companyChoice == null)
+                companyChoice = companyChoices.getDefaultValue();
         }
     }
     
@@ -77,7 +73,8 @@ public class LoginActionForm
         return password;
     }
     
-    public List<LabelValueBean> getCompanyChoices() {
+    public List<LabelValueBean> getCompanyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCompanyChoices();
@@ -92,7 +89,8 @@ public class LoginActionForm
         this.companyChoice = companyChoice;
     }
     
-    public String getCompanyChoice() {
+    public String getCompanyChoice()
+            throws NamingException {
         setupCompanyChoices();
         return companyChoice;
     }

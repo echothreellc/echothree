@@ -41,26 +41,22 @@ public class EditActionForm
     private String preferredHeight;
     private String preferredWidth;
 
-    private void setupApplicationEditorChoices() {
+    private void setupApplicationEditorChoices()
+            throws NamingException {
         if(applicationEditorChoices == null) {
-            try {
-                GetApplicationEditorChoicesForm commandForm = CoreUtil.getHome().getGetApplicationEditorChoicesForm();
-                
-                commandForm.setApplicationName(applicationName);
-                commandForm.setDefaultEditorChoice(editorChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = CoreUtil.getHome().getApplicationEditorChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetApplicationEditorChoicesResult getApplicationEditorChoicesResult = (GetApplicationEditorChoicesResult)executionResult.getResult();
-                applicationEditorChoices = getApplicationEditorChoicesResult.getApplicationEditorChoices();
-                
-                if(editorChoice == null) {
-                    editorChoice = applicationEditorChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, applicationEditorChoices remains null, no default
+            GetApplicationEditorChoicesForm commandForm = CoreUtil.getHome().getGetApplicationEditorChoicesForm();
+
+            commandForm.setApplicationName(applicationName);
+            commandForm.setDefaultEditorChoice(editorChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = CoreUtil.getHome().getApplicationEditorChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetApplicationEditorChoicesResult getApplicationEditorChoicesResult = (GetApplicationEditorChoicesResult)executionResult.getResult();
+            applicationEditorChoices = getApplicationEditorChoicesResult.getApplicationEditorChoices();
+
+            if(editorChoice == null) {
+                editorChoice = applicationEditorChoices.getDefaultValue();
             }
         }
     }
@@ -89,7 +85,8 @@ public class EditActionForm
         return applicationEditorUseName;
     }
 
-    public List<LabelValueBean> getApplicationEditorChoices() {
+    public List<LabelValueBean> getApplicationEditorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupApplicationEditorChoices();
@@ -104,7 +101,8 @@ public class EditActionForm
         this.editorChoice = editorChoice;
     }
     
-    public String getEditorChoice() {
+    public String getEditorChoice()
+            throws NamingException {
         setupApplicationEditorChoices();
         return editorChoice;
     }

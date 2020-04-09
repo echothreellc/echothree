@@ -48,47 +48,39 @@ public class AddActionForm
     private String unitOfMeasureChoice;
     private String percent;
     
-    private void setupCurrencyChoices() {
+    private void setupCurrencyChoices()
+            throws NamingException {
         if(currencyChoices == null) {
-            try {
-                GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
-                
-                form.setDefaultCurrencyChoice(currencyChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
-                currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
-                
-                if(currencyChoice == null)
-                    currencyChoice = currencyChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, currencyChoices remains null, no default
-            }
+            GetCurrencyChoicesForm form = AccountingUtil.getHome().getGetCurrencyChoicesForm();
+
+            form.setDefaultCurrencyChoice(currencyChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCurrencyChoicesResult getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
+
+            if(currencyChoice == null)
+                currencyChoice = currencyChoices.getDefaultValue();
         }
     }
     
-    private void setupUnitOfMeasureChoices() {
+    private void setupUnitOfMeasureChoices()
+            throws NamingException {
         if(unitOfMeasureChoices == null) {
-            try {
-                GetUnitOfMeasureChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureChoicesForm();
-                
-                form.setDefaultUnitOfMeasureChoice(unitOfMeasureChoice);
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_QUANTITY);
-                
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureChoicesResult getUnitOfMeasureChoicesResult = (GetUnitOfMeasureChoicesResult)executionResult.getResult();
-                unitOfMeasureChoices = getUnitOfMeasureChoicesResult.getUnitOfMeasureChoices();
-                
-                if(unitOfMeasureChoice == null)
-                    unitOfMeasureChoice = unitOfMeasureChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureChoices remains null, no default
-            }
+            GetUnitOfMeasureChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureChoicesForm();
+
+            form.setDefaultUnitOfMeasureChoice(unitOfMeasureChoice);
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_QUANTITY);
+
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureChoicesResult getUnitOfMeasureChoicesResult = (GetUnitOfMeasureChoicesResult)executionResult.getResult();
+            unitOfMeasureChoices = getUnitOfMeasureChoicesResult.getUnitOfMeasureChoices();
+
+            if(unitOfMeasureChoice == null)
+                unitOfMeasureChoice = unitOfMeasureChoices.getDefaultValue();
         }
     }
     
@@ -108,7 +100,8 @@ public class AddActionForm
         return filterAdjustmentName;
     }
     
-    public List<LabelValueBean> getCurrencyChoices() {
+    public List<LabelValueBean> getCurrencyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCurrencyChoices();
@@ -122,12 +115,14 @@ public class AddActionForm
         this.currencyChoice = currencyChoice;
     }
     
-    public String getCurrencyChoice() {
+    public String getCurrencyChoice()
+            throws NamingException {
         setupCurrencyChoices();
         return currencyChoice;
     }
     
-    public List<LabelValueBean> getUnitOfMeasureChoices() {
+    public List<LabelValueBean> getUnitOfMeasureChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupUnitOfMeasureChoices();
@@ -141,7 +136,8 @@ public class AddActionForm
         this.unitOfMeasureChoice = unitOfMeasureChoice;
     }
     
-    public String getUnitOfMeasureChoice() {
+    public String getUnitOfMeasureChoice()
+            throws NamingException {
         setupUnitOfMeasureChoices();
         return unitOfMeasureChoice;
     }

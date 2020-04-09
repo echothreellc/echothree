@@ -48,45 +48,37 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupFilterAdjustmentSourceChoices() {
+    private void setupFilterAdjustmentSourceChoices()
+            throws NamingException {
         if(filterAdjustmentSourceChoices == null) {
-            try {
-                GetFilterAdjustmentSourceChoicesForm getFilterAdjustmentSourceChoicesForm = FilterUtil.getHome().getGetFilterAdjustmentSourceChoicesForm();
-                
-                getFilterAdjustmentSourceChoicesForm.setDefaultFilterAdjustmentSourceChoice(filterAdjustmentSourceChoice);
-                
-                CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentSourceChoices(userVisitPK, getFilterAdjustmentSourceChoicesForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetFilterAdjustmentSourceChoicesResult getFilterAdjustmentSourceChoicesResult = (GetFilterAdjustmentSourceChoicesResult)executionResult.getResult();
-                filterAdjustmentSourceChoices = getFilterAdjustmentSourceChoicesResult.getFilterAdjustmentSourceChoices();
-                
-                if(filterAdjustmentSourceChoice == null)
-                    filterAdjustmentSourceChoice = filterAdjustmentSourceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, filterAdjustmentSourceChoices remains null, no default
-            }
+            GetFilterAdjustmentSourceChoicesForm getFilterAdjustmentSourceChoicesForm = FilterUtil.getHome().getGetFilterAdjustmentSourceChoicesForm();
+
+            getFilterAdjustmentSourceChoicesForm.setDefaultFilterAdjustmentSourceChoice(filterAdjustmentSourceChoice);
+
+            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentSourceChoices(userVisitPK, getFilterAdjustmentSourceChoicesForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetFilterAdjustmentSourceChoicesResult getFilterAdjustmentSourceChoicesResult = (GetFilterAdjustmentSourceChoicesResult)executionResult.getResult();
+            filterAdjustmentSourceChoices = getFilterAdjustmentSourceChoicesResult.getFilterAdjustmentSourceChoices();
+
+            if(filterAdjustmentSourceChoice == null)
+                filterAdjustmentSourceChoice = filterAdjustmentSourceChoices.getDefaultValue();
         }
     }
     
-    private void setupFilterAdjustmentTypeChoices() {
+    private void setupFilterAdjustmentTypeChoices()
+            throws NamingException {
         if(filterAdjustmentTypeChoices == null) {
-            try {
-                GetFilterAdjustmentTypeChoicesForm getFilterAdjustmentTypeChoicesForm = FilterUtil.getHome().getGetFilterAdjustmentTypeChoicesForm();
-                
-                getFilterAdjustmentTypeChoicesForm.setDefaultFilterAdjustmentTypeChoice(filterAdjustmentTypeChoice);
-                
-                CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentTypeChoices(userVisitPK, getFilterAdjustmentTypeChoicesForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetFilterAdjustmentTypeChoicesResult getFilterAdjustmentTypeChoicesResult = (GetFilterAdjustmentTypeChoicesResult)executionResult.getResult();
-                filterAdjustmentTypeChoices = getFilterAdjustmentTypeChoicesResult.getFilterAdjustmentTypeChoices();
-                
-                if(filterAdjustmentTypeChoice == null)
-                    filterAdjustmentTypeChoice = filterAdjustmentTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, filterAdjustmentTypeChoices remains null, no default
-            }
+            GetFilterAdjustmentTypeChoicesForm getFilterAdjustmentTypeChoicesForm = FilterUtil.getHome().getGetFilterAdjustmentTypeChoicesForm();
+
+            getFilterAdjustmentTypeChoicesForm.setDefaultFilterAdjustmentTypeChoice(filterAdjustmentTypeChoice);
+
+            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentTypeChoices(userVisitPK, getFilterAdjustmentTypeChoicesForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetFilterAdjustmentTypeChoicesResult getFilterAdjustmentTypeChoicesResult = (GetFilterAdjustmentTypeChoicesResult)executionResult.getResult();
+            filterAdjustmentTypeChoices = getFilterAdjustmentTypeChoicesResult.getFilterAdjustmentTypeChoices();
+
+            if(filterAdjustmentTypeChoice == null)
+                filterAdjustmentTypeChoice = filterAdjustmentTypeChoices.getDefaultValue();
         }
     }
     
@@ -106,7 +98,8 @@ public class AddActionForm
         return filterAdjustmentName;
     }
     
-    public List<LabelValueBean> getFilterAdjustmentSourceChoices() {
+    public List<LabelValueBean> getFilterAdjustmentSourceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupFilterAdjustmentSourceChoices();
@@ -120,12 +113,14 @@ public class AddActionForm
         this.filterAdjustmentSourceChoice = filterAdjustmentSourceChoice;
     }
     
-    public String getFilterAdjustmentSourceChoice() {
+    public String getFilterAdjustmentSourceChoice()
+            throws NamingException {
         setupFilterAdjustmentSourceChoices();
         return filterAdjustmentSourceChoice;
     }
     
-    public List<LabelValueBean> getFilterAdjustmentTypeChoices() {
+    public List<LabelValueBean> getFilterAdjustmentTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupFilterAdjustmentTypeChoices();
@@ -139,7 +134,8 @@ public class AddActionForm
         this.filterAdjustmentTypeChoice = filterAdjustmentTypeChoice;
     }
     
-    public String getFilterAdjustmentTypeChoice() {
+    public String getFilterAdjustmentTypeChoice()
+            throws NamingException {
         setupFilterAdjustmentTypeChoices();
         return filterAdjustmentTypeChoice;
     }

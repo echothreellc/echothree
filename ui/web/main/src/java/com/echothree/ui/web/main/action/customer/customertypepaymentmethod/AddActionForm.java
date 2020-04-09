@@ -16,7 +16,6 @@
 
 package com.echothree.ui.web.main.action.customer.customertypepaymentmethod;
 
-
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.form.GetPaymentMethodChoicesForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
@@ -43,9 +42,9 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    private void setupPaymentMethodChoices() {
+    private void setupPaymentMethodChoices()
+            throws NamingException {
         if(paymentMethodChoices == null) {
-            try {
                 GetPaymentMethodChoicesForm form = PaymentUtil.getHome().getGetPaymentMethodChoicesForm();
                 
                 form.setDefaultPaymentMethodChoice(paymentMethodChoice);
@@ -58,10 +57,6 @@ public class AddActionForm
                 
                 if(paymentMethodChoice == null)
                     paymentMethodChoice = paymentMethodChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, paymentMethodChoices remains null, no default
-            }
         }
     }
     
@@ -81,7 +76,8 @@ public class AddActionForm
         this.paymentMethodChoice = paymentMethodChoice;
     }
     
-    public List<LabelValueBean> getPaymentMethodChoices() {
+    public List<LabelValueBean> getPaymentMethodChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPaymentMethodChoices();
