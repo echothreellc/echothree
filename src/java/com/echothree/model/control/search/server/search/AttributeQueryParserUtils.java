@@ -428,7 +428,7 @@ public class AttributeQueryParserUtils
                 if(entityAttribute != null) {
                     EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
 
-                    // Do a case-sensative comparison vs. how the database handles the request. Lucene is case-sensative for field names.
+                    // Do a case-sensitive comparison vs. how the database handles the request. Lucene is case-sensative for field names.
                     if(entityAttributeDetail.getEntityAttributeName().equals(field)) {
                         String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
 
