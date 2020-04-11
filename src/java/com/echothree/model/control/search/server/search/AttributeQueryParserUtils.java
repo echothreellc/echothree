@@ -29,10 +29,7 @@ import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
-import com.echothree.model.data.party.server.entity.DateTimeFormatDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.AboveMaximumLimitException;
 import com.echothree.util.common.exception.BelowMinimumLimitException;
@@ -135,15 +132,15 @@ public class AttributeQueryParserUtils
     }
     
     protected Integer dateValueOf(final String fieldValue) {
-        DateTimeFormatDetail dateTimeFormatDetail = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail();
-        ZoneId zoneId = ZoneId.of(getUserControl().getPreferredTimeZoneFromUserVisit(userVisit).getLastDetail().getJavaTimeZoneName());
+        var dateTimeFormatDetail = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail();
+        var zoneId = ZoneId.of(getUserControl().getPreferredTimeZoneFromUserVisit(userVisit).getLastDetail().getJavaTimeZoneName());
         DateTimeFormatter dtf = null;
         ZonedDateTime zdt = null;
         
         if(fieldValue.equalsIgnoreCase("TODAY")) {
             zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(ThreadSession.currentSession().START_TIME), zoneId);
         } else {
-            DateTimeFormatter javaShortDateFormat = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat()).withZone(zoneId);
+            var javaShortDateFormat = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat()).withZone(zoneId);
 
             try {
                 zdt = ZonedDateTime.parse(fieldValue, javaShortDateFormat);
@@ -165,9 +162,9 @@ public class AttributeQueryParserUtils
         if(fieldValue.equalsIgnoreCase("NOW")) {
             result = ThreadSession.currentSession().START_TIME_LONG;
         } else {
-            DateTimeFormatDetail dateTimeFormatDetail = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail();
-            ZoneId zoneId = ZoneId.of(getUserControl().getPreferredTimeZoneFromUserVisit(userVisit).getLastDetail().getJavaTimeZoneName());
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat() + " " + dateTimeFormatDetail.getJavaTimeFormatSeconds()).withZone(zoneId);
+            var dateTimeFormatDetail = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail();
+            var zoneId = ZoneId.of(getUserControl().getPreferredTimeZoneFromUserVisit(userVisit).getLastDetail().getJavaTimeZoneName());
+            var dtf = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat() + " " + dateTimeFormatDetail.getJavaTimeFormatSeconds()).withZone(zoneId);
             ZonedDateTime zdt = null;
             
             try {
@@ -213,7 +210,7 @@ public class AttributeQueryParserUtils
     }
     
     private boolean checkIntegerRange(final int testLimit, Integer minimumLimit, Integer maximumLimit) {
-        boolean valid = true;
+        var valid = true;
         
         if(minimumLimit != null) {
             if(testLimit < minimumLimit) {
@@ -280,13 +277,13 @@ public class AttributeQueryParserUtils
     
     protected Long measurementValueOf(final String unitOfMeasureKindUseTypeName, final String rawFieldValue) {
         Long value = null;
-        String space = StringUtils.getInstance().getSpace(rawFieldValue);
+        var space = StringUtils.getInstance().getSpace(rawFieldValue);
         
         if(space != null) {
-            String[] splitFieldValue = Splitter.onPattern(Pattern.quote(space)).trimResults().omitEmptyStrings().splitToList(rawFieldValue).toArray(new String[0]);
+            var splitFieldValue = Splitter.onPattern(Pattern.quote(space)).trimResults().omitEmptyStrings().splitToList(rawFieldValue).toArray(new String[0]);
 
             if(splitFieldValue.length == 2 && splitFieldValue[0].length() > 0 && splitFieldValue[1].length() > 0) {
-                Long validatedValue = longValueOf(splitFieldValue[0]);
+                var validatedValue = longValueOf(splitFieldValue[0]);
 
                 if(!eea.hasExecutionErrors()) {
                     value = UnitOfMeasureTypeLogic.getInstance().checkUnitOfMeasure(eea, unitOfMeasureKindUseTypeName, validatedValue.toString(),
@@ -330,16 +327,16 @@ public class AttributeQueryParserUtils
         
         // rawField is null when multiple fields are being searched by default.
         if(rawField == null) {
-            List<BooleanClause> clauses = new ArrayList<>(rawFields.length);
+            var clauses = new ArrayList<BooleanClause>(rawFields.length);
             
             for(int i = 0; i < rawFields.length; i++) {
-                Query q = getFieldQuery(rawFields[i], rawFields, boosts, queryText, quoted);
+                var q = getFieldQuery(rawFields[i], rawFields, boosts, queryText, quoted);
                 
                 if(q != null) {
                     //I f the user passes a map of boosts
                     if(boosts != null) {
                         // Get the boost from the map and apply it.
-                        Float boost = boosts.get(rawFields[i]);
+                        var boost = boosts.get(rawFields[i]);
                         
                         if (boost != null) {
                             q = new BoostQuery(q, boost);
@@ -357,16 +354,16 @@ public class AttributeQueryParserUtils
                 query = getBooleanQuery(clauses);
             }
         } else {
-            String[] splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
-            String field = splitField[0];
+            var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
+            var field = splitField[0];
 
             if(dateFields.contains(field) || dateTimeFields.contains(field)) {
                  query = newTermQuery(new Term(rawField, queryText));
             } else {
-                EntityAttribute entityAttribute = getEntityAttribute(field);
+                var entityAttribute = getEntityAttribute(field);
 
                 if(entityAttribute != null) {
-                    EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
+                    var entityAttributeDetail = entityAttribute.getLastDetail();
 
                     // Do a case-sensative comparison vs. how the database handles the request. Lucene is case-sensative for field names.
                     if(entityAttributeDetail.getEntityAttributeName().equals(field)) {
@@ -390,7 +387,7 @@ public class AttributeQueryParserUtils
     private static final Set<String> excludedEntityAttributeTypeNames;
     
     static {
-        Set<String> set = new HashSet<>(5);
+        var set = new HashSet<String>(5);
 
         set.add(EntityAttributeTypes.NAME.name());
         set.add(EntityAttributeTypes.MULTIPLELISTITEM.name());
@@ -405,91 +402,91 @@ public class AttributeQueryParserUtils
         Query query = null;
         
         if(!eea.hasExecutionErrors()) {
-            String rawField = term.field();
-            String[] splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
-            String field = splitField[0];
-            String subfield = splitField.length > 1 ? splitField[1] : null;
+            var rawField = term.field();
+            var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
+            var field = splitField[0];
+            var subfield = splitField.length > 1 ? splitField[1] : null;
             
             if(dateFields.contains(field)) {
-                Integer val = dateValueOf(term.text());
+                var val = dateValueOf(term.text());
 
                 if(!eea.hasExecutionErrors()) {
                     query = IntPoint.newSetQuery(field, val);
                 }
             } else if(dateTimeFields.contains(field)) {
-                Long val = dateTimeValueOf(term.text());
+                var val = dateTimeValueOf(term.text());
 
                 if(!eea.hasExecutionErrors()) {
                     query = LongPoint.newSetQuery(field, val);
                 }
             } else {
-                EntityAttribute entityAttribute = getEntityAttribute(field);
+                var entityAttribute = getEntityAttribute(field);
 
                 if(entityAttribute != null) {
-                    EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
+                    var entityAttributeDetail = entityAttribute.getLastDetail();
 
-                    // Do a case-sensitive comparison vs. how the database handles the request. Lucene is case-sensative for field names.
+                    // Do a case-sensitive comparison vs. how the database handles the request. Lucene is case-sensitive for field names.
                     if(entityAttributeDetail.getEntityAttributeName().equals(field)) {
-                        String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
+                        var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
 
                         if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                            Integer val = intValueOf(term.text());
+                            var val = intValueOf(term.text());
 
                             if(!eea.hasExecutionErrors()) {
                                 query = IntPoint.newSetQuery(field, val);
                             }
                         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                            Long val = longValueOf(term.text());
+                            var val = longValueOf(term.text());
 
                             if(!eea.hasExecutionErrors()) {
                                 query = LongPoint.newSetQuery(field, val);
                             }
                         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.DATE.name())) {
-                            Integer val = dateValueOf(term.text());
+                            var val = dateValueOf(term.text());
 
                             if(!eea.hasExecutionErrors()) {
                                 query = IntPoint.newSetQuery(field, val);
                             }
                         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.TIME.name())) {
-                            Long val = dateTimeValueOf(term.text());
+                            var val = dateTimeValueOf(term.text());
 
                             if(!eea.hasExecutionErrors()) {
                                 query = LongPoint.newSetQuery(field, val);
                             }
                         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.GEOPOINT.name())) {
                             if(subfield == null) {
-                                EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+                                var entityTypeDetail = entityType.getLastDetail();
 
                                 handleExecutionError(MissingRequiredSubfieldException.class, eea, ExecutionErrors.MissingRequiredSubfield.name(),
                                         entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
                                         entityAttributeTypeName);
                             } else {
                                 if(subfield.equals(IndexConstants.IndexSubfieldLatitude)) {
-                                    Integer val = latitudeValueOf(term.text());
+                                    var val = latitudeValueOf(term.text());
 
                                     if(!eea.hasExecutionErrors()) {
                                         query = IntPoint.newSetQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, val);
                                     }
                                 } else if(subfield.equals(IndexConstants.IndexSubfieldLongitude)) {
-                                    Integer val = longitudeValueOf(term.text());
+                                    var val = longitudeValueOf(term.text());
 
                                     if(!eea.hasExecutionErrors()) {
                                         query = IntPoint.newSetQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, val);
                                     }
                                 } else if(subfield.equals(IndexConstants.IndexSubfieldElevation)) {
-                                    Long val = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, term.text());
+                                    var val = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, term.text());
 
                                     if(!eea.hasExecutionErrors()) {
                                         query = LongPoint.newSetQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, val);
                                     }
                                 } else if(subfield.equals(IndexConstants.IndexSubfieldAltitude)) {
-                                    Long val = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, term.text());
+                                    var val = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, term.text());
 
                                     if(!eea.hasExecutionErrors()) {
                                         query = LongPoint.newSetQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, val);
                                     }
                                 } else {
-                                    EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+                                    var entityTypeDetail = entityType.getLastDetail();
 
                                     handleExecutionError(UnknownSubfieldException.class, eea, ExecutionErrors.UnknownSubfield.name(),
                                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
@@ -497,7 +494,7 @@ public class AttributeQueryParserUtils
                                 }
                             }
                         } else if(!excludedEntityAttributeTypeNames.contains(entityAttributeTypeName)) {
-                            EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+                            var entityTypeDetail = entityType.getLastDetail();
 
                             handleExecutionError(InvalidEntityAttributeTypeException.class, eea, ExecutionErrors.InvalidEntityAttributeType.name(),
                                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
@@ -515,107 +512,111 @@ public class AttributeQueryParserUtils
         Query query = null;
         
         if(rawField == null) {
-            List<BooleanClause> clauses = new ArrayList<>(rawFields.length);
+            var clauses = new ArrayList<BooleanClause>(rawFields.length);
             
-            for(int i = 0; i < rawFields.length; i++) {
+            for(var i = 0; i < rawFields.length; i++) {
                 clauses.add(new BooleanClause(newRangeQuery(rawFields[i], null, min, max, startInclusive, endInclusive), BooleanClause.Occur.SHOULD));
             }
             
             query = getBooleanQuery(clauses);
         } else {
             if(!eea.hasExecutionErrors()) {
-                String[] splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
-                String field = splitField[0];
-                String subfield = splitField.length > 1 ? splitField[1] : null;
+                var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
+                var field = splitField[0];
+                var subfield = splitField.length > 1 ? splitField[1] : null;
 
                 if(dateFields.contains(field)) {
-                    Integer valMin = dateValueOf(min);
-                    Integer valMax = dateValueOf(max);
+                    var valMin = dateValueOf(min);
+                    var valMax = dateValueOf(max);
 
                     if(!eea.hasExecutionErrors()) {
                         query = IntPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
                     }
                 } else if(dateTimeFields.contains(field)) {
-                    Long valMin = dateTimeValueOf(min);
-                    Long valMax = dateTimeValueOf(max);
+                    var valMin = dateTimeValueOf(min);
+                    var valMax = dateTimeValueOf(max);
 
                     if(!eea.hasExecutionErrors()) {
                         query = LongPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
                     }
                 } else {
-                    EntityAttribute entityAttribute = getEntityAttribute(field);
+                    var entityAttribute = getEntityAttribute(field);
 
                     if(entityAttribute != null) {
-                        EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
+                        var entityAttributeDetail = entityAttribute.getLastDetail();
 
-                        // Do a case-sensative comparison vs. how the database handles the request. Lucene is case-sensative for field names.
+                        // Do a case-sensitive comparison vs. how the database handles the request. Lucene is case-sensative for field names.
                         if(entityAttributeDetail.getEntityAttributeName().equals(field)) {
-                            String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
+                            var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
 
                             if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                                Integer valMin = intValueOf(min);
-                                Integer valMax = intValueOf(max);
+                                var valMin = intValueOf(min);
+                                var valMax = intValueOf(max);
 
                                 if(!eea.hasExecutionErrors()) {
-                                    query = IntPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                                    query = IntPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1), endInclusive? valMax: Math.addExact(valMax, -1));
                                 }
                             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                                Long valMin = longValueOf(min);
-                                Long valMax = longValueOf(max);
+                                var valMin = longValueOf(min);
+                                var valMax = longValueOf(max);
 
                                 if(!eea.hasExecutionErrors()) {
-                                    query = LongPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                                    query = LongPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1), endInclusive? valMax: Math.addExact(valMax, -1));
                                 }
                             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.DATE.name())) {
-                                Integer valMin = dateValueOf(min);
-                                Integer valMax = dateValueOf(max);
+                                var valMin = dateValueOf(min);
+                                var valMax = dateValueOf(max);
 
                                 if(!eea.hasExecutionErrors()) {
-                                    query = IntPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                                    query = IntPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1), endInclusive? valMax: Math.addExact(valMax, -1));
                                 }
                             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.TIME.name())) {
-                                Long valMin = dateTimeValueOf(min);
-                                Long valMax = dateTimeValueOf(max);
+                                var valMin = dateTimeValueOf(min);
+                                var valMax = dateTimeValueOf(max);
 
                                 if(!eea.hasExecutionErrors()) {
-                                    query = LongPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                                    query = LongPoint.newRangeQuery(field, startInclusive? valMin: Math.addExact(valMin, 1), endInclusive? valMax: Math.addExact(valMax, -1));
                                 }
                             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.GEOPOINT.name())) {
                                 if(subfield == null) {
 
                                 } else {
                                     if(subfield.equals(IndexConstants.IndexSubfieldLatitude)) {
-                                        Integer valMin = latitudeValueOf(min);
-                                        Integer valMax = latitudeValueOf(max);
+                                        var valMin = latitudeValueOf(min);
+                                        var valMax = latitudeValueOf(max);
 
                                         if(!eea.hasExecutionErrors()) {
-                                            query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                                            query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield,
+                                                    startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
                                     } else if(subfield.equals(IndexConstants.IndexSubfieldLongitude)) {
-                                        Integer valMin = longitudeValueOf(min);
-                                        Integer valMax = longitudeValueOf(max);
+                                        var valMin = longitudeValueOf(min);
+                                        var valMax = longitudeValueOf(max);
 
                                         if(!eea.hasExecutionErrors()) {
-                                            query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                                            query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield,
+                                                    startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
                                     } else if(subfield.equals(IndexConstants.IndexSubfieldElevation)) {
-                                        Long valMin = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, min);
-                                        Long valMax = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, max);
+                                        var valMin = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, min);
+                                        var valMax = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, max);
 
                                         if(!eea.hasExecutionErrors()) {
-                                            query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                                            query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield,
+                                                    startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
                                     } else if(subfield.equals(IndexConstants.IndexSubfieldAltitude)) {
-                                        Long valMin = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, min);
-                                        Long valMax = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, max);
+                                        var valMin = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, min);
+                                        var valMax = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, max);
 
                                         if(!eea.hasExecutionErrors()) {
-                                            query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, startInclusive? valMin: Math.addExact(valMin, 1) , endInclusive? valMax: Math.addExact(valMax, -1));
+                                            query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield,
+                                                    startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
                                     }
                                 }
                             } else if(!excludedEntityAttributeTypeNames.contains(entityAttributeTypeName)) {
-                                EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
+                                var entityTypeDetail = entityType.getLastDetail();
 
                                 handleExecutionError(InvalidEntityAttributeTypeException.class, eea, ExecutionErrors.InvalidEntityAttributeType.name(),
                                         entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
