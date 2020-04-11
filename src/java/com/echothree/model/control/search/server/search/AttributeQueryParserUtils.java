@@ -579,7 +579,11 @@ public class AttributeQueryParserUtils
                                 }
                             } else if(entityAttributeTypeName.equals(EntityAttributeTypes.GEOPOINT.name())) {
                                 if(subfield == null) {
+                                    var entityTypeDetail = entityType.getLastDetail();
 
+                                    handleExecutionError(MissingRequiredSubfieldException.class, eea, ExecutionErrors.MissingRequiredSubfield.name(),
+                                            entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
+                                            entityAttributeTypeName);
                                 } else {
                                     if(subfield.equals(IndexConstants.IndexSubfieldLatitude)) {
                                         var valMin = latitudeValueOf(min);
