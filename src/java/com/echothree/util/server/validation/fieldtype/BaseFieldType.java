@@ -115,7 +115,7 @@ public abstract class BaseFieldType {
 
         if(maximumValue != null) {
             if(testValue > maximumValue) {
-                validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_VALUE, formatExampleValue(minimumValue)));
+                validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_VALUE, formatExampleValue(maximumValue)));
                 valid = false;
             }
         }
