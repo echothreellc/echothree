@@ -41,16 +41,16 @@ public class AttributeMultiFieldQueryParser
     @Override
     protected Query getFieldQuery(String field, String queryText, boolean quoted)
             throws ParseException {
-        Query query = attributeQueryParserUtils.getFieldQuery(field, fields, boosts, queryText, quoted);
+        var query = attributeQueryParserUtils.getFieldQuery(field, fields, boosts, queryText, quoted);
 
         return query == null ? super.getFieldQuery(field, queryText, quoted) : query;
     }
 
     @Override
-    protected Query newTermQuery(final Term term) {
-        Query query = attributeQueryParserUtils.newTermQuery(term);
+    protected Query newTermQuery(final Term term, final float boost) {
+        var query = attributeQueryParserUtils.newTermQuery(term);
 
-        return query == null ? super.newTermQuery(term) : query;
+        return query == null ? super.newTermQuery(term, boost) : query;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class AttributeMultiFieldQueryParser
 
     @Override
     protected Query newRangeQuery(final String field, final String min, final String max, final boolean startInclusive, final boolean endInclusive) {
-        Query query = attributeQueryParserUtils.newRangeQuery(field, fields, min, max, startInclusive, endInclusive);
+        var query = attributeQueryParserUtils.newRangeQuery(field, fields, min, max, startInclusive, endInclusive);
         
         return query == null ? super.newRangeQuery(field, min, max, startInclusive, endInclusive) : query;
     }
