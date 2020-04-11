@@ -47,10 +47,10 @@ public class AttributeMultiFieldQueryParser
     }
 
     @Override
-    protected Query newTermQuery(final Term term) {
+    protected Query newTermQuery(final Term term, final float boost) {
         Query query = attributeQueryParserUtils.newTermQuery(term);
 
-        return query == null ? super.newTermQuery(term) : query;
+        return query == null ? super.newTermQuery(term, boost) : query;
     }
 
     @Override
