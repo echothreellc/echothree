@@ -18,24 +18,24 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetAppearancesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetAppearancesResult;
-import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetAppearancesCommand
-        extends BaseSimpleCommand<GetAppearancesForm> {
+        extends BaseMultipleEntitiesCommand<Appearance, GetAppearancesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,14 +56,22 @@ public class GetAppearancesCommand
     public GetAppearancesCommand(UserVisitPK userVisitPK, GetAppearancesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<Appearance> getEntities() {
         var coreControl = getCoreControl();
-        GetAppearancesResult result = CoreResultFactory.getGetAppearancesResult();
-        
-        result.setAppearances(coreControl.getAppearanceTransfers(getUserVisit()));
-        
+
+        return coreControl.getAppearances();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<Appearance> entities) {
+        var result = CoreResultFactory.getGetAppearancesResult();
+
+        if(entities != null) {
+            result.setAppearances(getCoreControl().getAppearanceTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
