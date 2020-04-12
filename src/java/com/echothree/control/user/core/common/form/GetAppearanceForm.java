@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.AppearanceSpec;
+import com.echothree.control.user.core.common.spec.AppearanceUniversalSpec;
 
 public interface GetAppearanceForm
-        extends AppearanceSpec {
+        extends AppearanceUniversalSpec {
     
-    // Nothing additional beyond AppearanceSpec
+    // Nothing additional beyond AppearanceUniversalSpec
     
 }

@@ -18,19 +18,16 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetAppearanceForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetAppearanceResult;
-import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.CoreControl;
+import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -39,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetAppearanceCommand
-        extends BaseSimpleCommand<GetAppearanceForm> {
+        extends BaseSingleEntityCommand<Appearance, GetAppearanceForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -53,31 +50,35 @@ public class GetAppearanceCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+                new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+                ));
     }
     
     /** Creates a new instance of GetAppearanceCommand */
     public GetAppearanceCommand(UserVisitPK userVisitPK, GetAppearanceForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        GetAppearanceResult result = CoreResultFactory.getGetAppearanceResult();
-        String appearanceName = form.getAppearanceName();
-        Appearance appearance = coreControl.getAppearanceByName(appearanceName);
-        
+    protected Appearance getEntity() {
+        var appearance = AppearanceLogic.getInstance().getAppearanceByUniversalSpec(this, form);
+
+        return appearance;
+    }
+
+    @Override
+    protected BaseResult getTransfer(Appearance appearance) {
+        var result = CoreResultFactory.getGetAppearanceResult();
+
         if(appearance != null) {
-            result.setAppearance(coreControl.getAppearanceTransfer(getUserVisit(), appearance));
-            
-            sendEventUsingNames(appearance.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownAppearanceName.name(), appearanceName);
+            result.setAppearance(getCoreControl().getAppearanceTransfer(getUserVisit(), appearance));
         }
-        
+
         return result;
     }
-    
+
 }
