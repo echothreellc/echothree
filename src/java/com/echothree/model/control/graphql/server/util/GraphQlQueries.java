@@ -45,6 +45,8 @@ import com.echothree.control.user.content.server.command.GetContentSectionsComma
 import com.echothree.control.user.content.server.command.GetContentWebAddressCommand;
 import com.echothree.control.user.content.server.command.GetContentWebAddressesCommand;
 import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.server.command.GetAppearanceCommand;
+import com.echothree.control.user.core.server.command.GetAppearancesCommand;
 import com.echothree.control.user.core.server.command.GetColorCommand;
 import com.echothree.control.user.core.server.command.GetColorsCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
@@ -116,6 +118,7 @@ import com.echothree.model.control.content.server.graphql.ContentPageLayoutObjec
 import com.echothree.model.control.content.server.graphql.ContentPageObject;
 import com.echothree.model.control.content.server.graphql.ContentSectionObject;
 import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
+import com.echothree.model.control.core.server.graphql.AppearanceObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
@@ -159,6 +162,7 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
+import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
@@ -199,6 +203,54 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("appearance")
+    public static AppearanceObject appearance(final DataFetchingEnvironment env,
+            @GraphQLName("appearanceName") final String appearanceName,
+            @GraphQLName("id") final String id) {
+        Appearance appearance;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetAppearanceForm();
+
+            commandForm.setAppearanceName(appearanceName);
+            commandForm.setUlid(id);
+
+            appearance = new GetAppearanceCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return appearance == null ? null : new AppearanceObject(appearance);
+    }
+
+    @GraphQLField
+    @GraphQLName("appearances")
+    public static Collection<AppearanceObject> appearances(final DataFetchingEnvironment env) {
+        Collection<Appearance> appearances;
+        Collection<AppearanceObject> appearanceObjects;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = CoreUtil.getHome().getGetAppearancesForm();
+
+            appearances = new GetAppearancesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(appearances == null) {
+            appearanceObjects = Collections.EMPTY_LIST;
+        } else {
+            appearanceObjects = new ArrayList<>(appearances.size());
+
+            appearances.stream().map(AppearanceObject::new).forEachOrdered(appearanceObjects::add);
+        }
+
+        return appearanceObjects;
+    }
 
     @GraphQLField
     @GraphQLName("entityInstance")

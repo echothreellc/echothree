@@ -14,13 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.core.common.spec;
 
-import com.echothree.control.user.core.common.spec.AppearanceUniversalSpec;
+public interface AppearanceUniversalSpec
+        extends AppearanceSpec, UniversalEntitySpec {
 
-public interface GetAppearanceForm
-        extends AppearanceUniversalSpec {
-    
-    // Nothing additional beyond AppearanceUniversalSpec
+    // Nothing additional beyond AppearanceSpec, UniversalEntitySpec
     
 }

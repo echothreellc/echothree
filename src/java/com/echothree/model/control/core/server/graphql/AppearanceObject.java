@@ -22,19 +22,14 @@ import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.AppearanceDetail;
-import com.echothree.model.data.core.server.entity.AppearanceTextDecoration;
-import com.echothree.model.data.core.server.entity.AppearanceTextTransformation;
-import com.echothree.model.data.core.server.entity.Color;
-import com.echothree.model.data.core.server.entity.FontStyle;
-import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 
 @GraphQLDescription("appearance object")
 @GraphQLName("Appearance")
@@ -69,7 +64,7 @@ public class AppearanceObject
     @GraphQLField
     @GraphQLDescription("text color")
     public ColorObject getTextColor() {
-        Color textColor = getAppearanceDetail().getTextColor();
+        var textColor = getAppearanceDetail().getTextColor();
         
         return textColor == null ? null : new ColorObject(textColor);
     }
@@ -77,7 +72,7 @@ public class AppearanceObject
     @GraphQLField
     @GraphQLDescription("background color")
     public ColorObject getBackgroundColor() {
-        Color backgroundColor = getAppearanceDetail().getBackgroundColor();
+        var backgroundColor = getAppearanceDetail().getBackgroundColor();
         
         return backgroundColor == null ? null : new ColorObject(backgroundColor);
     }
@@ -85,7 +80,7 @@ public class AppearanceObject
     @GraphQLField
     @GraphQLDescription("font style")
     public FontStyleObject getFontStyle() {
-        FontStyle fontStyle = getAppearanceDetail().getFontStyle();
+        var fontStyle = getAppearanceDetail().getFontStyle();
         
         return fontStyle == null ? null : new FontStyleObject(fontStyle);
     }
@@ -93,7 +88,7 @@ public class AppearanceObject
     @GraphQLField
     @GraphQLDescription("font weight")
     public FontWeightObject getFontWeight() {
-        FontWeight fontWeight = getAppearanceDetail().getFontWeight();
+        var fontWeight = getAppearanceDetail().getFontWeight();
         
         return fontWeight == null ? null : new FontWeightObject(fontWeight);
     }
@@ -103,8 +98,8 @@ public class AppearanceObject
     @GraphQLNonNull
     public List<AppearanceTextDecorationObject> getAppearanceTextDecorations() {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        List<AppearanceTextDecoration> entities = coreControl.getAppearanceTextDecorationsByAppearance(appearance);
-        List<AppearanceTextDecorationObject> objects = new ArrayList<>(entities.size());
+        var entities = coreControl.getAppearanceTextDecorationsByAppearance(appearance);
+        var objects = new ArrayList<AppearanceTextDecorationObject>(entities.size());
         
         entities.forEach((entity) -> {
             objects.add(new AppearanceTextDecorationObject(entity));
@@ -118,8 +113,8 @@ public class AppearanceObject
     @GraphQLNonNull
     public List<AppearanceTextTransformationObject> getAppearanceTextTransformations() {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        List<AppearanceTextTransformation> entities = coreControl.getAppearanceTextTransformationsByAppearance(appearance);
-        List<AppearanceTextTransformationObject> objects = new ArrayList<>(entities.size());
+        var entities = coreControl.getAppearanceTextTransformationsByAppearance(appearance);
+        var objects = new ArrayList<AppearanceTextTransformationObject>(entities.size());
         
         entities.forEach((entity) -> {
             objects.add(new AppearanceTextTransformationObject(entity));

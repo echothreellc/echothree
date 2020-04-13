@@ -17510,6 +17510,22 @@ public class CoreControl
         return appearance;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Appearance */
+    public Appearance getAppearanceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new AppearancePK(entityInstance.getEntityUniqueId());
+        var appearance = AppearanceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return appearance;
+    }
+
+    public Appearance getAppearanceByEntityInstance(EntityInstance entityInstance) {
+        return getAppearanceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Appearance getAppearanceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getAppearanceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getAppearanceByNameQueries;
 
     static {
@@ -17529,7 +17545,7 @@ public class CoreControl
         getAppearanceByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private Appearance getAppearanceByName(String appearanceName, EntityPermission entityPermission) {
+    public Appearance getAppearanceByName(String appearanceName, EntityPermission entityPermission) {
         return AppearanceFactory.getInstance().getEntityFromQuery(entityPermission, getAppearanceByNameQueries, appearanceName);
     }
 
@@ -17747,8 +17763,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getAppearanceTransferCache().getAppearanceTransfer(appearance);
     }
 
-    public List<AppearanceTransfer> getAppearanceTransfers(UserVisit userVisit) {
-        List<Appearance> appearances = getAppearances();
+    public List<AppearanceTransfer> getAppearanceTransfers(UserVisit userVisit, Collection<Appearance> appearances) {
         List<AppearanceTransfer> appearanceTransfers = new ArrayList<>(appearances.size());
         AppearanceTransferCache appearanceTransferCache = getCoreTransferCaches(userVisit).getAppearanceTransferCache();
 
@@ -17757,6 +17772,10 @@ public class CoreControl
         });
 
         return appearanceTransfers;
+    }
+
+    public List<AppearanceTransfer> getAppearanceTransfers(UserVisit userVisit) {
+        return getAppearanceTransfers(userVisit, getAppearances());
     }
 
     public AppearanceChoicesBean getAppearanceChoices(String defaultAppearanceChoice, Language language, boolean allowNullChoice) {

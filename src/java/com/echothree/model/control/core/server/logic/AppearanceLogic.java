@@ -16,6 +16,10 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.control.user.core.common.spec.AppearanceUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownAppearanceNameException;
 import com.echothree.model.control.core.common.exception.UnknownColorNameException;
 import com.echothree.model.control.core.common.exception.UnknownFontStyleNameException;
@@ -25,6 +29,7 @@ import com.echothree.model.control.core.common.exception.UnknownTextTransformati
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.core.server.entity.TextDecoration;
@@ -32,6 +37,7 @@ import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class AppearanceLogic
@@ -48,10 +54,11 @@ public class AppearanceLogic
     public static AppearanceLogic getInstance() {
         return AppearanceLogicHolder.instance;
     }
-    
-    public Appearance getAppearanceByName(final ExecutionErrorAccumulator eea, final String appearanceName) {
+
+    public Appearance getAppearanceByName(final ExecutionErrorAccumulator eea, final String appearanceName,
+            final EntityPermission entityPermission) {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-        Appearance appearance = coreControl.getAppearanceByName(appearanceName);
+        var appearance = coreControl.getAppearanceByName(appearanceName, entityPermission);
 
         if(appearance == null) {
             handleExecutionError(UnknownAppearanceNameException.class, eea, ExecutionErrors.UnknownAppearanceName.name(), appearanceName);
@@ -59,7 +66,53 @@ public class AppearanceLogic
 
         return appearance;
     }
-    
+
+    public Appearance getAppearanceByName(final ExecutionErrorAccumulator eea, final String appearanceName) {
+        return getAppearanceByName(eea, appearanceName, EntityPermission.READ_ONLY);
+    }
+
+    public Appearance getAppearanceByNameForUpdate(final ExecutionErrorAccumulator eea, final String appearanceName) {
+        return getAppearanceByName(eea, appearanceName, EntityPermission.READ_WRITE);
+    }
+
+    public Appearance getAppearanceByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final AppearanceUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Appearance appearance = null;
+        var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
+        var appearanceName = universalSpec.getAppearanceName();
+        int parameterCount = (appearanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1:
+                if(appearanceName == null) {
+                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Appearance.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        appearance = coreControl.getAppearanceByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    appearance = getAppearanceByName(eea, appearanceName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return appearance;
+    }
+
+    public Appearance getAppearanceByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final AppearanceUniversalSpec universalSpec) {
+        return getAppearanceByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Appearance getAppearanceByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final AppearanceUniversalSpec universalSpec) {
+        return getAppearanceByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
     public Color getColorByName(final ExecutionErrorAccumulator eea, final String colorName) {
         var coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         Color color = coreControl.getColorByName(colorName);
