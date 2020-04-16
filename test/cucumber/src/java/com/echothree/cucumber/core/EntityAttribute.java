@@ -127,6 +127,114 @@ public class EntityAttribute implements En {
                     }
                 });
 
+        When("^the user sets the entity attribute's upper integer range to \"([^\"]*)\"$",
+                (String upperRangeIntegerValue) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setUpperRangeIntegerValue(upperRangeIntegerValue);
+                    }
+                });
+
+        When("^the user sets the entity attribute's upper integer limit to \"([^\"]*)\"$",
+                (String upperLimitIntegerValue) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setUpperLimitIntegerValue(upperLimitIntegerValue);
+                    }
+                });
+
+        When("^the user sets the entity attribute's lower integer limit to \"([^\"]*)\"$",
+                (String lowerLimitIntegerValue) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setLowerLimitIntegerValue(lowerLimitIntegerValue);
+                    }
+                });
+
+        When("^the user sets the entity attribute's lower integer range to \"([^\"]*)\"$",
+                (String lowerRangeIntegerValue) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setLowerRangeIntegerValue(lowerRangeIntegerValue);
+                    }
+                });
+
+        When("^the user sets the entity attribute's upper long range to \"([^\"]*)\"$",
+                (String upperRangeLongValue) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setUpperRangeLongValue(upperRangeLongValue);
+                    }
+                });
+
+        When("^the user sets the entity attribute's upper long limit to \"([^\"]*)\"$",
+                (String upperLimitLongValue) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setUpperLimitLongValue(upperLimitLongValue);
+                    }
+                });
+
+        When("^the user sets the entity attribute's lower long limit to \"([^\"]*)\"$",
+                (String lowerLimitLongValue) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setLowerLimitLongValue(lowerLimitLongValue);
+                    }
+                });
+
+        When("^the user sets the entity attribute's lower long range to \"([^\"]*)\"$",
+                (String lowerRangeLongValue) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setLowerRangeLongValue(lowerRangeLongValue);
+                    }
+                });
+
+        When("^the user sets the entity attribute's description to \"([^\"]*)\"$",
+                (String description) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setDescription(description);
+                    }
+                });
+
         When("^the user sets the entity attribute to (track|not track) revisions when modified$",
                 (String trackRevisions) -> {
                     var persona = CurrentPersona.persona;
