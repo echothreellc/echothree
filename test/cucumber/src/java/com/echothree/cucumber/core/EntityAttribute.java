@@ -223,6 +223,18 @@ public class EntityAttribute implements En {
                     }
                 });
 
+        When("^the user sets the entity attribute's validation pattern to \"([^\"]*)\"$",
+                (String validationPattern) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setValidationPattern(validationPattern);
+                    }
+                });
+
         When("^the user sets the entity attribute's description to \"([^\"]*)\"$",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
