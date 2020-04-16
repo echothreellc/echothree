@@ -247,6 +247,18 @@ public class EntityAttribute implements En {
                     }
                 });
 
+        When("^the user sets the entity attribute to (check|not check) the content web address when requested$",
+                (String checkContentWebAddress) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+
+                    assertThat(createEntityAttributeForm != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setCheckContentWebAddress(Boolean.valueOf(checkContentWebAddress.equals("check")).toString());
+                    }
+                });
+
         When("^the user sets the entity attribute's name to the last entity attribute added$",
                 () -> {
                     var persona = CurrentPersona.persona;
