@@ -106,3 +106,129 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's name to the last entity attribute added
     And the user deletes the entity attribute
     Then no error should occur
+
+  Scenario: Existing employee adds an entity attribute and then deletes it
+    Given the employee Test begins using the application
+    And the user begins entering a new entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's entity attribute type to BOOLEAN
+    And the user sets the entity attribute to track revisions when modified
+    And the user sets the entity attribute's sort order to "1"
+    And the user sets the entity attribute's description to "Test Boolean Attribute"
+    And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins deleting an entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user deletes the entity attribute
+    Then no error should occur
+
+  Scenario: Existing employee adds an entity attribute and then deletes it
+    Given the employee Test begins using the application
+    And the user begins entering a new entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's entity attribute type to COLLECTION
+    And the user sets the entity attribute to track revisions when modified
+    And the user sets the entity attribute's sort order to "1"
+    And the user sets the entity attribute's description to "Test Entity Collection Attribute"
+    And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins deleting an entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user deletes the entity attribute
+    Then no error should occur
+
+  Scenario: Existing employee adds an entity attribute and then deletes it
+    Given the employee Test begins using the application
+    And the user begins entering a new entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's entity attribute type to DATE
+    And the user sets the entity attribute to track revisions when modified
+    And the user sets the entity attribute's sort order to "1"
+    And the user sets the entity attribute's description to "Test Date Attribute"
+    And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins deleting an entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user deletes the entity attribute
+    Then no error should occur
+
+  Scenario: Existing employee adds an entity attribute and then deletes it
+    Given the employee Test begins using the application
+    And the user begins entering a new entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's entity attribute type to TIME
+    And the user sets the entity attribute to track revisions when modified
+    And the user sets the entity attribute's sort order to "1"
+    And the user sets the entity attribute's description to "Test Time Attribute"
+    And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins deleting an entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user deletes the entity attribute
+    Then no error should occur
+
+  Scenario: Existing employee adds an entity attribute and then deletes it
+    Given the employee Test begins using the application
+    And the user begins entering a new entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's entity attribute type to ENTITY
+    And the user sets the entity attribute to track revisions when modified
+    And the user sets the entity attribute's sort order to "1"
+    And the user sets the entity attribute's description to "Test Entity Attribute"
+    And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins deleting an entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user deletes the entity attribute
+    Then no error should occur
+
+  Scenario: Existing employee adds an entity attribute and then deletes it
+    Given the employee Test begins using the application
+    And the user begins entering a new entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's entity attribute type to GEOPOINT
+    And the user sets the entity attribute to track revisions when modified
+    And the user sets the entity attribute's sort order to "1"
+    And the user sets the entity attribute's description to "Test Geo Point Attribute"
+    And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins deleting an entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user deletes the entity attribute
+    Then no error should occur
+
+  Scenario: Existing employee adds an entity attribute and then deletes it
+    Given the employee Test begins using the application
+    And the user begins entering a new entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's entity attribute type to NAME
+    And the user sets the entity attribute to track revisions when modified
+    And the user sets the entity attribute's sort order to "1"
+    And the user sets the entity attribute's description to "Test Name Attribute"
+    And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins deleting an entity attribute
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user deletes the entity attribute
+    Then no error should occur
