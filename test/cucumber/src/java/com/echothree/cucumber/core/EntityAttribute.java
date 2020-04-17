@@ -16,10 +16,14 @@
 
 package com.echothree.cucumber.core;
 
+import com.echothree.control.user.contact.common.ContactUtil;
+import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
+import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
 import com.echothree.cucumber.LastCommandResult;
 import com.echothree.cucumber.user.CurrentPersona;
+import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,6 +36,7 @@ public class EntityAttribute implements En {
 
                     assertThat(persona.createEntityAttributeForm).isNull();
                     assertThat(persona.deleteEntityAttributeForm).isNull();
+                    assertThat(persona.entityAttributeSpec).isNull();
 
                     persona.createEntityAttributeForm = CoreUtil.getHome().getCreateEntityAttributeForm();
                 });
@@ -59,6 +64,7 @@ public class EntityAttribute implements En {
 
                     assertThat(persona.createEntityAttributeForm).isNull();
                     assertThat(persona.deleteEntityAttributeForm).isNull();
+                    assertThat(persona.entityAttributeSpec).isNull();
 
                     persona.deleteEntityAttributeForm = CoreUtil.getHome().getDeleteEntityAttributeForm();
                 });
@@ -75,18 +81,76 @@ public class EntityAttribute implements En {
                     persona.deleteEntityAttributeForm = null;
                 });
 
+        When("^the user begins specifying an entity attribute to edit$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.createEntityAttributeForm).isNull();
+                    assertThat(persona.deleteEntityAttributeForm).isNull();
+                    assertThat(persona.entityAttributeSpec).isNull();
+
+                    persona.entityAttributeSpec = CoreUtil.getHome().getEntityAttributeSpec();
+                });
+
+        When("^the user begins editing the entity attribute$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = persona.entityAttributeSpec;
+
+                    assertThat(spec).isNotNull();
+
+                    var commandForm = CoreUtil.getHome().getEditEntityAttributeForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEditMode(EditMode.LOCK);
+
+                    var commandResult = CoreUtil.getHome().editEntityAttribute(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditEntityAttributeResult)executionResult.getResult();
+
+                    if(!executionResult.getHasErrors()) {
+                        persona.entityAttributeEdit = result.getEdit();
+                    }
+                });
+
+        When("^the user finishes editing the entity attribute$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = persona.entityAttributeSpec;
+                    var edit = persona.entityAttributeEdit;
+
+                    assertThat(edit).isNotNull();
+
+                    var commandForm = CoreUtil.getHome().getEditEntityAttributeForm();
+
+                    commandForm.setSpec(spec);
+                    commandForm.setEdit(edit);
+                    commandForm.setEditMode(EditMode.UPDATE);
+
+                    var commandResult = CoreUtil.getHome().editEntityAttribute(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    persona.entityAttributeSpec = null;
+                    persona.entityAttributeEdit = null;
+                });
+        
         When("^the user sets the entity attribute's component vendor to ([a-zA-Z0-9-_]*)$",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
                     var deleteEntityAttributeForm = persona.deleteEntityAttributeForm;
+                    var entityAttributeSpec = persona.entityAttributeSpec;
 
-                    assertThat(createEntityAttributeForm != null || deleteEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || deleteEntityAttributeForm != null || entityAttributeSpec != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setComponentVendorName(componentVendorName);
                     } else if(deleteEntityAttributeForm != null) {
                         deleteEntityAttributeForm.setComponentVendorName(componentVendorName);
+                    } else {
+                        entityAttributeSpec.setComponentVendorName(componentVendorName);
                     }
                 });
 
@@ -95,13 +159,16 @@ public class EntityAttribute implements En {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
                     var deleteEntityAttributeForm = persona.deleteEntityAttributeForm;
+                    var entityAttributeSpec = persona.entityAttributeSpec;
 
-                    assertThat(createEntityAttributeForm != null || deleteEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || deleteEntityAttributeForm != null || entityAttributeSpec != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setEntityTypeName(entityTypeName);
                     } else if(deleteEntityAttributeForm != null) {
                         deleteEntityAttributeForm.setEntityTypeName(entityTypeName);
+                    } else {
+                        entityAttributeSpec.setEntityTypeName(entityTypeName);
                     }
                 });
 
@@ -110,7 +177,7 @@ public class EntityAttribute implements En {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
 
-                    assertThat(createEntityAttributeForm).isNotNull();
+                    assertThat(createEntityAttributeForm != null).isTrue();
 
                     createEntityAttributeForm.setEntityAttributeTypeName(entityAttributeTypeName);
                 });
@@ -119,11 +186,14 @@ public class EntityAttribute implements En {
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setSortOrder(sortOrder);
+                    } else {
+                        entityAttributeEdit.setSortOrder(sortOrder);
                     }
                 });
 
@@ -131,11 +201,14 @@ public class EntityAttribute implements En {
                 (String upperRangeIntegerValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setUpperRangeIntegerValue(upperRangeIntegerValue);
+                    } else {
+                        entityAttributeEdit.setUpperRangeIntegerValue(upperRangeIntegerValue);
                     }
                 });
 
@@ -143,11 +216,14 @@ public class EntityAttribute implements En {
                 (String upperLimitIntegerValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setUpperLimitIntegerValue(upperLimitIntegerValue);
+                    } else {
+                        entityAttributeEdit.setUpperLimitIntegerValue(upperLimitIntegerValue);
                     }
                 });
 
@@ -155,11 +231,14 @@ public class EntityAttribute implements En {
                 (String lowerLimitIntegerValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setLowerLimitIntegerValue(lowerLimitIntegerValue);
+                    } else {
+                        entityAttributeEdit.setLowerLimitIntegerValue(lowerLimitIntegerValue);
                     }
                 });
 
@@ -167,11 +246,14 @@ public class EntityAttribute implements En {
                 (String lowerRangeIntegerValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setLowerRangeIntegerValue(lowerRangeIntegerValue);
+                    } else {
+                        entityAttributeEdit.setLowerRangeIntegerValue(lowerRangeIntegerValue);
                     }
                 });
 
@@ -179,11 +261,14 @@ public class EntityAttribute implements En {
                 (String upperRangeLongValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setUpperRangeLongValue(upperRangeLongValue);
+                    } else {
+                        entityAttributeEdit.setUpperRangeLongValue(upperRangeLongValue);
                     }
                 });
 
@@ -191,11 +276,14 @@ public class EntityAttribute implements En {
                 (String upperLimitLongValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setUpperLimitLongValue(upperLimitLongValue);
+                    } else {
+                        entityAttributeEdit.setUpperLimitLongValue(upperLimitLongValue);
                     }
                 });
 
@@ -203,11 +291,14 @@ public class EntityAttribute implements En {
                 (String lowerLimitLongValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setLowerLimitLongValue(lowerLimitLongValue);
+                    } else {
+                        entityAttributeEdit.setLowerLimitLongValue(lowerLimitLongValue);
                     }
                 });
 
@@ -215,11 +306,14 @@ public class EntityAttribute implements En {
                 (String lowerRangeLongValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setLowerRangeLongValue(lowerRangeLongValue);
+                    } else {
+                        entityAttributeEdit.setLowerRangeLongValue(lowerRangeLongValue);
                     }
                 });
 
@@ -227,11 +321,14 @@ public class EntityAttribute implements En {
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setValidationPattern(validationPattern);
+                    } else {
+                        entityAttributeEdit.setValidationPattern(validationPattern);
                     }
                 });
 
@@ -239,11 +336,14 @@ public class EntityAttribute implements En {
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
                     if(createEntityAttributeForm != null) {
                         createEntityAttributeForm.setDescription(description);
+                    } else {
+                        entityAttributeEdit.setDescription(description);
                     }
                 });
 
@@ -251,11 +351,15 @@ public class EntityAttribute implements En {
                 (String trackRevisions) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
+                    trackRevisions = Boolean.valueOf(trackRevisions.equals("track")).toString();
                     if(createEntityAttributeForm != null) {
-                        createEntityAttributeForm.setTrackRevisions(Boolean.valueOf(trackRevisions.equals("track")).toString());
+                        createEntityAttributeForm.setTrackRevisions(trackRevisions);
+                    } else {
+                        entityAttributeEdit.setTrackRevisions(trackRevisions);
                     }
                 });
 
@@ -263,11 +367,15 @@ public class EntityAttribute implements En {
                 (String checkContentWebAddress) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
 
-                    assertThat(createEntityAttributeForm != null).isTrue();
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
 
+                    checkContentWebAddress = Boolean.valueOf(checkContentWebAddress.equals("check")).toString();
                     if(createEntityAttributeForm != null) {
-                        createEntityAttributeForm.setCheckContentWebAddress(Boolean.valueOf(checkContentWebAddress.equals("check")).toString());
+                        createEntityAttributeForm.setCheckContentWebAddress(checkContentWebAddress);
+                    } else {
+                        entityAttributeEdit.setCheckContentWebAddress(checkContentWebAddress);
                     }
                 });
 
@@ -276,11 +384,14 @@ public class EntityAttribute implements En {
                     var persona = CurrentPersona.persona;
                     var lastEntityAttributeName = persona.lastEntityAttributeName;
                     var deleteEntityAttributeForm = persona.deleteEntityAttributeForm;
+                    var entityAttributeSpec = persona.entityAttributeSpec;
 
-                    assertThat(deleteEntityAttributeForm != null).isTrue();
+                    assertThat(deleteEntityAttributeForm != null || entityAttributeSpec != null).isTrue();
 
                     if(deleteEntityAttributeForm != null) {
                         deleteEntityAttributeForm.setEntityAttributeName(lastEntityAttributeName);
+                    } else {
+                        entityAttributeSpec.setEntityAttributeName(lastEntityAttributeName);
                     }
                 });
     }

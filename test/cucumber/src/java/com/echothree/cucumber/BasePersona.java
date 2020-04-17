@@ -20,8 +20,10 @@ import com.echothree.control.user.contact.common.edit.ContactEmailAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
 import com.echothree.control.user.contact.common.edit.ContactWebAddressEdit;
+import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
+import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
@@ -54,6 +56,8 @@ public class BasePersona {
     // Core
     public CreateEntityAttributeForm createEntityAttributeForm;
     public DeleteEntityAttributeForm deleteEntityAttributeForm;
+    public EntityAttributeSpec entityAttributeSpec;
+    public EntityAttributeEdit entityAttributeEdit;
 
     public String lastEntityAttributeName;
     public String lastEntityRef;

@@ -7,7 +7,7 @@ Feature: Employee entity attribute
     When the user logs in as an employee with the username "Test E" and password "password" and company "TEST_COMPANY"
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds an entity attribute, edits it, and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHOTHREE
@@ -21,6 +21,15 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's lower integer range to "0"
     And the user sets the entity attribute's description to "Test Integer Attribute"
     And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins specifying an entity attribute to edit
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user begins editing the entity attribute
+    Then no error should occur
+    And the user sets the entity attribute's description to "Test Edited Integer Attribute"
+    And the user finishes editing the entity attribute
     Then no error should occur
     And the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHOTHREE
