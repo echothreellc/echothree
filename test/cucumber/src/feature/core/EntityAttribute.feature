@@ -55,6 +55,8 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's upper long limit to "90"
     And the user sets the entity attribute's lower long limit to "10"
     And the user sets the entity attribute's lower long range to "0"
+    And the user sets the entity attribute's unit of measure kind to BASIC
+    And the user sets the entity attribute's unit of measure type to EACH
     And the user sets the entity attribute's description to "Test Long Attribute"
     And the user adds the new entity attribute
     Then no error should occur
@@ -69,6 +71,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's upper long limit to "950"
     And the user sets the entity attribute's lower long limit to "550"
     And the user sets the entity attribute's lower long range to "500"
+    And the user sets the entity attribute's unit of measure type to DOZEN
     And the user sets the entity attribute's description to "Test Edited Long Attribute"
     And the user finishes editing the entity attribute
     Then no error should occur

@@ -16,8 +16,6 @@
 
 package com.echothree.cucumber.core;
 
-import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
@@ -329,6 +327,36 @@ public class EntityAttribute implements En {
                         createEntityAttributeForm.setValidationPattern(validationPattern);
                     } else {
                         entityAttributeEdit.setValidationPattern(validationPattern);
+                    }
+                });
+
+        When("^the user sets the entity attribute's unit of measure kind to ([a-zA-Z0-9-_]*)$",
+                (String unitOfMeasureKindName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
+
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
+                    } else {
+                        entityAttributeEdit.setUnitOfMeasureKindName(unitOfMeasureKindName);
+                    }
+                });
+
+        When("^the user sets the entity attribute's unit of measure type to ([a-zA-Z0-9-_]*)$",
+                (String unitOfMeasureTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createEntityAttributeForm = persona.createEntityAttributeForm;
+                    var entityAttributeEdit = persona.entityAttributeEdit;
+
+                    assertThat(createEntityAttributeForm != null || entityAttributeEdit != null).isTrue();
+
+                    if(createEntityAttributeForm != null) {
+                        createEntityAttributeForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+                    } else {
+                        entityAttributeEdit.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
                     }
                 });
 
