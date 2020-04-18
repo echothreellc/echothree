@@ -28,6 +28,11 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's name to the last entity attribute added
     And the user begins editing the entity attribute
     Then no error should occur
+    And the user sets the entity attribute to not track revisions when modified
+    And the user sets the entity attribute's upper integer range to "1000"
+    And the user sets the entity attribute's upper integer limit to "950"
+    And the user sets the entity attribute's lower integer limit to "550"
+    And the user sets the entity attribute's lower integer range to "500"
     And the user sets the entity attribute's description to "Test Edited Integer Attribute"
     And the user finishes editing the entity attribute
     Then no error should occur
@@ -52,6 +57,20 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's lower long range to "0"
     And the user sets the entity attribute's description to "Test Long Attribute"
     And the user adds the new entity attribute
+    Then no error should occur
+    And the user begins specifying an entity attribute to edit
+    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's entity type to Item
+    And the user sets the entity attribute's name to the last entity attribute added
+    And the user begins editing the entity attribute
+    Then no error should occur
+    And the user sets the entity attribute to not track revisions when modified
+    And the user sets the entity attribute's upper long range to "1000"
+    And the user sets the entity attribute's upper long limit to "950"
+    And the user sets the entity attribute's lower long limit to "550"
+    And the user sets the entity attribute's lower long range to "500"
+    And the user sets the entity attribute's description to "Test Edited Long Attribute"
+    And the user finishes editing the entity attribute
     Then no error should occur
     And the user begins deleting an entity attribute
     And the user sets the entity attribute's component vendor to ECHOTHREE
