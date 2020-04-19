@@ -21,9 +21,13 @@ import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
 import com.echothree.control.user.contact.common.edit.ContactWebAddressEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
+import com.echothree.control.user.core.common.edit.EntityListItemEdit;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
+import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
+import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
+import com.echothree.control.user.core.common.spec.EntityListItemSpec;
 import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
@@ -59,7 +63,13 @@ public class BasePersona {
     public EntityAttributeSpec entityAttributeSpec;
     public EntityAttributeEdit entityAttributeEdit;
 
+    public CreateEntityListItemForm createEntityListItemForm;
+    public DeleteEntityListItemForm deleteEntityListItemForm;
+    public EntityListItemSpec entityListItemSpec;
+    public EntityListItemEdit entityListItemEdit;
+
     public String lastEntityAttributeName;
+    public String lastEntityListItemName;
     public String lastEntityRef;
 
     // Customer
