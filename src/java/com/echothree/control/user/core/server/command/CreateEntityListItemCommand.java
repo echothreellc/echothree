@@ -70,12 +70,12 @@ public class CreateEntityListItemCommand
     
     @Override
     protected BaseResult execute() {
-        CreateEntityListItemResult result = CoreResultFactory.getCreateEntityListItemResult();
+        var result = CoreResultFactory.getCreateEntityListItemResult();
         EntityListItem entityListItem = null;
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
-        String entityAttributeName = form.getEntityAttributeName();
-        EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var entityAttributeName = form.getEntityAttributeName();
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
 
         if(!hasExecutionErrors()) {
             String entityListItemName = form.getEntityListItemName();
@@ -89,10 +89,11 @@ public class CreateEntityListItemCommand
         }
                 
         if(entityListItem != null) {
+            result.setEntityListItemName(entityListItem.getLastDetail().getEntityListItemName());
             result.setEntityRef(entityListItem.getPrimaryKey().getEntityRef());
         }
         
-        return null;
+        return result;
     }
     
 }
