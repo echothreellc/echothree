@@ -21,11 +21,15 @@ import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
 import com.echothree.control.user.contact.common.edit.ContactWebAddressEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
+import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
+import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
+import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
+import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemSpec;
 import com.echothree.control.user.item.common.form.CreateItemForm;
@@ -58,6 +62,11 @@ public class BasePersona {
     public String lastWebAddressContactMechanismName;
 
     // Core
+    public CreateEntityAttributeGroupForm createEntityAttributeGroupForm;
+    public DeleteEntityAttributeGroupForm deleteEntityAttributeGroupForm;
+    public EntityAttributeGroupSpec entityAttributeGroupSpec;
+    public EntityAttributeGroupEdit entityAttributeGroupEdit;
+
     public CreateEntityAttributeForm createEntityAttributeForm;
     public DeleteEntityAttributeForm deleteEntityAttributeForm;
     public EntityAttributeSpec entityAttributeSpec;
@@ -68,6 +77,7 @@ public class BasePersona {
     public EntityListItemSpec entityListItemSpec;
     public EntityListItemEdit entityListItemEdit;
 
+    public String lastEntityAttributeGroupName;
     public String lastEntityAttributeName;
     public String lastEntityListItemName;
     public String lastEntityRef;
