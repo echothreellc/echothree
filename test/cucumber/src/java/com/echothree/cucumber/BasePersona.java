@@ -21,14 +21,18 @@ import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
 import com.echothree.control.user.contact.common.edit.ContactWebAddressEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
+import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
+import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
+import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
+import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemSpec;
@@ -76,6 +80,11 @@ public class BasePersona {
     public DeleteEntityListItemForm deleteEntityListItemForm;
     public EntityListItemSpec entityListItemSpec;
     public EntityListItemEdit entityListItemEdit;
+
+    public CreateEntityAttributeEntityAttributeGroupForm createEntityAttributeEntityAttributeGroupForm;
+    public DeleteEntityAttributeEntityAttributeGroupForm deleteEntityAttributeEntityAttributeGroupForm;
+    public EntityAttributeEntityAttributeGroupSpec entityAttributeEntityAttributeGroupSpec;
+    public EntityAttributeEntityAttributeGroupEdit entityAttributeEntityAttributeGroupEdit;
 
     public String lastEntityAttributeGroupName;
     public String lastEntityAttributeName;
