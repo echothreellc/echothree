@@ -170,6 +170,7 @@
         </paymentProcessor>
     </paymentProcessors>
     <paymentMethods>
+<!--
         <paymentMethod paymentMethodTypeName="ACCOUNT" paymentMethodName="PURCHASE_ORDER" isDefault="false" sortOrder="3">
             <paymentMethodDescription languageIsoName="en" description="Purchase Order" />
         </paymentMethod>
@@ -184,6 +185,7 @@
         <paymentMethod paymentMethodTypeName="COD" paymentMethodName="COD" isDefault="false" sortOrder="5">
             <paymentMethodDescription languageIsoName="en" description="COD" />
         </paymentMethod>
+-->
         <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="DISCOVER" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="true"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
@@ -216,12 +218,14 @@
                 securityCodeValidationPattern="^[0-9][0-9][0-9]$" requestBilling="true" requireBilling="true" requestIssuer="true" requireIssuer="false">
             <paymentMethodDescription languageIsoName="en" description="American Express" />
         </paymentMethod>
+<!--
         <paymentMethod paymentMethodTypeName="PREPAID" paymentMethodName="CASHIERS_CHECK" isDefault="false" sortOrder="4">
             <paymentMethodDescription languageIsoName="en" description="Cashiers Check" />
         </paymentMethod>
         <paymentMethod paymentMethodTypeName="PREPAID" paymentMethodName="MONEY_ORDER" isDefault="false" sortOrder="4">
             <paymentMethodDescription languageIsoName="en" description="Money Order" />
         </paymentMethod>
+-->
     </paymentMethods>
     <billingAccountRoleTypes>
         <billingAccountRoleType billingAccountRoleTypeName="BILL_FROM" sortOrder="1">
