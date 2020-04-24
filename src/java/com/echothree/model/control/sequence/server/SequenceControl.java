@@ -18,15 +18,18 @@ package com.echothree.model.control.sequence.server;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.sequence.common.SequenceEncoderTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChecksumTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceEncoderTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceTypeChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
+import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceEncoderTypeException;
 import com.echothree.model.control.sequence.common.transfer.SequenceDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
+import com.echothree.model.control.sequence.server.logic.encoder.NoneSequenceEncoder;
 import com.echothree.model.control.sequence.server.transfer.SequenceDescriptionTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTransferCaches;
@@ -1380,7 +1383,23 @@ public class SequenceControl
 
         return chunkSize == null ? defaultChunkSize : chunkSize;
     }
-    
+
+    private String encode(SequenceTypeDetail sequenceTypeDetail, String value) {
+        var sequenceEncoderTypeName = sequenceTypeDetail.getSequenceEncoderType().getSequenceEncoderTypeName();
+        var sequenceEncoderType = SequenceEncoderTypes.valueOf(sequenceEncoderTypeName);
+        String encodedValue;
+
+        switch(sequenceEncoderType) {
+            case NONE:
+                encodedValue = NoneSequenceEncoder.getInstance().encode(value);
+                break;
+            default:
+                throw new UnimplementedSequenceEncoderTypeException();
+        }
+
+        return encodedValue;
+    }
+
     /**
      * @return A unique value for the sequence is returned. Null will be returned when the
      * sequence is exhausted, the length of the mask is not equal to the length of the
@@ -1501,8 +1520,7 @@ public class SequenceControl
                             if(value != null) {
                                 value = new String(valueChars);
 
-                                // TODO: encoding
-                                String encodedValue = value; // placeholder
+                                var encodedValue = encode(sequenceTypeDetail, value);
 
                                 // TODO: checksum
                                 String checksum = ""; // placeholder
