@@ -12,6 +12,9 @@
         <sequenceEncoderType sequenceEncoderTypeName="REVERSE" isDefault="false" sortOrder="1">
             <sequenceEncoderTypeDescription languageIsoName="en" description="Reverse" />
         </sequenceEncoderType>
+        <sequenceEncoderType sequenceEncoderTypeName="REVERSE_SWAP" isDefault="false" sortOrder="1">
+            <sequenceEncoderTypeDescription languageIsoName="en" description="Reverse/Swap" />
+        </sequenceEncoderType>
     </sequenceEncoderTypes>
     <sequenceTypes>
         <sequenceType sequenceTypeName="EVENT_GROUP" prefix="EG" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="NONE"

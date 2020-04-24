@@ -20,5 +20,6 @@ public enum SequenceEncoderTypes {
     
     NONE,
     REVERSE,
-    
+    REVERSE_SWAP,
+
 }
