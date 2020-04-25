@@ -16,15 +16,15 @@
 
 package com.echothree.model.control.sequence.server.logic.encoder;
 
-public class NoneSequenceEncoder
+public class ReverseSwapSequenceEncoder
         implements SequenceEncoder {
 
-    private NoneSequenceEncoder() {
+    private ReverseSwapSequenceEncoder() {
         super();
     }
 
     private static class SequenceEncoderHolder {
-        static SequenceEncoder instance = new NoneSequenceEncoder();
+        static SequenceEncoder instance = new ReverseSwapSequenceEncoder();
     }
 
     public static SequenceEncoder getInstance() {
@@ -33,7 +33,22 @@ public class NoneSequenceEncoder
 
     @Override
     public String encode(String value) {
-        return value;
+        var codePoints = value.codePoints().toArray();
+        var result = new StringBuilder();
+        var length = codePoints.length;
+        var ending = length % 2;
+        var hasExtra = ending == 1;
+
+        for(int i = length - 1; i > (hasExtra ? 0 : -1); i -= 2) {
+            result.appendCodePoint(codePoints[i - 1]);
+            result.appendCodePoint(codePoints[i]);
+        }
+
+        if(hasExtra) {
+            result.appendCodePoint(codePoints[0]);
+        }
+
+        return result.toString();
     }
 
 }

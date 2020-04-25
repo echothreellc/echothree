@@ -30,6 +30,8 @@ import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
 import com.echothree.model.control.sequence.server.logic.encoder.NoneSequenceEncoder;
+import com.echothree.model.control.sequence.server.logic.encoder.ReverseSequenceEncoder;
+import com.echothree.model.control.sequence.server.logic.encoder.ReverseSwapSequenceEncoder;
 import com.echothree.model.control.sequence.server.transfer.SequenceDescriptionTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTransferCache;
 import com.echothree.model.control.sequence.server.transfer.SequenceTransferCaches;
@@ -1392,6 +1394,12 @@ public class SequenceControl
         switch(sequenceEncoderType) {
             case NONE:
                 encodedValue = NoneSequenceEncoder.getInstance().encode(value);
+                break;
+            case REVERSE:
+                encodedValue = ReverseSequenceEncoder.getInstance().encode(value);
+                break;
+            case REVERSE_SWAP:
+                encodedValue = ReverseSwapSequenceEncoder.getInstance().encode(value);
                 break;
             default:
                 throw new UnimplementedSequenceEncoderTypeException();
