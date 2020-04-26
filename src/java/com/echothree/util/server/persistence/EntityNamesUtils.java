@@ -22,7 +22,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
 import com.echothree.model.data.communication.server.factory.CommunicationEventFactory;
 import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
@@ -287,7 +287,7 @@ public class EntityNamesUtils {
     // Entry point from the Identify UC. Permissions have NOT been checked at this point.
     public EntityInstanceAndNames getEntityNames(final Party requestingParty, final String value, final boolean includeEntityInstance) {
         EntityInstanceAndNames result = null;
-        var sequenceType = SequenceTypeLogic.getInstance().identifySequenceType(value);
+        var sequenceType = SequenceGeneratorLogic.getInstance().identifySequenceType(value);
 
         if(sequenceType != null) {
             var sequenceTypeName = sequenceType.getLastDetail().getSequenceTypeName();

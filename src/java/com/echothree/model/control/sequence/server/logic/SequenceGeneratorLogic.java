@@ -36,9 +36,11 @@ import com.echothree.util.server.persistence.SessionFactory;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.EmptyStackException;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Pattern;
 
 public class SequenceGeneratorLogic
         extends BaseLogic {
@@ -54,6 +56,11 @@ public class SequenceGeneratorLogic
     public static SequenceGeneratorLogic getInstance() {
         return SequenceGeneratorLogicHolder.instance;
     }
+
+
+    // --------------------------------------------------------------------------------
+    //   Generation
+    // --------------------------------------------------------------------------------
 
     private final static String numericValues = "0123456789";
     private final static int numericMaxIndex = numericValues.length() - 1;
@@ -281,5 +288,83 @@ public class SequenceGeneratorLogic
 
         return sequence;
     }
+
+    // --------------------------------------------------------------------------------
+    //   Identification
+    // --------------------------------------------------------------------------------
+
+    private StringBuilder getPatternFromMask(final String mask) {
+        char maskChars[] = mask.toCharArray();
+        int maskLength = maskChars.length;
+        StringBuilder pattern = new StringBuilder();
+
+        for(int index = 0 ; index < maskLength ; index++) {
+            char maskChar = maskChars[index];
+
+            switch(maskChar) {
+                case '9': {
+                    pattern.append("[\\p{Digit}]");
+                }
+                break;
+                case 'A': {
+                    pattern.append("\\p{Upper}");
+                }
+                break;
+                case 'Z': {
+                    pattern.append("[\\p{Upper}\\p{Digit}]");
+                }
+                break;
+            }
+        }
+
+        return pattern;
+    }
+
+    private String getPattern(final Sequence sequence) {
+        StringBuilder pattern = new StringBuilder("^");
+        SequenceDetail sequenceDetail = sequence.getLastDetail();
+        SequenceTypeDetail sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
+        String prefix = sequenceTypeDetail.getPrefix();
+        String suffix = sequenceTypeDetail.getSuffix();
+
+        if(prefix != null) {
+            pattern.append(Pattern.quote(prefix));
+        }
+
+        pattern.append(getPatternFromMask(sequenceDetail.getMask()));
+
+        if(suffix != null) {
+            pattern.append(Pattern.quote(suffix));
+        }
+
+        // TODO: Account for a SequenceEncoderType.
+        // TODO: Account for a SequenceChecksumType.
+
+        return pattern.append('$').toString();
+    }
+
+    public SequenceType identifySequenceType(final String value) {
+        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        SequenceType result = null;
+        List<SequenceType> sequenceTypes = sequenceControl.getSequenceTypes();
+
+        for(SequenceType sequenceType : sequenceTypes) {
+            List<Sequence> sequences = sequenceControl.getSequencesBySequenceType(sequenceType);
+
+            for(Sequence sequence : sequences) {
+                if(value.matches(getPattern(sequence))) {
+                    result = sequenceType;
+                    break;
+                }
+            }
+
+            if(result != null) {
+                break;
+            }
+        }
+
+        return result;
+    }
+
 
 }
