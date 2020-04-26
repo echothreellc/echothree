@@ -80,6 +80,11 @@ public class SequenceGeneratorLogic
         return chunkSize == null ? defaultChunkSize : chunkSize;
     }
 
+    // If the SequenceEncoders are ever modified to do anything other than swap characters
+    // around, getPattern(...) will need to have a special version of this. Right now, as it
+    // is used to identify Sequences based on the different masks, those masks must be altered
+    // to generate a regular expressions that's properly formatted for what's done here when
+    // creating new encoded values during generation.
     private String encode(SequenceTypeDetail sequenceTypeDetail, String value) {
         var sequenceEncoderTypeName = sequenceTypeDetail.getSequenceEncoderType().getSequenceEncoderTypeName();
         var sequenceEncoderType = SequenceEncoderTypes.valueOf(sequenceEncoderTypeName);
@@ -324,18 +329,19 @@ public class SequenceGeneratorLogic
         var sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
         var prefix = sequenceTypeDetail.getPrefix();
         var suffix = sequenceTypeDetail.getSuffix();
+        var mask = sequenceDetail.getMask();
 
         if(prefix != null) {
             pattern.append(Pattern.quote(prefix));
         }
 
-        pattern.append(getPatternFromMask(sequenceDetail.getMask()));
+        var encodedMask = encode(sequenceTypeDetail, mask);
+        pattern.append(getPatternFromMask(encodedMask));
 
         if(suffix != null) {
             pattern.append(Pattern.quote(suffix));
         }
 
-        // TODO: Account for a SequenceEncoderType.
         // TODO: Account for a SequenceChecksumType.
 
         return pattern.append('$').toString();
