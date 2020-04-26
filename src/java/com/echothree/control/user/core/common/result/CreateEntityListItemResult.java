@@ -20,8 +20,9 @@ import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateEntityListItemResult
-        extends  EntityRefSpec, BaseResult {
-    
-    // Nothing additional beyond EntityRefSpec, BaseResult
+        extends EntityRefSpec, BaseResult {
+
+    String getEntityListItemName();
+    void setEntityListItemName(String entityListItemName);
     
 }
