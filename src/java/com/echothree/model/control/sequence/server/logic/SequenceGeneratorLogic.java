@@ -27,7 +27,6 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceDetail;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDetail;
-import com.echothree.model.data.sequence.server.entity.SequenceValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -36,7 +35,6 @@ import com.echothree.util.server.persistence.SessionFactory;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.EmptyStackException;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -73,7 +71,7 @@ public class SequenceGeneratorLogic
     private final static ConcurrentMap<Long, Deque<String>> sequenceDeques = new ConcurrentHashMap<>();
 
     private int getChunkSize(SequenceTypeDetail sequenceTypeDetail, SequenceDetail sequenceDetail) {
-        Integer chunkSize = sequenceDetail.getChunkSize();
+        var chunkSize = sequenceDetail.getChunkSize();
 
         if(chunkSize == null) {
             chunkSize = sequenceTypeDetail.getChunkSize();
@@ -110,15 +108,15 @@ public class SequenceGeneratorLogic
      * value, or an invalid character is encountered in the mask.
      */
     public String getNextSequenceValue(Sequence sequence) {
+        var sequenceEntityId = sequence.getPrimaryKey().getEntityId();
+        var sequenceDeque = sequenceDeques.get(sequenceEntityId);
         String result = null;
-        Long sequenceEntityId = sequence.getPrimaryKey().getEntityId();
-        Deque<String> sequenceDeque = sequenceDeques.get(sequenceEntityId);
 
         if(sequenceDeque == null) {
             // Create a new sequenceDeque (aka. a LinkedList), and try to put it into sequenceDeques.
             // If it is already there, the new one is discarded, and the one that was already there
             // is returned.
-            Deque<String> newSequenceDeque = new ArrayDeque<>();
+            var newSequenceDeque = new ArrayDeque<String>();
 
             sequenceDeque = sequenceDeques.putIfAbsent(sequenceEntityId, newSequenceDeque);
             if(sequenceDeque == null) {
@@ -131,34 +129,34 @@ public class SequenceGeneratorLogic
                 result = sequenceDeque.removeFirst();
             } catch (NoSuchElementException nsee1) {
                 var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-                Session sequenceSession = SessionFactory.getInstance().getSession();
-                SequenceValue sequenceValue = sequenceControl.getSequenceValueForUpdateInSession(sequenceSession, sequence);
+                var sequenceSession = SessionFactory.getInstance().getSession();
+                var sequenceValue = sequenceControl.getSequenceValueForUpdateInSession(sequenceSession, sequence);
 
                 if(sequenceValue != null) {
-                    SequenceDetail sequenceDetail = sequence.getLastDetail();
-                    SequenceTypeDetail sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
-                    String prefix = sequenceTypeDetail.getPrefix();
-                    String suffix = sequenceTypeDetail.getSuffix();
-                    int chunkSize = getChunkSize(sequenceTypeDetail, sequenceDetail);
-                    String mask = sequenceDetail.getMask();
-                    char maskChars[] = mask.toCharArray();
-                    String value = sequenceValue.getValue();
-                    int valueLength = value.length();
-                    char valueChars[] = value.toCharArray();
+                    var sequenceDetail = sequence.getLastDetail();
+                    var sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
+                    var prefix = sequenceTypeDetail.getPrefix();
+                    var suffix = sequenceTypeDetail.getSuffix();
+                    var chunkSize = getChunkSize(sequenceTypeDetail, sequenceDetail);
+                    var mask = sequenceDetail.getMask();
+                    var maskChars = mask.toCharArray();
+                    var value = sequenceValue.getValue();
+                    var valueLength = value.length();
+                    var valueChars = value.toCharArray();
 
                     // Mask and its value must be the same length.
                     if(valueLength == mask.length()) {
-                        for(int i = 0; i < chunkSize; i++) {
+                        for(var i = 0; i < chunkSize; i++) {
                             // Step through the string from the right to the left.
-                            boolean forceIncrement = false;
+                            var forceIncrement = false;
 
-                            for(int index = valueLength - 1; index > -1; index--) {
-                                char maskChar = maskChars[index];
-                                char valueChar = valueChars[index];
+                            for(var index = valueLength - 1; index > -1; index--) {
+                                var maskChar = maskChars[index];
+                                var valueChar = valueChars[index];
 
                                 switch(maskChar) {
                                     case '9': {
-                                        int currentIndex = numericValues.indexOf(valueChar);
+                                        var currentIndex = numericValues.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
                                             if(currentIndex == numericMaxIndex) {
@@ -174,7 +172,7 @@ public class SequenceGeneratorLogic
                                     }
                                     break;
                                     case 'A': {
-                                        int currentIndex = alphabeticValues.indexOf(valueChar);
+                                        var currentIndex = alphabeticValues.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
                                             if(currentIndex == alphabeticMaxIndex) {
@@ -190,7 +188,7 @@ public class SequenceGeneratorLogic
                                     }
                                     break;
                                     case 'Z': {
-                                        int currentIndex = alphanumericValues.indexOf(valueChar);
+                                        var currentIndex = alphanumericValues.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
                                             if(currentIndex == alphanumericMaxIndex) {
@@ -228,9 +226,9 @@ public class SequenceGeneratorLogic
                                 var encodedValue = encode(sequenceTypeDetail, value);
 
                                 // TODO: checksum
-                                String checksum = ""; // placeholder
+                                var checksum = ""; // placeholder
 
-                                sequenceDeque.add(new StringBuilder().append(prefix != null ? prefix : "").append(encodedValue).append(checksum).append(suffix != null ? suffix : "").toString());
+                                sequenceDeque.add((prefix != null ? prefix : "") + encodedValue + checksum + (suffix != null ? suffix : ""));
                             }
                         }
 
@@ -256,20 +254,20 @@ public class SequenceGeneratorLogic
     }
 
     public String getNextSequenceValue(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
-        Sequence sequence = getDefaultSequence(eea, sequenceType);
+        var sequence = getDefaultSequence(eea, sequenceType);
 
         return hasExecutionErrors(eea) ? null : getNextSequenceValue(eea, sequence);
     }
 
     public String getNextSequenceValue(final ExecutionErrorAccumulator eea, final String sequenceTypeName) {
-        Sequence sequence = getDefaultSequence(eea, sequenceTypeName);
+        var sequence = getDefaultSequence(eea, sequenceTypeName);
 
         return hasExecutionErrors(eea) ? null : getNextSequenceValue(eea, sequence);
     }
 
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
+        var sequence = sequenceControl.getDefaultSequence(sequenceType);
 
         if(sequence == null) {
             handleExecutionError(UnknownSequenceNameException.class, eea, ExecutionErrors.MissingDefaultSequence.name(), sequenceType.getLastDetail().getSequenceTypeName());
@@ -279,7 +277,7 @@ public class SequenceGeneratorLogic
     }
 
     public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final String sequenceTypeName) {
-        SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
+        var sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
         Sequence sequence = null;
 
         if(!hasExecutionErrors(eea)) {
@@ -294,12 +292,12 @@ public class SequenceGeneratorLogic
     // --------------------------------------------------------------------------------
 
     private StringBuilder getPatternFromMask(final String mask) {
-        char maskChars[] = mask.toCharArray();
-        int maskLength = maskChars.length;
+        var maskChars = mask.toCharArray();
+        var maskLength = maskChars.length;
         StringBuilder pattern = new StringBuilder();
 
-        for(int index = 0 ; index < maskLength ; index++) {
-            char maskChar = maskChars[index];
+        for(var index = 0 ; index < maskLength ; index++) {
+            var maskChar = maskChars[index];
 
             switch(maskChar) {
                 case '9': {
@@ -321,11 +319,11 @@ public class SequenceGeneratorLogic
     }
 
     private String getPattern(final Sequence sequence) {
-        StringBuilder pattern = new StringBuilder("^");
-        SequenceDetail sequenceDetail = sequence.getLastDetail();
-        SequenceTypeDetail sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
-        String prefix = sequenceTypeDetail.getPrefix();
-        String suffix = sequenceTypeDetail.getSuffix();
+        var pattern = new StringBuilder("^");
+        var sequenceDetail = sequence.getLastDetail();
+        var sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
+        var prefix = sequenceTypeDetail.getPrefix();
+        var suffix = sequenceTypeDetail.getSuffix();
 
         if(prefix != null) {
             pattern.append(Pattern.quote(prefix));
@@ -345,13 +343,13 @@ public class SequenceGeneratorLogic
 
     public SequenceType identifySequenceType(final String value) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
+        var sequenceTypes = sequenceControl.getSequenceTypes();
         SequenceType result = null;
-        List<SequenceType> sequenceTypes = sequenceControl.getSequenceTypes();
 
-        for(SequenceType sequenceType : sequenceTypes) {
-            List<Sequence> sequences = sequenceControl.getSequencesBySequenceType(sequenceType);
+        for(var sequenceType : sequenceTypes) {
+            var sequences = sequenceControl.getSequencesBySequenceType(sequenceType);
 
-            for(Sequence sequence : sequences) {
+            for(var sequence : sequences) {
                 if(value.matches(getPattern(sequence))) {
                     result = sequenceType;
                     break;
