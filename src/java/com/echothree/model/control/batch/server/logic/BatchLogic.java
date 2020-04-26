@@ -22,6 +22,7 @@ import com.echothree.model.control.batch.common.exception.UnknownBatchTypeNameEx
 import com.echothree.model.control.batch.server.BatchControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
@@ -108,9 +109,7 @@ public class BatchLogic
         Sequence sequence = getBatchSequence(eea, batchType);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-
-            batchName = sequenceControl.getNextSequenceValue(sequence);
+            batchName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
 
         return batchName;

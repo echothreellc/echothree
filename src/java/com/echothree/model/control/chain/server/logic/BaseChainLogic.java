@@ -23,8 +23,7 @@ import com.echothree.model.control.chain.server.ChainControl;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
@@ -143,15 +142,14 @@ public class BaseChainLogic
         
         // The lack of a defaultChainActionSet is not a reportable error - it just silently avoids creating a Chain Instance.
         if(defaultChainActionSet != null) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             Sequence sequence = chain.getLastDetail().getChainInstanceSequence();
 
             if(sequence == null) {
-                sequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.CHAIN_INSTANCE.name());
+                sequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.CHAIN_INSTANCE.name());
             }
 
             if(!hasExecutionErrors(eea)) {
-                chainInstance = chainControl.createChainInstance(sequenceControl.getNextSequenceValue(sequence), defaultChainActionSet, createdBy);
+                chainInstance = chainControl.createChainInstance(SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), defaultChainActionSet, createdBy);
             }
         }
         

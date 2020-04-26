@@ -18,6 +18,7 @@ package com.echothree.model.control.workeffort.server.logic;
 
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.sequence.server.entity.Sequence;
@@ -204,9 +205,8 @@ public class WorkEffortLogic {
     }
 
     public WorkEffort createWorkEffort(final PreparedWorkEffort preparedWorkEffort, final EntityInstance owningEntityInstance, final BasePK createdBy) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         var workEffortControl = (WorkEffortControl)Session.getModelController(WorkEffortControl.class);
-        String workEffortName = sequenceControl.getNextSequenceValue(preparedWorkEffort.getWorkEffortSequence());
+        String workEffortName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(preparedWorkEffort.getWorkEffortSequence());
         
         WorkEffort workEffort = workEffortControl.createWorkEffort(workEffortName, owningEntityInstance, preparedWorkEffort.getWorkEffortScope(),
                 preparedWorkEffort.getScheduledTime(), null, null, preparedWorkEffort.getEstimatedTimeAllowed(), preparedWorkEffort.getMaximumTimeAllowed(),

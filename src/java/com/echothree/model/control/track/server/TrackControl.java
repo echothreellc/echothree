@@ -19,6 +19,7 @@ package com.echothree.model.control.track.server;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.track.common.choice.TrackChoicesBean;
 import com.echothree.model.control.track.common.choice.TrackStatusChoicesBean;
 import com.echothree.model.control.track.common.transfer.TrackDescriptionTransfer;
@@ -28,7 +29,6 @@ import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
 import com.echothree.model.control.track.server.transfer.TrackDescriptionTransferCache;
 import com.echothree.model.control.track.server.transfer.TrackTransferCache;
 import com.echothree.model.control.track.server.transfer.TrackTransferCaches;
-import com.echothree.model.control.track.server.transfer.UserVisitTrackTransferCache;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -93,7 +93,7 @@ public class TrackControl
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
-        String trackName = sequenceControl.getNextSequenceValue(sequence);
+        String trackName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createTrack(trackName, value, isDefault, sortOrder, createdBy);
     }

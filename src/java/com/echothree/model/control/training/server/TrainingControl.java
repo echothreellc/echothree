@@ -23,6 +23,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.training.common.choice.PartyTrainingClassStatusChoicesBean;
 import com.echothree.model.control.training.common.choice.TrainingClassChoicesBean;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
@@ -1908,7 +1909,7 @@ public class TrainingControl
     public PartyTrainingClass createPartyTrainingClass(Party party, TrainingClass trainingClass, Long completedTime, Long validUntilTime, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.PARTY_TRAINING_CLASS.name());
-        String partyTrainingClassName = sequenceControl.getNextSequenceValue(sequence);
+        String partyTrainingClassName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createPartyTrainingClass(partyTrainingClassName, party, trainingClass, completedTime, validUntilTime, createdBy);
     }

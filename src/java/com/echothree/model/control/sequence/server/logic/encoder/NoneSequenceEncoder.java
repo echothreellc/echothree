@@ -14,12 +14,26 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.sequence.common;
+package com.echothree.model.control.sequence.server.logic.encoder;
 
-public enum SequenceEncoderTypes {
-    
-    NONE,
-    REVERSE,
-    REVERSE_SWAP,
+public class NoneSequenceEncoder
+        implements SequenceEncoder {
+
+    private NoneSequenceEncoder() {
+        super();
+    }
+
+    private static class SequenceEncoderHolder {
+        static SequenceEncoder instance = new NoneSequenceEncoder();
+    }
+
+    public static SequenceEncoder getInstance() {
+        return SequenceEncoderHolder.instance;
+    }
+
+    @Override
+    public String encode(String value) {
+        return value;
+    }
 
 }

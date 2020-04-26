@@ -17,8 +17,9 @@
 package com.echothree.model.control.workrequirement.server.logic;
 
 import com.echothree.model.control.core.server.CoreControl;
-import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
+import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
@@ -92,7 +93,7 @@ public class WorkRequirementLogic {
             }
         }
 
-        String workRequirementName = sequenceControl.getNextSequenceValue(workRequirementSequence);
+        String workRequirementName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(workRequirementSequence);
         Long startTime = session.START_TIME_LONG;
         Long estimatedTimeAllowed = workRequirementScopeDetail.getEstimatedTimeAllowed();
 

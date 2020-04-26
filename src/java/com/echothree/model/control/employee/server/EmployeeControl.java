@@ -46,6 +46,9 @@ import com.echothree.model.control.employee.common.transfer.TerminationReasonDes
 import com.echothree.model.control.employee.common.transfer.TerminationReasonTransfer;
 import com.echothree.model.control.employee.common.transfer.TerminationTypeDescriptionTransfer;
 import com.echothree.model.control.employee.common.transfer.TerminationTypeTransfer;
+import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
+import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
+import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.employee.server.transfer.EmployeeTransferCache;
 import com.echothree.model.control.employee.server.transfer.EmployeeTransferCaches;
 import com.echothree.model.control.employee.server.transfer.EmployeeTypeDescriptionTransferCache;
@@ -68,10 +71,7 @@ import com.echothree.model.control.employee.server.transfer.TerminationTypeDescr
 import com.echothree.model.control.employee.server.transfer.TerminationTypeTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
-import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
-import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.common.pk.EmployeeTypePK;
 import com.echothree.model.data.employee.common.pk.EmploymentPK;
@@ -1899,7 +1899,7 @@ public class EmployeeControl
             BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.LEAVE.name());
-        String leaveName = sequenceControl.getNextSequenceValue(sequence);
+        String leaveName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createLeave(leaveName, party, companyParty, leaveType, leaveReason, startTime, endTime, totalTime, createdBy);
     }
@@ -3101,7 +3101,7 @@ public class EmployeeControl
             TerminationReason terminationReason, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EMPLOYMENT.name());
-        String employmentName = sequenceControl.getNextSequenceValue(sequence);
+        String employmentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createEmployment(employmentName, party, companyParty, startTime, endTime, terminationType, terminationReason, createdBy);
     }

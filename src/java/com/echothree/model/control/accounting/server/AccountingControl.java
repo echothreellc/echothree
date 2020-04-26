@@ -23,6 +23,7 @@ import com.echothree.model.control.accounting.common.choice.GlAccountClassChoice
 import com.echothree.model.control.accounting.common.choice.GlAccountTypeChoicesBean;
 import com.echothree.model.control.accounting.common.choice.GlResourceTypeChoicesBean;
 import com.echothree.model.control.accounting.common.choice.ItemAccountingCategoryChoicesBean;
+import com.echothree.model.control.accounting.common.choice.SymbolPositionChoicesBean;
 import com.echothree.model.control.accounting.common.choice.TransactionGroupStatusChoicesBean;
 import com.echothree.model.control.accounting.common.transfer.CurrencyDescriptionTransfer;
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
@@ -37,6 +38,8 @@ import com.echothree.model.control.accounting.common.transfer.GlResourceTypeDesc
 import com.echothree.model.control.accounting.common.transfer.GlResourceTypeTransfer;
 import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryDescriptionTransfer;
 import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryTransfer;
+import com.echothree.model.control.accounting.common.transfer.SymbolPositionDescriptionTransfer;
+import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeDescriptionTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeTransfer;
@@ -48,6 +51,8 @@ import com.echothree.model.control.accounting.common.transfer.TransactionGroupTr
 import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTypeDescriptionTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTypeTransfer;
+import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE;
+import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS;
 import com.echothree.model.control.accounting.server.transfer.AccountingTransferCaches;
 import com.echothree.model.control.accounting.server.transfer.CurrencyDescriptionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.GlAccountCategoryDescriptionTransferCache;
@@ -61,6 +66,8 @@ import com.echothree.model.control.accounting.server.transfer.GlResourceTypeDesc
 import com.echothree.model.control.accounting.server.transfer.GlResourceTypeTransferCache;
 import com.echothree.model.control.accounting.server.transfer.ItemAccountingCategoryDescriptionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.ItemAccountingCategoryTransferCache;
+import com.echothree.model.control.accounting.server.transfer.SymbolPositionDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.SymbolPositionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTransferCache;
 import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTypeDescriptionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTypeTransferCache;
@@ -71,21 +78,14 @@ import com.echothree.model.control.accounting.server.transfer.TransactionGroupTr
 import com.echothree.model.control.accounting.server.transfer.TransactionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.TransactionTypeDescriptionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.TransactionTypeTransferCache;
+import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.financial.server.FinancialControl;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
-import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE;
-import static com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS;
-import com.echothree.model.control.accounting.common.choice.SymbolPositionChoicesBean;
-import com.echothree.model.control.accounting.common.transfer.SymbolPositionDescriptionTransfer;
-import com.echothree.model.control.accounting.common.transfer.SymbolPositionTransfer;
-import com.echothree.model.control.accounting.server.transfer.SymbolPositionDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.SymbolPositionTransferCache;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.GlAccountCategoryPK;
 import com.echothree.model.data.accounting.common.pk.GlAccountClassPK;
@@ -4724,7 +4724,7 @@ public class AccountingControl
     public TransactionGroup createTransactionGroup(BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION_GROUP.name());
-        String transactionGroupName = sequenceControl.getNextSequenceValue(sequence);
+        String transactionGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         TransactionGroup transactionGroup = createTransactionGroup(transactionGroupName, createdBy);
         
@@ -4889,7 +4889,7 @@ public class AccountingControl
             BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRANSACTION.name());
-        String transactionName = sequenceControl.getNextSequenceValue(sequence);
+        String transactionName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createTransaction(transactionName, groupParty, transactionGroup, transactionType, postingTime, createdBy);
     }

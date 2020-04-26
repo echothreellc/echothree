@@ -29,6 +29,7 @@ import com.echothree.model.control.payment.common.PaymentConstants;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.payment.server.logic.BillingAccountLogic;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.term.common.TermConstants;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -145,9 +146,7 @@ public class InvoiceLogic
         Sequence sequence = getInvoiceSequence(eea, invoiceType);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-            
-            invoiceName = sequenceControl.getNextSequenceValue(sequence);
+            invoiceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
         
         return invoiceName;

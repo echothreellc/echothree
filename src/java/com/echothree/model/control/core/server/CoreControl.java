@@ -164,7 +164,6 @@ import com.echothree.model.control.core.server.transfer.EntityAttributeGroupDesc
 import com.echothree.model.control.core.server.transfer.EntityAttributeGroupTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityAttributeTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityCollectionAttributeTransferCache;
-import com.echothree.model.control.core.server.transfer.EntityInstanceTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityIntegerRangeDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityIntegerRangeTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityListItemDescriptionTransferCache;
@@ -209,6 +208,7 @@ import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.tag.server.TagControl;
 import com.echothree.model.control.workeffort.server.WorkEffortControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
@@ -578,7 +578,6 @@ import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.factory.PartyFactory;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
@@ -3394,7 +3393,7 @@ public class CoreControl
             
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
                 Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.EVENT_GROUP.name());
-                String eventGroupName = sequenceControl.getNextSequenceValue(sequence);
+                String eventGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
                 
                 eventGroup = createEventGroup(eventGroupName, createdBy);
 
@@ -12353,7 +12352,7 @@ public class CoreControl
         if(!eea.hasExecutionErrors()) {
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.BASE_ENCRYPTION_KEY.name());
-            String baseEncryptionKeyName = sequenceControl.getNextSequenceValue(sequence);
+            String baseEncryptionKeyName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
             String sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
             baseEncryptionKey = createBaseEncryptionKey(baseEncryptionKeyName, sha1Hash, createdBy);
 
@@ -12651,7 +12650,7 @@ public class CoreControl
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.EVENT_SUBSCRIBER.name());
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
-        String eventSubscriberName = sequenceControl.getNextSequenceValue(sequence);
+        String eventSubscriberName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createEventSubscriber(eventSubscriberName, entityInstance, description, sortOrder, createdBy);
     }

@@ -65,7 +65,7 @@ public class SequenceLogic
         Sequence sequence = null;
         
         if(sequenceName == null) {
-            sequenceName = getNextSequenceValue(eea, SequenceTypes.SEQUENCE.name());
+            sequenceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, SequenceTypes.SEQUENCE.name());
         }
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -131,46 +131,6 @@ public class SequenceLogic
         }
 
         return sequence;
-    }
-    
-    public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
-
-        if(sequence == null) {
-            handleExecutionError(UnknownSequenceNameException.class, eea, ExecutionErrors.MissingDefaultSequence.name(), sequenceType.getLastDetail().getSequenceTypeName());
-        }
-
-        return sequence;
-    }
-    
-    public Sequence getDefaultSequence(final ExecutionErrorAccumulator eea, final String sequenceTypeName) {
-        SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(eea, sequenceTypeName);
-        Sequence sequence = null;
-        
-        if(!hasExecutionErrors(eea)) {
-            sequence = getDefaultSequence(eea, sequenceType);
-        }
-        
-        return sequence;
-    }
-    
-    public String getNextSequenceValue(final ExecutionErrorAccumulator eea, final Sequence sequence) {
-        var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-        
-        return sequenceControl.getNextSequenceValue(sequence);
-    }
-    
-    public String getNextSequenceValue(final ExecutionErrorAccumulator eea, final SequenceType sequenceType) {
-        Sequence sequence = getDefaultSequence(eea, sequenceType);
-        
-        return hasExecutionErrors(eea) ? null : getNextSequenceValue(eea, sequence);
-    }
-    
-    public String getNextSequenceValue(final ExecutionErrorAccumulator eea, final String sequenceTypeName) {
-        Sequence sequence = getDefaultSequence(eea, sequenceTypeName);
-        
-        return hasExecutionErrors(eea) ? null : getNextSequenceValue(eea, sequence);
     }
     
 }

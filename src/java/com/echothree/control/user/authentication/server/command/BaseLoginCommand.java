@@ -16,13 +16,12 @@
 
 package com.echothree.control.user.authentication.server.command;
 
-
-import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
+import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.user.common.UserConstants;
@@ -48,10 +47,10 @@ import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
 import com.echothree.model.data.user.server.entity.UserLoginStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.value.UserKeyDetailValue;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.ExecutionWarnings;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.persistence.Session;
@@ -187,7 +186,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         userLoginStatus.setLastLoginTime(session.START_TIME_LONG);
         
         if(partyContactMechanism == null) {
-            String contactMechanismName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+            String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
             ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
             ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName,
                     contactMechanismType, Boolean.FALSE, partyPK);

@@ -18,11 +18,11 @@ package com.echothree.model.control.sequence.server;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.server.OfferControl;
+import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChecksumTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceEncoderTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceTypeChoicesBean;
-import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.transfer.SequenceDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
@@ -71,18 +71,11 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.SessionFactory;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.EmptyStackException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public class SequenceControl
         extends BaseModelControl {
@@ -1355,177 +1348,6 @@ public class SequenceControl
     
     public SequenceValue getSequenceValueForUpdate(Sequence sequence) {
         return getSequenceValueForUpdateInSession(session, sequence);
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Utilities
-    // --------------------------------------------------------------------------------
-    
-    private final static String numericValues = "0123456789";
-    private final static int numericMaxIndex = numericValues.length() - 1;
-    private final static String alphabeticValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private final static int alphabeticMaxIndex = alphabeticValues.length() - 1;
-    private final static String alphanumericValues = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private final static int alphanumericMaxIndex = alphanumericValues.length() - 1;
-    private final static int defaultChunkSize = 10;
-    
-    private final static ConcurrentMap<Long, Deque<String>> sequenceDeques = new ConcurrentHashMap<>();
-    
-    private int getChunkSize(SequenceTypeDetail sequenceTypeDetail, SequenceDetail sequenceDetail) {
-        Integer chunkSize = sequenceDetail.getChunkSize();
-
-        if(chunkSize == null) {
-            chunkSize = sequenceTypeDetail.getChunkSize();
-        }
-
-        return chunkSize == null ? defaultChunkSize : chunkSize;
-    }
-    
-    /**
-     * @return A unique value for the sequence is returned. Null will be returned when the
-     * sequence is exhausted, the length of the mask is not equal to the length of the
-     * value, or an invalid character is encountered in the mask.
-     */
-    public String getNextSequenceValue(Sequence sequence) {
-        String result = null;
-        Long sequenceEntityId = sequence.getPrimaryKey().getEntityId();
-        Deque<String> sequenceDeque = sequenceDeques.get(sequenceEntityId);
-
-        if(sequenceDeque == null) {
-            // Create a new sequenceDeque (aka. a LinkedList), and try to put it into sequenceDeques.
-            // If it is already there, the new one is discarded, and the one that was already there
-            // is returned.
-            Deque<String> newSequenceDeque = new ArrayDeque<>();
-            
-            sequenceDeque = sequenceDeques.putIfAbsent(sequenceEntityId, newSequenceDeque);
-            if(sequenceDeque == null) {
-                sequenceDeque = newSequenceDeque;
-            }
-        }
-
-        synchronized(sequenceDeque) {
-            try {
-                result = sequenceDeque.removeFirst();
-            } catch (NoSuchElementException nsee1) {
-                Session sequenceSession = SessionFactory.getInstance().getSession();
-                SequenceValue sequenceValue = getSequenceValueForUpdateInSession(sequenceSession, sequence);
-
-                if(sequenceValue != null) {
-                    SequenceDetail sequenceDetail = sequence.getLastDetail();
-                    SequenceTypeDetail sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
-                    String prefix = sequenceTypeDetail.getPrefix();
-                    String suffix = sequenceTypeDetail.getSuffix();
-                    int chunkSize = getChunkSize(sequenceTypeDetail, sequenceDetail);
-                    String mask = sequenceDetail.getMask();
-                    char maskChars[] = mask.toCharArray();
-                    String value = sequenceValue.getValue();
-                    int valueLength = value.length();
-                    char valueChars[] = value.toCharArray();
-
-                    // Mask and its value must be the same length.
-                    if(valueLength == mask.length()) {
-                        for(int i = 0; i < chunkSize; i++) {
-                            // Step through the string from the right to the left.
-                            boolean forceIncrement = false;
-
-                            for(int index = valueLength - 1; index > -1; index--) {
-                                char maskChar = maskChars[index];
-                                char valueChar = valueChars[index];
-
-                                switch(maskChar) {
-                                    case '9': {
-                                        int currentIndex = numericValues.indexOf(valueChar);
-                                        if(currentIndex != -1) {
-                                            int newCharIndex;
-                                            if(currentIndex == numericMaxIndex) {
-                                                newCharIndex = 0;
-                                                forceIncrement = true;
-                                            } else {
-                                                newCharIndex = currentIndex + 1;
-                                            }
-                                            valueChars[index] = numericValues.charAt(newCharIndex);
-                                        } else {
-                                            value = null;
-                                        }
-                                    }
-                                    break;
-                                    case 'A': {
-                                        int currentIndex = alphabeticValues.indexOf(valueChar);
-                                        if(currentIndex != -1) {
-                                            int newCharIndex;
-                                            if(currentIndex == alphabeticMaxIndex) {
-                                                newCharIndex = 0;
-                                                forceIncrement = true;
-                                            } else {
-                                                newCharIndex = currentIndex + 1;
-                                            }
-                                            valueChars[index] = alphabeticValues.charAt(newCharIndex);
-                                        } else {
-                                            value = null;
-                                        }
-                                    }
-                                    break;
-                                    case 'Z': {
-                                        int currentIndex = alphanumericValues.indexOf(valueChar);
-                                        if(currentIndex != -1) {
-                                            int newCharIndex;
-                                            if(currentIndex == alphanumericMaxIndex) {
-                                                newCharIndex = 0;
-                                                forceIncrement = true;
-                                            } else {
-                                                newCharIndex = currentIndex + 1;
-                                            }
-                                            valueChars[index] = alphanumericValues.charAt(newCharIndex);
-                                        } else {
-                                            value = null;
-                                        }
-                                    }
-                                    break;
-                                }
-
-                                // If an error occurred, or we do not need to increment any other positions in
-                                // the sequences value, exit.
-                                if((value == null) || !forceIncrement) {
-                                    break;
-                                }
-
-                                // If we reach the start of the sequences value, and have not yet exited, the
-                                // sequence is at its maximum possible value, exit.
-                                if(index == 0) {
-                                    value = null;
-                                }
-
-                                forceIncrement = false;
-                            }
-
-                            if(value != null) {
-                                value = new String(valueChars);
-
-                                // TODO: encoding
-                                String encodedValue = value; // placeholder
-
-                                // TODO: checksum
-                                String checksum = ""; // placeholder
-
-                                sequenceDeque.add(new StringBuilder().append(prefix != null ? prefix : "").append(encodedValue).append(checksum).append(suffix != null ? suffix : "").toString());
-                            }
-                        }
-
-                        sequenceValue.setValue(value);
-
-                        try {
-                            result = sequenceDeque.removeFirst();
-                        } catch (EmptyStackException ese2) {
-                            // Shouldn't happen, if it does, result stays null
-                        }
-                    }
-                }
-
-                sequenceSession.close();
-            }
-        }
-
-        return result;
     }
     
 }

@@ -27,7 +27,7 @@ import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
-import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -153,11 +153,11 @@ public class ItemLogic
         var itemSequence = itemCategory.getLastDetail().getItemSequence();
         
         if(itemSequence == null) {
-            itemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ITEM.name());
+            itemSequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ITEM.name());
         }
         
         if(!hasExecutionErrors(eea)) {
-            itemName = SequenceLogic.getInstance().getNextSequenceValue(eea, itemSequence);
+            itemName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, itemSequence);
         } else {
             handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
                     SequenceTypes.ITEM.name());
