@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.document.server;
 
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.document.common.choice.DocumentChoicesBean;
 import com.echothree.model.control.document.common.choice.DocumentTypeChoicesBean;
 import com.echothree.model.control.document.common.choice.DocumentTypeUsageTypeChoicesBean;
@@ -40,6 +40,7 @@ import com.echothree.model.control.document.server.transfer.PartyDocumentTransfe
 import com.echothree.model.control.document.server.transfer.PartyTypeDocumentTypeUsageTypeTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.common.pk.MimeTypeUsageTypePK;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -1343,7 +1344,7 @@ public class DocumentControl
     public Document createDocument(DocumentType documentType, MimeType mimeType, Integer pages, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.DOCUMENT.name()));
-        String documentName = sequenceControl.getNextSequenceValue(sequence);
+        String documentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createDocument(documentName, documentType, mimeType, pages, createdBy);
     }

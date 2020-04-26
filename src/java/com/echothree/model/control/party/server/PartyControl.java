@@ -96,6 +96,7 @@ import com.echothree.model.control.search.server.SearchControl;
 import com.echothree.model.control.security.server.SecurityControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.training.server.TrainingControl;
 import com.echothree.model.control.user.server.UserControl;
@@ -1858,7 +1859,7 @@ public class PartyControl
                 Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
                 
                 if(sequence != null) {
-                    partyName = sequenceControl.getNextSequenceValue(sequence);
+                    partyName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
                 }
             }
         }

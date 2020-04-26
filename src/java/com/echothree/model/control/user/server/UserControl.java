@@ -22,6 +22,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.common.choice.RecoveryQuestionChoicesBean;
 import com.echothree.model.control.user.common.choice.UserVisitGroupStatusChoicesBean;
@@ -456,7 +457,7 @@ public class UserControl
             
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
                 Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.USER_VISIT_GROUP.name());
-                String userVisitGroupName = sequenceControl.getNextSequenceValue(sequence);
+                String userVisitGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
                 
                 userVisitGroup = createUserVisitGroup(userVisitGroupName, createdBy);
 

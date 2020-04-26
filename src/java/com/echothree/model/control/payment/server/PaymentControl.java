@@ -50,8 +50,9 @@ import com.echothree.model.control.payment.server.transfer.PaymentProcessorDescr
 import com.echothree.model.control.payment.server.transfer.PaymentProcessorTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
-import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
+import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
@@ -1812,7 +1813,7 @@ public class PaymentControl
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.PARTY_PAYMENT_METHOD.name());
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceType);
-        String partyPaymentMethodName = sequenceControl.getNextSequenceValue(sequence);
+        String partyPaymentMethodName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createPartyPaymentMethod(partyPaymentMethodName, party, description, paymentMethod, deleteWhenUnused, isDefault,
                 sortOrder, createdBy);
@@ -2692,7 +2693,7 @@ public class PaymentControl
     public BillingAccount createBillingAccount(final Party billFrom, final Currency currency, final String reference, final String description, final BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(billFrom.getLastDetail().getPartyType().getBillingAccountSequenceType());
-        String billingAccountName = sequenceControl.getNextSequenceValue(sequence);
+        String billingAccountName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
          return createBillingAccount(billingAccountName, currency, reference, description, createdBy);
     }

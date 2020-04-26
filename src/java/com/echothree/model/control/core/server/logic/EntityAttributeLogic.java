@@ -66,7 +66,7 @@ import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
 import com.echothree.model.control.sequence.server.SequenceControl;
-import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -202,7 +202,7 @@ public class EntityAttributeLogic
             var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
             Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE.name());
 
-            entityAttributeName = sequenceControl.getNextSequenceValue(sequence);
+            entityAttributeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
 
         EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
@@ -499,11 +499,11 @@ public class EntityAttributeLogic
                 Sequence entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
 
                 if(entityListItemSequence == null) {
-                    entityListItemSequence = SequenceLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ENTITY_LIST_ITEM.name());
+                    entityListItemSequence = SequenceGeneratorLogic.getInstance().getDefaultSequence(eea, SequenceTypes.ENTITY_LIST_ITEM.name());
                 }
 
                 if(eea != null && !hasExecutionErrors(eea)) {
-                    entityListItemName = SequenceLogic.getInstance().getNextSequenceValue(eea, entityListItemSequence);
+                    entityListItemName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(eea, entityListItemSequence);
                 } else {
                     handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
                             SequenceTypes.ENTITY_LIST_ITEM.name());

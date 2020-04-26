@@ -36,6 +36,7 @@ import com.echothree.model.control.communication.server.transfer.CommunicationTr
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPurposePK;
 import com.echothree.model.data.communication.common.pk.CommunicationSourcePK;
@@ -743,7 +744,7 @@ public class CommunicationControl
             PartyContactMechanism partyContactMechanism, Document document, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.COMMUNICATION_EVENT.name()));
-        String communicationEventName = sequenceControl.getNextSequenceValue(sequence);
+        String communicationEventName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCommunicationEvent(communicationEventName, communicationEventType, communicationSource, communicationEventPurpose,
                 originalCommunicationEvent, parentCommunicationEvent, partyContactMechanism, document, createdBy);

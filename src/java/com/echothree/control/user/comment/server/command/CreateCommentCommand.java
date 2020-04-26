@@ -25,6 +25,7 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.Comment;
@@ -37,12 +38,12 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -116,7 +117,7 @@ public class CreateCommentCommand
                 commentSequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.COMMENT.name());
             }
             
-            commentName = sequenceControl.getNextSequenceValue(commentSequence);
+            commentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(commentSequence);
             
             Comment comment = commentControl.createComment(commentName, commentType, commentedEntityInstance,
                     commentedByEntityInstance, language == null? getPreferredLanguage(): language, description, mimeType, createdBy);

@@ -17,9 +17,9 @@
 package com.echothree.model.control.forum.server;
 
 import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.forum.common.choice.ForumChoicesBean;
@@ -65,6 +65,7 @@ import com.echothree.model.control.forum.server.transfer.ForumTransferCache;
 import com.echothree.model.control.forum.server.transfer.ForumTransferCaches;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -2597,7 +2598,7 @@ public class ForumControl
             sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_THREAD.name());
         }
         
-        return createForumThread(sequenceControl.getNextSequenceValue(sequence), icon, postedTime, sortOrder, createdBy);
+        return createForumThread(SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), icon, postedTime, sortOrder, createdBy);
     }
     
     public ForumThread createForumThread(String forumThreadName, Icon icon, Long postedTime, Integer sortOrder, BasePK createdBy) {
@@ -2824,7 +2825,7 @@ public class ForumControl
             sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.FORUM_MESSAGE.name());
         }
         
-        return createForumMessage(sequenceControl.getNextSequenceValue(sequence), forumThread, forumMessageType, parentForumMessage,
+        return createForumMessage(SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), forumThread, forumMessageType, parentForumMessage,
                 icon, postedTime, createdBy);
     }
     

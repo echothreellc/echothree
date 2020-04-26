@@ -36,6 +36,7 @@ import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -164,9 +165,7 @@ public class OrderLogic
         }
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
-
-            orderName = sequenceControl.getNextSequenceValue(sequence);
+            orderName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         }
 
         return orderName;

@@ -34,6 +34,9 @@ import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeDescriptionTransfer;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeTransfer;
 import com.echothree.model.control.printer.common.transfer.PrinterTransfer;
+import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
+import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
+import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
 import com.echothree.model.control.printer.server.transfer.PartyPrinterGroupUseTransferCache;
 import com.echothree.model.control.printer.server.transfer.PrinterDescriptionTransferCache;
 import com.echothree.model.control.printer.server.transfer.PrinterGroupDescriptionTransferCache;
@@ -43,12 +46,9 @@ import com.echothree.model.control.printer.server.transfer.PrinterGroupUseTypeDe
 import com.echothree.model.control.printer.server.transfer.PrinterGroupUseTypeTransferCache;
 import com.echothree.model.control.printer.server.transfer.PrinterTransferCache;
 import com.echothree.model.control.printer.server.transfer.PrinterTransferCaches;
-import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
-import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
-import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
+import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.document.common.pk.DocumentPK;
 import com.echothree.model.data.document.server.entity.Document;
@@ -1002,7 +1002,7 @@ public class PrinterControl
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
-        String printerGroupJobName = sequenceControl.getNextSequenceValue(sequence);
+        String printerGroupJobName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createPrinterGroupJob(printerGroupJobName, printerGroup, document, copies, priority, createdBy);
     }

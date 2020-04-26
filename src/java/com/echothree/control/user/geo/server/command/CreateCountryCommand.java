@@ -28,7 +28,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
@@ -137,7 +137,7 @@ public class CreateCountryCommand
 
                                 if(postalAddressFormat != null) {
                                     BasePK createdBy = getPartyPK();
-                                    String geoCodeName = SequenceLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
+                                    String geoCodeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.GEO_CODE.name());
                                     String telephoneCode = form.getTelephoneCode();
                                     String areaCodePattern = form.getAreaCodePattern();
                                     Boolean areaCodeRequired = Boolean.valueOf(form.getAreaCodeRequired());

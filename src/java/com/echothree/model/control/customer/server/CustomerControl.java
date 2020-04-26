@@ -37,6 +37,7 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
@@ -608,7 +609,7 @@ public class CustomerControl
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
 
-        String customerName = sequenceControl.getNextSequenceValue(sequence);
+        String customerName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         Customer customer = CustomerFactory.getInstance().create(party, customerName, customerType, initialOfferUse, cancellationPolicy, returnPolicy, arGlAccount, holdUntilComplete,
                 allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);

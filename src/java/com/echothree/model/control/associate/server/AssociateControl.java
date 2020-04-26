@@ -33,6 +33,7 @@ import com.echothree.model.control.associate.server.transfer.AssociateTransferCa
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.associate.common.pk.AssociatePK;
 import com.echothree.model.data.associate.common.pk.AssociatePartyContactMechanismPK;
 import com.echothree.model.data.associate.common.pk.AssociateProgramPK;
@@ -1112,7 +1113,7 @@ public class AssociateControl
             EntityInstance targetEntityInstance, Long associateReferralTime, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ASSOCIATE_REFERRAL.name());
-        String associateReferralName = sequenceControl.getNextSequenceValue(sequence);
+        String associateReferralName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
 
         return createAssociateReferral(associateReferralName, associate, associatePartyContactMechanism, targetEntityInstance, associateReferralTime,
                 createdBy);

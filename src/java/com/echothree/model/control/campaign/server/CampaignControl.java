@@ -37,6 +37,11 @@ import com.echothree.model.control.campaign.common.transfer.CampaignTermDescript
 import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer;
 import com.echothree.model.control.campaign.common.transfer.CampaignTransfer;
 import com.echothree.model.control.campaign.common.transfer.UserVisitCampaignTransfer;
+import com.echothree.model.control.campaign.common.workflow.CampaignContentStatusConstants;
+import com.echothree.model.control.campaign.common.workflow.CampaignMediumStatusConstants;
+import com.echothree.model.control.campaign.common.workflow.CampaignSourceStatusConstants;
+import com.echothree.model.control.campaign.common.workflow.CampaignStatusConstants;
+import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
 import com.echothree.model.control.campaign.server.transfer.CampaignContentDescriptionTransferCache;
 import com.echothree.model.control.campaign.server.transfer.CampaignContentTransferCache;
 import com.echothree.model.control.campaign.server.transfer.CampaignDescriptionTransferCache;
@@ -52,13 +57,8 @@ import com.echothree.model.control.campaign.server.transfer.UserVisitCampaignTra
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.control.campaign.common.workflow.CampaignContentStatusConstants;
-import com.echothree.model.control.campaign.common.workflow.CampaignMediumStatusConstants;
-import com.echothree.model.control.campaign.common.workflow.CampaignSourceStatusConstants;
-import com.echothree.model.control.campaign.common.workflow.CampaignStatusConstants;
-import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.campaign.common.pk.CampaignContentPK;
 import com.echothree.model.data.campaign.common.pk.CampaignMediumPK;
 import com.echothree.model.data.campaign.common.pk.CampaignPK;
@@ -158,7 +158,7 @@ public class CampaignControl
     public Campaign createCampaign(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN.name());
-        String campaignName = sequenceControl.getNextSequenceValue(sequence);
+        String campaignName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaign(campaignName, value, isDefault, sortOrder, createdBy);
     }
@@ -676,7 +676,7 @@ public class CampaignControl
     public CampaignSource createCampaignSource(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_SOURCE.name());
-        String campaignSourceName = sequenceControl.getNextSequenceValue(sequence);
+        String campaignSourceName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaignSource(campaignSourceName, value, isDefault, sortOrder, createdBy);
     }
@@ -1194,7 +1194,7 @@ public class CampaignControl
     public CampaignMedium createCampaignMedium(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_MEDIUM.name());
-        String campaignMediumName = sequenceControl.getNextSequenceValue(sequence);
+        String campaignMediumName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaignMedium(campaignMediumName, value, isDefault, sortOrder, createdBy);
     }
@@ -1712,7 +1712,7 @@ public class CampaignControl
     public CampaignTerm createCampaignTerm(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_TERM.name());
-        String campaignTermName = sequenceControl.getNextSequenceValue(sequence);
+        String campaignTermName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaignTerm(campaignTermName, value, isDefault, sortOrder, createdBy);
     }
@@ -2230,7 +2230,7 @@ public class CampaignControl
     public CampaignContent createCampaignContent(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequenceControl = (SequenceControl)Session.getModelController(SequenceControl.class);
         Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.CAMPAIGN_CONTENT.name());
-        String campaignContentName = sequenceControl.getNextSequenceValue(sequence);
+        String campaignContentName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
         
         return createCampaignContent(campaignContentName, value, isDefault, sortOrder, createdBy);
     }
