@@ -16,10 +16,14 @@
 
 package com.echothree.model.control.sequence.server.logic;
 
+import com.echothree.model.control.sequence.common.SequenceChecksumTypes;
 import com.echothree.model.control.sequence.common.SequenceEncoderTypes;
+import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceChecksumTypeException;
 import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceEncoderTypeException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.checksum.NoneSequenceChecksum;
+import com.echothree.model.control.sequence.server.logic.checksum.SequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.encoder.NoneSequenceEncoder;
 import com.echothree.model.control.sequence.server.logic.encoder.ReverseSequenceEncoder;
 import com.echothree.model.control.sequence.server.logic.encoder.ReverseSwapSequenceEncoder;
@@ -105,6 +109,22 @@ public class SequenceGeneratorLogic
         }
 
         return encodedValue;
+    }
+
+    private SequenceChecksum getSequenceChecksum(SequenceChecksumTypes sequenceChecksumType) {
+        switch(sequenceChecksumType) {
+            case NONE:
+                return NoneSequenceChecksum.getInstance();
+            default:
+                throw new UnimplementedSequenceChecksumTypeException();
+        }
+    }
+
+    private SequenceChecksum getSequenceChecksum(SequenceTypeDetail sequenceTypeDetail) {
+        var sequenceChecksumTypeName = sequenceTypeDetail.getSequenceChecksumType().getSequenceChecksumTypeName();
+        var sequenceChecksumType = SequenceChecksumTypes.valueOf(sequenceChecksumTypeName);
+
+        return getSequenceChecksum(sequenceChecksumType);
     }
 
     /**
@@ -230,10 +250,10 @@ public class SequenceGeneratorLogic
 
                                 var encodedValue = encode(sequenceTypeDetail, value);
 
-                                // TODO: checksum
-                                var checksum = ""; // placeholder
+                                var intermediateValue = (prefix != null ? prefix : "") + encodedValue + (suffix != null ? suffix : "");
+                                var checksum = getSequenceChecksum(sequenceTypeDetail).calculate(intermediateValue);
 
-                                sequenceDeque.add((prefix != null ? prefix : "") + encodedValue + checksum + (suffix != null ? suffix : ""));
+                                sequenceDeque.add(intermediateValue + checksum);
                             }
                         }
 
@@ -342,7 +362,7 @@ public class SequenceGeneratorLogic
             pattern.append(Pattern.quote(suffix));
         }
 
-        // TODO: Account for a SequenceChecksumType.
+        pattern.append(getSequenceChecksum(sequenceTypeDetail).regexp());
 
         return pattern.append('$').toString();
     }
@@ -370,5 +390,15 @@ public class SequenceGeneratorLogic
         return result;
     }
 
+    // --------------------------------------------------------------------------------
+    //   Verification
+    // --------------------------------------------------------------------------------
+
+    public boolean verifyValue(final SequenceType sequenceType, final String value) {
+        var sequenceTypeDetail = sequenceType.getLastDetail();
+        var sequenceChecksum = getSequenceChecksum(sequenceTypeDetail);
+
+        return sequenceChecksum.verify(value);
+    }
 
 }
