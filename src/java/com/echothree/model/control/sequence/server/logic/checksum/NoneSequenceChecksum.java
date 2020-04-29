@@ -33,14 +33,17 @@ public class NoneSequenceChecksum
         return SequenceChecksumHolder.instance;
     }
 
+    @Override
     public String calculate(String value) {
         return StringUtils.EMPTY;
     }
 
+    @Override
     public String regexp() {
         return StringUtils.EMPTY;
     }
 
+    @Override
     public boolean verify(String value) {
         return true;
     }
