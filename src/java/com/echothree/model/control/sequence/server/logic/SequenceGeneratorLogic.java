@@ -22,6 +22,7 @@ import com.echothree.model.control.sequence.common.exception.UnimplementedSequen
 import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceEncoderTypeException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.checksum.Mod36SequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.checksum.NoneSequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.checksum.SequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.encoder.NoneSequenceEncoder;
@@ -64,13 +65,14 @@ public class SequenceGeneratorLogic
     //   Generation
     // --------------------------------------------------------------------------------
 
-    private final static String numericValues = "0123456789";
-    private final static int numericMaxIndex = numericValues.length() - 1;
-    private final static String alphabeticValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private final static int alphabeticMaxIndex = alphabeticValues.length() - 1;
-    private final static String alphanumericValues = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private final static int alphanumericMaxIndex = alphanumericValues.length() - 1;
-    private final static int defaultChunkSize = 10;
+    public final static String NUMERIC_VALUES = "0123456789";
+    public final static int NUMERIC_MAX_INDEX = NUMERIC_VALUES.length() - 1;
+    public final static String ALPHABETIC_VALUES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public final static int ALPHABETIC_MAX_INDEX = ALPHABETIC_VALUES.length() - 1;
+    public final static String ALPHANUMERIC_VALUES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public final static int ALPHANUMERIC_MAX_INDEX = ALPHANUMERIC_VALUES.length() - 1;
+
+    private final static int DEFAULT_CHUNK_SIZE = 10;
 
     private final static ConcurrentMap<Long, Deque<String>> sequenceDeques = new ConcurrentHashMap<>();
 
@@ -81,7 +83,7 @@ public class SequenceGeneratorLogic
             chunkSize = sequenceTypeDetail.getChunkSize();
         }
 
-        return chunkSize == null ? defaultChunkSize : chunkSize;
+        return chunkSize == null ? DEFAULT_CHUNK_SIZE : chunkSize;
     }
 
     // If the SequenceEncoders are ever modified to do anything other than swap characters
@@ -115,6 +117,8 @@ public class SequenceGeneratorLogic
         switch(sequenceChecksumType) {
             case NONE:
                 return NoneSequenceChecksum.getInstance();
+            case MOD_36:
+                return Mod36SequenceChecksum.getInstance();
             default:
                 throw new UnimplementedSequenceChecksumTypeException();
         }
@@ -181,48 +185,48 @@ public class SequenceGeneratorLogic
 
                                 switch(maskChar) {
                                     case '9': {
-                                        var currentIndex = numericValues.indexOf(valueChar);
+                                        var currentIndex = NUMERIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
-                                            if(currentIndex == numericMaxIndex) {
+                                            if(currentIndex == NUMERIC_MAX_INDEX) {
                                                 newCharIndex = 0;
                                                 forceIncrement = true;
                                             } else {
                                                 newCharIndex = currentIndex + 1;
                                             }
-                                            valueChars[index] = numericValues.charAt(newCharIndex);
+                                            valueChars[index] = NUMERIC_VALUES.charAt(newCharIndex);
                                         } else {
                                             value = null;
                                         }
                                     }
                                     break;
                                     case 'A': {
-                                        var currentIndex = alphabeticValues.indexOf(valueChar);
+                                        var currentIndex = ALPHABETIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
-                                            if(currentIndex == alphabeticMaxIndex) {
+                                            if(currentIndex == ALPHABETIC_MAX_INDEX) {
                                                 newCharIndex = 0;
                                                 forceIncrement = true;
                                             } else {
                                                 newCharIndex = currentIndex + 1;
                                             }
-                                            valueChars[index] = alphabeticValues.charAt(newCharIndex);
+                                            valueChars[index] = ALPHABETIC_VALUES.charAt(newCharIndex);
                                         } else {
                                             value = null;
                                         }
                                     }
                                     break;
                                     case 'Z': {
-                                        var currentIndex = alphanumericValues.indexOf(valueChar);
+                                        var currentIndex = ALPHANUMERIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
-                                            if(currentIndex == alphanumericMaxIndex) {
+                                            if(currentIndex == ALPHANUMERIC_MAX_INDEX) {
                                                 newCharIndex = 0;
                                                 forceIncrement = true;
                                             } else {
                                                 newCharIndex = currentIndex + 1;
                                             }
-                                            valueChars[index] = alphanumericValues.charAt(newCharIndex);
+                                            valueChars[index] = ALPHANUMERIC_VALUES.charAt(newCharIndex);
                                         } else {
                                             value = null;
                                         }
