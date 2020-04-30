@@ -54,7 +54,13 @@ public class Mod36SequenceChecksum
 
     @Override
     public boolean verify(String value) {
-        return true;
+        var codePoints = value.codePoints().toArray();
+        var length = codePoints.length;
+        var valueWithoutChecksum = new String(codePoints, 0, length - 1);
+        var checksumFromValue = new String(codePoints, length - 1, 1);
+        var checksum = calculate(valueWithoutChecksum);
+
+        return checksumFromValue.equals(checksum);
     }
 
 }
