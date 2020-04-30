@@ -125,10 +125,10 @@ public class SequenceGeneratorLogic
     }
 
     private SequenceChecksum getSequenceChecksum(SequenceTypeDetail sequenceTypeDetail) {
-        var sequenceChecksumTypeName = sequenceTypeDetail.getSequenceChecksumType().getSequenceChecksumTypeName();
-        var sequenceChecksumType = SequenceChecksumTypes.valueOf(sequenceChecksumTypeName);
+        var sequenceChecksumType = sequenceTypeDetail.getSequenceChecksumType();
+        var sequenceChecksumTypeName = sequenceChecksumType == null ? null : sequenceChecksumType.getSequenceChecksumTypeName();
 
-        return getSequenceChecksum(sequenceChecksumType);
+        return sequenceChecksumTypeName == null ? null : getSequenceChecksum(SequenceChecksumTypes.valueOf(sequenceChecksumTypeName));
     }
 
     /**
@@ -322,25 +322,19 @@ public class SequenceGeneratorLogic
 
     private StringBuilder getPatternFromMask(final String mask) {
         var maskChars = mask.toCharArray();
-        var maskLength = maskChars.length;
         StringBuilder pattern = new StringBuilder();
 
-        for(var index = 0 ; index < maskLength ; index++) {
-            var maskChar = maskChars[index];
-
+        for(char maskChar : maskChars) {
             switch(maskChar) {
-                case '9': {
+                case '9':
                     pattern.append("[\\p{Digit}]");
-                }
-                break;
-                case 'A': {
+                    break;
+                case 'A':
                     pattern.append("\\p{Upper}");
-                }
-                break;
-                case 'Z': {
+                    break;
+                case 'Z':
                     pattern.append("[\\p{Upper}\\p{Digit}]");
-                }
-                break;
+                    break;
             }
         }
 
@@ -376,16 +370,22 @@ public class SequenceGeneratorLogic
         var sequenceTypes = sequenceControl.getSequenceTypes();
         SequenceType result = null;
 
+        // Check all Sequence Types...
         for(var sequenceType : sequenceTypes) {
-            var sequences = sequenceControl.getSequencesBySequenceType(sequenceType);
-
-            for(var sequence : sequences) {
+            // ...and each Sequence within them.
+            for(var sequence : sequenceControl.getSequencesBySequenceType(sequenceType)) {
+                // Check the regexp that's generated for this sequence against the value.
                 if(value.matches(getPattern(sequence))) {
-                    result = sequenceType;
-                    break;
+                    // If the regexp matches, check the checksum. If it matches, we've
+                    // probably got a match. If not, continue looking for other matches.
+                    if(verifyValue(sequenceType, value)) {
+                        result = sequenceType;
+                        break;
+                    }
                 }
             }
 
+            // If the SequenceType was found, break out of the outer for loop as well.
             if(result != null) {
                 break;
             }
@@ -402,7 +402,7 @@ public class SequenceGeneratorLogic
         var sequenceTypeDetail = sequenceType.getLastDetail();
         var sequenceChecksum = getSequenceChecksum(sequenceTypeDetail);
 
-        return sequenceChecksum.verify(value);
+        return sequenceChecksum == null || sequenceChecksum.verify(value);
     }
 
 }
