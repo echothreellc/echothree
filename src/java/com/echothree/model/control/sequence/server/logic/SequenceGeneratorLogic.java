@@ -126,9 +126,17 @@ public class SequenceGeneratorLogic
 
     private SequenceChecksum getSequenceChecksum(SequenceTypeDetail sequenceTypeDetail) {
         var sequenceChecksumType = sequenceTypeDetail.getSequenceChecksumType();
-        var sequenceChecksumTypeName = sequenceChecksumType == null ? null : sequenceChecksumType.getSequenceChecksumTypeName();
+        SequenceChecksum result = null;
 
-        return sequenceChecksumTypeName == null ? null : getSequenceChecksum(SequenceChecksumTypes.valueOf(sequenceChecksumTypeName));
+        // Needs to be very careful as the SequenceChecksumType may be null for a given SequenceTypeDetail.
+        // If it is, we'll just leave sequenceChecksum null and return that.
+        if(sequenceChecksumType != null) {
+            var sequenceChecksumTypeName = sequenceChecksumType.getSequenceChecksumTypeName();
+
+            result = getSequenceChecksum(SequenceChecksumTypes.valueOf(sequenceChecksumTypeName));
+        }
+
+        return result;
     }
 
     /**
