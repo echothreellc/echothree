@@ -19,6 +19,7 @@ package com.echothree.model.control.sequence.common;
 public enum SequenceChecksumTypes {
 
     NONE,
+    MOD_10,
     MOD_36,
 
 }
