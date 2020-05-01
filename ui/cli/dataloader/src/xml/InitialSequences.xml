@@ -4,6 +4,9 @@
         <sequenceChecksumType sequenceChecksumTypeName="NONE" isDefault="true" sortOrder="1">
             <sequenceChecksumTypeDescription languageIsoName="en" description="None" />
         </sequenceChecksumType>
+        <sequenceChecksumType sequenceChecksumTypeName="MOD_36" isDefault="false" sortOrder="1">
+            <sequenceChecksumTypeDescription languageIsoName="en" description="MOD 36" />
+        </sequenceChecksumType>
     </sequenceChecksumTypes>
     <sequenceEncoderTypes>
         <sequenceEncoderType sequenceEncoderTypeName="NONE" isDefault="true" sortOrder="1">

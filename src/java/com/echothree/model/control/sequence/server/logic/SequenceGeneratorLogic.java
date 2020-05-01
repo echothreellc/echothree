@@ -16,10 +16,15 @@
 
 package com.echothree.model.control.sequence.server.logic;
 
+import com.echothree.model.control.sequence.common.SequenceChecksumTypes;
 import com.echothree.model.control.sequence.common.SequenceEncoderTypes;
+import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceChecksumTypeException;
 import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceEncoderTypeException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.checksum.Mod36SequenceChecksum;
+import com.echothree.model.control.sequence.server.logic.checksum.NoneSequenceChecksum;
+import com.echothree.model.control.sequence.server.logic.checksum.SequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.encoder.NoneSequenceEncoder;
 import com.echothree.model.control.sequence.server.logic.encoder.ReverseSequenceEncoder;
 import com.echothree.model.control.sequence.server.logic.encoder.ReverseSwapSequenceEncoder;
@@ -60,13 +65,14 @@ public class SequenceGeneratorLogic
     //   Generation
     // --------------------------------------------------------------------------------
 
-    private final static String numericValues = "0123456789";
-    private final static int numericMaxIndex = numericValues.length() - 1;
-    private final static String alphabeticValues = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private final static int alphabeticMaxIndex = alphabeticValues.length() - 1;
-    private final static String alphanumericValues = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private final static int alphanumericMaxIndex = alphanumericValues.length() - 1;
-    private final static int defaultChunkSize = 10;
+    public final static String NUMERIC_VALUES = "0123456789";
+    public final static int NUMERIC_MAX_INDEX = NUMERIC_VALUES.length() - 1;
+    public final static String ALPHABETIC_VALUES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public final static int ALPHABETIC_MAX_INDEX = ALPHABETIC_VALUES.length() - 1;
+    public final static String ALPHANUMERIC_VALUES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    public final static int ALPHANUMERIC_MAX_INDEX = ALPHANUMERIC_VALUES.length() - 1;
+
+    private final static int DEFAULT_CHUNK_SIZE = 10;
 
     private final static ConcurrentMap<Long, Deque<String>> sequenceDeques = new ConcurrentHashMap<>();
 
@@ -77,7 +83,7 @@ public class SequenceGeneratorLogic
             chunkSize = sequenceTypeDetail.getChunkSize();
         }
 
-        return chunkSize == null ? defaultChunkSize : chunkSize;
+        return chunkSize == null ? DEFAULT_CHUNK_SIZE : chunkSize;
     }
 
     // If the SequenceEncoders are ever modified to do anything other than swap characters
@@ -105,6 +111,32 @@ public class SequenceGeneratorLogic
         }
 
         return encodedValue;
+    }
+
+    private SequenceChecksum getSequenceChecksum(SequenceChecksumTypes sequenceChecksumType) {
+        switch(sequenceChecksumType) {
+            case NONE:
+                return NoneSequenceChecksum.getInstance();
+            case MOD_36:
+                return Mod36SequenceChecksum.getInstance();
+            default:
+                throw new UnimplementedSequenceChecksumTypeException();
+        }
+    }
+
+    private SequenceChecksum getSequenceChecksum(SequenceTypeDetail sequenceTypeDetail) {
+        var sequenceChecksumType = sequenceTypeDetail.getSequenceChecksumType();
+        SequenceChecksum result = null;
+
+        // Needs to be very careful as the SequenceChecksumType may be null for a given SequenceTypeDetail.
+        // If it is, we'll just leave sequenceChecksum null and return that.
+        if(sequenceChecksumType != null) {
+            var sequenceChecksumTypeName = sequenceChecksumType.getSequenceChecksumTypeName();
+
+            result = getSequenceChecksum(SequenceChecksumTypes.valueOf(sequenceChecksumTypeName));
+        }
+
+        return result;
     }
 
     /**
@@ -161,48 +193,48 @@ public class SequenceGeneratorLogic
 
                                 switch(maskChar) {
                                     case '9': {
-                                        var currentIndex = numericValues.indexOf(valueChar);
+                                        var currentIndex = NUMERIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
-                                            if(currentIndex == numericMaxIndex) {
+                                            if(currentIndex == NUMERIC_MAX_INDEX) {
                                                 newCharIndex = 0;
                                                 forceIncrement = true;
                                             } else {
                                                 newCharIndex = currentIndex + 1;
                                             }
-                                            valueChars[index] = numericValues.charAt(newCharIndex);
+                                            valueChars[index] = NUMERIC_VALUES.charAt(newCharIndex);
                                         } else {
                                             value = null;
                                         }
                                     }
                                     break;
                                     case 'A': {
-                                        var currentIndex = alphabeticValues.indexOf(valueChar);
+                                        var currentIndex = ALPHABETIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
-                                            if(currentIndex == alphabeticMaxIndex) {
+                                            if(currentIndex == ALPHABETIC_MAX_INDEX) {
                                                 newCharIndex = 0;
                                                 forceIncrement = true;
                                             } else {
                                                 newCharIndex = currentIndex + 1;
                                             }
-                                            valueChars[index] = alphabeticValues.charAt(newCharIndex);
+                                            valueChars[index] = ALPHABETIC_VALUES.charAt(newCharIndex);
                                         } else {
                                             value = null;
                                         }
                                     }
                                     break;
                                     case 'Z': {
-                                        var currentIndex = alphanumericValues.indexOf(valueChar);
+                                        var currentIndex = ALPHANUMERIC_VALUES.indexOf(valueChar);
                                         if(currentIndex != -1) {
                                             int newCharIndex;
-                                            if(currentIndex == alphanumericMaxIndex) {
+                                            if(currentIndex == ALPHANUMERIC_MAX_INDEX) {
                                                 newCharIndex = 0;
                                                 forceIncrement = true;
                                             } else {
                                                 newCharIndex = currentIndex + 1;
                                             }
-                                            valueChars[index] = alphanumericValues.charAt(newCharIndex);
+                                            valueChars[index] = ALPHANUMERIC_VALUES.charAt(newCharIndex);
                                         } else {
                                             value = null;
                                         }
@@ -230,10 +262,10 @@ public class SequenceGeneratorLogic
 
                                 var encodedValue = encode(sequenceTypeDetail, value);
 
-                                // TODO: checksum
-                                var checksum = ""; // placeholder
+                                var intermediateValue = (prefix != null ? prefix : "") + encodedValue + (suffix != null ? suffix : "");
+                                var checksum = getSequenceChecksum(sequenceTypeDetail).calculate(intermediateValue);
 
-                                sequenceDeque.add((prefix != null ? prefix : "") + encodedValue + checksum + (suffix != null ? suffix : ""));
+                                sequenceDeque.add(intermediateValue + checksum);
                             }
                         }
 
@@ -298,25 +330,19 @@ public class SequenceGeneratorLogic
 
     private StringBuilder getPatternFromMask(final String mask) {
         var maskChars = mask.toCharArray();
-        var maskLength = maskChars.length;
         StringBuilder pattern = new StringBuilder();
 
-        for(var index = 0 ; index < maskLength ; index++) {
-            var maskChar = maskChars[index];
-
+        for(char maskChar : maskChars) {
             switch(maskChar) {
-                case '9': {
+                case '9':
                     pattern.append("[\\p{Digit}]");
-                }
-                break;
-                case 'A': {
+                    break;
+                case 'A':
                     pattern.append("\\p{Upper}");
-                }
-                break;
-                case 'Z': {
+                    break;
+                case 'Z':
                     pattern.append("[\\p{Upper}\\p{Digit}]");
-                }
-                break;
+                    break;
             }
         }
 
@@ -342,7 +368,7 @@ public class SequenceGeneratorLogic
             pattern.append(Pattern.quote(suffix));
         }
 
-        // TODO: Account for a SequenceChecksumType.
+        pattern.append(getSequenceChecksum(sequenceTypeDetail).regexp());
 
         return pattern.append('$').toString();
     }
@@ -352,16 +378,22 @@ public class SequenceGeneratorLogic
         var sequenceTypes = sequenceControl.getSequenceTypes();
         SequenceType result = null;
 
+        // Check all Sequence Types...
         for(var sequenceType : sequenceTypes) {
-            var sequences = sequenceControl.getSequencesBySequenceType(sequenceType);
-
-            for(var sequence : sequences) {
+            // ...and each Sequence within them.
+            for(var sequence : sequenceControl.getSequencesBySequenceType(sequenceType)) {
+                // Check the regexp that's generated for this sequence against the value.
                 if(value.matches(getPattern(sequence))) {
-                    result = sequenceType;
-                    break;
+                    // If the regexp matches, check the checksum. If it matches, we've
+                    // probably got a match. If not, continue looking for other matches.
+                    if(verifyValue(sequenceType, value)) {
+                        result = sequenceType;
+                        break;
+                    }
                 }
             }
 
+            // If the SequenceType was found, break out of the outer for loop as well.
             if(result != null) {
                 break;
             }
@@ -370,5 +402,15 @@ public class SequenceGeneratorLogic
         return result;
     }
 
+    // --------------------------------------------------------------------------------
+    //   Verification
+    // --------------------------------------------------------------------------------
+
+    public boolean verifyValue(final SequenceType sequenceType, final String value) {
+        var sequenceTypeDetail = sequenceType.getLastDetail();
+        var sequenceChecksum = getSequenceChecksum(sequenceTypeDetail);
+
+        return sequenceChecksum == null || sequenceChecksum.verify(value);
+    }
 
 }

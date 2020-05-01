@@ -14,11 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.sequence.common;
+package com.echothree.model.control.sequence.server.logic.checksum;
 
-public enum SequenceChecksumTypes {
+public interface SequenceChecksum {
 
-    NONE,
-    MOD_36,
+    String calculate(String value);
+
+    String regexp();
+
+    boolean verify(String value);
 
 }

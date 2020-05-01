@@ -14,11 +14,38 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.sequence.common;
+package com.echothree.model.control.sequence.server.logic.checksum;
 
-public enum SequenceChecksumTypes {
+import org.apache.commons.lang.StringUtils;
 
-    NONE,
-    MOD_36,
+public class NoneSequenceChecksum
+        implements SequenceChecksum {
+
+    private NoneSequenceChecksum() {
+        super();
+    }
+
+    private static class SequenceChecksumHolder {
+        static SequenceChecksum instance = new NoneSequenceChecksum();
+    }
+
+    public static SequenceChecksum getInstance() {
+        return SequenceChecksumHolder.instance;
+    }
+
+    @Override
+    public String calculate(String value) {
+        return StringUtils.EMPTY;
+    }
+
+    @Override
+    public String regexp() {
+        return StringUtils.EMPTY;
+    }
+
+    @Override
+    public boolean verify(String value) {
+        return true;
+    }
 
 }
