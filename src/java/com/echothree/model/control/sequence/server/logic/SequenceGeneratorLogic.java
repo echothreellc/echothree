@@ -22,6 +22,7 @@ import com.echothree.model.control.sequence.common.exception.UnimplementedSequen
 import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceEncoderTypeException;
 import com.echothree.model.control.sequence.common.exception.UnknownSequenceNameException;
 import com.echothree.model.control.sequence.server.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.checksum.Mod10SequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.checksum.Mod36SequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.checksum.NoneSequenceChecksum;
 import com.echothree.model.control.sequence.server.logic.checksum.SequenceChecksum;
@@ -117,6 +118,8 @@ public class SequenceGeneratorLogic
         switch(sequenceChecksumType) {
             case NONE:
                 return NoneSequenceChecksum.getInstance();
+            case MOD_10:
+                return Mod10SequenceChecksum.getInstance();
             case MOD_36:
                 return Mod36SequenceChecksum.getInstance();
             default:
