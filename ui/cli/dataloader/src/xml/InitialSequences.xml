@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <initialData>
-    <sequenceChecksumTypes>
-        <sequenceChecksumType sequenceChecksumTypeName="NONE" isDefault="true" sortOrder="1">
-            <sequenceChecksumTypeDescription languageIsoName="en" description="None" />
-        </sequenceChecksumType>
-        <sequenceChecksumType sequenceChecksumTypeName="MOD_10" isDefault="false" sortOrder="1">
-            <sequenceChecksumTypeDescription languageIsoName="en" description="MOD 10" />
-        </sequenceChecksumType>
-        <sequenceChecksumType sequenceChecksumTypeName="MOD_36" isDefault="false" sortOrder="1">
-            <sequenceChecksumTypeDescription languageIsoName="en" description="MOD 36" />
-        </sequenceChecksumType>
-    </sequenceChecksumTypes>
     <sequenceEncoderTypes>
         <sequenceEncoderType sequenceEncoderTypeName="NONE" isDefault="true" sortOrder="1">
             <sequenceEncoderTypeDescription languageIsoName="en" description="None" />
@@ -22,6 +11,17 @@
             <sequenceEncoderTypeDescription languageIsoName="en" description="Reverse/Swap" />
         </sequenceEncoderType>
     </sequenceEncoderTypes>
+    <sequenceChecksumTypes>
+        <sequenceChecksumType sequenceChecksumTypeName="NONE" isDefault="true" sortOrder="1">
+            <sequenceChecksumTypeDescription languageIsoName="en" description="None" />
+        </sequenceChecksumType>
+        <sequenceChecksumType sequenceChecksumTypeName="MOD_10" isDefault="false" sortOrder="1">
+            <sequenceChecksumTypeDescription languageIsoName="en" description="MOD 10" />
+        </sequenceChecksumType>
+        <sequenceChecksumType sequenceChecksumTypeName="MOD_36" isDefault="false" sortOrder="1">
+            <sequenceChecksumTypeDescription languageIsoName="en" description="MOD 36" />
+        </sequenceChecksumType>
+    </sequenceChecksumTypes>
     <sequenceTypes>
         <sequenceType sequenceTypeName="EVENT_GROUP" prefix="EG" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="true" sortOrder="1">
