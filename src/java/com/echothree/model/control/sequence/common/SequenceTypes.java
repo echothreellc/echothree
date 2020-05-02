@@ -18,7 +18,6 @@ package com.echothree.model.control.sequence.common;
 
 public enum SequenceTypes {
     
-    ACCOUNT,
     APPEARANCE,
     ASSOCIATE,
     ASSOCIATE_PARTY_CONTACT_MECHANISM,
@@ -39,7 +38,6 @@ public enum SequenceTypes {
     CUSTOMER_CANCELLATION,
     CUSTOMER_RETURN,
     DOCUMENT,
-    EMAIL,
     EMPLOYEE,
     EMPLOYMENT,
     ENTITY_ATTRIBUTE,
