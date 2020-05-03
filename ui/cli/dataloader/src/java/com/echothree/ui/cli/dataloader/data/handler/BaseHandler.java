@@ -22,6 +22,7 @@ import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
 import java.util.HashMap;
 import java.util.Map;
+import javax.naming.NamingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
@@ -44,7 +45,7 @@ public abstract class BaseHandler {
     }
     
     public abstract void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException;
+            throws SAXException, NamingException;
     
     public abstract void endElement(String namespaceURI, String localName, String qName)
             throws SAXException;
