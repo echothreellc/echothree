@@ -152,25 +152,11 @@ import java.util.List;
 import java.util.Map;
 
 public class PaymentControl
-        extends BaseModelControl {
+        extends BasePaymentControl {
     
     /** Creates a new instance of PaymentControl */
     public PaymentControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Payment Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private PaymentTransferCaches paymentTransferCaches = null;
-    
-    public PaymentTransferCaches getPaymentTransferCaches(UserVisit userVisit) {
-        if(paymentTransferCaches == null) {
-            paymentTransferCaches = new PaymentTransferCaches(userVisit, this);
-        }
-        
-        return paymentTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
