@@ -159,6 +159,11 @@
             <paymentMethodTypeDescription languageIsoName="en" description="Gift Certificate" />
         </paymentMethodType>
     </paymentMethodTypes>
+    <paymentProcessorActionTypes>
+        <paymentProcessorActionType paymentProcessorActionTypeName="PLACEHOLDER" isDefault="true" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Placeholder" />
+        </paymentProcessorActionType>
+    </paymentProcessorActionTypes>
     <paymentProcessorTypes>
         <paymentProcessorType paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" isDefault="true" sortOrder="1">
             <paymentProcessorTypeDescription languageIsoName="en" description="Test Payment Processor Type" />
