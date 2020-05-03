@@ -33,5 +33,7 @@ public abstract class BasePaymentTransferCache<K extends BaseEntity, V extends B
         
         this.paymentControl = paymentControl;
     }
-    
+
+    public abstract V getTransfer(K key);
+
 }

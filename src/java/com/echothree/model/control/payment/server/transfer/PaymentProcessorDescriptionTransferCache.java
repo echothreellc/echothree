@@ -30,13 +30,14 @@ public class PaymentProcessorDescriptionTransferCache
     public PaymentProcessorDescriptionTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
     }
-    
-    public PaymentProcessorDescriptionTransfer getPaymentProcessorDescriptionTransfer(PaymentProcessorDescription paymentProcessorDescription) {
+
+    @Override
+    public PaymentProcessorDescriptionTransfer getTransfer(PaymentProcessorDescription paymentProcessorDescription) {
         PaymentProcessorDescriptionTransfer paymentProcessorDescriptionTransfer = get(paymentProcessorDescription);
         
         if(paymentProcessorDescriptionTransfer == null) {
             PaymentProcessorTransferCache paymentProcessorTransferCache = paymentControl.getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
-            PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessorTransferCache.getPaymentProcessorTransfer(paymentProcessorDescription.getPaymentProcessor());
+            PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessorTransferCache.getTransfer(paymentProcessorDescription.getPaymentProcessor());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorDescription.getLanguage());
             
             paymentProcessorDescriptionTransfer = new PaymentProcessorDescriptionTransfer(languageTransfer, paymentProcessorTransfer, paymentProcessorDescription.getDescription());

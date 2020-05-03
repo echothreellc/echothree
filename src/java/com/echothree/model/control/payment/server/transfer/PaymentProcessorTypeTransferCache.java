@@ -28,8 +28,9 @@ public class PaymentProcessorTypeTransferCache
     public PaymentProcessorTypeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
     }
-    
-    public PaymentProcessorTypeTransfer getPaymentProcessorTypeTransfer(PaymentProcessorType paymentProcessorType) {
+
+    @Override
+    public PaymentProcessorTypeTransfer getTransfer(PaymentProcessorType paymentProcessorType) {
         PaymentProcessorTypeTransfer paymentProcessorTypeTransfer = get(paymentProcessorType);
         
         if(paymentProcessorTypeTransfer == null) {

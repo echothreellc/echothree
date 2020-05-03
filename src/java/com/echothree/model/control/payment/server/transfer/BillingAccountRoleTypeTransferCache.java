@@ -29,7 +29,7 @@ public class BillingAccountRoleTypeTransferCache
         super(userVisit, paymentControl);
     }
     
-    public BillingAccountRoleTypeTransfer getBillingAccountRoleTypeTransfer(BillingAccountRoleType billingAccountRoleType) {
+    public BillingAccountRoleTypeTransfer getTransfer(BillingAccountRoleType billingAccountRoleType) {
         BillingAccountRoleTypeTransfer billingAccountRoleTypeTransfer = get(billingAccountRoleType);
         
         if(billingAccountRoleTypeTransfer == null) {
