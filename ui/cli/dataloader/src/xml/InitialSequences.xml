@@ -23,402 +23,402 @@
         </sequenceChecksumType>
     </sequenceChecksumTypes>
     <sequenceTypes>
-        <sequenceType sequenceTypeName="EVENT_GROUP" prefix="EG" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="EVENT_GROUP" prefix="EG" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="true" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Event Group" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Event Group" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="USER_VISIT_GROUP" prefix="UV" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="USER_VISIT_GROUP" prefix="UV" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="User Visit Group" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default User Visit Group" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="SALES_ORDER_BATCH" prefix="OB" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="SALES_ORDER_BATCH" prefix="OB" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Sales Order Batch" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Sales Order Batch" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="VENDOR_BILLING_ACCOUNT" prefix="VB" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="VENDOR_BILLING_ACCOUNT" prefix="VB" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Vendor Billing Account" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Vendor Billing Account" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CUSTOMER_BILLING_ACCOUNT" prefix="CB" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Customer Billing Account" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Customer Billing Account" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="SALES_ORDER" prefix="OR" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Sales Order" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Sales Order" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="PURCHASE_ORDER" prefix="PO" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="PURCHASE_ORDER" prefix="PO" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Purchase Order" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Purchase Order" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="SALES_INVOICE" prefix="IN" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Invoice" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Sales Invoice" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="PURCHASE_INVOICE" prefix="PI" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="PURCHASE_INVOICE" prefix="PI" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Invoice" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Purchase Invoice" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="WISHLIST" prefix="WL" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Wish List" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Wish List" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="RECEIVING_TICKET" prefix="RT" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="RECEIVING_TICKET" prefix="RT" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Receiving Ticket" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Receiving Ticket" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CUSTOMER" prefix="CU" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Customer" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Customer" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="EMPLOYEE" prefix="EP" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="EMPLOYEE" prefix="EP" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Employee" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Employee" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CONTACT_MECHANISM" prefix="CM" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Contact Mechanism" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Contact Mechanism" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="ITEM" prefix="IT" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="ITEM" prefix="IT" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Item" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Item" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="ITEM_SERIAL" prefix="IS" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="ITEM_SERIAL" prefix="IS" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Item Serial Number" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Item Serial" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="GEO_CODE" prefix="GC" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="GEO_CODE" prefix="GC" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Item Serial Number" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Geo Code" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="TRANSACTION_GROUP" prefix="TG" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="TRANSACTION_GROUP" prefix="TG" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Transaction Group" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Transaction Group" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="TRANSACTION" prefix="TR" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="TRANSACTION" prefix="TR" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Transaction" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Transaction" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="PARTY" prefix="PY" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Party" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Party" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="COMMENT" prefix="CO" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Comment" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Comment" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="RATING" prefix="RA" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Rating" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Rating" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="PARTY_PAYMENT_METHOD" prefix="PM" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Party Payment Method" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Party Payment Method" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="PARTY_TRAINING_CLASS" prefix="PT" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="PARTY_TRAINING_CLASS" prefix="PT" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Party Training Class" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Party Training Class" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="FORUM_THREAD" prefix="FT" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Forum Thread" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Forum Thread" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="FORUM_MESSAGE" prefix="FM" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Forum Message" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Forum Message" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="SUBSCRIPTION" prefix="SU" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Subscription" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Subscription" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="DOCUMENT" prefix="DC" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="DOCUMENT" prefix="DC" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Document" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Document" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="COMMUNICATION_EVENT" prefix="CE" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Communication Event" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Communication Event" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="WORK_EFFORT" prefix="WE" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="WORK_EFFORT" prefix="WE" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Work Effort" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Work Effort" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="WORK_REQUIREMENT" prefix="WR" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="WORK_REQUIREMENT" prefix="WR" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Work Requirement" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Work Requirement" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="ASSOCIATE" prefix="AS" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="ASSOCIATE" prefix="AS" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Associate" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Associate" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="ASSOCIATE_PARTY_CONTACT_MECHANISM" prefix="AM" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Associate Contact Mechanism" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Associate Contact Mechanism" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="ASSOCIATE_REFERRAL" prefix="AR" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Associate Referral" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Associate Referral" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CUSTOMER_CANCELLATION" prefix="CC" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Customer Cancellation" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Customer Cancellation" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="VENDOR_CANCELLATION" prefix="VC" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="VENDOR_CANCELLATION" prefix="VC" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Vendor Cancellation" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Vendor Cancellation" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CUSTOMER_RETURN" prefix="CR" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Customer Return" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Customer Return" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="VENDOR_RETURN" prefix="VR" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="VENDOR_RETURN" prefix="VR" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Vendor Return" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Vendor Return" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CHAIN_INSTANCE" prefix="CI" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Chain Instance" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" value="1534679058" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Chain Instance" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="BASE_ENCRYPTION_KEY" prefix="KY" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="BASE_ENCRYPTION_KEY" prefix="KY" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Base Encryption Key" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Base Encryption Key" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="EVENT_SUBSCRIBER" prefix="ES" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="EVENT_SUBSCRIBER" prefix="ES" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Event Subscriber" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Event Subscriber" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="PRINTER_GROUP_JOB" prefix="PJ" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="PRINTER_GROUP_JOB" prefix="PJ" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Printer Group Job" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Printer Group Job" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="EMPLOYMENT" prefix="EY" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="EMPLOYMENT" prefix="EY" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Employment" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Employment" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="LEAVE" prefix="LV" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="LEAVE" prefix="LV" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Leave" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Leave" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="ENTITY_LIST_ITEM" prefix="LI" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="ENTITY_LIST_ITEM" prefix="LI" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Entity List Item" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Entity List Item" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CAMPAIGN" prefix="CN" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Campaign" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Campaign" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CAMPAIGN_SOURCE" prefix="NS" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Campaign Source" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Campaign Source" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CAMPAIGN_MEDIUM" prefix="NM" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Campaign Medium" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Campaign Medium" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CAMPAIGN_TERM" prefix="NT" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Campaign Term" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Campaign Term" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="CAMPAIGN_CONTENT" prefix="NC" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Campaign Content" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Campaign Content" />
             </sequence>
         </sequenceType>
         <sequenceType sequenceTypeName="TRACK" prefix="TK" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Track" />
-            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Track" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="COLOR" prefix="CL" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="COLOR" prefix="CL" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Color" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Color" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="APPEARANCE" prefix="AP" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="APPEARANCE" prefix="AP" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Appearance" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Appearance" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="ENTITY_ATTRIBUTE_GROUP" prefix="AG" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="ENTITY_ATTRIBUTE_GROUP" prefix="AG" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Entity Attribute Group" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Entity Attribute Group" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="ENTITY_ATTRIBUTE" prefix="AT" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="ENTITY_ATTRIBUTE" prefix="AT" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Entity Attribute" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Entity Attribute" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="TAG_SCOPE" prefix="TS" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="TAG_SCOPE" prefix="TS" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Tag Scope" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Tag Scope" />
             </sequence>
         </sequenceType>
-        <sequenceType sequenceTypeName="SEQUENCE" prefix="SQ" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
+        <sequenceType sequenceTypeName="SEQUENCE" prefix="SQ" sequenceEncoderTypeName="NONE" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Sequence" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="ZZ99999999" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Sequence" />
             </sequence>
         </sequenceType>
