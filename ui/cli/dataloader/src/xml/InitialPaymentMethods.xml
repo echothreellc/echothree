@@ -160,8 +160,44 @@
         </paymentMethodType>
     </paymentMethodTypes>
     <paymentProcessorActionTypes>
-        <paymentProcessorActionType paymentProcessorActionTypeName="PLACEHOLDER" isDefault="true" sortOrder="0">
-            <paymentProcessorActionTypeDescription languageIsoName="en" description="Placeholder" />
+        <paymentProcessorActionType paymentProcessorActionTypeName="ADJUST_TRANSACTION" isDefault="true" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Adjust Transaction" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="DUPLICATE_PREAUTHORIZATION" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Duplicate Pre-Authorization" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="DUPLICATE_PURCHASE" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Duplicate Purchase" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="GET_CARD_TYPE" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Get Card Type" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="GET_TRANSACTION_DETAILS" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Get Transaction Details" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="PREAUTHORIZATION_COMPLETION" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Pre-Authorization Completion" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="PREAUTHORIZE" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Pre-Authorize" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="PURCHASE" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Purchase" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="REFUND" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Refund" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="REFUND_EXISTING_TRANSACTION" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Refund Existing Transaction" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="REVERSE_TRANSACTION" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Reverse Transaction" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="VERIFY_CARD" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Verify Card" />
+        </paymentProcessorActionType>
+        <paymentProcessorActionType paymentProcessorActionTypeName="VOID_TRANSACTION" isDefault="false" sortOrder="0">
+            <paymentProcessorActionTypeDescription languageIsoName="en" description="Void Transaction" />
         </paymentProcessorActionType>
     </paymentProcessorActionTypes>
     <paymentProcessorTypes>

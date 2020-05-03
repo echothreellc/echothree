@@ -17,7 +17,19 @@
 package com.echothree.model.control.payment.common;
 
 public enum PaymentProcessorActionTypes {
-    
-    PLACEHOLDER,
-    
+
+    ADJUST_TRANSACTION,
+    DUPLICATE_PREAUTHORIZATION,
+    DUPLICATE_PURCHASE,
+    GET_CARD_TYPE,
+    GET_TRANSACTION_DETAILS,
+    PREAUTHORIZATION_COMPLETION,
+    PREAUTHORIZE,
+    PURCHASE,
+    REFUND,
+    REFUND_EXISTING_TRANSACTION,
+    REVERSE_TRANSACTION,
+    VERIFY_CARD,
+    VOID_TRANSACTION,
+
 }
