@@ -198,15 +198,15 @@ public class PaymentControl
     
     public BillingAccountRoleTypeTransfer getBillingAccountRoleTypeTransfer(UserVisit userVisit,
             BillingAccountRoleType billingAccountRoleType) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountRoleTypeTransferCache().getBillingAccountRoleTypeTransfer(billingAccountRoleType);
+        return getPaymentTransferCaches(userVisit).getBillingAccountRoleTypeTransferCache().getTransfer(billingAccountRoleType);
     }
-    
+
     private List<BillingAccountRoleTypeTransfer> getBillingAccountRoleTypeTransfers(final UserVisit userVisit, final List<BillingAccountRoleType> billingAccountRoleTypes) {
         List<BillingAccountRoleTypeTransfer> billingAccountRoleTypeTransfers = new ArrayList<>(billingAccountRoleTypes.size());
         BillingAccountRoleTypeTransferCache billingAccountRoleTypeTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTypeTransferCache();
-        
+
         billingAccountRoleTypes.stream().forEach((billingAccountRoleType) -> {
-            billingAccountRoleTypeTransfers.add(billingAccountRoleTypeTransferCache.getBillingAccountRoleTypeTransfer(billingAccountRoleType));
+            billingAccountRoleTypeTransfers.add(billingAccountRoleTypeTransferCache.getTransfer(billingAccountRoleType));
         });
 
             return billingAccountRoleTypeTransfers;
@@ -326,7 +326,7 @@ public class PaymentControl
     }
     
     public PaymentMethodTypeTransfer getPaymentMethodTypeTransfer(UserVisit userVisit, PaymentMethodType paymentMethodType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache().getPaymentMethodTypeTransfer(paymentMethodType);
+        return getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache().getTransfer(paymentMethodType);
     }
     
     public List<PaymentMethodTypeTransfer> getPaymentMethodTypeTransfers(UserVisit userVisit) {
@@ -335,7 +335,7 @@ public class PaymentControl
         PaymentMethodTypeTransferCache paymentMethodTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache();
         
         paymentMethodTypes.stream().forEach((paymentMethodType) -> {
-            paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getPaymentMethodTypeTransfer(paymentMethodType));
+            paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(paymentMethodType));
         });
         
         return paymentMethodTypeTransfers;
@@ -484,7 +484,7 @@ public class PaymentControl
     }
 
     public PaymentMethodTypePartyTypeTransfer getPaymentMethodTypePartyTypeTransfer(UserVisit userVisit, PaymentMethodTypePartyType paymentMethodTypePartyType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache().getPaymentMethodTypePartyTypeTransfer(paymentMethodTypePartyType);
+        return getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache().getTransfer(paymentMethodTypePartyType);
     }
 
     public List<PaymentMethodTypePartyTypeTransfer> getPaymentMethodTypePartyTypeTransfers(UserVisit userVisit, List<PaymentMethodTypePartyType> paymentMethodTypePartyTypes) {
@@ -492,7 +492,7 @@ public class PaymentControl
         PaymentMethodTypePartyTypeTransferCache paymentMethodTypePartyTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache();
 
         paymentMethodTypePartyTypes.stream().forEach((paymentMethodTypePartyType) -> {
-            paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getPaymentMethodTypePartyTypeTransfer(paymentMethodTypePartyType));
+            paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(paymentMethodTypePartyType));
         });
 
         return paymentMethodTypePartyTypeTransfers;
@@ -571,7 +571,7 @@ public class PaymentControl
     }
     
     public PaymentProcessorTypeTransfer getPaymentProcessorTypeTransfer(UserVisit userVisit, PaymentProcessorType paymentProcessorType) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeTransferCache().getPaymentProcessorTypeTransfer(paymentProcessorType);
+        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeTransferCache().getTransfer(paymentProcessorType);
     }
     
     public List<PaymentProcessorTypeTransfer> getPaymentProcessorTypeTransfers(UserVisit userVisit) {
@@ -580,7 +580,7 @@ public class PaymentControl
         PaymentProcessorTypeTransferCache paymentProcessorTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeTransferCache();
         
         paymentProcessorTypes.stream().forEach((paymentProcessorType) -> {
-            paymentProcessorTypeTransfers.add(paymentProcessorTypeTransferCache.getPaymentProcessorTypeTransfer(paymentProcessorType));
+            paymentProcessorTypeTransfers.add(paymentProcessorTypeTransferCache.getTransfer(paymentProcessorType));
         });
         
         return paymentProcessorTypeTransfers;
@@ -802,7 +802,7 @@ public class PaymentControl
     }
     
     public PaymentProcessorTransfer getPaymentProcessorTransfer(UserVisit userVisit, PaymentProcessor paymentProcessor) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache().getPaymentProcessorTransfer(paymentProcessor);
+        return getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache().getTransfer(paymentProcessor);
     }
     
     public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit) {
@@ -811,7 +811,7 @@ public class PaymentControl
         PaymentProcessorTransferCache paymentProcessorTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
         
         paymentProcessors.stream().forEach((paymentProcessor) -> {
-            paymentProcessorTransfers.add(paymentProcessorTransferCache.getPaymentProcessorTransfer(paymentProcessor));
+            paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor));
         });
         
         return paymentProcessorTransfers;
@@ -1013,7 +1013,7 @@ public class PaymentControl
     }
     
     public PaymentProcessorDescriptionTransfer getPaymentProcessorDescriptionTransfer(UserVisit userVisit, PaymentProcessorDescription paymentProcessorDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache().getPaymentProcessorDescriptionTransfer(paymentProcessorDescription);
+        return getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache().getTransfer(paymentProcessorDescription);
     }
     
     public List<PaymentProcessorDescriptionTransfer> getPaymentProcessorDescriptionTransfers(UserVisit userVisit, PaymentProcessor paymentProcessor) {
@@ -1022,7 +1022,7 @@ public class PaymentControl
         PaymentProcessorDescriptionTransferCache paymentProcessorDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache();
         
         paymentProcessorDescriptions.stream().forEach((paymentProcessorDescription) -> {
-            paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getPaymentProcessorDescriptionTransfer(paymentProcessorDescription));
+            paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(paymentProcessorDescription));
         });
         
         return paymentProcessorDescriptionTransfers;
@@ -1314,7 +1314,7 @@ public class PaymentControl
     }
 
     public PaymentMethodTransfer getPaymentMethodTransfer(UserVisit userVisit, PaymentMethod paymentMethod) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache().getPaymentMethodTransfer(paymentMethod);
+        return getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache().getTransfer(paymentMethod);
     }
     
     public List<PaymentMethodTransfer> getPaymentMethodTransfers(UserVisit userVisit, List<PaymentMethod> paymentMethods) {
@@ -1322,7 +1322,7 @@ public class PaymentControl
         PaymentMethodTransferCache paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
 
         paymentMethods.stream().forEach((paymentMethod) -> {
-            paymentMethodTransfers.add(paymentMethodTransferCache.getPaymentMethodTransfer(paymentMethod));
+            paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod));
         });
 
         return paymentMethodTransfers;
@@ -1547,7 +1547,7 @@ public class PaymentControl
     }
     
     public PaymentMethodDescriptionTransfer getPaymentMethodDescriptionTransfer(UserVisit userVisit, PaymentMethodDescription paymentMethodDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache().getPaymentMethodDescriptionTransfer(paymentMethodDescription);
+        return getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache().getTransfer(paymentMethodDescription);
     }
     
     public List<PaymentMethodDescriptionTransfer> getPaymentMethodDescriptionTransfers(UserVisit userVisit, PaymentMethod paymentMethod) {
@@ -1556,7 +1556,7 @@ public class PaymentControl
         PaymentMethodDescriptionTransferCache paymentMethodDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache();
         
         paymentMethodDescriptions.stream().forEach((paymentMethodDescription) -> {
-            paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getPaymentMethodDescriptionTransfer(paymentMethodDescription));
+            paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription));
         });
         
         return paymentMethodDescriptionTransfers;
@@ -1971,7 +1971,7 @@ public class PaymentControl
     }
 
     public PartyPaymentMethodTransfer getPartyPaymentMethodTransfer(UserVisit userVisit, PartyPaymentMethod partyPaymentMethod) {
-        return getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache().getPartyPaymentMethodTransfer(partyPaymentMethod);
+        return getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache().getTransfer(partyPaymentMethod);
     }
 
     public List<PartyPaymentMethodTransfer> getPartyPaymentMethodTransfers(UserVisit userVisit, List<PartyPaymentMethod> partyPaymentMethods) {
@@ -1979,7 +1979,7 @@ public class PaymentControl
         PartyPaymentMethodTransferCache partyPaymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodTransferCache();
 
         partyPaymentMethods.stream().forEach((partyPaymentMethod) -> {
-            partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getPartyPaymentMethodTransfer(partyPaymentMethod));
+            partyPaymentMethodTransfers.add(partyPaymentMethodTransferCache.getTransfer(partyPaymentMethod));
         });
 
         return partyPaymentMethodTransfers;
@@ -2647,7 +2647,7 @@ public class PaymentControl
     
     public PartyPaymentMethodContactMechanismTransfer getPartyPaymentMethodContactMechanismTransfer(UserVisit userVisit,
             PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
-        return getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache().getPartyPaymentMethodContactMechanismTransfer(partyPaymentMethodContactMechanism);
+        return getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache().getTransfer(partyPaymentMethodContactMechanism);
     }
     
     public List<PartyPaymentMethodContactMechanismTransfer> getPartyPaymentMethodContactMechanismTransfers(UserVisit userVisit,
@@ -2656,7 +2656,7 @@ public class PaymentControl
         PartyPaymentMethodContactMechanismTransferCache partyPaymentMethodContactMechanismTransferCache = getPaymentTransferCaches(userVisit).getPartyPaymentMethodContactMechanismTransferCache();
         
         partyPaymentMethodContactMechanisms.stream().forEach((partyPaymentMethodContactMechanism) -> {
-            partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getPartyPaymentMethodContactMechanismTransfer(partyPaymentMethodContactMechanism));
+            partyPaymentMethodContactMechanismTransfers.add(partyPaymentMethodContactMechanismTransferCache.getTransfer(partyPaymentMethodContactMechanism));
         });
         
         return partyPaymentMethodContactMechanismTransfers;
@@ -2896,7 +2896,7 @@ public class PaymentControl
     }
     
     public BillingAccountTransfer getBillingAccountTransfer(UserVisit userVisit, BillingAccount billingAccount) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountTransferCache().getBillingAccountTransfer(billingAccount);
+        return getPaymentTransferCaches(userVisit).getBillingAccountTransferCache().getTransfer(billingAccount);
     }
     
     public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, List<BillingAccount> billingAccounts) {
@@ -2904,7 +2904,7 @@ public class PaymentControl
         BillingAccountTransferCache billingAccountTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountTransferCache();
         
         billingAccounts.stream().forEach((billingAccount) -> {
-            billingAccountTransfers.add(billingAccountTransferCache.getBillingAccountTransfer(billingAccount));
+            billingAccountTransfers.add(billingAccountTransferCache.getTransfer(billingAccount));
         });
         
         return billingAccountTransfers;
@@ -3121,7 +3121,7 @@ public class PaymentControl
     }
     
     public BillingAccountRoleTransfer getBillingAccountRoleTransfer(UserVisit userVisit, BillingAccountRole billingAccountRole) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache().getBillingAccountRoleTransfer(billingAccountRole);
+        return getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache().getTransfer(billingAccountRole);
     }
     
     public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, List<BillingAccountRole> billingAccountRoles) {
@@ -3129,7 +3129,7 @@ public class PaymentControl
         BillingAccountRoleTransferCache billingAccountRoleTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache();
         
         billingAccountRoles.stream().forEach((billingAccountRole) -> {
-            billingAccountRoleTransfers.add(billingAccountRoleTransferCache.getBillingAccountRoleTransfer(billingAccountRole));
+            billingAccountRoleTransfers.add(billingAccountRoleTransferCache.getTransfer(billingAccountRole));
         });
         
         return billingAccountRoleTransfers;

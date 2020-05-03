@@ -304,5 +304,68 @@ public class PaymentBean
     public CommandResult deletePartyPaymentMethod(UserVisitPK userVisitPK, DeletePartyPaymentMethodForm form) {
         return new DeletePartyPaymentMethodCommand(userVisitPK, form).run();
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Payment Processor Action Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createPaymentProcessorActionType(UserVisitPK userVisitPK, CreatePaymentProcessorActionTypeForm form) {
+        return new CreatePaymentProcessorActionTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorActionTypes(UserVisitPK userVisitPK, GetPaymentProcessorActionTypesForm form) {
+        return new GetPaymentProcessorActionTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorActionType(UserVisitPK userVisitPK, GetPaymentProcessorActionTypeForm form) {
+        return new GetPaymentProcessorActionTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorActionTypeChoices(UserVisitPK userVisitPK, GetPaymentProcessorActionTypeChoicesForm form) {
+        return new GetPaymentProcessorActionTypeChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setDefaultPaymentProcessorActionType(UserVisitPK userVisitPK, SetDefaultPaymentProcessorActionTypeForm form) {
+        return new SetDefaultPaymentProcessorActionTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editPaymentProcessorActionType(UserVisitPK userVisitPK, EditPaymentProcessorActionTypeForm form) {
+        return new EditPaymentProcessorActionTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deletePaymentProcessorActionType(UserVisitPK userVisitPK, DeletePaymentProcessorActionTypeForm form) {
+        return new DeletePaymentProcessorActionTypeCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Payment Processor Action Type Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createPaymentProcessorActionTypeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorActionTypeDescriptionForm form) {
+        return new CreatePaymentProcessorActionTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorActionTypeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorActionTypeDescriptionsForm form) {
+        return new GetPaymentProcessorActionTypeDescriptionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editPaymentProcessorActionTypeDescription(UserVisitPK userVisitPK, EditPaymentProcessorActionTypeDescriptionForm form) {
+        return new EditPaymentProcessorActionTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deletePaymentProcessorActionTypeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorActionTypeDescriptionForm form) {
+        return new DeletePaymentProcessorActionTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
 }

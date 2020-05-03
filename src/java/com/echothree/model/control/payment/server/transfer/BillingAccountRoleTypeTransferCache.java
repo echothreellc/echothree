@@ -28,7 +28,8 @@ public class BillingAccountRoleTypeTransferCache
     public BillingAccountRoleTypeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
     }
-    
+
+    @Override
     public BillingAccountRoleTypeTransfer getTransfer(BillingAccountRoleType billingAccountRoleType) {
         BillingAccountRoleTypeTransfer billingAccountRoleTypeTransfer = get(billingAccountRoleType);
         

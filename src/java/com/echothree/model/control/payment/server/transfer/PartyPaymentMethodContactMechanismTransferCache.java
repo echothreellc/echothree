@@ -47,7 +47,8 @@ public class PartyPaymentMethodContactMechanismTransferCache
         coreControl = (CoreControl)Session.getModelController(CoreControl.class);
         workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     }
-    
+
+    @Override
     public PartyPaymentMethodContactMechanismTransfer getTransfer(PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
         PartyPaymentMethodContactMechanismTransfer partyPaymentMethodContactMechanismTransfer = get(partyPaymentMethodContactMechanism);
         
