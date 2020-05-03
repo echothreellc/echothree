@@ -257,7 +257,7 @@
         <sequenceType sequenceTypeName="ASSOCIATE_REFERRAL" prefix="AR" sequenceEncoderTypeName="REVERSE_SWAP" sequenceChecksumTypeName="MOD_10"
                       isDefault="false" sortOrder="1">
             <sequenceTypeDescription languageIsoName="en" description="Associate Referral" />
-            <sequence sequenceName="DEFAULT" mask="9999999999999" isDefault="true" sortOrder="1">
+            <sequence sequenceName="DEFAULT" mask="9AA9AA9AA9AA9" isDefault="true" sortOrder="1">
                 <sequenceDescription languageIsoName="en" description="Default Associate Referral" />
             </sequence>
         </sequenceType>
