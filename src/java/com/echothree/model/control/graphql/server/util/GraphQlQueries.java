@@ -87,6 +87,9 @@ import com.echothree.control.user.party.server.command.GetNameSuffixesCommand;
 import com.echothree.control.user.party.server.command.GetPersonalTitlesCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.control.user.party.server.command.GetTimeZonesCommand;
+import com.echothree.control.user.payment.common.PaymentUtil;
+import com.echothree.control.user.payment.server.command.GetPaymentProcessorActionTypeCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentProcessorActionTypesCommand;
 import com.echothree.control.user.queue.common.QueueUtil;
 import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
@@ -139,6 +142,7 @@ import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
 import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
+import com.echothree.model.control.payment.server.graphql.PaymentProcessorActionTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
@@ -183,6 +187,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.party.server.entity.TimeZone;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -203,6 +208,58 @@ import javax.naming.NamingException;
 
 @GraphQLName("query")
 public final class GraphQlQueries {
+
+    @GraphQLField
+    @GraphQLName("paymentProcessorActionType")
+    public static PaymentProcessorActionTypeObject paymentProcessorActionType(final DataFetchingEnvironment env,
+            @GraphQLName("paymentProcessorActionTypeName") final String paymentProcessorActionTypeName,
+            @GraphQLName("id") final String id) {
+        PaymentProcessorActionType paymentProcessorActionType;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = PaymentUtil.getHome().getGetPaymentProcessorActionTypeForm();
+
+            commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
+            commandForm.setUlid(id);
+
+            paymentProcessorActionType = new GetPaymentProcessorActionTypeCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return paymentProcessorActionType == null ? null : new PaymentProcessorActionTypeObject(paymentProcessorActionType);
+    }
+
+    @GraphQLField
+    @GraphQLName("paymentProcessorActionTypes")
+    public static Collection<PaymentProcessorActionTypeObject> paymentProcessorActionTypes(final DataFetchingEnvironment env) {
+        Collection<PaymentProcessorActionType> paymentProcessorActionTypes;
+        Collection<PaymentProcessorActionTypeObject> paymentProcessorActionTypeObjects;
+
+        try {
+            GraphQlContext context = env.getContext();
+            var commandForm = PaymentUtil.getHome().getGetPaymentProcessorActionTypesForm();
+
+            paymentProcessorActionTypes = new GetPaymentProcessorActionTypesCommand(context.getUserVisitPK(), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(paymentProcessorActionTypes == null) {
+            paymentProcessorActionTypeObjects = Collections.EMPTY_LIST;
+        } else {
+            paymentProcessorActionTypeObjects = new ArrayList<>(paymentProcessorActionTypes.size());
+
+            paymentProcessorActionTypes.stream().map((paymentProcessorActionType) -> {
+                return new PaymentProcessorActionTypeObject(paymentProcessorActionType);
+            }).forEachOrdered((paymentProcessorActionTypeObject) -> {
+                paymentProcessorActionTypeObjects.add(paymentProcessorActionTypeObject);
+            });
+        }
+
+        return paymentProcessorActionTypeObjects;
+    }
 
     @GraphQLField
     @GraphQLName("appearance")
