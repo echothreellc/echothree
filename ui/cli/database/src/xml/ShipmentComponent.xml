@@ -583,19 +583,19 @@
                             <indexColumn name="ShipmentTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index5">
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="ParentShipmentPackageId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index6">
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="ShipmentId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index7">
+                        <index type="Multiple" name="Index6">
                             <indexColumn name="PackageTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index8">
+                        <index type="Multiple" name="Index7">
                             <indexColumn name="UnitOfMeasureTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
