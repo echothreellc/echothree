@@ -42,7 +42,7 @@ public class BillingAccountRoleTransferCache
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     }
 
-    public BillingAccountRoleTransfer getBillingAccountRoleTransfer(BillingAccountRole billingAccountRole) {
+    public BillingAccountRoleTransfer getTransfer(BillingAccountRole billingAccountRole) {
         BillingAccountRoleTransfer billingAccountRoleTransfer = get(billingAccountRole);
 
         if(billingAccountRoleTransfer == null) {

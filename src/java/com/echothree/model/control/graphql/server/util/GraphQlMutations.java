@@ -59,6 +59,15 @@ import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
 import com.echothree.control.user.party.common.spec.PartyUniversalSpec;
+import com.echothree.control.user.payment.common.PaymentUtil;
+import com.echothree.control.user.payment.common.edit.PaymentProcessorActionTypeEdit;
+import com.echothree.control.user.payment.common.form.CreatePaymentProcessorActionTypeForm;
+import com.echothree.control.user.payment.common.form.DeletePaymentProcessorActionTypeForm;
+import com.echothree.control.user.payment.common.form.EditPaymentProcessorActionTypeForm;
+import com.echothree.control.user.payment.common.form.SetDefaultPaymentProcessorActionTypeForm;
+import com.echothree.control.user.payment.common.result.CreatePaymentProcessorActionTypeResult;
+import com.echothree.control.user.payment.common.result.EditPaymentProcessorActionTypeResult;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorActionTypeUniversalSpec;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.form.ClearCustomerResultsForm;
 import com.echothree.control.user.search.common.form.SearchCustomersForm;
@@ -89,7 +98,138 @@ import javax.naming.NamingException;
 
 @GraphQLName("mutation")
 public class GraphQlMutations {
-    
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createPaymentProcessorActionType(final DataFetchingEnvironment env,
+            @GraphQLName("paymentProcessorActionTypeName") @GraphQLNonNull final String paymentProcessorActionTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        CommandResultWithIdObject commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            CreatePaymentProcessorActionTypeForm commandForm = PaymentUtil.getHome().getCreatePaymentProcessorActionTypeForm();
+
+            commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            CommandResult commandResult = PaymentUtil.getHome().createPaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                CreatePaymentProcessorActionTypeResult result = (CreatePaymentProcessorActionTypeResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deletePaymentProcessorActionType(final DataFetchingEnvironment env,
+            @GraphQLName("paymentProcessorActionTypeName") @GraphQLNonNull final String paymentProcessorActionTypeName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            DeletePaymentProcessorActionTypeForm commandForm = PaymentUtil.getHome().getDeletePaymentProcessorActionTypeForm();
+
+            commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
+
+            CommandResult commandResult = PaymentUtil.getHome().deletePaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editPaymentProcessorActionType(final DataFetchingEnvironment env,
+            @GraphQLName("originalPaymentProcessorActionTypeName") final String originalPaymentProcessorActionTypeName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("paymentProcessorActionTypeName") final String paymentProcessorActionTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        CommandResultWithIdObject commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            PaymentProcessorActionTypeUniversalSpec spec = PaymentUtil.getHome().getPaymentProcessorActionTypeUniversalSpec();
+
+            spec.setPaymentProcessorActionTypeName(originalPaymentProcessorActionTypeName);
+            spec.setUlid(id);
+
+            EditPaymentProcessorActionTypeForm commandForm = PaymentUtil.getHome().getEditPaymentProcessorActionTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            CommandResult commandResult = PaymentUtil.getHome().editPaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                EditPaymentProcessorActionTypeResult result = (EditPaymentProcessorActionTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                PaymentProcessorActionTypeEdit edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessorActionType().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("paymentProcessorActionTypeName"))
+                    edit.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = PaymentUtil.getHome().editPaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetDefaultPaymentProcessorActionType(final DataFetchingEnvironment env,
+            @GraphQLName("paymentProcessorActionTypeName") @GraphQLNonNull final String paymentProcessorActionTypeName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            SetDefaultPaymentProcessorActionTypeForm commandForm = PaymentUtil.getHome().getSetDefaultPaymentProcessorActionTypeForm();
+
+            commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
+
+            CommandResult commandResult = PaymentUtil.getHome().setDefaultPaymentProcessorActionType(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultWithIdObject createInventoryCondition(final DataFetchingEnvironment env,

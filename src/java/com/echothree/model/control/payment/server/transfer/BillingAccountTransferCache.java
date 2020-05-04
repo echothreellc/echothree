@@ -52,7 +52,8 @@ public class BillingAccountTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public BillingAccountTransfer getBillingAccountTransfer(BillingAccount billingAccount) {
+    @Override
+    public BillingAccountTransfer getTransfer(BillingAccount billingAccount) {
         BillingAccountTransfer billingAccountTransfer = get(billingAccount);
 
         if(billingAccountTransfer == null) {

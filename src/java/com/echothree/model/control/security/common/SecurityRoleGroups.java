@@ -227,6 +227,7 @@ public enum SecurityRoleGroups {
     PartyTrainingClassStatus,
     PartyTypeDocumentTypeUsageType,
     PaymentProcessor,
+    PaymentProcessorActionType,
     PaymentProcessorType,
     PaymentMethod,
     PaymentMethodType,

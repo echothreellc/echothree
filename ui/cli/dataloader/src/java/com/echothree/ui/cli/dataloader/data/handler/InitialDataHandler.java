@@ -149,6 +149,7 @@ import com.echothree.ui.cli.dataloader.data.handler.party.TimeZonesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.BillingAccountRoleTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentMethodTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentMethodsHandler;
+import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentProcessorActionTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentProcessorTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentProcessorsHandler;
 import com.echothree.ui.cli.dataloader.data.handler.period.PeriodKindsHandler;
@@ -224,7 +225,7 @@ public class InitialDataHandler
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
+            throws SAXException, NamingException {
         if(localName.equals("languages")) {
             initialDataParser.pushHandler(new LanguagesHandler(initialDataParser, this));
         } else if(localName.equals("partyTypes")) {
@@ -427,6 +428,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new PaymentMethodTypesHandler(initialDataParser, this));
         } else if(localName.equals("paymentMethods")) {
             initialDataParser.pushHandler(new PaymentMethodsHandler(initialDataParser, this));
+        } else if(localName.equals("paymentProcessorActionTypes")) {
+            initialDataParser.pushHandler(new PaymentProcessorActionTypesHandler(initialDataParser, this));
         } else if(localName.equals("paymentProcessorTypes")) {
             initialDataParser.pushHandler(new PaymentProcessorTypesHandler(initialDataParser, this));
         } else if(localName.equals("paymentProcessors")) {

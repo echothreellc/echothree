@@ -44,8 +44,9 @@ public class PaymentProcessorTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
-    public PaymentProcessorTransfer getPaymentProcessorTransfer(PaymentProcessor paymentProcessor) {
+
+    @Override
+    public PaymentProcessorTransfer getTransfer(PaymentProcessor paymentProcessor) {
         PaymentProcessorTransfer paymentProcessorTransfer = get(paymentProcessor);
         
         if(paymentProcessorTransfer == null) {

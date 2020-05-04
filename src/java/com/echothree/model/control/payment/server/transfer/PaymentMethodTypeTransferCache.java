@@ -38,8 +38,9 @@ public class PaymentMethodTypeTransferCache
             includePaymentMethodTypePartyTypes = options.contains(PaymentOptions.PaymentMethodTypeIncludePaymentMethodTypePartyTypes);
         }
     }
-    
-    public PaymentMethodTypeTransfer getPaymentMethodTypeTransfer(PaymentMethodType paymentMethodType) {
+
+    @Override
+    public PaymentMethodTypeTransfer getTransfer(PaymentMethodType paymentMethodType) {
         PaymentMethodTypeTransfer paymentMethodTypeTransfer = get(paymentMethodType);
         
         if(paymentMethodTypeTransfer == null) {

@@ -40,8 +40,9 @@ public class PaymentMethodTypePartyTypeTransferCache
         partyControl = (PartyControl)Session.getModelController(PartyControl.class);
         workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     }
-    
-    public PaymentMethodTypePartyTypeTransfer getPaymentMethodTypePartyTypeTransfer(PaymentMethodTypePartyType paymentMethodTypePartyType) {
+
+    @Override
+    public PaymentMethodTypePartyTypeTransfer getTransfer(PaymentMethodTypePartyType paymentMethodTypePartyType) {
         PaymentMethodTypePartyTypeTransfer paymentMethodTypePartyTypeTransfer = get(paymentMethodTypePartyType);
         
         if(paymentMethodTypePartyTypeTransfer == null) {

@@ -2344,6 +2344,12 @@
             <entityType entityTypeName="EntityAttributeString" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Attribute String" />
             </entityType>
+            <entityType entityTypeName="PaymentProcessorActionType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Action Type" />
+            </entityType>
+            <entityType entityTypeName="PaymentProcessorActionTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Action Type Description" />
+            </entityType>
             <component componentName="InitialDataFromXML" description="Initial Data From XML">
                 <componentVersion majorRevision="1" minorRevision="0" componentStageName="DEVELOPMENT" buildNumber="1" />
             </component>

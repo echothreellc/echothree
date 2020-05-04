@@ -50,8 +50,9 @@ public class PaymentMethodTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
-    public PaymentMethodTransfer getPaymentMethodTransfer(PaymentMethod paymentMethod) {
+
+    @Override
+    public PaymentMethodTransfer getTransfer(PaymentMethod paymentMethod) {
         PaymentMethodTransfer paymentMethodTransfer = get(paymentMethod);
         
         if(paymentMethodTransfer == null) {

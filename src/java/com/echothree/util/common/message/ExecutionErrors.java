@@ -2176,5 +2176,10 @@ public enum ExecutionErrors {
     CannotDeleteContactMechanismInUse,
     CannotDeletePersonalTitleInUse,
     CannotDeleteNameSuffixInUse,
+    DuplicatePaymentProcessorActionTypeName,
+    UnknownPaymentProcessorActionTypeName,
+    UnknownDefaultPaymentProcessorActionType,
+    DuplicatePaymentProcessorActionTypeDescription,
+    UnknownPaymentProcessorActionTypeDescription,
 
 }
