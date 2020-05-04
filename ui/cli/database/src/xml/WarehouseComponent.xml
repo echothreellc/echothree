@@ -380,15 +380,15 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="BoxTypes" nameSingular="BoxType" columnPrefix="bxtyp">
+                <table namePlural="PackageTypes" nameSingular="PackageType" columnPrefix="pckgtyp">
                     <columns>
-                        <column name="BoxTypeId" type="EID" nullAllowed="false" />
-                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BoxTypeDetails" destinationColumn="BoxTypeDetailId"/>
-                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BoxTypeDetails" destinationColumn="BoxTypeDetailId"/>
+                        <column name="PackageTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PackageTypeDetails" destinationColumn="PackageTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PackageTypeDetails" destinationColumn="PackageTypeDetailId"/>
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                         </index>
                         <index type="Unique">
                             <indexColumn name="ActiveDetailId"/>
@@ -398,32 +398,32 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="BoxTypeDetails" nameSingular="BoxTypeDetail" columnPrefix="bxtypdt">
+                <table namePlural="PackageTypeDetails" nameSingular="PackageTypeDetail" columnPrefix="pckgtypdt">
                     <columns>
-                        <column name="BoxTypeDetailId" type="EID" nullAllowed="false" />
-                        <column name="BoxTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BoxTypes" destinationColumn="BoxTypeId"/>
-                        <column name="BoxTypeName" type="Name" nullAllowed="false" />
+                        <column name="PackageTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PackageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PackageTypes" destinationColumn="PackageTypeId"/>
+                        <column name="PackageTypeName" type="Name" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="BoxTypeDetailId" />
+                            <indexColumn name="PackageTypeDetailId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
-                            <indexColumn name="BoxTypeName" />
+                            <indexColumn name="PackageTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="BoxTypeDescriptions" nameSingular="BoxTypeDescription" columnPrefix="bxtypd">
+                <table namePlural="PackageTypeDescriptions" nameSingular="PackageTypeDescription" columnPrefix="pckgtypd">
                     <columns>
-                        <column name="BoxTypeDescriptionId" type="EID" nullAllowed="false" />
-                        <column name="BoxTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BoxTypes" destinationColumn="BoxTypeId" />
+                        <column name="PackageTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PackageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PackageTypes" destinationColumn="PackageTypeId" />
                         <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
                         <column name="Description" type="Description" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -431,15 +431,15 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="BoxTypeDescriptionId" />
+                            <indexColumn name="PackageTypeDescriptionId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                             <indexColumn name="LanguageId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
@@ -448,10 +448,10 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="BoxTypeVolumes" nameSingular="BoxTypeVolume" columnPrefix="bxtypvol">
+                <table namePlural="PackageTypeVolumes" nameSingular="PackageTypeVolume" columnPrefix="pckgtypvol">
                     <columns>
-                        <column name="BoxTypeVolumeId" type="EID" nullAllowed="false" />
-                        <column name="BoxTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BoxTypes" destinationColumn="BoxTypeId"/>
+                        <column name="PackageTypeVolumeId" type="EID" nullAllowed="false" />
+                        <column name="PackageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PackageTypes" destinationColumn="PackageTypeId"/>
                         <column name="Height" type="Measurement" nullAllowed="false" />
                         <column name="Width" type="Measurement" nullAllowed="false" />
                         <column name="Depth" type="Measurement" nullAllowed="false" />
@@ -460,18 +460,18 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="BoxTypeVolumeId" />
+                            <indexColumn name="PackageTypeVolumeId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="BoxTypeCapacities" nameSingular="BoxTypeCapacity" columnPrefix="bxtypcap">
+                <table namePlural="PackageTypeCapacities" nameSingular="PackageTypeCapacity" columnPrefix="pckgtypcap">
                     <columns>
-                        <column name="BoxTypeCapacityId" type="EID" nullAllowed="false" />
-                        <column name="BoxTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BoxTypes" destinationColumn="BoxTypeId"/>
+                        <column name="PackageTypeCapacityId" type="EID" nullAllowed="false" />
+                        <column name="PackageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PackageTypes" destinationColumn="PackageTypeId"/>
                         <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
                         <column name="Capacity" type="Measurement" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -479,15 +479,15 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="BoxTypeCapacityId" />
+                            <indexColumn name="PackageTypeCapacityId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                             <indexColumn name="UnitOfMeasureTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
@@ -496,29 +496,29 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="WarehouseBoxTypes" nameSingular="WarehouseBoxType" columnPrefix="whsebxtyp">
+                <table namePlural="WarehousePackageTypes" nameSingular="WarehousePackageType" columnPrefix="whsepckgtyp">
                     <columns>
-                        <column name="WarehouseBoxType" type="EID" nullAllowed="false" />
+                        <column name="WarehousePackageType" type="EID" nullAllowed="false" />
                         <column name="WarehousePartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId"/>
-                        <column name="BoxTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="BoxTypes" destinationColumn="BoxTypeId"/>
+                        <column name="PackageTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PackageTypes" destinationColumn="PackageTypeId"/>
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                         </index>
                         <index type="Multiple" name="Index1">
                             <indexColumn name="WarehousePartyId"/>
                             <indexColumn name="ThruTime"/>
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="BoxTypeId"/>
+                            <indexColumn name="PackageTypeId"/>
                             <indexColumn name="ThruTime"/>
                         </index>
                         <index type="Unique" name="Index3">
                             <indexColumn name="WarehousePartyId"/>
-                            <indexColumn name="BoxTypeId"/>
+                            <indexColumn name="PackageTypeId"/>
                             <indexColumn name="ThruTime"/>
                         </index>
                     </indexes>
