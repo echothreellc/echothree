@@ -558,6 +558,7 @@
                         <column name="ShipmentPackageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentPackages" destinationColumn="ShipmentPackageId" />
                         <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
                         <column name="ShipmentPackageName" type="Name" nullAllowed="false" />
+                        <column name="ParentShipmentPackageId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="ShipmentPackages" destinationColumn="ShipmentPackageId" />
                         <column name="ShipmentId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Shipments" destinationColumn="ShipmentId" />
                         <column name="PackageTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PackageTypes" destinationColumn="PackageTypeId" />
                         <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
@@ -583,14 +584,18 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
-                            <indexColumn name="ShipmentId" />
+                            <indexColumn name="ParentShipmentPackageId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index5">
-                            <indexColumn name="PackageTypeId" />
+                            <indexColumn name="ShipmentId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index6">
+                            <indexColumn name="PackageTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
                             <indexColumn name="UnitOfMeasureTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
