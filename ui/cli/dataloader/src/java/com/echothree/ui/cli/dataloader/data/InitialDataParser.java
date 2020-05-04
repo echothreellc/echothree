@@ -217,7 +217,11 @@ public class InitialDataParser
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
-        getDefaultHandler().startElement(namespaceURI, localName, qName, attrs);
+        try {
+            getDefaultHandler().startElement(namespaceURI, localName, qName, attrs);
+        } catch(NamingException ne) {
+            throw new SAXException(ne);
+        }
     }
     
     @Override
