@@ -559,7 +559,7 @@
                         <column name="ShipmentTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ShipmentTypes" destinationColumn="ShipmentTypeId" />
                         <column name="ShipmentPackageName" type="Name" nullAllowed="false" />
                         <column name="ShipmentId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Shipments" destinationColumn="ShipmentId" />
-                        <column name="BoxTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="BoxTypes" destinationColumn="BoxTypeId" />
+                        <column name="PackageTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PackageTypes" destinationColumn="PackageTypeId" />
                         <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
                         <column name="Weight" type="Measurement" nullAllowed="true" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -587,7 +587,7 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index5">
-                            <indexColumn name="BoxTypeId" />
+                            <indexColumn name="PackageTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index6">
