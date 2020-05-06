@@ -2350,6 +2350,12 @@
             <entityType entityTypeName="PaymentProcessorActionTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Action Type Description" />
             </entityType>
+            <entityType entityTypeName="PaymentProcessorResultCode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Result Code" />
+            </entityType>
+            <entityType entityTypeName="PaymentProcessorResultCodeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Result Code Description" />
+            </entityType>
             <component componentName="InitialDataFromXML" description="Initial Data From XML">
                 <componentVersion majorRevision="1" minorRevision="0" componentStageName="DEVELOPMENT" buildNumber="1" />
             </component>

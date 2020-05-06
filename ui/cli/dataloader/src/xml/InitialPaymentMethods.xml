@@ -200,6 +200,35 @@
             <paymentProcessorActionTypeDescription languageIsoName="en" description="Void Transaction" />
         </paymentProcessorActionType>
     </paymentProcessorActionTypes>
+    <paymentProcessorResultCodes>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="AUTHORIZED" isDefault="true" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Transaction Authorized/Approved" />
+        </paymentProcessorResultCode>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="SUCCESS" isDefault="false" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Operation Was Successful" />
+        </paymentProcessorResultCode>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="CALL" isDefault="false" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Call Processor for Authorization" />
+        </paymentProcessorResultCode>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="DENIED" isDefault="false" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Transaction Denied, Permanent Denial, Not Likely to Succeed on Further Attempts" />
+        </paymentProcessorResultCode>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="DUPLICATE" isDefault="false" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Duplicate Transaction" />
+        </paymentProcessorResultCode>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="PICK_UP" isDefault="false" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Confiscate Card" />
+        </paymentProcessorResultCode>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="RETRY" isDefault="false" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Temporary Error, Retrying the Transaction May Yield a Different Result" />
+        </paymentProcessorResultCode>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="SETUP" isDefault="false" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Setup Error" />
+        </paymentProcessorResultCode>
+        <paymentProcessorResultCode paymentProcessorResultCodeName="TIMEOUT" isDefault="false" sortOrder="0">
+            <paymentProcessorResultCodeDescription languageIsoName="en" description="Transaction Not Processed in Allocated Amount of Time" />
+        </paymentProcessorResultCode>
+    </paymentProcessorResultCodes>
     <paymentProcessorTypes>
         <paymentProcessorType paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" isDefault="true" sortOrder="1">
             <paymentProcessorTypeDescription languageIsoName="en" description="Test Payment Processor Type" />
