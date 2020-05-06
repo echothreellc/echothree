@@ -150,6 +150,7 @@ import com.echothree.ui.cli.dataloader.data.handler.payment.BillingAccountRoleTy
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentMethodTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentMethodsHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentProcessorActionTypesHandler;
+import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentProcessorResultCodesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentProcessorTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.payment.PaymentProcessorsHandler;
 import com.echothree.ui.cli.dataloader.data.handler.period.PeriodKindsHandler;
@@ -430,6 +431,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new PaymentMethodsHandler(initialDataParser, this));
         } else if(localName.equals("paymentProcessorActionTypes")) {
             initialDataParser.pushHandler(new PaymentProcessorActionTypesHandler(initialDataParser, this));
+        } else if(localName.equals("paymentProcessorResultCodes")) {
+            initialDataParser.pushHandler(new PaymentProcessorResultCodesHandler(initialDataParser, this));
         } else if(localName.equals("paymentProcessorTypes")) {
             initialDataParser.pushHandler(new PaymentProcessorTypesHandler(initialDataParser, this));
         } else if(localName.equals("paymentProcessors")) {
