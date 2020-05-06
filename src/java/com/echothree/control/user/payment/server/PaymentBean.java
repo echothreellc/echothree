@@ -368,4 +368,67 @@ public class PaymentBean
         return new DeletePaymentProcessorActionTypeDescriptionCommand(userVisitPK, form).run();
     }
 
+    // -------------------------------------------------------------------------
+    //   Payment Processor Result Codes
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createPaymentProcessorResultCode(UserVisitPK userVisitPK, CreatePaymentProcessorResultCodeForm form) {
+        return new CreatePaymentProcessorResultCodeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorResultCodes(UserVisitPK userVisitPK, GetPaymentProcessorResultCodesForm form) {
+        return new GetPaymentProcessorResultCodesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorResultCode(UserVisitPK userVisitPK, GetPaymentProcessorResultCodeForm form) {
+        return new GetPaymentProcessorResultCodeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorResultCodeChoices(UserVisitPK userVisitPK, GetPaymentProcessorResultCodeChoicesForm form) {
+        return new GetPaymentProcessorResultCodeChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setDefaultPaymentProcessorResultCode(UserVisitPK userVisitPK, SetDefaultPaymentProcessorResultCodeForm form) {
+        return new SetDefaultPaymentProcessorResultCodeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editPaymentProcessorResultCode(UserVisitPK userVisitPK, EditPaymentProcessorResultCodeForm form) {
+        return new EditPaymentProcessorResultCodeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deletePaymentProcessorResultCode(UserVisitPK userVisitPK, DeletePaymentProcessorResultCodeForm form) {
+        return new DeletePaymentProcessorResultCodeCommand(userVisitPK, form).run();
+    }
+
+    // -------------------------------------------------------------------------
+    //   Payment Processor Result Code Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createPaymentProcessorResultCodeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorResultCodeDescriptionForm form) {
+        return new CreatePaymentProcessorResultCodeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentProcessorResultCodeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorResultCodeDescriptionsForm form) {
+        return new GetPaymentProcessorResultCodeDescriptionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editPaymentProcessorResultCodeDescription(UserVisitPK userVisitPK, EditPaymentProcessorResultCodeDescriptionForm form) {
+        return new EditPaymentProcessorResultCodeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deletePaymentProcessorResultCodeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorResultCodeDescriptionForm form) {
+        return new DeletePaymentProcessorResultCodeDescriptionCommand(userVisitPK, form).run();
+    }
+
 }
