@@ -22,7 +22,7 @@ import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.form.GetPaymentMethodsForm;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodsResult;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -71,7 +71,7 @@ public class Step1Action
             throws Exception {
         GetPaymentMethodsForm commandForm = PaymentUtil.getHome().getGetPaymentMethodsForm();
 
-        commandForm.setPaymentMethodTypeName(PaymentConstants.PaymentMethodType_CREDIT_CARD);
+        commandForm.setPaymentMethodTypeName(PaymentMethodTypes.CREDIT_CARD.name());
 
         CommandResult commandResult = PaymentUtil.getHome().getPaymentMethods(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
