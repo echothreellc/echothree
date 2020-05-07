@@ -25,7 +25,7 @@ import com.echothree.control.user.payment.common.spec.PartyPaymentMethodSpec;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -45,10 +45,10 @@ import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCar
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardValue;
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -166,14 +166,14 @@ public class EditPartyPaymentMethodCommand
     public void doLock(PartyPaymentMethodEdit edit, PartyPaymentMethod partyPaymentMethod) {
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
-        String paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getPaymentMethodTypeName();
+        String paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
 
         edit.setDescription(partyPaymentMethodDetail.getDescription());
         edit.setDeleteWhenUnused(partyPaymentMethodDetail.getDeleteWhenUnused().toString());
         edit.setIsDefault(partyPaymentMethodDetail.getIsDefault().toString());
         edit.setSortOrder(partyPaymentMethodDetail.getSortOrder().toString());
 
-        if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+        if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
             PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = paymentControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
             PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode = paymentControl.getPartyPaymentMethodCreditCardSecurityCode(partyPaymentMethod);
             boolean includeCreditCardNumber = SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, getParty(),
@@ -226,7 +226,7 @@ public class EditPartyPaymentMethodCommand
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         PartyPK executingPartyPK = getPartyPK();
         PartyPaymentMethodDetailValue partyPaymentMethodDetailValue = paymentControl.getPartyPaymentMethodDetailValueForUpdate(partyPaymentMethod);
-        String paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getPaymentMethodTypeName();
+        String paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
 
         partyPaymentMethodDetailValue.setDescription(edit.getDescription());
         partyPaymentMethodDetailValue.setDeleteWhenUnused(Boolean.valueOf(edit.getDeleteWhenUnused()));
@@ -235,7 +235,7 @@ public class EditPartyPaymentMethodCommand
 
         paymentControl.updatePartyPaymentMethodFromValue(partyPaymentMethodDetailValue, executingPartyPK);
 
-        if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+        if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
             var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             Party party = getPartyFromPartyPaymentMethod(partyPaymentMethod);

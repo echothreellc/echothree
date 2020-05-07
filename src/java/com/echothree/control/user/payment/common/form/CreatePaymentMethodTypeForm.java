@@ -16,15 +16,11 @@
 
 package com.echothree.control.user.payment.common.form;
 
-import com.echothree.control.user.payment.common.spec.PaymentMethodTypeSpec;
+import com.echothree.control.user.payment.common.edit.PaymentMethodTypeEdit;
 
 public interface CreatePaymentMethodTypeForm
-        extends PaymentMethodTypeSpec {
+        extends PaymentMethodTypeEdit {
     
-    String getIsDefault();
-    void setIsDefault(String isDefault);
-    
-    String getSortOrder();
-    void setSortOrder(String sortOrder);
+    // Nothing additional beyond PaymentMethodTypeEdit
     
 }

@@ -44,20 +44,32 @@ public interface PaymentService
     // -------------------------------------------------------------------------
     //   Payment Method Types
     // -------------------------------------------------------------------------
-    
+
     CommandResult createPaymentMethodType(UserVisitPK userVisitPK, CreatePaymentMethodTypeForm form);
-    
-    CommandResult getPaymentMethodTypeChoices(UserVisitPK userVisitPK, GetPaymentMethodTypeChoicesForm form);
-    
-    CommandResult getPaymentMethodType(UserVisitPK userVisitPK, GetPaymentMethodTypeForm form);
-    
+
     CommandResult getPaymentMethodTypes(UserVisitPK userVisitPK, GetPaymentMethodTypesForm form);
-    
+
+    CommandResult getPaymentMethodType(UserVisitPK userVisitPK, GetPaymentMethodTypeForm form);
+
+    CommandResult getPaymentMethodTypeChoices(UserVisitPK userVisitPK, GetPaymentMethodTypeChoicesForm form);
+
+    CommandResult setDefaultPaymentMethodType(UserVisitPK userVisitPK, SetDefaultPaymentMethodTypeForm form);
+
+    CommandResult editPaymentMethodType(UserVisitPK userVisitPK, EditPaymentMethodTypeForm form);
+
+    CommandResult deletePaymentMethodType(UserVisitPK userVisitPK, DeletePaymentMethodTypeForm form);
+
     // -------------------------------------------------------------------------
-    //   Payment Method Type Descriptions
+    //   Payment Processor Action Type Descriptions
     // -------------------------------------------------------------------------
-    
+
     CommandResult createPaymentMethodTypeDescription(UserVisitPK userVisitPK, CreatePaymentMethodTypeDescriptionForm form);
+
+    CommandResult getPaymentMethodTypeDescriptions(UserVisitPK userVisitPK, GetPaymentMethodTypeDescriptionsForm form);
+
+    CommandResult editPaymentMethodTypeDescription(UserVisitPK userVisitPK, EditPaymentMethodTypeDescriptionForm form);
+
+    CommandResult deletePaymentMethodTypeDescription(UserVisitPK userVisitPK, DeletePaymentMethodTypeDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Payment Method Type Party Types

@@ -60,20 +60,28 @@ import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
 import com.echothree.control.user.party.common.spec.PartyUniversalSpec;
 import com.echothree.control.user.payment.common.PaymentUtil;
+import com.echothree.control.user.payment.common.edit.PaymentMethodTypeEdit;
 import com.echothree.control.user.payment.common.edit.PaymentProcessorActionTypeEdit;
 import com.echothree.control.user.payment.common.edit.PaymentProcessorResultCodeEdit;
+import com.echothree.control.user.payment.common.form.CreatePaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.form.CreatePaymentProcessorActionTypeForm;
 import com.echothree.control.user.payment.common.form.CreatePaymentProcessorResultCodeForm;
+import com.echothree.control.user.payment.common.form.DeletePaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.form.DeletePaymentProcessorActionTypeForm;
 import com.echothree.control.user.payment.common.form.DeletePaymentProcessorResultCodeForm;
+import com.echothree.control.user.payment.common.form.EditPaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.form.EditPaymentProcessorActionTypeForm;
 import com.echothree.control.user.payment.common.form.EditPaymentProcessorResultCodeForm;
+import com.echothree.control.user.payment.common.form.SetDefaultPaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.form.SetDefaultPaymentProcessorActionTypeForm;
 import com.echothree.control.user.payment.common.form.SetDefaultPaymentProcessorResultCodeForm;
+import com.echothree.control.user.payment.common.result.CreatePaymentMethodTypeResult;
 import com.echothree.control.user.payment.common.result.CreatePaymentProcessorActionTypeResult;
 import com.echothree.control.user.payment.common.result.CreatePaymentProcessorResultCodeResult;
+import com.echothree.control.user.payment.common.result.EditPaymentMethodTypeResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorActionTypeResult;
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorResultCodeResult;
+import com.echothree.control.user.payment.common.spec.PaymentMethodTypeUniversalSpec;
 import com.echothree.control.user.payment.common.spec.PaymentProcessorActionTypeUniversalSpec;
 import com.echothree.control.user.payment.common.spec.PaymentProcessorResultCodeUniversalSpec;
 import com.echothree.control.user.search.common.SearchUtil;
@@ -106,6 +114,137 @@ import javax.naming.NamingException;
 
 @GraphQLName("mutation")
 public class GraphQlMutations {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createPaymentMethodType(final DataFetchingEnvironment env,
+            @GraphQLName("paymentMethodTypeName") @GraphQLNonNull final String paymentMethodTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        CommandResultWithIdObject commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            CreatePaymentMethodTypeForm commandForm = PaymentUtil.getHome().getCreatePaymentMethodTypeForm();
+
+            commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            CommandResult commandResult = PaymentUtil.getHome().createPaymentMethodType(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                CreatePaymentMethodTypeResult result = (CreatePaymentMethodTypeResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deletePaymentMethodType(final DataFetchingEnvironment env,
+            @GraphQLName("paymentMethodTypeName") @GraphQLNonNull final String paymentMethodTypeName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            DeletePaymentMethodTypeForm commandForm = PaymentUtil.getHome().getDeletePaymentMethodTypeForm();
+
+            commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
+
+            CommandResult commandResult = PaymentUtil.getHome().deletePaymentMethodType(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editPaymentMethodType(final DataFetchingEnvironment env,
+            @GraphQLName("originalPaymentMethodTypeName") final String originalPaymentMethodTypeName,
+            @GraphQLName("id") final String id,
+            @GraphQLName("paymentMethodTypeName") final String paymentMethodTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        CommandResultWithIdObject commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            PaymentMethodTypeUniversalSpec spec = PaymentUtil.getHome().getPaymentMethodTypeUniversalSpec();
+
+            spec.setPaymentMethodTypeName(originalPaymentMethodTypeName);
+            spec.setUlid(id);
+
+            EditPaymentMethodTypeForm commandForm = PaymentUtil.getHome().getEditPaymentMethodTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            CommandResult commandResult = PaymentUtil.getHome().editPaymentMethodType(context.getUserVisitPK(), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                ExecutionResult executionResult = commandResult.getExecutionResult();
+                EditPaymentMethodTypeResult result = (EditPaymentMethodTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                PaymentMethodTypeEdit edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentMethodType().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("paymentMethodTypeName"))
+                    edit.setPaymentMethodTypeName(paymentMethodTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = PaymentUtil.getHome().editPaymentMethodType(context.getUserVisitPK(), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject setSetDefaultPaymentMethodType(final DataFetchingEnvironment env,
+            @GraphQLName("paymentMethodTypeName") @GraphQLNonNull final String paymentMethodTypeName) {
+        CommandResultObject commandResultObject = new CommandResultObject();
+
+        try {
+            GraphQlContext context = env.getContext();
+            SetDefaultPaymentMethodTypeForm commandForm = PaymentUtil.getHome().getSetDefaultPaymentMethodTypeForm();
+
+            commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
+
+            CommandResult commandResult = PaymentUtil.getHome().setDefaultPaymentMethodType(context.getUserVisitPK(), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation

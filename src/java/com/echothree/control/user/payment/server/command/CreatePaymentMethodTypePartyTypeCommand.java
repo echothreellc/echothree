@@ -19,6 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.CreatePaymentMethodTypePartyTypeForm;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
@@ -56,16 +57,16 @@ public class CreatePaymentMethodTypePartyTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
         String paymentMethodTypeName = form.getPaymentMethodTypeName();
-        PaymentMethodType paymentMethodType = paymentControl.getPaymentMethodTypeByName(paymentMethodTypeName);
+        PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
         
-        if(paymentMethodType != null) {
+        if(!hasExecutionErrors()) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
             String partyTypeName = form.getPartyTypeName();
             PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
             
             if(partyType != null) {
+                var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
                 PaymentMethodTypePartyType paymentMethodTypePartyType = paymentControl.getPaymentMethodTypePartyType(paymentMethodType,
                         partyType);
                 
@@ -93,8 +94,6 @@ public class CreatePaymentMethodTypePartyTypeCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPaymentMethodTypeName.name(), paymentMethodTypeName);
         }
         
         return null;

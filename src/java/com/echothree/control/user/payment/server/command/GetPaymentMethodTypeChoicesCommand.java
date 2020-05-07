@@ -17,16 +17,15 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentMethodTypeChoicesForm;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodTypeChoicesResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.PaymentMethodTypeControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -48,7 +47,7 @@ public class GetPaymentMethodTypeChoicesCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethodType.name(), SecurityRoles.Choices.name())
                         )))
                 )));
-
+        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("DefaultPaymentMethodTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
@@ -62,14 +61,14 @@ public class GetPaymentMethodTypeChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        GetPaymentMethodTypeChoicesResult result = PaymentResultFactory.getGetPaymentMethodTypeChoicesResult();
-        String defaultPaymentMethodTypeChoice = form.getDefaultPaymentMethodTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var paymentMethodTypeControl = (PaymentMethodTypeControl)Session.getModelController(PaymentMethodTypeControl.class);
+        var result = PaymentResultFactory.getGetPaymentMethodTypeChoicesResult();
+        var defaultPaymentMethodTypeChoice = form.getDefaultPaymentMethodTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
         
-        result.setPaymentMethodTypeChoices(paymentControl.getPaymentMethodTypeChoices(defaultPaymentMethodTypeChoice,
+        result.setPaymentMethodTypeChoices(paymentMethodTypeControl.getPaymentMethodTypeChoices(defaultPaymentMethodTypeChoice,
                 getPreferredLanguage(), allowNullChoice));
-        
+
         return result;
     }
     

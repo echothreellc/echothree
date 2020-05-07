@@ -17,18 +17,21 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.CreatePaymentMethodTypeForm;
+import com.echothree.control.user.payment.common.result.PaymentResultFactory;
+import com.echothree.control.user.payment.common.result.CreatePaymentMethodTypeResult;
+import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,13 +44,17 @@ public class CreatePaymentMethodTypeCommand
     
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethodType.name(), SecurityRoles.Create.name())
+                        )))
                 )));
-
+        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("PaymentMethodTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
                 ));
     }
     
@@ -58,20 +65,21 @@ public class CreatePaymentMethodTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        CreatePaymentMethodTypeResult result = PaymentResultFactory.getCreatePaymentMethodTypeResult();
         String paymentMethodTypeName = form.getPaymentMethodTypeName();
-        PaymentMethodType paymentMethodType = paymentControl.getPaymentMethodTypeByName(paymentMethodTypeName);
-        
-        if(paymentMethodType == null) {
-            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-            Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            
-            paymentControl.createPaymentMethodType(paymentMethodTypeName, isDefault, sortOrder);
-        } else {
-            addExecutionError(ExecutionErrors.DuplicatePaymentMethodTypeName.name(), paymentMethodTypeName);
+        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+        Integer sortOrder = Integer.valueOf(form.getSortOrder());
+        String description = form.getDescription();
+
+        PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().createPaymentMethodType(this,
+                paymentMethodTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
+
+        if(paymentMethodType != null && !hasExecutionErrors()) {
+            result.setPaymentMethodTypeName(paymentMethodType.getLastDetail().getPaymentMethodTypeName());
+            result.setEntityRef(paymentMethodType.getPrimaryKey().getEntityRef());
         }
-        
-        return null;
+
+        return result;
     }
     
 }

@@ -20,7 +20,7 @@ import com.echothree.control.user.payment.common.edit.PartyPaymentMethodEdit;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.exception.UnknownPartyPaymentMethodNameException;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.user.server.UserControl;
@@ -322,9 +322,9 @@ public class PartyPaymentMethodLogic
     public void checkPaymentMethodType(final Session session, final ExecutionErrorAccumulator ema, final Party party, final PaymentMethod paymentMethod,
             final PartyPaymentMethodEdit ppme) {
         PaymentMethodType paymentMethodType = paymentMethod.getLastDetail().getPaymentMethodType();
-        String paymentMethodTypeName = paymentMethodType.getPaymentMethodTypeName();
+        String paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
 
-        if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+        if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
             checkCreditCard(session, ema, party, paymentMethod, ppme);
         } else {
             ema.addExecutionError(ExecutionErrors.InvalidPaymentMethodType.name(), paymentMethodTypeName);

@@ -58,34 +58,64 @@ public class PaymentBean
     // -------------------------------------------------------------------------
     //   Payment Method Types
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createPaymentMethodType(UserVisitPK userVisitPK, CreatePaymentMethodTypeForm form) {
         return new CreatePaymentMethodTypeCommand(userVisitPK, form).run();
     }
-    
-    @Override
-    public CommandResult getPaymentMethodTypeChoices(UserVisitPK userVisitPK, GetPaymentMethodTypeChoicesForm form) {
-        return new GetPaymentMethodTypeChoicesCommand(userVisitPK, form).run();
-    }
-    
-    @Override
-    public CommandResult getPaymentMethodType(UserVisitPK userVisitPK, GetPaymentMethodTypeForm form) {
-        return new GetPaymentMethodTypeCommand(userVisitPK, form).run();
-    }
-    
+
     @Override
     public CommandResult getPaymentMethodTypes(UserVisitPK userVisitPK, GetPaymentMethodTypesForm form) {
         return new GetPaymentMethodTypesCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getPaymentMethodType(UserVisitPK userVisitPK, GetPaymentMethodTypeForm form) {
+        return new GetPaymentMethodTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentMethodTypeChoices(UserVisitPK userVisitPK, GetPaymentMethodTypeChoicesForm form) {
+        return new GetPaymentMethodTypeChoicesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult setDefaultPaymentMethodType(UserVisitPK userVisitPK, SetDefaultPaymentMethodTypeForm form) {
+        return new SetDefaultPaymentMethodTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editPaymentMethodType(UserVisitPK userVisitPK, EditPaymentMethodTypeForm form) {
+        return new EditPaymentMethodTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deletePaymentMethodType(UserVisitPK userVisitPK, DeletePaymentMethodTypeForm form) {
+        return new DeletePaymentMethodTypeCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Payment Method Type Descriptions
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult createPaymentMethodTypeDescription(UserVisitPK userVisitPK, CreatePaymentMethodTypeDescriptionForm form) {
         return new CreatePaymentMethodTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getPaymentMethodTypeDescriptions(UserVisitPK userVisitPK, GetPaymentMethodTypeDescriptionsForm form) {
+        return new GetPaymentMethodTypeDescriptionsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editPaymentMethodTypeDescription(UserVisitPK userVisitPK, EditPaymentMethodTypeDescriptionForm form) {
+        return new EditPaymentMethodTypeDescriptionCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deletePaymentMethodTypeDescription(UserVisitPK userVisitPK, DeletePaymentMethodTypeDescriptionForm form) {
+        return new DeletePaymentMethodTypeDescriptionCommand(userVisitPK, form).run();
     }
     
     // -------------------------------------------------------------------------

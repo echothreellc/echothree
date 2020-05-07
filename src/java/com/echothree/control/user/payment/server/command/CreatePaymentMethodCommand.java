@@ -20,8 +20,9 @@ import com.echothree.control.user.payment.common.form.CreatePaymentMethodForm;
 import com.echothree.control.user.payment.common.result.CreatePaymentMethodResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorConstants;
@@ -33,11 +34,11 @@ import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -112,9 +113,9 @@ public class CreatePaymentMethodCommand
         if(!validationResult.getHasErrors()) {
             String paymentMethodTypeName = form.getPaymentMethodTypeName();
             
-            if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CHECK)) {
+            if(paymentMethodTypeName.equals(PaymentMethodTypes.CHECK.name())) {
                 validationResult = validator.validate(form, formCheckFieldDefinitions);
-            } else if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+            } else if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                 validationResult = validator.validate(form, formCreditCardFieldDefinitions);
             }
         }
@@ -131,9 +132,9 @@ public class CreatePaymentMethodCommand
 
         if(paymentMethod == null) {
             String paymentMethodTypeName = form.getPaymentMethodTypeName();
-            PaymentMethodType paymentMethodType = paymentControl.getPaymentMethodTypeByName(paymentMethodTypeName);
+            PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
 
-            if(paymentMethodType != null) {
+            if(!hasExecutionErrors()) {
                 String paymentProcessorName = form.getPaymentProcessorName();
                 PaymentProcessor paymentProcessor = paymentProcessorName == null ? null : paymentControl.getPaymentProcessorByName(paymentProcessorName);
 
@@ -158,12 +159,12 @@ public class CreatePaymentMethodCommand
                             paymentMethod = paymentControl.createPaymentMethod(paymentMethodName, paymentMethodType, paymentProcessor, itemSelector, salesOrderItemSelector,
                                     isDefault, sortOrder, partyPK);
 
-                            if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CHECK)) {
+                            if(paymentMethodTypeName.equals(PaymentMethodTypes.CHECK.name())) {
                                 Integer holdDays = Integer.valueOf(form.getHoldDays());
 
                                 paymentControl.createPaymentMethodCheck(paymentMethod, holdDays, partyPK);
                             } else {
-                                if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+                                if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                                     Boolean requestNameOnCard = Boolean.valueOf(form.getRequestNameOnCard());
                                     Boolean requireNameOnCard = Boolean.valueOf(form.getRequireNameOnCard());
                                     Boolean checkCardNumber = Boolean.valueOf(form.getCheckCardNumber());
@@ -198,8 +199,6 @@ public class CreatePaymentMethodCommand
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPaymentProcessorName.name(), paymentProcessorName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPaymentMethodTypeName.name(), paymentMethodTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicatePaymentMethodName.name(), paymentMethodName);

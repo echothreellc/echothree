@@ -17,23 +17,27 @@
 package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.PaymentMethodTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCheck;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDetail;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {
-    
+
+    PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl) Session.getModelController(PaymentMethodTypeControl.class);
+
     boolean includeComments;
 
     /** Creates a new instance of PaymentMethodTransferCache */
@@ -58,7 +62,7 @@ public class PaymentMethodTransferCache
         if(paymentMethodTransfer == null) {
             PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetail();
             String paymentMethodName = paymentMethodDetail.getPaymentMethodName();
-            PaymentMethodTypeTransfer paymentMethodTypeTransfer = paymentControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodDetail.getPaymentMethodType());
+            PaymentMethodTypeTransfer paymentMethodTypeTransfer = paymentMethodTypeControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodDetail.getPaymentMethodType());
             String paymentMethodTypeName = paymentMethodTypeTransfer.getPaymentMethodTypeName();
             PaymentProcessor paymentProcessor = paymentMethodDetail.getPaymentProcessor();
             PaymentProcessorTransfer paymentProcessorTransfer = paymentProcessor == null? null: paymentControl.getPaymentProcessorTransfer(userVisit, paymentProcessor);
@@ -83,11 +87,11 @@ public class PaymentMethodTransferCache
             Boolean requireIssuer = null;
             Integer holdDays = null;
             
-            if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CHECK)) {
+            if(paymentMethodTypeName.equals(PaymentMethodTypes.CHECK.name())) {
                 PaymentMethodCheck paymentMethodCheck = paymentControl.getPaymentMethodCheck(paymentMethod);
                 
                 holdDays = paymentMethodCheck.getHoldDays();
-            } else if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+            } else if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                 PaymentMethodCreditCard paymentMethodCreditCard = paymentControl.getPaymentMethodCreditCard(paymentMethod);
                 
                 requestNameOnCard = paymentMethodCreditCard.getRequestNameOnCard();

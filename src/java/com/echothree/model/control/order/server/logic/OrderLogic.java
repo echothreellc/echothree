@@ -33,7 +33,7 @@ import com.echothree.model.control.order.common.exception.UnknownOrderSequenceEx
 import com.echothree.model.control.order.common.exception.UnknownOrderSequenceTypeException;
 import com.echothree.model.control.order.common.exception.UnknownOrderTypeNameException;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -322,12 +322,12 @@ public class OrderLogic
                 paymentMethod = partyPaymentMethod.getLastDetail().getPaymentMethod();
             }
             
-            paymentMethodTypeName = paymentMethod.getLastDetail().getPaymentMethodType().getPaymentMethodTypeName();
+            paymentMethodTypeName = paymentMethod.getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
             
             // If the type is CREDIT_CARD, GIFT_CARD, or GIFT_CERTIFICATE, then the partyPaymentMethod must be specified.
-            if((paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD) 
-                    || paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_GIFT_CARD)
-                    || paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_GIFT_CERTIFICATE)) && partyPaymentMethod == null) {
+            if((paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())
+                    || paymentMethodTypeName.equals(PaymentMethodTypes.GIFT_CARD.name())
+                    || paymentMethodTypeName.equals(PaymentMethodTypes.GIFT_CERTIFICATE.name())) && partyPaymentMethod == null) {
                 handleExecutionError(MustSpecifyPartyPaymentMethodException.class, eea, ExecutionErrors.MustSpecifyPartyPaymentMethod.name());
             } else if(partyPaymentMethod != null) {
                 // Otherwise, the partyPaymentMethod should always be null.
@@ -335,7 +335,7 @@ public class OrderLogic
             }
             
             // If the type is CREDIT_CARD then wasPresent must be specified.
-            if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD) && wasPresent == null) {
+            if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name()) && wasPresent == null) {
                 handleExecutionError(MustSpecifyWasPresentException.class, eea, ExecutionErrors.MustSpecifyWasPresent.name());
             } else if(wasPresent != null) {
                 // Otherwise, the partyPaymentMethod should always be null.

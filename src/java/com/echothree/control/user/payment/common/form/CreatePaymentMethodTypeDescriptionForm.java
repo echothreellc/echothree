@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.payment.common.form;
 
+import com.echothree.control.user.payment.common.edit.PaymentMethodTypeDescriptionEdit;
 import com.echothree.control.user.payment.common.spec.PaymentMethodTypeDescriptionSpec;
 
 public interface CreatePaymentMethodTypeDescriptionForm
-        extends PaymentMethodTypeDescriptionSpec {
+        extends PaymentMethodTypeDescriptionSpec, PaymentMethodTypeDescriptionEdit {
     
-    String getDescription();
-    void setDescription(String description);
+    // Nothing additional beyond PaymentMethodTypeDescriptionSpec, PaymentMethodTypeDescriptionEdit
     
 }

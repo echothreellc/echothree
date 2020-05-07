@@ -17,18 +17,16 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentMethodChoicesForm;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -66,12 +64,13 @@ public class GetPaymentMethodChoicesCommand
     @Override
     protected BaseResult execute() {
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        GetPaymentMethodChoicesResult result = PaymentResultFactory.getGetPaymentMethodChoicesResult();        String paymentMethodTypeName = form.getPaymentMethodTypeName();
-        PaymentMethodType paymentMethodType = paymentMethodTypeName == null? null: paymentControl.getPaymentMethodTypeByName(paymentMethodTypeName);
+        var result = PaymentResultFactory.getGetPaymentMethodChoicesResult();
+        var paymentMethodTypeName = form.getPaymentMethodTypeName();
+        var paymentMethodType = paymentMethodTypeName == null ? null : PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(this, paymentMethodTypeName);
 
-        if(paymentMethodTypeName == null || paymentMethodType != null) {
-            String defaultPaymentMethodChoice = form.getDefaultPaymentMethodChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        if(!hasExecutionErrors()) {
+            var defaultPaymentMethodChoice = form.getDefaultPaymentMethodChoice();
+            var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
             if(paymentMethodType == null) {
                 result.setPaymentMethodChoices(paymentControl.getPaymentMethodChoices(defaultPaymentMethodChoice, getPreferredLanguage(), allowNullChoice));
@@ -79,8 +78,6 @@ public class GetPaymentMethodChoicesCommand
                 result.setPaymentMethodChoices(paymentControl.getPaymentMethodChoicesByPaymentMethodType(defaultPaymentMethodChoice, getPreferredLanguage(),
                         allowNullChoice, paymentMethodType));
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPaymentMethodTypeName.name(), paymentMethodTypeName);
         }
         
         return result;

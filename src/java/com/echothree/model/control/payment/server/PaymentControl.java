@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.choice.PartyPaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.choice.PaymentMethodTypeChoicesBean;
@@ -160,133 +161,6 @@ public class PaymentControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Payment Method Types
-    // --------------------------------------------------------------------------------
-    
-    public PaymentMethodType createPaymentMethodType(String paymentMethodTypeName, Boolean isDefault, Integer sortOrder) {
-        return PaymentMethodTypeFactory.getInstance().create(paymentMethodTypeName, isDefault, sortOrder);
-    }
-    
-    public List<PaymentMethodType> getPaymentMethodTypes() {
-        PreparedStatement ps = PaymentMethodTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM paymentmethodtypes " +
-                "ORDER BY pmtyp_sortorder, pmtyp_paymentmethodtypename");
-        
-        return PaymentMethodTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-    }
-    
-    public PaymentMethodType getPaymentMethodTypeByName(String paymentMethodTypeName) {
-        PaymentMethodType paymentMethodType = null;
-        
-        try {
-            PreparedStatement ps = PaymentMethodTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM paymentmethodtypes " +
-                    "WHERE pmtyp_paymentmethodtypename = ?");
-            
-            ps.setString(1, paymentMethodTypeName);
-            
-            paymentMethodType = PaymentMethodTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentMethodType;
-    }
-    
-    public PaymentMethodTypeChoicesBean getPaymentMethodTypeChoices(String defaultPaymentMethodTypeChoice, Language language,
-            boolean allowNullChoice) {
-        List<PaymentMethodType> paymentMethodTypes = getPaymentMethodTypes();
-        int size = paymentMethodTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
-        String defaultValue = null;
-        
-        if(allowNullChoice) {
-            labels.add("");
-            values.add("");
-        }
-        
-        for(PaymentMethodType paymentMethodType: paymentMethodTypes) {
-            String label = getBestPaymentMethodTypeDescription(paymentMethodType, language);
-            String value = paymentMethodType.getPaymentMethodTypeName();
-            
-            labels.add(label == null? value: label);
-            values.add(value);
-            
-            boolean usingDefaultChoice = defaultPaymentMethodTypeChoice == null? false: defaultPaymentMethodTypeChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && paymentMethodType.getIsDefault()))
-                defaultValue = value;
-        }
-        
-        return new PaymentMethodTypeChoicesBean(labels, values, defaultValue);
-    }
-    
-    public PaymentMethodTypeTransfer getPaymentMethodTypeTransfer(UserVisit userVisit, PaymentMethodType paymentMethodType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache().getTransfer(paymentMethodType);
-    }
-    
-    public List<PaymentMethodTypeTransfer> getPaymentMethodTypeTransfers(UserVisit userVisit) {
-        List<PaymentMethodType> paymentMethodTypes = getPaymentMethodTypes();
-        List<PaymentMethodTypeTransfer> paymentMethodTypeTransfers = new ArrayList<>(paymentMethodTypes.size());
-        PaymentMethodTypeTransferCache paymentMethodTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache();
-        
-        paymentMethodTypes.stream().forEach((paymentMethodType) -> {
-            paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(paymentMethodType));
-        });
-        
-        return paymentMethodTypeTransfers;
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Payment Method Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    public PaymentMethodTypeDescription createPaymentMethodTypeDescription(PaymentMethodType paymentMethodType, Language language,
-            String description) {
-        return PaymentMethodTypeDescriptionFactory.getInstance().create(paymentMethodType, language, description);
-    }
-    
-    public PaymentMethodTypeDescription getPaymentMethodTypeDescription(PaymentMethodType paymentMethodType, Language language) {
-        PaymentMethodTypeDescription paymentMethodTypeDescription = null;
-        
-        try {
-            PreparedStatement ps = PaymentMethodTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM paymentmethodtypedescriptions " +
-                    "WHERE pmtypd_pmtyp_paymentmethodtypeid = ? AND pmtypd_lang_languageid = ?");
-            
-            ps.setLong(1, paymentMethodType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            paymentMethodTypeDescription = PaymentMethodTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentMethodTypeDescription;
-    }
-    
-    public String getBestPaymentMethodTypeDescription(PaymentMethodType paymentMethodType, Language language) {
-        String description;
-        PaymentMethodTypeDescription paymentMethodTypeDescription = getPaymentMethodTypeDescription(paymentMethodType, language);
-        
-        if(paymentMethodTypeDescription == null && !language.getIsDefault()) {
-            paymentMethodTypeDescription = getPaymentMethodTypeDescription(paymentMethodType, getPartyControl().getDefaultLanguage());
-        }
-        
-        if(paymentMethodTypeDescription == null) {
-            description = paymentMethodType.getPaymentMethodTypeName();
-        } else {
-            description = paymentMethodTypeDescription.getDescription();
-        }
-        
-        return description;
-    }
-    
-    // --------------------------------------------------------------------------------
     //   Payment Method Type Party Types
     // --------------------------------------------------------------------------------
     
@@ -356,10 +230,10 @@ public class PaymentControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM paymentmethodtypepartytypes, paymentmethodtypes " +
+                "FROM paymentmethodtypepartytypes, paymentmethodtypes, paymentmethodtypedetails " +
                 "WHERE pmtypptyp_ptyp_partytypeid = ? " +
-                "AND pmtypptyp_pmtyp_paymentmethodtypeid = pmtyp_paymentmethodtypeid " +
-                "ORDER BY pmtyp_sortorder, pmtyp_paymentmethodtypename");
+                "AND pmtypptyp_pmtyp_paymentmethodtypeid = pmtyp_paymentmethodtypeid AND pmtyp_lastdetailid = pmtypdt_paymentmethodtypedetailid " +
+                "ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM paymentmethodtypepartytypes " +
@@ -1981,8 +1855,8 @@ public class PaymentControl
         partyPaymentMethod.setActiveDetail(null);
         partyPaymentMethod.store();
 
-        var paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getPaymentMethodTypeName();
-        if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+        var paymentMethodTypeName = partyPaymentMethodDetail.getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
+        if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
             var partyPaymentMethodCreditCardSecurityCode = getPartyPaymentMethodCreditCardSecurityCodeForUpdate(partyPaymentMethod);
 
             deletePartyPaymentMethodCreditCard(getPartyPaymentMethodCreditCardForUpdate(partyPaymentMethod), deletedBy);

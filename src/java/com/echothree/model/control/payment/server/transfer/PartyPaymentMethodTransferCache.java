@@ -25,6 +25,7 @@ import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
@@ -129,7 +130,7 @@ public class PartyPaymentMethodTransferCache
             String securityCode = null;
             EntityInstance entityInstance = null;
             
-            if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+            if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                 PartyPaymentMethodCreditCard partyPaymentMethodCreditCard = paymentControl.getPartyPaymentMethodCreditCard(partyPaymentMethod);
                 
                 if(partyPaymentMethodCreditCard != null) {

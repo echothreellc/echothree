@@ -20,6 +20,7 @@ import com.echothree.model.control.contact.common.transfer.PartyContactMechanism
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
@@ -58,9 +59,9 @@ public class PartyPaymentMethodContactMechanismTransferCache
             PartyContactMechanismPurposeTransfer partyContactMechanismPurposeTransfer = contactControl.getPartyContactMechanismPurposeTransfer(userVisit, partyPaymentMethodContactMechanism.getPartyContactMechanismPurpose());
             WorkflowEntityStatusTransfer partyPaymentMethodContactMechanismStatusTransfer = null;
             
-            String paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getPaymentMethodTypeName();
+            String paymentMethodTypeName = partyPaymentMethod.getLastDetail().getPaymentMethod().getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName();
             EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(partyPaymentMethodContactMechanism.getPrimaryKey());
-            if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+            if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                     partyPaymentMethodContactMechanismStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                             Workflow_CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM, entityInstance);
             }

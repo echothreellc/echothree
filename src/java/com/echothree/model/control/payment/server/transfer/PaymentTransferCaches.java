@@ -24,8 +24,9 @@ public class PaymentTransferCaches
         extends BaseTransferCaches {
     
     protected PaymentControl paymentControl;
-    
+
     protected PaymentMethodTypeTransferCache paymentMethodTypeTransferCache;
+    protected PaymentMethodTypeDescriptionTransferCache paymentMethodTypeDescriptionTransferCache;
     protected PaymentMethodTypePartyTypeTransferCache paymentMethodTypePartyTypeTransferCache;
     protected PaymentMethodTransferCache paymentMethodTransferCache;
     protected PaymentMethodDescriptionTransferCache paymentMethodDescriptionTransferCache;
@@ -48,12 +49,19 @@ public class PaymentTransferCaches
         
         this.paymentControl = paymentControl;
     }
-    
+
     public PaymentMethodTypeTransferCache getPaymentMethodTypeTransferCache() {
         if(paymentMethodTypeTransferCache == null)
             paymentMethodTypeTransferCache = new PaymentMethodTypeTransferCache(userVisit, paymentControl);
 
         return paymentMethodTypeTransferCache;
+    }
+
+    public PaymentMethodTypeDescriptionTransferCache getPaymentMethodTypeDescriptionTransferCache() {
+        if(paymentMethodTypeDescriptionTransferCache == null)
+            paymentMethodTypeDescriptionTransferCache = new PaymentMethodTypeDescriptionTransferCache(userVisit, paymentControl);
+
+        return paymentMethodTypeDescriptionTransferCache;
     }
 
     public PaymentMethodTypePartyTypeTransferCache getPaymentMethodTypePartyTypeTransferCache() {
