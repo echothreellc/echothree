@@ -19,15 +19,15 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.CreateBillingAccountRoleTypeDescriptionForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleTypeDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,9 +61,9 @@ public class CreateBillingAccountRoleTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
         String billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
-        BillingAccountRoleType billingAccountRoleType = paymentControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
+        BillingAccountRoleType billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         
         if(billingAccountRoleType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -71,12 +71,12 @@ public class CreateBillingAccountRoleTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                BillingAccountRoleTypeDescription billingAccountRoleTypeDescription = paymentControl.getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
+                BillingAccountRoleTypeDescription billingAccountRoleTypeDescription = billingControl.getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
                 
                 if(billingAccountRoleTypeDescription == null) {
                     String description = form.getDescription();
-                    
-                    paymentControl.createBillingAccountRoleTypeDescription(billingAccountRoleType, language, description);
+
+                    billingControl.createBillingAccountRoleTypeDescription(billingAccountRoleType, language, description);
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateBillingAccountRoleTypeDescription.name());
                 }

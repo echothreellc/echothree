@@ -16,13 +16,10 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTransfer;
-import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTypeTransfer;
-import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,25 +28,23 @@ import com.echothree.util.server.persistence.Session;
 public class BillingAccountRoleTransferCache
         extends BasePaymentTransferCache<BillingAccountRole, BillingAccountRoleTransfer> {
 
-    ContactControl contactControl;
-    PartyControl partyControl;
+    BillingControl billingControl = (BillingControl)Session.getModelController(BillingControl.class);
+    ContactControl contactControl = (ContactControl)Session.getModelController(ContactControl.class);
+    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of BillingAccountRoleTransferCache */
     public BillingAccountRoleTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
-
-        contactControl = (ContactControl)Session.getModelController(ContactControl.class);
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
     }
 
     public BillingAccountRoleTransfer getTransfer(BillingAccountRole billingAccountRole) {
-        BillingAccountRoleTransfer billingAccountRoleTransfer = get(billingAccountRole);
+        var billingAccountRoleTransfer = get(billingAccountRole);
 
         if(billingAccountRoleTransfer == null) {
-            BillingAccountTransfer billingAccount = paymentControl.getBillingAccountTransfer(userVisit, billingAccountRole.getBillingAccount());
-            PartyTransfer party = partyControl.getPartyTransfer(userVisit, billingAccountRole.getParty());
-            PartyContactMechanismTransfer partyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, billingAccountRole.getPartyContactMechanism());
-            BillingAccountRoleTypeTransfer billingAccountRoleType = paymentControl.getBillingAccountRoleTypeTransfer(userVisit, billingAccountRole.getBillingAccountRoleType());
+            var billingAccount = billingControl.getBillingAccountTransfer(userVisit, billingAccountRole.getBillingAccount());
+            var party = partyControl.getPartyTransfer(userVisit, billingAccountRole.getParty());
+            var partyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, billingAccountRole.getPartyContactMechanism());
+            var billingAccountRoleType = billingControl.getBillingAccountRoleTypeTransfer(userVisit, billingAccountRole.getBillingAccountRoleType());
 
             billingAccountRoleTransfer = new BillingAccountRoleTransfer(billingAccount, party, partyContactMechanism, billingAccountRoleType);
             put(billingAccountRole, billingAccountRoleTransfer);

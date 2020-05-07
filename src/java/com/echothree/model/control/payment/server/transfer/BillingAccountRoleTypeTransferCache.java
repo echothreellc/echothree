@@ -17,13 +17,17 @@
 package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTypeTransfer;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class BillingAccountRoleTypeTransferCache
         extends BasePaymentTransferCache<BillingAccountRoleType, BillingAccountRoleTypeTransfer> {
-    
+
+    BillingControl billingControl = (BillingControl) Session.getModelController(BillingControl.class);
+
     /** Creates a new instance of BillingAccountRoleTypeTransferCache */
     public BillingAccountRoleTypeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
@@ -31,12 +35,12 @@ public class BillingAccountRoleTypeTransferCache
 
     @Override
     public BillingAccountRoleTypeTransfer getTransfer(BillingAccountRoleType billingAccountRoleType) {
-        BillingAccountRoleTypeTransfer billingAccountRoleTypeTransfer = get(billingAccountRoleType);
+        var billingAccountRoleTypeTransfer = get(billingAccountRoleType);
         
         if(billingAccountRoleTypeTransfer == null) {
-            String billingAccountRoleTypeName = billingAccountRoleType.getBillingAccountRoleTypeName();
-            Integer sortOrder = billingAccountRoleType.getSortOrder();
-            String description = paymentControl.getBestBillingAccountRoleTypeDescription(billingAccountRoleType, getLanguage());
+            var billingAccountRoleTypeName = billingAccountRoleType.getBillingAccountRoleTypeName();
+            var sortOrder = billingAccountRoleType.getSortOrder();
+            var description = billingControl.getBestBillingAccountRoleTypeDescription(billingAccountRoleType, getLanguage());
             
             billingAccountRoleTypeTransfer = new BillingAccountRoleTypeTransfer(billingAccountRoleTypeName, sortOrder, description);
             put(billingAccountRoleType, billingAccountRoleTypeTransfer);

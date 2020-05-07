@@ -39,6 +39,7 @@ import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.common.transfer.PersonTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
@@ -50,8 +51,8 @@ import com.echothree.model.control.user.server.UserControl;
 import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
-import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
+import com.echothree.model.control.vendor.server.VendorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -81,6 +82,7 @@ public class VendorTransferCache
         extends BaseVendorTransferCache<Party, VendorTransfer> {
 
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+    BillingControl billingControl = (BillingControl)Session.getModelController(BillingControl.class);
     CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
     CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
     CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
@@ -257,7 +259,7 @@ public class VendorTransferCache
             }
             
             if(includeBillingAccounts) {
-                vendorTransfer.setBillingAccounts(new ListWrapper<>(paymentControl.getBillingAccountTransfersByBillFrom(userVisit, party)));
+                vendorTransfer.setBillingAccounts(new ListWrapper<>(billingControl.getBillingAccountTransfersByBillFrom(userVisit, party)));
             }
             
             if(includeVendorItems) {
