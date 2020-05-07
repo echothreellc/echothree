@@ -28,7 +28,7 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
@@ -50,8 +50,8 @@ public class InvoiceTransferCache
         extends BaseInvoiceTransferCache<Invoice, InvoiceTransfer> {
     
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+    BillingControl billingControl = (BillingControl)Session.getModelController(BillingControl.class);
     CoreControl coreControl = (CoreControl)Session.getModelController(CoreControl.class);
-    PaymentControl paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
     TermControl termControl = (TermControl)Session.getModelController(TermControl.class);
     WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     boolean includeLines;
@@ -106,7 +106,7 @@ public class InvoiceTransferCache
             InvoiceDetail invoiceDetail = invoice.getLastDetail();
             InvoiceTypeTransfer invoiceType = invoiceControl.getInvoiceTypeTransfer(userVisit, invoiceDetail.getInvoiceType());
             String invoiceName = invoiceDetail.getInvoiceName();
-            BillingAccountTransfer billingAccount = paymentControl.getBillingAccountTransfer(userVisit, invoiceDetail.getBillingAccount());
+            BillingAccountTransfer billingAccount = billingControl.getBillingAccountTransfer(userVisit, invoiceDetail.getBillingAccount());
             GlAccountTransfer glAccount = accountingControl.getGlAccountTransfer(userVisit, invoiceDetail.getGlAccount());
             TermTransfer term = termControl.getTermTransfer(userVisit, invoiceDetail.getTerm()); 
             String reference = invoiceDetail.getReference();

@@ -26,7 +26,7 @@ import com.echothree.model.control.invoice.common.exception.UnknownInvoiceTypeNa
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.control.payment.server.logic.BillingAccountLogic;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -222,10 +222,10 @@ public class InvoiceLogic
                     term = getInvoiceTerm(eea, billFrom, term);
                     
                     if(eea == null || !eea.hasExecutionErrors()) {
-                        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+                        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
                         InvoiceTimeLogic invoicedTimeLogic = InvoiceTimeLogic.getInstance();
-                        PartyContactMechanism billFromContactMechanism = paymentControl.getBillingAccountRoleUsingNames(billingAccount, PaymentConstants.BillingAccountRoleType_BILL_FROM).getPartyContactMechanism();
-                        PartyContactMechanism billToContactMechanism = paymentControl.getBillingAccountRoleUsingNames(billingAccount, PaymentConstants.BillingAccountRoleType_BILL_TO).getPartyContactMechanism();
+                        PartyContactMechanism billFromContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, PaymentConstants.BillingAccountRoleType_BILL_FROM).getPartyContactMechanism();
+                        PartyContactMechanism billToContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, PaymentConstants.BillingAccountRoleType_BILL_TO).getPartyContactMechanism();
                         String termTypeName = getTermTypeName(term);
 
                         invoicedTime = invoicedTime == null ? session.START_TIME_LONG : invoicedTime;

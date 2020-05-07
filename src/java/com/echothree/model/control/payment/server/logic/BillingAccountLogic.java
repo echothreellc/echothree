@@ -19,7 +19,7 @@ package com.echothree.model.control.payment.server.logic;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
@@ -47,8 +47,8 @@ public class BillingAccountLogic {
 
     public BillingAccount getBillingAccount(final ExecutionErrorAccumulator ema, final Party billFrom, PartyContactMechanism billFromPartyContactMechanism,
             final Party billTo, PartyContactMechanism billToPartyContactMechanism, final Currency currency, final String reference, final String description, final BasePK createdBy) {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        BillingAccount billingAccount = paymentControl.getBillingAccount(billFrom, billTo, currency);
+        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
+        BillingAccount billingAccount = billingControl.getBillingAccount(billFrom, billTo, currency);
 
         // If the BillingAccount was found, the billFromPartyContactMechanism and billToPartyContactMechanism parameters are ignored. They're used only
         // when a new BillingAccount needs to be created.
@@ -93,9 +93,9 @@ public class BillingAccountLogic {
             }
             
             if(!ema.hasExecutionErrors()) {
-                billingAccount = paymentControl.createBillingAccount(billFrom, currency, reference, description, createdBy);
-                paymentControl.createBillingAccountRoleUsingNames(billingAccount, billFrom, billFromPartyContactMechanism, PaymentConstants.BillingAccountRoleType_BILL_FROM, createdBy);
-                paymentControl.createBillingAccountRoleUsingNames(billingAccount, billTo, billToPartyContactMechanism, PaymentConstants.BillingAccountRoleType_BILL_TO, createdBy);
+                billingAccount = billingControl.createBillingAccount(billFrom, currency, reference, description, createdBy);
+                billingControl.createBillingAccountRoleUsingNames(billingAccount, billFrom, billFromPartyContactMechanism, PaymentConstants.BillingAccountRoleType_BILL_FROM, createdBy);
+                billingControl.createBillingAccountRoleUsingNames(billingAccount, billTo, billToPartyContactMechanism, PaymentConstants.BillingAccountRoleType_BILL_TO, createdBy);
             }
         }
 

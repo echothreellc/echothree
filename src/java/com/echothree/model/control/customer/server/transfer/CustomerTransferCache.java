@@ -30,6 +30,8 @@ import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.customer.common.CustomerOptions;
 import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
+import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
+import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.document.server.DocumentControl;
 import com.echothree.model.control.invoice.server.InvoiceControl;
@@ -44,6 +46,7 @@ import com.echothree.model.control.party.common.transfer.PersonTransfer;
 import com.echothree.model.control.party.common.transfer.ProfileTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
 import com.echothree.model.control.party.server.PartyControl;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
@@ -52,8 +55,6 @@ import com.echothree.model.control.scale.server.ScaleControl;
 import com.echothree.model.control.subscription.server.SubscriptionControl;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.user.server.UserControl;
-import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
-import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -81,6 +82,7 @@ public class CustomerTransferCache
         extends BaseCustomerTransferCache<Party, CustomerTransfer> {
 
     AccountingControl accountingControl = (AccountingControl)Session.getModelController(AccountingControl.class);
+    BillingControl billingControl = (BillingControl)Session.getModelController(BillingControl.class);
     CancellationPolicyControl cancellationPolicyControl = (CancellationPolicyControl)Session.getModelController(CancellationPolicyControl.class);
     CarrierControl carrierControl = (CarrierControl)Session.getModelController(CarrierControl.class);
     CommunicationControl communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
@@ -270,7 +272,7 @@ public class CustomerTransferCache
             }
             
             if(includeBillingAccounts) {
-                customerTransfer.setBillingAccounts(new ListWrapper<>(paymentControl.getBillingAccountTransfersByBillFrom(userVisit, party)));
+                customerTransfer.setBillingAccounts(new ListWrapper<>(billingControl.getBillingAccountTransfersByBillFrom(userVisit, party)));
             }
             
             if(includeInvoicesFrom) {

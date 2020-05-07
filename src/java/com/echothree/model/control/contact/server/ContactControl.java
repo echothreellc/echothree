@@ -67,6 +67,7 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.order.server.OrderControl;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
@@ -2645,6 +2646,7 @@ public class ContactControl
     
     public void deletePartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {
         var associateControl = (AssociateControl)Session.getModelController(AssociateControl.class);
+        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
         var communicationControl = (CommunicationControl)Session.getModelController(CommunicationControl.class);
         var invoiceControl = (InvoiceControl)Session.getModelController(InvoiceControl.class);
         var letterControl = (LetterControl)Session.getModelController(LetterControl.class);
@@ -2656,12 +2658,12 @@ public class ContactControl
         deletePartyContactMechanismRelationshipsByPartyContactMechanism(partyContactMechanism, deletedBy);
         
         associateControl.deleteAssociatePartyContactMechanismsByPartyContactMechanism(partyContactMechanism, deletedBy);
+        billingControl.deleteBillingAccountRolesByPartyContactMechanism(partyContactMechanism, deletedBy);
         communicationControl.deleteCommunicationEventsByPartyContactMechanism(partyContactMechanism, deletedBy);
         invoiceControl.deleteInvoiceRolesByPartyContactMechanism(partyContactMechanism, deletedBy);
         letterControl.deleteLetterSourcesByPartyContactMechanism(partyContactMechanism, deletedBy);
         orderControl.deleteOrderShipmentGroupsByPartyContactMechanism(partyContactMechanism, deletedBy);
         paymentControl.deletePartyPaymentMethodCreditCardsByPartyContactMechanism(partyContactMechanism, deletedBy);
-        paymentControl.deleteBillingAccountRolesByPartyContactMechanism(partyContactMechanism, deletedBy);
         shipmentControl.deleteShipmentsByPartyContactMechanism(partyContactMechanism, deletedBy);
         
         PartyContactMechanismDetail partyContactMechanismDetail = partyContactMechanism.getLastDetailForUpdate();

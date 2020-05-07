@@ -18,13 +18,13 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.CreateBillingAccountRoleTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.BillingControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,14 +57,14 @@ public class CreateBillingAccountRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        var billingControl = (BillingControl)Session.getModelController(BillingControl.class);
         String billingAccountRoleTypeName = form.getBillingAccountRoleTypeName();
-        BillingAccountRoleType billingAccountRoleType = paymentControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
+        BillingAccountRoleType billingAccountRoleType = billingControl.getBillingAccountRoleTypeByName(billingAccountRoleTypeName);
         
         if(billingAccountRoleType == null) {
             Integer sortOrder = Integer.valueOf(form.getSortOrder());
-            
-            paymentControl.createBillingAccountRoleType(billingAccountRoleTypeName, sortOrder);
+
+            billingControl.createBillingAccountRoleType(billingAccountRoleTypeName, sortOrder);
         } else {
             addExecutionError(ExecutionErrors.DuplicateBillingAccountRoleTypeName.name(), billingAccountRoleTypeName);
         }
