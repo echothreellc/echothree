@@ -17,7 +17,6 @@
 package com.echothree.model.control.payment.common.transfer;
 
 import com.echothree.util.common.transfer.BaseTransfer;
-import com.echothree.util.common.transfer.ListWrapper;
 
 public class PaymentMethodTypeTransfer
         extends BaseTransfer {
@@ -26,9 +25,7 @@ public class PaymentMethodTypeTransfer
     private Boolean isDefault;
     private Integer sortOrder;
     private String description;
-
-    private ListWrapper<PaymentMethodTypePartyTypeTransfer> paymentMethodTypePartyTypes;
-
+    
     /** Creates a new instance of PaymentMethodTypeTransfer */
     public PaymentMethodTypeTransfer(String paymentMethodTypeName, Boolean isDefault, Integer sortOrder, String description) {
         this.paymentMethodTypeName = paymentMethodTypeName;
@@ -44,7 +41,6 @@ public class PaymentMethodTypeTransfer
     public void setPaymentMethodTypeName(String paymentMethodTypeName) {
         this.paymentMethodTypeName = paymentMethodTypeName;
     }
-    
     public Boolean getIsDefault() {
         return isDefault;
     }
@@ -67,20 +63,6 @@ public class PaymentMethodTypeTransfer
     
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * @return the paymentMethodTypePartyTypes
-     */
-    public ListWrapper<PaymentMethodTypePartyTypeTransfer> getPaymentMethodTypePartyTypes() {
-        return paymentMethodTypePartyTypes;
-    }
-
-    /**
-     * @param paymentMethodTypePartyTypes the paymentMethodTypePartyTypes to set
-     */
-    public void setPaymentMethodTypePartyTypes(ListWrapper<PaymentMethodTypePartyTypeTransfer> paymentMethodTypePartyTypes) {
-        this.paymentMethodTypePartyTypes = paymentMethodTypePartyTypes;
     }
     
 }

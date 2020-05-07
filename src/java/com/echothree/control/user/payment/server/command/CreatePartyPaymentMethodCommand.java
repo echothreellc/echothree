@@ -23,7 +23,7 @@ import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -46,10 +46,10 @@ import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -181,9 +181,9 @@ public class CreatePartyPaymentMethodCommand
 
                 if(!hasExecutionErrors()) {
                     PaymentMethodType paymentMethodType = paymentMethod.getLastDetail().getPaymentMethodType();
-                    String paymentMethodTypeName = paymentMethodType.getPaymentMethodTypeName();
+                    String paymentMethodTypeName = paymentMethodType.getLastDetail().getPaymentMethodTypeName();
 
-                    if(paymentMethodTypeName.equals(PaymentConstants.PaymentMethodType_CREDIT_CARD)) {
+                    if(paymentMethodTypeName.equals(PaymentMethodTypes.CREDIT_CARD.name())) {
                         var contactControl = (ContactControl)Session.getModelController(ContactControl.class);
                         Soundex soundex = new Soundex();
                         String personalTitleId = form.getPersonalTitleId();

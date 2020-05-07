@@ -21,6 +21,7 @@ import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypePartyTypeTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.PaymentMethodTypeControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
@@ -30,15 +31,13 @@ import com.echothree.util.server.persistence.Session;
 public class PaymentMethodTypePartyTypeTransferCache
         extends BasePaymentTransferCache<PaymentMethodTypePartyType, PaymentMethodTypePartyTypeTransfer> {
     
-    PartyControl partyControl;
-    WorkflowControl workflowControl;
+    PartyControl partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+    PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl) Session.getModelController(PaymentMethodTypeControl.class);
+    WorkflowControl workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of PaymentMethodTypePartyTypeTransferCache */
     public PaymentMethodTypePartyTypeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
-
-        partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-        workflowControl = (WorkflowControl)Session.getModelController(WorkflowControl.class);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class PaymentMethodTypePartyTypeTransferCache
         PaymentMethodTypePartyTypeTransfer paymentMethodTypePartyTypeTransfer = get(paymentMethodTypePartyType);
         
         if(paymentMethodTypePartyTypeTransfer == null) {
-            PaymentMethodTypeTransfer paymentMethodType = paymentControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodTypePartyType.getPaymentMethodType());
+            PaymentMethodTypeTransfer paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeTransfer(userVisit, paymentMethodTypePartyType.getPaymentMethodType());
             PartyTypeTransfer partyType = partyControl.getPartyTypeTransfer(userVisit, paymentMethodTypePartyType.getPartyType());
             WorkflowTransfer partyPaymentMethodWorkflow = workflowControl.getWorkflowTransfer(userVisit, paymentMethodTypePartyType.getPartyPaymentMethodWorkflow());
             WorkflowTransfer partyContactMechanismWorkflow = workflowControl.getWorkflowTransfer(userVisit, paymentMethodTypePartyType.getPartyContactMechanismWorkflow());

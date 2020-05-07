@@ -16,10 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.payment;
 
-import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
-import com.echothree.control.user.payment.common.form.CreatePaymentMethodTypeDescriptionForm;
-import com.echothree.control.user.payment.common.form.CreatePaymentMethodTypePartyTypeForm;
+import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -29,19 +27,18 @@ import org.xml.sax.SAXException;
 
 public class PaymentMethodTypeHandler
         extends BaseHandler {
+
     PaymentService paymentService;
+
     String paymentMethodTypeName;
     
     /** Creates a new instance of PaymentMethodTypeHandler */
-    public PaymentMethodTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String paymentMethodTypeName) {
+    public PaymentMethodTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String paymentMethodTypeName)
+            throws NamingException {
         super(initialDataParser, parentHandler);
         
-        try {
-            paymentService = PaymentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
-        
+        paymentService = PaymentUtil.getHome();
+
         this.paymentMethodTypeName = paymentMethodTypeName;
     }
     
@@ -49,19 +46,12 @@ public class PaymentMethodTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("paymentMethodTypeDescription")) {
-            CreatePaymentMethodTypeDescriptionForm commandForm = PaymentFormFactory.getCreatePaymentMethodTypeDescriptionForm();
-            
+            var commandForm = PaymentFormFactory.getCreatePaymentMethodTypeDescriptionForm();
+
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
             commandForm.set(getAttrsMap(attrs));
-            
+
             checkCommandResult(paymentService.createPaymentMethodTypeDescription(initialDataParser.getUserVisit(), commandForm));
-        } else if(localName.equals("paymentMethodTypePartyType")) {
-            CreatePaymentMethodTypePartyTypeForm commandForm = PaymentFormFactory.getCreatePaymentMethodTypePartyTypeForm();
-            
-            commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
-            commandForm.set(getAttrsMap(attrs));
-            
-            checkCommandResult(paymentService.createPaymentMethodTypePartyType(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

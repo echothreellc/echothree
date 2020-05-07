@@ -20,13 +20,5 @@ public interface PaymentConstants {
     
     String BillingAccountRoleType_BILL_FROM = "BILL_FROM";
     String BillingAccountRoleType_BILL_TO = "BILL_TO";
-    
-    String PaymentMethodType_ACCOUNT = "ACCOUNT";
-    String PaymentMethodType_CHECK = "CHECK";
-    String PaymentMethodType_COD = "COD";
-    String PaymentMethodType_CREDIT_CARD = "CREDIT_CARD";
-    String PaymentMethodType_PREPAID = "PREPAID";
-    String PaymentMethodType_GIFT_CARD = "GIFT_CARD";
-    String PaymentMethodType_GIFT_CERTIFICATE = "GIFT_CERTIFICATE";
-    
+
 }

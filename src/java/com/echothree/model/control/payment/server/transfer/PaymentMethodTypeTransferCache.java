@@ -16,46 +16,41 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.PaymentMethodTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
+import com.echothree.model.data.payment.server.entity.PaymentMethodTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.transfer.ListWrapper;
-import java.util.Set;
+import com.echothree.util.server.persistence.Session;
 
 public class PaymentMethodTypeTransferCache
         extends BasePaymentTransferCache<PaymentMethodType, PaymentMethodTypeTransfer> {
-    
-    boolean includePaymentMethodTypePartyTypes;
+
+    PaymentMethodTypeControl paymentMethodTypeControl = (PaymentMethodTypeControl) Session.getModelController(PaymentMethodTypeControl.class);
 
     /** Creates a new instance of PaymentMethodTypeTransferCache */
     public PaymentMethodTypeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
-
-        Set<String> options = session.getOptions();
-        if(options != null) {
-            includePaymentMethodTypePartyTypes = options.contains(PaymentOptions.PaymentMethodTypeIncludePaymentMethodTypePartyTypes);
-        }
+        
+        setIncludeEntityInstance(true);
     }
-
+    
     @Override
     public PaymentMethodTypeTransfer getTransfer(PaymentMethodType paymentMethodType) {
         PaymentMethodTypeTransfer paymentMethodTypeTransfer = get(paymentMethodType);
         
         if(paymentMethodTypeTransfer == null) {
-            String paymentMethodTypeName = paymentMethodType.getPaymentMethodTypeName();
-            Boolean isDefault = paymentMethodType.getIsDefault();
-            Integer sortOrder = paymentMethodType.getSortOrder();
-            String description = paymentControl.getBestPaymentMethodTypeDescription(paymentMethodType, getLanguage());
+            PaymentMethodTypeDetail paymentMethodTypeDetail = paymentMethodType.getLastDetail();
+            String paymentMethodTypeName = paymentMethodTypeDetail.getPaymentMethodTypeName();
+            Boolean isDefault = paymentMethodTypeDetail.getIsDefault();
+            Integer sortOrder = paymentMethodTypeDetail.getSortOrder();
+            String description = paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, getLanguage());
             
             paymentMethodTypeTransfer = new PaymentMethodTypeTransfer(paymentMethodTypeName, isDefault, sortOrder, description);
             put(paymentMethodType, paymentMethodTypeTransfer);
-
-            if(includePaymentMethodTypePartyTypes) {
-                paymentMethodTypeTransfer.setPaymentMethodTypePartyTypes(new ListWrapper<>(paymentControl.getPaymentMethodTypePartyTypeTransfersByPaymentMethodType(userVisit, paymentMethodType)));
-            }
         }
+        
         return paymentMethodTypeTransfer;
     }
     
