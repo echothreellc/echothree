@@ -18,30 +18,39 @@ package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.PaymentProcessorTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class PaymentProcessorTypeTransferCache
         extends BasePaymentTransferCache<PaymentProcessorType, PaymentProcessorTypeTransfer> {
-    
+
+    PaymentProcessorTypeControl paymentProcessorTypeControl = (PaymentProcessorTypeControl) Session.getModelController(PaymentProcessorTypeControl.class);
+
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
     public PaymentProcessorTypeTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
+        
+        setIncludeEntityInstance(true);
     }
-
+    
     @Override
     public PaymentProcessorTypeTransfer getTransfer(PaymentProcessorType paymentProcessorType) {
         PaymentProcessorTypeTransfer paymentProcessorTypeTransfer = get(paymentProcessorType);
         
         if(paymentProcessorTypeTransfer == null) {
-            String paymentProcessorTypeName = paymentProcessorType.getPaymentProcessorTypeName();
-            Boolean isDefault = paymentProcessorType.getIsDefault();
-            Integer sortOrder = paymentProcessorType.getSortOrder();
-            String description = paymentControl.getBestPaymentProcessorTypeDescription(paymentProcessorType, getLanguage());
+            PaymentProcessorTypeDetail paymentProcessorTypeDetail = paymentProcessorType.getLastDetail();
+            String paymentProcessorTypeName = paymentProcessorTypeDetail.getPaymentProcessorTypeName();
+            Boolean isDefault = paymentProcessorTypeDetail.getIsDefault();
+            Integer sortOrder = paymentProcessorTypeDetail.getSortOrder();
+            String description = paymentProcessorTypeControl.getBestPaymentProcessorTypeDescription(paymentProcessorType, getLanguage());
             
             paymentProcessorTypeTransfer = new PaymentProcessorTypeTransfer(paymentProcessorTypeName, isDefault, sortOrder, description);
             put(paymentProcessorType, paymentProcessorTypeTransfer);
         }
+        
         return paymentProcessorTypeTransfer;
     }
     

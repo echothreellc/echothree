@@ -16,15 +16,17 @@
 
 package com.echothree.control.user.payment.server.command;
 
-import com.echothree.control.user.payment.common.form.CreatePaymentProcessorTypeForm;
-import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.control.user.payment.common.result.CreatePaymentProcessorTypeResult;
-import com.echothree.model.control.payment.server.logic.PaymentProcessorTypeLogic;
+import com.echothree.control.user.payment.common.form.DeletePaymentProcessorTypeDescriptionForm;
+import com.echothree.model.control.payment.server.PaymentProcessorTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeDescription;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -32,12 +34,13 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CreatePaymentProcessorTypeCommand
-        extends BaseSimpleCommand<CreatePaymentProcessorTypeForm> {
+public class DeletePaymentProcessorTypeDescriptionCommand
+        extends BaseSimpleCommand<DeletePaymentProcessorTypeDescriptionForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,40 +49,48 @@ public class CreatePaymentProcessorTypeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorType.name(), SecurityRoles.Create.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorType.name(), SecurityRoles.Description.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("PaymentProcessorTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of CreatePaymentProcessorTypeCommand */
-    public CreatePaymentProcessorTypeCommand(UserVisitPK userVisitPK, CreatePaymentProcessorTypeForm form) {
+    /** Creates a new instance of DeletePaymentProcessorTypeDescriptionCommand */
+    public DeletePaymentProcessorTypeDescriptionCommand(UserVisitPK userVisitPK, DeletePaymentProcessorTypeDescriptionForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        CreatePaymentProcessorTypeResult result = PaymentResultFactory.getCreatePaymentProcessorTypeResult();
+        var paymentProcessorTypeControl = (PaymentProcessorTypeControl)Session.getModelController(PaymentProcessorTypeControl.class);
         String paymentProcessorTypeName = form.getPaymentProcessorTypeName();
-        Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-        Integer sortOrder = Integer.valueOf(form.getSortOrder());
-        String description = form.getDescription();
-
-        PaymentProcessorType paymentProcessorType = PaymentProcessorTypeLogic.getInstance().createPaymentProcessorType(this,
-                paymentProcessorTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
-
-        if(paymentProcessorType != null && !hasExecutionErrors()) {
-            result.setPaymentProcessorTypeName(paymentProcessorType.getLastDetail().getPaymentProcessorTypeName());
-            result.setEntityRef(paymentProcessorType.getPrimaryKey().getEntityRef());
+        PaymentProcessorType paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
+        
+        if(paymentProcessorType != null) {
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = form.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            
+            if(language != null) {
+                PaymentProcessorTypeDescription paymentProcessorTypeDescription = paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionForUpdate(paymentProcessorType, language);
+                
+                if(paymentProcessorTypeDescription != null) {
+                    paymentProcessorTypeControl.deletePaymentProcessorTypeDescription(paymentProcessorTypeDescription, getPartyPK());
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownPaymentProcessorTypeDescription.name());
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownPaymentProcessorTypeName.name(), paymentProcessorTypeName);
         }
-
-        return result;
+        
+        return null;
     }
     
 }

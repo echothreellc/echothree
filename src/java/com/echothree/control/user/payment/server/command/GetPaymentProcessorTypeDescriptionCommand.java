@@ -16,7 +16,9 @@
 
 package com.echothree.control.user.payment.server.command;
 
-import com.echothree.control.user.payment.common.form.CreatePaymentProcessorTypeDescriptionForm;
+import com.echothree.control.user.payment.common.form.GetPaymentProcessorTypeDescriptionForm;
+import com.echothree.control.user.payment.common.result.PaymentResultFactory;
+import com.echothree.control.user.payment.common.result.GetPaymentProcessorTypeDescriptionResult;
 import com.echothree.model.control.payment.server.PaymentProcessorTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
@@ -39,8 +41,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CreatePaymentProcessorTypeDescriptionCommand
-        extends BaseSimpleCommand<CreatePaymentProcessorTypeDescriptionForm> {
+public class GetPaymentProcessorTypeDescriptionCommand
+        extends BaseSimpleCommand<GetPaymentProcessorTypeDescriptionForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -55,19 +57,19 @@ public class CreatePaymentProcessorTypeDescriptionCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("PaymentProcessorTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
-    /** Creates a new instance of CreatePaymentProcessorTypeDescriptionCommand */
-    public CreatePaymentProcessorTypeDescriptionCommand(UserVisitPK userVisitPK, CreatePaymentProcessorTypeDescriptionForm form) {
+    /** Creates a new instance of GetPaymentProcessorTypeDescriptionCommand */
+    public GetPaymentProcessorTypeDescriptionCommand(UserVisitPK userVisitPK, GetPaymentProcessorTypeDescriptionForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var paymentProcessorTypeControl = (PaymentProcessorTypeControl)Session.getModelController(PaymentProcessorTypeControl.class);
+        GetPaymentProcessorTypeDescriptionResult result = PaymentResultFactory.getGetPaymentProcessorTypeDescriptionResult();
         String paymentProcessorTypeName = form.getPaymentProcessorTypeName();
         PaymentProcessorType paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
         
@@ -79,12 +81,10 @@ public class CreatePaymentProcessorTypeDescriptionCommand
             if(language != null) {
                 PaymentProcessorTypeDescription paymentProcessorTypeDescription = paymentProcessorTypeControl.getPaymentProcessorTypeDescription(paymentProcessorType, language);
                 
-                if(paymentProcessorTypeDescription == null) {
-                    String description = form.getDescription();
-                    
-                    paymentProcessorTypeControl.createPaymentProcessorTypeDescription(paymentProcessorType, language, description, getPartyPK());
+                if(paymentProcessorTypeDescription != null) {
+                    result.setPaymentProcessorTypeDescription(paymentProcessorTypeControl.getPaymentProcessorTypeDescriptionTransfer(getUserVisit(), paymentProcessorTypeDescription));
                 } else {
-                    addExecutionError(ExecutionErrors.DuplicatePaymentProcessorTypeDescription.name());
+                    addExecutionError(ExecutionErrors.UnknownPaymentProcessorTypeDescription.name(), paymentProcessorTypeName, languageIsoName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
@@ -93,7 +93,7 @@ public class CreatePaymentProcessorTypeDescriptionCommand
             addExecutionError(ExecutionErrors.UnknownPaymentProcessorTypeName.name(), paymentProcessorTypeName);
         }
         
-        return null;
+        return result;
     }
     
 }

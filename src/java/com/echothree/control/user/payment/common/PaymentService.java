@@ -60,7 +60,7 @@ public interface PaymentService
     CommandResult deletePaymentMethodType(UserVisitPK userVisitPK, DeletePaymentMethodTypeForm form);
 
     // -------------------------------------------------------------------------
-    //   Payment Processor Action Type Descriptions
+    //   Payment Method Type Descriptions
     // -------------------------------------------------------------------------
 
     CommandResult createPaymentMethodTypeDescription(UserVisitPK userVisitPK, CreatePaymentMethodTypeDescriptionForm form);
@@ -76,25 +76,37 @@ public interface PaymentService
     // -------------------------------------------------------------------------
     
     CommandResult createPaymentMethodTypePartyType(UserVisitPK userVisitPK, CreatePaymentMethodTypePartyTypeForm form);
-    
+
     // -------------------------------------------------------------------------
     //   Payment Processor Types
     // -------------------------------------------------------------------------
-    
+
     CommandResult createPaymentProcessorType(UserVisitPK userVisitPK, CreatePaymentProcessorTypeForm form);
-    
-    CommandResult getPaymentProcessorTypeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeChoicesForm form);
-    
-    CommandResult getPaymentProcessorType(UserVisitPK userVisitPK, GetPaymentProcessorTypeForm form);
-    
+
     CommandResult getPaymentProcessorTypes(UserVisitPK userVisitPK, GetPaymentProcessorTypesForm form);
-    
+
+    CommandResult getPaymentProcessorType(UserVisitPK userVisitPK, GetPaymentProcessorTypeForm form);
+
+    CommandResult getPaymentProcessorTypeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeChoicesForm form);
+
+    CommandResult setDefaultPaymentProcessorType(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeForm form);
+
+    CommandResult editPaymentProcessorType(UserVisitPK userVisitPK, EditPaymentProcessorTypeForm form);
+
+    CommandResult deletePaymentProcessorType(UserVisitPK userVisitPK, DeletePaymentProcessorTypeForm form);
+
     // -------------------------------------------------------------------------
     //   Payment Processor Type Descriptions
     // -------------------------------------------------------------------------
-    
+
     CommandResult createPaymentProcessorTypeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorTypeDescriptionForm form);
-    
+
+    CommandResult getPaymentProcessorTypeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorTypeDescriptionsForm form);
+
+    CommandResult editPaymentProcessorTypeDescription(UserVisitPK userVisitPK, EditPaymentProcessorTypeDescriptionForm form);
+
+    CommandResult deletePaymentProcessorTypeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorTypeDescriptionForm form);
+
     // -------------------------------------------------------------------------
     //   Payment Processors
     // -------------------------------------------------------------------------
