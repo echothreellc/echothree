@@ -16,11 +16,16 @@
 
 package com.echothree.control.user.payment.common.form;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeUniversalSpec;
+import com.echothree.control.user.party.common.spec.PartyTypeSpec;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeSpec;
 
-public interface GetPaymentProcessorTypeForm
-        extends PaymentProcessorTypeUniversalSpec {
+public interface CreatePaymentProcessorTypePartyTypeForm
+        extends PaymentProcessorTypeSpec, PartyTypeSpec {
     
-    // Nothing additional beyond PaymentProcessorTypeUniversalSpec
+    String getPartyPaymentMethodWorkflowName();
+    void setPartyPaymentMethodWorkflowName(String partyPaymentMethodWorkflowName);
+    
+    String getContactMechanismWorkflowName();
+    void setContactMechanismWorkflowName(String contactMechanismWorkflowName);
     
 }

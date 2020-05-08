@@ -16,9 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.payment;
 
-import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
-import com.echothree.control.user.payment.common.form.CreatePaymentProcessorTypeForm;
+import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -28,29 +27,27 @@ import org.xml.sax.SAXException;
 
 public class PaymentProcessorTypesHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     
     /** Creates a new instance of PaymentProcessorTypesHandler */
-    public PaymentProcessorTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public PaymentProcessorTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws NamingException {
         super(initialDataParser, parentHandler);
         
-        try {
-            paymentService = PaymentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        paymentService = PaymentUtil.getHome();
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
+            throws SAXException, NamingException {
         if(localName.equals("paymentProcessorType")) {
-            CreatePaymentProcessorTypeForm commandForm = PaymentFormFactory.getCreatePaymentProcessorTypeForm();
-            
+            var commandForm = PaymentFormFactory.getCreatePaymentProcessorTypeForm();
+
             commandForm.set(getAttrsMap(attrs));
-            
+
             checkCommandResult(paymentService.createPaymentProcessorType(initialDataParser.getUserVisit(), commandForm));
-            
+
             initialDataParser.pushHandler(new PaymentProcessorTypeHandler(initialDataParser, this, commandForm.getPaymentProcessorTypeName()));
         }
     }

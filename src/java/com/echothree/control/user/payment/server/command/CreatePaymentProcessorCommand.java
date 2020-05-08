@@ -17,21 +17,17 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.CreatePaymentProcessorForm;
-import com.echothree.control.user.payment.common.result.CreatePaymentProcessorResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.logic.PaymentProcessorTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.payment.server.entity.PaymentProcessor;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -72,30 +68,28 @@ public class CreatePaymentProcessorCommand
     @Override
     protected BaseResult execute() {
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        CreatePaymentProcessorResult result = PaymentResultFactory.getCreatePaymentProcessorResult();
-        String paymentProcessorName = form.getPaymentProcessorName();
-        PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
+        var result = PaymentResultFactory.getCreatePaymentProcessorResult();
+        var paymentProcessorName = form.getPaymentProcessorName();
+        var paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
         
         if(paymentProcessor == null) {
-            String paymentProcessorTypeName = form.getPaymentProcessorTypeName();
-            PaymentProcessorType paymentProcessorType = paymentControl.getPaymentProcessorTypeByName(paymentProcessorTypeName);
+            var paymentProcessorTypeName = form.getPaymentProcessorTypeName();
+            var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(this, paymentProcessorTypeName);
             
-            if(paymentProcessorType != null) {
-                PartyPK partyPK = getPartyPK();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+            if(!hasExecutionErrors()) {
+                var partyPK = getPartyPK();
+                var isDefault = Boolean.valueOf(form.getIsDefault());
+                var sortOrder = Integer.valueOf(form.getSortOrder());
+                var description = form.getDescription();
                 
                 paymentProcessor = paymentControl.createPaymentProcessor(paymentProcessorName, paymentProcessorType,
                         isDefault, sortOrder, partyPK);
                 
                 if(description != null) {
-                    Language language = getPreferredLanguage();
+                    var language = getPreferredLanguage();
                     
                     paymentControl.createPaymentProcessorDescription(paymentProcessor, language, description, partyPK);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPaymentProcessorTypeName.name(), paymentProcessorTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicatePaymentProcessorName.name(), paymentProcessorName);

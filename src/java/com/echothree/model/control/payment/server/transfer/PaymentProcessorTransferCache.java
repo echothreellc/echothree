@@ -19,23 +19,24 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeTransfer;
 import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.PaymentProcessorTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
+import com.echothree.util.server.persistence.Session;
 
 public class PaymentProcessorTransferCache
         extends BasePaymentTransferCache<PaymentProcessor, PaymentProcessorTransfer> {
-    
+
+    PaymentProcessorTypeControl paymentProcessorTypeControl = (PaymentProcessorTypeControl) Session.getModelController(PaymentProcessorTypeControl.class);
+
     boolean includeComments;
 
     /** Creates a new instance of PaymentProcessorTransferCache */
     public PaymentProcessorTransferCache(UserVisit userVisit, PaymentControl paymentControl) {
         super(userVisit, paymentControl);
 
-        Set<String> options = session.getOptions();
+        var options = session.getOptions();
         if(options != null) {
             setIncludeKey(options.contains(PaymentOptions.PaymentProcessorIncludeKey));
             setIncludeGuid(options.contains(PaymentOptions.PaymentProcessorIncludeGuid));
@@ -50,12 +51,12 @@ public class PaymentProcessorTransferCache
         PaymentProcessorTransfer paymentProcessorTransfer = get(paymentProcessor);
         
         if(paymentProcessorTransfer == null) {
-            PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetail();
-            String paymentProcessorName = paymentProcessorDetail.getPaymentProcessorName();
-            PaymentProcessorTypeTransfer paymentProcessorType = paymentControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorDetail.getPaymentProcessorType());
-            Boolean isDefault = paymentProcessorDetail.getIsDefault();
-            Integer sortOrder = paymentProcessorDetail.getSortOrder();
-            String description = paymentControl.getBestPaymentProcessorDescription(paymentProcessor, getLanguage());
+            var paymentProcessorDetail = paymentProcessor.getLastDetail();
+            var paymentProcessorName = paymentProcessorDetail.getPaymentProcessorName();
+            var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorDetail.getPaymentProcessorType());
+            var isDefault = paymentProcessorDetail.getIsDefault();
+            var sortOrder = paymentProcessorDetail.getSortOrder();
+            var description = paymentControl.getBestPaymentProcessorDescription(paymentProcessor, getLanguage());
             
             paymentProcessorTransfer = new PaymentProcessorTransfer(paymentProcessorName, paymentProcessorType, isDefault, sortOrder, description);
             put(paymentProcessor, paymentProcessorTransfer);

@@ -14,13 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.payment.common.form;
+package com.echothree.control.user.payment.common.result;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeUniversalSpec;
+import com.echothree.control.user.payment.common.edit.PaymentProcessorTypeEdit;
+import com.echothree.util.common.command.BaseEditResult;
 
-public interface GetPaymentProcessorTypeForm
-        extends PaymentProcessorTypeUniversalSpec {
+public interface EditPaymentProcessorTypeResult
+        extends GetPaymentProcessorTypeResult, BaseEditResult<PaymentProcessorTypeEdit> {
     
-    // Nothing additional beyond PaymentProcessorTypeUniversalSpec
+    // Nothing additional beyond GetPaymentProcessorTypeResult, BaseEditResult<PaymentProcessorTypeEdit>
     
 }

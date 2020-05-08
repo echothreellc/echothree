@@ -19,66 +19,42 @@ package com.echothree.model.control.payment.server;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.payment.common.PaymentConstants;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.choice.PartyPaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
-import com.echothree.model.control.payment.common.choice.PaymentMethodTypeChoicesBean;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorChoicesBean;
-import com.echothree.model.control.payment.common.choice.PaymentProcessorTypeChoicesBean;
-import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTransfer;
-import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTypeTransfer;
-import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypePartyTypeTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeTransfer;
-import com.echothree.model.control.payment.server.transfer.BillingAccountRoleTransferCache;
-import com.echothree.model.control.payment.server.transfer.BillingAccountRoleTypeTransferCache;
-import com.echothree.model.control.payment.server.transfer.BillingAccountTransferCache;
 import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodContactMechanismTransferCache;
 import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentMethodDescriptionTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentMethodTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentMethodTypePartyTypeTransferCache;
-import com.echothree.model.control.payment.server.transfer.PaymentMethodTypeTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentProcessorDescriptionTransferCache;
 import com.echothree.model.control.payment.server.transfer.PaymentProcessorTransferCache;
-import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeTransferCache;
-import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
 import com.echothree.model.data.party.common.pk.NameSuffixPK;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.common.pk.PersonalTitlePK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
-import com.echothree.model.data.payment.common.pk.BillingAccountPK;
-import com.echothree.model.data.payment.common.pk.BillingAccountRoleTypePK;
 import com.echothree.model.data.payment.common.pk.PartyPaymentMethodPK;
 import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
 import com.echothree.model.data.payment.common.pk.PaymentMethodTypePK;
 import com.echothree.model.data.payment.common.pk.PaymentProcessorPK;
 import com.echothree.model.data.payment.common.pk.PaymentProcessorTypePK;
-import com.echothree.model.data.payment.server.entity.BillingAccount;
-import com.echothree.model.data.payment.server.entity.BillingAccountDetail;
-import com.echothree.model.data.payment.server.entity.BillingAccountRole;
-import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
-import com.echothree.model.data.payment.server.entity.BillingAccountRoleTypeDescription;
-import com.echothree.model.data.payment.server.entity.BillingAccountStatus;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactMechanism;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCard;
@@ -90,19 +66,11 @@ import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDescription;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDetail;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
-import com.echothree.model.data.payment.server.entity.PaymentMethodTypeDescription;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDetail;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeDescription;
-import com.echothree.model.data.payment.server.factory.BillingAccountDetailFactory;
-import com.echothree.model.data.payment.server.factory.BillingAccountFactory;
-import com.echothree.model.data.payment.server.factory.BillingAccountRoleFactory;
-import com.echothree.model.data.payment.server.factory.BillingAccountRoleTypeDescriptionFactory;
-import com.echothree.model.data.payment.server.factory.BillingAccountRoleTypeFactory;
-import com.echothree.model.data.payment.server.factory.BillingAccountStatusFactory;
 import com.echothree.model.data.payment.server.factory.PartyPaymentMethodContactMechanismFactory;
 import com.echothree.model.data.payment.server.factory.PartyPaymentMethodCreditCardFactory;
 import com.echothree.model.data.payment.server.factory.PartyPaymentMethodCreditCardSecurityCodeFactory;
@@ -113,15 +81,10 @@ import com.echothree.model.data.payment.server.factory.PaymentMethodCreditCardFa
 import com.echothree.model.data.payment.server.factory.PaymentMethodDescriptionFactory;
 import com.echothree.model.data.payment.server.factory.PaymentMethodDetailFactory;
 import com.echothree.model.data.payment.server.factory.PaymentMethodFactory;
-import com.echothree.model.data.payment.server.factory.PaymentMethodTypeDescriptionFactory;
-import com.echothree.model.data.payment.server.factory.PaymentMethodTypeFactory;
 import com.echothree.model.data.payment.server.factory.PaymentMethodTypePartyTypeFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorDescriptionFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorDetailFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorFactory;
-import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeDescriptionFactory;
-import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeFactory;
-import com.echothree.model.data.payment.server.value.BillingAccountRoleValue;
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardSecurityCodeValue;
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardValue;
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodDetailValue;
@@ -139,7 +102,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -278,133 +240,6 @@ public class PaymentControl
         return getPaymentMethodTypePartyTypeTransfers(userVisit, getPaymentMethodTypePartyTypesByPartyType(paymentMethodType));
     }
 
-    // --------------------------------------------------------------------------------
-    //   Payment Processor Types
-    // --------------------------------------------------------------------------------
-    
-    public PaymentProcessorType createPaymentProcessorType(String paymentProcessorTypeName, Boolean isDefault, Integer sortOrder) {
-        return PaymentProcessorTypeFactory.getInstance().create(paymentProcessorTypeName, isDefault, sortOrder);
-    }
-    
-    public List<PaymentProcessorType> getPaymentProcessorTypes() {
-        PreparedStatement ps = PaymentProcessorTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM paymentprocessortypes " +
-                "ORDER BY pprctyp_sortorder, pprctyp_paymentprocessortypename");
-        
-        return PaymentProcessorTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-    }
-    
-    public PaymentProcessorType getPaymentProcessorTypeByName(String paymentProcessorTypeName) {
-        PaymentProcessorType paymentProcessorType = null;
-        
-        try {
-            PreparedStatement ps = PaymentProcessorTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM paymentprocessortypes " +
-                    "WHERE pprctyp_paymentprocessortypename = ?");
-            
-            ps.setString(1, paymentProcessorTypeName);
-            
-            paymentProcessorType = PaymentProcessorTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentProcessorType;
-    }
-    
-    public PaymentProcessorTypeChoicesBean getPaymentProcessorTypeChoices(String defaultPaymentProcessorTypeChoice, Language language,
-            boolean allowNullChoice) {
-        List<PaymentProcessorType> paymentProcessorTypes = getPaymentProcessorTypes();
-        int size = paymentProcessorTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
-        String defaultValue = null;
-        
-        if(allowNullChoice) {
-            labels.add("");
-            values.add("");
-        }
-        
-        for(PaymentProcessorType paymentProcessorType: paymentProcessorTypes) {
-            String label = getBestPaymentProcessorTypeDescription(paymentProcessorType, language);
-            String value = paymentProcessorType.getPaymentProcessorTypeName();
-            
-            labels.add(label == null? value: label);
-            values.add(value);
-            
-            boolean usingDefaultChoice = defaultPaymentProcessorTypeChoice == null? false: defaultPaymentProcessorTypeChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && paymentProcessorType.getIsDefault()))
-                defaultValue = value;
-        }
-        
-        return new PaymentProcessorTypeChoicesBean(labels, values, defaultValue);
-    }
-    
-    public PaymentProcessorTypeTransfer getPaymentProcessorTypeTransfer(UserVisit userVisit, PaymentProcessorType paymentProcessorType) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeTransferCache().getTransfer(paymentProcessorType);
-    }
-    
-    public List<PaymentProcessorTypeTransfer> getPaymentProcessorTypeTransfers(UserVisit userVisit) {
-        List<PaymentProcessorType> paymentProcessorTypes = getPaymentProcessorTypes();
-        List<PaymentProcessorTypeTransfer> paymentProcessorTypeTransfers = new ArrayList<>(paymentProcessorTypes.size());
-        PaymentProcessorTypeTransferCache paymentProcessorTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeTransferCache();
-        
-        paymentProcessorTypes.stream().forEach((paymentProcessorType) -> {
-            paymentProcessorTypeTransfers.add(paymentProcessorTypeTransferCache.getTransfer(paymentProcessorType));
-        });
-        
-        return paymentProcessorTypeTransfers;
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Payment Processor Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    public PaymentProcessorTypeDescription createPaymentProcessorTypeDescription(PaymentProcessorType paymentProcessorType, Language language,
-            String description) {
-        return PaymentProcessorTypeDescriptionFactory.getInstance().create(paymentProcessorType, language, description);
-    }
-    
-    public PaymentProcessorTypeDescription getPaymentProcessorTypeDescription(PaymentProcessorType paymentProcessorType, Language language) {
-        PaymentProcessorTypeDescription paymentProcessorTypeDescription = null;
-        
-        try {
-            PreparedStatement ps = PaymentProcessorTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM paymentprocessortypedescriptions " +
-                    "WHERE pprctypd_pprctyp_paymentprocessortypeid = ? AND pprctypd_lang_languageid = ?");
-            
-            ps.setLong(1, paymentProcessorType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            paymentProcessorTypeDescription = PaymentProcessorTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentProcessorTypeDescription;
-    }
-    
-    public String getBestPaymentProcessorTypeDescription(PaymentProcessorType paymentProcessorType, Language language) {
-        String description;
-        PaymentProcessorTypeDescription paymentProcessorTypeDescription = getPaymentProcessorTypeDescription(paymentProcessorType, language);
-        
-        if(paymentProcessorTypeDescription == null && !language.getIsDefault()) {
-            paymentProcessorTypeDescription = getPaymentProcessorTypeDescription(paymentProcessorType, getPartyControl().getDefaultLanguage());
-        }
-        
-        if(paymentProcessorTypeDescription == null) {
-            description = paymentProcessorType.getPaymentProcessorTypeName();
-        } else {
-            description = paymentProcessorTypeDescription.getDescription();
-        }
-        
-        return description;
-    }
-    
     // --------------------------------------------------------------------------------
     //   Payment Processors
     // --------------------------------------------------------------------------------

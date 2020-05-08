@@ -16,45 +16,37 @@
 
 package com.echothree.model.control.payment.common.transfer;
 
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class PaymentProcessorTypeTransfer
+public class PaymentProcessorTypeDescriptionTransfer
         extends BaseTransfer {
     
-    private String paymentProcessorTypeName;
-    private Boolean isDefault;
-    private Integer sortOrder;
+    private LanguageTransfer language;
+    private PaymentProcessorTypeTransfer paymentProcessorType;
     private String description;
     
-    /** Creates a new instance of PaymentProcessorTypeTransfer */
-    public PaymentProcessorTypeTransfer(String paymentProcessorTypeName, Boolean isDefault, Integer sortOrder, String description) {
-        this.paymentProcessorTypeName = paymentProcessorTypeName;
-        this.isDefault = isDefault;
-        this.sortOrder = sortOrder;
+    /** Creates a new instance of PaymentProcessorTypeDescriptionTransfer */
+    public PaymentProcessorTypeDescriptionTransfer(LanguageTransfer language, PaymentProcessorTypeTransfer paymentProcessorType, String description) {
+        this.language = language;
+        this.paymentProcessorType = paymentProcessorType;
         this.description = description;
     }
     
-    public String getPaymentProcessorTypeName() {
-        return paymentProcessorTypeName;
+    public LanguageTransfer getLanguage() {
+        return language;
     }
     
-    public void setPaymentProcessorTypeName(String paymentProcessorTypeName) {
-        this.paymentProcessorTypeName = paymentProcessorTypeName;
-    }
-    public Boolean getIsDefault() {
-        return isDefault;
+    public void setLanguage(LanguageTransfer language) {
+        this.language = language;
     }
     
-    public void setIsDefault(Boolean isDefault) {
-        this.isDefault = isDefault;
+    public PaymentProcessorTypeTransfer getPaymentProcessorType() {
+        return paymentProcessorType;
     }
     
-    public Integer getSortOrder() {
-        return sortOrder;
-    }
-    
-    public void setSortOrder(Integer sortOrder) {
-        this.sortOrder = sortOrder;
+    public void setPaymentProcessorType(PaymentProcessorTypeTransfer paymentProcessorType) {
+        this.paymentProcessorType = paymentProcessorType;
     }
     
     public String getDescription() {

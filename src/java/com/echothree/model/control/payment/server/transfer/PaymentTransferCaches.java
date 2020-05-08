@@ -35,6 +35,7 @@ public class PaymentTransferCaches
     protected BillingAccountRoleTransferCache billingAccountRoleTransferCache;
     protected PartyPaymentMethodTransferCache partyPaymentMethodTransferCache;
     protected PaymentProcessorTypeTransferCache paymentProcessorTypeTransferCache;
+    protected PaymentProcessorTypeDescriptionTransferCache paymentProcessorTypeDescriptionTransferCache;
     protected PaymentProcessorTransferCache paymentProcessorTransferCache;
     protected PaymentProcessorDescriptionTransferCache paymentProcessorDescriptionTransferCache;
     protected PartyPaymentMethodContactMechanismTransferCache partyPaymentMethodContactMechanismTransferCache;
@@ -112,14 +113,21 @@ public class PaymentTransferCaches
         
         return partyPaymentMethodTransferCache;
     }
-    
+
     public PaymentProcessorTypeTransferCache getPaymentProcessorTypeTransferCache() {
         if(paymentProcessorTypeTransferCache == null)
             paymentProcessorTypeTransferCache = new PaymentProcessorTypeTransferCache(userVisit, paymentControl);
-        
+
         return paymentProcessorTypeTransferCache;
     }
-    
+
+    public PaymentProcessorTypeDescriptionTransferCache getPaymentProcessorTypeDescriptionTransferCache() {
+        if(paymentProcessorTypeDescriptionTransferCache == null)
+            paymentProcessorTypeDescriptionTransferCache = new PaymentProcessorTypeDescriptionTransferCache(userVisit, paymentControl);
+
+        return paymentProcessorTypeDescriptionTransferCache;
+    }
+
     public PaymentProcessorTransferCache getPaymentProcessorTransferCache() {
         if(paymentProcessorTransferCache == null)
             paymentProcessorTransferCache = new PaymentProcessorTransferCache(userVisit, paymentControl);

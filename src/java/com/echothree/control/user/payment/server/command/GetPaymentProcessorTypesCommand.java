@@ -17,53 +17,49 @@
 package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.form.GetPaymentProcessorTypesForm;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorTypesResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
-import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.payment.server.PaymentControl;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.control.user.payment.common.result.GetPaymentProcessorTypesResult;
+import com.echothree.model.control.payment.server.PaymentProcessorTypeControl;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.control.CommandSecurityDefinition;
-import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetPaymentProcessorTypesCommand
-        extends BaseSimpleCommand<GetPaymentProcessorTypesForm> {
+        extends BaseMultipleEntitiesCommand<PaymentProcessorType, GetPaymentProcessorTypesForm> {
     
-    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorType.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 ));
     }
-
+    
     /** Creates a new instance of GetPaymentProcessorTypesCommand */
     public GetPaymentProcessorTypesCommand(UserVisitPK userVisitPK, GetPaymentProcessorTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        GetPaymentProcessorTypesResult result = PaymentResultFactory.getGetPaymentProcessorTypesResult();
+    protected Collection<PaymentProcessorType> getEntities() {
+        var paymentProcessorTypeControl = (PaymentProcessorTypeControl)Session.getModelController(PaymentProcessorTypeControl.class);
         
-        result.setPaymentProcessorTypes(paymentControl.getPaymentProcessorTypeTransfers(getUserVisit()));
+        return paymentProcessorTypeControl.getPaymentProcessorTypes();
+    }
+    
+    @Override
+    protected BaseResult getTransfers(Collection<PaymentProcessorType> entities) {
+        GetPaymentProcessorTypesResult result = PaymentResultFactory.getGetPaymentProcessorTypesResult();
+        var paymentProcessorTypeControl = (PaymentProcessorTypeControl)Session.getModelController(PaymentProcessorTypeControl.class);
+        
+        result.setPaymentProcessorTypes(paymentProcessorTypeControl.getPaymentProcessorTypeTransfers(getUserVisit(), entities));
         
         return result;
     }

@@ -4893,6 +4893,15 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PaymentProcessorType" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Payment Processor Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Payment Processor Type List" />
             </securityRole>
@@ -4901,6 +4910,9 @@
             </securityRole>
             <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Payment Processor Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Type Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PaymentProcessor" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
@@ -8238,9 +8250,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchAliasType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchAliasType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchAliasType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorType" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Delete" />

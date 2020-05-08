@@ -1204,6 +1204,12 @@
             <entityType entityTypeName="PaymentMethodTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Method Type Description" />
             </entityType>
+            <entityType entityTypeName="PaymentProcessorType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Type" />
+            </entityType>
+            <entityType entityTypeName="PaymentProcessorTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Type Description" />
+            </entityType>
             <entityType entityTypeName="Person" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Person" />
             </entityType>

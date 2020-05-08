@@ -16,15 +16,11 @@
 
 package com.echothree.control.user.payment.common.form;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeSpec;
+import com.echothree.control.user.payment.common.edit.PaymentProcessorTypeEdit;
 
 public interface CreatePaymentProcessorTypeForm
-        extends PaymentProcessorTypeSpec {
+        extends PaymentProcessorTypeEdit {
     
-    String getIsDefault();
-    void setIsDefault(String isDefault);
-    
-    String getSortOrder();
-    void setSortOrder(String sortOrder);
+    // Nothing additional beyond PaymentProcessorTypeEdit
     
 }
