@@ -342,6 +342,83 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="PaymentProcessorTypeAdditionalCodeTypes" nameSingular="PaymentProcessorTypeAdditionalCodeType" columnPrefix="pproctypddtlctyp">
+                    <columns>
+                        <column name="PaymentProcessorTypeAdditionalCodeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentProcessorTypeAdditionalCodeTypeDetails" destinationColumn="PaymentProcessorTypeAdditionalCodeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentProcessorTypeAdditionalCodeTypeDetails" destinationColumn="PaymentProcessorTypeAdditionalCodeTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PaymentProcessorTypeAdditionalCodeTypeDetails" nameSingular="PaymentProcessorTypeAdditionalCodeTypeDetail" columnPrefix="pproctypddtlctypdt">
+                    <columns>
+                        <column name="PaymentProcessorTypeAdditionalCodeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PaymentProcessorTypeAdditionalCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeAdditionalCodeTypes" destinationColumn="PaymentProcessorTypeAdditionalCodeTypeId" />
+                        <column name="PaymentProcessorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypes" destinationColumn="PaymentProcessorTypeId" />
+                        <column name="PaymentProcessorTypeAdditionalCodeTypeName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="PaymentProcessorTypeId" />
+                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PaymentProcessorId" />
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PaymentProcessorTypeAdditionalCodeTypeDescriptions" nameSingular="PaymentProcessorTypeAdditionalCodeTypeDescription" columnPrefix="pproctypddtlctypd">
+                    <columns>
+                        <column name="PaymentProcessorTypeAdditionalCodeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PaymentProcessorTypeAdditionalCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeAdditionalCodeTypes" destinationColumn="PaymentProcessorTypeAdditionalCodeTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="PaymentProcessors" nameSingular="PaymentProcessor" columnPrefix="pprc">
                     <columns>
                         <column name="PaymentProcessorId" type="EID" nullAllowed="false" />
