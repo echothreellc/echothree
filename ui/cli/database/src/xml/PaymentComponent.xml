@@ -385,7 +385,7 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="PaymentProcessorId" />
+                            <indexColumn name="PaymentProcessorTypeId" />
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
                         </index>
