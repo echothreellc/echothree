@@ -18,26 +18,26 @@ package com.echothree.model.control.payment.common.exception;
 
 import com.echothree.util.common.message.Message;
 
-public class DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException
+public class UnknownPaymentProcessorTypeCodeTypeNameException
         extends BasePaymentException {
     
-    /** Creates a new instance of DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException */
-    public DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException() {
+    /** Creates a new instance of UnknownPaymentProcessorTypeCodeTypeNameException */
+    public UnknownPaymentProcessorTypeCodeTypeNameException() {
         super();
     }
     
-    /** Creates a new instance of DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException */
-    public DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException(String message) {
+    /** Creates a new instance of UnknownPaymentProcessorTypeCodeTypeNameException */
+    public UnknownPaymentProcessorTypeCodeTypeNameException(String message) {
         super(message);
     }
     
-    /** Creates a new instance of DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException */
-    public DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException(Throwable cause) {
+    /** Creates a new instance of UnknownPaymentProcessorTypeCodeTypeNameException */
+    public UnknownPaymentProcessorTypeCodeTypeNameException(Throwable cause) {
         super(cause);
     }
     
-    /** Creates a new instance of DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException */
-    public DuplicatePaymentProcessorTypeAdditionalCodeTypeNameException(Message message) {
+    /** Creates a new instance of UnknownPaymentProcessorTypeCodeTypeNameException */
+    public UnknownPaymentProcessorTypeCodeTypeNameException(Message message) {
         super(message);
     }
 

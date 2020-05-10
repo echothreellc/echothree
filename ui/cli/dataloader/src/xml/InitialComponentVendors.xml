@@ -1210,10 +1210,10 @@
             <entityType entityTypeName="PaymentProcessorTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Type Description" />
             </entityType>
-            <entityType entityTypeName="PaymentProcessorTypeAdditionalCodeType" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="PaymentProcessorTypeCodeType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Type" />
             </entityType>
-            <entityType entityTypeName="PaymentProcessorTypeAdditionalCodeTypeDescription" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="PaymentProcessorTypeCodeTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Type Description" />
             </entityType>
             <entityType entityTypeName="Person" keepAllHistory="false" sortOrder="1">
