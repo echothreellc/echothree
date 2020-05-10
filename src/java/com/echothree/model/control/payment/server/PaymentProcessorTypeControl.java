@@ -49,7 +49,7 @@ public class PaymentProcessorTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Conditions
+    //   Payment Processor Types
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorType createPaymentProcessorType(final String paymentProcessorTypeName, Boolean isDefault,
@@ -311,7 +311,7 @@ public class PaymentProcessorTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Condition Descriptions
+    //   Payment Processor Type Descriptions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorTypeDescription createPaymentProcessorTypeDescription(final PaymentProcessorType paymentProcessorType,
