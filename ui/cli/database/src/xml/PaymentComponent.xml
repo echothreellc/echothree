@@ -342,15 +342,15 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="PaymentProcessorTypeAdditionalCodeTypes" nameSingular="PaymentProcessorTypeAdditionalCodeType" columnPrefix="pproctypddtlctyp">
+                <table namePlural="PaymentProcessorTypeCodeTypes" nameSingular="PaymentProcessorTypeCodeType" columnPrefix="pproctypctyp">
                     <columns>
-                        <column name="PaymentProcessorTypeAdditionalCodeTypeId" type="EID" nullAllowed="false" />
-                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentProcessorTypeAdditionalCodeTypeDetails" destinationColumn="PaymentProcessorTypeAdditionalCodeTypeDetailId"/>
-                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentProcessorTypeAdditionalCodeTypeDetails" destinationColumn="PaymentProcessorTypeAdditionalCodeTypeDetailId"/>
+                        <column name="PaymentProcessorTypeCodeTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentProcessorTypeCodeTypeDetails" destinationColumn="PaymentProcessorTypeCodeTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentProcessorTypeCodeTypeDetails" destinationColumn="PaymentProcessorTypeCodeTypeDetailId"/>
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeId" />
+                            <indexColumn name="PaymentProcessorTypeCodeTypeId" />
                         </index>
                         <index type="Unique">
                             <indexColumn name="ActiveDetailId"/>
@@ -360,12 +360,12 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="PaymentProcessorTypeAdditionalCodeTypeDetails" nameSingular="PaymentProcessorTypeAdditionalCodeTypeDetail" columnPrefix="pproctypddtlctypdt">
+                <table namePlural="PaymentProcessorTypeCodeTypeDetails" nameSingular="PaymentProcessorTypeCodeTypeDetail" columnPrefix="pproctypctypdt">
                     <columns>
-                        <column name="PaymentProcessorTypeAdditionalCodeTypeDetailId" type="EID" nullAllowed="false" />
-                        <column name="PaymentProcessorTypeAdditionalCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeAdditionalCodeTypes" destinationColumn="PaymentProcessorTypeAdditionalCodeTypeId" />
+                        <column name="PaymentProcessorTypeCodeTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="PaymentProcessorTypeCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeCodeTypes" destinationColumn="PaymentProcessorTypeCodeTypeId" />
                         <column name="PaymentProcessorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypes" destinationColumn="PaymentProcessorTypeId" />
-                        <column name="PaymentProcessorTypeAdditionalCodeTypeName" type="Name" nullAllowed="false" />
+                        <column name="PaymentProcessorTypeCodeTypeName" type="Name" nullAllowed="false" />
                         <column name="IsDefault" type="Boolean" nullAllowed="false" />
                         <column name="SortOrder" type="Integer" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -373,15 +373,15 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeDetailId" />
+                            <indexColumn name="PaymentProcessorTypeCodeTypeDetailId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeId" />
+                            <indexColumn name="PaymentProcessorTypeCodeTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Unique" name="Index2">
                             <indexColumn name="PaymentProcessorTypeId" />
-                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeName" />
+                            <indexColumn name="PaymentProcessorTypeCodeTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
@@ -391,10 +391,10 @@
                         </index>
                     </indexes>
                 </table>
-                <table namePlural="PaymentProcessorTypeAdditionalCodeTypeDescriptions" nameSingular="PaymentProcessorTypeAdditionalCodeTypeDescription" columnPrefix="pproctypddtlctypd">
+                <table namePlural="PaymentProcessorTypeCodeTypeDescriptions" nameSingular="PaymentProcessorTypeCodeTypeDescription" columnPrefix="pproctypctypd">
                     <columns>
-                        <column name="PaymentProcessorTypeAdditionalCodeTypeDescriptionId" type="EID" nullAllowed="false" />
-                        <column name="PaymentProcessorTypeAdditionalCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeAdditionalCodeTypes" destinationColumn="PaymentProcessorTypeAdditionalCodeTypeId" />
+                        <column name="PaymentProcessorTypeCodeTypeDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="PaymentProcessorTypeCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeCodeTypes" destinationColumn="PaymentProcessorTypeCodeTypeId" />
                         <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
                         <column name="Description" type="Description" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
@@ -402,15 +402,15 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeDescriptionId" />
+                            <indexColumn name="PaymentProcessorTypeCodeTypeDescriptionId" />
                         </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeId" />
+                            <indexColumn name="PaymentProcessorTypeCodeTypeId" />
                             <indexColumn name="LanguageId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="PaymentProcessorTypeAdditionalCodeTypeId" />
+                            <indexColumn name="PaymentProcessorTypeCodeTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
