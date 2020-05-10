@@ -49,7 +49,7 @@ public class PaymentMethodTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Conditions
+    //   Payment Method Types
     // --------------------------------------------------------------------------------
 
     public PaymentMethodType createPaymentMethodType(final String paymentMethodTypeName, Boolean isDefault,
@@ -311,7 +311,7 @@ public class PaymentMethodTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Condition Descriptions
+    //   Payment Method Type Descriptions
     // --------------------------------------------------------------------------------
 
     public PaymentMethodTypeDescription createPaymentMethodTypeDescription(final PaymentMethodType paymentMethodType,

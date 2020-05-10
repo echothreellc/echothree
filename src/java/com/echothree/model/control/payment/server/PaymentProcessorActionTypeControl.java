@@ -49,7 +49,7 @@ public class PaymentProcessorActionTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Conditions
+    //   Payment Processor Action Types
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorActionType createPaymentProcessorActionType(final String paymentProcessorActionTypeName, Boolean isDefault,
@@ -311,7 +311,7 @@ public class PaymentProcessorActionTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Condition Descriptions
+    //   Payment Processor Action Type Descriptions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorActionTypeDescription createPaymentProcessorActionTypeDescription(final PaymentProcessorActionType paymentProcessorActionType,

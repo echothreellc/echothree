@@ -49,7 +49,7 @@ public class PaymentProcessorResultCodeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Conditions
+    //   Payment Processor Result Codes
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorResultCode createPaymentProcessorResultCode(final String paymentProcessorResultCodeName, Boolean isDefault,
@@ -311,7 +311,7 @@ public class PaymentProcessorResultCodeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Condition Descriptions
+    //   Payment Processor Result Code Descriptions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorResultCodeDescription createPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
