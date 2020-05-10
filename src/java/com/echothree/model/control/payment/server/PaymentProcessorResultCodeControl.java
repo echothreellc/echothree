@@ -43,7 +43,7 @@ import java.util.Objects;
 public class PaymentProcessorResultCodeControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentControl */
+    /** Creates a new instance of PaymentProcessorResultCodeControl */
     public PaymentProcessorResultCodeControl() {
         super();
     }

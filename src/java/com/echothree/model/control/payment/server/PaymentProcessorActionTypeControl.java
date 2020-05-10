@@ -43,7 +43,7 @@ import java.util.Objects;
 public class PaymentProcessorActionTypeControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentControl */
+    /** Creates a new instance of PaymentProcessorActionTypeControl */
     public PaymentProcessorActionTypeControl() {
         super();
     }

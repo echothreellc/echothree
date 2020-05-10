@@ -61,7 +61,7 @@ import java.util.List;
 public class BillingControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentControl */
+    /** Creates a new instance of BillingControl */
     public BillingControl() {
         super();
     }
