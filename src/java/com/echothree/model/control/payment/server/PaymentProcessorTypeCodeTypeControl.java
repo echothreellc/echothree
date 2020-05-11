@@ -332,6 +332,14 @@ public class PaymentProcessorTypeCodeTypeControl
         sendEventUsingNames(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
     }
 
+    public void deletePaymentProcessorTypeCodeTypes(final Collection<PaymentProcessorTypeCodeType> paymentProcessorTypeCodeTypes, final BasePK deletedBy) {
+        paymentProcessorTypeCodeTypes.forEach(paymentProcessorTypeCodeType -> deletePaymentProcessorTypeCodeType(paymentProcessorTypeCodeType, deletedBy));
+    }
+
+    public void deletePaymentProcessorTypeCodeTypesByPaymentProcessorType(final PaymentProcessorType paymentProcessorType, final BasePK deletedBy) {
+        deletePaymentProcessorTypeCodeTypes(getPaymentProcessorTypeCodeTypesForUpdate(paymentProcessorType), deletedBy);
+    }
+
     // --------------------------------------------------------------------------------
     //   Payment Processor Type Code Type Descriptions
     // --------------------------------------------------------------------------------
