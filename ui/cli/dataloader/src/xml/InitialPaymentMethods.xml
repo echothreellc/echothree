@@ -233,7 +233,7 @@
         <paymentProcessorType paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" isDefault="true" sortOrder="1">
             <paymentProcessorTypeDescription languageIsoName="en" description="Test Payment Processor Type" />
             <paymentProcessorTypeCodeType paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE_ADDITIONAL_CODE_TYPE" isDefault="true" sortOrder="1">
-                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Test Payment Processor Type Additional Code Type" />
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Test Payment Processor Type Code Type" />
             </paymentProcessorTypeCodeType>
         </paymentProcessorType>
     </paymentProcessorTypes>
