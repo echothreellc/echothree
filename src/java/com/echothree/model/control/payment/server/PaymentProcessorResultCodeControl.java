@@ -282,7 +282,6 @@ public class PaymentProcessorResultCodeControl
     }
 
     public void deletePaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode, final BasePK deletedBy) {
-
         deletePaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(paymentProcessorResultCode, deletedBy);
 
         var paymentProcessorResultCodeDetail = paymentProcessorResultCode.getLastDetailForUpdate();

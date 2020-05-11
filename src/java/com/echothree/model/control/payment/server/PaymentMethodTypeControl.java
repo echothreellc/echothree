@@ -282,7 +282,6 @@ public class PaymentMethodTypeControl
     }
 
     public void deletePaymentMethodType(final PaymentMethodType paymentMethodType, final BasePK deletedBy) {
-
         deletePaymentMethodTypeDescriptionsByPaymentMethodType(paymentMethodType, deletedBy);
 
         var paymentMethodTypeDetail = paymentMethodType.getLastDetailForUpdate();

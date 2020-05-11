@@ -282,7 +282,6 @@ public class PaymentProcessorActionTypeControl
     }
 
     public void deletePaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType, final BasePK deletedBy) {
-
         deletePaymentProcessorActionTypeDescriptionsByPaymentProcessorActionType(paymentProcessorActionType, deletedBy);
 
         var paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetailForUpdate();
