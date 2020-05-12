@@ -17,7 +17,7 @@
 package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.BillingAccountRoleTypes;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTransfer;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTypeTransfer;
 import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
@@ -230,10 +230,10 @@ public class BillingControl
             
             ps.setLong(1, currency.getPrimaryKey().getEntityId());
             ps.setLong(2, billFrom.getPrimaryKey().getEntityId());
-            ps.setString(3, PaymentConstants.BillingAccountRoleType_BILL_FROM);
+            ps.setString(3, BillingAccountRoleTypes.BILL_FROM.name());
             ps.setLong(4, Session.MAX_TIME);
             ps.setLong(5, billTo.getPrimaryKey().getEntityId());
-            ps.setString(6, PaymentConstants.BillingAccountRoleType_BILL_TO);
+            ps.setString(6, BillingAccountRoleTypes.BILL_TO.name());
             ps.setLong(7, Session.MAX_TIME);
             
             billingAccount = BillingAccountFactory.getInstance().getEntityFromQuery(entityPermission, ps);
@@ -280,10 +280,10 @@ public class BillingControl
             PreparedStatement ps = BillingAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, billFrom.getPrimaryKey().getEntityId());
-            ps.setString(2, PaymentConstants.BillingAccountRoleType_BILL_FROM);
+            ps.setString(2, BillingAccountRoleTypes.BILL_FROM.name());
             ps.setLong(3, Session.MAX_TIME);
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setString(4, PaymentConstants.BillingAccountRoleType_BILL_TO);
+                ps.setString(4, BillingAccountRoleTypes.BILL_TO.name());
                 ps.setLong(5, Session.MAX_TIME);
             }
             
@@ -331,10 +331,10 @@ public class BillingControl
             PreparedStatement ps = BillingAccountFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, billTo.getPrimaryKey().getEntityId());
-            ps.setString(2, PaymentConstants.BillingAccountRoleType_BILL_TO);
+            ps.setString(2, BillingAccountRoleTypes.BILL_TO.name());
             ps.setLong(3, Session.MAX_TIME);
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setString(4, PaymentConstants.BillingAccountRoleType_BILL_FROM);
+                ps.setString(4, BillingAccountRoleTypes.BILL_FROM.name());
                 ps.setLong(5, Session.MAX_TIME);
             }
             

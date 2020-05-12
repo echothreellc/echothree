@@ -18,7 +18,7 @@ package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.server.ContactControl;
-import com.echothree.model.control.payment.common.PaymentConstants;
+import com.echothree.model.control.payment.common.BillingAccountRoleTypes;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
@@ -66,7 +66,7 @@ public class BillingAccountLogic {
                         ema.addExecutionError(ExecutionErrors.UnknownBillFromPartyContactMechanismPurpose.name());
                     }
                 } else {
-                    // Make sure that the manually choosen PartyContactMechanism is marked with the PHYSICAL_BILLING ContactMechanismPurpose
+                    // Make sure that the manually chosen PartyContactMechanism is marked with the PHYSICAL_BILLING ContactMechanismPurpose
                     PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(billFromPartyContactMechanism, contactMechanismPurpose);
                     
                     if(partyContactMechanismPurpose == null) {
@@ -83,7 +83,7 @@ public class BillingAccountLogic {
                         ema.addExecutionError(ExecutionErrors.UnknownBillToPartyContactMechanismPurpose.name());
                     }
                 } else {
-                    // Make sure that the manually choosen PartyContactMechanism is marked with the PHYSICAL_BILLING ContactMechanismPurpose
+                    // Make sure that the manually chosen PartyContactMechanism is marked with the PHYSICAL_BILLING ContactMechanismPurpose
                     PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(billToPartyContactMechanism, contactMechanismPurpose);
                     
                     if(partyContactMechanismPurpose == null) {
@@ -94,8 +94,8 @@ public class BillingAccountLogic {
             
             if(!ema.hasExecutionErrors()) {
                 billingAccount = billingControl.createBillingAccount(billFrom, currency, reference, description, createdBy);
-                billingControl.createBillingAccountRoleUsingNames(billingAccount, billFrom, billFromPartyContactMechanism, PaymentConstants.BillingAccountRoleType_BILL_FROM, createdBy);
-                billingControl.createBillingAccountRoleUsingNames(billingAccount, billTo, billToPartyContactMechanism, PaymentConstants.BillingAccountRoleType_BILL_TO, createdBy);
+                billingControl.createBillingAccountRoleUsingNames(billingAccount, billFrom, billFromPartyContactMechanism, BillingAccountRoleTypes.BILL_FROM.name(), createdBy);
+                billingControl.createBillingAccountRoleUsingNames(billingAccount, billTo, billToPartyContactMechanism, BillingAccountRoleTypes.BILL_TO.name(), createdBy);
             }
         }
 

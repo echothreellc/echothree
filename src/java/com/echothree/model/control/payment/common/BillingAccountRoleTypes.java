@@ -16,9 +16,8 @@
 
 package com.echothree.model.control.payment.common;
 
-public interface PaymentConstants {
-    
-    String BillingAccountRoleType_BILL_FROM = "BILL_FROM";
-    String BillingAccountRoleType_BILL_TO = "BILL_TO";
+public enum BillingAccountRoleTypes {
 
+    BILL_FROM,
+    BILL_TO,
 }
