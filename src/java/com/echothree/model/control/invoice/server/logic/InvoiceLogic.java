@@ -26,7 +26,7 @@ import com.echothree.model.control.invoice.common.exception.UnknownInvoiceTypeNa
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.payment.common.PaymentConstants;
-import com.echothree.model.control.payment.server.BillingControl;
+import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.logic.BillingAccountLogic;
 import com.echothree.model.control.sequence.server.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;

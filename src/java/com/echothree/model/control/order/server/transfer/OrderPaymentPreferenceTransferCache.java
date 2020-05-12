@@ -20,7 +20,7 @@ import com.echothree.model.control.order.common.transfer.OrderPaymentPreferenceT
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreferenceDetail;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;

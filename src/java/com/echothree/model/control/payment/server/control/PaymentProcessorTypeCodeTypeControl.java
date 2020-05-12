@@ -14,33 +14,23 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.server;
+package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorTypeCodeTypeChoicesBean;
-import com.echothree.model.control.payment.common.choice.PaymentProcessorTypeChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeTypeDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeTypeTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeDescriptionTransfer;
-import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeTransfer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.common.pk.PaymentProcessorTypeCodeTypePK;
-import com.echothree.model.data.payment.common.pk.PaymentProcessorTypePK;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeTypeDescription;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeDescription;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeCodeTypeDescriptionFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeCodeTypeDetailFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeCodeTypeFactory;
-import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeDescriptionFactory;
-import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeDetailFactory;
-import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeFactory;
 import com.echothree.model.data.payment.server.value.PaymentProcessorTypeCodeTypeDescriptionValue;
 import com.echothree.model.data.payment.server.value.PaymentProcessorTypeCodeTypeDetailValue;
-import com.echothree.model.data.payment.server.value.PaymentProcessorTypeDescriptionValue;
-import com.echothree.model.data.payment.server.value.PaymentProcessorTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;

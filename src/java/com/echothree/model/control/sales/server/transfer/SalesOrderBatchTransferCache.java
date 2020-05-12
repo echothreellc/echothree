@@ -24,7 +24,7 @@ import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCac
 import com.echothree.model.control.core.server.CoreControl;
 import com.echothree.model.control.order.server.OrderControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.SalesControl;
 import com.echothree.model.control.workflow.server.WorkflowControl;

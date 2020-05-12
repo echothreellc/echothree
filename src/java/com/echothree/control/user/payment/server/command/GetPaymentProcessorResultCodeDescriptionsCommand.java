@@ -19,7 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.GetPaymentProcessorResultCodeDescriptionsForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.control.user.payment.common.result.GetPaymentProcessorResultCodeDescriptionsResult;
-import com.echothree.model.control.payment.server.PaymentProcessorResultCodeControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

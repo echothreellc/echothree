@@ -67,8 +67,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.letter.server.LetterControl;
 import com.echothree.model.control.order.server.OrderControl;
-import com.echothree.model.control.payment.server.BillingControl;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.BillingControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
@@ -77,7 +77,6 @@ import com.echothree.model.control.contact.common.choice.EmailAddressStatusChoic
 import com.echothree.model.control.contact.common.choice.EmailAddressVerificationChoicesBean;
 import com.echothree.model.control.contact.common.choice.TelephoneStatusChoicesBean;
 import com.echothree.model.control.contact.common.choice.WebAddressStatusChoicesBean;
-import com.echothree.model.control.workflow.server.WorkflowControl;
 import com.echothree.model.data.contact.common.pk.ContactMechanismAliasTypePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismTypePK;

@@ -22,7 +22,7 @@ import com.echothree.control.user.payment.common.form.EditPaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.control.user.payment.common.result.EditPaymentMethodTypeResult;
 import com.echothree.control.user.payment.common.spec.PaymentMethodTypeUniversalSpec;
-import com.echothree.model.control.payment.server.PaymentMethodTypeControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

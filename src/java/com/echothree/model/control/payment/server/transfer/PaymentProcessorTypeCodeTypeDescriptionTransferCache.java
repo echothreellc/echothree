@@ -19,7 +19,7 @@ package com.echothree.model.control.payment.server.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeTypeDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeTypeTransfer;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 

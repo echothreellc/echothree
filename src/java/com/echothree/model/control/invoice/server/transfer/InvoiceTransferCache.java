@@ -28,7 +28,7 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.model.control.invoice.common.workflow.PurchaseInvoiceStatusConstants;
 import com.echothree.model.control.invoice.server.InvoiceControl;
 import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
-import com.echothree.model.control.payment.server.BillingControl;
+import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.TermControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;

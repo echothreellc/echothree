@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.server;
+package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
 import com.echothree.model.data.user.server.entity.UserVisit;
