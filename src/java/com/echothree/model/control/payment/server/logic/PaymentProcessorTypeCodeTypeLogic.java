@@ -110,6 +110,29 @@ public class PaymentProcessorTypeCodeTypeLogic
         return getPaymentProcessorTypeCodeTypeByName(eea, paymentProcessorType, paymentProcessorTypeCodeTypeName, EntityPermission.READ_WRITE);
     }
 
+    public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByNames(final ExecutionErrorAccumulator eea,
+            final String paymentProcessorTypeName, final String paymentProcessorTypeCodeTypeName,
+            final EntityPermission entityPermission) {
+        var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, paymentProcessorTypeName);
+        PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = null;
+
+        if(!eea.hasExecutionErrors()) {
+            paymentProcessorTypeCodeType = getPaymentProcessorTypeCodeTypeByName(eea, paymentProcessorType, paymentProcessorTypeCodeTypeName, entityPermission);
+        }
+
+        return paymentProcessorTypeCodeType;
+    }
+
+    public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByNames(final ExecutionErrorAccumulator eea,
+            final String paymentProcessorTypeName, final String paymentProcessorTypeCodeTypeName) {
+        return getPaymentProcessorTypeCodeTypeByNames(eea, paymentProcessorTypeName, paymentProcessorTypeCodeTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByNamesForUpdate(final ExecutionErrorAccumulator eea,
+            final String paymentProcessorTypeName, final String paymentProcessorTypeCodeTypeName) {
+        return getPaymentProcessorTypeCodeTypeByNames(eea, paymentProcessorTypeName, paymentProcessorTypeCodeTypeName, EntityPermission.READ_WRITE);
+    }
+
     public PaymentProcessorTypeCodeType getPaymentProcessorTypeCodeTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final PaymentProcessorTypeCodeTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         PaymentProcessorTypeCodeType paymentProcessorTypeCodeType = null;
