@@ -19,7 +19,7 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.GetPaymentMethodTypeForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.control.user.payment.common.result.GetPaymentMethodTypeResult;
-import com.echothree.model.control.payment.server.PaymentMethodTypeControl;
+import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;

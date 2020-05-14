@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.server;
+package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorResultCodeChoicesBean;
@@ -43,13 +43,13 @@ import java.util.Objects;
 public class PaymentProcessorResultCodeControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentControl */
+    /** Creates a new instance of PaymentProcessorResultCodeControl */
     public PaymentProcessorResultCodeControl() {
         super();
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Conditions
+    //   Payment Processor Result Codes
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorResultCode createPaymentProcessorResultCode(final String paymentProcessorResultCodeName, Boolean isDefault,
@@ -282,7 +282,6 @@ public class PaymentProcessorResultCodeControl
     }
 
     public void deletePaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode, final BasePK deletedBy) {
-
         deletePaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(paymentProcessorResultCode, deletedBy);
 
         var paymentProcessorResultCodeDetail = paymentProcessorResultCode.getLastDetailForUpdate();
@@ -311,7 +310,7 @@ public class PaymentProcessorResultCodeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Condition Descriptions
+    //   Payment Processor Result Code Descriptions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorResultCodeDescription createPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,

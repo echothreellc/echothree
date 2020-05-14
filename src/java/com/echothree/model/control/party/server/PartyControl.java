@@ -88,7 +88,7 @@ import com.echothree.model.control.party.server.transfer.PartyTypeTransferCache;
 import com.echothree.model.control.party.server.transfer.PersonalTitleTransferCache;
 import com.echothree.model.control.party.server.transfer.TimeZoneDescriptionTransferCache;
 import com.echothree.model.control.party.server.transfer.TimeZoneTransferCache;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.printer.server.PrinterControl;
 import com.echothree.model.control.returnpolicy.server.ReturnPolicyControl;
 import com.echothree.model.control.scale.server.ScaleControl;

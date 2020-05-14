@@ -232,6 +232,12 @@
     <paymentProcessorTypes>
         <paymentProcessorType paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" isDefault="true" sortOrder="1">
             <paymentProcessorTypeDescription languageIsoName="en" description="Test Payment Processor Type" />
+            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="TEST_PAYMENT_PROCESSOR_TYPE_CODE_TYPE_1" isDefault="true" sortOrder="1">
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Test Payment Processor Type Code Type 1" />
+            </paymentProcessorTypeCodeType>
+            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="TEST_PAYMENT_PROCESSOR_TYPE_CODE_TYPE_2" isDefault="false" sortOrder="1">
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Test Payment Processor Type Code Type 2" />
+            </paymentProcessorTypeCodeType>
         </paymentProcessorType>
     </paymentProcessorTypes>
     <paymentProcessors>

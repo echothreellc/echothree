@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.server;
+package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorTypeChoicesBean;
@@ -43,13 +43,13 @@ import java.util.Objects;
 public class PaymentProcessorTypeControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentControl */
+    /** Creates a new instance of PaymentProcessorTypeControl */
     public PaymentProcessorTypeControl() {
         super();
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Conditions
+    //   Payment Processor Types
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorType createPaymentProcessorType(final String paymentProcessorTypeName, Boolean isDefault,
@@ -282,7 +282,9 @@ public class PaymentProcessorTypeControl
     }
 
     public void deletePaymentProcessorType(final PaymentProcessorType paymentProcessorType, final BasePK deletedBy) {
+        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl) Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
 
+        paymentProcessorTypeCodeTypeControl.deletePaymentProcessorTypeCodeTypesByPaymentProcessorType(paymentProcessorType, deletedBy);
         deletePaymentProcessorTypeDescriptionsByPaymentProcessorType(paymentProcessorType, deletedBy);
 
         var paymentProcessorTypeDetail = paymentProcessorType.getLastDetailForUpdate();
@@ -311,7 +313,7 @@ public class PaymentProcessorTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Condition Descriptions
+    //   Payment Processor Type Descriptions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorTypeDescription createPaymentProcessorTypeDescription(final PaymentProcessorType paymentProcessorType,

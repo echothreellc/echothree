@@ -18,7 +18,7 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.DeleteCustomerTypePaymentMethodForm;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;

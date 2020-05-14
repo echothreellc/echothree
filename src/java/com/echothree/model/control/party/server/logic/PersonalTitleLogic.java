@@ -20,7 +20,7 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.exception.CannotDeletePersonalTitleInUseException;
 import com.echothree.model.control.party.common.exception.UnknownPersonalTitleIdException;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.util.common.message.ExecutionErrors;

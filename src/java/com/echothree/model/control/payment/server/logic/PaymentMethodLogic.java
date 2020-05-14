@@ -18,7 +18,7 @@ package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.model.control.payment.common.exception.ItemNotAcceptibleForPaymentMethodException;
 import com.echothree.model.control.payment.common.exception.UnknownPaymentMethodNameException;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.control.selector.common.SelectorConstants;
 import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.PaymentMethodItemSelectorEvaluator;
@@ -52,9 +52,7 @@ public class PaymentMethodLogic
 
     private PaymentMethod getPaymentMethodByName(final ExecutionErrorAccumulator eea, final String paymentMethodName, final EntityPermission entityPermission) {
         var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
-        PaymentMethod paymentMethod = null;
-
-        paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName, entityPermission);
+        var paymentMethod = paymentControl.getPaymentMethodByName(paymentMethodName, entityPermission);
 
         if(paymentMethod == null) {
             handleExecutionError(UnknownPaymentMethodNameException.class, eea, ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);

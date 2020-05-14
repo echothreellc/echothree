@@ -20,7 +20,7 @@ import com.echothree.model.control.contact.server.ContactControl;
 import com.echothree.model.control.party.common.exception.CannotDeleteNameSuffixInUseException;
 import com.echothree.model.control.party.common.exception.UnknownNameSuffixIdException;
 import com.echothree.model.control.party.server.PartyControl;
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.util.common.message.ExecutionErrors;

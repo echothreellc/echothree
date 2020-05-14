@@ -44,8 +44,18 @@ public class PaymentProcessorTypeHandler
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
-        if(localName.equals("paymentProcessorTypeDescription")) {
+            throws SAXException, NamingException {
+        if(localName.equals("paymentProcessorTypeCodeType")) {
+            var commandForm = PaymentFormFactory.getCreatePaymentProcessorTypeCodeTypeForm();
+
+            commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(paymentService.createPaymentProcessorTypeCodeType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new PaymentProcessorTypeCodeTypeHandler(initialDataParser, this,
+                    commandForm.getPaymentProcessorTypeName(), commandForm.getPaymentProcessorTypeCodeTypeName()));
+        } else if(localName.equals("paymentProcessorTypeDescription")) {
             var commandForm = PaymentFormFactory.getCreatePaymentProcessorTypeDescriptionForm();
 
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);

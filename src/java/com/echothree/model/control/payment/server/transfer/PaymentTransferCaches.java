@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
-import com.echothree.model.control.payment.server.PaymentControl;
+import com.echothree.model.control.payment.server.control.PaymentControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
 
@@ -43,6 +43,8 @@ public class PaymentTransferCaches
     protected PaymentProcessorActionTypeDescriptionTransferCache paymentProcessorActionTypeDescriptionTransferCache;
     protected PaymentProcessorResultCodeTransferCache paymentProcessorResultCodeTransferCache;
     protected PaymentProcessorResultCodeDescriptionTransferCache paymentProcessorResultCodeDescriptionTransferCache;
+    protected PaymentProcessorTypeCodeTypeTransferCache paymentProcessorTypeCodeTypeTransferCache;
+    protected PaymentProcessorTypeCodeTypeDescriptionTransferCache paymentProcessorTypeCodeTypeDescriptionTransferCache;
     
     /** Creates a new instance of PaymentTransferCaches */
     public PaymentTransferCaches(UserVisit userVisit, PaymentControl paymentControl) {
@@ -175,6 +177,20 @@ public class PaymentTransferCaches
             paymentProcessorResultCodeDescriptionTransferCache = new PaymentProcessorResultCodeDescriptionTransferCache(userVisit, paymentControl);
 
         return paymentProcessorResultCodeDescriptionTransferCache;
+    }
+
+    public PaymentProcessorTypeCodeTypeTransferCache getPaymentProcessorTypeCodeTypeTransferCache() {
+        if(paymentProcessorTypeCodeTypeTransferCache == null)
+            paymentProcessorTypeCodeTypeTransferCache = new PaymentProcessorTypeCodeTypeTransferCache(userVisit, paymentControl);
+
+        return paymentProcessorTypeCodeTypeTransferCache;
+    }
+
+    public PaymentProcessorTypeCodeTypeDescriptionTransferCache getPaymentProcessorTypeCodeTypeDescriptionTransferCache() {
+        if(paymentProcessorTypeCodeTypeDescriptionTransferCache == null)
+            paymentProcessorTypeCodeTypeDescriptionTransferCache = new PaymentProcessorTypeCodeTypeDescriptionTransferCache(userVisit, paymentControl);
+
+        return paymentProcessorTypeCodeTypeDescriptionTransferCache;
     }
 
 }

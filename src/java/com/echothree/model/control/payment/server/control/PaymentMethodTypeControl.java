@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.server;
+package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.choice.PaymentMethodTypeChoicesBean;
@@ -43,13 +43,13 @@ import java.util.Objects;
 public class PaymentMethodTypeControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentControl */
+    /** Creates a new instance of PaymentMethodTypeControl */
     public PaymentMethodTypeControl() {
         super();
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Conditions
+    //   Payment Method Types
     // --------------------------------------------------------------------------------
 
     public PaymentMethodType createPaymentMethodType(final String paymentMethodTypeName, Boolean isDefault,
@@ -282,7 +282,6 @@ public class PaymentMethodTypeControl
     }
 
     public void deletePaymentMethodType(final PaymentMethodType paymentMethodType, final BasePK deletedBy) {
-
         deletePaymentMethodTypeDescriptionsByPaymentMethodType(paymentMethodType, deletedBy);
 
         var paymentMethodTypeDetail = paymentMethodType.getLastDetailForUpdate();
@@ -311,7 +310,7 @@ public class PaymentMethodTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Condition Descriptions
+    //   Payment Method Type Descriptions
     // --------------------------------------------------------------------------------
 
     public PaymentMethodTypeDescription createPaymentMethodTypeDescription(final PaymentMethodType paymentMethodType,

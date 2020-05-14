@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment.server;
+package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorActionTypeChoicesBean;
@@ -43,13 +43,13 @@ import java.util.Objects;
 public class PaymentProcessorActionTypeControl
         extends BasePaymentControl {
 
-    /** Creates a new instance of PaymentControl */
+    /** Creates a new instance of PaymentProcessorActionTypeControl */
     public PaymentProcessorActionTypeControl() {
         super();
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Conditions
+    //   Payment Processor Action Types
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorActionType createPaymentProcessorActionType(final String paymentProcessorActionTypeName, Boolean isDefault,
@@ -282,7 +282,6 @@ public class PaymentProcessorActionTypeControl
     }
 
     public void deletePaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType, final BasePK deletedBy) {
-
         deletePaymentProcessorActionTypeDescriptionsByPaymentProcessorActionType(paymentProcessorActionType, deletedBy);
 
         var paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetailForUpdate();
@@ -311,7 +310,7 @@ public class PaymentProcessorActionTypeControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Inventory Condition Descriptions
+    //   Payment Processor Action Type Descriptions
     // --------------------------------------------------------------------------------
 
     public PaymentProcessorActionTypeDescription createPaymentProcessorActionTypeDescription(final PaymentProcessorActionType paymentProcessorActionType,

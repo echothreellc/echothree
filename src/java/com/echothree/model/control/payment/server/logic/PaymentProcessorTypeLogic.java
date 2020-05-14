@@ -20,7 +20,7 @@ import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeUniver
 import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorTypeNameException;
 import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorTypeNameException;
 import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorTypeException;
-import com.echothree.model.control.payment.server.PaymentProcessorTypeControl;
+import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
