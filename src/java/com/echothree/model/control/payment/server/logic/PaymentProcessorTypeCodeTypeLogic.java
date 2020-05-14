@@ -21,6 +21,8 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorTypeCodeTypeDescriptionException;
 import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorTypeCodeTypeNameException;
 import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorTypeCodeTypeException;
 import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorTypeCodeTypeNameException;
@@ -29,6 +31,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -201,5 +204,36 @@ public class PaymentProcessorTypeCodeTypeLogic
         var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl)Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
 
         paymentProcessorTypeCodeTypeControl.deletePaymentProcessorTypeCodeType(paymentProcessorTypeCodeType, deletedBy);
+    }
+
+    public PaymentProcessorTypeCodeTypeDescription createPaymentProcessorTypeCodeTypeDescription(final ExecutionErrorAccumulator eea,
+            final PaymentProcessorTypeCodeType paymentProcessorTypeCodeType, final Language language,
+            final String description, final BasePK createdBy) {
+        var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl) Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+        var paymentProcessorTypeCodeTypeDescription = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, language);
+
+        if(paymentProcessorTypeCodeTypeDescription == null) {
+            paymentProcessorTypeCodeTypeDescription = paymentProcessorTypeCodeTypeControl.createPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType,
+                    language, description, createdBy);
+        } else {
+            handleExecutionError(DuplicatePaymentProcessorTypeCodeTypeDescriptionException.class, eea, ExecutionErrors.DuplicatePaymentProcessorTypeCodeTypeDescription.name());
+        }
+
+        return paymentProcessorTypeCodeTypeDescription;
+    }
+
+    public PaymentProcessorTypeCodeTypeDescription createPaymentProcessorTypeCodeTypeDescription(final ExecutionErrorAccumulator eea,
+            final String paymentProcessorTypeName, final String paymentProcessorTypeCodeTypeName,
+            final String languageIsoName, final String description, final BasePK createdBy) {
+        var paymentProcessorTypeCodeType = PaymentProcessorTypeCodeTypeLogic.getInstance().getPaymentProcessorTypeCodeTypeByNames(eea, paymentProcessorTypeName, paymentProcessorTypeCodeTypeName);
+        var language = LanguageLogic.getInstance().getLanguageByName(eea, languageIsoName);
+        PaymentProcessorTypeCodeTypeDescription paymentProcessorTypeCodeTypeDescription = null;
+
+        if(!eea.hasExecutionErrors()) {
+            paymentProcessorTypeCodeTypeDescription = createPaymentProcessorTypeCodeTypeDescription(eea,
+                    paymentProcessorTypeCodeType, language, description, createdBy);
+        }
+
+        return paymentProcessorTypeCodeTypeDescription;
     }
 }
