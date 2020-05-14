@@ -140,11 +140,13 @@ public class PaymentProcessorTypeCodeTypeControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid AND pproctypctypdt_isdefault = 1",
+                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid " +
+                    "AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_isdefault = 1",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
-                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid AND pproctypctypdt_isdefault = 1 " +
+                    "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid " +
+                    "AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? AND pproctypctypdt_isdefault = 1 " +
                     "FOR UPDATE");
 
     public PaymentProcessorTypeCodeType getDefaultPaymentProcessorTypeCodeType(final PaymentProcessorType paymentProcessorType, final EntityPermission entityPermission) {
