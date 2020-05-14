@@ -25,50 +25,44 @@ import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class PaymentProcessorTypeHandler
+public class PaymentProcessorTypeCodeTypeHandler
         extends BaseHandler {
 
     PaymentService paymentService;
 
     String paymentProcessorTypeName;
-    
-    /** Creates a new instance of PaymentProcessorTypeHandler */
-    public PaymentProcessorTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String paymentProcessorTypeName)
+    String paymentProcessorTypeCodeTypeName;
+
+    /** Creates a new instance of PaymentProcessorTypeCodeTypeHandler */
+    public PaymentProcessorTypeCodeTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler,
+            String paymentProcessorTypeName, String paymentProcessorTypeCodeTypeName)
             throws NamingException {
         super(initialDataParser, parentHandler);
         
         paymentService = PaymentUtil.getHome();
 
         this.paymentProcessorTypeName = paymentProcessorTypeName;
+        this.paymentProcessorTypeCodeTypeName = paymentProcessorTypeCodeTypeName;
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException, NamingException {
-        if(localName.equals("paymentProcessorTypeCodeType")) {
-            var commandForm = PaymentFormFactory.getCreatePaymentProcessorTypeCodeTypeForm();
+            throws SAXException {
+        if(localName.equals("paymentProcessorTypeCodeTypeDescription")) {
+            var commandForm = PaymentFormFactory.getCreatePaymentProcessorTypeCodeTypeDescriptionForm();
 
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
+            commandForm.setPaymentProcessorTypeCodeTypeName(paymentProcessorTypeCodeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorTypeCodeType(initialDataParser.getUserVisit(), commandForm));
-
-            initialDataParser.pushHandler(new PaymentProcessorTypeCodeTypeHandler(initialDataParser, this,
-                    commandForm.getPaymentProcessorTypeName(), commandForm.getPaymentProcessorTypeCodeTypeName()));
-        } else if(localName.equals("paymentProcessorTypeDescription")) {
-            var commandForm = PaymentFormFactory.getCreatePaymentProcessorTypeDescriptionForm();
-
-            commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
-            commandForm.set(getAttrsMap(attrs));
-
-            checkCommandResult(paymentService.createPaymentProcessorTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(paymentService.createPaymentProcessorTypeCodeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
-        if(localName.equals("paymentProcessorType")) {
+        if(localName.equals("paymentProcessorTypeCodeType")) {
             initialDataParser.popHandler();
         }
     }
