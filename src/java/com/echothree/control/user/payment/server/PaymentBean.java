@@ -199,35 +199,35 @@ public class PaymentBean
         return new CreatePaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
     }
 
-//    @Override
-//    public CommandResult getPaymentProcessorTypeCodeTypes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypesForm form) {
-//        return new GetPaymentProcessorTypeCodeTypesCommand(userVisitPK, form).run();
-//    }
-//
-//    @Override
-//    public CommandResult getPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeForm form) {
-//        return new GetPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
-//    }
-//
-//    @Override
-//    public CommandResult getPaymentProcessorTypeCodeTypeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeChoicesForm form) {
-//        return new GetPaymentProcessorTypeCodeTypeChoicesCommand(userVisitPK, form).run();
-//    }
-//
-//    @Override
-//    public CommandResult setDefaultPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeCodeTypeForm form) {
-//        return new SetDefaultPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
-//    }
-//
-//    @Override
-//    public CommandResult editPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeTypeForm form) {
-//        return new EditPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
-//    }
-//
-//    @Override
-//    public CommandResult deletePaymentProcessorTypeCodeType(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeTypeForm form) {
-//        return new DeletePaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
-//    }
+    //    @Override
+    //    public CommandResult getPaymentProcessorTypeCodeTypes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypesForm form) {
+    //        return new GetPaymentProcessorTypeCodeTypesCommand(userVisitPK, form).run();
+    //    }
+    //
+    //    @Override
+    //    public CommandResult getPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeForm form) {
+    //        return new GetPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+    //    }
+    //
+    //    @Override
+    //    public CommandResult getPaymentProcessorTypeCodeTypeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeChoicesForm form) {
+    //        return new GetPaymentProcessorTypeCodeTypeChoicesCommand(userVisitPK, form).run();
+    //    }
+    //
+    //    @Override
+    //    public CommandResult setDefaultPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeCodeTypeForm form) {
+    //        return new SetDefaultPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+    //    }
+    //
+    //    @Override
+    //    public CommandResult editPaymentProcessorTypeCodeType(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeTypeForm form) {
+    //        return new EditPaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+    //    }
+    //
+    //    @Override
+    //    public CommandResult deletePaymentProcessorTypeCodeType(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeTypeForm form) {
+    //        return new DeletePaymentProcessorTypeCodeTypeCommand(userVisitPK, form).run();
+    //    }
 
     // -------------------------------------------------------------------------
     //   Payment Processor Type Code Type Descriptions
@@ -238,24 +238,92 @@ public class PaymentBean
         return new CreatePaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
     }
 
+    //    @Override
+    //    public CommandResult getPaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeDescriptionForm form) {
+    //        return new GetPaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+    //    }
+    //
+    //    @Override
+    //    public CommandResult getPaymentProcessorTypeCodeTypeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeDescriptionsForm form) {
+    //        return new GetPaymentProcessorTypeCodeTypeDescriptionsCommand(userVisitPK, form).run();
+    //    }
+    //
+    //    @Override
+    //    public CommandResult editPaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeTypeDescriptionForm form) {
+    //        return new EditPaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+    //    }
+    //
+    //    @Override
+    //    public CommandResult deletePaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeTypeDescriptionForm form) {
+    //        return new DeletePaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+    //    }
+
+    // -------------------------------------------------------------------------
+    //   Payment Processor Type Codes
+    // -------------------------------------------------------------------------
+
 //    @Override
-//    public CommandResult getPaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeDescriptionForm form) {
-//        return new GetPaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+//    public CommandResult createPaymentProcessorTypeCode(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeForm form) {
+//        return new CreatePaymentProcessorTypeCodeCommand(userVisitPK, form).run();
 //    }
 //
 //    @Override
-//    public CommandResult getPaymentProcessorTypeCodeTypeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeTypeDescriptionsForm form) {
-//        return new GetPaymentProcessorTypeCodeTypeDescriptionsCommand(userVisitPK, form).run();
+//    public CommandResult getPaymentProcessorTypeCodes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodesForm form) {
+//        return new GetPaymentProcessorTypeCodesCommand(userVisitPK, form).run();
 //    }
 //
 //    @Override
-//    public CommandResult editPaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeTypeDescriptionForm form) {
-//        return new EditPaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+//    public CommandResult getPaymentProcessorTypeCode(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeForm form) {
+//        return new GetPaymentProcessorTypeCodeCommand(userVisitPK, form).run();
 //    }
 //
 //    @Override
-//    public CommandResult deletePaymentProcessorTypeCodeTypeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeTypeDescriptionForm form) {
-//        return new DeletePaymentProcessorTypeCodeTypeDescriptionCommand(userVisitPK, form).run();
+//    public CommandResult getPaymentProcessorTypeCodeChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeChoicesForm form) {
+//        return new GetPaymentProcessorTypeCodeChoicesCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult setDefaultPaymentProcessorTypeCode(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeCodeForm form) {
+//        return new SetDefaultPaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult editPaymentProcessorTypeCode(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeForm form) {
+//        return new EditPaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult deletePaymentProcessorTypeCode(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeForm form) {
+//        return new DeletePaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+//    }
+
+    // -------------------------------------------------------------------------
+    //   Payment Processor Type Code Descriptions
+    // -------------------------------------------------------------------------
+
+//    @Override
+//    public CommandResult createPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeDescriptionForm form) {
+//        return new CreatePaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult getPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeDescriptionForm form) {
+//        return new GetPaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult getPaymentProcessorTypeCodeDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeDescriptionsForm form) {
+//        return new GetPaymentProcessorTypeCodeDescriptionsCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult editPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, EditPaymentProcessorTypeCodeDescriptionForm form) {
+//        return new EditPaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult deletePaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, DeletePaymentProcessorTypeCodeDescriptionForm form) {
+//        return new DeletePaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
 //    }
 
     // -------------------------------------------------------------------------
