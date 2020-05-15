@@ -441,7 +441,6 @@
                     <columns>
                         <column name="PaymentProcessorTypeCodeDetailId" type="EID" nullAllowed="false" />
                         <column name="PaymentProcessorTypeCodeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeCodes" destinationColumn="PaymentProcessorTypeCodeId" />
-                        <column name="PaymentProcessorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypes" destinationColumn="PaymentProcessorTypeId" />
                         <column name="PaymentProcessorTypeCodeTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeCodeTypes" destinationColumn="PaymentProcessorTypeCodeTypeId" />
                         <column name="PaymentProcessorTypeCodeName" type="Name" nullAllowed="false" />
                         <column name="IsDefault" type="Boolean" nullAllowed="false" />
@@ -458,21 +457,15 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="PaymentProcessorTypeId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index3">
                             <indexColumn name="PaymentProcessorTypeCodeTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Unique" name="Index4">
-                            <indexColumn name="PaymentProcessorTypeId" />
+                        <index type="Unique" name="Index3">
                             <indexColumn name="PaymentProcessorTypeCodeTypeId" />
                             <indexColumn name="PaymentProcessorTypeCodeName" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index5">
-                            <indexColumn name="PaymentProcessorTypeId" />
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="PaymentProcessorTypeCodeTypeId" />
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
