@@ -4939,6 +4939,30 @@
                 <securityRoleDescription languageIsoName="en" description="Payment Processor Type Code Type Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PaymentProcessorCodeType" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Payment Processor Code Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Code Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Code Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Code Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Code Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Code Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Code Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Payment Processor Code Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PaymentProcessor" parentSecurityRoleGroupName="PaymentComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Payment Processor" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8288,6 +8312,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCodeType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCodeType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCodeType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorTypeCode" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PaymentProcessorActionType" securityRoleName="Delete" />
