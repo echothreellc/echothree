@@ -230,6 +230,7 @@ public enum SecurityRoleGroups {
     PaymentProcessorActionType,
     PaymentProcessorResultCode,
     PaymentProcessorType,
+    PaymentProcessorTypeCode,
     PaymentProcessorTypeCodeType,
     PaymentMethod,
     PaymentMethodType,
