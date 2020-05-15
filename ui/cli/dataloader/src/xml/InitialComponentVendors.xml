@@ -1211,10 +1211,16 @@
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Type Description" />
             </entityType>
             <entityType entityTypeName="PaymentProcessorTypeCodeType" keepAllHistory="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Payment Processor Type" />
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Type Code Type" />
             </entityType>
             <entityType entityTypeName="PaymentProcessorTypeCodeTypeDescription" keepAllHistory="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Payment Processor Type Description" />
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Type Code Type Description" />
+            </entityType>
+            <entityType entityTypeName="PaymentProcessorTypeCode" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Type Code" />
+            </entityType>
+            <entityType entityTypeName="PaymentProcessorTypeCodeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Payment Processor Type Code Description" />
             </entityType>
             <entityType entityTypeName="Person" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Person" />
