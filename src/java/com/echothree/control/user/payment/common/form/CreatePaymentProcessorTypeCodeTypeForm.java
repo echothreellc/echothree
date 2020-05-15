@@ -17,10 +17,11 @@
 package com.echothree.control.user.payment.common.form;
 
 import com.echothree.control.user.payment.common.edit.PaymentProcessorTypeCodeTypeEdit;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeCodeTypeSpec;
 
 public interface CreatePaymentProcessorTypeCodeTypeForm
-        extends PaymentProcessorTypeCodeTypeEdit {
+        extends PaymentProcessorTypeCodeTypeSpec, PaymentProcessorTypeCodeTypeEdit {
     
-    // Nothing additional beyond PaymentProcessorTypeCodeTypeEdit
+    // Nothing additional beyond PaymentProcessorTypeCodeTypeSpec, PaymentProcessorTypeCodeTypeEdit
     
 }

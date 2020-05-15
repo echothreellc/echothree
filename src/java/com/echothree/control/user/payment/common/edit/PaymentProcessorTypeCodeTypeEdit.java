@@ -16,11 +16,12 @@
 
 package com.echothree.control.user.payment.common.edit;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeCodeTypeSpec;
-
 public interface PaymentProcessorTypeCodeTypeEdit
-        extends PaymentProcessorTypeCodeTypeSpec, PaymentProcessorTypeCodeTypeDescriptionEdit {
-    
+        extends PaymentProcessorTypeCodeTypeDescriptionEdit {
+
+    String getPaymentProcessorTypeCodeTypeName();
+    void setPaymentProcessorTypeCodeTypeName(String paymentProcessorTypeCodeTypeName);
+
     String getIsDefault();
     void setIsDefault(String isDefault);
     
