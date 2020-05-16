@@ -262,11 +262,11 @@ public class PaymentBean
     //   Payment Processor Type Codes
     // -------------------------------------------------------------------------
 
-//    @Override
-//    public CommandResult createPaymentProcessorTypeCode(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeForm form) {
-//        return new CreatePaymentProcessorTypeCodeCommand(userVisitPK, form).run();
-//    }
-//
+    @Override
+    public CommandResult createPaymentProcessorTypeCode(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeForm form) {
+        return new CreatePaymentProcessorTypeCodeCommand(userVisitPK, form).run();
+    }
+
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodes(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodesForm form) {
 //        return new GetPaymentProcessorTypeCodesCommand(userVisitPK, form).run();
@@ -301,11 +301,11 @@ public class PaymentBean
     //   Payment Processor Type Code Descriptions
     // -------------------------------------------------------------------------
 
-//    @Override
-//    public CommandResult createPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeDescriptionForm form) {
-//        return new CreatePaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
-//    }
-//
+    @Override
+    public CommandResult createPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, CreatePaymentProcessorTypeCodeDescriptionForm form) {
+        return new CreatePaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
+    }
+
 //    @Override
 //    public CommandResult getPaymentProcessorTypeCodeDescription(UserVisitPK userVisitPK, GetPaymentProcessorTypeCodeDescriptionForm form) {
 //        return new GetPaymentProcessorTypeCodeDescriptionCommand(userVisitPK, form).run();
