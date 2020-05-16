@@ -342,6 +342,33 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="PaymentProcessorTypeActions" nameSingular="PaymentProcessorTypeAction" columnPrefix="pprctypact">
+                    <columns>
+                        <column name="PaymentProcessorTypeActionId" type="EID" nullAllowed="false" />
+                        <column name="PaymentProcessorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypes" destinationColumn="PaymentProcessorTypeId" />
+                        <column name="PaymentProcessorActionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorActionTypes" destinationColumn="PaymentProcessorActionTypeId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PaymentProcessorTypeActionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PaymentProcessorTypeId" />
+                            <indexColumn name="PaymentProcessorActionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PaymentProcessorTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PaymentProcessorActionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="PaymentProcessorTypeCodeTypes" nameSingular="PaymentProcessorTypeCodeType" columnPrefix="pproctypctyp">
                     <columns>
                         <column name="PaymentProcessorTypeCodeTypeId" type="EID" nullAllowed="false" />
