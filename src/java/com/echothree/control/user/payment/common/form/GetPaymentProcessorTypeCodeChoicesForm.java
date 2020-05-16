@@ -16,11 +16,15 @@
 
 package com.echothree.control.user.payment.common.form;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeSpec;
+import com.echothree.util.common.form.BaseForm;
 
-public interface GetPaymentProcessorTypeCodeTypesForm
-        extends PaymentProcessorTypeSpec {
+public interface GetPaymentProcessorTypeCodeChoicesForm
+        extends BaseForm {
     
-    // Nothing additional beyond BaseForm
+    String getDefaultPaymentProcessorTypeCodeChoice();
+    void setDefaultPaymentProcessorTypeCodeChoice(String defaultPaymentProcessorTypeCodeChoice);
+    
+    String getAllowNullChoice();
+    void setAllowNullChoice(String allowNullChoice);
     
 }

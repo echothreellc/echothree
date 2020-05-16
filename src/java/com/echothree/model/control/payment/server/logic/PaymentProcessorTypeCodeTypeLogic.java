@@ -225,7 +225,8 @@ public class PaymentProcessorTypeCodeTypeLogic
     public PaymentProcessorTypeCodeTypeDescription createPaymentProcessorTypeCodeTypeDescription(final ExecutionErrorAccumulator eea,
             final String paymentProcessorTypeName, final String paymentProcessorTypeCodeTypeName,
             final String languageIsoName, final String description, final BasePK createdBy) {
-        var paymentProcessorTypeCodeType = PaymentProcessorTypeCodeTypeLogic.getInstance().getPaymentProcessorTypeCodeTypeByNames(eea, paymentProcessorTypeName, paymentProcessorTypeCodeTypeName);
+        var paymentProcessorTypeCodeType = getPaymentProcessorTypeCodeTypeByNames(eea, paymentProcessorTypeName,
+                paymentProcessorTypeCodeTypeName);
         var language = LanguageLogic.getInstance().getLanguageByName(eea, languageIsoName);
         PaymentProcessorTypeCodeTypeDescription paymentProcessorTypeCodeTypeDescription = null;
 

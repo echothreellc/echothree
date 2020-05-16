@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.payment.common.form;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeSpec;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeCodeDescriptionSpec;
 
-public interface GetPaymentProcessorTypeCodeTypesForm
-        extends PaymentProcessorTypeSpec {
+public interface GetPaymentProcessorTypeCodeDescriptionForm
+        extends PaymentProcessorTypeCodeDescriptionSpec {
     
-    // Nothing additional beyond BaseForm
+    // Nothing additional beyond PaymentProcessorTypeCodeDescriptionSpec
     
 }

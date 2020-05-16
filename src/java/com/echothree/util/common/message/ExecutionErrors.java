@@ -2196,5 +2196,10 @@ public enum ExecutionErrors {
     UnknownDefaultPaymentProcessorTypeCodeType,
     DuplicatePaymentProcessorTypeCodeTypeDescription,
     UnknownPaymentProcessorTypeCodeTypeDescription,
+    DuplicatePaymentProcessorTypeCodeName,
+    UnknownPaymentProcessorTypeCodeName,
+    UnknownDefaultPaymentProcessorTypeCode,
+    DuplicatePaymentProcessorTypeCodeDescription,
+    UnknownPaymentProcessorTypeCodeDescription,
 
 }

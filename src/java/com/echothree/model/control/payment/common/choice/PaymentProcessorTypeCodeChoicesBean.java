@@ -14,13 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.payment.common.form;
+package com.echothree.model.control.payment.common.choice;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeSpec;
+import com.echothree.view.common.BaseChoicesBean;
+import java.util.List;
 
-public interface GetPaymentProcessorTypeCodeTypesForm
-        extends PaymentProcessorTypeSpec {
-    
-    // Nothing additional beyond BaseForm
+public class PaymentProcessorTypeCodeChoicesBean
+        extends BaseChoicesBean {
+
+    /** Creates a new instance of PaymentProcessorTypeCodeChoicesBean */
+    public PaymentProcessorTypeCodeChoicesBean(List<String> labels, List<String> values, String defaultValue) {
+        super(labels, values, defaultValue);
+    }
     
 }

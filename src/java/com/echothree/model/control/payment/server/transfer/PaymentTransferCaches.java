@@ -45,6 +45,8 @@ public class PaymentTransferCaches
     protected PaymentProcessorResultCodeDescriptionTransferCache paymentProcessorResultCodeDescriptionTransferCache;
     protected PaymentProcessorTypeCodeTypeTransferCache paymentProcessorTypeCodeTypeTransferCache;
     protected PaymentProcessorTypeCodeTypeDescriptionTransferCache paymentProcessorTypeCodeTypeDescriptionTransferCache;
+    protected PaymentProcessorTypeCodeTransferCache paymentProcessorTypeCodeTransferCache;
+    protected PaymentProcessorTypeCodeDescriptionTransferCache paymentProcessorTypeCodeDescriptionTransferCache;
     
     /** Creates a new instance of PaymentTransferCaches */
     public PaymentTransferCaches(UserVisit userVisit, PaymentControl paymentControl) {
@@ -191,6 +193,20 @@ public class PaymentTransferCaches
             paymentProcessorTypeCodeTypeDescriptionTransferCache = new PaymentProcessorTypeCodeTypeDescriptionTransferCache(userVisit, paymentControl);
 
         return paymentProcessorTypeCodeTypeDescriptionTransferCache;
+    }
+
+    public PaymentProcessorTypeCodeTransferCache getPaymentProcessorTypeCodeTransferCache() {
+        if(paymentProcessorTypeCodeTransferCache == null)
+            paymentProcessorTypeCodeTransferCache = new PaymentProcessorTypeCodeTransferCache(userVisit, paymentControl);
+
+        return paymentProcessorTypeCodeTransferCache;
+    }
+
+    public PaymentProcessorTypeCodeDescriptionTransferCache getPaymentProcessorTypeCodeDescriptionTransferCache() {
+        if(paymentProcessorTypeCodeDescriptionTransferCache == null)
+            paymentProcessorTypeCodeDescriptionTransferCache = new PaymentProcessorTypeCodeDescriptionTransferCache(userVisit, paymentControl);
+
+        return paymentProcessorTypeCodeDescriptionTransferCache;
     }
 
 }
