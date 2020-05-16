@@ -51,7 +51,6 @@ public class LotTimeLogic {
     public void createOrUpdateLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
             final BasePK partyPK) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        LotDetail lotDetail = lot.getLastDetail();
         LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType == null) {
