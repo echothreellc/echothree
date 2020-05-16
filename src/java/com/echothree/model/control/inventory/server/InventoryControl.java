@@ -2125,12 +2125,12 @@ public class InventoryControl
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? AND lttimtypdt_lottimetypename = ?");
+                "AND lttimtypdt_lottimetypename = ?");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? AND lttimtypdt_lottimetypename = ? " +
+                "AND lttimtypdt_lottimetypename = ? " +
                 "FOR UPDATE");
         getLotTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
@@ -2165,12 +2165,12 @@ public class InventoryControl
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? AND lttimtypdt_isdefault = 1");
+                "AND lttimtypdt_isdefault = 1");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? AND lttimtypdt_isdefault = 1 " +
+                "AND lttimtypdt_isdefault = 1 " +
                 "FOR UPDATE");
         getDefaultLotTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
@@ -2200,13 +2200,11 @@ public class InventoryControl
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? " +
                 "ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? " +
                 "FOR UPDATE");
         getLotTimeTypesQueries = Collections.unmodifiableMap(queryMap);
     }
@@ -2726,12 +2724,12 @@ public class InventoryControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "AND ltaltypdt_lotaliastypename = ?");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "AND ltaltypdt_lotaliastypename = ? " +
                 "FOR UPDATE");
         getLotAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
@@ -2766,12 +2764,12 @@ public class InventoryControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "AND ltaltypdt_isdefault = 1");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "AND ltaltypdt_isdefault = 1 " +
                 "FOR UPDATE");
         getDefaultLotAliasTypeQueries = Collections.unmodifiableMap(queryMap);
@@ -2801,12 +2799,12 @@ public class InventoryControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "FOR UPDATE");
         getLotAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
