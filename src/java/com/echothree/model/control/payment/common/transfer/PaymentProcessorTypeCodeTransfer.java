@@ -21,28 +21,28 @@ import com.echothree.util.common.transfer.BaseTransfer;
 public class PaymentProcessorTypeCodeTransfer
         extends BaseTransfer {
 
-    private PaymentProcessorTypeTransfer paymentProcessorTypeTransfer;
+    private PaymentProcessorTypeCodeTypeTransfer paymentProcessorTypeCodeTypeTransfer;
     private String paymentProcessorTypeCodeName;
     private Boolean isDefault;
     private Integer sortOrder;
     private String description;
 
     /** Creates a new instance of PaymentProcessorTypeTransfer */
-    public PaymentProcessorTypeCodeTransfer(PaymentProcessorTypeTransfer paymentProcessorTypeTransfer,
+    public PaymentProcessorTypeCodeTransfer(PaymentProcessorTypeCodeTypeTransfer paymentProcessorTypeCodeTypeTransfer,
             String paymentProcessorTypeCodeName, Boolean isDefault, Integer sortOrder, String description) {
-        this.paymentProcessorTypeTransfer = paymentProcessorTypeTransfer;
+        this.paymentProcessorTypeCodeTypeTransfer = paymentProcessorTypeCodeTypeTransfer;
         this.paymentProcessorTypeCodeName = paymentProcessorTypeCodeName;
         this.isDefault = isDefault;
         this.sortOrder = sortOrder;
         this.description = description;
     }
 
-    public PaymentProcessorTypeTransfer getPaymentProcessorTypeTransfer() {
-        return paymentProcessorTypeTransfer;
+    public PaymentProcessorTypeCodeTypeTransfer getPaymentProcessorTypeCodeTypeTransfer() {
+        return paymentProcessorTypeCodeTypeTransfer;
     }
 
-    public void setPaymentProcessorTypeTransfer(PaymentProcessorTypeTransfer paymentProcessorTypeTransfer) {
-        this.paymentProcessorTypeTransfer = paymentProcessorTypeTransfer;
+    public void setPaymentProcessorTypeCodeTypeTransfer(PaymentProcessorTypeCodeTypeTransfer paymentProcessorTypeCodeTypeTransfer) {
+        this.paymentProcessorTypeCodeTypeTransfer = paymentProcessorTypeCodeTypeTransfer;
     }
 
     public String getPaymentProcessorTypeCodeName() {
