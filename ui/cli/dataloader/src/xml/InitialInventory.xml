@@ -39,4 +39,20 @@
             <allocationPriorityDescription languageIsoName="en" description="High" />
         </allocationPriority>
     </allocationPriorities>
+    <lotAliasTypes>
+        <lotAliasType lotAliasTypeName="TEST_LOT_ALIAS_TYPE_1" isDefault="true" sortOrder="0">
+            <lotAliasTypeDescription languageIsoName="en" description="Test Lot Alias Type 1" />
+        </lotAliasType>
+        <lotAliasType lotAliasTypeName="TEST_LOT_ALIAS_TYPE_2" isDefault="false" sortOrder="0">
+            <lotAliasTypeDescription languageIsoName="en" description="Test Lot Alias Type 2" />
+        </lotAliasType>
+    </lotAliasTypes>
+    <lotTimeTypes>
+        <lotTimeType lotTimeTypeName="TEST_LOT_TIME_TYPE_1" isDefault="true" sortOrder="0">
+            <lotTimeTypeDescription languageIsoName="en" description="Test Lot Time Type 1" />
+        </lotTimeType>
+        <lotTimeType lotTimeTypeName="TEST_LOT_TIME_TYPE_2" isDefault="false" sortOrder="0">
+            <lotTimeTypeDescription languageIsoName="en" description="Test Lot Time Type 2" />
+        </lotTimeType>
+    </lotTimeTypes>
 </initialData>
