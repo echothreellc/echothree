@@ -490,9 +490,6 @@ public class InventoryControl
     }
     
     private void deleteInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy, boolean adjustDefault) {
-        var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
-        
         deleteInventoryLocationGroupDescriptionsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
         
         InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetailForUpdate();
