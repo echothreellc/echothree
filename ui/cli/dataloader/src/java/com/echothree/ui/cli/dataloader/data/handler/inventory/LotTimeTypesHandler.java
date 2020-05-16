@@ -31,7 +31,7 @@ public class LotTimeTypesHandler
 
     InventoryService inventoryService;
 
-    /** Creates a new instance of LotTypeHandler */
+    /** Creates a new instance of LotTimeTypesHandler */
     public LotTimeTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
             throws SAXException, NamingException {
         super(initialDataParser, parentHandler);

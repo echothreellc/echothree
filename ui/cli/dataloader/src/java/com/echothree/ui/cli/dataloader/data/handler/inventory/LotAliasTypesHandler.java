@@ -31,7 +31,7 @@ public class LotAliasTypesHandler
 
     InventoryService inventoryService;
 
-    /** Creates a new instance of LotTypeHandler */
+    /** Creates a new instance of LotAliasTypesHandler */
     public LotAliasTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
             throws SAXException, NamingException {
         super(initialDataParser, parentHandler);
