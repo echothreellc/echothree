@@ -345,26 +345,56 @@
                 <table namePlural="PaymentProcessorTypeActions" nameSingular="PaymentProcessorTypeAction" columnPrefix="pprctypact">
                     <columns>
                         <column name="PaymentProcessorTypeActionId" type="EID" nullAllowed="false" />
-                        <column name="PaymentProcessorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypes" destinationColumn="PaymentProcessorTypeId" />
-                        <column name="PaymentProcessorActionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorActionTypes" destinationColumn="PaymentProcessorActionTypeId" />
-                        <column name="FromTime" type="Time" nullAllowed="false" />
-                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentProcessorTypeActionDetails" destinationColumn="PaymentProcessorTypeActionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PaymentProcessorTypeActionDetails" destinationColumn="PaymentProcessorTypeActionDetailId"/>
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
                             <indexColumn name="PaymentProcessorTypeActionId" />
                         </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="PaymentProcessorTypeActionDetails" nameSingular="PaymentProcessorTypeActionDetail" columnPrefix="pprctypactdt">
+                    <columns>
+                        <column name="PaymentProcessorTypeActionDetailId" type="EID" nullAllowed="false" />
+                        <column name="PaymentProcessorTypeActionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeActions" destinationColumn="PaymentProcessorTypeActionId" />
+                        <column name="PaymentProcessorTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypes" destinationColumn="PaymentProcessorTypeId" />
+                        <column name="PaymentProcessorActionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorActionTypes" destinationColumn="PaymentProcessorActionTypeId" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PaymentProcessorTypeActionDetailId" />
+                        </index>
                         <index type="Unique" name="Index1">
-                            <indexColumn name="PaymentProcessorTypeId" />
-                            <indexColumn name="PaymentProcessorActionTypeId" />
+                            <indexColumn name="PaymentProcessorTypeActionId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index2">
+                        <index type="Unique" name="Index2">
                             <indexColumn name="PaymentProcessorTypeId" />
+                            <indexColumn name="PaymentProcessorActionTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
+                            <indexColumn name="PaymentProcessorTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="PaymentProcessorActionTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="PaymentProcessorTypeId" />
+                            <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
