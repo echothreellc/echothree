@@ -29,14 +29,13 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.model.data.inventory.server.entity.LotTimeTypeDescription;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.inventory.server.value.LotTimeTypeDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -62,7 +61,6 @@ public class EditLotTimeTypeDescriptionCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotTimeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 ));
@@ -91,36 +89,29 @@ public class EditLotTimeTypeDescriptionCommand
     public LotTimeTypeDescription getEntity(EditLotTimeTypeDescriptionResult result) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotTimeTypeDescription lotTimeTypeDescription = null;
-        String lotTypeName = spec.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
+        String lotTimeTypeName = spec.getLotTimeTypeName();
+        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
 
-        if(lotType != null) {
-            String lotTimeTypeName = spec.getLotTimeTypeName();
-            LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
+        if(lotTimeType != null) {
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = spec.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
-            if(lotTimeType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            if(language != null) {
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                    lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescription(lotTimeType, language);
+                } else { // EditMode.UPDATE
+                    lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, language);
+                }
 
-                if(language != null) {
-                    if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescription(lotTimeType, language);
-                    } else { // EditMode.UPDATE
-                        lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, language);
-                    }
-
-                    if(lotTimeTypeDescription == null) {
-                        addExecutionError(ExecutionErrors.UnknownLotTimeTypeDescription.name(), lotTypeName, lotTimeTypeName, languageIsoName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+                if(lotTimeTypeDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownLotTimeTypeDescription.name(), lotTimeTypeName, languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTypeName, lotTimeTypeName);
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
+            addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
         }
 
         return lotTimeTypeDescription;

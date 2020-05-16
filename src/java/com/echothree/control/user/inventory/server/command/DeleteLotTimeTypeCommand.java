@@ -22,12 +22,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -52,7 +51,6 @@ public class DeleteLotTimeTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
@@ -65,20 +63,13 @@ public class DeleteLotTimeTypeCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        String lotTypeName = form.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
+        String lotTimeTypeName = form.getLotTimeTypeName();
+        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
 
-        if(lotType != null) {
-            String lotTimeTypeName = form.getLotTimeTypeName();
-            LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByNameForUpdate(lotType, lotTimeTypeName);
-
-            if(lotTimeType != null) {
-                inventoryControl.deleteLotTimeType(lotTimeType, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTypeName, lotTimeTypeName);
-            }
+        if(lotTimeType != null) {
+            inventoryControl.deleteLotTimeType(lotTimeType, getPartyPK());
         } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
+            addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
         }
 
         return null;

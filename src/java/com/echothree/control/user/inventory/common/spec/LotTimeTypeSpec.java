@@ -16,8 +16,10 @@
 
 package com.echothree.control.user.inventory.common.spec;
 
+import com.echothree.util.common.form.BaseSpec;
+
 public interface LotTimeTypeSpec
-        extends LotTypeSpec {
+        extends BaseSpec {
     
     String getLotTimeTypeName();
     void setLotTimeTypeName(String lotTimeTypeName);

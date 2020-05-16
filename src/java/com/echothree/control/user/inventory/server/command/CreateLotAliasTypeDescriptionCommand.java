@@ -24,13 +24,12 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDescription;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -55,7 +54,6 @@ public class CreateLotAliasTypeDescriptionCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
@@ -70,38 +68,31 @@ public class CreateLotAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        String lotTypeName = form.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
+        String lotAliasTypeName = form.getLotAliasTypeName();
+        LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
 
-        if(lotType != null) {
-            String lotAliasTypeName = form.getLotAliasTypeName();
-            LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
+        if(lotAliasType != null) {
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = form.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
-            if(lotAliasType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            if(language != null) {
+                LotAliasTypeDescription lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescription(lotAliasType, language);
 
-                if(language != null) {
-                    LotAliasTypeDescription lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescription(lotAliasType, language);
+                if(lotAliasTypeDescription == null) {
+                    String description = form.getDescription();
 
-                    if(lotAliasTypeDescription == null) {
-                        String description = form.getDescription();
-
-                        inventoryControl.createLotAliasTypeDescription(lotAliasType, language, description, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateLotAliasTypeDescription.name(), lotTypeName, lotAliasTypeName, languageIsoName);
-                    }
+                    inventoryControl.createLotAliasTypeDescription(lotAliasType, language, description, getPartyPK());
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+                    addExecutionError(ExecutionErrors.DuplicateLotAliasTypeDescription.name(), lotAliasTypeName, languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotTypeName, lotAliasTypeName);
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
+            addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
         }
-        
+
         return null;
     }
     

@@ -17,10 +17,9 @@
 package com.echothree.control.user.inventory.common.edit;
 
 import com.echothree.control.user.inventory.common.spec.LotAliasTypeSpec;
-import com.echothree.control.user.inventory.common.spec.LotTypeSpec;
 
 public interface LotAliasTypeEdit
-        extends LotAliasTypeSpec, LotTypeSpec, LotAliasTypeDescriptionEdit {
+        extends LotAliasTypeSpec, LotAliasTypeDescriptionEdit {
     
     String getValidationPattern();
     void setValidationPattern(String validationPattern);

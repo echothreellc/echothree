@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.spec.LotTypeSpec;
+import com.echothree.util.common.form.BaseForm;
 
 public interface GetLotTimeTypeChoicesForm
-        extends LotTypeSpec {
+        extends BaseForm {
     
     String getDefaultLotTimeTypeChoice();
     void setDefaultLotTimeTypeChoice(String defaultLotTimeTypeChoice);

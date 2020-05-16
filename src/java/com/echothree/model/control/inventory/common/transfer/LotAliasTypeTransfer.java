@@ -21,7 +21,6 @@ import com.echothree.util.common.transfer.BaseTransfer;
 public class LotAliasTypeTransfer
         extends BaseTransfer {
     
-    private LotTypeTransfer lotType;
     private String lotAliasTypeName;
     private String validationPattern;
     private Boolean isDefault;
@@ -29,22 +28,13 @@ public class LotAliasTypeTransfer
     private String description;
     
     /** Creates a new instance of LotAliasTypeTransfer */
-    public LotAliasTypeTransfer(LotTypeTransfer lotType, String lotAliasTypeName, String validationPattern,
+    public LotAliasTypeTransfer(String lotAliasTypeName, String validationPattern,
             Boolean isDefault, Integer sortOrder, String description) {
-        this.lotType = lotType;
         this.lotAliasTypeName = lotAliasTypeName;
         this.validationPattern = validationPattern;
         this.isDefault = isDefault;
         this.sortOrder = sortOrder;
         this.description = description;
-    }
-
-    public LotTypeTransfer getLotType() {
-        return lotType;
-    }
-
-    public void setLotType(LotTypeTransfer lotType) {
-        this.lotType = lotType;
     }
 
     public String getLotAliasTypeName() {

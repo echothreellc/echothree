@@ -104,7 +104,8 @@ import com.echothree.ui.cli.dataloader.data.handler.index.IndexesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.inventory.AllocationPrioritiesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.inventory.InventoryConditionUseTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.inventory.InventoryConditionsHandler;
-import com.echothree.ui.cli.dataloader.data.handler.inventory.LotTypesHandler;
+import com.echothree.ui.cli.dataloader.data.handler.inventory.LotAliasTypesHandler;
+import com.echothree.ui.cli.dataloader.data.handler.inventory.LotTimeTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.invoice.InvoiceLineUseTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.invoice.InvoiceRoleTypesHandler;
 import com.echothree.ui.cli.dataloader.data.handler.invoice.InvoiceTypesHandler;
@@ -409,8 +410,10 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new OrderTypesHandler(initialDataParser, this));
         } else if(localName.equals("orderRoleTypes")) {
             initialDataParser.pushHandler(new OrderRoleTypesHandler(initialDataParser, this));
-        } else if(localName.equals("lotTypes")) {
-            initialDataParser.pushHandler(new LotTypesHandler(initialDataParser, this));
+        } else if(localName.equals("lotAliasTypes")) {
+            initialDataParser.pushHandler(new LotAliasTypesHandler(initialDataParser, this));
+        } else if(localName.equals("lotTimeTypes")) {
+            initialDataParser.pushHandler(new LotTimeTypesHandler(initialDataParser, this));
         } else if(localName.equals("shipmentTypes")) {
             initialDataParser.pushHandler(new ShipmentTypesHandler(initialDataParser, this));
         } else if(localName.equals("picklistTypes")) {

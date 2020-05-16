@@ -22,13 +22,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -53,7 +52,6 @@ public class CreateLotAliasTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -70,30 +68,23 @@ public class CreateLotAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        String lotTypeName = form.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
+        String lotAliasTypeName = form.getLotAliasTypeName();
+        LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
 
-        if(lotType != null) {
-            String lotAliasTypeName = form.getLotAliasTypeName();
-            LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
+        if(lotAliasType == null) {
+            PartyPK createdBy = getPartyPK();
+            String validationPattern = form.getValidationPattern();
+            Boolean isDefault = Boolean.valueOf(form.getIsDefault());
+            Integer sortOrder = Integer.valueOf(form.getSortOrder());
+            String description = form.getDescription();
 
-            if(lotAliasType == null) {
-                PartyPK createdBy = getPartyPK();
-                String validationPattern = form.getValidationPattern();
-                Boolean isDefault = Boolean.valueOf(form.getIsDefault());
-                Integer sortOrder = Integer.valueOf(form.getSortOrder());
-                String description = form.getDescription();
+            lotAliasType = inventoryControl.createLotAliasType(lotAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
 
-                lotAliasType = inventoryControl.createLotAliasType(lotType, lotAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
-
-                if(description != null) {
-                    inventoryControl.createLotAliasTypeDescription(lotAliasType, getPreferredLanguage(), description, createdBy);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.DuplicateLotAliasTypeName.name(), lotTypeName, lotAliasTypeName);
+            if(description != null) {
+                inventoryControl.createLotAliasTypeDescription(lotAliasType, getPreferredLanguage(), description, createdBy);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
+            addExecutionError(ExecutionErrors.DuplicateLotAliasTypeName.name(), lotAliasTypeName);
         }
 
         return null;

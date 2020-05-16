@@ -186,7 +186,6 @@ public enum SecurityRoleGroups {
     LicenseType,
     LotAliasType,
     LotTimeType,
-    LotType,
     MimeType,
     Offer,
     OfferChainType,

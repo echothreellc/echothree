@@ -23,12 +23,10 @@ import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -52,7 +50,6 @@ public class GetLotAliasTypeChoicesCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultLotAliasTypeChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
                 ));
@@ -67,19 +64,11 @@ public class GetLotAliasTypeChoicesCommand
     protected BaseResult execute() {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetLotAliasTypeChoicesResult result = InventoryResultFactory.getGetLotAliasTypeChoicesResult();
-        String lotTypeName = form.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
+        String defaultLotAliasTypeChoice = form.getDefaultLotAliasTypeChoice();
+        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-        if(lotType != null) {
-            String defaultLotAliasTypeChoice = form.getDefaultLotAliasTypeChoice();
-            boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        result.setLotAliasTypeChoices(inventoryControl.getLotAliasTypeChoices(defaultLotAliasTypeChoice, getPreferredLanguage(), allowNullChoice));
 
-            result.setLotAliasTypeChoices(inventoryControl.getLotAliasTypeChoices(defaultLotAliasTypeChoice, getPreferredLanguage(), allowNullChoice,
-                    lotType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
-        }
-        
         return result;
     }
     

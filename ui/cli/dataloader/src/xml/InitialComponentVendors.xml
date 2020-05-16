@@ -2044,12 +2044,6 @@
             <entityType entityTypeName="ContactMechanismAliasTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Contact Mechanism Alias Type" />
             </entityType>
-            <entityType entityTypeName="LotType" keepAllHistory="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Lot Type" />
-            </entityType>
-            <entityType entityTypeName="LotTypeDescription" keepAllHistory="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Lot Type Description" />
-            </entityType>
             <entityType entityTypeName="LotAliasType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Lot Alias Type" />
             </entityType>

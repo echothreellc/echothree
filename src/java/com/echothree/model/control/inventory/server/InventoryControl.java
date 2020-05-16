@@ -24,7 +24,6 @@ import com.echothree.model.control.inventory.common.choice.InventoryLocationGrou
 import com.echothree.model.control.inventory.common.choice.InventoryLocationGroupStatusChoicesBean;
 import com.echothree.model.control.inventory.common.choice.LotAliasTypeChoicesBean;
 import com.echothree.model.control.inventory.common.choice.LotTimeTypeChoicesBean;
-import com.echothree.model.control.inventory.common.choice.LotTypeChoicesBean;
 import com.echothree.model.control.inventory.common.transfer.AllocationPriorityDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.AllocationPriorityTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionDescriptionTransfer;
@@ -43,8 +42,6 @@ import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTransfer;
-import com.echothree.model.control.inventory.common.transfer.LotTypeDescriptionTransfer;
-import com.echothree.model.control.inventory.common.transfer.LotTypeTransfer;
 import com.echothree.model.control.inventory.common.transfer.PartyInventoryLevelTransfer;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.transfer.AllocationPriorityDescriptionTransferCache;
@@ -60,8 +57,6 @@ import com.echothree.model.control.inventory.server.transfer.LotAliasTypeTransfe
 import com.echothree.model.control.inventory.server.transfer.LotTimeTransferCache;
 import com.echothree.model.control.inventory.server.transfer.LotTimeTypeDescriptionTransferCache;
 import com.echothree.model.control.inventory.server.transfer.LotTimeTypeTransferCache;
-import com.echothree.model.control.inventory.server.transfer.LotTypeDescriptionTransferCache;
-import com.echothree.model.control.inventory.server.transfer.LotTypeTransferCache;
 import com.echothree.model.control.inventory.server.transfer.PartyInventoryLevelTransferCache;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.vendor.server.VendorControl;
@@ -78,7 +73,6 @@ import com.echothree.model.data.inventory.common.pk.InventoryLocationGroupPK;
 import com.echothree.model.data.inventory.common.pk.LotAliasTypePK;
 import com.echothree.model.data.inventory.common.pk.LotPK;
 import com.echothree.model.data.inventory.common.pk.LotTimeTypePK;
-import com.echothree.model.data.inventory.common.pk.LotTypePK;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.AllocationPriorityDescription;
 import com.echothree.model.data.inventory.server.entity.AllocationPriorityDetail;
@@ -102,9 +96,6 @@ import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.model.data.inventory.server.entity.LotTimeTypeDescription;
 import com.echothree.model.data.inventory.server.entity.LotTimeTypeDetail;
-import com.echothree.model.data.inventory.server.entity.LotType;
-import com.echothree.model.data.inventory.server.entity.LotTypeDescription;
-import com.echothree.model.data.inventory.server.entity.LotTypeDetail;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
 import com.echothree.model.data.inventory.server.factory.AllocationPriorityDescriptionFactory;
 import com.echothree.model.data.inventory.server.factory.AllocationPriorityDetailFactory;
@@ -129,9 +120,6 @@ import com.echothree.model.data.inventory.server.factory.LotTimeFactory;
 import com.echothree.model.data.inventory.server.factory.LotTimeTypeDescriptionFactory;
 import com.echothree.model.data.inventory.server.factory.LotTimeTypeDetailFactory;
 import com.echothree.model.data.inventory.server.factory.LotTimeTypeFactory;
-import com.echothree.model.data.inventory.server.factory.LotTypeDescriptionFactory;
-import com.echothree.model.data.inventory.server.factory.LotTypeDetailFactory;
-import com.echothree.model.data.inventory.server.factory.LotTypeFactory;
 import com.echothree.model.data.inventory.server.factory.PartyInventoryLevelFactory;
 import com.echothree.model.data.inventory.server.value.AllocationPriorityDescriptionValue;
 import com.echothree.model.data.inventory.server.value.AllocationPriorityDetailValue;
@@ -149,25 +137,17 @@ import com.echothree.model.data.inventory.server.value.LotAliasValue;
 import com.echothree.model.data.inventory.server.value.LotTimeTypeDescriptionValue;
 import com.echothree.model.data.inventory.server.value.LotTimeTypeDetailValue;
 import com.echothree.model.data.inventory.server.value.LotTimeValue;
-import com.echothree.model.data.inventory.server.value.LotTypeDescriptionValue;
-import com.echothree.model.data.inventory.server.value.LotTypeDetailValue;
 import com.echothree.model.data.inventory.server.value.PartyInventoryLevelValue;
 import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.sequence.common.pk.SequenceTypePK;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
-import com.echothree.model.data.workflow.common.pk.WorkflowPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -181,12 +161,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 public class InventoryControl
         extends BaseModelControl {
@@ -512,9 +490,6 @@ public class InventoryControl
     }
     
     private void deleteInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, BasePK deletedBy, boolean adjustDefault) {
-        var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(inventoryLocationGroup.getPrimaryKey());
-        
         deleteInventoryLocationGroupDescriptionsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
         
         InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetailForUpdate();
@@ -2109,512 +2084,15 @@ public class InventoryControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Lot Types
-    // --------------------------------------------------------------------------------
-
-    public LotType createLotType(String lotTypeName, LotType parentLotType, SequenceType lotSequenceType, Workflow lotWorkflow,
-            WorkflowEntrance lotWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        LotType defaultLotType = getDefaultLotType();
-        boolean defaultFound = defaultLotType != null;
-
-        if(defaultFound && isDefault) {
-            LotTypeDetailValue defaultLotTypeDetailValue = getDefaultLotTypeDetailValueForUpdate();
-
-            defaultLotTypeDetailValue.setIsDefault(Boolean.FALSE);
-            updateLotTypeFromValue(defaultLotTypeDetailValue, false, createdBy);
-        } else if(!defaultFound) {
-            isDefault = Boolean.TRUE;
-        }
-
-        LotType lotType = LotTypeFactory.getInstance().create();
-        LotTypeDetail lotTypeDetail = LotTypeDetailFactory.getInstance().create(lotType, lotTypeName, parentLotType,
-                lotSequenceType, lotWorkflow, lotWorkflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
-
-        // Convert to R/W
-        lotType = LotTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                lotType.getPrimaryKey());
-        lotType.setActiveDetail(lotTypeDetail);
-        lotType.setLastDetail(lotTypeDetail);
-        lotType.store();
-
-        sendEventUsingNames(lotType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
-
-        return lotType;
-    }
-
-    private static final Map<EntityPermission, String> getLotTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottypes, lottypedetails " +
-                "WHERE lttyp_activedetailid = lttypdt_lottypedetailid " +
-                "AND lttypdt_lottypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottypes, lottypedetails " +
-                "WHERE lttyp_activedetailid = lttypdt_lottypedetailid " +
-                "AND lttypdt_lottypename = ? " +
-                "FOR UPDATE");
-        getLotTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private LotType getLotTypeByName(String lotTypeName, EntityPermission entityPermission) {
-        return LotTypeFactory.getInstance().getEntityFromQuery(entityPermission, getLotTypeByNameQueries, lotTypeName);
-    }
-
-    public LotType getLotTypeByName(String lotTypeName) {
-        return getLotTypeByName(lotTypeName, EntityPermission.READ_ONLY);
-    }
-
-    public LotType getLotTypeByNameForUpdate(String lotTypeName) {
-        return getLotTypeByName(lotTypeName, EntityPermission.READ_WRITE);
-    }
-
-    public LotTypeDetailValue getLotTypeDetailValueForUpdate(LotType lotType) {
-        return lotType == null? null: lotType.getLastDetailForUpdate().getLotTypeDetailValue().clone();
-    }
-
-    public LotTypeDetailValue getLotTypeDetailValueByNameForUpdate(String lotTypeName) {
-        return getLotTypeDetailValueForUpdate(getLotTypeByNameForUpdate(lotTypeName));
-    }
-
-    private static final Map<EntityPermission, String> getDefaultLotTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottypes, lottypedetails " +
-                "WHERE lttyp_activedetailid = lttypdt_lottypedetailid " +
-                "AND lttypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottypes, lottypedetails " +
-                "WHERE lttyp_activedetailid = lttypdt_lottypedetailid " +
-                "AND lttypdt_isdefault = 1 " +
-                "FOR UPDATE");
-        getDefaultLotTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private LotType getDefaultLotType(EntityPermission entityPermission) {
-        return LotTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultLotTypeQueries);
-    }
-
-    public LotType getDefaultLotType() {
-        return getDefaultLotType(EntityPermission.READ_ONLY);
-    }
-
-    public LotType getDefaultLotTypeForUpdate() {
-        return getDefaultLotType(EntityPermission.READ_WRITE);
-    }
-
-    public LotTypeDetailValue getDefaultLotTypeDetailValueForUpdate() {
-        return getDefaultLotTypeForUpdate().getLastDetailForUpdate().getLotTypeDetailValue().clone();
-    }
-
-    private static final Map<EntityPermission, String> getLotTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottypes, lottypedetails " +
-                "WHERE lttyp_activedetailid = lttypdt_lottypedetailid " +
-                "ORDER BY lttypdt_sortorder, lttypdt_lottypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottypes, lottypedetails " +
-                "WHERE lttyp_activedetailid = lttypdt_lottypedetailid " +
-                "FOR UPDATE");
-        getLotTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<LotType> getLotTypes(EntityPermission entityPermission) {
-        return LotTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTypesQueries);
-    }
-
-    public List<LotType> getLotTypes() {
-        return getLotTypes(EntityPermission.READ_ONLY);
-    }
-
-    public List<LotType> getLotTypesForUpdate() {
-        return getLotTypes(EntityPermission.READ_WRITE);
-    }
-
-    private static final Map<EntityPermission, String> getLotTypesByParentLotTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottypes, lottypedetails " +
-                "WHERE lttyp_activedetailid = lttypdt_lottypedetailid AND lttypdt_parentlottypeid = ? " +
-                "ORDER BY lttypdt_sortorder, lttypdt_lottypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottypes, lottypedetails " +
-                "WHERE lttyp_activedetailid = lttypdt_lottypedetailid AND lttypdt_parentlottypeid = ? " +
-                "FOR UPDATE");
-        getLotTypesByParentLotTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<LotType> getLotTypesByParentLotType(LotType parentLotType,
-            EntityPermission entityPermission) {
-        return LotTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTypesByParentLotTypeQueries,
-                parentLotType);
-    }
-
-    public List<LotType> getLotTypesByParentLotType(LotType parentLotType) {
-        return getLotTypesByParentLotType(parentLotType, EntityPermission.READ_ONLY);
-    }
-
-    public List<LotType> getLotTypesByParentLotTypeForUpdate(LotType parentLotType) {
-        return getLotTypesByParentLotType(parentLotType, EntityPermission.READ_WRITE);
-    }
-
-    public LotTypeTransfer getLotTypeTransfer(UserVisit userVisit, LotType lotType) {
-        return getInventoryTransferCaches(userVisit).getLotTypeTransferCache().getTransfer(lotType);
-    }
-
-    public List<LotTypeTransfer> getLotTypeTransfers(UserVisit userVisit) {
-        List<LotType> lotTypes = getLotTypes();
-        List<LotTypeTransfer> lotTypeTransfers = new ArrayList<>(lotTypes.size());
-        LotTypeTransferCache lotTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTypeTransferCache();
-
-        lotTypes.stream().forEach((lotType) -> {
-            lotTypeTransfers.add(lotTypeTransferCache.getTransfer(lotType));
-        });
-
-        return lotTypeTransfers;
-    }
-
-    public LotTypeChoicesBean getLotTypeChoices(String defaultLotTypeChoice,
-            Language language, boolean allowNullChoice) {
-        List<LotType> lotTypes = getLotTypes();
-        int size = lotTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
-        String defaultValue = null;
-
-        if(allowNullChoice) {
-            labels.add("");
-            values.add("");
-
-            if(defaultLotTypeChoice == null) {
-                defaultValue = "";
-            }
-        }
-
-        for(LotType lotType: lotTypes) {
-            LotTypeDetail lotTypeDetail = lotType.getLastDetail();
-
-            String label = getBestLotTypeDescription(lotType, language);
-            String value = lotTypeDetail.getLotTypeName();
-
-            labels.add(label == null? value: label);
-            values.add(value);
-
-            boolean usingDefaultChoice = defaultLotTypeChoice == null? false: defaultLotTypeChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && lotTypeDetail.getIsDefault())) {
-                defaultValue = value;
-            }
-        }
-
-        return new LotTypeChoicesBean(labels, values, defaultValue);
-    }
-
-    public boolean isParentLotTypeSafe(LotType lotType,
-            LotType parentLotType) {
-        boolean safe = true;
-
-        if(parentLotType != null) {
-            Set<LotType> parentLotTypes = new HashSet<>();
-
-            parentLotTypes.add(lotType);
-            do {
-                if(parentLotTypes.contains(parentLotType)) {
-                    safe = false;
-                    break;
-                }
-
-                parentLotTypes.add(parentLotType);
-                parentLotType = parentLotType.getLastDetail().getParentLotType();
-            } while(parentLotType != null);
-        }
-
-        return safe;
-    }
-
-    private void updateLotTypeFromValue(LotTypeDetailValue lotTypeDetailValue, boolean checkDefault,
-            BasePK updatedBy) {
-        if(lotTypeDetailValue.hasBeenModified()) {
-            LotType lotType = LotTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                     lotTypeDetailValue.getLotTypePK());
-            LotTypeDetail lotTypeDetail = lotType.getActiveDetailForUpdate();
-
-            lotTypeDetail.setThruTime(session.START_TIME_LONG);
-            lotTypeDetail.store();
-
-            LotTypePK lotTypePK = lotTypeDetail.getLotTypePK(); // Not updated
-            String lotTypeName = lotTypeDetailValue.getLotTypeName();
-            LotTypePK parentLotTypePK = lotTypeDetailValue.getParentLotTypePK();
-            SequenceTypePK lotSequenceTypePK = lotTypeDetailValue.getLotSequenceTypePK();
-            WorkflowPK lotWorkflowPK = lotTypeDetailValue.getLotWorkflowPK();
-            WorkflowEntrancePK lotWorkflowEntrancePK = lotTypeDetailValue.getLotWorkflowEntrancePK();
-            Boolean isDefault = lotTypeDetailValue.getIsDefault();
-            Integer sortOrder = lotTypeDetailValue.getSortOrder();
-
-            if(checkDefault) {
-                LotType defaultLotType = getDefaultLotType();
-                boolean defaultFound = defaultLotType != null && !defaultLotType.equals(lotType);
-
-                if(isDefault && defaultFound) {
-                    // If I'm the default, and a default already existed...
-                    LotTypeDetailValue defaultLotTypeDetailValue = getDefaultLotTypeDetailValueForUpdate();
-
-                    defaultLotTypeDetailValue.setIsDefault(Boolean.FALSE);
-                    updateLotTypeFromValue(defaultLotTypeDetailValue, false, updatedBy);
-                } else if(!isDefault && !defaultFound) {
-                    // If I'm not the default, and no other default exists...
-                    isDefault = Boolean.TRUE;
-                }
-            }
-
-            lotTypeDetail = LotTypeDetailFactory.getInstance().create(lotTypePK, lotTypeName, parentLotTypePK, lotSequenceTypePK, lotWorkflowPK,
-                    lotWorkflowEntrancePK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
-
-            lotType.setActiveDetail(lotTypeDetail);
-            lotType.setLastDetail(lotTypeDetail);
-
-            sendEventUsingNames(lotTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
-        }
-    }
-
-    public void updateLotTypeFromValue(LotTypeDetailValue lotTypeDetailValue, BasePK updatedBy) {
-        updateLotTypeFromValue(lotTypeDetailValue, true, updatedBy);
-    }
-
-    private void deleteLotType(LotType lotType, boolean checkDefault, BasePK deletedBy) {
-        LotTypeDetail lotTypeDetail = lotType.getLastDetailForUpdate();
-
-        deleteLotTypesByParentLotType(lotType, deletedBy);
-        deleteLotTypeDescriptionsByLotType(lotType, deletedBy);
-        deleteLotAliasTypesByLotType(lotType, deletedBy);
-        // TODO: deleteLotsByLotType(lotType, deletedBy);
-
-        lotTypeDetail.setThruTime(session.START_TIME_LONG);
-        lotType.setActiveDetail(null);
-        lotType.store();
-
-        if(checkDefault) {
-            // Check for default, and pick one if necessary
-            LotType defaultLotType = getDefaultLotType();
-
-            if(defaultLotType == null) {
-                List<LotType> lotTypes = getLotTypesForUpdate();
-
-                if(!lotTypes.isEmpty()) {
-                    Iterator<LotType> iter = lotTypes.iterator();
-                    if(iter.hasNext()) {
-                        defaultLotType = iter.next();
-                    }
-                    LotTypeDetailValue lotTypeDetailValue = defaultLotType.getLastDetailForUpdate().getLotTypeDetailValue().clone();
-
-                    lotTypeDetailValue.setIsDefault(Boolean.TRUE);
-                    updateLotTypeFromValue(lotTypeDetailValue, false, deletedBy);
-                }
-            }
-        }
-
-        sendEventUsingNames(lotType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
-    }
-
-    public void deleteLotType(LotType lotType, BasePK deletedBy) {
-        deleteLotType(lotType, true, deletedBy);
-    }
-
-    private void deleteLotTypes(List<LotType> lotTypes, boolean checkDefault, BasePK deletedBy) {
-        lotTypes.stream().forEach((lotType) -> {
-            deleteLotType(lotType, checkDefault, deletedBy);
-        });
-    }
-
-    public void deleteLotTypes(List<LotType> lotTypes, BasePK deletedBy) {
-        deleteLotTypes(lotTypes, true, deletedBy);
-    }
-
-    private void deleteLotTypesByParentLotType(LotType parentLotType, BasePK deletedBy) {
-        deleteLotTypes(getLotTypesByParentLotTypeForUpdate(parentLotType), false, deletedBy);
-    }
-
-    // --------------------------------------------------------------------------------
-    //   Lot Type Descriptions
-    // --------------------------------------------------------------------------------
-
-    public LotTypeDescription createLotTypeDescription(LotType lotType, Language language, String description, BasePK createdBy) {
-        LotTypeDescription lotTypeDescription = LotTypeDescriptionFactory.getInstance().create(lotType, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
-
-        sendEventUsingNames(lotType.getPrimaryKey(), EventTypes.MODIFY.name(), lotTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
-
-        return lotTypeDescription;
-    }
-
-    private static final Map<EntityPermission, String> getLotTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottypedescriptions " +
-                "WHERE lttypd_lttyp_lottypeid = ? AND lttypd_lang_languageid = ? AND lttypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottypedescriptions " +
-                "WHERE lttypd_lttyp_lottypeid = ? AND lttypd_lang_languageid = ? AND lttypd_thrutime = ? " +
-                "FOR UPDATE");
-        getLotTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private LotTypeDescription getLotTypeDescription(LotType lotType, Language language, EntityPermission entityPermission) {
-        return LotTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getLotTypeDescriptionQueries,
-                lotType, language, Session.MAX_TIME);
-    }
-
-    public LotTypeDescription getLotTypeDescription(LotType lotType, Language language) {
-        return getLotTypeDescription(lotType, language, EntityPermission.READ_ONLY);
-    }
-
-    public LotTypeDescription getLotTypeDescriptionForUpdate(LotType lotType, Language language) {
-        return getLotTypeDescription(lotType, language, EntityPermission.READ_WRITE);
-    }
-
-    public LotTypeDescriptionValue getLotTypeDescriptionValue(LotTypeDescription lotTypeDescription) {
-        return lotTypeDescription == null? null: lotTypeDescription.getLotTypeDescriptionValue().clone();
-    }
-
-    public LotTypeDescriptionValue getLotTypeDescriptionValueForUpdate(LotType lotType, Language language) {
-        return getLotTypeDescriptionValue(getLotTypeDescriptionForUpdate(lotType, language));
-    }
-
-    private static final Map<EntityPermission, String> getLotTypeDescriptionsByLotTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottypedescriptions, languages " +
-                "WHERE lttypd_lttyp_lottypeid = ? AND lttypd_thrutime = ? AND lttypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottypedescriptions " +
-                "WHERE lttypd_lttyp_lottypeid = ? AND lttypd_thrutime = ? " +
-                "FOR UPDATE");
-        getLotTypeDescriptionsByLotTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private List<LotTypeDescription> getLotTypeDescriptionsByLotType(LotType lotType, EntityPermission entityPermission) {
-        return LotTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTypeDescriptionsByLotTypeQueries,
-                lotType, Session.MAX_TIME);
-    }
-
-    public List<LotTypeDescription> getLotTypeDescriptionsByLotType(LotType lotType) {
-        return getLotTypeDescriptionsByLotType(lotType, EntityPermission.READ_ONLY);
-    }
-
-    public List<LotTypeDescription> getLotTypeDescriptionsByLotTypeForUpdate(LotType lotType) {
-        return getLotTypeDescriptionsByLotType(lotType, EntityPermission.READ_WRITE);
-    }
-
-    public String getBestLotTypeDescription(LotType lotType, Language language) {
-        String description;
-        LotTypeDescription lotTypeDescription = getLotTypeDescription(lotType, language);
-
-        if(lotTypeDescription == null && !language.getIsDefault()) {
-            lotTypeDescription = getLotTypeDescription(lotType, getPartyControl().getDefaultLanguage());
-        }
-
-        if(lotTypeDescription == null) {
-            description = lotType.getLastDetail().getLotTypeName();
-        } else {
-            description = lotTypeDescription.getDescription();
-        }
-
-        return description;
-    }
-
-    public LotTypeDescriptionTransfer getLotTypeDescriptionTransfer(UserVisit userVisit, LotTypeDescription lotTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getLotTypeDescriptionTransferCache().getTransfer(lotTypeDescription);
-    }
-
-    public List<LotTypeDescriptionTransfer> getLotTypeDescriptionTransfersByLotType(UserVisit userVisit, LotType lotType) {
-        List<LotTypeDescription> lotTypeDescriptions = getLotTypeDescriptionsByLotType(lotType);
-        List<LotTypeDescriptionTransfer> lotTypeDescriptionTransfers = new ArrayList<>(lotTypeDescriptions.size());
-        LotTypeDescriptionTransferCache lotTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTypeDescriptionTransferCache();
-
-        lotTypeDescriptions.stream().forEach((lotTypeDescription) -> {
-            lotTypeDescriptionTransfers.add(lotTypeDescriptionTransferCache.getTransfer(lotTypeDescription));
-        });
-
-        return lotTypeDescriptionTransfers;
-    }
-
-    public void updateLotTypeDescriptionFromValue(LotTypeDescriptionValue lotTypeDescriptionValue, BasePK updatedBy) {
-        if(lotTypeDescriptionValue.hasBeenModified()) {
-            LotTypeDescription lotTypeDescription = LotTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                    lotTypeDescriptionValue.getPrimaryKey());
-
-            lotTypeDescription.setThruTime(session.START_TIME_LONG);
-            lotTypeDescription.store();
-
-            LotType lotType = lotTypeDescription.getLotType();
-            Language language = lotTypeDescription.getLanguage();
-            String description = lotTypeDescriptionValue.getDescription();
-
-            lotTypeDescription = LotTypeDescriptionFactory.getInstance().create(lotType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
-
-            sendEventUsingNames(lotType.getPrimaryKey(), EventTypes.MODIFY.name(), lotTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
-        }
-    }
-
-    public void deleteLotTypeDescription(LotTypeDescription lotTypeDescription, BasePK deletedBy) {
-        lotTypeDescription.setThruTime(session.START_TIME_LONG);
-
-        sendEventUsingNames(lotTypeDescription.getLotTypePK(), EventTypes.MODIFY.name(), lotTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-
-    }
-
-    public void deleteLotTypeDescriptionsByLotType(LotType lotType, BasePK deletedBy) {
-        List<LotTypeDescription> lotTypeDescriptions = getLotTypeDescriptionsByLotTypeForUpdate(lotType);
-
-        lotTypeDescriptions.stream().forEach((lotTypeDescription) -> {
-            deleteLotTypeDescription(lotTypeDescription, deletedBy);
-        });
-    }
-
-    // --------------------------------------------------------------------------------
     //   Lot Time Types
     // --------------------------------------------------------------------------------
 
-    public LotTimeType createLotTimeType(LotType lotType, String lotTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        LotTimeType defaultLotTimeType = getDefaultLotTimeType(lotType);
+    public LotTimeType createLotTimeType(String lotTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        LotTimeType defaultLotTimeType = getDefaultLotTimeType();
         boolean defaultFound = defaultLotTimeType != null;
 
         if(defaultFound && isDefault) {
-            LotTimeTypeDetailValue defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate(lotType);
+            LotTimeTypeDetailValue defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate();
 
             defaultLotTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateLotTimeTypeFromValue(defaultLotTimeTypeDetailValue, false, createdBy);
@@ -2623,7 +2101,7 @@ public class InventoryControl
         }
 
         LotTimeType lotTimeType = LotTimeTypeFactory.getInstance().create();
-        LotTimeTypeDetail lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeType, lotType, lotTimeTypeName, isDefault,
+        LotTimeTypeDetail lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeType, lotTimeTypeName, isDefault,
                 sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -2647,35 +2125,35 @@ public class InventoryControl
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? AND lttimtypdt_lottimetypename = ?");
+                "AND lttimtypdt_lottimetypename = ?");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? AND lttimtypdt_lottimetypename = ? " +
+                "AND lttimtypdt_lottimetypename = ? " +
                 "FOR UPDATE");
         getLotTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private LotTimeType getLotTimeTypeByName(LotType lotType, String lotTimeTypeName, EntityPermission entityPermission) {
+    private LotTimeType getLotTimeTypeByName(String lotTimeTypeName, EntityPermission entityPermission) {
         return LotTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getLotTimeTypeByNameQueries,
-                lotType, lotTimeTypeName);
+                lotTimeTypeName);
     }
 
-    public LotTimeType getLotTimeTypeByName(LotType lotType, String lotTimeTypeName) {
-        return getLotTimeTypeByName(lotType, lotTimeTypeName, EntityPermission.READ_ONLY);
+    public LotTimeType getLotTimeTypeByName(String lotTimeTypeName) {
+        return getLotTimeTypeByName(lotTimeTypeName, EntityPermission.READ_ONLY);
     }
 
-    public LotTimeType getLotTimeTypeByNameForUpdate(LotType lotType, String lotTimeTypeName) {
-        return getLotTimeTypeByName(lotType, lotTimeTypeName, EntityPermission.READ_WRITE);
+    public LotTimeType getLotTimeTypeByNameForUpdate(String lotTimeTypeName) {
+        return getLotTimeTypeByName(lotTimeTypeName, EntityPermission.READ_WRITE);
     }
 
     public LotTimeTypeDetailValue getLotTimeTypeDetailValueForUpdate(LotTimeType lotTimeType) {
         return lotTimeType == null? null: lotTimeType.getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
     }
 
-    public LotTimeTypeDetailValue getLotTimeTypeDetailValueByNameForUpdate(LotType lotType, String lotTimeTypeName) {
-        return getLotTimeTypeDetailValueForUpdate(getLotTimeTypeByNameForUpdate(lotType, lotTimeTypeName));
+    public LotTimeTypeDetailValue getLotTimeTypeDetailValueByNameForUpdate(String lotTimeTypeName) {
+        return getLotTimeTypeDetailValueForUpdate(getLotTimeTypeByNameForUpdate(lotTimeTypeName));
     }
 
     private static final Map<EntityPermission, String> getDefaultLotTimeTypeQueries;
@@ -2687,31 +2165,30 @@ public class InventoryControl
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? AND lttimtypdt_isdefault = 1");
+                "AND lttimtypdt_isdefault = 1");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? AND lttimtypdt_isdefault = 1 " +
+                "AND lttimtypdt_isdefault = 1 " +
                 "FOR UPDATE");
         getDefaultLotTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private LotTimeType getDefaultLotTimeType(LotType lotType, EntityPermission entityPermission) {
-        return LotTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultLotTimeTypeQueries,
-                lotType);
+    private LotTimeType getDefaultLotTimeType(EntityPermission entityPermission) {
+        return LotTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultLotTimeTypeQueries);
     }
 
-    public LotTimeType getDefaultLotTimeType(LotType lotType) {
-        return getDefaultLotTimeType(lotType, EntityPermission.READ_ONLY);
+    public LotTimeType getDefaultLotTimeType() {
+        return getDefaultLotTimeType(EntityPermission.READ_ONLY);
     }
 
-    public LotTimeType getDefaultLotTimeTypeForUpdate(LotType lotType) {
-        return getDefaultLotTimeType(lotType, EntityPermission.READ_WRITE);
+    public LotTimeType getDefaultLotTimeTypeForUpdate() {
+        return getDefaultLotTimeType(EntityPermission.READ_WRITE);
     }
 
-    public LotTimeTypeDetailValue getDefaultLotTimeTypeDetailValueForUpdate(LotType lotType) {
-        return getDefaultLotTimeTypeForUpdate(lotType).getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
+    public LotTimeTypeDetailValue getDefaultLotTimeTypeDetailValueForUpdate() {
+        return getDefaultLotTimeTypeForUpdate().getLastDetailForUpdate().getLotTimeTypeDetailValue().clone();
     }
 
     private static final Map<EntityPermission, String> getLotTimeTypesQueries;
@@ -2723,36 +2200,33 @@ public class InventoryControl
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? " +
                 "ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lottimetypes, lottimetypedetails " +
                 "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lttyp_lottypeid = ? " +
                 "FOR UPDATE");
         getLotTimeTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private List<LotTimeType> getLotTimeTypes(LotType lotType, EntityPermission entityPermission) {
-        return LotTimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTimeTypesQueries,
-                lotType);
+    private List<LotTimeType> getLotTimeTypes(EntityPermission entityPermission) {
+        return LotTimeTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotTimeTypesQueries);
     }
 
-    public List<LotTimeType> getLotTimeTypes(LotType lotType) {
-        return getLotTimeTypes(lotType, EntityPermission.READ_ONLY);
+    public List<LotTimeType> getLotTimeTypes() {
+        return getLotTimeTypes(EntityPermission.READ_ONLY);
     }
 
-    public List<LotTimeType> getLotTimeTypesForUpdate(LotType lotType) {
-        return getLotTimeTypes(lotType, EntityPermission.READ_WRITE);
+    public List<LotTimeType> getLotTimeTypesForUpdate() {
+        return getLotTimeTypes(EntityPermission.READ_WRITE);
     }
 
     public LotTimeTypeTransfer getLotTimeTypeTransfer(UserVisit userVisit, LotTimeType lotTimeType) {
         return getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache().getTransfer(lotTimeType);
     }
 
-    public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit, LotType lotType) {
-        List<LotTimeType> lotTimeTypes = getLotTimeTypes(lotType);
+    public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit) {
+        List<LotTimeType> lotTimeTypes = getLotTimeTypes();
         List<LotTimeTypeTransfer> lotTimeTypeTransfers = new ArrayList<>(lotTimeTypes.size());
         LotTimeTypeTransferCache lotTimeTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache();
 
@@ -2763,9 +2237,8 @@ public class InventoryControl
         return lotTimeTypeTransfers;
     }
 
-    public LotTimeTypeChoicesBean getLotTimeTypeChoices(String defaultLotTimeTypeChoice, Language language, boolean allowNullChoice,
-            LotType lotType) {
-        List<LotTimeType> lotTimeTypes = getLotTimeTypes(lotType);
+    public LotTimeTypeChoicesBean getLotTimeTypeChoices(String defaultLotTimeTypeChoice, Language language, boolean allowNullChoice) {
+        List<LotTimeType> lotTimeTypes = getLotTimeTypes();
         int size = lotTimeTypes.size();
         List<String> labels = new ArrayList<>(size);
         List<String> values = new ArrayList<>(size);
@@ -2808,20 +2281,18 @@ public class InventoryControl
             lotTimeTypeDetail.setThruTime(session.START_TIME_LONG);
             lotTimeTypeDetail.store();
 
-            LotType lotType = lotTimeTypeDetail.getLotType(); // Not updated
-            LotTypePK lotTypePK = lotType.getPrimaryKey(); // Not updated
             LotTimeTypePK lotTimeTypePK = lotTimeTypeDetail.getLotTimeTypePK(); // Not updated
             String lotTimeTypeName = lotTimeTypeDetailValue.getLotTimeTypeName();
             Boolean isDefault = lotTimeTypeDetailValue.getIsDefault();
             Integer sortOrder = lotTimeTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                LotTimeType defaultLotTimeType = getDefaultLotTimeType(lotType);
+                LotTimeType defaultLotTimeType = getDefaultLotTimeType();
                 boolean defaultFound = defaultLotTimeType != null && !defaultLotTimeType.equals(lotTimeType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LotTimeTypeDetailValue defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate(lotType);
+                    LotTimeTypeDetailValue defaultLotTimeTypeDetailValue = getDefaultLotTimeTypeDetailValueForUpdate();
 
                     defaultLotTimeTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateLotTimeTypeFromValue(defaultLotTimeTypeDetailValue, false, updatedBy);
@@ -2831,7 +2302,7 @@ public class InventoryControl
                 }
             }
 
-            lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeTypePK, lotTypePK, lotTimeTypeName, isDefault, sortOrder,
+            lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeTypePK, lotTimeTypeName, isDefault, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             lotTimeType.setActiveDetail(lotTimeTypeDetail);
@@ -2855,10 +2326,9 @@ public class InventoryControl
         lotTimeType.store();
 
         // Check for default, and pick one if necessary
-        LotType lotType = lotTimeTypeDetail.getLotType();
-        LotTimeType defaultLotTimeType = getDefaultLotTimeType(lotType);
+        LotTimeType defaultLotTimeType = getDefaultLotTimeType();
         if(defaultLotTimeType == null) {
-            List<LotTimeType> lotTimeTypes = getLotTimeTypesForUpdate(lotType);
+            List<LotTimeType> lotTimeTypes = getLotTimeTypesForUpdate();
 
             if(!lotTimeTypes.isEmpty()) {
                 Iterator<LotTimeType> iter = lotTimeTypes.iterator();
@@ -3217,13 +2687,13 @@ public class InventoryControl
     //   Lot Alias Types
     // --------------------------------------------------------------------------------
 
-    public LotAliasType createLotAliasType(LotType lotType, String lotAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
+    public LotAliasType createLotAliasType(String lotAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
-        LotAliasType defaultLotAliasType = getDefaultLotAliasType(lotType);
+        LotAliasType defaultLotAliasType = getDefaultLotAliasType();
         boolean defaultFound = defaultLotAliasType != null;
 
         if(defaultFound && isDefault) {
-            LotAliasTypeDetailValue defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate(lotType);
+            LotAliasTypeDetailValue defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate();
 
             defaultLotAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateLotAliasTypeFromValue(defaultLotAliasTypeDetailValue, false, createdBy);
@@ -3232,7 +2702,7 @@ public class InventoryControl
         }
 
         LotAliasType lotAliasType = LotAliasTypeFactory.getInstance().create();
-        LotAliasTypeDetail lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasType, lotType, lotAliasTypeName,
+        LotAliasTypeDetail lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasType, lotAliasTypeName,
                 validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -3254,37 +2724,36 @@ public class InventoryControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "AND ltaltypdt_lotaliastypename = ?");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "AND ltaltypdt_lotaliastypename = ? " +
                 "FOR UPDATE");
         getLotAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private LotAliasType getLotAliasTypeByName(LotType lotType, String lotAliasTypeName, EntityPermission entityPermission) {
+    private LotAliasType getLotAliasTypeByName(String lotAliasTypeName, EntityPermission entityPermission) {
         return LotAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getLotAliasTypeByNameQueries,
-                lotType, lotAliasTypeName);
+                lotAliasTypeName);
     }
 
-    public LotAliasType getLotAliasTypeByName(LotType lotType, String lotAliasTypeName) {
-        return getLotAliasTypeByName(lotType, lotAliasTypeName, EntityPermission.READ_ONLY);
+    public LotAliasType getLotAliasTypeByName(String lotAliasTypeName) {
+        return getLotAliasTypeByName(lotAliasTypeName, EntityPermission.READ_ONLY);
     }
 
-    public LotAliasType getLotAliasTypeByNameForUpdate(LotType lotType, String lotAliasTypeName) {
-        return getLotAliasTypeByName(lotType, lotAliasTypeName, EntityPermission.READ_WRITE);
+    public LotAliasType getLotAliasTypeByNameForUpdate(String lotAliasTypeName) {
+        return getLotAliasTypeByName(lotAliasTypeName, EntityPermission.READ_WRITE);
     }
 
     public LotAliasTypeDetailValue getLotAliasTypeDetailValueForUpdate(LotAliasType lotAliasType) {
         return lotAliasType == null? null: lotAliasType.getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
     }
 
-    public LotAliasTypeDetailValue getLotAliasTypeDetailValueByNameForUpdate(LotType lotType,
-            String lotAliasTypeName) {
-        return getLotAliasTypeDetailValueForUpdate(getLotAliasTypeByNameForUpdate(lotType, lotAliasTypeName));
+    public LotAliasTypeDetailValue getLotAliasTypeDetailValueByNameForUpdate(String lotAliasTypeName) {
+        return getLotAliasTypeDetailValueForUpdate(getLotAliasTypeByNameForUpdate(lotAliasTypeName));
     }
 
     private static final Map<EntityPermission, String> getDefaultLotAliasTypeQueries;
@@ -3295,31 +2764,31 @@ public class InventoryControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "AND ltaltypdt_isdefault = 1");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "AND ltaltypdt_isdefault = 1 " +
                 "FOR UPDATE");
         getDefaultLotAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private LotAliasType getDefaultLotAliasType(LotType lotType, EntityPermission entityPermission) {
-        return LotAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultLotAliasTypeQueries, lotType);
+    private LotAliasType getDefaultLotAliasType(EntityPermission entityPermission) {
+        return LotAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultLotAliasTypeQueries);
     }
 
-    public LotAliasType getDefaultLotAliasType(LotType lotType) {
-        return getDefaultLotAliasType(lotType, EntityPermission.READ_ONLY);
+    public LotAliasType getDefaultLotAliasType() {
+        return getDefaultLotAliasType(EntityPermission.READ_ONLY);
     }
 
-    public LotAliasType getDefaultLotAliasTypeForUpdate(LotType lotType) {
-        return getDefaultLotAliasType(lotType, EntityPermission.READ_WRITE);
+    public LotAliasType getDefaultLotAliasTypeForUpdate() {
+        return getDefaultLotAliasType(EntityPermission.READ_WRITE);
     }
 
-    public LotAliasTypeDetailValue getDefaultLotAliasTypeDetailValueForUpdate(LotType lotType) {
-        return getDefaultLotAliasTypeForUpdate(lotType).getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
+    public LotAliasTypeDetailValue getDefaultLotAliasTypeDetailValueForUpdate() {
+        return getDefaultLotAliasTypeForUpdate().getLastDetailForUpdate().getLotAliasTypeDetailValue().clone();
     }
 
     private static final Map<EntityPermission, String> getLotAliasTypesQueries;
@@ -3330,34 +2799,34 @@ public class InventoryControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid AND ltaltypdt_lttyp_lottypeid = ? " +
+                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
                 "FOR UPDATE");
         getLotAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private List<LotAliasType> getLotAliasTypes(LotType lotType, EntityPermission entityPermission) {
-        return LotAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotAliasTypesQueries, lotType);
+    private List<LotAliasType> getLotAliasTypes(EntityPermission entityPermission) {
+        return LotAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getLotAliasTypesQueries);
     }
 
-    public List<LotAliasType> getLotAliasTypes(LotType lotType) {
-        return getLotAliasTypes(lotType, EntityPermission.READ_ONLY);
+    public List<LotAliasType> getLotAliasTypes() {
+        return getLotAliasTypes(EntityPermission.READ_ONLY);
     }
 
-    public List<LotAliasType> getLotAliasTypesForUpdate(LotType lotType) {
-        return getLotAliasTypes(lotType, EntityPermission.READ_WRITE);
+    public List<LotAliasType> getLotAliasTypesForUpdate() {
+        return getLotAliasTypes(EntityPermission.READ_WRITE);
     }
 
     public LotAliasTypeTransfer getLotAliasTypeTransfer(UserVisit userVisit, LotAliasType lotAliasType) {
         return getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache().getTransfer(lotAliasType);
     }
 
-    public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit, LotType lotType) {
-        List<LotAliasType> lotAliasTypes = getLotAliasTypes(lotType);
+    public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit) {
+        List<LotAliasType> lotAliasTypes = getLotAliasTypes();
         List<LotAliasTypeTransfer> lotAliasTypeTransfers = new ArrayList<>(lotAliasTypes.size());
         LotAliasTypeTransferCache lotAliasTypeTransferCache = getInventoryTransferCaches(userVisit).getLotAliasTypeTransferCache();
 
@@ -3369,8 +2838,8 @@ public class InventoryControl
     }
 
     public LotAliasTypeChoicesBean getLotAliasTypeChoices(String defaultLotAliasTypeChoice, Language language,
-            boolean allowNullChoice, LotType lotType) {
-        List<LotAliasType> lotAliasTypes = getLotAliasTypes(lotType);
+            boolean allowNullChoice) {
+        List<LotAliasType> lotAliasTypes = getLotAliasTypes();
         int size = lotAliasTypes.size();
         List<String> labels = new ArrayList<>(size);
         List<String> values = new ArrayList<>(size);
@@ -3414,20 +2883,18 @@ public class InventoryControl
             lotAliasTypeDetail.store();
 
             LotAliasTypePK lotAliasTypePK = lotAliasTypeDetail.getLotAliasTypePK();
-            LotType lotType = lotAliasTypeDetail.getLotType();
-            LotTypePK lotTypePK = lotType.getPrimaryKey();
             String lotAliasTypeName = lotAliasTypeDetailValue.getLotAliasTypeName();
             String validationPattern = lotAliasTypeDetailValue.getValidationPattern();
             Boolean isDefault = lotAliasTypeDetailValue.getIsDefault();
             Integer sortOrder = lotAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                LotAliasType defaultLotAliasType = getDefaultLotAliasType(lotType);
+                LotAliasType defaultLotAliasType = getDefaultLotAliasType();
                 boolean defaultFound = defaultLotAliasType != null && !defaultLotAliasType.equals(lotAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    LotAliasTypeDetailValue defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate(lotType);
+                    LotAliasTypeDetailValue defaultLotAliasTypeDetailValue = getDefaultLotAliasTypeDetailValueForUpdate();
 
                     defaultLotAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateLotAliasTypeFromValue(defaultLotAliasTypeDetailValue, false, updatedBy);
@@ -3437,7 +2904,7 @@ public class InventoryControl
                 }
             }
 
-            lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasTypePK, lotTypePK, lotAliasTypeName,
+            lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasTypePK, lotAliasTypeName,
                     validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             lotAliasType.setActiveDetail(lotAliasTypeDetail);
@@ -3461,10 +2928,9 @@ public class InventoryControl
         lotAliasType.store();
 
         // Check for default, and pick one if necessary
-        LotType lotType = lotAliasTypeDetail.getLotType();
-        LotAliasType defaultLotAliasType = getDefaultLotAliasType(lotType);
+        LotAliasType defaultLotAliasType = getDefaultLotAliasType();
         if(defaultLotAliasType == null) {
-            List<LotAliasType> lotAliasTypes = getLotAliasTypesForUpdate(lotType);
+            List<LotAliasType> lotAliasTypes = getLotAliasTypesForUpdate();
 
             if(!lotAliasTypes.isEmpty()) {
                 Iterator<LotAliasType> iter = lotAliasTypes.iterator();
@@ -3485,10 +2951,6 @@ public class InventoryControl
         lotAliasTypes.stream().forEach((lotAliasType) -> {
             deleteLotAliasType(lotAliasType, deletedBy);
         });
-    }
-
-    public void deleteLotAliasTypesByLotType(LotType lotType, BasePK deletedBy) {
-        deleteLotAliasTypes(getLotAliasTypesForUpdate(lotType), deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -3843,7 +3305,7 @@ public class InventoryControl
     //   Lots
     // --------------------------------------------------------------------------------
 
-    public Lot getLotByName(LotType lotType, String lotName) {
+    public Lot getLotByName(String lotName) {
         // TODO
         return null;
     }

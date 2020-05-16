@@ -29,14 +29,13 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDescription;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.inventory.server.value.LotAliasTypeDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -62,7 +61,6 @@ public class EditLotAliasTypeDescriptionCommand
                 )));
 
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
                 ));
@@ -91,36 +89,29 @@ public class EditLotAliasTypeDescriptionCommand
     public LotAliasTypeDescription getEntity(EditLotAliasTypeDescriptionResult result) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotAliasTypeDescription lotAliasTypeDescription = null;
-        String lotTypeName = spec.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
+        String lotAliasTypeName = spec.getLotAliasTypeName();
+        LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
 
-        if(lotType != null) {
-            String lotAliasTypeName = spec.getLotAliasTypeName();
-            LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
+        if(lotAliasType != null) {
+            var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
+            String languageIsoName = spec.getLanguageIsoName();
+            Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
-            if(lotAliasType != null) {
-                var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
-                String languageIsoName = spec.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
+            if(language != null) {
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                    lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescription(lotAliasType, language);
+                } else { // EditMode.UPDATE
+                    lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, language);
+                }
 
-                if(language != null) {
-                    if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescription(lotAliasType, language);
-                    } else { // EditMode.UPDATE
-                        lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, language);
-                    }
-
-                    if(lotAliasTypeDescription == null) {
-                        addExecutionError(ExecutionErrors.UnknownLotAliasTypeDescription.name(), lotTypeName, lotAliasTypeName, languageIsoName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+                if(lotAliasTypeDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownLotAliasTypeDescription.name(), lotAliasTypeName, languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotTypeName, lotAliasTypeName);
+                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
+            addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
         }
 
         return lotAliasTypeDescription;

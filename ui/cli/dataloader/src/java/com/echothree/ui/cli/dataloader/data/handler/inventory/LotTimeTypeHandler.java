@@ -30,11 +30,10 @@ public class LotTimeTypeHandler
         extends BaseHandler {
     
     InventoryService inventoryService;
-    String lotTypeName;
     String lotTimeTypeName;
     
     /** Creates a new instance of LotTimeTypeHandler */
-    public LotTimeTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String lotTypeName, String lotTimeTypeName)
+    public LotTimeTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String lotTimeTypeName)
             throws SAXException {
         super(initialDataParser, parentHandler);
         
@@ -44,7 +43,6 @@ public class LotTimeTypeHandler
             throw new SAXException(ne);
         }
 
-        this.lotTypeName = lotTypeName;
         this.lotTimeTypeName = lotTimeTypeName;
     }
     
@@ -54,7 +52,6 @@ public class LotTimeTypeHandler
         if(localName.equals("lotTimeTypeDescription")) {
             CreateLotTimeTypeDescriptionForm commandForm = InventoryFormFactory.getCreateLotTimeTypeDescriptionForm();
             
-            commandForm.setLotTypeName(lotTypeName);
             commandForm.setLotTimeTypeName(lotTimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 

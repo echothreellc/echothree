@@ -30,11 +30,10 @@ public class LotAliasTypeHandler
         extends BaseHandler {
 
     InventoryService inventoryService;
-    String lotTypeName;
     String lotAliasTypeName;
     
     /** Creates a new instance of LotAliasTypeHandler */
-    public LotAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String lotTypeName, String lotAliasTypeName)
+    public LotAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String lotAliasTypeName)
             throws SAXException {
         super(initialDataParser, parentHandler);
 
@@ -44,7 +43,6 @@ public class LotAliasTypeHandler
             throw new SAXException(ne);
         }
 
-        this.lotTypeName = lotTypeName;
         this.lotAliasTypeName = lotAliasTypeName;
     }
 
@@ -54,7 +52,6 @@ public class LotAliasTypeHandler
         if(localName.equals("lotAliasTypeDescription")) {
             CreateLotAliasTypeDescriptionForm commandForm = InventoryFormFactory.getCreateLotAliasTypeDescriptionForm();
 
-            commandForm.setLotTypeName(lotTypeName);
             commandForm.setLotAliasTypeName(lotAliasTypeName);
             commandForm.set(getAttrsMap(attrs));
 

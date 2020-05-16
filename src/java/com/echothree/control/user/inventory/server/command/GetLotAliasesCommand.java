@@ -19,19 +19,17 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetLotAliasesForm;
 import com.echothree.control.user.inventory.common.result.GetLotAliasesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.server.command.util.LotAliasUtil;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.Lot;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -43,47 +41,42 @@ import java.util.List;
 
 public class GetLotAliasesCommand
         extends BaseSimpleCommand<GetLotAliasesForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.LotAliasType.name(), SecurityRoles.List.name())
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
     
     /** Creates a new instance of GetLotAliasesCommand */
     public GetLotAliasesCommand(UserVisitPK userVisitPK, GetLotAliasesForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(LotAliasUtil.getInstance().getSecurityRoleGroupNameByLotTypeSpec(form), SecurityRoles.List.name())
-                        )))
-                ))), FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetLotAliasesResult result = InventoryResultFactory.getGetLotAliasesResult();
-        String lotTypeName = form.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
+        String lotName = form.getLotName();
+        Lot lot = inventoryControl.getLotByName(lotName);
 
-        if(lotType != null) {
-            String lotName = form.getLotName();
-            Lot lot = inventoryControl.getLotByName(lotType, lotName);
+        if(lot != null) {
+            UserVisit userVisit = getUserVisit();
 
-            if(lot != null) {
-                UserVisit userVisit = getUserVisit();
-
-                result.setLot(inventoryControl.getLotTransfer(userVisit, lot));
-                result.setLotAliases(inventoryControl.getLotAliasTransfersByLot(userVisit, lot));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLotName.name(), lotTypeName, lotName);
-            }
+            result.setLot(inventoryControl.getLotTransfer(userVisit, lot));
+            result.setLotAliases(inventoryControl.getLotAliasTransfersByLot(userVisit, lot));
         } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
+            addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
         }
 
         return result;
