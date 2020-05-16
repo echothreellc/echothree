@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.spec.LotTypeSpec;
+import com.echothree.util.common.form.BaseForm;
 
 public interface GetLotAliasTypeChoicesForm
-        extends LotTypeSpec {
+        extends BaseForm {
     
     String getDefaultLotAliasTypeChoice();
     void setDefaultLotAliasTypeChoice(String defaultLotAliasTypeChoice);

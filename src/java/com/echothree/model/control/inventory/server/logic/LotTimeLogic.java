@@ -21,7 +21,6 @@ import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotDetail;
 import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.inventory.server.value.LotTimeValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -42,10 +41,6 @@ public class LotTimeLogic {
         return LotTimeLogicHolder.instance;
     }
 
-    private String getLotTypeName(LotType lotType) {
-        return lotType.getLastDetail().getLotTypeName();
-    }
-
     public void createOrUpdateLotTimeIfNotNull(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
             final BasePK partyPK) {
         if(time != null) {
@@ -57,12 +52,11 @@ public class LotTimeLogic {
             final BasePK partyPK) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotDetail lotDetail = lot.getLastDetail();
-        LotType lotType = lotDetail.getLotType();
-        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
+        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType == null) {
             if(ema != null) {
-                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), getLotTypeName(lotType), lotTimeTypeName);
+                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
             }
         } else {
             LotTimeValue lotTimeValue = inventoryControl.getLotTimeValueForUpdate(lot, lotTimeType);
@@ -79,20 +73,19 @@ public class LotTimeLogic {
     public Long getLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotDetail lotDetail = lot.getLastDetail();
-        LotType lotType = lotDetail.getLotType();
-        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
+        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
         Long result = null;
 
         if(lotTimeType == null) {
             if(ema != null) {
-                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), getLotTypeName(lotType), lotTimeTypeName);
+                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
             }
         } else {
             LotTime lotTime = inventoryControl.getLotTime(lot, lotTimeType);
 
             if(lotTime == null) {
                 if(ema != null) {
-                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), getLotTypeName(lotType), lotDetail.getLotName(), lotTimeTypeName);
+                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), lotDetail.getLotName(), lotTimeTypeName);
                 }
             } else {
                 result = lotTime.getTime();
@@ -105,19 +98,18 @@ public class LotTimeLogic {
     public void deleteLotTime(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final BasePK deletedBy) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         LotDetail lotDetail = lot.getLastDetail();
-        LotType lotType = lotDetail.getLotType();
-        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotType, lotTimeTypeName);
+        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType == null) {
             if(ema != null) {
-                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), getLotTypeName(lotType), lotTimeTypeName);
+                ema.addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
             }
         } else {
             LotTime lotTime = inventoryControl.getLotTimeForUpdate(lot, lotTimeType);
 
             if(lotTime == null) {
                 if(ema != null) {
-                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), getLotTypeName(lotType), lotDetail.getLotName(), lotTimeTypeName);
+                    ema.addExecutionError(ExecutionErrors.UnknownLotTime.name(), lotDetail.getLotName(), lotTimeTypeName);
                 }
             } else {
                 inventoryControl.deleteLotTime(lotTime, deletedBy);

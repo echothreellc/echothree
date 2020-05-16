@@ -144,38 +144,6 @@ public interface InventoryService
     CommandResult deleteInventoryLocationGroupVolume(UserVisitPK userVisitPK, DeleteInventoryLocationGroupVolumeForm form);
     
     // --------------------------------------------------------------------------------
-    //   Lot Types
-    // --------------------------------------------------------------------------------
-
-    CommandResult createLotType(UserVisitPK userVisitPK, CreateLotTypeForm form);
-
-    CommandResult getLotTypeChoices(UserVisitPK userVisitPK, GetLotTypeChoicesForm form);
-
-    CommandResult getLotType(UserVisitPK userVisitPK, GetLotTypeForm form);
-
-    CommandResult getLotTypes(UserVisitPK userVisitPK, GetLotTypesForm form);
-
-    CommandResult setDefaultLotType(UserVisitPK userVisitPK, SetDefaultLotTypeForm form);
-
-    CommandResult editLotType(UserVisitPK userVisitPK, EditLotTypeForm form);
-
-    CommandResult deleteLotType(UserVisitPK userVisitPK, DeleteLotTypeForm form);
-
-    // --------------------------------------------------------------------------------
-    //   Lot Type Descriptions
-    // --------------------------------------------------------------------------------
-
-    CommandResult createLotTypeDescription(UserVisitPK userVisitPK, CreateLotTypeDescriptionForm form);
-
-    CommandResult getLotTypeDescription(UserVisitPK userVisitPK, GetLotTypeDescriptionForm form);
-
-    CommandResult getLotTypeDescriptions(UserVisitPK userVisitPK, GetLotTypeDescriptionsForm form);
-
-    CommandResult editLotTypeDescription(UserVisitPK userVisitPK, EditLotTypeDescriptionForm form);
-
-    CommandResult deleteLotTypeDescription(UserVisitPK userVisitPK, DeleteLotTypeDescriptionForm form);
-
-    // --------------------------------------------------------------------------------
     //   Lot Time Types
     // --------------------------------------------------------------------------------
 

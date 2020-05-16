@@ -17,15 +17,11 @@
 package com.echothree.control.user.inventory.common.result;
 
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
-import com.echothree.model.control.inventory.common.transfer.LotTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetLotAliasTypesResult
         extends BaseResult {
-    
-    LotTypeTransfer getLotType();
-    void setLotType(LotTypeTransfer lotType);
     
     List<LotAliasTypeTransfer> getLotAliasTypes();
     void setLotAliasTypes(List<LotAliasTypeTransfer> lotAliasTypes);

@@ -16,9 +16,9 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.inventory;
 
-import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.InventoryService;
-import com.echothree.control.user.inventory.common.form.CreateLotTypeForm;
+import com.echothree.control.user.inventory.common.InventoryUtil;
+import com.echothree.control.user.inventory.common.form.CreateLotTimeTypeForm;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -26,41 +26,37 @@ import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class LotTypesHandler
+public class LotTimeTypesHandler
         extends BaseHandler {
 
     InventoryService inventoryService;
-    
-    /** Creates a new instance of LotTypesHandler */
-    public LotTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
-            throws SAXException {
+
+    /** Creates a new instance of LotTypeHandler */
+    public LotTimeTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException, NamingException {
         super(initialDataParser, parentHandler);
         
-        try {
-            inventoryService = InventoryUtil.getHome();
-        } catch (NamingException ne) {
-            throw new SAXException(ne);
-        }
+        inventoryService = InventoryUtil.getHome();
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
-        if(localName.equals("lotType")) {
-            CreateLotTypeForm commandForm = InventoryFormFactory.getCreateLotTypeForm();
+        if(localName.equals("lotTimeType")) {
+            CreateLotTimeTypeForm commandForm = InventoryFormFactory.getCreateLotTimeTypeForm();
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createLotType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(inventoryService.createLotTimeType(initialDataParser.getUserVisit(), commandForm));
 
-            initialDataParser.pushHandler(new LotTypeHandler(initialDataParser, this, commandForm.getLotTypeName()));
+            initialDataParser.pushHandler(new LotTimeTypeHandler(initialDataParser, this, commandForm.getLotTimeTypeName()));
         }
     }
     
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
-        if(localName.equals("lotTypes")) {
+        if(localName.equals("lotType")) {
             initialDataParser.popHandler();
         }
     }

@@ -17,7 +17,6 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotAliasForm;
-import com.echothree.control.user.inventory.server.command.util.LotAliasUtil;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -25,12 +24,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -44,12 +42,19 @@ import java.util.regex.Pattern;
 
 public class CreateLotAliasCommand
         extends BaseSimpleCommand<CreateLotAliasForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.LotAliasType.name(), SecurityRoles.Create.name())
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
@@ -58,27 +63,18 @@ public class CreateLotAliasCommand
     
     /** Creates a new instance of CreateLotAliasCommand */
     public CreateLotAliasCommand(UserVisitPK userVisitPK, CreateLotAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(LotAliasUtil.getInstance().getSecurityRoleGroupNameByLotTypeSpec(form), SecurityRoles.Create.name())
-                        )))
-                ))), FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override
     protected BaseResult execute() {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        String lotTypeName = form.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
-
-        if(lotType != null) {
             String lotName = form.getLotName();
-            Lot lot = inventoryControl.getLotByName(lotType, lotName);
+            Lot lot = inventoryControl.getLotByName(lotName);
 
             if(lot != null) {
                 String lotAliasTypeName = form.getLotAliasTypeName();
-                LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
+                LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
 
                 if(lotAliasType != null) {
                     LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
@@ -98,18 +94,15 @@ public class CreateLotAliasCommand
                         if(inventoryControl.getLotAlias(lot, lotAliasType) == null && inventoryControl.getLotAliasByAlias(lotAliasType, alias) == null) {
                             inventoryControl.createLotAlias(lot, lotAliasType, alias, getPartyPK());
                         } else {
-                            addExecutionError(ExecutionErrors.DuplicateLotAlias.name(), lotTypeName, lotName, lotAliasTypeName, alias);
+                            addExecutionError(ExecutionErrors.DuplicateLotAlias.name(), lotName, lotAliasTypeName, alias);
                         }
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotTypeName, lotAliasTypeName);
+                    addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownLotName.name(), lotTypeName, lotName);
+                addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
-        }
 
         return null;
     }

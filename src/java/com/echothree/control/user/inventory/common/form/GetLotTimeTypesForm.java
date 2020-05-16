@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.spec.LotTypeSpec;
+import com.echothree.util.common.form.BaseForm;
 
 public interface GetLotTimeTypesForm
-        extends LotTypeSpec {
+        extends BaseForm {
     
-    // Nothing additional beyond LotTypeSpec
+    // Nothing additional beyond BaseForm
     
 }

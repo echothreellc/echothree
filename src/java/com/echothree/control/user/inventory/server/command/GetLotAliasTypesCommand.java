@@ -23,12 +23,9 @@ import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -53,7 +50,6 @@ public class GetLotAliasTypesCommand
                 )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
 
@@ -66,16 +62,8 @@ public class GetLotAliasTypesCommand
     protected BaseResult execute() {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         GetLotAliasTypesResult result = InventoryResultFactory.getGetLotAliasTypesResult();
-        String lotTypeName = form.getLotTypeName();
-        LotType lotType = inventoryControl.getLotTypeByName(lotTypeName);
 
-        if(lotType != null) {
-            result.setLotType(inventoryControl.getLotTypeTransfer(getUserVisit(), lotType));
-            result.setLotAliasTypes(inventoryControl.getLotAliasTypeTransfers(getUserVisit(), lotType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
-        }
-
+        result.setLotAliasTypes(inventoryControl.getLotAliasTypeTransfers(getUserVisit()));
 
         return result;
     }

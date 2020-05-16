@@ -5539,27 +5539,6 @@
                 <securityRoleDescription languageIsoName="en" description="Party Document Choices" />
             </securityRole>
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="LotType" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Lot Type" />
-            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Lot Type Create" />
-            </securityRole>
-            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Lot Type Edit" />
-            </securityRole>
-            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Lot Type Delete" />
-            </securityRole>
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Lot Type List" />
-            </securityRole>
-            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Lot Type Review" />
-            </securityRole>
-            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Lot Type Description" />
-            </securityRole>
-        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="LotTimeType" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Lot Time Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -5603,6 +5582,24 @@
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Lot Alias Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="LotAlias" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Lot Alias" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Lot Alias Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Lot Alias Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Lot Alias Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Lot Alias List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Lot Alias Review" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PrinterComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -8471,12 +8468,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyDocument" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyDocument" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyDocument" securityRoleName="Choices" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="LotType" securityRoleName="Create" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="LotType" securityRoleName="Edit" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="LotType" securityRoleName="Delete" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="LotType" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="LotType" securityRoleName="Review" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="LotType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LotTimeType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LotTimeType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LotTimeType" securityRoleName="Delete" />
@@ -8490,6 +8481,11 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="LotAliasType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LotAliasType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LotAliasType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LotAlias" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LotAlias" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LotAlias" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LotAlias" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LotAlias" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PrinterGroup" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PrinterGroup" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PrinterGroup" securityRoleName="Delete" />

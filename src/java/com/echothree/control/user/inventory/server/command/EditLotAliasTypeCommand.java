@@ -29,15 +29,14 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDescription;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
-import com.echothree.model.data.inventory.server.entity.LotType;
 import com.echothree.model.data.inventory.server.value.LotAliasTypeDescriptionValue;
 import com.echothree.model.data.inventory.server.value.LotAliasTypeDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,7 +62,6 @@ public class EditLotAliasTypeCommand
                 )));
 
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LotTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
                 ));
 
@@ -91,32 +89,22 @@ public class EditLotAliasTypeCommand
         return InventoryEditFactory.getLotAliasTypeEdit();
     }
 
-    LotType lotType;
-
     @Override
     public LotAliasType getEntity(EditLotAliasTypeResult result) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        LotAliasType lotAliasType = null;
-        String lotTypeName = spec.getLotTypeName();
+        LotAliasType lotAliasType;
+        String lotAliasTypeName = spec.getLotAliasTypeName();
 
-        lotType = inventoryControl.getLotTypeByName(lotTypeName);
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+            lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+        } else { // EditMode.UPDATE
+            lotAliasType = inventoryControl.getLotAliasTypeByNameForUpdate(lotAliasTypeName);
+        }
 
-        if(lotType != null) {
-            String lotAliasTypeName = spec.getLotAliasTypeName();
-
-            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                lotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
-            } else { // EditMode.UPDATE
-                lotAliasType = inventoryControl.getLotAliasTypeByNameForUpdate(lotType, lotAliasTypeName);
-            }
-
-            if(lotAliasType != null) {
-                result.setLotAliasType(inventoryControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotTypeName, lotAliasTypeName);
-            }
+        if(lotAliasType != null) {
+            result.setLotAliasType(inventoryControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
         } else {
-            addExecutionError(ExecutionErrors.UnknownLotTypeName.name(), lotTypeName);
+            addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
         }
 
         return lotAliasType;
@@ -154,10 +142,10 @@ public class EditLotAliasTypeCommand
     public void canUpdate(LotAliasType lotAliasType) {
         var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
         String lotAliasTypeName = edit.getLotAliasTypeName();
-        LotAliasType duplicateLotAliasType = inventoryControl.getLotAliasTypeByName(lotType, lotAliasTypeName);
+        LotAliasType duplicateLotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(duplicateLotAliasType != null && !lotAliasType.equals(duplicateLotAliasType)) {
-            addExecutionError(ExecutionErrors.DuplicateLotAliasTypeName.name(), spec.getLotTypeName(), lotAliasTypeName);
+            addExecutionError(ExecutionErrors.DuplicateLotAliasTypeName.name(), lotAliasTypeName);
         }
     }
 

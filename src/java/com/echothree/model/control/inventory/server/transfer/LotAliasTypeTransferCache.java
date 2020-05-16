@@ -17,7 +17,6 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
-import com.echothree.model.control.inventory.common.transfer.LotTypeTransfer;
 import com.echothree.model.control.inventory.server.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDetail;
@@ -39,14 +38,13 @@ public class LotAliasTypeTransferCache
         
         if(lotAliasTypeTransfer == null) {
             LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
-            LotTypeTransfer lotType = inventoryControl.getLotTypeTransfer(userVisit, lotAliasTypeDetail.getLotType());
             String lotAliasTypeName = lotAliasTypeDetail.getLotAliasTypeName();
             String validationPattern = lotAliasTypeDetail.getValidationPattern();
             Boolean isDefault = lotAliasTypeDetail.getIsDefault();
             Integer sortOrder = lotAliasTypeDetail.getSortOrder();
             String description = inventoryControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage());
             
-            lotAliasTypeTransfer = new LotAliasTypeTransfer(lotType, lotAliasTypeName, validationPattern, isDefault, sortOrder, description);
+            lotAliasTypeTransfer = new LotAliasTypeTransfer(lotAliasTypeName, validationPattern, isDefault, sortOrder, description);
             put(lotAliasType, lotAliasTypeTransfer);
         }
         
