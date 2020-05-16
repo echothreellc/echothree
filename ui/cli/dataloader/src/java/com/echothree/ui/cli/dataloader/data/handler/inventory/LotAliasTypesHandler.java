@@ -56,7 +56,7 @@ public class LotAliasTypesHandler
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
-        if(localName.equals("lotType")) {
+        if(localName.equals("lotAliasTypes")) {
             initialDataParser.popHandler();
         }
     }

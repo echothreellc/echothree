@@ -56,7 +56,7 @@ public class LotTimeTypesHandler
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
-        if(localName.equals("lotType")) {
+        if(localName.equals("lotTimeTypes")) {
             initialDataParser.popHandler();
         }
     }
