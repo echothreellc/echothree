@@ -283,8 +283,10 @@ public class PaymentProcessorTypeControl
 
     public void deletePaymentProcessorType(final PaymentProcessorType paymentProcessorType, final BasePK deletedBy) {
         var paymentProcessorTypeCodeTypeControl = (PaymentProcessorTypeCodeTypeControl) Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
+        var paymentProcessorTypeActionControl = (PaymentProcessorTypeActionControl) Session.getModelController(PaymentProcessorTypeActionControl.class);
 
         paymentProcessorTypeCodeTypeControl.deletePaymentProcessorTypeCodeTypesByPaymentProcessorType(paymentProcessorType, deletedBy);
+        paymentProcessorTypeActionControl.deletePaymentProcessorTypeActionsByPaymentProcessorType(paymentProcessorType, deletedBy);
         deletePaymentProcessorTypeDescriptionsByPaymentProcessorType(paymentProcessorType, deletedBy);
 
         var paymentProcessorTypeDetail = paymentProcessorType.getLastDetailForUpdate();
