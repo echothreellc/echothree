@@ -175,8 +175,8 @@ public interface PaymentService
     //   Payment Processor Type Actions
     // -------------------------------------------------------------------------
 
-//    CommandResult createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form);
-//
+    CommandResult createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form);
+
 //    CommandResult getPaymentProcessorTypeActions(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionsForm form);
 //
 //    CommandResult getPaymentProcessorTypeAction(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionForm form);

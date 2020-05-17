@@ -330,11 +330,11 @@ public class PaymentBean
     //   Payment Processor Type Actions
     // -------------------------------------------------------------------------
 
-//    @Override
-//    public CommandResult createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form) {
-//        return new CreatePaymentProcessorTypeActionCommand(userVisitPK, form).run();
-//    }
-//
+    @Override
+    public CommandResult createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form) {
+        return new CreatePaymentProcessorTypeActionCommand(userVisitPK, form).run();
+    }
+
 //    @Override
 //    public CommandResult getPaymentProcessorTypeActions(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionsForm form) {
 //        return new GetPaymentProcessorTypeActionsCommand(userVisitPK, form).run();
