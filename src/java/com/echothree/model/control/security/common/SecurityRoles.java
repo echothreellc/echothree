@@ -39,6 +39,7 @@ public enum SecurityRoles {
     PartyType,
     PartyTypeContactList,
     PartyTypeContactListGroup,
+    PaymentProcessorAction,
     PaymentProcessorTypeAction,
     Review,
     Search,
