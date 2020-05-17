@@ -14,39 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.security.common;
+package com.echothree.control.user.payment.common.result;
 
-public enum SecurityRoles {
+import com.echothree.model.control.payment.common.choice.PaymentProcessorTypeActionChoicesBean;
+import com.echothree.util.common.command.BaseResult;
+
+public interface GetPaymentProcessorTypeActionChoicesResult
+        extends BaseResult {
     
-    AppearanceTextDecoration,
-    AppearanceTextTransformation,
-    Change,
-    Choices,
-    ContactListContactMechanismPurpose,
-    Create,
-    CreditCard,
-    CustomerTypeContactList,
-    CustomerTypeContactListGroup,
-    Delete,
-    Description,
-    Edit,
-    EntityAttributeEntityAttributeGroup,
-    EntityType,
-    HarmonizedTariffScheduleCodeUse,
-    History,
-    List,
-    Load,
-    PartyType,
-    PartyTypeContactList,
-    PartyTypeContactListGroup,
-    PaymentProcessorTypeAction,
-    Review,
-    Search,
-    SecurityRole,
-    Selector,
-    SelectorKind,
-    Translation,
-    UserLogin,
-    WorkflowStep,
+    PaymentProcessorTypeActionChoicesBean getPaymentProcessorTypeActionChoices();
+    void setPaymentProcessorTypeActionChoices(PaymentProcessorTypeActionChoicesBean paymentProcessorTypeActionChoices);
     
 }

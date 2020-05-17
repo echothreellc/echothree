@@ -327,6 +327,45 @@ public class PaymentBean
 //    }
 
     // -------------------------------------------------------------------------
+    //   Payment Processor Type Actions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createPaymentProcessorTypeAction(UserVisitPK userVisitPK, CreatePaymentProcessorTypeActionForm form) {
+        return new CreatePaymentProcessorTypeActionCommand(userVisitPK, form).run();
+    }
+
+//    @Override
+//    public CommandResult getPaymentProcessorTypeActions(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionsForm form) {
+//        return new GetPaymentProcessorTypeActionsCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult getPaymentProcessorTypeAction(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionForm form) {
+//        return new GetPaymentProcessorTypeActionCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult getPaymentProcessorTypeActionChoices(UserVisitPK userVisitPK, GetPaymentProcessorTypeActionChoicesForm form) {
+//        return new GetPaymentProcessorTypeActionChoicesCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult setDefaultPaymentProcessorTypeAction(UserVisitPK userVisitPK, SetDefaultPaymentProcessorTypeActionForm form) {
+//        return new SetDefaultPaymentProcessorTypeActionCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult editPaymentProcessorTypeAction(UserVisitPK userVisitPK, EditPaymentProcessorTypeActionForm form) {
+//        return new EditPaymentProcessorTypeActionCommand(userVisitPK, form).run();
+//    }
+//
+//    @Override
+//    public CommandResult deletePaymentProcessorTypeAction(UserVisitPK userVisitPK, DeletePaymentProcessorTypeActionForm form) {
+//        return new DeletePaymentProcessorTypeActionCommand(userVisitPK, form).run();
+//    }
+
+    // -------------------------------------------------------------------------
     //   Payment Processors
     // -------------------------------------------------------------------------
     

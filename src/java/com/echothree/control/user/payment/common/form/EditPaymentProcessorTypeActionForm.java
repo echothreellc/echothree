@@ -14,39 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.security.common;
+package com.echothree.control.user.payment.common.form;
 
-public enum SecurityRoles {
+import com.echothree.control.user.payment.common.edit.PaymentProcessorTypeActionEdit;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeActionUniversalSpec;
+import com.echothree.util.common.form.BaseEditForm;
+
+public interface EditPaymentProcessorTypeActionForm
+        extends BaseEditForm<PaymentProcessorTypeActionUniversalSpec, PaymentProcessorTypeActionEdit> {
     
-    AppearanceTextDecoration,
-    AppearanceTextTransformation,
-    Change,
-    Choices,
-    ContactListContactMechanismPurpose,
-    Create,
-    CreditCard,
-    CustomerTypeContactList,
-    CustomerTypeContactListGroup,
-    Delete,
-    Description,
-    Edit,
-    EntityAttributeEntityAttributeGroup,
-    EntityType,
-    HarmonizedTariffScheduleCodeUse,
-    History,
-    List,
-    Load,
-    PartyType,
-    PartyTypeContactList,
-    PartyTypeContactListGroup,
-    PaymentProcessorTypeAction,
-    Review,
-    Search,
-    SecurityRole,
-    Selector,
-    SelectorKind,
-    Translation,
-    UserLogin,
-    WorkflowStep,
+    // Nothing additional beyond BaseEditForm
     
 }

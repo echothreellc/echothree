@@ -14,39 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.security.common;
+package com.echothree.control.user.payment.common.form;
 
-public enum SecurityRoles {
+import com.echothree.util.common.form.BaseForm;
+
+public interface GetPaymentProcessorTypeActionChoicesForm
+        extends BaseForm {
     
-    AppearanceTextDecoration,
-    AppearanceTextTransformation,
-    Change,
-    Choices,
-    ContactListContactMechanismPurpose,
-    Create,
-    CreditCard,
-    CustomerTypeContactList,
-    CustomerTypeContactListGroup,
-    Delete,
-    Description,
-    Edit,
-    EntityAttributeEntityAttributeGroup,
-    EntityType,
-    HarmonizedTariffScheduleCodeUse,
-    History,
-    List,
-    Load,
-    PartyType,
-    PartyTypeContactList,
-    PartyTypeContactListGroup,
-    PaymentProcessorTypeAction,
-    Review,
-    Search,
-    SecurityRole,
-    Selector,
-    SelectorKind,
-    Translation,
-    UserLogin,
-    WorkflowStep,
+    String getDefaultPaymentProcessorTypeActionChoice();
+    void setDefaultPaymentProcessorTypeActionChoice(String defaultPaymentProcessorTypeActionChoice);
+    
+    String getAllowNullChoice();
+    void setAllowNullChoice(String allowNullChoice);
     
 }
