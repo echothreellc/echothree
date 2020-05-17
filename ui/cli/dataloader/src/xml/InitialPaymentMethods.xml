@@ -250,13 +250,13 @@
                     <paymentProcessorTypeCodeDescription languageIsoName="en" description="Test Type 2 Code B" />
                 </paymentProcessorTypeCode>
             </paymentProcessorTypeCodeType>
-            <paymentProcessorTypeAction paymentProcessorTypeActionName="PREAUTHORIZE" isDefault="true" sortOrder="1" />
-            <paymentProcessorTypeAction paymentProcessorTypeActionName="PREAUTHORIZATION_COMPLETION" isDefault="false" sortOrder="1" />
-            <paymentProcessorTypeAction paymentProcessorTypeActionName="REFUND" isDefault="false" sortOrder="1" />
-            <paymentProcessorTypeAction paymentProcessorTypeActionName="REFUND_EXISTING_TRANSACTION" isDefault="false" sortOrder="1" />
-            <paymentProcessorTypeAction paymentProcessorTypeActionName="REVERSE_TRANSACTION" isDefault="false" sortOrder="1" />
-            <paymentProcessorTypeAction paymentProcessorTypeActionName="VERIFY_CARD" isDefault="false" sortOrder="1" />
-            <paymentProcessorTypeAction paymentProcessorTypeActionName="VOID_TRANSACTION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="PREAUTHORIZE" isDefault="true" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="PREAUTHORIZATION_COMPLETION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REFUND" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REFUND_EXISTING_TRANSACTION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REVERSE_TRANSACTION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="VERIFY_CARD" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="VOID_TRANSACTION" isDefault="false" sortOrder="1" />
         </paymentProcessorType>
     </paymentProcessorTypes>
     <paymentProcessors>
