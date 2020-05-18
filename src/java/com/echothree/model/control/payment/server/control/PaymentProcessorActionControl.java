@@ -64,7 +64,7 @@ public class PaymentProcessorActionControl
                     "WHERE pprcact_pprc_paymentprocessorid = ? AND pprcact_pprctypact_paymentprocessortypeactionid = ? AND pprcact_thrutime = ? " +
                     "FOR UPDATE");
 
-    private PaymentProcessorAction getPaymentProcessorAction(final PaymentProcessor paymentProcessor,
+    public PaymentProcessorAction getPaymentProcessorAction(final PaymentProcessor paymentProcessor,
             final PaymentProcessorTypeAction paymentProcessorTypeAction, final EntityPermission entityPermission) {
         return PaymentProcessorActionFactory.getInstance().getEntityFromQuery(entityPermission, getPaymentProcessorActionQueries,
                 paymentProcessor, paymentProcessorTypeAction, Session.MAX_TIME);
@@ -103,7 +103,7 @@ public class PaymentProcessorActionControl
                     "WHERE pprcact_pprc_paymentprocessorid = ? AND pprcact_thrutime = ? " +
                     "FOR UPDATE");
 
-    private List<PaymentProcessorAction> getPaymentProcessorActionsByPaymentProcessor(final PaymentProcessor paymentProcessor,
+    public List<PaymentProcessorAction> getPaymentProcessorActionsByPaymentProcessor(final PaymentProcessor paymentProcessor,
             final EntityPermission entityPermission) {
         return PaymentProcessorActionFactory.getInstance().getEntitiesFromQuery(entityPermission,
                 getPaymentProcessorActionsByPaymentProcessorQueries,
@@ -131,7 +131,7 @@ public class PaymentProcessorActionControl
                     "WHERE pprcact_pprctypact_paymentprocessortypeactionid = ? AND pprcact_thrutime = ? " +
                     "FOR UPDATE");
 
-    private List<PaymentProcessorAction> getPaymentProcessorActionsByPaymentProcessorTypeAction(final PaymentProcessorTypeAction paymentProcessorTypeAction,
+    public List<PaymentProcessorAction> getPaymentProcessorActionsByPaymentProcessorTypeAction(final PaymentProcessorTypeAction paymentProcessorTypeAction,
             final EntityPermission entityPermission) {
         return PaymentProcessorActionFactory.getInstance().getEntitiesFromQuery(entityPermission,
                 getPaymentProcessorActionsByPaymentProcessorTypeActionQueries,
