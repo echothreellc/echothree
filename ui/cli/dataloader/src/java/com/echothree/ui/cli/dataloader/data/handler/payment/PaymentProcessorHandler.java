@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 public class PaymentProcessorHandler
         extends BaseHandler {
+    
     PaymentService paymentService;
     String paymentProcessorName;
     String entityRef;
@@ -42,6 +43,7 @@ public class PaymentProcessorHandler
         paymentService = PaymentUtil.getHome();
 
         this.paymentProcessorName = paymentProcessorName;
+        this.entityRef = entityRef;
     }
     
     @Override
