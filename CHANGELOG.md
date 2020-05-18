@@ -1,5 +1,21 @@
 # Changelog
 
+## 2020-05-17-01
+
+* Add Payment Processor Type Actions [8](https://gitlab.echothree.com/echothree/echothree/-/issues/8)
+* Add Payment Processor Result Codes [11](https://gitlab.echothree.com/echothree/echothree/-/issues/11)
+* Add Payment Processor Type Code Types [12](https://gitlab.echothree.com/echothree/echothree/-/issues/12)
+* Add Payment Processor Type Codes [13](https://gitlab.echothree.com/echothree/echothree/-/issues/13)
+* Add Payment Processor Actions [22](https://gitlab.echothree.com/echothree/echothree/-/issues/22)
+* Convert Payment Method Types to Versioned Entities [25](https://gitlab.echothree.com/echothree/echothree/-/issues/25)
+* Convert Payment Processor Types to Versioned Entities [27](https://gitlab.echothree.com/echothree/echothree/-/issues/27)
+* Add Optional Parent Shipment Package to Shipment Package Details [28](https://gitlab.echothree.com/echothree/echothree/-/issues/28)
+* Rename Box Type to Package Type [33](https://gitlab.echothree.com/echothree/echothree/-/issues/33)
+* WildFly 19.1.0 Upgrade [35](https://gitlab.echothree.com/echothree/echothree/-/issues/35)
+* Separate BillingControl from PaymentControl [36](https://gitlab.echothree.com/echothree/echothree/-/issues/36)
+* Remove Lot Types [46](https://gitlab.echothree.com/echothree/echothree/-/issues/46)
+* Guava 29.0-jre Upgrade [47](https://gitlab.echothree.com/echothree/echothree/-/issues/47)
+
 ## 2020-05-03-01
 
 * GraphQL Object Addition for appearance (core) [E3-2258](https://www.echothree.com/bugzilla/show_bug.cgi?id=2258)
@@ -40,7 +56,7 @@
 * Update Customer Search and Review Appearance (ui-main) [E3-2554](https://www.echothree.com/bugzilla/show_bug.cgi?id=2554)
 * graphql-java 14.0 / graphql-java-annotations 8.0 Upgrades (graphql) [E3-2555](https://www.echothree.com/bugzilla/show_bug.cgi?id=2555)
 * Cucumber 5.4.2 Upgrade (miscellaneous) [E3-2556](https://www.echothree.com/bugzilla/show_bug.cgi?id=2556)
-* WildFly 19.1.0 Upgrade (miscellaneous) [E3-2557](https://www.echothree.com/bugzilla/show_bug.cgi?id=2557)
+* WildFly 19.0.0 Upgrade (miscellaneous) [E3-2557](https://www.echothree.com/bugzilla/show_bug.cgi?id=2557)
 * ICU4J 66.1 Upgrade (miscellaneous) [E3-2558](https://www.echothree.com/bugzilla/show_bug.cgi?id=2558)
 * jOOQ 3.13.1 Upgrade (miscellaneous) [E3-2559](https://www.echothree.com/bugzilla/show_bug.cgi?id=2559)
 * MySQL Connector/J 8.0.19 Upgrade (miscellaneous) [E3-2560](https://www.echothree.com/bugzilla/show_bug.cgi?id=2560)
@@ -57,7 +73,7 @@
 * Apache Ivy 2.5.0 Upgrade (miscellaneous) [E3-2518](https://www.echothree.com/bugzilla/show_bug.cgi?id=2518)
 * MySQL Connector/J 8.0.18 Upgrade (miscellaneous) [E3-2519](https://www.echothree.com/bugzilla/show_bug.cgi?id=2519)
 * Add CODEOWNERS for GitLab (miscellaneous) [E3-2520](https://www.echothree.com/bugzilla/show_bug.cgi?id=2520)
-* WildFly 19.1.0 Upgrade (miscellaneous) [E3-2521](https://www.echothree.com/bugzilla/show_bug.cgi?id=2521)
+* WildFly 18.0.1 Upgrade (miscellaneous) [E3-2521](https://www.echothree.com/bugzilla/show_bug.cgi?id=2521)
 * GraphQL Mutations Resulting in IllegalStateException (graphql) [E3-2522](https://www.echothree.com/bugzilla/show_bug.cgi?id=2522)
 * 2020 Copyright Update (miscellaneous) [E3-2523](https://www.echothree.com/bugzilla/show_bug.cgi?id=2523)
 * Lucene 8.4.0 Upgrade (index) [E3-2524](https://www.echothree.com/bugzilla/show_bug.cgi?id=2524)
