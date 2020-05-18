@@ -16,8 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.payment;
 
-import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
+import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.form.CreatePaymentProcessorForm;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.control.user.payment.common.result.CreatePaymentProcessorResult;
@@ -34,19 +34,16 @@ public class PaymentProcessorsHandler
     PaymentService paymentService;
     
     /** Creates a new instance of PaymentProcessorsHandler */
-    public PaymentProcessorsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public PaymentProcessorsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws NamingException {
         super(initialDataParser, parentHandler);
         
-        try {
-            paymentService = PaymentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        paymentService = PaymentUtil.getHome();
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
+            throws SAXException, NamingException {
         if(localName.equals("paymentProcessor")) {
             CreatePaymentProcessorForm commandForm = PaymentFormFactory.getCreatePaymentProcessorForm();
             
