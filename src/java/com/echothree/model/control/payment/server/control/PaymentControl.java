@@ -43,6 +43,7 @@ import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.contact.common.pk.PartyContactMechanismPK;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.NameSuffixPK;
 import com.echothree.model.data.party.common.pk.PersonalTitlePK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -85,6 +86,7 @@ import com.echothree.model.data.payment.server.factory.PaymentMethodTypePartyTyp
 import com.echothree.model.data.payment.server.factory.PaymentProcessorDescriptionFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorDetailFactory;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorFactory;
+import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeFactory;
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardSecurityCodeValue;
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardValue;
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodDetailValue;
@@ -94,6 +96,7 @@ import com.echothree.model.data.payment.server.value.PaymentMethodDescriptionVal
 import com.echothree.model.data.payment.server.value.PaymentMethodDetailValue;
 import com.echothree.model.data.payment.server.value.PaymentProcessorDescriptionValue;
 import com.echothree.model.data.payment.server.value.PaymentProcessorDetailValue;
+import com.echothree.model.data.payment.server.value.PaymentProcessorTypeDetailValue;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.sequence.server.entity.Sequence;
@@ -274,12 +277,28 @@ public class PaymentControl
         
         return paymentProcessor;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentProcessor */
+    public PaymentProcessor getPaymentProcessorByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new PaymentProcessorPK(entityInstance.getEntityUniqueId());
+
+        return PaymentProcessorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PaymentProcessor getPaymentProcessorByEntityInstance(final EntityInstance entityInstance) {
+        return getPaymentProcessorByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PaymentProcessor getPaymentProcessorByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getPaymentProcessorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public PaymentProcessorDetailValue getPaymentProcessorDetailValueForUpdate(PaymentProcessor paymentProcessor) {
         return paymentProcessor.getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
     }
-    
-    private PaymentProcessor getPaymentProcessorByName(String paymentProcessorName, EntityPermission entityPermission) {
+
+    public PaymentProcessor getPaymentProcessorByName(String paymentProcessorName, EntityPermission entityPermission) {
         PaymentProcessor paymentProcessor = null;
         
         try {
@@ -319,7 +338,7 @@ public class PaymentControl
     public PaymentProcessorDetailValue getPaymentProcessorDetailValueByNameForUpdate(String paymentProcessorName) {
         return getPaymentProcessorDetailValueForUpdate(getPaymentProcessorByNameForUpdate(paymentProcessorName));
     }
-    
+
     private List<PaymentProcessor> getPaymentProcessors(EntityPermission entityPermission) {
         String query = null;
         
@@ -347,8 +366,8 @@ public class PaymentControl
     public List<PaymentProcessor> getPaymentProcessorsForUpdate() {
         return getPaymentProcessors(EntityPermission.READ_WRITE);
     }
-    
-    private PaymentProcessor getDefaultPaymentProcessor(EntityPermission entityPermission) {
+
+    public PaymentProcessor getDefaultPaymentProcessor(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
