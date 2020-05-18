@@ -636,6 +636,33 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="PaymentProcessorActions" nameSingular="PaymentProcessorAction" columnPrefix="pprcact">
+                    <columns>
+                        <column name="PaymentProcessorActionId" type="EID" nullAllowed="false" />
+                        <column name="PaymentProcessorId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessors" destinationColumn="PaymentProcessorId" />
+                        <column name="PaymentProcessorTypeActionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PaymentProcessorTypeActions" destinationColumn="PaymentProcessorTypeActionId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="PaymentProcessorActionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PaymentProcessorId" />
+                            <indexColumn name="PaymentProcessorTypeActionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="PaymentProcessorId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="PaymentProcessorTypeActionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="PaymentMethods" nameSingular="PaymentMethod" columnPrefix="pm">
                     <columns>
                         <column name="PaymentMethodId" type="EID" nullAllowed="false" />

@@ -16,9 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.data.handler.payment;
 
-import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
-import com.echothree.control.user.payment.common.form.CreatePaymentProcessorDescriptionForm;
+import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.data.handler.BaseHandler;
@@ -31,32 +30,38 @@ import org.xml.sax.SAXException;
 
 public class PaymentProcessorHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     String paymentProcessorName;
     String entityRef;
     
     /** Creates a new instance of PaymentProcessorHandler */
-    public PaymentProcessorHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String paymentProcessorName, String entityRef) {
+    public PaymentProcessorHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String paymentProcessorName, String entityRef)
+            throws NamingException {
         super(initialDataParser, parentHandler);
         
-        try {
-            paymentService = PaymentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
-        
+        paymentService = PaymentUtil.getHome();
+
         this.paymentProcessorName = paymentProcessorName;
+        this.entityRef = entityRef;
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
-        if(localName.equals("paymentProcessorDescription")) {
-            CreatePaymentProcessorDescriptionForm commandForm = PaymentFormFactory.getCreatePaymentProcessorDescriptionForm();
-            
+        if(localName.equals("paymentProcessorAction")) {
+            var commandForm = PaymentFormFactory.getCreatePaymentProcessorActionForm();
+
             commandForm.setPaymentProcessorName(paymentProcessorName);
             commandForm.set(getAttrsMap(attrs));
-            
+
+            checkCommandResult(paymentService.createPaymentProcessorAction(initialDataParser.getUserVisit(), commandForm));
+        } else if(localName.equals("paymentProcessorDescription")) {
+            var commandForm = PaymentFormFactory.getCreatePaymentProcessorDescriptionForm();
+
+            commandForm.setPaymentProcessorName(paymentProcessorName);
+            commandForm.set(getAttrsMap(attrs));
+
             checkCommandResult(paymentService.createPaymentProcessorDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("comments")) {
             initialDataParser.pushHandler(new CommentsHandler(initialDataParser, this, entityRef));

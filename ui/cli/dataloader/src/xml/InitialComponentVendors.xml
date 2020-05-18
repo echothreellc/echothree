@@ -1207,6 +1207,9 @@
             <entityType entityTypeName="PaymentProcessorType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Type" />
             </entityType>
+            <entityType entityTypeName="PaymentProcessorAction" keepAllHistory="false" sortOrder="1">
+                <entityActionDescription languageIsoName="en" description="Payment Processor Action" />
+            </entityType>
             <entityType entityTypeName="PaymentProcessorTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Payment Processor Type Description" />
             </entityType>

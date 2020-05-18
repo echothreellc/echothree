@@ -206,21 +206,33 @@ public interface PaymentService
     CommandResult setDefaultPaymentProcessor(UserVisitPK userVisitPK, SetDefaultPaymentProcessorForm form);
     
     CommandResult deletePaymentProcessor(UserVisitPK userVisitPK, DeletePaymentProcessorForm form);
-    
+
     // -------------------------------------------------------------------------
     //   Payment Processor Descriptions
     // -------------------------------------------------------------------------
-    
+
     CommandResult createPaymentProcessorDescription(UserVisitPK userVisitPK, CreatePaymentProcessorDescriptionForm form);
-    
+
     CommandResult editPaymentProcessorDescription(UserVisitPK userVisitPK, EditPaymentProcessorDescriptionForm form);
 
     CommandResult getPaymentProcessorDescription(UserVisitPK userVisitPK, GetPaymentProcessorDescriptionForm form);
 
     CommandResult getPaymentProcessorDescriptions(UserVisitPK userVisitPK, GetPaymentProcessorDescriptionsForm form);
-    
+
     CommandResult deletePaymentProcessorDescription(UserVisitPK userVisitPK, DeletePaymentProcessorDescriptionForm form);
-    
+
+    // -------------------------------------------------------------------------
+    //   Payment Processor Actions
+    // -------------------------------------------------------------------------
+
+    CommandResult createPaymentProcessorAction(UserVisitPK userVisitPK, CreatePaymentProcessorActionForm form);
+
+//    CommandResult getPaymentProcessorAction(UserVisitPK userVisitPK, GetPaymentProcessorActionForm form);
+//
+//    CommandResult getPaymentProcessorActions(UserVisitPK userVisitPK, GetPaymentProcessorActionsForm form);
+//
+//    CommandResult deletePaymentProcessorAction(UserVisitPK userVisitPK, DeletePaymentProcessorActionForm form);
+
     // -------------------------------------------------------------------------
     //   Payment Methods
     // -------------------------------------------------------------------------

@@ -262,6 +262,13 @@
     <paymentProcessors>
         <paymentProcessor paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="true" sortOrder="1">
             <paymentProcessorDescription languageIsoName="en" description="Test Payment Processor" />
+            <paymentProcessorAction paymentProcessorActionTypeName="PREAUTHORIZE" />
+            <paymentProcessorAction paymentProcessorActionTypeName="PREAUTHORIZATION_COMPLETION" />
+            <paymentProcessorAction paymentProcessorActionTypeName="REFUND" />
+            <paymentProcessorAction paymentProcessorActionTypeName="REFUND_EXISTING_TRANSACTION" />
+            <paymentProcessorAction paymentProcessorActionTypeName="REVERSE_TRANSACTION" />
+            <paymentProcessorAction paymentProcessorActionTypeName="VERIFY_CARD" />
+            <paymentProcessorAction paymentProcessorActionTypeName="VOID_TRANSACTION" />
         </paymentProcessor>
     </paymentProcessors>
     <paymentMethods>

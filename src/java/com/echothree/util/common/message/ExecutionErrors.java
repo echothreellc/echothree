@@ -2198,5 +2198,8 @@ public enum ExecutionErrors {
     DuplicatePaymentProcessorTypeAction,
     UnknownPaymentProcessorTypeAction,
     UnknownDefaultPaymentProcessorTypeAction,
+    DuplicatePaymentProcessorAction,
+    UnknownPaymentProcessorAction,
+    UnknownDefaultPaymentProcessor,
 
 }

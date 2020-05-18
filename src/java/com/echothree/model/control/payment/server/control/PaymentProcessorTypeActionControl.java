@@ -333,6 +333,10 @@ public class PaymentProcessorTypeActionControl
     }
 
     public void deletePaymentProcessorTypeAction(final PaymentProcessorTypeAction paymentProcessorTypeAction, final BasePK deletedBy) {
+        var paymentProcessorActionControl = (PaymentProcessorActionControl) Session.getModelController(PaymentProcessorActionControl.class);
+
+        paymentProcessorActionControl.deletePaymentProcessorActionsByPaymentProcessorTypeAction(paymentProcessorTypeAction, deletedBy);
+        
         var paymentProcessorTypeActionDetail = paymentProcessorTypeAction.getLastDetailForUpdate();
         paymentProcessorTypeActionDetail.setThruTime(session.START_TIME_LONG);
         paymentProcessorTypeActionDetail.store();

@@ -94,18 +94,18 @@ public class PaymentProcessorTypeActionLogic
 
         if(paymentProcessorTypeAction == null) {
             handleExecutionError(UnknownPaymentProcessorTypeActionException.class, eea, ExecutionErrors.UnknownPaymentProcessorTypeAction.name(),
-                    paymentProcessorType, paymentProcessorActionType);
+                    paymentProcessorType.getLastDetail().getPaymentProcessorTypeName(), paymentProcessorActionType.getLastDetail().getPaymentProcessorActionTypeName());
         }
 
         return paymentProcessorTypeAction;
     }
 
-    public PaymentProcessorTypeAction getPaymentProcessorTypeActionByName(final ExecutionErrorAccumulator eea,
+    public PaymentProcessorTypeAction getPaymentProcessorTypeAction(final ExecutionErrorAccumulator eea,
             final PaymentProcessorType paymentProcessorType, final PaymentProcessorActionType paymentProcessorActionType) {
         return getPaymentProcessorTypeAction(eea, paymentProcessorType, paymentProcessorActionType, EntityPermission.READ_ONLY);
     }
 
-    public PaymentProcessorTypeAction getPaymentProcessorTypeActionByNameForUpdate(final ExecutionErrorAccumulator eea,
+    public PaymentProcessorTypeAction getPaymentProcessorTypeActionForUpdate(final ExecutionErrorAccumulator eea,
             final PaymentProcessorType paymentProcessorType, final PaymentProcessorActionType paymentProcessorActionType) {
         return getPaymentProcessorTypeAction(eea, paymentProcessorType, paymentProcessorActionType, EntityPermission.READ_WRITE);
     }

@@ -14,40 +14,20 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.security.common;
+package com.echothree.control.user.payment.common.result;
 
-public enum SecurityRoles {
+import com.echothree.model.control.payment.common.transfer.PaymentProcessorActionTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
+
+public interface GetPaymentProcessorActionsResult
+        extends BaseResult {
     
-    AppearanceTextDecoration,
-    AppearanceTextTransformation,
-    Change,
-    Choices,
-    ContactListContactMechanismPurpose,
-    Create,
-    CreditCard,
-    CustomerTypeContactList,
-    CustomerTypeContactListGroup,
-    Delete,
-    Description,
-    Edit,
-    EntityAttributeEntityAttributeGroup,
-    EntityType,
-    HarmonizedTariffScheduleCodeUse,
-    History,
-    List,
-    Load,
-    PartyType,
-    PartyTypeContactList,
-    PartyTypeContactListGroup,
-    PaymentProcessorAction,
-    PaymentProcessorTypeAction,
-    Review,
-    Search,
-    SecurityRole,
-    Selector,
-    SelectorKind,
-    Translation,
-    UserLogin,
-    WorkflowStep,
+    PaymentProcessorTransfer getPaymentProcessor();
+    void setPaymentProcessor(PaymentProcessorTransfer paymentProcessor);
+    
+    List<PaymentProcessorActionTransfer> getPaymentProcessorActions();
+    void setPaymentProcessorActions(List<PaymentProcessorActionTransfer> paymentProcessorActions);
     
 }
