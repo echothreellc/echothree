@@ -1,0 +1,150 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2020 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.payment.server.logic;
+
+import com.echothree.control.user.payment.common.spec.PaymentProcessorUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorNameException;
+import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorException;
+import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorNameException;
+import com.echothree.model.control.payment.server.control.PaymentControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.payment.server.entity.PaymentProcessor;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
+
+public class PaymentProcessorLogic
+    extends BaseLogic {
+    
+    private PaymentProcessorLogic() {
+        super();
+    }
+    
+    private static class PaymentProcessorLogicHolder {
+        static PaymentProcessorLogic instance = new PaymentProcessorLogic();
+    }
+    
+    public static PaymentProcessorLogic getInstance() {
+        return PaymentProcessorLogicHolder.instance;
+    }
+
+    public PaymentProcessor createPaymentProcessor(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
+            PaymentProcessorType paymentProcessorType, final Boolean isDefault, final Integer sortOrder,
+            final Language language, final String description, final BasePK createdBy) {
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName);
+
+        if(paymentProcessor == null) {
+            paymentProcessor = paymentControl.createPaymentProcessor(paymentProcessorName, paymentProcessorType, isDefault,
+                    sortOrder, createdBy);
+
+            if(description != null) {
+                paymentControl.createPaymentProcessorDescription(paymentProcessor, language, description, createdBy);
+            }
+        } else {
+            handleExecutionError(DuplicatePaymentProcessorNameException.class, eea, ExecutionErrors.DuplicatePaymentProcessorName.name(), paymentProcessorName);
+        }
+
+        return paymentProcessor;
+    }
+
+    public PaymentProcessor getPaymentProcessorByName(final ExecutionErrorAccumulator eea, final String paymentProcessorName,
+            final EntityPermission entityPermission) {
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        PaymentProcessor paymentProcessor = paymentControl.getPaymentProcessorByName(paymentProcessorName, entityPermission);
+
+        if(paymentProcessor == null) {
+            handleExecutionError(UnknownPaymentProcessorNameException.class, eea, ExecutionErrors.UnknownPaymentProcessorName.name(), paymentProcessorName);
+        }
+
+        return paymentProcessor;
+    }
+
+    public PaymentProcessor getPaymentProcessorByName(final ExecutionErrorAccumulator eea, final String paymentProcessorName) {
+        return getPaymentProcessorByName(eea, paymentProcessorName, EntityPermission.READ_ONLY);
+    }
+
+    public PaymentProcessor getPaymentProcessorByNameForUpdate(final ExecutionErrorAccumulator eea, final String paymentProcessorName) {
+        return getPaymentProcessorByName(eea, paymentProcessorName, EntityPermission.READ_WRITE);
+    }
+
+    public PaymentProcessor getPaymentProcessorByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final PaymentProcessorUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+        PaymentProcessor paymentProcessor = null;
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+        String paymentProcessorName = universalSpec.getPaymentProcessorName();
+        int parameterCount = (paymentProcessorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 0:
+                if(allowDefault) {
+                    paymentProcessor = paymentControl.getDefaultPaymentProcessor(entityPermission);
+
+                    if(paymentProcessor == null) {
+                        handleExecutionError(UnknownDefaultPaymentProcessorException.class, eea, ExecutionErrors.UnknownDefaultPaymentProcessor.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+                break;
+            case 1:
+                if(paymentProcessorName == null) {
+                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessor.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        paymentProcessor = paymentControl.getPaymentProcessorByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    paymentProcessor = getPaymentProcessorByName(eea, paymentProcessorName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return paymentProcessor;
+    }
+
+    public PaymentProcessor getPaymentProcessorByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final PaymentProcessorUniversalSpec universalSpec, boolean allowDefault) {
+        return getPaymentProcessorByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public PaymentProcessor getPaymentProcessorByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final PaymentProcessorUniversalSpec universalSpec, boolean allowDefault) {
+        return getPaymentProcessorByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void deletePaymentProcessor(final ExecutionErrorAccumulator eea, final PaymentProcessor paymentProcessor,
+            final BasePK deletedBy) {
+        var paymentControl = (PaymentControl)Session.getModelController(PaymentControl.class);
+
+        paymentControl.deletePaymentProcessor(paymentProcessor, deletedBy);
+    }
+
+}
