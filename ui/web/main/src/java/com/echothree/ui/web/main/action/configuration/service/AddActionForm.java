@@ -43,25 +43,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupProtocolChoices() {
+    public void setupProtocolChoices()
+            throws NamingException {
         if(protocolChoices == null) {
-            try {
-                GetProtocolChoicesForm form = CoreUtil.getHome().getGetProtocolChoicesForm();
+            GetProtocolChoicesForm form = CoreUtil.getHome().getGetProtocolChoicesForm();
 
-                form.setDefaultProtocolChoice(protocolChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultProtocolChoice(protocolChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = CoreUtil.getHome().getProtocolChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetProtocolChoicesResult getProtocolChoicesResult = (GetProtocolChoicesResult)executionResult.getResult();
-                protocolChoices = getProtocolChoicesResult.getProtocolChoices();
+            CommandResult commandResult = CoreUtil.getHome().getProtocolChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetProtocolChoicesResult getProtocolChoicesResult = (GetProtocolChoicesResult)executionResult.getResult();
+            protocolChoices = getProtocolChoicesResult.getProtocolChoices();
 
-                if(protocolChoice == null) {
-                    protocolChoice = protocolChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, protocolChoices remains null, no default
+            if(protocolChoice == null) {
+                protocolChoice = protocolChoices.getDefaultValue();
             }
         }
     }
@@ -82,7 +78,8 @@ public class AddActionForm
         this.port = port;
     }
 
-    public String getProtocolChoice() {
+    public String getProtocolChoice()
+            throws NamingException {
         setupProtocolChoices();
         return protocolChoice;
     }
@@ -91,7 +88,8 @@ public class AddActionForm
         this.protocolChoice = protocolChoice;
     }
 
-    public List<LabelValueBean> getProtocolChoices() {
+    public List<LabelValueBean> getProtocolChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupProtocolChoices();

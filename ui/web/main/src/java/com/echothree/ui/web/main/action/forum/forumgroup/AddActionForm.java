@@ -42,27 +42,23 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupIconChoices() {
+    private void setupIconChoices()
+            throws NamingException {
         if(iconChoices == null) {
-            try {
-                GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
-                
-                // TODO: iconUsageType
-                commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_GROUP);
-                commandForm.setDefaultIconChoice(iconChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetIconChoicesResult getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
-                iconChoices = getIconChoicesResult.getIconChoices();
-                
-                if(iconChoice == null)
-                    iconChoice = iconChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, iconChoices remains null, no default
-            }
+            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+
+            // TODO: iconUsageType
+            commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_GROUP);
+            commandForm.setDefaultIconChoice(iconChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetIconChoicesResult getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
+            iconChoices = getIconChoicesResult.getIconChoices();
+
+            if(iconChoice == null)
+                iconChoice = iconChoices.getDefaultValue();
         }
     }
     
@@ -74,7 +70,8 @@ public class AddActionForm
         return forumGroupName;
     }
     
-    public List<LabelValueBean> getIconChoices() {
+    public List<LabelValueBean> getIconChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupIconChoices();
@@ -88,7 +85,8 @@ public class AddActionForm
         this.iconChoice = iconChoice;
     }
     
-    public String getIconChoice() {
+    public String getIconChoice()
+            throws NamingException {
         setupIconChoices();
         return iconChoice;
     }

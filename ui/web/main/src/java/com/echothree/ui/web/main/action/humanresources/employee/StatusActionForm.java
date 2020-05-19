@@ -38,26 +38,22 @@ public class StatusActionForm
     private String employeeName;
     private String employeeStatusChoice;
     
-    public void setupEmployeeStatusChoices() {
+    public void setupEmployeeStatusChoices()
+            throws NamingException {
         if(employeeStatusChoices == null) {
-            try {
-                GetEmployeeStatusChoicesForm form = PartyUtil.getHome().getGetEmployeeStatusChoicesForm();
-                
-                form.setEmployeeName(employeeName);
-                form.setDefaultEmployeeStatusChoice(employeeStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getEmployeeStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmployeeStatusChoicesResult result = (GetEmployeeStatusChoicesResult)executionResult.getResult();
-                employeeStatusChoices = result.getEmployeeStatusChoices();
-                
-                if(employeeStatusChoice == null)
-                    employeeStatusChoice = employeeStatusChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, employeeStatusChoices remains null, no default
-            }
+            GetEmployeeStatusChoicesForm form = PartyUtil.getHome().getGetEmployeeStatusChoicesForm();
+
+            form.setEmployeeName(employeeName);
+            form.setDefaultEmployeeStatusChoice(employeeStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = PartyUtil.getHome().getEmployeeStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetEmployeeStatusChoicesResult result = (GetEmployeeStatusChoicesResult)executionResult.getResult();
+            employeeStatusChoices = result.getEmployeeStatusChoices();
+
+            if(employeeStatusChoice == null)
+                employeeStatusChoice = employeeStatusChoices.getDefaultValue();
         }
     }
     
@@ -85,7 +81,8 @@ public class StatusActionForm
         this.employeeStatusChoice = employeeStatusChoice;
     }
     
-    public List<LabelValueBean> getEmployeeStatusChoices() {
+    public List<LabelValueBean> getEmployeeStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEmployeeStatusChoices();

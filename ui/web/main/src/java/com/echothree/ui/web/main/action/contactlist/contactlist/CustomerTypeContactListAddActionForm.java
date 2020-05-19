@@ -40,25 +40,21 @@ public class CustomerTypeContactListAddActionForm
     private String customerTypeChoice;
     private Boolean addWhenCreated;
     
-    private void setupCustomerTypeChoices() {
+    private void setupCustomerTypeChoices()
+            throws NamingException {
         if(customerTypeChoices == null) {
-            try {
-                GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
+            GetCustomerTypeChoicesForm form = CustomerUtil.getHome().getGetCustomerTypeChoicesForm();
 
-                form.setDefaultCustomerTypeChoice(customerTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setDefaultCustomerTypeChoice(customerTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCustomerTypeChoicesResult getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
-                customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
+            CommandResult commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCustomerTypeChoicesResult getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
 
-                if(customerTypeChoice == null) {
-                    customerTypeChoice = customerTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, customerTypeChoices remains null, no default
+            if(customerTypeChoice == null) {
+                customerTypeChoice = customerTypeChoices.getDefaultValue();
             }
         }
     }
@@ -71,7 +67,8 @@ public class CustomerTypeContactListAddActionForm
         return contactListName;
     }
     
-    public String getCustomerTypeChoice() {
+    public String getCustomerTypeChoice()
+            throws NamingException {
         setupCustomerTypeChoices();
 
         return customerTypeChoice;
@@ -81,7 +78,8 @@ public class CustomerTypeContactListAddActionForm
         this.customerTypeChoice = customerTypeChoice;
     }
 
-    public List<LabelValueBean> getCustomerTypeChoices() {
+    public List<LabelValueBean> getCustomerTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupCustomerTypeChoices();

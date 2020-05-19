@@ -39,26 +39,22 @@ public class AddActionForm
     private String entranceWorkflowName;
     private String entranceWorkflowStepChoice;
 
-    private void setupEntranceWorkflowStepChoices() {
+    private void setupEntranceWorkflowStepChoices()
+            throws NamingException {
         if(entranceWorkflowStepChoices == null) {
-            try {
-                GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
-                form.setWorkflowName(entranceWorkflowName);
-                form.setDefaultWorkflowStepChoice(entranceWorkflowStepChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setWorkflowName(entranceWorkflowName);
+            form.setDefaultWorkflowStepChoice(entranceWorkflowStepChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
-                entranceWorkflowStepChoices = result.getWorkflowStepChoices();
+            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            entranceWorkflowStepChoices = result.getWorkflowStepChoices();
 
-                if(entranceWorkflowStepChoice == null) {
-                    entranceWorkflowStepChoice = entranceWorkflowStepChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, entranceWorkflowStepChoices remains null, no default
+            if(entranceWorkflowStepChoice == null) {
+                entranceWorkflowStepChoice = entranceWorkflowStepChoices.getDefaultValue();
             }
         }
     }
@@ -105,7 +101,8 @@ public class AddActionForm
         this.entranceWorkflowName = entranceWorkflowName;
     }
 
-    public String getEntranceWorkflowStepChoice() {
+    public String getEntranceWorkflowStepChoice()
+            throws NamingException {
         setupEntranceWorkflowStepChoices();
         
         return entranceWorkflowStepChoice;
@@ -115,7 +112,8 @@ public class AddActionForm
         this.entranceWorkflowStepChoice = entranceWorkflowStepChoice;
     }
 
-    public List<LabelValueBean> getEntranceWorkflowStepChoices() {
+    public List<LabelValueBean> getEntranceWorkflowStepChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupEntranceWorkflowStepChoices();

@@ -49,50 +49,42 @@ public class AddActionForm
     private String filterItemSelectorChoice;
     private String description;
     
-    private void setupFilterAdjustmentChoices() {
+    private void setupFilterAdjustmentChoices()
+            throws NamingException {
         if(filterAdjustmentChoices == null) {
-            try {
-                GetFilterAdjustmentChoicesForm form = FilterUtil.getHome().getGetFilterAdjustmentChoicesForm();
-                
-                form.setFilterKindName(filterKindName);
-                form.setDefaultFilterAdjustmentChoice(filterAdjustmentChoice);
-                form.setInitialAdjustmentsOnly(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetFilterAdjustmentChoicesResult result = (GetFilterAdjustmentChoicesResult)executionResult.getResult();
-                filterAdjustmentChoices = result.getFilterAdjustmentChoices();
-                
-                if(filterAdjustmentChoice == null)
-                    filterAdjustmentChoice = filterAdjustmentChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, filterAdjustmentChoices remains null, no default
-            }
+            GetFilterAdjustmentChoicesForm form = FilterUtil.getHome().getGetFilterAdjustmentChoicesForm();
+
+            form.setFilterKindName(filterKindName);
+            form.setDefaultFilterAdjustmentChoice(filterAdjustmentChoice);
+            form.setInitialAdjustmentsOnly(Boolean.FALSE.toString());
+
+            CommandResult commandResult = FilterUtil.getHome().getFilterAdjustmentChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetFilterAdjustmentChoicesResult result = (GetFilterAdjustmentChoicesResult)executionResult.getResult();
+            filterAdjustmentChoices = result.getFilterAdjustmentChoices();
+
+            if(filterAdjustmentChoice == null)
+                filterAdjustmentChoice = filterAdjustmentChoices.getDefaultValue();
         }
     }
     
-    private void setupFilterItemSelectorChoices() {
+    private void setupFilterItemSelectorChoices()
+            throws NamingException {
         if(filterItemSelectorChoices == null) {
-            try {
-                GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
-                
-                form.setSelectorKindName(SelectorConstants.SelectorKind_ITEM);
-                form.setSelectorTypeName(SelectorConstants.SelectorType_FILTER);
-                form.setDefaultSelectorChoice(filterItemSelectorChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
-                filterItemSelectorChoices = result.getSelectorChoices();
-                
-                if(filterItemSelectorChoice == null)
-                    filterItemSelectorChoice = filterItemSelectorChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, selectorChoices remains null, no default
-            }
+            GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
+
+            form.setSelectorKindName(SelectorConstants.SelectorKind_ITEM);
+            form.setSelectorTypeName(SelectorConstants.SelectorType_FILTER);
+            form.setDefaultSelectorChoice(filterItemSelectorChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSelectorChoicesResult result = (GetSelectorChoicesResult)executionResult.getResult();
+            filterItemSelectorChoices = result.getSelectorChoices();
+
+            if(filterItemSelectorChoice == null)
+                filterItemSelectorChoice = filterItemSelectorChoices.getDefaultValue();
         }
     }
     
@@ -136,7 +128,8 @@ public class AddActionForm
         this.filterStepElementName = filterStepElementName;
     }
     
-    public List<LabelValueBean> getFilterAdjustmentChoices() {
+    public List<LabelValueBean> getFilterAdjustmentChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupFilterAdjustmentChoices();
@@ -150,12 +143,14 @@ public class AddActionForm
         this.filterAdjustmentChoice = filterAdjustmentChoice;
     }
     
-    public String getFilterAdjustmentChoice() {
+    public String getFilterAdjustmentChoice()
+            throws NamingException {
         setupFilterAdjustmentChoices();
         return filterAdjustmentChoice;
     }
     
-    public List<LabelValueBean> getFilterItemSelectorChoices() {
+    public List<LabelValueBean> getFilterItemSelectorChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupFilterItemSelectorChoices();
@@ -169,7 +164,8 @@ public class AddActionForm
         this.filterItemSelectorChoice = filterItemSelectorChoice;
     }
     
-    public String getFilterItemSelectorChoice() {
+    public String getFilterItemSelectorChoice()
+            throws NamingException {
         setupFilterItemSelectorChoices();
         return filterItemSelectorChoice;
     }

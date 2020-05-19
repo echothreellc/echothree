@@ -51,74 +51,62 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupScheduledTimeUnitOfMeasureTypeChoices() {
+    private void setupScheduledTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(scheduledTimeUnitOfMeasureTypeChoices == null) {
-            try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                form.setDefaultUnitOfMeasureTypeChoice(scheduledTimeUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            form.setDefaultUnitOfMeasureTypeChoice(scheduledTimeUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                scheduledTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            scheduledTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
-                if(scheduledTimeUnitOfMeasureTypeChoice == null) {
-                    scheduledTimeUnitOfMeasureTypeChoice = scheduledTimeUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            if(scheduledTimeUnitOfMeasureTypeChoice == null) {
+                scheduledTimeUnitOfMeasureTypeChoice = scheduledTimeUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupEstimatedTimeAllowedUnitOfMeasureTypeChoices() {
+    private void setupEstimatedTimeAllowedUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(estimatedTimeAllowedUnitOfMeasureTypeChoices == null) {
-            try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                form.setDefaultUnitOfMeasureTypeChoice(estimatedTimeAllowedUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            form.setDefaultUnitOfMeasureTypeChoice(estimatedTimeAllowedUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                estimatedTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            estimatedTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
-                if(estimatedTimeAllowedUnitOfMeasureTypeChoice == null) {
-                    estimatedTimeAllowedUnitOfMeasureTypeChoice = estimatedTimeAllowedUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            if(estimatedTimeAllowedUnitOfMeasureTypeChoice == null) {
+                estimatedTimeAllowedUnitOfMeasureTypeChoice = estimatedTimeAllowedUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupMaximumTimeAllowedUnitOfMeasureTypeChoices() {
+    private void setupMaximumTimeAllowedUnitOfMeasureTypeChoices()
+            throws NamingException {
         if(maximumTimeAllowedUnitOfMeasureTypeChoices == null) {
-            try {
-                GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
+            GetUnitOfMeasureTypeChoicesForm form = UomUtil.getHome().getGetUnitOfMeasureTypeChoicesForm();
 
-                form.setDefaultUnitOfMeasureTypeChoice(maximumTimeAllowedUnitOfMeasureTypeChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
+            form.setDefaultUnitOfMeasureTypeChoice(maximumTimeAllowedUnitOfMeasureTypeChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+            form.setUnitOfMeasureKindUseTypeName(UomConstants.UnitOfMeasureKindUseType_TIME);
 
-                CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
-                maximumTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
+            CommandResult commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetUnitOfMeasureTypeChoicesResult getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            maximumTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
-                if(maximumTimeAllowedUnitOfMeasureTypeChoice == null) {
-                    maximumTimeAllowedUnitOfMeasureTypeChoice = maximumTimeAllowedUnitOfMeasureTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, unitOfMeasureTypeChoices remains null, no default
+            if(maximumTimeAllowedUnitOfMeasureTypeChoice == null) {
+                maximumTimeAllowedUnitOfMeasureTypeChoice = maximumTimeAllowedUnitOfMeasureTypeChoices.getDefaultValue();
             }
         }
     }
@@ -147,7 +135,8 @@ public class AddActionForm
         this.scheduledTime = scheduledTime;
     }
 
-    public List<LabelValueBean> getScheduledTimeUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getScheduledTimeUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupScheduledTimeUnitOfMeasureTypeChoices();
@@ -158,7 +147,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getScheduledTimeUnitOfMeasureTypeChoice() {
+    public String getScheduledTimeUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupScheduledTimeUnitOfMeasureTypeChoices();
         return scheduledTimeUnitOfMeasureTypeChoice;
     }
@@ -175,7 +165,8 @@ public class AddActionForm
         this.estimatedTimeAllowed = estimatedTimeAllowed;
     }
 
-    public List<LabelValueBean> getEstimatedTimeAllowedUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getEstimatedTimeAllowedUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupEstimatedTimeAllowedUnitOfMeasureTypeChoices();
@@ -186,7 +177,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getEstimatedTimeAllowedUnitOfMeasureTypeChoice() {
+    public String getEstimatedTimeAllowedUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupEstimatedTimeAllowedUnitOfMeasureTypeChoices();
         return estimatedTimeAllowedUnitOfMeasureTypeChoice;
     }
@@ -203,7 +195,8 @@ public class AddActionForm
         this.maximumTimeAllowed = maximumTimeAllowed;
     }
 
-    public List<LabelValueBean> getMaximumTimeAllowedUnitOfMeasureTypeChoices() {
+    public List<LabelValueBean> getMaximumTimeAllowedUnitOfMeasureTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupMaximumTimeAllowedUnitOfMeasureTypeChoices();
@@ -214,7 +207,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getMaximumTimeAllowedUnitOfMeasureTypeChoice() {
+    public String getMaximumTimeAllowedUnitOfMeasureTypeChoice()
+            throws NamingException {
         setupMaximumTimeAllowedUnitOfMeasureTypeChoices();
         return maximumTimeAllowedUnitOfMeasureTypeChoice;
     }

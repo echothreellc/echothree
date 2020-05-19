@@ -43,25 +43,21 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    public void setupWorkflowStepTypeChoices() {
+    public void setupWorkflowStepTypeChoices()
+            throws NamingException {
         if(workflowStepTypeChoices == null) {
-            try {
-                GetWorkflowStepTypeChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepTypeChoicesForm();
-                
-                form.setDefaultWorkflowStepTypeChoice(workflowStepTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkflowStepTypeChoicesResult result = (GetWorkflowStepTypeChoicesResult)executionResult.getResult();
-                workflowStepTypeChoices = result.getWorkflowStepTypeChoices();
-                
-                if(workflowStepTypeChoice == null) {
-                    workflowStepTypeChoice = workflowStepTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, workflowStepTypeChoices remains null, no default
+            GetWorkflowStepTypeChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepTypeChoicesForm();
+
+            form.setDefaultWorkflowStepTypeChoice(workflowStepTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetWorkflowStepTypeChoicesResult result = (GetWorkflowStepTypeChoicesResult)executionResult.getResult();
+            workflowStepTypeChoices = result.getWorkflowStepTypeChoices();
+
+            if(workflowStepTypeChoice == null) {
+                workflowStepTypeChoice = workflowStepTypeChoices.getDefaultValue();
             }
         }
     }
@@ -82,7 +78,8 @@ public class AddActionForm
         return workflowStepName;
     }
     
-    public List<LabelValueBean> getWorkflowStepTypeChoices() {
+    public List<LabelValueBean> getWorkflowStepTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupWorkflowStepTypeChoices();
@@ -97,7 +94,8 @@ public class AddActionForm
         this.workflowStepTypeChoice = workflowStepTypeChoice;
     }
     
-    public String getWorkflowStepTypeChoice() {
+    public String getWorkflowStepTypeChoice()
+            throws NamingException {
         setupWorkflowStepTypeChoices();
         
         return workflowStepTypeChoice;
