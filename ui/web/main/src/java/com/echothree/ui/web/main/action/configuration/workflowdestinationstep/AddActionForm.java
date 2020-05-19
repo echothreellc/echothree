@@ -40,26 +40,22 @@ public class AddActionForm
     private String destinationWorkflowName;
     private String destinationWorkflowStepChoice;
 
-    private void setupDestinationWorkflowStepChoices() {
+    private void setupDestinationWorkflowStepChoices()
+            throws NamingException {
         if(destinationWorkflowStepChoices == null) {
-            try {
-                GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
 
-                form.setWorkflowName(destinationWorkflowName);
-                form.setDefaultWorkflowStepChoice(destinationWorkflowStepChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
+            form.setWorkflowName(destinationWorkflowName);
+            form.setDefaultWorkflowStepChoice(destinationWorkflowStepChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
-                destinationWorkflowStepChoices = result.getWorkflowStepChoices();
+            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            destinationWorkflowStepChoices = result.getWorkflowStepChoices();
 
-                if(destinationWorkflowStepChoice == null) {
-                    destinationWorkflowStepChoice = destinationWorkflowStepChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, destinationWorkflowStepChoices remains null, no default
+            if(destinationWorkflowStepChoice == null) {
+                destinationWorkflowStepChoice = destinationWorkflowStepChoices.getDefaultValue();
             }
         }
     }
@@ -120,7 +116,8 @@ public class AddActionForm
         this.destinationWorkflowName = destinationWorkflowName;
     }
 
-    public String getDestinationWorkflowStepChoice() {
+    public String getDestinationWorkflowStepChoice()
+            throws NamingException {
         setupDestinationWorkflowStepChoices();
         
         return destinationWorkflowStepChoice;
@@ -130,7 +127,8 @@ public class AddActionForm
         this.destinationWorkflowStepChoice = destinationWorkflowStepChoice;
     }
 
-    public List<LabelValueBean> getDestinationWorkflowStepChoices() {
+    public List<LabelValueBean> getDestinationWorkflowStepChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupDestinationWorkflowStepChoices();

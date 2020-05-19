@@ -38,26 +38,22 @@ public class AvailabilityActionForm
     private String employeeName;
     private String employeeAvailabilityChoice;
     
-    public void setupEmployeeAvailabilityChoices() {
+    public void setupEmployeeAvailabilityChoices()
+            throws NamingException {
         if(employeeAvailabilityChoices == null) {
-            try {
-                GetEmployeeAvailabilityChoicesForm form = PartyUtil.getHome().getGetEmployeeAvailabilityChoicesForm();
-                
-                form.setEmployeeName(employeeName);
-                form.setDefaultEmployeeAvailabilityChoice(employeeAvailabilityChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getEmployeeAvailabilityChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetEmployeeAvailabilityChoicesResult result = (GetEmployeeAvailabilityChoicesResult)executionResult.getResult();
-                employeeAvailabilityChoices = result.getEmployeeAvailabilityChoices();
-                
-                if(employeeAvailabilityChoice == null)
-                    employeeAvailabilityChoice = employeeAvailabilityChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, employeeAvailabilityChoices remains null, no default
-            }
+            GetEmployeeAvailabilityChoicesForm form = PartyUtil.getHome().getGetEmployeeAvailabilityChoicesForm();
+
+            form.setEmployeeName(employeeName);
+            form.setDefaultEmployeeAvailabilityChoice(employeeAvailabilityChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = PartyUtil.getHome().getEmployeeAvailabilityChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetEmployeeAvailabilityChoicesResult result = (GetEmployeeAvailabilityChoicesResult)executionResult.getResult();
+            employeeAvailabilityChoices = result.getEmployeeAvailabilityChoices();
+
+            if(employeeAvailabilityChoice == null)
+                employeeAvailabilityChoice = employeeAvailabilityChoices.getDefaultValue();
         }
     }
     
@@ -85,7 +81,8 @@ public class AvailabilityActionForm
         this.employeeAvailabilityChoice = employeeAvailabilityChoice;
     }
     
-    public List<LabelValueBean> getEmployeeAvailabilityChoices() {
+    public List<LabelValueBean> getEmployeeAvailabilityChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEmployeeAvailabilityChoices();

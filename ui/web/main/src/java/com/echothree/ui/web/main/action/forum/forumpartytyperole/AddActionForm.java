@@ -43,48 +43,40 @@ public class AddActionForm
     private String partyTypeChoice;
     private String forumRoleTypeChoice;
     
-    private void setupPartyTypeChoices() {
+    private void setupPartyTypeChoices()
+            throws NamingException {
         if(partyTypeChoices == null) {
-            try {
-                GetPartyTypeChoicesForm form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
-                
-                form.setDefaultPartyTypeChoice(partyTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetPartyTypeChoicesResult getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
-                partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
-                
-                if(partyTypeChoice == null) {
-                    partyTypeChoice = partyTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, partyTypeChoices remains null, no default
+            GetPartyTypeChoicesForm form = PartyUtil.getHome().getGetPartyTypeChoicesForm();
+
+            form.setDefaultPartyTypeChoice(partyTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetPartyTypeChoicesResult getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
+            partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
+
+            if(partyTypeChoice == null) {
+                partyTypeChoice = partyTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupForumRoleTypeChoices() {
+    private void setupForumRoleTypeChoices()
+            throws NamingException {
         if(forumRoleTypeChoices == null) {
-            try {
-                GetForumRoleTypeChoicesForm form = ForumUtil.getHome().getGetForumRoleTypeChoicesForm();
-                
-                form.setDefaultForumRoleTypeChoice(forumRoleTypeChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ForumUtil.getHome().getForumRoleTypeChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumRoleTypeChoicesResult getForumRoleTypeChoicesResult = (GetForumRoleTypeChoicesResult)executionResult.getResult();
-                forumRoleTypeChoices = getForumRoleTypeChoicesResult.getForumRoleTypeChoices();
-                
-                if(forumRoleTypeChoice == null) {
-                    forumRoleTypeChoice = forumRoleTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, forumRoleTypeChoices remains null, no default
+            GetForumRoleTypeChoicesForm form = ForumUtil.getHome().getGetForumRoleTypeChoicesForm();
+
+            form.setDefaultForumRoleTypeChoice(forumRoleTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ForumUtil.getHome().getForumRoleTypeChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetForumRoleTypeChoicesResult getForumRoleTypeChoicesResult = (GetForumRoleTypeChoicesResult)executionResult.getResult();
+            forumRoleTypeChoices = getForumRoleTypeChoicesResult.getForumRoleTypeChoices();
+
+            if(forumRoleTypeChoice == null) {
+                forumRoleTypeChoice = forumRoleTypeChoices.getDefaultValue();
             }
         }
     }
@@ -97,7 +89,8 @@ public class AddActionForm
         this.forumName = forumName;
     }
     
-    public String getPartyTypeChoice() {
+    public String getPartyTypeChoice()
+            throws NamingException {
         setupPartyTypeChoices();
         
         return partyTypeChoice;
@@ -107,7 +100,8 @@ public class AddActionForm
         this.partyTypeChoice = partyTypeChoice;
     }
     
-    public List<LabelValueBean> getPartyTypeChoices() {
+    public List<LabelValueBean> getPartyTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupPartyTypeChoices();
@@ -118,7 +112,8 @@ public class AddActionForm
         return choices;
     }
     
-    public String getForumRoleTypeChoice() {
+    public String getForumRoleTypeChoice()
+            throws NamingException {
         setupForumRoleTypeChoices();
         
         return forumRoleTypeChoice;
@@ -128,7 +123,8 @@ public class AddActionForm
         this.forumRoleTypeChoice = forumRoleTypeChoice;
     }
     
-    public List<LabelValueBean> getForumRoleTypeChoices() {
+    public List<LabelValueBean> getForumRoleTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupForumRoleTypeChoices();

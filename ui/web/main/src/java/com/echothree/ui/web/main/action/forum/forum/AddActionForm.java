@@ -57,94 +57,78 @@ public class AddActionForm
     private String sortOrder;
     private String description;
     
-    private void setupForumTypeChoices() {
+    private void setupForumTypeChoices()
+            throws NamingException {
         if(forumTypeChoices == null) {
-            try {
-                GetForumTypeChoicesForm commandForm = ForumUtil.getHome().getGetForumTypeChoicesForm();
-                
-                commandForm.setDefaultForumTypeChoice(forumTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ForumUtil.getHome().getForumTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumTypeChoicesResult result = (GetForumTypeChoicesResult)executionResult.getResult();
-                forumTypeChoices = result.getForumTypeChoices();
-                
-                if(forumTypeChoice == null)
-                    forumTypeChoice = forumTypeChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, forumTypeChoices remains null, no default
-            }
+            GetForumTypeChoicesForm commandForm = ForumUtil.getHome().getGetForumTypeChoicesForm();
+
+            commandForm.setDefaultForumTypeChoice(forumTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ForumUtil.getHome().getForumTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetForumTypeChoicesResult result = (GetForumTypeChoicesResult)executionResult.getResult();
+            forumTypeChoices = result.getForumTypeChoices();
+
+            if(forumTypeChoice == null)
+                forumTypeChoice = forumTypeChoices.getDefaultValue();
         }
     }
     
-    private void setupIconChoices() {
+    private void setupIconChoices()
+            throws NamingException {
         if(iconChoices == null) {
-            try {
-                GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
-                
-                commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM);
-                commandForm.setDefaultIconChoice(iconChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetIconChoicesResult getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
-                iconChoices = getIconChoicesResult.getIconChoices();
-                
-                if(iconChoice == null)
-                    iconChoice = iconChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, iconChoices remains null, no default
-            }
+            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+
+            commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM);
+            commandForm.setDefaultIconChoice(iconChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetIconChoicesResult getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
+            iconChoices = getIconChoicesResult.getIconChoices();
+
+            if(iconChoice == null)
+                iconChoice = iconChoices.getDefaultValue();
         }
     }
     
-    private void setupForumThreadSequenceChoices() {
+    private void setupForumThreadSequenceChoices()
+            throws NamingException {
         if(forumThreadSequenceChoices == null) {
-            try {
-                GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                commandForm.setSequenceTypeName(SequenceTypes.FORUM_THREAD.name());
-                commandForm.setDefaultSequenceChoice(forumThreadSequenceChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
-                forumThreadSequenceChoices = result.getSequenceChoices();
-                
-                if(forumThreadSequenceChoice == null)
-                    forumThreadSequenceChoice = forumThreadSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, forumThreadSequenceChoices remains null, no default
-            }
+            GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+
+            commandForm.setSequenceTypeName(SequenceTypes.FORUM_THREAD.name());
+            commandForm.setDefaultSequenceChoice(forumThreadSequenceChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            forumThreadSequenceChoices = result.getSequenceChoices();
+
+            if(forumThreadSequenceChoice == null)
+                forumThreadSequenceChoice = forumThreadSequenceChoices.getDefaultValue();
         }
     }
     
-    private void setupForumMessageSequenceChoices() {
+    private void setupForumMessageSequenceChoices()
+            throws NamingException {
         if(forumMessageSequenceChoices == null) {
-            try {
-                GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
-                
-                commandForm.setSequenceTypeName(SequenceTypes.FORUM_MESSAGE.name());
-                commandForm.setDefaultSequenceChoice(forumMessageSequenceChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
-                forumMessageSequenceChoices = result.getSequenceChoices();
-                
-                if(forumMessageSequenceChoice == null)
-                    forumMessageSequenceChoice = forumMessageSequenceChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, forumMessageSequenceChoices remains null, no default
-            }
+            GetSequenceChoicesForm commandForm = SequenceUtil.getHome().getGetSequenceChoicesForm();
+
+            commandForm.setSequenceTypeName(SequenceTypes.FORUM_MESSAGE.name());
+            commandForm.setDefaultSequenceChoice(forumMessageSequenceChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetSequenceChoicesResult result = (GetSequenceChoicesResult)executionResult.getResult();
+            forumMessageSequenceChoices = result.getSequenceChoices();
+
+            if(forumMessageSequenceChoice == null)
+                forumMessageSequenceChoice = forumMessageSequenceChoices.getDefaultValue();
         }
     }
     
@@ -156,7 +140,8 @@ public class AddActionForm
         return forumName;
     }
     
-    public List<LabelValueBean> getForumTypeChoices() {
+    public List<LabelValueBean> getForumTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupForumTypeChoices();
@@ -170,12 +155,14 @@ public class AddActionForm
         this.forumTypeChoice = forumTypeChoice;
     }
     
-    public String getForumTypeChoice() {
+    public String getForumTypeChoice()
+            throws NamingException {
         setupForumTypeChoices();
         return forumTypeChoice;
     }
     
-    public List<LabelValueBean> getIconChoices() {
+    public List<LabelValueBean> getIconChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupIconChoices();
@@ -189,12 +176,14 @@ public class AddActionForm
         this.iconChoice = iconChoice;
     }
     
-    public String getIconChoice() {
+    public String getIconChoice()
+            throws NamingException {
         setupIconChoices();
         return iconChoice;
     }
     
-    public List<LabelValueBean> getForumThreadSequenceChoices() {
+    public List<LabelValueBean> getForumThreadSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupForumThreadSequenceChoices();
@@ -208,12 +197,14 @@ public class AddActionForm
         this.forumThreadSequenceChoice = forumThreadSequenceChoice;
     }
     
-    public String getForumThreadSequenceChoice() {
+    public String getForumThreadSequenceChoice()
+            throws NamingException {
         setupForumThreadSequenceChoices();
         return forumThreadSequenceChoice;
     }
     
-    public List<LabelValueBean> getForumMessageSequenceChoices() {
+    public List<LabelValueBean> getForumMessageSequenceChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupForumMessageSequenceChoices();
@@ -227,7 +218,8 @@ public class AddActionForm
         this.forumMessageSequenceChoice = forumMessageSequenceChoice;
     }
     
-    public String getForumMessageSequenceChoice() {
+    public String getForumMessageSequenceChoice()
+            throws NamingException {
         setupForumMessageSequenceChoices();
         return forumMessageSequenceChoice;
     }

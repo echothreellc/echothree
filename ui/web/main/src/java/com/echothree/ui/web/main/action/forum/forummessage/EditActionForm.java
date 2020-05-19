@@ -57,119 +57,102 @@ public class EditActionForm
     private String contentMimeTypeChoice;
     private String content;
     
-    private void setupForumThreadIconChoices() {
+    private void setupForumThreadIconChoices()
+            throws NamingException {
         if(forumThreadIconChoices == null) {
-            try {
-                GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
-                
-                commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_THREAD);
-                commandForm.setDefaultIconChoice(forumThreadIconChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
-                forumThreadIconChoices = result.getIconChoices();
-                
-                if(forumThreadIconChoice == null) {
-                    forumThreadIconChoice = forumThreadIconChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, forumThreadIconChoices remains null, no default
+            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+
+            commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_THREAD);
+            commandForm.setDefaultIconChoice(forumThreadIconChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
+            forumThreadIconChoices = result.getIconChoices();
+
+            if(forumThreadIconChoice == null) {
+                forumThreadIconChoice = forumThreadIconChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupForumMessageIconChoices() {
+    private void setupForumMessageIconChoices()
+            throws NamingException {
         if(forumMessageIconChoices == null) {
-            try {
-                GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
-                
-                commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_MESSAGE);
-                commandForm.setDefaultIconChoice(forumMessageIconChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
-                forumMessageIconChoices = result.getIconChoices();
-                
-                if(forumMessageIconChoice == null) {
-                    forumMessageIconChoice = forumMessageIconChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, forumMessageIconChoices remains null, no default
+            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+
+            commandForm.setIconUsageTypeName(IconConstants.IconUsageType_FORUM_MESSAGE);
+            commandForm.setDefaultIconChoice(forumMessageIconChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
+            forumMessageIconChoices = result.getIconChoices();
+
+            if(forumMessageIconChoice == null) {
+                forumMessageIconChoice = forumMessageIconChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupFeedSummaryMimeTypeChoices() {
+    private void setupFeedSummaryMimeTypeChoices()
+            throws NamingException {
         if(feedSummaryMimeTypeChoices == null) {
-            try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(feedSummaryMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                commandForm.setForumName(getForumName());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                feedSummaryMimeTypeChoices = result.getMimeTypeChoices();
-                
-                if(feedSummaryMimeTypeChoice == null) {
-                    feedSummaryMimeTypeChoice = feedSummaryMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, feedSummaryMimeTypeChoices remains null, no default
+            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+
+            commandForm.setDefaultMimeTypeChoice(feedSummaryMimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setForumName(getForumName());
+
+            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            feedSummaryMimeTypeChoices = result.getMimeTypeChoices();
+
+            if(feedSummaryMimeTypeChoice == null) {
+                feedSummaryMimeTypeChoice = feedSummaryMimeTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupSummaryMimeTypeChoices() {
+    private void setupSummaryMimeTypeChoices()
+            throws NamingException {
         if(summaryMimeTypeChoices == null) {
-            try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(summaryMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                commandForm.setForumName(getForumName());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                summaryMimeTypeChoices = result.getMimeTypeChoices();
-                
-                if(summaryMimeTypeChoice == null) {
-                    summaryMimeTypeChoice = summaryMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, summaryMimeTypeChoices remains null, no default
+            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+
+            commandForm.setDefaultMimeTypeChoice(summaryMimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setForumName(getForumName());
+
+            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            summaryMimeTypeChoices = result.getMimeTypeChoices();
+
+            if(summaryMimeTypeChoice == null) {
+                summaryMimeTypeChoice = summaryMimeTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupContentMimeTypeChoices() {
+    private void setupContentMimeTypeChoices()
+            throws NamingException {
         if(contentMimeTypeChoices == null) {
-            try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(contentMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
-                commandForm.setForumName(getForumName());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                contentMimeTypeChoices = result.getMimeTypeChoices();
-                
-                if(contentMimeTypeChoice == null) {
-                    contentMimeTypeChoice = contentMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, contentMimeTypeChoices remains null, no default
+            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+
+            commandForm.setDefaultMimeTypeChoice(contentMimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setForumName(getForumName());
+
+            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            contentMimeTypeChoices = result.getMimeTypeChoices();
+
+            if(contentMimeTypeChoice == null) {
+                contentMimeTypeChoice = contentMimeTypeChoices.getDefaultValue();
             }
         }
     }
@@ -190,7 +173,8 @@ public class EditActionForm
         this.forumMessageName = forumMessageName;
     }
     
-    public List<LabelValueBean> getForumThreadIconChoices() {
+    public List<LabelValueBean> getForumThreadIconChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupForumThreadIconChoices();
@@ -205,7 +189,8 @@ public class EditActionForm
         this.forumThreadIconChoice = forumThreadIconChoice;
     }
     
-    public String getForumThreadIconChoice() {
+    public String getForumThreadIconChoice()
+            throws NamingException {
         setupForumThreadIconChoices();
         
         return forumThreadIconChoice;
@@ -227,7 +212,8 @@ public class EditActionForm
         this.sortOrder = sortOrder;
     }
     
-    public List<LabelValueBean> getForumMessageIconChoices() {
+    public List<LabelValueBean> getForumMessageIconChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupForumMessageIconChoices();
@@ -242,7 +228,8 @@ public class EditActionForm
         this.forumMessageIconChoice = forumMessageIconChoice;
     }
     
-    public String getForumMessageIconChoice() {
+    public String getForumMessageIconChoice()
+            throws NamingException {
         setupForumMessageIconChoices();
         
         return forumMessageIconChoice;
@@ -256,7 +243,8 @@ public class EditActionForm
         this.title = title;
     }
     
-    public List<LabelValueBean> getFeedSummaryMimeTypeChoices() {
+    public List<LabelValueBean> getFeedSummaryMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupFeedSummaryMimeTypeChoices();
@@ -271,7 +259,8 @@ public class EditActionForm
         this.feedSummaryMimeTypeChoice = feedSummaryMimeTypeChoice;
     }
     
-    public String getFeedSummaryMimeTypeChoice() {
+    public String getFeedSummaryMimeTypeChoice()
+            throws NamingException {
         setupFeedSummaryMimeTypeChoices();
         
         return feedSummaryMimeTypeChoice;
@@ -285,7 +274,8 @@ public class EditActionForm
         this.feedSummary = feedSummary;
     }
     
-    public List<LabelValueBean> getSummaryMimeTypeChoices() {
+    public List<LabelValueBean> getSummaryMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSummaryMimeTypeChoices();
@@ -300,7 +290,8 @@ public class EditActionForm
         this.summaryMimeTypeChoice = summaryMimeTypeChoice;
     }
     
-    public String getSummaryMimeTypeChoice() {
+    public String getSummaryMimeTypeChoice()
+            throws NamingException {
         setupSummaryMimeTypeChoices();
         
         return summaryMimeTypeChoice;
@@ -314,7 +305,8 @@ public class EditActionForm
         this.summary = summary;
     }
     
-    public List<LabelValueBean> getContentMimeTypeChoices() {
+    public List<LabelValueBean> getContentMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupContentMimeTypeChoices();
@@ -329,7 +321,8 @@ public class EditActionForm
         this.contentMimeTypeChoice = contentMimeTypeChoice;
     }
     
-    public String getContentMimeTypeChoice() {
+    public String getContentMimeTypeChoice()
+            throws NamingException {
         setupContentMimeTypeChoices();
         
         return contentMimeTypeChoice;

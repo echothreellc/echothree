@@ -73,141 +73,119 @@ public class EmployeeProfileAddActionForm
     private String signatureMimeTypeChoice;
     private String signature;
     
-    private void setupIconChoices() {
+    private void setupIconChoices()
+            throws NamingException {
         if(iconChoices == null) {
-            try {
-                GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
-                
-                commandForm.setIconUsageTypeName(IconConstants.IconUsageType_PROFILE);
-                commandForm.setDefaultIconChoice(iconChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
-                iconChoices = result.getIconChoices();
-                
-                if(iconChoice == null) {
-                    iconChoice = iconChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, iconChoices remains null, no default
+            GetIconChoicesForm commandForm = IconUtil.getHome().getGetIconChoicesForm();
+
+            commandForm.setIconUsageTypeName(IconConstants.IconUsageType_PROFILE);
+            commandForm.setDefaultIconChoice(iconChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetIconChoicesResult result = (GetIconChoicesResult)executionResult.getResult();
+            iconChoices = result.getIconChoices();
+
+            if(iconChoice == null) {
+                iconChoice = iconChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupGenderChoices() {
+    private void setupGenderChoices()
+            throws NamingException {
         if(genderChoices == null) {
-            try {
-                GetGenderChoicesForm commandForm = PartyUtil.getHome().getGetGenderChoicesForm();
-                
-                commandForm.setDefaultGenderChoice(genderChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getGenderChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetGenderChoicesResult result = (GetGenderChoicesResult)executionResult.getResult();
-                genderChoices = result.getGenderChoices();
-                
-                if(genderChoice == null) {
-                    genderChoice = genderChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, genderChoices remains null, no default
+            GetGenderChoicesForm commandForm = PartyUtil.getHome().getGetGenderChoicesForm();
+
+            commandForm.setDefaultGenderChoice(genderChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = PartyUtil.getHome().getGenderChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetGenderChoicesResult result = (GetGenderChoicesResult)executionResult.getResult();
+            genderChoices = result.getGenderChoices();
+
+            if(genderChoice == null) {
+                genderChoice = genderChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupMoodChoices() {
+    private void setupMoodChoices()
+            throws NamingException {
         if(moodChoices == null) {
-            try {
-                GetMoodChoicesForm commandForm = PartyUtil.getHome().getGetMoodChoicesForm();
-                
-                commandForm.setDefaultMoodChoice(moodChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = PartyUtil.getHome().getMoodChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMoodChoicesResult result = (GetMoodChoicesResult)executionResult.getResult();
-                moodChoices = result.getMoodChoices();
-                
-                if(moodChoice == null) {
-                    moodChoice = moodChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, moodChoices remains null, no default
+            GetMoodChoicesForm commandForm = PartyUtil.getHome().getGetMoodChoicesForm();
+
+            commandForm.setDefaultMoodChoice(moodChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = PartyUtil.getHome().getMoodChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMoodChoicesResult result = (GetMoodChoicesResult)executionResult.getResult();
+            moodChoices = result.getMoodChoices();
+
+            if(moodChoice == null) {
+                moodChoice = moodChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupBirthdayFormatChoices() {
+    private void setupBirthdayFormatChoices()
+            throws NamingException {
         if(birthdayFormatChoices == null) {
-            try {
-                GetBirthdayFormatChoicesForm commandForm = PartyUtil.getHome().getGetBirthdayFormatChoicesForm();
+            GetBirthdayFormatChoicesForm commandForm = PartyUtil.getHome().getGetBirthdayFormatChoicesForm();
 
-                commandForm.setDefaultBirthdayFormatChoice(birthdayFormatChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setDefaultBirthdayFormatChoice(birthdayFormatChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getBirthdayFormatChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetBirthdayFormatChoicesResult result = (GetBirthdayFormatChoicesResult)executionResult.getResult();
-                birthdayFormatChoices = result.getBirthdayFormatChoices();
+            CommandResult commandResult = PartyUtil.getHome().getBirthdayFormatChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetBirthdayFormatChoicesResult result = (GetBirthdayFormatChoicesResult)executionResult.getResult();
+            birthdayFormatChoices = result.getBirthdayFormatChoices();
 
-                if(birthdayFormatChoice == null) {
-                    birthdayFormatChoice = birthdayFormatChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, birthdayFormatChoices remains null, no default
+            if(birthdayFormatChoice == null) {
+                birthdayFormatChoice = birthdayFormatChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupBioMimeTypeChoices() {
+    private void setupBioMimeTypeChoices()
+            throws NamingException {
         if(bioMimeTypeChoices == null) {
-            try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(bioMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                bioMimeTypeChoices = result.getMimeTypeChoices();
-                
-                if(bioMimeTypeChoice == null) {
-                    bioMimeTypeChoice = bioMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, bioMimeTypeChoices remains null, no default
+            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+
+            commandForm.setDefaultMimeTypeChoice(bioMimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+
+            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            bioMimeTypeChoices = result.getMimeTypeChoices();
+
+            if(bioMimeTypeChoice == null) {
+                bioMimeTypeChoice = bioMimeTypeChoices.getDefaultValue();
             }
         }
     }
     
-    private void setupSignatureMimeTypeChoices() {
+    private void setupSignatureMimeTypeChoices()
+            throws NamingException {
         if(signatureMimeTypeChoices == null) {
-            try {
-                GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
-                
-                commandForm.setDefaultMimeTypeChoice(signatureMimeTypeChoice);
-                commandForm.setAllowNullChoice(Boolean.TRUE.toString());
-                commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
-                
-                CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
-                signatureMimeTypeChoices = result.getMimeTypeChoices();
-                
-                if(signatureMimeTypeChoice == null) {
-                    signatureMimeTypeChoice = signatureMimeTypeChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                // failed, signatureMimeTypeChoices remains null, no default
+            GetMimeTypeChoicesForm commandForm = CoreUtil.getHome().getGetMimeTypeChoicesForm();
+
+            commandForm.setDefaultMimeTypeChoice(signatureMimeTypeChoice);
+            commandForm.setAllowNullChoice(Boolean.TRUE.toString());
+            commandForm.setMimeTypeUsageTypeName(MimeTypeUsageTypes.TEXT.name());
+
+            CommandResult commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetMimeTypeChoicesResult result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            signatureMimeTypeChoices = result.getMimeTypeChoices();
+
+            if(signatureMimeTypeChoice == null) {
+                signatureMimeTypeChoice = signatureMimeTypeChoices.getDefaultValue();
             }
         }
     }
@@ -236,7 +214,8 @@ public class EmployeeProfileAddActionForm
         this.nickname = nickname;
     }
     
-    public List<LabelValueBean> getIconChoices() {
+    public List<LabelValueBean> getIconChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupIconChoices();
@@ -251,13 +230,15 @@ public class EmployeeProfileAddActionForm
         this.iconChoice = iconChoice;
     }
     
-    public String getIconChoice() {
+    public String getIconChoice()
+            throws NamingException {
         setupIconChoices();
         
         return iconChoice;
     }
     
-    public List<LabelValueBean> getGenderChoices() {
+    public List<LabelValueBean> getGenderChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupGenderChoices();
@@ -272,13 +253,15 @@ public class EmployeeProfileAddActionForm
         this.genderChoice = genderChoice;
     }
     
-    public String getGenderChoice() {
+    public String getGenderChoice()
+            throws NamingException {
         setupGenderChoices();
         
         return genderChoice;
     }
     
-    public List<LabelValueBean> getMoodChoices() {
+    public List<LabelValueBean> getMoodChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupMoodChoices();
@@ -293,7 +276,8 @@ public class EmployeeProfileAddActionForm
         this.moodChoice = moodChoice;
     }
     
-    public String getMoodChoice() {
+    public String getMoodChoice()
+            throws NamingException {
         setupMoodChoices();
         
         return moodChoice;
@@ -307,7 +291,8 @@ public class EmployeeProfileAddActionForm
         this.birthday = birthday;
     }
     
-    public List<LabelValueBean> getBirthdayFormatChoices() {
+    public List<LabelValueBean> getBirthdayFormatChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupBirthdayFormatChoices();
@@ -322,7 +307,8 @@ public class EmployeeProfileAddActionForm
         this.birthdayFormatChoice = birthdayFormatChoice;
     }
 
-    public String getBirthdayFormatChoice() {
+    public String getBirthdayFormatChoice()
+            throws NamingException {
         setupBirthdayFormatChoices();
 
         return birthdayFormatChoice;
@@ -352,7 +338,8 @@ public class EmployeeProfileAddActionForm
         this.location = location;
     }
     
-    public List<LabelValueBean> getBioMimeTypeChoices() {
+    public List<LabelValueBean> getBioMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupBioMimeTypeChoices();
@@ -367,7 +354,8 @@ public class EmployeeProfileAddActionForm
         this.bioMimeTypeChoice = bioMimeTypeChoice;
     }
     
-    public String getBioMimeTypeChoice() {
+    public String getBioMimeTypeChoice()
+            throws NamingException {
         setupBioMimeTypeChoices();
         
         return bioMimeTypeChoice;
@@ -381,7 +369,8 @@ public class EmployeeProfileAddActionForm
         this.bio = bio;
     }
     
-    public List<LabelValueBean> getSignatureMimeTypeChoices() {
+    public List<LabelValueBean> getSignatureMimeTypeChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupSignatureMimeTypeChoices();
@@ -396,7 +385,8 @@ public class EmployeeProfileAddActionForm
         this.signatureMimeTypeChoice = signatureMimeTypeChoice;
     }
     
-    public String getSignatureMimeTypeChoice() {
+    public String getSignatureMimeTypeChoice()
+            throws NamingException {
         setupSignatureMimeTypeChoices();
         
         return signatureMimeTypeChoice;

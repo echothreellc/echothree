@@ -49,74 +49,62 @@ public class AddActionForm
     private String companyName;
     private String divisionName;
     
-    private void setupCompanyChoices() {
+    private void setupCompanyChoices()
+            throws NamingException {
         if(companyChoices == null) {
-            try {
-                GetCompanyChoicesForm commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
+            GetCompanyChoicesForm commandForm = PartyUtil.getHome().getGetCompanyChoicesForm();
 
-                commandForm.setDefaultCompanyChoice(companyChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setDefaultCompanyChoice(companyChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
-                companyChoices = result.getCompanyChoices();
+            CommandResult commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCompanyChoicesResult result = (GetCompanyChoicesResult)executionResult.getResult();
+            companyChoices = result.getCompanyChoices();
 
-                if(companyChoice == null) {
-                    companyChoice = companyChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, companyChoices remains null, no default
+            if(companyChoice == null) {
+                companyChoice = companyChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupDivisionChoices() {
+    private void setupDivisionChoices()
+            throws NamingException {
         if(divisionChoices == null) {
-            try {
-                GetDivisionChoicesForm commandForm = PartyUtil.getHome().getGetDivisionChoicesForm();
+            GetDivisionChoicesForm commandForm = PartyUtil.getHome().getGetDivisionChoicesForm();
 
-                commandForm.setCompanyName(getCompanyName());
-                commandForm.setDefaultDivisionChoice(divisionChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setCompanyName(getCompanyName());
+            commandForm.setDefaultDivisionChoice(divisionChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getDivisionChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetDivisionChoicesResult result = (GetDivisionChoicesResult)executionResult.getResult();
-                divisionChoices = result.getDivisionChoices();
+            CommandResult commandResult = PartyUtil.getHome().getDivisionChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetDivisionChoicesResult result = (GetDivisionChoicesResult)executionResult.getResult();
+            divisionChoices = result.getDivisionChoices();
 
-                if(divisionChoice == null) {
-                    divisionChoice = divisionChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, divisionChoices remains null, no default
+            if(divisionChoice == null) {
+                divisionChoice = divisionChoices.getDefaultValue();
             }
         }
     }
 
-    private void setupDepartmentChoices() {
+    private void setupDepartmentChoices()
+            throws NamingException {
         if(departmentChoices == null) {
-            try {
-                GetDepartmentChoicesForm commandForm = PartyUtil.getHome().getGetDepartmentChoicesForm();
+            GetDepartmentChoicesForm commandForm = PartyUtil.getHome().getGetDepartmentChoicesForm();
 
-                commandForm.setCompanyName(getCompanyName());
-                commandForm.setDivisionName(getDivisionName());
-                commandForm.setDefaultDepartmentChoice(departmentChoice);
-                commandForm.setAllowNullChoice(Boolean.FALSE.toString());
+            commandForm.setCompanyName(getCompanyName());
+            commandForm.setDivisionName(getDivisionName());
+            commandForm.setDefaultDepartmentChoice(departmentChoice);
+            commandForm.setAllowNullChoice(Boolean.FALSE.toString());
 
-                CommandResult commandResult = PartyUtil.getHome().getDepartmentChoices(userVisitPK, commandForm);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetDepartmentChoicesResult result = (GetDepartmentChoicesResult)executionResult.getResult();
-                departmentChoices = result.getDepartmentChoices();
+            CommandResult commandResult = PartyUtil.getHome().getDepartmentChoices(userVisitPK, commandForm);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetDepartmentChoicesResult result = (GetDepartmentChoicesResult)executionResult.getResult();
+            departmentChoices = result.getDepartmentChoices();
 
-                if(departmentChoice == null) {
-                    departmentChoice = departmentChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, departmentChoices remains null, no default
+            if(departmentChoice == null) {
+                departmentChoice = departmentChoices.getDefaultValue();
             }
         }
     }
@@ -129,7 +117,8 @@ public class AddActionForm
         return partyName;
     }
     
-    public String getCompanyChoice() {
+    public String getCompanyChoice()
+            throws NamingException {
         setupCompanyChoices();
 
         return companyChoice;
@@ -139,7 +128,8 @@ public class AddActionForm
         this.companyChoice = companyChoice;
     }
 
-    public List<LabelValueBean> getCompanyChoices() {
+    public List<LabelValueBean> getCompanyChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupCompanyChoices();
@@ -150,7 +140,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getDivisionChoice() {
+    public String getDivisionChoice()
+            throws NamingException {
         setupDivisionChoices();
 
         return divisionChoice;
@@ -160,7 +151,8 @@ public class AddActionForm
         this.divisionChoice = divisionChoice;
     }
 
-    public List<LabelValueBean> getDivisionChoices() {
+    public List<LabelValueBean> getDivisionChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupDivisionChoices();
@@ -171,7 +163,8 @@ public class AddActionForm
         return choices;
     }
 
-    public String getDepartmentChoice() {
+    public String getDepartmentChoice()
+            throws NamingException {
         setupDepartmentChoices();
 
         return departmentChoice;
@@ -181,7 +174,8 @@ public class AddActionForm
         this.departmentChoice = departmentChoice;
     }
 
-    public List<LabelValueBean> getDepartmentChoices() {
+    public List<LabelValueBean> getDepartmentChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
 
         setupDepartmentChoices();

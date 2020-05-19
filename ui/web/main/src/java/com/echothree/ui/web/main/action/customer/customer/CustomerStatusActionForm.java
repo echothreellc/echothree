@@ -38,26 +38,22 @@ public class CustomerStatusActionForm
     private String customerName;
     private String customerStatusChoice;
     
-    public void setupCustomerStatusChoices() {
+    public void setupCustomerStatusChoices()
+            throws NamingException {
         if(customerStatusChoices == null) {
-            try {
-                GetCustomerStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
-                
-                form.setCustomerName(customerName);
-                form.setDefaultCustomerStatusChoice(customerStatusChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetCustomerStatusChoicesResult result = (GetCustomerStatusChoicesResult)executionResult.getResult();
-                customerStatusChoices = result.getCustomerStatusChoices();
-                
-                if(customerStatusChoice == null) {
-                    customerStatusChoice = customerStatusChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, customerStatusChoices remains null, no default
+            GetCustomerStatusChoicesForm form = CustomerUtil.getHome().getGetCustomerStatusChoicesForm();
+
+            form.setCustomerName(customerName);
+            form.setDefaultCustomerStatusChoice(customerStatusChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = CustomerUtil.getHome().getCustomerStatusChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetCustomerStatusChoicesResult result = (GetCustomerStatusChoicesResult)executionResult.getResult();
+            customerStatusChoices = result.getCustomerStatusChoices();
+
+            if(customerStatusChoice == null) {
+                customerStatusChoice = customerStatusChoices.getDefaultValue();
             }
         }
     }
@@ -86,7 +82,8 @@ public class CustomerStatusActionForm
         this.customerStatusChoice = customerStatusChoice;
     }
     
-    public List<LabelValueBean> getCustomerStatusChoices() {
+    public List<LabelValueBean> getCustomerStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupCustomerStatusChoices();

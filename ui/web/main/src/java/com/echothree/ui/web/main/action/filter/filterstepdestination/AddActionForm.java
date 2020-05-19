@@ -40,28 +40,24 @@ public class AddActionForm
     private String filterStepName;
     private String toFilterStepChoice;
     
-    private void setupToFilterStepChoices() {
+    private void setupToFilterStepChoices()
+            throws NamingException {
         if(toFilterStepChoices == null) {
-            try {
-                GetFilterStepChoicesForm form = FilterUtil.getHome().getGetFilterStepChoicesForm();
-                
-                form.setFilterKindName(filterKindName);
-                form.setFilterTypeName(filterTypeName);
-                form.setFilterName(filterName);
-                form.setDefaultFilterStepChoice(toFilterStepChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = FilterUtil.getHome().getFilterStepChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetFilterStepChoicesResult result = (GetFilterStepChoicesResult)executionResult.getResult();
-                toFilterStepChoices = result.getFilterStepChoices();
-                
-                if(toFilterStepChoice == null)
-                    toFilterStepChoice = toFilterStepChoices.getDefaultValue();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, filterStepChoices remains null, no default
-            }
+            GetFilterStepChoicesForm form = FilterUtil.getHome().getGetFilterStepChoicesForm();
+
+            form.setFilterKindName(filterKindName);
+            form.setFilterTypeName(filterTypeName);
+            form.setFilterName(filterName);
+            form.setDefaultFilterStepChoice(toFilterStepChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = FilterUtil.getHome().getFilterStepChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetFilterStepChoicesResult result = (GetFilterStepChoicesResult)executionResult.getResult();
+            toFilterStepChoices = result.getFilterStepChoices();
+
+            if(toFilterStepChoice == null)
+                toFilterStepChoice = toFilterStepChoices.getDefaultValue();
         }
     }
     
@@ -97,7 +93,8 @@ public class AddActionForm
         return filterStepName;
     }
     
-    public List<LabelValueBean> getToFilterStepChoices() {
+    public List<LabelValueBean> getToFilterStepChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupToFilterStepChoices();
@@ -111,7 +108,8 @@ public class AddActionForm
         this.toFilterStepChoice = toFilterStepChoice;
     }
     
-    public String getToFilterStepChoice() {
+    public String getToFilterStepChoice()
+            throws NamingException {
         setupToFilterStepChoices();
         return toFilterStepChoice;
     }

@@ -41,30 +41,27 @@ public class AddActionForm
     private Boolean isDefault;
     private String sortOrder;
     
-    private void setupForumGroupChoices() {
+    private void setupForumGroupChoices()
+            throws NamingException {
         if(forumGroupChoices == null) {
-            try {
-                GetForumGroupChoicesForm form = ForumUtil.getHome().getGetForumGroupChoicesForm();
-                
-                form.setDefaultForumGroupChoice(forumGroupChoice);
-                form.setAllowNullChoice(Boolean.FALSE.toString());
-                
-                CommandResult commandResult = ForumUtil.getHome().getForumGroupChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetForumGroupChoicesResult getForumGroupChoicesResult = (GetForumGroupChoicesResult)executionResult.getResult();
-                forumGroupChoices = getForumGroupChoicesResult.getForumGroupChoices();
-                
-                if(forumGroupChoice == null) {
-                    forumGroupChoice = forumGroupChoices.getDefaultValue();
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, forumGroupChoices remains null, no default
+            GetForumGroupChoicesForm form = ForumUtil.getHome().getGetForumGroupChoicesForm();
+
+            form.setDefaultForumGroupChoice(forumGroupChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            CommandResult commandResult = ForumUtil.getHome().getForumGroupChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetForumGroupChoicesResult getForumGroupChoicesResult = (GetForumGroupChoicesResult)executionResult.getResult();
+            forumGroupChoices = getForumGroupChoicesResult.getForumGroupChoices();
+
+            if(forumGroupChoice == null) {
+                forumGroupChoice = forumGroupChoices.getDefaultValue();
             }
         }
     }
     
-    public String getForumGroupChoice() {
+    public String getForumGroupChoice()
+            throws NamingException {
         setupForumGroupChoices();
         
         return forumGroupChoice;
@@ -74,7 +71,8 @@ public class AddActionForm
         this.forumGroupChoice = forumGroupChoice;
     }
     
-    public List<LabelValueBean> getForumGroupChoices() {
+    public List<LabelValueBean> getForumGroupChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupForumGroupChoices();

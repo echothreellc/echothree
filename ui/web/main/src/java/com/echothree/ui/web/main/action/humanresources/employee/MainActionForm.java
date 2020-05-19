@@ -52,47 +52,39 @@ public class MainActionForm
     private String createdSince;
     private String modifiedSince;
     
-    private void setupEmployeeStatusChoices() {
+    private void setupEmployeeStatusChoices()
+            throws NamingException {
         if(employeeStatusChoices == null) {
-            try {
-                GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
-                
-                form.setWorkflowName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
-                form.setDefaultWorkflowStepChoice(employeeStatusChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
-                employeeStatusChoices = result.getWorkflowStepChoices();
-                
-                if(employeeStatusChoice == null) {
-                    employeeStatusChoice = EmployeeStatusConstants.WorkflowStep_ACTIVE;
-                }
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, employeeStatusChoices remains null, no default
+            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+
+            form.setWorkflowName(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
+            form.setDefaultWorkflowStepChoice(employeeStatusChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            employeeStatusChoices = result.getWorkflowStepChoices();
+
+            if(employeeStatusChoice == null) {
+                employeeStatusChoice = EmployeeStatusConstants.WorkflowStep_ACTIVE;
             }
         }
     }
     
-    private void setupEmployeeAvailabilityChoices() {
+    private void setupEmployeeAvailabilityChoices()
+            throws NamingException {
         if(employeeAvailabilityChoices == null) {
-            try {
-                GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
-                
-                form.setWorkflowName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY);
-                form.setDefaultWorkflowStepChoice(employeeAvailabilityChoice);
-                form.setAllowNullChoice(Boolean.TRUE.toString());
-                
-                CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
-                employeeAvailabilityChoices = result.getWorkflowStepChoices();
-            } catch (NamingException ne) {
-                ne.printStackTrace();
-                // failed, employeeAvailabilityChoices remains null, no default
-            }
+            GetWorkflowStepChoicesForm form = WorkflowUtil.getHome().getGetWorkflowStepChoicesForm();
+
+            form.setWorkflowName(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY);
+            form.setDefaultWorkflowStepChoice(employeeAvailabilityChoice);
+            form.setAllowNullChoice(Boolean.TRUE.toString());
+
+            CommandResult commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
+            ExecutionResult executionResult = commandResult.getExecutionResult();
+            GetWorkflowStepChoicesResult result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            employeeAvailabilityChoices = result.getWorkflowStepChoices();
         }
     }
     
@@ -160,7 +152,8 @@ public class MainActionForm
         this.lastNameSoundex = lastNameSoundex;
     }
     
-    public String getEmployeeStatusChoice() {
+    public String getEmployeeStatusChoice()
+            throws NamingException {
         setupEmployeeStatusChoices();
         return employeeStatusChoice;
     }
@@ -169,7 +162,8 @@ public class MainActionForm
         this.employeeStatusChoice = employeeStatusChoice;
     }
     
-    public List<LabelValueBean> getEmployeeStatusChoices() {
+    public List<LabelValueBean> getEmployeeStatusChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEmployeeStatusChoices();
@@ -180,7 +174,8 @@ public class MainActionForm
         return choices;
     }
     
-    public String getEmployeeAvailabilityChoice() {
+    public String getEmployeeAvailabilityChoice()
+            throws NamingException {
         setupEmployeeAvailabilityChoices();
         return employeeAvailabilityChoice;
     }
@@ -189,7 +184,8 @@ public class MainActionForm
         this.employeeAvailabilityChoice = employeeAvailabilityChoice;
     }
     
-    public List<LabelValueBean> getEmployeeAvailabilityChoices() {
+    public List<LabelValueBean> getEmployeeAvailabilityChoices()
+            throws NamingException {
         List<LabelValueBean> choices = null;
         
         setupEmployeeAvailabilityChoices();
