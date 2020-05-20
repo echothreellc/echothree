@@ -21,7 +21,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.Session;
 
-public class BasePaymentControl
+public abstract class BasePaymentControl
         extends BaseModelControl {
 
     /** Creates a new instance of BasePaymentControl */
