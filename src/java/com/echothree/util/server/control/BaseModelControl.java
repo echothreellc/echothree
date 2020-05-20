@@ -29,8 +29,7 @@ import java.sql.Connection;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class BaseModelControl<C
-        extends BaseModelControl> {
+public class BaseModelControl {
     
     protected Session session;
     protected Connection connection;
