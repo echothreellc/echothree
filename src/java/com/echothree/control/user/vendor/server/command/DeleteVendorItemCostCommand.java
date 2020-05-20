@@ -18,7 +18,7 @@ package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.DeleteVendorItemCostForm;
 import com.echothree.model.control.inventory.common.InventoryConstants;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;

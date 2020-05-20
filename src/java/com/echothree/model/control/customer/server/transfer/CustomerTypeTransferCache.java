@@ -24,7 +24,7 @@ import com.echothree.model.control.customer.common.CustomerProperties;
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.server.CustomerControl;
 import com.echothree.model.control.inventory.common.transfer.AllocationPriorityTransfer;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
 import com.echothree.model.control.offer.server.OfferControl;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;

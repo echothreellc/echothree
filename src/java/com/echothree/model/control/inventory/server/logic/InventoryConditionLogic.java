@@ -20,7 +20,7 @@ import com.echothree.control.user.inventory.common.spec.InventoryConditionUniver
 import com.echothree.model.control.inventory.common.exception.DuplicateInventoryConditionNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryConditionNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;

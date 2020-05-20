@@ -20,7 +20,7 @@ import com.echothree.control.user.vendor.common.form.GetVendorItemCostForm;
 import com.echothree.control.user.vendor.common.result.GetVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.inventory.common.InventoryConstants;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

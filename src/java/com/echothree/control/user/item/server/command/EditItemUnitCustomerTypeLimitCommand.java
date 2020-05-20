@@ -23,7 +23,7 @@ import com.echothree.control.user.item.common.result.EditItemUnitCustomerTypeLim
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemUnitCustomerTypeLimitSpec;
 import com.echothree.model.control.customer.server.CustomerControl;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;

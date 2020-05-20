@@ -18,7 +18,7 @@ package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupCapacityTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupTransfer;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
 import com.echothree.model.control.uom.server.UomControl;
 import com.echothree.model.control.uom.server.transfer.UnitOfMeasureTypeTransferCache;

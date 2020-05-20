@@ -21,7 +21,7 @@ import com.echothree.model.control.accounting.common.transfer.ItemAccountingCate
 import com.echothree.model.control.accounting.server.AccountingControl;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionGlAccountTransfer;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionTransfer;
-import com.echothree.model.control.inventory.server.InventoryControl;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.ItemControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionGlAccount;
