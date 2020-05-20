@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetLotAliasTypeDescriptionsForm;
 import com.echothree.control.user.inventory.common.result.GetLotAliasTypeDescriptionsResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -64,14 +64,14 @@ public class GetLotAliasTypeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         GetLotAliasTypeDescriptionsResult result = InventoryResultFactory.getGetLotAliasTypeDescriptionsResult();
         String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
-            result.setLotAliasType(inventoryControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
-            result.setLotAliasTypeDescriptions(inventoryControl.getLotAliasTypeDescriptionTransfersByLotAliasType(getUserVisit(), lotAliasType));
+            result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
+            result.setLotAliasTypeDescriptions(lotAliasControl.getLotAliasTypeDescriptionTransfersByLotAliasType(getUserVisit(), lotAliasType));
         } else {
             addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
         }

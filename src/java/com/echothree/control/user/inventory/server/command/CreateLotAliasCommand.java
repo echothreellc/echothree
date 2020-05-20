@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotAliasForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -74,9 +74,9 @@ public class CreateLotAliasCommand
         Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
             String lotAliasTypeName = form.getLotAliasTypeName();
-            LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+            LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
             if(lotAliasType != null) {
                 LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
@@ -93,8 +93,8 @@ public class CreateLotAliasCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    if(inventoryControl.getLotAlias(lot, lotAliasType) == null && inventoryControl.getLotAliasByAlias(lotAliasType, alias) == null) {
-                        inventoryControl.createLotAlias(lot, lotAliasType, alias, getPartyPK());
+                    if(lotAliasControl.getLotAlias(lot, lotAliasType) == null && lotAliasControl.getLotAliasByAlias(lotAliasType, alias) == null) {
+                        lotAliasControl.createLotAlias(lot, lotAliasType, alias, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateLotAlias.name(), lotName, lotAliasTypeName, alias);
                     }

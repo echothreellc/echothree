@@ -22,7 +22,7 @@ import com.echothree.control.user.inventory.common.form.EditLotAliasTypeForm;
 import com.echothree.control.user.inventory.common.result.EditLotAliasTypeResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.LotAliasTypeSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -91,18 +91,18 @@ public class EditLotAliasTypeCommand
 
     @Override
     public LotAliasType getEntity(EditLotAliasTypeResult result) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         LotAliasType lotAliasType;
         String lotAliasTypeName = spec.getLotAliasTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+            lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
         } else { // EditMode.UPDATE
-            lotAliasType = inventoryControl.getLotAliasTypeByNameForUpdate(lotAliasTypeName);
+            lotAliasType = lotAliasControl.getLotAliasTypeByNameForUpdate(lotAliasTypeName);
         }
 
         if(lotAliasType != null) {
-            result.setLotAliasType(inventoryControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
+            result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
         } else {
             addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
         }
@@ -117,15 +117,15 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void fillInResult(EditLotAliasTypeResult result, LotAliasType lotAliasType) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
 
-        result.setLotAliasType(inventoryControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
+        result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
     }
 
     @Override
     public void doLock(LotAliasTypeEdit edit, LotAliasType lotAliasType) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        LotAliasTypeDescription lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescription(lotAliasType, getPreferredLanguage());
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
+        LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, getPreferredLanguage());
         LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
 
         edit.setLotAliasTypeName(lotAliasTypeDetail.getLotAliasTypeName());
@@ -140,9 +140,9 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void canUpdate(LotAliasType lotAliasType) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         String lotAliasTypeName = edit.getLotAliasTypeName();
-        LotAliasType duplicateLotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+        LotAliasType duplicateLotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(duplicateLotAliasType != null && !lotAliasType.equals(duplicateLotAliasType)) {
             addExecutionError(ExecutionErrors.DuplicateLotAliasTypeName.name(), lotAliasTypeName);
@@ -151,10 +151,10 @@ public class EditLotAliasTypeCommand
 
     @Override
     public void doUpdate(LotAliasType lotAliasType) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         PartyPK partyPK = getPartyPK();
-        LotAliasTypeDetailValue lotAliasTypeDetailValue = inventoryControl.getLotAliasTypeDetailValueForUpdate(lotAliasType);
-        LotAliasTypeDescription lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, getPreferredLanguage());
+        LotAliasTypeDetailValue lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueForUpdate(lotAliasType);
+        LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescriptionForUpdate(lotAliasType, getPreferredLanguage());
         String description = edit.getDescription();
 
         lotAliasTypeDetailValue.setLotAliasTypeName(edit.getLotAliasTypeName());
@@ -162,17 +162,17 @@ public class EditLotAliasTypeCommand
         lotAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         lotAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        inventoryControl.updateLotAliasTypeFromValue(lotAliasTypeDetailValue, partyPK);
+        lotAliasControl.updateLotAliasTypeFromValue(lotAliasTypeDetailValue, partyPK);
 
         if(lotAliasTypeDescription == null && description != null) {
-            inventoryControl.createLotAliasTypeDescription(lotAliasType, getPreferredLanguage(), description, partyPK);
+            lotAliasControl.createLotAliasTypeDescription(lotAliasType, getPreferredLanguage(), description, partyPK);
         } else if(lotAliasTypeDescription != null && description == null) {
-            inventoryControl.deleteLotAliasTypeDescription(lotAliasTypeDescription, partyPK);
+            lotAliasControl.deleteLotAliasTypeDescription(lotAliasTypeDescription, partyPK);
         } else if(lotAliasTypeDescription != null && description != null) {
-            LotAliasTypeDescriptionValue lotAliasTypeDescriptionValue = inventoryControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
+            LotAliasTypeDescriptionValue lotAliasTypeDescriptionValue = lotAliasControl.getLotAliasTypeDescriptionValue(lotAliasTypeDescription);
 
             lotAliasTypeDescriptionValue.setDescription(description);
-            inventoryControl.updateLotAliasTypeDescriptionFromValue(lotAliasTypeDescriptionValue, partyPK);
+            lotAliasControl.updateLotAliasTypeDescriptionFromValue(lotAliasTypeDescriptionValue, partyPK);
         }
     }
 

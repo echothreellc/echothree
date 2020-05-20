@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetLotAliasesForm;
 import com.echothree.control.user.inventory.common.result.GetLotAliasesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -72,11 +72,11 @@ public class GetLotAliasesCommand
         Lot lot = lotControl.getLotByName(lotName);
 
         if(lot != null) {
-            var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+            var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
             UserVisit userVisit = getUserVisit();
 
             result.setLot(lotControl.getLotTransfer(userVisit, lot));
-            result.setLotAliases(inventoryControl.getLotAliasTransfersByLot(userVisit, lot));
+            result.setLotAliases(lotAliasControl.getLotAliasTransfersByLot(userVisit, lot));
         } else {
             addExecutionError(ExecutionErrors.UnknownLotName.name(), lotName);
         }

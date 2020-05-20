@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetLotAliasTypesForm;
 import com.echothree.control.user.inventory.common.result.GetLotAliasTypesResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -60,10 +60,10 @@ public class GetLotAliasTypesCommand
 
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         GetLotAliasTypesResult result = InventoryResultFactory.getGetLotAliasTypesResult();
 
-        result.setLotAliasTypes(inventoryControl.getLotAliasTypeTransfers(getUserVisit()));
+        result.setLotAliasTypes(lotAliasControl.getLotAliasTypeTransfers(getUserVisit()));
 
         return result;
     }

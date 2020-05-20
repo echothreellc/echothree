@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultLotAliasTypeForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,13 +61,13 @@ public class SetDefaultLotAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasTypeDetailValue lotAliasTypeDetailValue = inventoryControl.getLotAliasTypeDetailValueByNameForUpdate(lotAliasTypeName);
+        LotAliasTypeDetailValue lotAliasTypeDetailValue = lotAliasControl.getLotAliasTypeDetailValueByNameForUpdate(lotAliasTypeName);
 
         if(lotAliasTypeDetailValue != null) {
             lotAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
-            inventoryControl.updateLotAliasTypeFromValue(lotAliasTypeDetailValue, getPartyPK());
+            lotAliasControl.updateLotAliasTypeFromValue(lotAliasTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
         }

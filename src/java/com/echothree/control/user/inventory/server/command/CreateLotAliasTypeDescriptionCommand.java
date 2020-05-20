@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotAliasTypeDescriptionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -67,9 +67,9 @@ public class CreateLotAliasTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotAliasControl = (LotAliasControl)Session.getModelController(LotAliasControl.class);
         String lotAliasTypeName = form.getLotAliasTypeName();
-        LotAliasType lotAliasType = inventoryControl.getLotAliasTypeByName(lotAliasTypeName);
+        LotAliasType lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
         if(lotAliasType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -77,12 +77,12 @@ public class CreateLotAliasTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LotAliasTypeDescription lotAliasTypeDescription = inventoryControl.getLotAliasTypeDescription(lotAliasType, language);
+                LotAliasTypeDescription lotAliasTypeDescription = lotAliasControl.getLotAliasTypeDescription(lotAliasType, language);
 
                 if(lotAliasTypeDescription == null) {
                     String description = form.getDescription();
 
-                    inventoryControl.createLotAliasTypeDescription(lotAliasType, language, description, getPartyPK());
+                    lotAliasControl.createLotAliasTypeDescription(lotAliasType, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateLotAliasTypeDescription.name(), lotAliasTypeName, languageIsoName);
                 }

@@ -19,13 +19,17 @@ package com.echothree.model.control.inventory.server.transfer;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class LotAliasTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<LotAliasTypeDescription, LotAliasTypeDescriptionTransfer> {
-    
+
+    LotAliasControl lotAliasControl = (LotAliasControl) Session.getModelController(LotAliasControl.class);
+
     /** Creates a new instance of LotAliasTypeDescriptionTransferCache */
     public LotAliasTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
@@ -36,7 +40,7 @@ public class LotAliasTypeDescriptionTransferCache
         LotAliasTypeDescriptionTransfer lotAliasTypeDescriptionTransfer = get(lotAliasTypeDescription);
         
         if(lotAliasTypeDescriptionTransfer == null) {
-            LotAliasTypeTransfer lotAliasTypeTransfer = inventoryControl.getLotAliasTypeTransfer(userVisit, lotAliasTypeDescription.getLotAliasType());
+            LotAliasTypeTransfer lotAliasTypeTransfer = lotAliasControl.getLotAliasTypeTransfer(userVisit, lotAliasTypeDescription.getLotAliasType());
             LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, lotAliasTypeDescription.getLanguage());
             
             lotAliasTypeDescriptionTransfer = new LotAliasTypeDescriptionTransfer(languageTransfer, lotAliasTypeTransfer, lotAliasTypeDescription.getDescription());
