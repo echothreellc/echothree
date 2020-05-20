@@ -22,7 +22,7 @@ import com.echothree.control.user.inventory.common.form.EditLotTimeTypeForm;
 import com.echothree.control.user.inventory.common.result.EditLotTimeTypeResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.LotTimeTypeSpec;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -90,18 +90,18 @@ public class EditLotTimeTypeCommand
 
     @Override
     public LotTimeType getEntity(EditLotTimeTypeResult result) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
         LotTimeType lotTimeType = null;
         String lotTimeTypeName = spec.getLotTimeTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            lotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
+            lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
         } else { // EditMode.UPDATE
-            lotTimeType = inventoryControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
+            lotTimeType = lotTimeControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
         }
 
         if(lotTimeType != null) {
-            result.setLotTimeType(inventoryControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
+            result.setLotTimeType(lotTimeControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
         } else {
             addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
         }
@@ -116,15 +116,15 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void fillInResult(EditLotTimeTypeResult result, LotTimeType lotTimeType) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
 
-        result.setLotTimeType(inventoryControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
+        result.setLotTimeType(lotTimeControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
     }
 
     @Override
     public void doLock(LotTimeTypeEdit edit, LotTimeType lotTimeType) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
-        LotTimeTypeDescription lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescription(lotTimeType, getPreferredLanguage());
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+        LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, getPreferredLanguage());
         LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetail();
 
         edit.setLotTimeTypeName(lotTimeTypeDetail.getLotTimeTypeName());
@@ -138,9 +138,9 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void canUpdate(LotTimeType lotTimeType) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
         String lotTimeTypeName = edit.getLotTimeTypeName();
-        LotTimeType duplicateLotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
+        LotTimeType duplicateLotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(duplicateLotTimeType != null && !lotTimeType.equals(duplicateLotTimeType)) {
             addExecutionError(ExecutionErrors.DuplicateLotTimeTypeName.name(), lotTimeTypeName);
@@ -149,29 +149,29 @@ public class EditLotTimeTypeCommand
 
     @Override
     public void doUpdate(LotTimeType lotTimeType) {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
         PartyPK partyPK = getPartyPK();
-        LotTimeTypeDetailValue lotTimeTypeDetailValue = inventoryControl.getLotTimeTypeDetailValueForUpdate(lotTimeType);
-        LotTimeTypeDescription lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, getPreferredLanguage());
+        LotTimeTypeDetailValue lotTimeTypeDetailValue = lotTimeControl.getLotTimeTypeDetailValueForUpdate(lotTimeType);
+        LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescriptionForUpdate(lotTimeType, getPreferredLanguage());
         String description = edit.getDescription();
 
         lotTimeTypeDetailValue.setLotTimeTypeName(edit.getLotTimeTypeName());
         lotTimeTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         lotTimeTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        inventoryControl.updateLotTimeTypeFromValue(lotTimeTypeDetailValue, partyPK);
+        lotTimeControl.updateLotTimeTypeFromValue(lotTimeTypeDetailValue, partyPK);
 
         if(lotTimeTypeDescription == null && description != null) {
-            inventoryControl.createLotTimeTypeDescription(lotTimeType, getPreferredLanguage(), description, partyPK);
+            lotTimeControl.createLotTimeTypeDescription(lotTimeType, getPreferredLanguage(), description, partyPK);
         } else {
             if(lotTimeTypeDescription != null && description == null) {
-                inventoryControl.deleteLotTimeTypeDescription(lotTimeTypeDescription, partyPK);
+                lotTimeControl.deleteLotTimeTypeDescription(lotTimeTypeDescription, partyPK);
             } else {
                 if(lotTimeTypeDescription != null && description != null) {
-                    LotTimeTypeDescriptionValue lotTimeTypeDescriptionValue = inventoryControl.getLotTimeTypeDescriptionValue(lotTimeTypeDescription);
+                    LotTimeTypeDescriptionValue lotTimeTypeDescriptionValue = lotTimeControl.getLotTimeTypeDescriptionValue(lotTimeTypeDescription);
 
                     lotTimeTypeDescriptionValue.setDescription(description);
-                    inventoryControl.updateLotTimeTypeDescriptionFromValue(lotTimeTypeDescriptionValue, partyPK);
+                    lotTimeControl.updateLotTimeTypeDescriptionFromValue(lotTimeTypeDescriptionValue, partyPK);
                 }
             }
         }

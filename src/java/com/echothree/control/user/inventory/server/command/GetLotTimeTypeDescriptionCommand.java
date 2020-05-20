@@ -19,7 +19,7 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetLotTimeTypeDescriptionForm;
 import com.echothree.control.user.inventory.common.result.GetLotTimeTypeDescriptionResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -68,10 +68,10 @@ public class GetLotTimeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
         GetLotTimeTypeDescriptionResult result = InventoryResultFactory.getGetLotTimeTypeDescriptionResult();
         String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
+        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -79,10 +79,10 @@ public class GetLotTimeTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LotTimeTypeDescription lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescription(lotTimeType, language);
+                LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, language);
 
                 if(lotTimeTypeDescription != null) {
-                    result.setLotTimeTypeDescription(inventoryControl.getLotTimeTypeDescriptionTransfer(getUserVisit(), lotTimeTypeDescription));
+                    result.setLotTimeTypeDescription(lotTimeControl.getLotTimeTypeDescriptionTransfer(getUserVisit(), lotTimeTypeDescription));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLotTimeTypeDescription.name(), lotTimeTypeName, languageIsoName);
                 }

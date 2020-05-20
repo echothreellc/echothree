@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.DeleteLotTimeTypeForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -62,12 +62,12 @@ public class DeleteLotTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
         String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
+        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByNameForUpdate(lotTimeTypeName);
 
         if(lotTimeType != null) {
-            inventoryControl.deleteLotTimeType(lotTimeType, getPartyPK());
+            lotTimeControl.deleteLotTimeType(lotTimeType, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
         }

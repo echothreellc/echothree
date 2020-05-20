@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotTimeTypeDescriptionForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -67,9 +67,9 @@ public class CreateLotTimeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
         String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeType lotTimeType = inventoryControl.getLotTimeTypeByName(lotTimeTypeName);
+        LotTimeType lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
         if(lotTimeType != null) {
             var partyControl = (PartyControl)Session.getModelController(PartyControl.class);
@@ -77,12 +77,12 @@ public class CreateLotTimeTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
 
             if(language != null) {
-                LotTimeTypeDescription lotTimeTypeDescription = inventoryControl.getLotTimeTypeDescription(lotTimeType, language);
+                LotTimeTypeDescription lotTimeTypeDescription = lotTimeControl.getLotTimeTypeDescription(lotTimeType, language);
 
                 if(lotTimeTypeDescription == null) {
                     String description = form.getDescription();
 
-                    inventoryControl.createLotTimeTypeDescription(lotTimeType, language, description, getPartyPK());
+                    lotTimeControl.createLotTimeTypeDescription(lotTimeType, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateLotTimeTypeDescription.name(), lotTimeTypeName, languageIsoName);
                 }
