@@ -167,25 +167,11 @@ import java.util.Map;
 import java.util.Objects;
 
 public class InventoryControl
-        extends BaseModelControl {
+        extends BaseInventoryControl {
     
     /** Creates a new instance of InventoryControl */
     public InventoryControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Inventory Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private InventoryTransferCaches inventoryTransferCaches = null;
-    
-    public InventoryTransferCaches getInventoryTransferCaches(UserVisit userVisit) {
-        if(inventoryTransferCaches == null) {
-            inventoryTransferCaches = new InventoryTransferCaches(userVisit, this);
-        }
-        
-        return inventoryTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
