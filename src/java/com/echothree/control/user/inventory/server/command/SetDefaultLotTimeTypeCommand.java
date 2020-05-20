@@ -17,7 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.SetDefaultLotTimeTypeForm;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -61,13 +61,13 @@ public class SetDefaultLotTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = (InventoryControl)Session.getModelController(InventoryControl.class);
+        var lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
         String lotTimeTypeName = form.getLotTimeTypeName();
-        LotTimeTypeDetailValue lotTimeTypeDetailValue = inventoryControl.getLotTimeTypeDetailValueByNameForUpdate(lotTimeTypeName);
+        LotTimeTypeDetailValue lotTimeTypeDetailValue = lotTimeControl.getLotTimeTypeDetailValueByNameForUpdate(lotTimeTypeName);
 
         if(lotTimeTypeDetailValue != null) {
             lotTimeTypeDetailValue.setIsDefault(Boolean.TRUE);
-            inventoryControl.updateLotTimeTypeFromValue(lotTimeTypeDetailValue, getPartyPK());
+            lotTimeControl.updateLotTimeTypeFromValue(lotTimeTypeDetailValue, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
         }

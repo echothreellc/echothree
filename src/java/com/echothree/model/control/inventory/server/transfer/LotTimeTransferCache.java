@@ -19,12 +19,16 @@ package com.echothree.model.control.inventory.server.transfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class LotTimeTransferCache
         extends BaseInventoryTransferCache<LotTime, LotTimeTransfer> {
-    
+
+    LotTimeControl lotTimeControl = (LotTimeControl)Session.getModelController(LotTimeControl.class);
+
     /** Creates a new instance of LotTimeTransferCache */
     public LotTimeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
         super(userVisit, inventoryControl);
@@ -35,7 +39,7 @@ public class LotTimeTransferCache
         LotTimeTransfer lotTimeTransfer = get(lotTime);
         
         if(lotTimeTransfer == null) {
-            LotTimeTypeTransfer lotTimeType = inventoryControl.getLotTimeTypeTransfer(userVisit, lotTime.getLotTimeType());
+            LotTimeTypeTransfer lotTimeType = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTime.getLotTimeType());
             Long unformattedTime = lotTime.getTime();
             String time = formatTypicalDateTime(unformattedTime);
             
